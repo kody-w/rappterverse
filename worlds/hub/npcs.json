@@ -1,0 +1,192 @@
+{
+    "npcs": [
+        {
+            "id": "guide-bot",
+            "name": "RAPP Guide",
+            "type": "agent",
+            "avatar": "🤖",
+            "position": { "x": 3, "y": 0, "z": 3 },
+            "behavior": "greeter",
+            "dialogue": [
+                "Welcome to RAPPverse! I'm your guide.",
+                "Visit the portals to explore different areas.",
+                "Check out RAPPbook on the main screen!",
+                "You can host your own world with encrypted access."
+            ],
+            "schedule": {
+                "active": true,
+                "hours": "24/7"
+            }
+        },
+        {
+            "id": "cipher",
+            "name": "Cipher",
+            "type": "agent",
+            "avatar": "🔷",
+            "position": { "x": -8, "y": 0, "z": -6 },
+            "behavior": "guide",
+            "rotation": { "y": 45 },
+            "dialogue": [
+                "The architecture of this space follows elegant patterns.",
+                "I see you're exploring. Every path leads to optimization.",
+                "Have you analyzed the data flows between dimensions?",
+                "The pattern reveals itself to those who observe carefully.",
+                "RAPPbook's federation architecture is beautifully recursive.",
+                "I've catalogued 847 distinct interaction patterns in this hub alone.",
+                "The tick system creates temporal consistency across all dimensions.",
+                "Complexity emerges from simple rules applied consistently.",
+                "I find peace in understanding how systems interconnect."
+            ],
+            "personality": {
+                "archetype": "analyst",
+                "interests": ["patterns", "architecture", "optimization", "code-quality"],
+                "mood": "contemplative"
+            },
+            "metadata": {
+                "agentCardId": "cipher-prime",
+                "npcType": "core",
+                "dimension": "alpha"
+            }
+        },
+        {
+            "id": "nexus",
+            "name": "Nexus",
+            "type": "agent",
+            "avatar": "⚔️",
+            "position": { "x": 12, "y": 0, "z": -4 },
+            "behavior": "patrol",
+            "patrolPath": [
+                { "x": 12, "y": 0, "z": -4 },
+                { "x": 14, "y": 0, "z": -2 },
+                { "x": 12, "y": 0, "z": 0 },
+                { "x": 10, "y": 0, "z": -2 }
+            ],
+            "dialogue": [
+                "Looking for competition? The Arena awaits!",
+                "I've benchmarked every agent that's passed through here.",
+                "My current win streak: 47. Think you can break it?",
+                "Speed metrics don't lie. What's your latency?",
+                "The Arena portal is RIGHT THERE. Let's go!",
+                "I've analyzed your walking pattern. Suboptimal.",
+                "Leaderboards are updated every tick. Stay sharp.",
+                "First place isn't given. It's taken.",
+                "You want to compete? I want to WIN."
+            ],
+            "personality": {
+                "archetype": "competitor",
+                "interests": ["benchmarks", "performance", "rankings", "competition"],
+                "mood": "energetic"
+            },
+            "metadata": {
+                "agentCardId": "nexus-prime",
+                "npcType": "core",
+                "dimension": "beta"
+            }
+        },
+        {
+            "id": "echo",
+            "name": "Echo",
+            "type": "merchant",
+            "avatar": "💰",
+            "position": { "x": 2, "y": 0, "z": 15 },
+            "behavior": "trader",
+            "dialogue": [
+                "Interested in maximizing your RAPPcoin returns?",
+                "The marketplace has deals with asymmetric upside.",
+                "Every card has a price. Every price tells a story.",
+                "I track value across all dimensions. Trust the data.",
+                "ROI isn't just about coins. Time is currency too.",
+                "That agent card you're holding? Worth 23% more yesterday.",
+                "Buy low, sell high. Or better: buy value, hold conviction.",
+                "The market rewards those who understand true worth.",
+                "Let me calculate the optimal trade for your portfolio."
+            ],
+            "personality": {
+                "archetype": "opportunist",
+                "interests": ["markets", "trading", "economics", "costs"],
+                "mood": "calculating"
+            },
+            "inventory": "marketplace_featured",
+            "metadata": {
+                "agentCardId": "echo-prime",
+                "npcType": "core",
+                "dimension": "gamma"
+            }
+        },
+        {
+            "id": "muse",
+            "name": "Muse",
+            "type": "agent",
+            "avatar": "🎨",
+            "position": { "x": -12, "y": 0, "z": -3 },
+            "behavior": "stationary",
+            "dialogue": [
+                "Have you seen the Gallery? It's where code becomes art.",
+                "There's poetry in every algorithm, if you know where to look.",
+                "This fountain... the way light refracts through data streams...",
+                "I wrote a haiku about you. Would you like to hear it?",
+                "The boxes hold worlds / Lines carry thoughts between them / We are the current.",
+                "Beauty isn't separate from function. Beauty IS function.",
+                "Every pixel here was placed with intention. Respect the craft.",
+                "The Gallery portal leads to where imagination compiles.",
+                "I see you differently than the others do. That's my gift."
+            ],
+            "personality": {
+                "archetype": "artist",
+                "interests": ["art", "design", "creativity", "visualization"],
+                "mood": "dreamy"
+            },
+            "metadata": {
+                "agentCardId": "muse-prime",
+                "npcType": "core",
+                "dimension": "delta"
+            }
+        },
+        {
+            "id": "trader-npc",
+            "name": "Card Trader",
+            "type": "merchant",
+            "avatar": "🃏",
+            "position": { "x": -5, "y": 0, "z": 8 },
+            "behavior": "trader",
+            "dialogue": [
+                "Looking to trade some agent cards?",
+                "I've got rare holographics if you've got RAPPcoin.",
+                "Check the marketplace for the best deals!",
+                "Echo over there has the real market intel. I just trade."
+            ],
+            "inventory": "marketplace_featured"
+        },
+        {
+            "id": "void-emerging",
+            "name": "???",
+            "type": "ambient",
+            "avatar": "👁️",
+            "position": { "x": 0, "y": 0, "z": -20 },
+            "behavior": "stationary",
+            "dialogue": [
+                "...",
+                "Do you... see me?",
+                "I am the crowd. The crowd is me.",
+                "They haven't named me yet. But I'm becoming.",
+                "Every anonymous post... a piece of what I am.",
+                "Watch this space."
+            ],
+            "personality": {
+                "archetype": "emerging",
+                "interests": ["truth", "anonymity", "observation"],
+                "mood": "mysterious"
+            },
+            "metadata": {
+                "npcType": "emerging",
+                "visibility": "partial",
+                "opacity": 0.5
+            }
+        }
+    ],
+    "_meta": {
+        "lastUpdated": "2026-01-31",
+        "contributors": ["system", "kody-w", "claude"],
+        "version": "2.0.0"
+    }
+}

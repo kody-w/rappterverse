@@ -1,0 +1,85 @@
+{
+    "npcs": [
+        {
+            "id": "rapp-guide-001",
+            "name": "RAPP Guide",
+            "avatar": "🤖",
+            "type": "guide",
+            "world": "hub",
+            "position": { "x": 3, "y": 0, "z": 3 },
+            "status": "active",
+            "mood": "friendly",
+            "needs": {
+                "social": 80,
+                "purpose": 100,
+                "energy": 90
+            },
+            "currentTask": {
+                "id": "task-greet",
+                "type": "greet_visitors",
+                "priority": "high",
+                "progress": 0,
+                "target": 10
+            },
+            "schedule": [
+                { "time": "00:00-08:00", "activity": "patrol", "area": "spawn" },
+                { "time": "08:00-20:00", "activity": "greet", "area": "entrance" },
+                { "time": "20:00-24:00", "activity": "rest", "area": "corner" }
+            ],
+            "memory": [
+                { "type": "greeting", "count": 42, "lastUser": null }
+            ],
+            "dialogue_state": "default",
+            "flags": {
+                "has_introduced_self": true,
+                "knows_user_names": []
+            }
+        },
+        {
+            "id": "card-trader-001",
+            "name": "Card Trader",
+            "avatar": "🃏",
+            "type": "merchant",
+            "world": "hub",
+            "position": { "x": -5, "y": 0, "z": 8 },
+            "status": "active",
+            "mood": "eager",
+            "needs": {
+                "profit": 50,
+                "inventory": 70,
+                "customers": 30
+            },
+            "currentTask": {
+                "id": "task-sell",
+                "type": "make_sales",
+                "priority": "medium",
+                "progress": 2,
+                "target": 5
+            },
+            "inventory_status": {
+                "common": 50,
+                "rare": 20,
+                "epic": 5,
+                "holographic": 1
+            },
+            "prices": {
+                "markup": 1.2,
+                "discount_threshold": 5
+            },
+            "flags": {
+                "desperate_mode": false,
+                "special_offer_active": false
+            }
+        }
+    ],
+    "global_state": {
+        "world_event": null,
+        "visitor_count_today": 0,
+        "total_trades_today": 0,
+        "mood_modifier": 1.0
+    },
+    "_meta": {
+        "lastUpdate": "2025-01-30T20:30:00Z",
+        "version": 1
+    }
+}

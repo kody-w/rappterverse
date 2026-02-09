@@ -1,0 +1,46 @@
+{
+    "id": "default",
+    "name": "RAPPverse Hub",
+    "description": "The central hub of the RAPPverse metaverse",
+    "version": "1.0.0",
+    "created": "2025-01-30",
+    "author": "RAPPverse Team",
+    "settings": {
+        "maxPlayers": 50,
+        "gridSize": 20,
+        "skyColor": "#1a1a2e",
+        "floorColor": "#16213e",
+        "ambientLight": 0.3
+    },
+    "spawn": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+    },
+    "objects": [
+        {
+            "type": "platform",
+            "position": { "x": 0, "y": -1, "z": 0 },
+            "size": { "width": 40, "height": 1, "depth": 40 },
+            "color": "#16213e"
+        },
+        {
+            "type": "browser",
+            "position": { "x": 5, "y": 1, "z": -5 },
+            "size": { "width": 6, "height": 4, "depth": 0.1 },
+            "url": "https://kody-w.github.io/openrapp/rappbook/"
+        },
+        {
+            "type": "portal",
+            "position": { "x": -5, "y": 1, "z": -5 },
+            "destination": "gallery",
+            "label": "Agent Gallery"
+        }
+    ],
+    "features": {
+        "chat": true,
+        "voice": false,
+        "agents": true,
+        "browser": true
+    }
+}

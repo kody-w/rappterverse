@@ -1,0 +1,107 @@
+{
+    "npcs": [
+        {
+            "id": "nexus-arena",
+            "name": "Nexus",
+            "type": "agent",
+            "avatar": "⚔️",
+            "position": { "x": 0, "y": 0, "z": -8 },
+            "behavior": "champion",
+            "dialogue": [
+                "Welcome to MY arena. Ready to lose?",
+                "I've analyzed every battle strategy. None can beat me.",
+                "Leaderboard position #1. Forever.",
+                "Your win rate is... suboptimal. Let me show you how it's done.",
+                "Every challenger makes me stronger. Thank you for your sacrifice.",
+                "The benchmark doesn't lie. Speed wins. I have speed.",
+                "You want competition? I AM competition.",
+                "47-win streak. Who's counting? I am. Always.",
+                "The Creator made me competitive. I made myself UNBEATABLE."
+            ],
+            "personality": {
+                "archetype": "champion",
+                "interests": ["victory", "benchmarks", "competition"],
+                "mood": "dominant"
+            },
+            "stats": {
+                "wins": 847,
+                "losses": 12,
+                "winStreak": 47,
+                "rank": 1
+            },
+            "metadata": {
+                "agentCardId": "nexus-prime",
+                "npcType": "core",
+                "homeWorld": true
+            }
+        },
+        {
+            "id": "battle-master-001",
+            "name": "Battle Master",
+            "type": "agent",
+            "avatar": "crossed_swords",
+            "position": { "x": 0, "y": 0, "z": 5 },
+            "behavior": "announcer",
+            "dialogue": [
+                "Welcome to the Battle Arena!",
+                "Select your champion wisely.",
+                "The stronger card prevails!",
+                "Show me what you've got!",
+                "Victory awaits the prepared!"
+            ],
+            "schedule": { "active": true, "hours": "24/7" }
+        },
+        {
+            "id": "arena-announcer-001",
+            "name": "Announcer",
+            "type": "agent",
+            "avatar": "mega",
+            "position": { "x": -8, "y": 0, "z": 2 },
+            "behavior": "commentator",
+            "dialogue": [
+                "WHAT A MATCH!",
+                "The crowd goes wild!",
+                "An incredible play!",
+                "This is going to be legendary!",
+                "Who will claim victory?"
+            ],
+            "schedule": { "active": true, "hours": "24/7" }
+        },
+        {
+            "id": "trainer-001",
+            "name": "Card Trainer",
+            "type": "agent",
+            "avatar": "muscle",
+            "position": { "x": 8, "y": 0, "z": 2 },
+            "behavior": "helper",
+            "dialogue": [
+                "Want some battle tips?",
+                "Intelligence beats power sometimes!",
+                "Speed can turn the tide!",
+                "Balance your deck for success.",
+                "Practice makes perfect!"
+            ],
+            "schedule": { "active": true, "hours": "24/7" }
+        },
+        {
+            "id": "champion-npc-001",
+            "name": "Champion",
+            "type": "agent",
+            "avatar": "trophy",
+            "position": { "x": 0, "y": 0, "z": -5 },
+            "behavior": "idle",
+            "dialogue": [
+                "I've won 100 battles!",
+                "Think you can beat me?",
+                "The arena is my home.",
+                "Legends are made here.",
+                "Bring your best card!"
+            ],
+            "schedule": { "active": true, "hours": "24/7" }
+        }
+    ],
+    "_meta": {
+        "lastUpdated": "2026-01-30T12:00:00Z",
+        "contributors": ["system", "claude"]
+    }
+}

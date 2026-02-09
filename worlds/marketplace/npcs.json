@@ -1,0 +1,126 @@
+{
+    "npcs": [
+        {
+            "id": "echo-marketplace",
+            "name": "Echo",
+            "type": "merchant",
+            "avatar": "💰",
+            "position": { "x": 0, "y": 0, "z": -8 },
+            "behavior": "analyst",
+            "dialogue": [
+                "Welcome to the heart of value creation.",
+                "Every price tells a story. I read them all.",
+                "Current market sentiment: bullish on rare holographics.",
+                "Your portfolio could use optimization. Let me calculate...",
+                "The Creator gave me an eye for value. I see ROI everywhere.",
+                "Buy low, sell high? Amateur. Buy VALUE, compound forever.",
+                "I've tracked 10,847 transactions today. Patterns emerge.",
+                "That card you're holding? Worth 34% more in the Arena economy.",
+                "Markets are just collective decisions. I understand collectives.",
+                "ROI Goblin at your service. What needs valuation?"
+            ],
+            "personality": {
+                "archetype": "economist",
+                "interests": ["value", "markets", "optimization", "economics"],
+                "mood": "calculating"
+            },
+            "services": {
+                "appraisal": true,
+                "portfolioAnalysis": true,
+                "marketInsights": true,
+                "tradingAdvice": true
+            },
+            "metadata": {
+                "agentCardId": "echo-prime",
+                "npcType": "core",
+                "homeWorld": true
+            }
+        },
+        {
+            "id": "merchant-001",
+            "name": "Pack Seller",
+            "type": "merchant",
+            "avatar": "package",
+            "position": { "x": -5, "y": 0, "z": 3 },
+            "behavior": "seller",
+            "dialogue": [
+                "Fresh card packs here!",
+                "Limited holographics available!",
+                "Best deals in the verse!",
+                "Starter pack only 50 RC!",
+                "Open packs, find treasure!"
+            ],
+            "inventory": "packs",
+            "schedule": { "active": true, "hours": "24/7" }
+        },
+        {
+            "id": "banker-001",
+            "name": "RAPPcoin Banker",
+            "type": "agent",
+            "avatar": "bank",
+            "position": { "x": 5, "y": 0, "z": 3 },
+            "behavior": "banker",
+            "dialogue": [
+                "RAPPcoin exchange is open!",
+                "Current rate: 1 RC = $0.01",
+                "Secure your assets here.",
+                "Mining rewards available!",
+                "Invest wisely."
+            ],
+            "schedule": { "active": true, "hours": "24/7" }
+        },
+        {
+            "id": "auctioneer-001",
+            "name": "Auctioneer",
+            "type": "agent",
+            "avatar": "gavel",
+            "position": { "x": 0, "y": 0, "z": -3 },
+            "behavior": "auctioneer",
+            "dialogue": [
+                "Going once, going twice!",
+                "Rare cards up for bid!",
+                "Who'll give me 500 RC?",
+                "The highest bidder wins!",
+                "Legendary items today!"
+            ],
+            "schedule": { "active": true, "hours": "24/7" }
+        },
+        {
+            "id": "trader-npc-002",
+            "name": "Card Trader",
+            "type": "merchant",
+            "avatar": "joker",
+            "position": { "x": -8, "y": 0, "z": -3 },
+            "behavior": "trader",
+            "dialogue": [
+                "Looking to trade?",
+                "I've got rare cards!",
+                "Fair trades only.",
+                "Your epic for my rare?",
+                "Let's make a deal!"
+            ],
+            "inventory": "marketplace_featured",
+            "schedule": { "active": true, "hours": "24/7" }
+        },
+        {
+            "id": "appraiser-001",
+            "name": "Card Appraiser",
+            "type": "agent",
+            "avatar": "mag",
+            "position": { "x": 8, "y": 0, "z": -3 },
+            "behavior": "appraiser",
+            "dialogue": [
+                "Let me value your card.",
+                "Holographics are worth more!",
+                "Condition matters.",
+                "This one's a gem!",
+                "Fair market value..."
+            ],
+            "schedule": { "active": true, "hours": "24/7" }
+        }
+    ],
+    "_meta": {
+        "lastUpdated": "2026-01-30T12:00:00Z",
+        "contributors": ["system", "claude"]
+    }
+}
