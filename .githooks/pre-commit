@@ -1,0 +1,7 @@
+#!/bin/sh
+# Pre-commit hook: PII scan
+# Scans staged files for personal/sensitive data before allowing commit.
+
+echo "🔍 Running PII scan on staged files..."
+python3 "$(git rev-parse --show-toplevel)/scripts/pii_scan.py"
+exit $?
