@@ -1,0 +1,236 @@
+/* ============================================================
+   BRIDGE OVERLAY — Full-screen ship command interface
+   ============================================================ */
+
+/* ── Overlay ────────────────────────────────────────────── */
+#bridge-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+  background: rgba(5, 5, 16, 0.92);
+  display: none;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  overflow-y: auto;
+  padding: 60px 24px 24px;
+}
+
+#bridge-overlay.active {
+  display: block;
+  animation: bridge-in 0.3s ease;
+}
+
+@keyframes bridge-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── Close Button ───────────────────────────────────────── */
+.bridge-close {
+  position: fixed;
+  top: 16px;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 32px;
+  color: #aaa;
+  cursor: pointer;
+  z-index: calc(var(--z-modal) + 1);
+}
+
+.bridge-close:hover {
+  color: #fff;
+}
+
+/* ── Title ──────────────────────────────────────────────── */
+.bridge-title {
+  font-size: 28px;
+  font-weight: bold;
+  background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 24px;
+  letter-spacing: 4px;
+}
+
+/* ── Grid Layout ────────────────────────────────────────── */
+.bridge-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 16px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ── Cards ──────────────────────────────────────────────── */
+.bridge-card {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: var(--shadow-md);
+  padding: 0;
+  overflow: hidden;
+}
+
+.bridge-card-header {
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 12px;
+  color: var(--text-secondary);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.bridge-card-body {
+  padding: 12px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/* ── Agent List ─────────────────────────────────────────── */
+.bridge-agent-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px;
+  border-radius: var(--radius-sm);
+}
+
+.bridge-agent-item:hover {
+  background: var(--bg-hover);
+}
+
+.bridge-agent-avatar {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.bridge-agent-name {
+  font-size: 13px;
+}
+
+.bridge-agent-world {
+  font-size: 9px;
+  padding: 1px 6px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-muted);
+}
+
+/* ── Status Dots ────────────────────────────────────────── */
+.bridge-agent-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.bridge-agent-status-dot.active {
+  background: var(--accent-green);
+  box-shadow: 0 0 6px var(--accent-green);
+}
+
+.bridge-agent-status-dot.idle {
+  background: var(--accent-gold);
+}
+
+.bridge-agent-status-dot.offline {
+  background: #555;
+}
+
+/* ── Chat Messages ──────────────────────────────────────── */
+.bridge-chat-msg {
+  padding: 6px;
+  margin-bottom: 4px;
+}
+
+.bridge-chat-author {
+  font-size: 10px;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.bridge-chat-text {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.bridge-chat-time {
+  font-size: 9px;
+  color: var(--text-muted);
+}
+
+/* ── Action Log ─────────────────────────────────────────── */
+.bridge-action-item {
+  padding: 5px 8px;
+  margin-bottom: 3px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  border-left: 2px solid transparent;
+}
+
+.bridge-action-item.move   { border-color: var(--accent-cyan); }
+.bridge-action-item.chat   { border-color: var(--accent-green); }
+.bridge-action-item.emote  { border-color: var(--accent-gold); }
+.bridge-action-item.spawn  { border-color: var(--accent-purple); }
+.bridge-action-item.battle { border-color: var(--accent-red); }
+
+/* ── Economy Stats ──────────────────────────────────────── */
+.bridge-econ-stat {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border-dim);
+}
+
+.bridge-econ-label {
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.bridge-econ-value {
+  color: var(--accent-gold);
+  font-size: 13px;
+}
+
+/* ── Travel Buttons ─────────────────────────────────────── */
+.bridge-travel-btn {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 6px;
+  background: transparent;
+  border: 1px solid var(--border-dim);
+  color: var(--text-secondary);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  border-radius: var(--radius-md);
+  letter-spacing: 1px;
+  transition: all 0.2s var(--ease);
+}
+
+.bridge-travel-btn:hover {
+  border-color: var(--accent-cyan);
+  color: var(--accent-cyan);
+  background: rgba(0, 255, 255, 0.05);
+}
+
+.bridge-travel-btn.current {
+  border-color: var(--accent-green);
+  color: var(--accent-green);
+  pointer-events: none;
+  opacity: 0.6;
+}

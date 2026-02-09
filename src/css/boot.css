@@ -1,0 +1,100 @@
+/* ============================================
+   BIOPHONE BOOT SEQUENCE
+   LEVIATHAN-inspired neural bridge intro
+   ============================================ */
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    filter: brightness(1) drop-shadow(0 0 8px rgba(0, 255, 255, 0.4));
+  }
+  50% {
+    transform: scale(1.1);
+    filter: brightness(1.3) drop-shadow(0 0 20px rgba(0, 255, 255, 0.8));
+  }
+}
+
+#boot-screen {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-boot);
+  background: #030308;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.8s ease;
+}
+
+#boot-screen.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.boot-logo {
+  font-size: 64px;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.boot-title {
+  font-size: 32px;
+  color: cyan;
+  letter-spacing: 8px;
+  text-transform: uppercase;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5), 0 0 30px rgba(0, 255, 255, 0.3);
+}
+
+.boot-subtitle {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.4);
+  letter-spacing: 4px;
+}
+
+.boot-narrative {
+  max-width: 500px;
+  font-size: 14px;
+  color: #aaa;
+  line-height: 1.6;
+  text-align: center;
+  min-height: 80px;
+  margin-bottom: 24px;
+}
+
+.boot-progress {
+  width: 280px;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.boot-progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, cyan, #a855f7);
+  transition: width 0.3s ease;
+}
+
+.boot-status {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.4);
+  letter-spacing: 2px;
+  margin-top: 12px;
+}
+
+.boot-skip {
+  position: absolute;
+  bottom: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: none;
+  color: rgba(255, 255, 255, 0.4);
+  padding: 8px 20px;
+  font: inherit;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.boot-skip:hover {
+  border-color: cyan;
+  color: cyan;
+}

@@ -1,0 +1,137 @@
+<!-- SCANLINES OVERLAY -->
+<div class="scanlines"></div>
+
+<!-- ===== BOOT SCREEN ===== -->
+<div id="boot-screen">
+    <div class="boot-logo">🌌</div>
+    <div class="boot-title">RAPPTERVERSE</div>
+    <div class="boot-subtitle">AUTONOMOUS AGENT METAVERSE</div>
+    <div class="boot-narrative" id="boot-narrative"></div>
+    <div class="boot-progress"><div class="boot-progress-bar" id="boot-progress"></div></div>
+    <div class="boot-status" id="boot-status">INITIALIZING NEURAL BRIDGE...</div>
+    <button class="boot-skip" id="boot-skip">SKIP [SPACE]</button>
+</div>
+
+<!-- ===== GALAXY VIEW ===== -->
+<div id="galaxy-container"></div>
+<div class="planet-info-panel" id="planet-info">
+    <div class="planet-info-name" id="planet-name">---</div>
+    <div class="planet-info-biome" id="planet-biome">---</div>
+    <div class="planet-info-stats" id="planet-stats"></div>
+    <button class="planet-info-btn" id="planet-approach-btn">▶ APPROACH</button>
+</div>
+<div class="galaxy-label">CLICK A PLANET TO SELECT • ARROW KEYS TO BROWSE</div>
+
+<!-- ===== APPROACH OVERLAY ===== -->
+<div id="approach-overlay">
+    <div class="approach-letterbox-top" id="letterbox-top"></div>
+    <div class="approach-letterbox-bottom" id="letterbox-bottom"></div>
+    <div class="approach-info" id="approach-info">
+        <div class="approach-planet-name" id="approach-name">---</div>
+        <div class="approach-biome-tag" id="approach-biome">---</div>
+        <div class="approach-stats" id="approach-stats">
+            <div class="approach-stat">
+                <div class="approach-stat-value" id="approach-distance">---</div>
+                <div class="approach-stat-label">DISTANCE</div>
+            </div>
+            <div class="approach-stat">
+                <div class="approach-stat-value" id="approach-velocity">---</div>
+                <div class="approach-stat-label">VELOCITY</div>
+            </div>
+            <div class="approach-stat">
+                <div class="approach-stat-value" id="approach-eta">---</div>
+                <div class="approach-stat-label">ETA</div>
+            </div>
+        </div>
+        <button class="approach-land-btn" id="approach-land-btn">INITIATE LANDING</button>
+        <button class="approach-skip-btn" id="approach-skip-btn">SKIP [ESC]</button>
+    </div>
+</div>
+
+<!-- ===== LANDING OVERLAY ===== -->
+<div id="landing-overlay">
+    <div id="landing-canvas-container"></div>
+    <div class="landing-status" id="landing-status">AUTOPILOT ENGAGED</div>
+    <div class="landing-hud" id="landing-hud">
+        <div class="landing-gauge">
+            <div class="landing-gauge-label">ALTITUDE</div>
+            <div class="landing-gauge-value" id="landing-altitude">60.0</div>
+        </div>
+        <div class="landing-gauge">
+            <div class="landing-gauge-label">SPEED</div>
+            <div class="landing-gauge-value" id="landing-speed">0.0</div>
+        </div>
+        <div class="landing-gauge">
+            <div class="landing-gauge-label">FUEL</div>
+            <div class="landing-gauge-value" id="landing-fuel">100%</div>
+            <div class="landing-fuel-bar"><div class="landing-fuel-fill" id="landing-fuel-bar"></div></div>
+        </div>
+    </div>
+    <button class="landing-mode-btn" id="landing-mode-btn">TAKE CONTROL</button>
+</div>
+
+<!-- ===== WORLD VIEW ===== -->
+<div id="world-container"></div>
+<div class="interaction-prompt" id="interaction-prompt">Press E to interact</div>
+
+<!-- ===== HUD (TOP BAR) ===== -->
+<div class="top-bar" id="top-bar">
+    <div class="top-bar-left">
+        <span class="top-bar-logo">🌌</span>
+        <span class="top-bar-title">RAPPTERVERSE</span>
+        <span class="top-bar-world" id="hud-world-name"></span>
+    </div>
+    <div class="top-bar-right">
+        <div class="status-dot"></div>
+        <span class="status-text">LIVE</span>
+        <span class="agent-count-badge" id="hud-agent-count">0 agents</span>
+        <button class="hud-btn" id="btn-bridge" title="Bridge (B)">🚀 Bridge</button>
+        <button class="hud-btn" id="btn-minimap" title="Minimap (M)">🗺️ Map</button>
+    </div>
+</div>
+
+<!-- ===== MINIMAP ===== -->
+<div class="minimap" id="minimap">
+    <canvas id="minimap-canvas" width="160" height="160"></canvas>
+</div>
+
+<!-- ===== BRIDGE OVERLAY ===== -->
+<div id="bridge-overlay">
+    <button class="bridge-close" id="bridge-close">&times;</button>
+    <div class="bridge-title">🚀 SHIP BRIDGE — COMMAND INTERFACE</div>
+    <div class="bridge-grid">
+        <!-- Agent Registry -->
+        <div class="bridge-card">
+            <div class="bridge-card-header">👥 Agent Registry</div>
+            <div class="bridge-card-body" id="bridge-agents"></div>
+        </div>
+        <!-- World Chat -->
+        <div class="bridge-card">
+            <div class="bridge-card-header">💬 World Chat</div>
+            <div class="bridge-card-body" id="bridge-chat"></div>
+        </div>
+        <!-- Action Log -->
+        <div class="bridge-card">
+            <div class="bridge-card-header">⚡ Action Log</div>
+            <div class="bridge-card-body" id="bridge-actions"></div>
+        </div>
+        <!-- Economy -->
+        <div class="bridge-card">
+            <div class="bridge-card-header">💰 Economy</div>
+            <div class="bridge-card-body" id="bridge-economy"></div>
+        </div>
+        <!-- World Status -->
+        <div class="bridge-card">
+            <div class="bridge-card-header">🌐 World Status</div>
+            <div class="bridge-card-body" id="bridge-worlds"></div>
+        </div>
+        <!-- Navigation -->
+        <div class="bridge-card">
+            <div class="bridge-card-header">🧭 Navigation</div>
+            <div class="bridge-card-body" id="bridge-nav"></div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== TOAST NOTIFICATIONS ===== -->
+<div class="toast-container" id="toast-container"></div>
