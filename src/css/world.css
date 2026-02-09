@@ -1,0 +1,42 @@
+/* ============================================================
+   WORLD MODE — On-planet exploration styles
+   ============================================================ */
+
+/* ── World Container ────────────────────────────────────── */
+#world-container {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-base);
+}
+
+/* ── Interaction Prompt ─────────────────────────────────── */
+.interaction-prompt {
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg-panel);
+  border: 1px solid var(--accent-cyan);
+  padding: 10px 24px;
+  border-radius: var(--radius-lg);
+  font-size: 14px;
+  color: var(--accent-cyan);
+  letter-spacing: 1px;
+  z-index: var(--z-ui);
+  display: none;
+  animation: fade-in 0.2s var(--ease);
+}
+
+.interaction-prompt.visible {
+  display: block;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── Chat Bubble (reference for CSS2DObject sprites) ───── */
+.chat-bubble {
+  position: absolute;
+}

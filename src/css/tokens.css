@@ -1,0 +1,227 @@
+/* ============================================================
+   LEVIATHAN Design Tokens — RAPPterverse
+   Global CSS custom properties and base styles
+   ============================================================ */
+
+/* ── Universal Reset ────────────────────────────────────── */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  user-select: none;
+}
+
+/* ── Design Tokens ──────────────────────────────────────── */
+:root {
+  /* iOS safe areas */
+  --safe-top: env(safe-area-inset-top);
+  --safe-right: env(safe-area-inset-right);
+  --safe-bottom: env(safe-area-inset-bottom);
+  --safe-left: env(safe-area-inset-left);
+
+  /* Z-index layering */
+  --z-base: 1;
+  --z-ui: 100;
+  --z-panel: 1000;
+  --z-overlay: 2000;
+  --z-toast: 5000;
+  --z-modal: 9000;
+  --z-boot: 10000;
+  --z-cinematic: 10001;
+
+  /* Spacing — 4px grid */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 28px;
+  --space-8: 32px;
+  --space-9: 36px;
+  --space-10: 40px;
+  --space-11: 44px;
+  --space-12: 48px;
+
+  /* Typography */
+  --font-xs: 10px;
+  --font-sm: 12px;
+  --font-base: 14px;
+  --font-md: 16px;
+  --font-lg: 20px;
+  --font-xl: 24px;
+  --font-2xl: 32px;
+  --font-3xl: 48px;
+
+  /* Colors — backgrounds */
+  --bg-dark: rgba(10, 15, 20, 0.95);
+  --bg-panel: rgba(15, 20, 30, 0.92);
+  --bg-hover: rgba(30, 35, 40, 0.95);
+
+  /* Colors — borders */
+  --border-dim: rgba(255, 255, 255, 0.06);
+  --border-default: rgba(255, 255, 255, 0.1);
+  --border-active: rgba(255, 255, 255, 0.2);
+  --border-focus: rgba(0, 255, 255, 0.4);
+
+  /* Colors — text */
+  --text-primary: #fff;
+  --text-secondary: #aaa;
+  --text-muted: #888;
+
+  /* Colors — accents */
+  --accent-cyan: #0ff;
+  --accent-gold: #fb0;
+  --accent-purple: #bf00ff;
+  --accent-green: #00ff88;
+  --accent-red: #ff4444;
+  --accent-orange: #ff8800;
+
+  /* Touch targets */
+  --touch-min: 44px;
+  --touch-comfortable: 48px;
+
+  /* Border radius */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+  --radius-xl: 15px;
+  --radius-full: 9999px;
+
+  /* Transitions — cubic-bezier easing */
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-fast: 0.1s var(--ease);
+  --transition-base: 0.15s var(--ease);
+  --transition-smooth: 0.25s var(--ease);
+  --transition-slow: 0.4s var(--ease);
+  --transition-panel: 0.3s var(--ease);
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.6);
+  --shadow-glow-cyan: 0 0 15px rgba(0, 255, 255, 0.3);
+  --shadow-glow-gold: 0 0 15px rgba(255, 187, 0, 0.3);
+}
+
+/* ── Body ───────────────────────────────────────────────── */
+body {
+  background: #050510;
+  color: var(--text-primary);
+  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', monospace;
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+}
+
+/* ── Scanline Overlay (CRT effect) ──────────────────────── */
+.scanlines {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: var(--z-overlay);
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 1px,
+    rgba(0, 0, 0, 0.08) 1px,
+    rgba(0, 0, 0, 0.08) 2px
+  );
+}
+
+/* ── Scrollbar ──────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.12) transparent;
+}
+
+/* ── Screen-reader Only ─────────────────────────────────── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── Shared Panel (glassmorphism) ───────────────────────── */
+.panel {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: var(--shadow-md);
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--border-dim);
+  font-size: var(--font-sm);
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.panel-body {
+  padding: var(--space-4);
+  font-size: var(--font-base);
+  color: var(--text-primary);
+  overflow-y: auto;
+}
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width: 768px) {
+  :root {
+    --font-base: 13px;
+    --font-lg: 18px;
+    --font-xl: 22px;
+    --font-2xl: 28px;
+    --font-3xl: 40px;
+    --space-4: 12px;
+    --space-6: 20px;
+    --space-8: 28px;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --font-xs: 9px;
+    --font-sm: 11px;
+    --font-base: 12px;
+    --font-lg: 16px;
+    --font-xl: 20px;
+    --font-2xl: 24px;
+    --font-3xl: 32px;
+    --space-3: 8px;
+    --space-4: 10px;
+    --space-6: 16px;
+    --space-8: 24px;
+  }
+}
