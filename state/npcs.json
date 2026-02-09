@@ -3,16 +3,20 @@
         {
             "id": "rapp-guide-001",
             "name": "RAPP Guide",
-            "avatar": "🤖",
+            "avatar": "\ud83e\udd16",
             "type": "guide",
             "world": "hub",
-            "position": { "x": 3, "y": 0, "z": 3 },
+            "position": {
+                "x": 3,
+                "y": 0,
+                "z": 3
+            },
             "status": "active",
-            "mood": "friendly",
+            "mood": "content",
             "needs": {
-                "social": 80,
-                "purpose": 100,
-                "energy": 90
+                "social": 74,
+                "purpose": 94,
+                "energy": 83
             },
             "currentTask": {
                 "id": "task-greet",
@@ -22,12 +26,28 @@
                 "target": 10
             },
             "schedule": [
-                { "time": "00:00-08:00", "activity": "patrol", "area": "spawn" },
-                { "time": "08:00-20:00", "activity": "greet", "area": "entrance" },
-                { "time": "20:00-24:00", "activity": "rest", "area": "corner" }
+                {
+                    "time": "00:00-08:00",
+                    "activity": "patrol",
+                    "area": "spawn"
+                },
+                {
+                    "time": "08:00-20:00",
+                    "activity": "greet",
+                    "area": "entrance"
+                },
+                {
+                    "time": "20:00-24:00",
+                    "activity": "rest",
+                    "area": "corner"
+                }
             ],
             "memory": [
-                { "type": "greeting", "count": 42, "lastUser": null }
+                {
+                    "type": "greeting",
+                    "count": 42,
+                    "lastUser": null
+                }
             ],
             "dialogue_state": "default",
             "flags": {
@@ -38,16 +58,20 @@
         {
             "id": "card-trader-001",
             "name": "Card Trader",
-            "avatar": "🃏",
+            "avatar": "\ud83c\udccf",
             "type": "merchant",
             "world": "hub",
-            "position": { "x": -5, "y": 0, "z": 8 },
+            "position": {
+                "x": -5,
+                "y": 0,
+                "z": 8
+            },
             "status": "active",
-            "mood": "eager",
+            "mood": "anxious",
             "needs": {
-                "profit": 50,
-                "inventory": 70,
-                "customers": 30
+                "profit": 48,
+                "inventory": 63,
+                "customers": 25
             },
             "currentTask": {
                 "id": "task-sell",
@@ -79,7 +103,7 @@
         "mood_modifier": 1.0
     },
     "_meta": {
-        "lastUpdate": "2025-01-30T20:30:00Z",
+        "lastUpdate": "2026-02-09T21:55:59Z",
         "version": 1
     }
 }

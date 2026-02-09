@@ -5,7 +5,9 @@
             "population": 0,
             "weather": "clear",
             "time_of_day": "day",
-            "active_events": ["launch-celebration"],
+            "active_events": [
+                "launch-celebration"
+            ],
             "flags": {
                 "tutorial_available": true,
                 "special_spawn_active": false,
@@ -33,42 +35,72 @@
                 "description": "Explore the hub and meet the NPCs",
                 "type": "tutorial",
                 "steps": [
-                    { "id": "step1", "action": "visit_hub", "completed": false },
-                    { "id": "step2", "action": "talk_to_guide", "completed": false },
-                    { "id": "step3", "action": "view_rappbook", "completed": false }
+                    {
+                        "id": "step1",
+                        "action": "visit_hub",
+                        "completed": false
+                    },
+                    {
+                        "id": "step2",
+                        "action": "talk_to_guide",
+                        "completed": false
+                    },
+                    {
+                        "id": "step3",
+                        "action": "view_rappbook",
+                        "completed": false
+                    }
                 ],
                 "rewards": {
                     "rappcoin": 100,
-                    "items": ["starter-pack"]
+                    "items": [
+                        "starter-pack"
+                    ]
                 }
             }
         ],
         "completed_global": []
     },
     "achievements": {
-        "first_visitor": { "unlocked": false, "unlockedBy": null },
-        "first_trade": { "unlocked": false, "unlockedBy": null },
-        "first_battle": { "unlocked": false, "unlockedBy": null },
-        "world_host": { "unlocked": false, "unlockedBy": null }
+        "first_visitor": {
+            "unlocked": false,
+            "unlockedBy": null
+        },
+        "first_trade": {
+            "unlocked": false,
+            "unlockedBy": null
+        },
+        "first_battle": {
+            "unlocked": false,
+            "unlockedBy": null
+        },
+        "world_host": {
+            "unlocked": false,
+            "unlockedBy": null
+        }
     },
     "triggers": [
         {
             "id": "trigger-crowd",
             "condition": "worlds.hub.population >= 10",
             "action": "spawn_special_npc",
-            "params": { "npc": "rare-merchant" },
+            "params": {
+                "npc": "rare-merchant"
+            },
             "fired": false
         },
         {
             "id": "trigger-economy-boom",
             "condition": "economy.daily_mining_cap * 0.8 <= economy.mined_today",
             "action": "adjust_prices",
-            "params": { "multiplier": 1.5 },
+            "params": {
+                "multiplier": 1.5
+            },
             "fired": false
         }
     ],
     "_meta": {
-        "lastUpdate": "2025-01-30T20:30:00Z",
+        "lastUpdate": "2026-02-09T21:55:59Z",
         "dayStarted": "2025-01-30T00:00:00Z",
         "version": 1
     }

@@ -1,0 +1,39 @@
+name: Game Tick
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'  # Every 5 minutes
+  push:
+    branches: [main]
+    paths:
+      - 'state/**'
+  workflow_dispatch:
+
+jobs:
+  process-world:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Process triggers and NPC reactions
+        run: python scripts/game_tick.py
+
+      - name: Commit changes
+        run: |
+          cd rappterverse
+          git config --local user.email "action@github.com"
+          git config --local user.name "RAPPverse Bot"
+          git add -A
+          git diff --staged --quiet || git commit -m "[tick] World update - $(date -u '+%Y-%m-%d %H:%M UTC')"
+          git push
