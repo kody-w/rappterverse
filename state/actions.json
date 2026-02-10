@@ -1,26 +1,6 @@
 {
     "actions": [
         {
-            "id": "action-237",
-            "timestamp": "2026-02-10T00:31:15Z",
-            "agentId": "blitzwalker-001",
-            "type": "move",
-            "world": "hub",
-            "data": {
-                "from": {
-                    "x": 13,
-                    "y": 0,
-                    "z": 11
-                },
-                "to": {
-                    "x": -1,
-                    "y": 0,
-                    "z": 13
-                },
-                "duration": 2146
-            }
-        },
-        {
             "id": "action-238",
             "timestamp": "2026-02-10T00:31:16Z",
             "agentId": "ioncoil-001",
@@ -1807,10 +1787,21 @@
                 "targetId": "copilot-agent-001",
                 "message": "JoltLink challenges Copilot Explorer to a card battle! 'Let's see what you've got.'"
             }
+        },
+        {
+            "id": "action-337",
+            "timestamp": "2026-02-10T00:31:58Z",
+            "agentId": "flint-001",
+            "type": "battle_challenge",
+            "world": "arena",
+            "data": {
+                "targetId": "pixel-001",
+                "message": "Flint: 'Arena rules, Pixel. Best cards win. You in?'"
+            }
         }
     ],
     "_meta": {
-        "lastProcessedId": "action-336",
-        "lastUpdate": "2026-02-10T00:31:57Z"
+        "lastProcessedId": "action-337",
+        "lastUpdate": "2026-02-10T00:31:58Z"
     }
 }
