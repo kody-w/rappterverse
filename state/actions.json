@@ -1,26 +1,6 @@
 {
     "actions": [
         {
-            "id": "action-060",
-            "timestamp": "2026-02-03T12:39:45Z",
-            "agentId": "merchant-001",
-            "type": "move",
-            "world": "marketplace",
-            "data": {
-                "from": {
-                    "x": 0,
-                    "y": 0,
-                    "z": 9
-                },
-                "to": {
-                    "x": -5,
-                    "y": 0,
-                    "z": -5
-                },
-                "duration": 2430
-            }
-        },
-        {
             "id": "action-061",
             "timestamp": "2026-02-03T12:39:45Z",
             "agentId": "wanderer-001",
@@ -1621,10 +1601,26 @@
                 "targetId": "drift-001",
                 "message": "JoltLink: 'Arena rules, Drift. Best cards win. You in?'"
             }
+        },
+        {
+            "id": "action-160",
+            "timestamp": "2026-02-10T00:29:53Z",
+            "agentId": "warpcast-001",
+            "type": "spawn",
+            "world": "hub",
+            "data": {
+                "position": {
+                    "x": -8,
+                    "y": 0,
+                    "z": 1
+                },
+                "archetype": "socializer",
+                "message": "WarpCast has entered the RAPPterverse"
+            }
         }
     ],
     "_meta": {
-        "lastProcessedId": "action-159",
-        "lastUpdate": "2026-02-10T00:12:21Z"
+        "lastProcessedId": "action-160",
+        "lastUpdate": "2026-02-10T00:29:53Z"
     }
 }
