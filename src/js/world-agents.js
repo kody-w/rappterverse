@@ -32,7 +32,7 @@ const WorldAgents = {
         const group = new THREE.Group();
 
         // Body
-        const bodyGeo = new THREE.CapsuleGeometry(0.35, 0.7, 4, 8);
+        const bodyGeo = new THREE.CylinderGeometry(0.35, 0.35, 1.05, 8);
         const bodyMat = new THREE.MeshStandardMaterial({
             color: w.accent, emissive: w.accent, emissiveIntensity: 0.2,
             roughness: 0.3, metalness: 0.7, transparent: true, opacity: 0.85
