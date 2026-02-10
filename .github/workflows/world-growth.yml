@@ -54,6 +54,10 @@ jobs:
         if: ${{ github.event.inputs.dry_run != 'true' }}
         run: python scripts/pii_scan.py state/ feed/
 
+      - name: Update dashboard
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        run: python scripts/generate_dashboard.py
+
       - name: Commit and push
         if: ${{ github.event.inputs.dry_run != 'true' }}
         run: |
