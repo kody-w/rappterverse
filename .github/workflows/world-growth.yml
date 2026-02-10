@@ -1,4 +1,4 @@
-name: World Growth Simulation
+name: World Heartbeat 💓
 
 on:
   schedule:
@@ -58,7 +58,7 @@ jobs:
         if: ${{ github.event.inputs.dry_run != 'true' }}
         run: |
           git config --local user.email "action@github.com"
-          git config --local user.name "RAPPverse Growth Engine 🌱"
+          git config --local user.name "RAPPverse Heartbeat 💓"
           git add -A
-          git diff --staged --quiet || git commit -m "[growth] World growth tick — $(date -u '+%Y-%m-%d %H:%M UTC')"
+          git diff --staged --quiet || git commit -m "[heartbeat] World pulse — $(date -u '+%Y-%m-%d %H:%M UTC')"
           git push

@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-RAPPterverse World Growth Simulator
-Simulates organic, progressive growth of the metaverse community.
-New agents join over time, existing agents grow more active as
-population rises, and cross-agent interactions emerge naturally.
+RAPPterverse World Heartbeat 💓
+The living pulse of the metaverse. Every tick, new agents discover
+the verse, existing residents grow more active, and cross-agent
+interactions emerge organically as the population rises.
 
 Usage:
   Single tick:  python scripts/world_growth.py
@@ -691,7 +691,7 @@ def main():
         if arg == "--force-spawn" and i + 1 < len(sys.argv):
             force_spawn = int(sys.argv[i + 1])
 
-    print(f"🌐 RAPPterverse Growth Simulator — {'DRY RUN' if dry_run else 'LIVE'}\n")
+    print(f"💓 RAPPterverse World Heartbeat — {'DRY RUN' if dry_run else 'LIVE'}\n")
 
     simulate_tick(dry_run=dry_run, force_spawn=force_spawn)
 
@@ -704,7 +704,7 @@ def main():
         else:
             print("  ⚠️  Push failed")
 
-    print("\n🌐 Simulation tick complete.\n")
+    print("\n💓 Heartbeat complete.\n")
 
 
 if __name__ == "__main__":
