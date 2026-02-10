@@ -701,7 +701,7 @@ body {
 
 /* === css/world.css === */
 /* ============================================================
-   WORLD MODE — On-planet exploration styles
+   WORLD MODE — On-planet exploration + DOTA combat styles
    ============================================================ */
 
 /* ── World Container ────────────────────────────────────── */
@@ -742,6 +742,81 @@ body {
 /* ── Chat Bubble (reference for CSS2DObject sprites) ───── */
 .chat-bubble {
   position: absolute;
+}
+
+/* ── Combat HUD ─────────────────────────────────────────── */
+.combat-hud {
+  position: fixed;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: rgba(5, 5, 16, 0.88);
+  border: 1px solid rgba(0, 212, 255, 0.25);
+  border-radius: var(--radius-lg);
+  padding: 8px 20px;
+  z-index: var(--z-ui);
+  font-size: 12px;
+  color: #aaccdd;
+  pointer-events: none;
+}
+
+.combat-label {
+  color: #556677;
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-right: 6px;
+}
+
+.combat-momentum {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.combat-momentum-bar {
+  width: 120px;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.combat-momentum-fill {
+  height: 100%;
+  width: 50%;
+  background: #ffaa00;
+  border-radius: 4px;
+  transition: width 0.3s ease, background 0.3s ease;
+}
+
+.combat-momentum-val {
+  color: #ffaa00;
+  font-weight: bold;
+  min-width: 24px;
+  text-align: right;
+}
+
+.combat-wave {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.combat-wave-num {
+  color: #00ffcc;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.combat-hint {
+  color: #445566;
+  font-size: 10px;
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  padding-left: 12px;
 }
 
 /* === css/bridge.css === */
@@ -1249,6 +1324,22 @@ body {
 <!-- ===== WORLD VIEW ===== -->
 <div id="world-container"></div>
 <div class="interaction-prompt" id="interaction-prompt">Press E to interact</div>
+
+<!-- ===== COMBAT HUD ===== -->
+<div class="combat-hud" id="combat-hud" style="display:none">
+    <div class="combat-momentum">
+        <span class="combat-label">MOMENTUM</span>
+        <div class="combat-momentum-bar">
+            <div class="combat-momentum-fill" id="combat-momentum-fill"></div>
+        </div>
+        <span class="combat-momentum-val" id="combat-momentum-val">50</span>
+    </div>
+    <div class="combat-wave">
+        <span class="combat-label">WAVE</span>
+        <span class="combat-wave-num" id="combat-wave-num">0</span>
+    </div>
+    <div class="combat-hint">SPACE — Attack</div>
+</div>
 
 <!-- ===== HUD (TOP BAR) ===== -->
 <div class="top-bar" id="top-bar">
@@ -1919,95 +2010,92 @@ const Galaxy = {
 };
 
 // === js/approach.js ===
-// Planet Approach — 3D Cinematic Camera Zoom
+// Planet Approach — 3-Phase Cinematic Camera Sequence
+// Phases: approaching → orbiting → ready
 const Approach = {
     active: false,
     targetWorld: null,
-    startPos: null,
-    targetPos: null,
-    startLookAt: null,
-    targetLookAt: null,
-    progress: 0,
-    duration: 4500,
-    startTime: 0,
+    phase: null,           // 'approaching' | 'orbiting' | 'ready'
+    progress: 0,           // approach lerp progress 0→1
+    orbitAngle: 0,         // camera orbit angle around planet
+    startPos: null,        // camera position when approach began
+    startLookAt: null,     // initial lookAt target
     animFrame: null,
+    orbitRadius: 20,
+    orbitHeight: 8,
+
+    easeInOutCubic(t) {
+        return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    },
+
+    getOrbitCameraPosition(planetPos, angle) {
+        const r = this.orbitRadius;
+        const h = this.orbitHeight;
+        return new THREE.Vector3(
+            planetPos.x + Math.cos(angle) * r,
+            planetPos.y + h + Math.sin(angle * 0.5) * 3,
+            planetPos.z + Math.sin(angle) * r
+        );
+    },
+
+    getPlanetPosition() {
+        const group = Galaxy.planets[this.targetWorld];
+        return group ? group.position.clone() : new THREE.Vector3();
+    },
 
     start(worldId) {
         this.targetWorld = worldId;
         this.active = true;
+        this.phase = 'approaching';
         this.progress = 0;
-        this.startTime = Date.now();
+        this.orbitAngle = 0;
         GameState.setMode('approach');
         GameState.currentWorld = worldId;
 
-        const w = WORLDS[worldId];
         const planetGroup = Galaxy.planets[worldId];
         if (!planetGroup) { this.abort(); return; }
 
-        // Capture camera start state
+        // Capture starting camera state
         this.startPos = Galaxy.camera.position.clone();
         this.startLookAt = new THREE.Vector3(0, 0, 0);
 
-        // Compute target: close orbit around planet
-        const pPos = planetGroup.position.clone();
-        const camDir = pPos.clone().normalize();
-        this.targetPos = pPos.clone().sub(camDir.multiplyScalar(12)).add(new THREE.Vector3(0, 5, 0));
-        this.targetLookAt = pPos.clone();
+        // Deselect planet panel so it doesn't overlap
+        Galaxy.deselectPlanet();
+        const label = document.querySelector('.galaxy-label');
+        if (label) label.style.display = 'none';
 
-        // Show HUD overlay (transparent — 3D renders behind it)
-        const overlay = document.getElementById('approach-overlay');
-        overlay.classList.add('active');
-        setTimeout(() => {
-            document.getElementById('letterbox-top').classList.add('active');
-            document.getElementById('letterbox-bottom').classList.add('active');
-        }, 200);
-
-        // Planet info
+        // Populate overlay with planet info
+        const w = WORLDS[worldId];
         document.getElementById('approach-name').textContent = w.name;
         const biomeEl = document.getElementById('approach-biome');
         biomeEl.textContent = w.biome;
         biomeEl.style.background = `rgba(${Galaxy.hexToRgb(w.planetColor)}, 0.2)`;
         biomeEl.style.color = `#${w.planetColor.toString(16).padStart(6, '0')}`;
 
-        // Deselect planet panel so it doesn't overlap
-        Galaxy.deselectPlanet();
-        document.querySelector('.galaxy-label').style.display = 'none';
+        // Show overlay and letterbox
+        document.getElementById('approach-overlay').classList.add('active');
+        setTimeout(() => {
+            document.getElementById('letterbox-top').classList.add('active');
+            document.getElementById('letterbox-bottom').classList.add('active');
+        }, 200);
 
-        // Buttons
-        document.getElementById('approach-land-btn').onclick = () => this.initiateLanding();
+        // Hide landing button until ready phase
+        const landBtn = document.getElementById('approach-land-btn');
+        landBtn.style.display = 'none';
+        landBtn.onclick = () => this.initiateLanding();
         document.getElementById('approach-skip-btn').onclick = () => this.abort();
 
-        // Start render loop (we drive Galaxy camera + render ourselves)
         this.animate();
-    },
-
-    easeInOut(t) {
-        return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
     },
 
     animate() {
         if (!this.active) return;
         this.animFrame = requestAnimationFrame(() => this.animate());
 
-        const elapsed = Date.now() - this.startTime;
-        this.progress = Math.min(elapsed / this.duration, 1);
-        const t = this.easeInOut(this.progress);
+        const elapsed = performance.now();
+        const pPos = this.getPlanetPosition();
 
-        // Track planet position (it orbits)
-        const planetGroup = Galaxy.planets[this.targetWorld];
-        if (planetGroup) {
-            const pPos = planetGroup.position.clone();
-            const camDir = pPos.clone().normalize();
-            this.targetPos = pPos.clone().sub(camDir.multiplyScalar(12)).add(new THREE.Vector3(0, 5, 0));
-            this.targetLookAt = pPos.clone();
-        }
-
-        // Lerp camera
-        Galaxy.camera.position.lerpVectors(this.startPos, this.targetPos, t);
-        const lookAt = new THREE.Vector3().lerpVectors(this.startLookAt, this.targetLookAt, t);
-        Galaxy.camera.lookAt(lookAt);
-
-        // Slow-orbit planets during zoom
+        // --- Keep galaxy alive: slow planet orbits, star pulse, starfield ---
         Galaxy.planetMeshes.forEach((group, idx) => {
             const wc = WORLDS[WORLD_IDS[idx]];
             group.userData.orbitAngle += wc.orbitSpeed * 0.004;
@@ -2016,20 +2104,62 @@ const Approach = {
             group.children[0].rotation.y += 0.003;
         });
 
-        // Pulse star
         if (Galaxy.starMesh) {
             Galaxy.starMesh.scale.setScalar(1 + Math.sin(elapsed * 0.002) * 0.05);
         }
 
-        // Update HUD stats
-        const distance = Math.max(0, (1 - this.progress) * 1200).toFixed(0);
-        const velocity = (8 + this.progress * 12).toFixed(1);
-        const eta = Math.max(0, ((1 - this.progress) * 4.5)).toFixed(1);
+        if (Galaxy.starField) {
+            Galaxy.starField.rotation.y += 0.00005;
+        }
+
+        // --- Phase logic ---
+        if (this.phase === 'approaching') {
+            this.progress = Math.min(this.progress + 0.008, 1);
+            const t = this.easeInOutCubic(this.progress);
+
+            // Target is orbit position around live planet position
+            const orbitTarget = this.getOrbitCameraPosition(pPos, this.orbitAngle);
+            Galaxy.camera.position.lerpVectors(this.startPos, orbitTarget, t);
+
+            // Lerp lookAt from star center to planet
+            const lookAt = new THREE.Vector3().lerpVectors(this.startLookAt, pPos, t);
+            Galaxy.camera.lookAt(lookAt);
+
+            if (this.progress >= 1) {
+                this.phase = 'orbiting';
+            }
+        } else if (this.phase === 'orbiting') {
+            this.orbitAngle += 0.008;
+
+            const orbitTarget = this.getOrbitCameraPosition(pPos, this.orbitAngle);
+            Galaxy.camera.position.lerp(orbitTarget, 0.1);
+            Galaxy.camera.lookAt(pPos);
+
+            if (this.orbitAngle > Math.PI * 0.5) {
+                this.phase = 'ready';
+                // Show landing button with pulse
+                const landBtn = document.getElementById('approach-land-btn');
+                landBtn.style.display = '';
+            }
+        } else if (this.phase === 'ready') {
+            // Slow orbit continues
+            this.orbitAngle += 0.005;
+
+            const orbitTarget = this.getOrbitCameraPosition(pPos, this.orbitAngle);
+            Galaxy.camera.position.lerp(orbitTarget, 0.1);
+            Galaxy.camera.lookAt(pPos);
+        }
+
+        // --- Update HUD stats ---
+        const approachFactor = this.phase === 'approaching' ? this.progress : 1;
+        const distance = Math.max(0, (1 - approachFactor) * 1200).toFixed(0);
+        const velocity = (8 + approachFactor * 12).toFixed(1);
+        const eta = Math.max(0, (1 - approachFactor) * 4.5).toFixed(1);
         document.getElementById('approach-distance').textContent = distance + ' km';
         document.getElementById('approach-velocity').textContent = velocity + ' km/s';
         document.getElementById('approach-eta').textContent = eta + 's';
 
-        // Render galaxy scene with our animated camera
+        // --- Render ---
         GameState.renderer.render(Galaxy.scene, Galaxy.camera);
     },
 
@@ -2051,6 +2181,7 @@ const Approach = {
         this.active = false;
         if (this.animFrame) cancelAnimationFrame(this.animFrame);
         this.animFrame = null;
+        this.phase = null;
         document.getElementById('approach-overlay').classList.remove('active');
         document.getElementById('letterbox-top').classList.remove('active');
         document.getElementById('letterbox-bottom').classList.remove('active');
@@ -2058,39 +2189,55 @@ const Approach = {
 };
 
 // === js/landing.js ===
-// Landing Mini-Game — Ship Descent
+// Landing Mini-Game — Isometric Ship Descent
+const LANDING_CONFIG = {
+    gravity: 0.02,
+    thrustPower: 0.04,
+    manualControl: 0.012,
+    fuelConsumption: 0.3,
+    safeSpeed: 0.8,
+    landingPadSize: 12,
+    startAltitude: 80,
+    bounds: 120
+};
+
+const MOVEMENT_KEYS = [
+    'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight',
+    'KeyW', 'KeyA', 'KeyS', 'KeyD', 'Space', 'ShiftLeft', 'ShiftRight'
+];
+
 const Landing = {
     active: false,
     scene: null,
     camera: null,
+    renderer: null,
     ship: null,
+    propellers: null,
+    thrustLight: null,
+    beaconLight: null,
     targetWorld: null,
     isManual: false,
-    altitude: 60,
-    velocity: { x: 0, y: -0.5, z: 0 },
-    fuel: 100,
+    altitude: 0,
+    velocity: null,
+    fuel: 0,
     landed: false,
-    padPosition: { x: 0, z: 0 },
     keys: {},
     animFrame: null,
-
-    config: {
-        gravity: 0.015,
-        thrustPower: 0.04,
-        lateralSpeed: 0.2,
-        fuelConsumption: 0.015,
-        safeSpeed: 2.5,
-        padSize: 12
-    },
+    lastTime: 0,
+    beaconTimer: 0,
+    beaconOn: true,
 
     start(worldId) {
         this.targetWorld = worldId;
         this.active = true;
         this.landed = false;
         this.isManual = false;
-        this.altitude = 60;
-        this.velocity = { x: 0, y: -0.5, z: 0 };
+        this.altitude = LANDING_CONFIG.startAltitude;
+        this.velocity = { x: 0, y: 0, z: 0 };
         this.fuel = 100;
+        this.keys = {};
+        this.beaconTimer = 0;
+        this.beaconOn = true;
         GameState.setMode('landing');
 
         const w = WORLDS[worldId];
@@ -2101,63 +2248,86 @@ const Landing = {
         // Scene
         this.scene = new THREE.Scene();
         this.scene.background = new THREE.Color(w.landingTerrain.sky);
-        this.scene.fog = new THREE.Fog(w.landingTerrain.fog, 50, 200);
+        this.scene.fog = new THREE.Fog(w.landingTerrain.fog, 80, 300);
 
-        // Camera (orthographic top-down-ish)
-        this.camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 500);
-        this.camera.position.set(0, 80, 40);
+        // Isometric orthographic camera
+        const aspect = window.innerWidth / window.innerHeight;
+        const d = 50;
+        this.camera = new THREE.OrthographicCamera(
+            -d * aspect, d * aspect, d, -d, 1, 1000
+        );
+        this.camera.position.set(100, 100, 100);
         this.camera.lookAt(0, 0, 0);
 
-        // Lights
+        // Lighting
         this.scene.add(new THREE.AmbientLight(0x666666, 0.8));
-        const dir = new THREE.DirectionalLight(0xffffff, 0.6);
-        dir.position.set(10, 30, 10);
+        const dir = new THREE.DirectionalLight(0xffffff, 0.7);
+        dir.position.set(50, 80, 50);
         this.scene.add(dir);
+        const fill = new THREE.DirectionalLight(0x4466aa, 0.3);
+        fill.position.set(-30, 40, -20);
+        this.scene.add(fill);
 
-        // Terrain
         this.createTerrain(w);
+        this.createEnvironment(w);
+        this.createLandingPad();
+        this.createShip();
 
-        // Landing pad
-        this.createLandingPad(w);
-
-        // Ship
-        this.createShip(w);
-
-        // Renderer
+        // Own renderer (separate from GameState.renderer)
+        this.renderer = new THREE.WebGLRenderer({ antialias: true });
+        this.renderer.setSize(window.innerWidth, window.innerHeight);
+        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         const container = document.getElementById('landing-canvas-container');
         container.innerHTML = '';
-        container.appendChild(GameState.renderer.domElement);
+        container.appendChild(this.renderer.domElement);
 
-        // Controls
+        // Mode toggle button
         const modeBtn = document.getElementById('landing-mode-btn');
         modeBtn.textContent = 'TAKE CONTROL';
         modeBtn.onclick = () => this.toggleManual();
 
         // Key listeners
-        this.keyDown = (e) => { this.keys[e.code] = true; };
+        this.keyDown = (e) => {
+            this.keys[e.code] = true;
+            if (!this.isManual && MOVEMENT_KEYS.includes(e.code)) {
+                this.isManual = true;
+                this.syncModeUI();
+                HUD.showToast('Manual control activated');
+            }
+        };
         this.keyUp = (e) => { this.keys[e.code] = false; };
         window.addEventListener('keydown', this.keyDown);
         window.addEventListener('keyup', this.keyUp);
 
-        // Start loop
+        // Resize handler
+        this.resizeHandler = () => {
+            const a = window.innerWidth / window.innerHeight;
+            this.camera.left = -d * a;
+            this.camera.right = d * a;
+            this.camera.updateProjectionMatrix();
+            this.renderer.setSize(window.innerWidth, window.innerHeight);
+        };
+        window.addEventListener('resize', this.resizeHandler);
+
         this.lastTime = performance.now();
         this.animate();
     },
 
     createTerrain(w) {
-        const geo = new THREE.PlaneGeometry(200, 200, 40, 40);
+        const geo = new THREE.PlaneGeometry(300, 300, 60, 60);
         const positions = geo.attributes.position.array;
         const rng = seededRandom(this.targetWorld + '-terrain');
         for (let i = 0; i < positions.length; i += 3) {
-            // Don't displace center (landing pad area)
             const x = positions[i], z = positions[i + 1];
-            const distFromCenter = Math.sqrt(x * x + z * z);
-            const heightFactor = Math.min(distFromCenter / 30, 1);
-            positions[i + 2] = rng() * 8 * heightFactor;
+            const dist = Math.sqrt(x * x + z * z);
+            const heightFactor = Math.min(dist / 30, 1);
+            positions[i + 2] = rng() * 6 * heightFactor;
         }
         geo.computeVertexNormals();
         const mat = new THREE.MeshStandardMaterial({
-            color: w.landingTerrain.ground, roughness: 0.9, metalness: 0.1,
+            color: w.landingTerrain.ground,
+            roughness: 0.9,
+            metalness: 0.1,
             flatShading: true
         });
         const terrain = new THREE.Mesh(geo, mat);
@@ -2165,79 +2335,186 @@ const Landing = {
         this.scene.add(terrain);
     },
 
-    createLandingPad(w) {
-        // Flat pad
-        const padGeo = new THREE.CylinderGeometry(this.config.padSize / 2, this.config.padSize / 2, 0.3, 16);
-        const padMat = new THREE.MeshStandardMaterial({ color: 0x333344, roughness: 0.5, metalness: 0.5 });
-        const pad = new THREE.Mesh(padGeo, padMat);
-        pad.position.y = 0.15;
-        this.scene.add(pad);
+    createEnvironment(w) {
+        const rng = seededRandom(this.targetWorld + '-env');
+        const biome = w.biome;
+        const padRadius = LANDING_CONFIG.landingPadSize + 5;
 
-        // Beacon
-        const beaconGeo = new THREE.CylinderGeometry(0.2, 0.2, 3, 8);
-        const beaconMat = new THREE.MeshBasicMaterial({ color: 0x00ff88 });
-        const beacon = new THREE.Mesh(beaconGeo, beaconMat);
-        beacon.position.y = 1.5;
-        this.scene.add(beacon);
+        for (let i = 0; i < 60; i++) {
+            const angle = rng() * Math.PI * 2;
+            const radius = padRadius + rng() * 80;
+            const x = Math.cos(angle) * radius;
+            const z = Math.sin(angle) * radius;
 
-        // Beacon light
-        const beaconLight = new THREE.PointLight(0x00ff88, 1, 30);
-        beaconLight.position.y = 3;
-        this.scene.add(beaconLight);
+            let obj;
+            if ((biome === 'Terra' || biome === 'Crystal') && rng() > 0.4) {
+                // Trees
+                const trunkGeo = new THREE.CylinderGeometry(0.4, 0.6, 3 + rng() * 4, 6);
+                const trunkMat = new THREE.MeshStandardMaterial({
+                    color: 0x664422, roughness: 0.9
+                });
+                obj = new THREE.Group();
+                const trunk = new THREE.Mesh(trunkGeo, trunkMat);
+                trunk.position.y = 1.5 + rng() * 2;
+                obj.add(trunk);
 
-        // Landing ring
-        const ringGeo = new THREE.RingGeometry(this.config.padSize / 2 - 0.5, this.config.padSize / 2, 24);
-        const ringMat = new THREE.MeshBasicMaterial({ color: WORLDS[this.targetWorld].accent, side: THREE.DoubleSide, transparent: true, opacity: 0.4 });
-        const ring = new THREE.Mesh(ringGeo, ringMat);
-        ring.rotation.x = -Math.PI / 2;
-        ring.position.y = 0.35;
-        this.scene.add(ring);
+                const canopySize = 2 + rng() * 3;
+                const canopyGeo = new THREE.SphereGeometry(canopySize, 6, 5);
+                const canopyMat = new THREE.MeshStandardMaterial({
+                    color: biome === 'Crystal' ? 0x44ddcc : 0x228833,
+                    roughness: 0.8,
+                    flatShading: true
+                });
+                const canopy = new THREE.Mesh(canopyGeo, canopyMat);
+                canopy.position.y = 3 + rng() * 4;
+                obj.add(canopy);
+            } else {
+                // Rocks
+                const size = 1 + rng() * 3;
+                const rockGeo = new THREE.DodecahedronGeometry(size, 0);
+                const rockMat = new THREE.MeshStandardMaterial({
+                    color: 0x777777,
+                    roughness: 0.95,
+                    flatShading: true
+                });
+                obj = new THREE.Mesh(rockGeo, rockMat);
+                obj.position.y = size * 0.4;
+                obj.rotation.set(rng() * Math.PI, rng() * Math.PI, 0);
+            }
+
+            obj.position.x = x;
+            obj.position.z = z;
+            this.scene.add(obj);
+        }
     },
 
-    createShip(w) {
+    createLandingPad() {
+        const ps = LANDING_CONFIG.landingPadSize;
+
+        // Pad surface
+        const padGeo = new THREE.CylinderGeometry(ps, ps, 1, 24);
+        const padMat = new THREE.MeshStandardMaterial({
+            color: 0x44ff44, roughness: 0.4, metalness: 0.3
+        });
+        const pad = new THREE.Mesh(padGeo, padMat);
+        pad.position.y = 0.5;
+        this.scene.add(pad);
+
+        // White center marker
+        const markerGeo = new THREE.CylinderGeometry(2, 2, 0.2, 16);
+        const markerMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+        const marker = new THREE.Mesh(markerGeo, markerMat);
+        marker.position.y = 1.15;
+        this.scene.add(marker);
+
+        // Beacon pole
+        const poleGeo = new THREE.CylinderGeometry(0.3, 0.3, 8, 8);
+        const poleMat = new THREE.MeshStandardMaterial({
+            color: 0x888888, metalness: 0.6, roughness: 0.4
+        });
+        const pole = new THREE.Mesh(poleGeo, poleMat);
+        pole.position.set(ps + 2, 4, 0);
+        this.scene.add(pole);
+
+        // Beacon light sphere
+        const beaconGeo = new THREE.SphereGeometry(0.6, 8, 8);
+        const beaconMat = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+        const beacon = new THREE.Mesh(beaconGeo, beaconMat);
+        beacon.position.set(ps + 2, 8.5, 0);
+        this.scene.add(beacon);
+        this.beaconMesh = beacon;
+
+        // Beacon point light
+        this.beaconLight = new THREE.PointLight(0xff0000, 1, 40);
+        this.beaconLight.position.set(ps + 2, 8.5, 0);
+        this.scene.add(this.beaconLight);
+    },
+
+    createShip() {
+        const rng = seededRandom(this.targetWorld + '-ship');
         const group = new THREE.Group();
 
-        // Body
-        const bodyGeo = new THREE.BoxGeometry(2, 1, 3);
-        const bodyMat = new THREE.MeshStandardMaterial({ color: 0x8888aa, metalness: 0.7, roughness: 0.3 });
+        // Main body
+        const bodyGeo = new THREE.BoxGeometry(6, 2, 6);
+        const bodyMat = new THREE.MeshStandardMaterial({
+            color: 0x333333, metalness: 0.7, roughness: 0.3
+        });
         group.add(new THREE.Mesh(bodyGeo, bodyMat));
 
-        // Nose cone
-        const noseGeo = new THREE.ConeGeometry(1, 2, 4);
-        const noseMat = new THREE.MeshStandardMaterial({ color: 0xaaaacc, metalness: 0.7, roughness: 0.3 });
-        const nose = new THREE.Mesh(noseGeo, noseMat);
-        nose.rotation.x = Math.PI / 2;
-        nose.position.z = -2.5;
-        group.add(nose);
+        // Cockpit dome
+        const cockpitGeo = new THREE.SphereGeometry(2, 12, 8);
+        const cockpitMat = new THREE.MeshStandardMaterial({
+            color: 0x00ffff, metalness: 0.4, roughness: 0.2,
+            transparent: true, opacity: 0.85
+        });
+        const cockpit = new THREE.Mesh(cockpitGeo, cockpitMat);
+        cockpit.scale.y = 0.6;
+        cockpit.position.y = 1.2;
+        group.add(cockpit);
 
-        // Wings
-        const wingGeo = new THREE.BoxGeometry(5, 0.1, 1.5);
-        const wingMat = new THREE.MeshStandardMaterial({ color: 0x666688, metalness: 0.6, roughness: 0.4 });
-        const wing = new THREE.Mesh(wingGeo, wingMat);
-        wing.position.z = 0.5;
-        group.add(wing);
+        // Propeller arms and rotors
+        const armPositions = [
+            [-4, 0.5, -4], [4, 0.5, -4],
+            [-4, 0.5, 4], [4, 0.5, 4]
+        ];
+        this.propellers = [];
 
-        // Thruster glow
-        const thrustGeo = new THREE.ConeGeometry(0.5, 2, 8);
-        const thrustMat = new THREE.MeshBasicMaterial({ color: w.accent || 0x00aaff, transparent: true, opacity: 0.6 });
-        const thrust = new THREE.Mesh(thrustGeo, thrustMat);
-        thrust.rotation.x = -Math.PI / 2;
-        thrust.position.z = 2.5;
-        thrust.position.y = -0.3;
-        thrust.visible = true;
-        group.add(thrust);
-        this.thrustMesh = thrust;
+        const armMat = new THREE.MeshStandardMaterial({
+            color: 0x555555, metalness: 0.6, roughness: 0.4
+        });
+        const propMat = new THREE.MeshStandardMaterial({
+            color: 0x999999, metalness: 0.5, roughness: 0.3,
+            transparent: true, opacity: 0.7
+        });
 
-        group.position.y = this.altitude;
+        for (const pos of armPositions) {
+            // Arm strut
+            const armGeo = new THREE.BoxGeometry(1, 0.4, 1);
+            const arm = new THREE.Mesh(armGeo, armMat);
+            arm.position.set(pos[0], pos[1], pos[2]);
+            group.add(arm);
+
+            // Propeller disc
+            const propGeo = new THREE.CylinderGeometry(1.8, 1.8, 0.15, 16);
+            const prop = new THREE.Mesh(propGeo, propMat);
+            prop.position.set(pos[0], pos[1] + 0.5, pos[2]);
+            group.add(prop);
+            this.propellers.push(prop);
+        }
+
+        // Thrust light under ship
+        this.thrustLight = new THREE.PointLight(0x00ff00, 1.5, 30);
+        this.thrustLight.position.y = -1.5;
+        group.add(this.thrustLight);
+
+        // Random start position within ±40
+        const startX = (rng() - 0.5) * 80;
+        const startZ = (rng() - 0.5) * 80;
+        group.position.set(startX, LANDING_CONFIG.startAltitude, startZ);
+
         this.ship = group;
         this.scene.add(group);
     },
 
     toggleManual() {
         this.isManual = !this.isManual;
+        this.syncModeUI();
+    },
+
+    syncModeUI() {
         const btn = document.getElementById('landing-mode-btn');
-        btn.textContent = this.isManual ? 'ENGAGE AUTOPILOT' : 'TAKE CONTROL';
-        document.getElementById('landing-status').textContent = this.isManual ? 'MANUAL CONTROL' : 'AUTOPILOT ENGAGED';
+        const status = document.getElementById('landing-status');
+        if (this.isManual) {
+            btn.textContent = 'ENGAGE AUTOPILOT';
+            status.textContent = 'MANUAL CONTROL';
+        } else {
+            btn.textContent = 'TAKE CONTROL';
+            status.textContent = 'AUTOPILOT ENGAGED';
+        }
+        // Thrust light color: green = autopilot, orange = manual
+        if (this.thrustLight) {
+            this.thrustLight.color.setHex(this.isManual ? 0xff8800 : 0x00ff00);
+        }
     },
 
     animate() {
@@ -2248,127 +2525,210 @@ const Landing = {
         const delta = Math.min((now - this.lastTime) / 1000, 0.05);
         this.lastTime = now;
 
+        // Spin propellers
+        for (const prop of this.propellers) {
+            prop.rotation.y += delta * 50;
+        }
+
+        // Beacon blink (toggle every 500ms)
+        this.beaconTimer += delta * 1000;
+        if (this.beaconTimer >= 500) {
+            this.beaconTimer -= 500;
+            this.beaconOn = !this.beaconOn;
+            if (this.beaconMesh) this.beaconMesh.visible = this.beaconOn;
+            if (this.beaconLight) this.beaconLight.intensity = this.beaconOn ? 1 : 0;
+        }
+
+        // --- Physics ---
         // Gravity
-        this.velocity.y -= this.config.gravity;
+        this.velocity.y -= LANDING_CONFIG.gravity;
 
         if (this.isManual) {
-            // Manual thrust
-            if ((this.keys['Space'] || this.keys['ArrowUp'] || this.keys['KeyW']) && this.fuel > 0) {
-                this.velocity.y += this.config.thrustPower;
-                this.fuel = Math.max(0, this.fuel - this.config.fuelConsumption);
-            }
-            if (this.keys['ArrowLeft'] || this.keys['KeyA']) this.velocity.x -= this.config.lateralSpeed * delta;
-            if (this.keys['ArrowRight'] || this.keys['KeyD']) this.velocity.x += this.config.lateralSpeed * delta;
-            if (this.keys['ArrowDown'] || this.keys['KeyS']) this.velocity.z += this.config.lateralSpeed * delta;
+            this.updateManual(delta);
         } else {
-            // Autopilot — smooth descent toward pad center
-            const targetVelY = -0.8 - (this.altitude / 60) * 0.5;
-            this.velocity.y += (targetVelY - this.velocity.y) * 0.02;
-            this.velocity.x *= 0.95; // dampen lateral
-            this.velocity.z *= 0.95;
-            // Steer toward center
-            if (this.ship) {
-                this.velocity.x += (0 - this.ship.position.x) * 0.001;
-                this.velocity.z += (0 - this.ship.position.z) * 0.001;
-            }
+            this.updateAutopilot(delta);
         }
 
-        // Clamp velocity
-        const maxSpeed = 3;
-        this.velocity.x = Math.max(-maxSpeed, Math.min(maxSpeed, this.velocity.x));
-        this.velocity.z = Math.max(-maxSpeed, Math.min(maxSpeed, this.velocity.z));
+        // Velocity damping
+        this.velocity.x *= 0.96;
+        this.velocity.y *= 0.96;
+        this.velocity.z *= 0.96;
 
-        // Update position
-        if (this.ship) {
-            this.ship.position.y += this.velocity.y;
-            this.ship.position.x += this.velocity.x;
-            this.ship.position.z += this.velocity.z;
-            this.altitude = Math.max(0, this.ship.position.y);
+        // Update ship position
+        this.ship.position.x += this.velocity.x;
+        this.ship.position.y += this.velocity.y;
+        this.ship.position.z += this.velocity.z;
 
-            // Tilt ship based on lateral velocity
-            this.ship.rotation.z = -this.velocity.x * 0.3;
-            this.ship.rotation.x = this.velocity.z * 0.1;
+        // Clamp within bounds
+        const b = LANDING_CONFIG.bounds;
+        this.ship.position.x = Math.max(-b, Math.min(b, this.ship.position.x));
+        this.ship.position.z = Math.max(-b, Math.min(b, this.ship.position.z));
+        if (this.ship.position.y < 0) this.ship.position.y = 0;
 
-            // Thrust visibility
-            if (this.thrustMesh) {
-                this.thrustMesh.visible = this.velocity.y > -0.3;
-                this.thrustMesh.scale.y = 0.5 + Math.random() * 0.5;
-            }
-        }
+        this.altitude = this.ship.position.y;
 
-        // Camera follow
-        if (this.ship) {
-            this.camera.position.x = this.ship.position.x;
-            this.camera.position.y = this.ship.position.y + 20;
-            this.camera.position.z = this.ship.position.z + 25;
-            this.camera.lookAt(this.ship.position);
-        }
+        // Ship tilt based on velocity
+        this.ship.rotation.z = this.velocity.x * 0.05;
+        this.ship.rotation.x = -this.velocity.z * 0.05;
 
-        // Update HUD
+        // Camera follow (isometric offset tracking ship loosely)
+        this.camera.position.set(
+            100 + this.ship.position.x * 0.3,
+            100 + this.ship.position.y * 0.3,
+            100 + this.ship.position.z * 0.3
+        );
+        this.camera.lookAt(
+            this.ship.position.x * 0.3,
+            this.ship.position.y * 0.3,
+            this.ship.position.z * 0.3
+        );
+
         this.updateHUD();
+        this.checkLanding();
 
-        // Check landing
-        if (this.altitude <= 0.5) {
-            this.land();
+        this.renderer.render(this.scene, this.camera);
+    },
+
+    updateManual(delta) {
+        const mc = LANDING_CONFIG.manualControl;
+
+        if (this.keys['ArrowUp'] || this.keys['KeyW']) this.velocity.z -= mc;
+        if (this.keys['ArrowDown'] || this.keys['KeyS']) this.velocity.z += mc;
+        if (this.keys['ArrowLeft'] || this.keys['KeyA']) this.velocity.x -= mc;
+        if (this.keys['ArrowRight'] || this.keys['KeyD']) this.velocity.x += mc;
+
+        if (this.keys['Space'] && this.fuel > 0) {
+            this.velocity.y += LANDING_CONFIG.thrustPower;
+            this.fuel = Math.max(0, this.fuel - LANDING_CONFIG.fuelConsumption * 1.5);
         }
 
-        // Render
-        GameState.renderer.render(this.scene, this.camera);
+        if (this.keys['ShiftLeft'] || this.keys['ShiftRight']) {
+            this.velocity.y -= LANDING_CONFIG.thrustPower * 0.5;
+        }
+
+        // Manual fuel drain
+        if (this.keys['ArrowUp'] || this.keys['KeyW'] || this.keys['ArrowDown'] || this.keys['KeyS'] ||
+            this.keys['ArrowLeft'] || this.keys['KeyA'] || this.keys['ArrowRight'] || this.keys['KeyD']) {
+            this.fuel = Math.max(0, this.fuel - LANDING_CONFIG.fuelConsumption * 0.5);
+        }
+    },
+
+    updateAutopilot(delta) {
+        const sx = this.ship.position.x;
+        const sz = this.ship.position.z;
+        const horizontalDist = Math.sqrt(sx * sx + sz * sz);
+        const overPad = horizontalDist < LANDING_CONFIG.landingPadSize;
+
+        let desiredVel = { x: 0, y: 0, z: 0 };
+
+        if (this.altitude > 40) {
+            // High altitude: slow descent
+            desiredVel.y = -0.15 * 1.5;
+            desiredVel.x = -sx * 0.01;
+            desiredVel.z = -sz * 0.01;
+        } else if (!overPad) {
+            // Not over pad: hover and drift toward it
+            desiredVel.y = -0.02;
+            desiredVel.x = -sx * 0.02;
+            desiredVel.z = -sz * 0.02;
+        } else {
+            // Over pad: very slow final descent
+            desiredVel.y = -0.15 * 0.5;
+            desiredVel.x = -sx * 0.005;
+            desiredVel.z = -sz * 0.005;
+        }
+
+        // Lerp velocity toward desired
+        const lerp = 0.03;
+        this.velocity.x += (desiredVel.x - this.velocity.x) * lerp;
+        this.velocity.y += (desiredVel.y - this.velocity.y) * lerp;
+        this.velocity.z += (desiredVel.z - this.velocity.z) * lerp;
+
+        // Slow fuel consumption on autopilot
+        this.fuel = Math.max(0, this.fuel - LANDING_CONFIG.fuelConsumption * 0.1);
     },
 
     updateHUD() {
-        const speed = Math.sqrt(this.velocity.x ** 2 + this.velocity.y ** 2 + this.velocity.z ** 2);
+        const speed = Math.sqrt(
+            this.velocity.x ** 2 + this.velocity.y ** 2 + this.velocity.z ** 2
+        );
         const altEl = document.getElementById('landing-altitude');
         const spdEl = document.getElementById('landing-speed');
         const fuelEl = document.getElementById('landing-fuel');
         const fuelBar = document.getElementById('landing-fuel-bar');
 
-        altEl.textContent = this.altitude.toFixed(1);
-        spdEl.textContent = speed.toFixed(1);
-        fuelEl.textContent = Math.round(this.fuel) + '%';
-        fuelBar.style.width = this.fuel + '%';
+        if (altEl) altEl.textContent = this.altitude.toFixed(1);
+        if (spdEl) spdEl.textContent = speed.toFixed(2);
+        if (fuelEl) fuelEl.textContent = Math.round(this.fuel) + '%';
+        if (fuelBar) fuelBar.style.width = this.fuel + '%';
 
-        // Color warnings
-        altEl.className = 'landing-gauge-value' + (this.altitude < 10 ? ' warning' : '');
-        spdEl.className = 'landing-gauge-value' + (speed > this.config.safeSpeed ? ' danger' : speed > 1.5 ? ' warning' : '');
+        // Warning colors
+        if (altEl) altEl.className = 'landing-gauge-value' + (this.altitude < 10 ? ' warning' : '');
+        if (spdEl) spdEl.className = 'landing-gauge-value' + (speed > LANDING_CONFIG.safeSpeed ? ' danger' : speed > 0.5 ? ' warning' : '');
     },
 
-    land() {
-        this.landed = true;
-        const speed = Math.sqrt(this.velocity.x ** 2 + this.velocity.y ** 2 + this.velocity.z ** 2);
-        const status = document.getElementById('landing-status');
+    checkLanding() {
+        const speed = Math.sqrt(
+            this.velocity.x ** 2 + this.velocity.y ** 2 + this.velocity.z ** 2
+        );
+        const sx = this.ship.position.x;
+        const sz = this.ship.position.z;
+        const horizontalDist = Math.sqrt(sx * sx + sz * sz);
 
-        if (speed > this.config.safeSpeed) {
-            status.textContent = '⚠️ HARD LANDING — HULL STRESS DETECTED';
-            status.style.color = '#ff4444';
-        } else {
+        // Out of fuel at high altitude
+        if (this.fuel <= 0 && this.altitude > 10) {
+            this.resolveLanding(false, 'Out of fuel!');
+            return;
+        }
+
+        if (this.altitude <= 3) {
+            const onPad = horizontalDist < LANDING_CONFIG.landingPadSize;
+            if (onPad && speed < LANDING_CONFIG.safeSpeed) {
+                this.resolveLanding(true, null);
+            } else if (speed >= LANDING_CONFIG.safeSpeed) {
+                this.resolveLanding(false, 'Too fast!');
+            } else {
+                this.resolveLanding(false, 'Missed the landing pad!');
+            }
+        }
+    },
+
+    resolveLanding(success, reason) {
+        this.landed = true;
+        const status = document.getElementById('landing-status');
+        const worldName = WORLDS[this.targetWorld].name;
+
+        if (success) {
             status.textContent = '✅ LANDING SUCCESSFUL';
             status.style.color = '#00ff88';
+            HUD.showToast(`Welcome to ${worldName}`);
+        } else {
+            status.textContent = `⚠️ CRASH — ${reason}`;
+            status.style.color = '#ff4444';
+            HUD.showToast('Crash landing!');
         }
 
-        if (typeof HUD !== 'undefined' && HUD.showToast) {
-            HUD.showToast(`Landed on ${WORLDS[this.targetWorld].name}`);
-        }
-
-        // Transition to world after delay
-        setTimeout(() => this.transitionToWorld(), 2000);
-    },
-
-    transitionToWorld() {
-        this.cleanup();
-        GameState.setMode('world');
-        WorldMode.init(this.targetWorld);
+        setTimeout(() => {
+            if (!success) {
+                HUD.showToast('Hull damage sustained');
+            }
+            this.cleanup();
+            WorldMode.init(this.targetWorld);
+        }, 2000);
     },
 
     cleanup() {
         this.active = false;
         if (this.animFrame) cancelAnimationFrame(this.animFrame);
+
         window.removeEventListener('keydown', this.keyDown);
         window.removeEventListener('keyup', this.keyUp);
+        window.removeEventListener('resize', this.resizeHandler);
         this.keys = {};
+
         document.getElementById('landing-overlay').classList.remove('active');
 
-        // Dispose scene
+        // Dispose scene resources
         if (this.scene) {
             this.scene.traverse(obj => {
                 if (obj.geometry) obj.geometry.dispose();
@@ -2378,34 +2738,1195 @@ const Landing = {
                 }
             });
         }
+
+        // Dispose own renderer
+        if (this.renderer) {
+            this.renderer.dispose();
+            if (this.renderer.domElement && this.renderer.domElement.parentNode) {
+                this.renderer.domElement.parentNode.removeChild(this.renderer.domElement);
+            }
+        }
+
         this.scene = null;
         this.ship = null;
+        this.propellers = null;
+        this.thrustLight = null;
+        this.beaconLight = null;
+        this.beaconMesh = null;
+        this.renderer = null;
     }
 };
 
-// === js/world.js ===
-// World Mode — On-Planet Exploration
+// === js/world-terrain.js ===
+// World Terrain — Ground, Biome Objects, Particles, Lighting
+const WorldTerrain = {
+    particles: null,
+
+    build(scene, w, worldId) {
+        this.buildGround(scene, w);
+        this.buildLighting(scene, w);
+        this.particles = this.spawnParticles(scene, w);
+        this.spawnBiomeObjects(scene, w, worldId);
+    },
+
+    buildGround(scene, w) {
+        // Terrain plane with displacement
+        const size = Math.max(w.bounds.x, w.bounds.z) * 2 + 20;
+        const geo = new THREE.PlaneGeometry(size, size, 48, 48);
+        const positions = geo.attributes.position.array;
+        const rng = seededRandom(w.name + '-ground');
+        for (let i = 0; i < positions.length; i += 3) {
+            const x = positions[i], z = positions[i + 1];
+            const dist = Math.sqrt(x * x + z * z);
+            const edge = Math.min(dist / (size * 0.3), 1);
+            positions[i + 2] = rng() * 1.5 * edge;
+        }
+        geo.computeVertexNormals();
+
+        const mat = new THREE.MeshStandardMaterial({
+            color: w.floor, roughness: 0.9, metalness: 0.1,
+            transparent: true, opacity: 0.85, flatShading: true
+        });
+        const ground = new THREE.Mesh(geo, mat);
+        ground.rotation.x = -Math.PI / 2;
+        ground.position.y = -0.05;
+        scene.add(ground);
+
+        // Grid
+        const gridSize = Math.max(w.bounds.x, w.bounds.z) * 2 + 2;
+        const grid = new THREE.GridHelper(gridSize, gridSize, w.grid, new THREE.Color(w.grid).multiplyScalar(0.3));
+        grid.material.opacity = 0.15;
+        grid.material.transparent = true;
+        scene.add(grid);
+
+        // Boundary wireframe
+        const bGeo = new THREE.BoxGeometry(w.bounds.x * 2, 4, w.bounds.z * 2);
+        const bMat = new THREE.MeshBasicMaterial({ color: w.accent, wireframe: true, transparent: true, opacity: 0.06 });
+        const boundary = new THREE.Mesh(bGeo, bMat);
+        boundary.position.y = 2;
+        scene.add(boundary);
+    },
+
+    buildLighting(scene, w) {
+        const ambient = new THREE.AmbientLight(0x404060, 0.6);
+        scene.add(ambient);
+
+        const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+        dirLight.position.set(10, 20, 10);
+        scene.add(dirLight);
+
+        const pointLight = new THREE.PointLight(w.accent, 1.5, 60);
+        pointLight.position.set(0, 10, 0);
+        scene.add(pointLight);
+
+        // Day/night from game state
+        const worldState = GameState.data.gameState?.worlds?.[GameState.currentWorld];
+        if (worldState?.time_of_day === 'night') {
+            ambient.intensity = 0.2;
+            dirLight.intensity = 0.3;
+            dirLight.color.set(0x6666aa);
+        }
+    },
+
+    spawnParticles(scene, w) {
+        const count = 200;
+        const geo = new THREE.BufferGeometry();
+        const pos = new Float32Array(count * 3);
+        for (let i = 0; i < count; i++) {
+            pos[i * 3] = (Math.random() - 0.5) * w.bounds.x * 4;
+            pos[i * 3 + 1] = Math.random() * 15 + 1;
+            pos[i * 3 + 2] = (Math.random() - 0.5) * w.bounds.z * 4;
+        }
+        geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+        const mat = new THREE.PointsMaterial({
+            color: w.accent, size: 0.12,
+            transparent: true, opacity: 0.35,
+            blending: THREE.AdditiveBlending, sizeAttenuation: true
+        });
+        const particles = new THREE.Points(geo, mat);
+        scene.add(particles);
+        return particles;
+    },
+
+    spawnBiomeObjects(scene, w, worldId) {
+        const rng = seededRandom(worldId + '-biome');
+        const count = 40;
+        const laneExclusion = 4; // Don't place objects on lanes
+
+        for (let i = 0; i < count; i++) {
+            const x = (rng() - 0.5) * w.bounds.x * 2;
+            const z = (rng() - 0.5) * w.bounds.z * 2;
+
+            // Skip if too close to any lane path
+            if (typeof WorldLanes !== 'undefined' && WorldLanes.isNearLane(x, z, laneExclusion)) continue;
+
+            let obj;
+            if (w.biome === 'Terra' || w.biome === 'Crystal') {
+                if (rng() > 0.4) {
+                    // Trees
+                    obj = new THREE.Group();
+                    const trunkGeo = new THREE.CylinderGeometry(0.3, 0.5, 2 + rng() * 3, 6);
+                    const trunkMat = new THREE.MeshStandardMaterial({ color: 0x664422, roughness: 0.9 });
+                    const trunk = new THREE.Mesh(trunkGeo, trunkMat);
+                    trunk.position.y = 1 + rng();
+                    obj.add(trunk);
+                    const canopySize = 1.5 + rng() * 2;
+                    const canopyGeo = new THREE.SphereGeometry(canopySize, 6, 5);
+                    const canopyMat = new THREE.MeshStandardMaterial({
+                        color: w.biome === 'Crystal' ? 0x44ddcc : 0x228833,
+                        roughness: 0.8, flatShading: true
+                    });
+                    const canopy = new THREE.Mesh(canopyGeo, canopyMat);
+                    canopy.position.y = 2.5 + rng() * 2;
+                    obj.add(canopy);
+                } else {
+                    const size = 0.5 + rng() * 1.5;
+                    const rockGeo = new THREE.DodecahedronGeometry(size, 0);
+                    const rockMat = new THREE.MeshStandardMaterial({ color: 0x777777, roughness: 0.95, flatShading: true });
+                    obj = new THREE.Mesh(rockGeo, rockMat);
+                    obj.position.y = size * 0.3;
+                }
+            } else if (w.biome === 'Volcanic') {
+                // Lava rocks and spires
+                const size = 0.8 + rng() * 2;
+                const geo = rng() > 0.5
+                    ? new THREE.ConeGeometry(size * 0.5, size * 2, 5)
+                    : new THREE.DodecahedronGeometry(size, 0);
+                const mat = new THREE.MeshStandardMaterial({
+                    color: 0x332211, emissive: 0xff4400,
+                    emissiveIntensity: rng() * 0.3, roughness: 0.95, flatShading: true
+                });
+                obj = new THREE.Mesh(geo, mat);
+                obj.position.y = size * 0.4;
+            } else {
+                // Desert — sand dunes / cacti
+                const size = 0.6 + rng() * 1.5;
+                const geo = new THREE.CylinderGeometry(size * 0.3, size * 0.5, size * 2, 6);
+                const mat = new THREE.MeshStandardMaterial({ color: 0xaaaa66, roughness: 0.95, flatShading: true });
+                obj = new THREE.Mesh(geo, mat);
+                obj.position.y = size;
+            }
+
+            obj.position.x = x;
+            obj.position.z = z;
+            obj.rotation.y = rng() * Math.PI * 2;
+            scene.add(obj);
+        }
+    },
+
+    update(time) {
+        if (this.particles) this.particles.rotation.y = time * 0.015;
+    }
+};
+
+// === js/world-lanes.js ===
+// World Lanes — DOTA-Style Lane Definitions, Towers, Thrones
+const LANE_DEFS = {
+    top: {
+        name: 'Boreal Reach', color: 0x4488ff,
+        waypoints: [
+            { x: -1, z: -1 }, { x: -1, z: -0.6 }, { x: -1, z: -0.2 },
+            { x: -1, z: 0.2 }, { x: -1, z: 0.6 }, { x: -1, z: 1 },
+            { x: -0.5, z: 1 }, { x: 0, z: 1 }, { x: 0.5, z: 1 }, { x: 1, z: 1 }
+        ],
+        chokeIndex: 7
+    },
+    mid: {
+        name: 'Nexus Spine', color: 0xffaa00,
+        waypoints: [
+            { x: -1, z: -1 }, { x: -0.75, z: -0.75 }, { x: -0.5, z: -0.5 },
+            { x: -0.25, z: -0.25 }, { x: 0, z: 0 }, { x: 0.25, z: 0.25 },
+            { x: 0.5, z: 0.5 }, { x: 0.75, z: 0.75 }, { x: 1, z: 1 }
+        ],
+        chokeIndex: 4
+    },
+    bot: {
+        name: 'Verdant Trail', color: 0x44ff88,
+        waypoints: [
+            { x: -1, z: -1 }, { x: -0.5, z: -1 }, { x: 0, z: -1 },
+            { x: 0.5, z: -1 }, { x: 1, z: -1 }, { x: 1, z: -0.6 },
+            { x: 1, z: -0.2 }, { x: 1, z: 0.2 }, { x: 1, z: 0.6 }, { x: 1, z: 1 }
+        ],
+        chokeIndex: 2
+    }
+};
+
+const WorldLanes = {
+    towers: [],       // { mesh, hp, maxHp, lane, faction, index, attackTimer, target }
+    thrones: {},      // { explorer: {mesh,hp,maxHp}, horde: {mesh,hp,maxHp} }
+    lanePaths: [],    // visual lane path meshes
+    scaledWaypoints: {}, // waypoints scaled to world bounds
+
+    init(scene, w) {
+        this.towers = [];
+        this.thrones = {};
+        this.lanePaths = [];
+        this.scaledWaypoints = {};
+
+        // Scale waypoints from ±1 to world bounds
+        const sx = w.bounds.x * 0.9;
+        const sz = w.bounds.z * 0.9;
+
+        for (const [laneKey, lane] of Object.entries(LANE_DEFS)) {
+            this.scaledWaypoints[laneKey] = lane.waypoints.map(wp => ({
+                x: wp.x * sx, z: wp.z * sz
+            }));
+
+            this.renderLanePath(scene, laneKey, lane);
+            this.createTowersForLane(scene, laneKey, lane, sx, sz);
+        }
+
+        this.createThrones(scene, sx, sz);
+    },
+
+    renderLanePath(scene, laneKey, lane) {
+        const wps = this.scaledWaypoints[laneKey];
+        const points = wps.map(wp => new THREE.Vector3(wp.x, 0.05, wp.z));
+        const geo = new THREE.BufferGeometry().setFromPoints(points);
+        const mat = new THREE.LineBasicMaterial({
+            color: lane.color, transparent: true, opacity: 0.25
+        });
+        const line = new THREE.Line(geo, mat);
+        scene.add(line);
+        this.lanePaths.push(line);
+
+        // Choke point marker
+        const choke = wps[lane.chokeIndex];
+        if (choke) {
+            const ringGeo = new THREE.RingGeometry(1.5, 2, 16);
+            const ringMat = new THREE.MeshBasicMaterial({
+                color: lane.color, side: THREE.DoubleSide,
+                transparent: true, opacity: 0.2
+            });
+            const ring = new THREE.Mesh(ringGeo, ringMat);
+            ring.rotation.x = -Math.PI / 2;
+            ring.position.set(choke.x, 0.06, choke.z);
+            scene.add(ring);
+            this.lanePaths.push(ring);
+        }
+    },
+
+    createTowersForLane(scene, laneKey, lane, sx, sz) {
+        const wps = this.scaledWaypoints[laneKey];
+        const total = wps.length;
+
+        // 3 towers per side: explorer side (indices 1,2,3), horde side (last 3)
+        const explorerIndices = [1, 2, Math.floor(total * 0.35)];
+        const hordeIndices = [total - 2, total - 3, Math.ceil(total * 0.65)];
+
+        explorerIndices.forEach((idx, i) => {
+            const wp = wps[Math.min(idx, total - 1)];
+            this.createTower(scene, wp.x, wp.z, 'explorer', lane.color, laneKey, i);
+        });
+
+        hordeIndices.forEach((idx, i) => {
+            const wp = wps[Math.min(idx, total - 1)];
+            this.createTower(scene, wp.x, wp.z, 'horde', 0xff4488, laneKey, i + 3);
+        });
+    },
+
+    createTower(scene, x, z, faction, color, lane, index) {
+        const group = new THREE.Group();
+        const teamColor = faction === 'explorer' ? 0x00ccff : 0xff4444;
+
+        // Base
+        const baseGeo = new THREE.CylinderGeometry(1.5, 2, 1.5, 8);
+        const baseMat = new THREE.MeshStandardMaterial({ color: 0x333344, roughness: 0.6, metalness: 0.4 });
+        group.add(new THREE.Mesh(baseGeo, baseMat));
+        group.children[0].position.y = 0.75;
+
+        // Column
+        const colGeo = new THREE.CylinderGeometry(0.6, 0.8, 5, 8);
+        const colMat = new THREE.MeshStandardMaterial({
+            color: teamColor, emissive: teamColor, emissiveIntensity: 0.15,
+            roughness: 0.4, metalness: 0.6
+        });
+        const col = new THREE.Mesh(colGeo, colMat);
+        col.position.y = 4;
+        group.add(col);
+
+        // Top orb
+        const orbGeo = new THREE.SphereGeometry(0.8, 12, 12);
+        const orbMat = new THREE.MeshStandardMaterial({
+            color: teamColor, emissive: teamColor, emissiveIntensity: 0.5,
+            roughness: 0.2, metalness: 0.8
+        });
+        const orb = new THREE.Mesh(orbGeo, orbMat);
+        orb.position.y = 7;
+        group.add(orb);
+
+        // Attack range ring
+        const rangeGeo = new THREE.RingGeometry(14.5, 15, 24);
+        const rangeMat = new THREE.MeshBasicMaterial({
+            color: teamColor, side: THREE.DoubleSide, transparent: true, opacity: 0.06
+        });
+        const rangeRing = new THREE.Mesh(rangeGeo, rangeMat);
+        rangeRing.rotation.x = -Math.PI / 2;
+        rangeRing.position.y = 0.02;
+        group.add(rangeRing);
+
+        // HP bar
+        const hpGeo = new THREE.PlaneGeometry(3, 0.3);
+        const hpMat = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+        const hpBar = new THREE.Mesh(hpGeo, hpMat);
+        hpBar.position.y = 8.5;
+        hpBar.rotation.x = 0;
+        group.add(hpBar);
+
+        group.position.set(x + (faction === 'explorer' ? -2 : 2), 0, z);
+        scene.add(group);
+
+        this.towers.push({
+            mesh: group, orb, hpBar,
+            hp: 100, maxHp: 100,
+            lane, faction, index,
+            attackTimer: 0, target: null,
+            attackRange: 15, attackDamage: 12, attackCooldown: 1.5
+        });
+    },
+
+    createThrones(scene, sx, sz) {
+        // Explorer throne at team A spawn (-1,-1 scaled)
+        this.thrones.explorer = this._buildThrone(scene, -sx, -sz, 'explorer', 0x00ccff);
+        // Horde throne at team B spawn (1,1 scaled)
+        this.thrones.horde = this._buildThrone(scene, sx, sz, 'horde', 0xff4444);
+    },
+
+    _buildThrone(scene, x, z, faction, color) {
+        const group = new THREE.Group();
+
+        // Base platform
+        const baseGeo = new THREE.CylinderGeometry(4, 5, 1.5, 16);
+        const baseMat = new THREE.MeshStandardMaterial({ color: 0x333344, roughness: 0.6, metalness: 0.4 });
+        group.add(new THREE.Mesh(baseGeo, baseMat));
+        group.children[0].position.y = 0.75;
+
+        // Ring
+        const ringGeo = new THREE.TorusGeometry(3, 0.3, 8, 24);
+        const ringMat = new THREE.MeshStandardMaterial({
+            color, emissive: color, emissiveIntensity: 0.3,
+            roughness: 0.3, metalness: 0.7
+        });
+        const ring = new THREE.Mesh(ringGeo, ringMat);
+        ring.rotation.x = Math.PI / 2;
+        ring.position.y = 1.8;
+        group.add(ring);
+
+        // Crystal core
+        const crystalGeo = new THREE.OctahedronGeometry(2, 0);
+        const crystalMat = new THREE.MeshStandardMaterial({
+            color, emissive: color, emissiveIntensity: 0.5,
+            roughness: 0.1, metalness: 0.9, transparent: true, opacity: 0.9
+        });
+        const crystal = new THREE.Mesh(crystalGeo, crystalMat);
+        crystal.position.y = 5;
+        group.add(crystal);
+
+        // 4 pillar supports
+        for (let i = 0; i < 4; i++) {
+            const a = (i / 4) * Math.PI * 2;
+            const pillarGeo = new THREE.CylinderGeometry(0.5, 0.7, 6, 8);
+            const pillarMat = new THREE.MeshStandardMaterial({ color: 0x222233, roughness: 0.5, metalness: 0.5 });
+            const pillar = new THREE.Mesh(pillarGeo, pillarMat);
+            pillar.position.set(Math.cos(a) * 3, 3, Math.sin(a) * 3);
+            group.add(pillar);
+        }
+
+        // Crown
+        const crownGeo = new THREE.TorusGeometry(1.5, 0.2, 8, 16);
+        const crownMat = new THREE.MeshStandardMaterial({
+            color: 0xffd700, emissive: 0xffa500, emissiveIntensity: 0.3,
+            roughness: 0.2, metalness: 0.8
+        });
+        const crown = new THREE.Mesh(crownGeo, crownMat);
+        crown.rotation.x = Math.PI / 2;
+        crown.position.y = 8;
+        group.add(crown);
+
+        // HP bar
+        const hpGeo = new THREE.PlaneGeometry(5, 0.4);
+        const hpMat = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+        const hpBar = new THREE.Mesh(hpGeo, hpMat);
+        hpBar.position.y = 10;
+        group.add(hpBar);
+
+        group.position.set(x, 0, z);
+        scene.add(group);
+
+        return { mesh: group, crystal, crown, hpBar, hp: 200, maxHp: 200 };
+    },
+
+    // Check if position is near any lane path (for terrain object exclusion)
+    isNearLane(x, z, radius) {
+        for (const wps of Object.values(this.scaledWaypoints)) {
+            for (const wp of wps) {
+                const dx = x - wp.x, dz = z - wp.z;
+                if (dx * dx + dz * dz < radius * radius) return true;
+            }
+        }
+        return false;
+    },
+
+    // Check if all towers in a lane for a faction are destroyed
+    areTowersDown(lane, faction) {
+        return this.towers.filter(t => t.lane === lane && t.faction === faction).every(t => t.hp <= 0);
+    },
+
+    // Update tower HP bars
+    updateTowerVisuals(time) {
+        this.towers.forEach(t => {
+            if (t.hp <= 0) {
+                if (t.mesh.visible) {
+                    t.mesh.visible = false;
+                    // Show destruction particles
+                }
+                return;
+            }
+            // HP bar scale
+            const ratio = t.hp / t.maxHp;
+            t.hpBar.scale.x = ratio;
+            t.hpBar.material.color.setHex(ratio > 0.5 ? 0x00ff00 : ratio > 0.25 ? 0xffaa00 : 0xff0000);
+            // Orb pulse
+            if (t.orb) t.orb.material.emissiveIntensity = 0.3 + Math.sin(time * 3) * 0.2;
+        });
+
+        // Throne visuals
+        for (const [faction, throne] of Object.entries(this.thrones)) {
+            if (throne.hp <= 0) {
+                if (throne.mesh.visible) throne.mesh.visible = false;
+                continue;
+            }
+            const ratio = throne.hp / throne.maxHp;
+            throne.hpBar.scale.x = ratio;
+            throne.hpBar.material.color.setHex(ratio > 0.5 ? 0x00ff00 : ratio > 0.25 ? 0xffaa00 : 0xff0000);
+            if (throne.crystal) {
+                throne.crystal.rotation.y = time * 0.5;
+                throne.crystal.position.y = 5 + Math.sin(time * 0.8) * 0.3;
+            }
+            if (throne.crown) {
+                throne.crown.rotation.z = time * 0.3;
+            }
+        }
+    },
+
+    cleanup() {
+        this.towers = [];
+        this.thrones = {};
+        this.lanePaths = [];
+        this.scaledWaypoints = {};
+    }
+};
+
+// === js/world-combat.js ===
+// World Combat — Creep Waves, Tower Attacks, Momentum, Player Combat
+const COMBAT_CONFIG = {
+    waveInterval: 25000,      // New wave every 25 seconds
+    creepsPerWave: 3,         // Per side per lane
+    creepSpeed: 3,            // Units per second
+    creepBaseHp: 30,
+    creepDamage: 8,
+    clashRange: 3,            // Distance for creeps to attack each other
+    clashCooldown: 1.5,       // Seconds between attacks
+    towerRange: 15,
+    towerDamage: 12,
+    towerCooldown: 1.5,
+    playerDamage: 20,
+    playerRange: 5,
+    playerCooldown: 1,
+    momentumDecay: 0.1,       // Decay toward 50 per second
+    momentumPerKill: 3
+};
+
+const WorldCombat = {
+    creeps: [],               // { mesh, hp, maxHp, faction, lane, waypointIdx, speed, attackTimer, alive }
+    projectiles: [],          // { mesh, target, speed, damage }
+    momentum: 50,             // 0=horde winning, 100=explorer winning
+    waveNumber: 0,
+    lastWaveTime: 0,
+    playerAttackTimer: 0,
+    active: false,
+    scene: null,
+
+    init(scene) {
+        this.scene = scene;
+        this.creeps = [];
+        this.projectiles = [];
+        this.momentum = 50;
+        this.waveNumber = 0;
+        this.lastWaveTime = performance.now();
+        this.playerAttackTimer = 0;
+        this.active = true;
+    },
+
+    update(delta, time, playerPos) {
+        if (!this.active) return;
+
+        const now = performance.now();
+
+        // Spawn waves
+        if (now - this.lastWaveTime >= COMBAT_CONFIG.waveInterval) {
+            this.lastWaveTime = now;
+            this.waveNumber++;
+            this.spawnWave();
+        }
+
+        // Move creeps
+        this.updateCreeps(delta);
+
+        // Tower attacks
+        this.updateTowers(delta);
+
+        // Projectiles
+        this.updateProjectiles(delta);
+
+        // Momentum decay toward 50
+        if (this.momentum > 50) this.momentum -= COMBAT_CONFIG.momentumDecay * delta;
+        if (this.momentum < 50) this.momentum += COMBAT_CONFIG.momentumDecay * delta;
+        this.momentum = Math.max(0, Math.min(100, this.momentum));
+
+        // Player attack cooldown
+        if (this.playerAttackTimer > 0) this.playerAttackTimer -= delta;
+
+        // Cleanup dead creeps
+        this.creeps = this.creeps.filter(c => {
+            if (!c.alive) {
+                if (c.mesh.parent) c.mesh.parent.remove(c.mesh);
+                return false;
+            }
+            return true;
+        });
+
+        // Cleanup finished projectiles
+        this.projectiles = this.projectiles.filter(p => {
+            if (!p.alive) {
+                if (p.mesh.parent) p.mesh.parent.remove(p.mesh);
+                return false;
+            }
+            return true;
+        });
+
+        // Update HUD
+        this.updateCombatHUD();
+    },
+
+    spawnWave() {
+        const scaleFactor = 1 + (this.waveNumber * 0.08);
+
+        for (const [laneKey, lane] of Object.entries(LANE_DEFS)) {
+            const wps = WorldLanes.scaledWaypoints[laneKey];
+            if (!wps || wps.length < 2) continue;
+
+            // Explorer creeps (start from index 0)
+            for (let i = 0; i < COMBAT_CONFIG.creepsPerWave; i++) {
+                this.createCreep('explorer', laneKey, 0, scaleFactor, i);
+            }
+
+            // Horde creeps (start from last index, go backward)
+            for (let i = 0; i < COMBAT_CONFIG.creepsPerWave; i++) {
+                this.createCreep('horde', laneKey, wps.length - 1, scaleFactor, i);
+            }
+        }
+
+        if (typeof HUD !== 'undefined') HUD.showToast(`Wave ${this.waveNumber} incoming!`);
+    },
+
+    createCreep(faction, lane, startIdx, scale, offset) {
+        const isExplorer = faction === 'explorer';
+        const color = isExplorer ? 0x00ff88 : 0xff4488;
+        const hp = Math.floor(COMBAT_CONFIG.creepBaseHp * scale);
+
+        const group = new THREE.Group();
+
+        // Body sphere
+        const bodyGeo = new THREE.SphereGeometry(0.4, 8, 8);
+        const bodyMat = new THREE.MeshStandardMaterial({
+            color, emissive: color, emissiveIntensity: 0.3, roughness: 0.4
+        });
+        group.add(new THREE.Mesh(bodyGeo, bodyMat));
+        group.children[0].position.y = 0.5;
+
+        // Eyes
+        const eyeGeo = new THREE.SphereGeometry(0.08, 6, 6);
+        const eyeMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+        const eyeL = new THREE.Mesh(eyeGeo, eyeMat);
+        eyeL.position.set(-0.15, 0.6, 0.3);
+        group.add(eyeL);
+        const eyeR = new THREE.Mesh(eyeGeo, eyeMat);
+        eyeR.position.set(0.15, 0.6, 0.3);
+        group.add(eyeR);
+
+        // HP bar
+        const hpGeo = new THREE.PlaneGeometry(1, 0.12);
+        const hpMat = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+        const hpBar = new THREE.Mesh(hpGeo, hpMat);
+        hpBar.position.y = 1.2;
+        group.add(hpBar);
+
+        const wps = WorldLanes.scaledWaypoints[lane];
+        const start = wps[startIdx];
+        // Offset creeps slightly so they don't stack
+        group.position.set(
+            start.x + (Math.random() - 0.5) * 2,
+            0,
+            start.z + (Math.random() - 0.5) * 2 - offset * 1.5 * (isExplorer ? 1 : -1)
+        );
+
+        this.scene.add(group);
+        this.creeps.push({
+            mesh: group, hpBar,
+            hp, maxHp: hp,
+            faction, lane,
+            waypointIdx: startIdx,
+            direction: isExplorer ? 1 : -1,
+            speed: COMBAT_CONFIG.creepSpeed + Math.random() * 0.5,
+            attackTimer: 0,
+            alive: true
+        });
+    },
+
+    updateCreeps(delta) {
+        for (const creep of this.creeps) {
+            if (!creep.alive) continue;
+
+            const wps = WorldLanes.scaledWaypoints[creep.lane];
+            if (!wps) continue;
+
+            // Find nearby enemy creep
+            let enemy = null;
+            let enemyDist = COMBAT_CONFIG.clashRange;
+
+            for (const other of this.creeps) {
+                if (!other.alive || other.faction === creep.faction) continue;
+                const dx = creep.mesh.position.x - other.mesh.position.x;
+                const dz = creep.mesh.position.z - other.mesh.position.z;
+                const dist = Math.sqrt(dx * dx + dz * dz);
+                if (dist < enemyDist) {
+                    enemy = other;
+                    enemyDist = dist;
+                }
+            }
+
+            if (enemy) {
+                // Fight
+                creep.attackTimer -= delta;
+                if (creep.attackTimer <= 0) {
+                    creep.attackTimer = COMBAT_CONFIG.clashCooldown;
+                    enemy.hp -= COMBAT_CONFIG.creepDamage;
+                    if (enemy.hp <= 0) {
+                        enemy.alive = false;
+                        // Momentum shift
+                        if (enemy.faction === 'horde') {
+                            this.momentum = Math.min(100, this.momentum + COMBAT_CONFIG.momentumPerKill);
+                        } else {
+                            this.momentum = Math.max(0, this.momentum - COMBAT_CONFIG.momentumPerKill);
+                        }
+                    }
+                }
+                // Face enemy
+                const angle = Math.atan2(
+                    enemy.mesh.position.x - creep.mesh.position.x,
+                    enemy.mesh.position.z - creep.mesh.position.z
+                );
+                creep.mesh.rotation.y = angle;
+            } else {
+                // March along waypoints
+                const nextIdx = creep.waypointIdx + creep.direction;
+                if (nextIdx < 0 || nextIdx >= wps.length) {
+                    // Reached enemy throne — attack it
+                    const targetThrone = creep.faction === 'explorer' ? 'horde' : 'explorer';
+                    const throne = WorldLanes.thrones[targetThrone];
+                    if (throne && throne.hp > 0) {
+                        creep.attackTimer -= delta;
+                        if (creep.attackTimer <= 0) {
+                            creep.attackTimer = COMBAT_CONFIG.clashCooldown;
+                            throne.hp -= COMBAT_CONFIG.creepDamage;
+                            if (throne.hp <= 0) {
+                                const winner = creep.faction === 'explorer' ? 'Explorers' : 'Horde';
+                                if (typeof HUD !== 'undefined') HUD.showToast(`${winner} destroyed the throne!`);
+                            }
+                        }
+                    }
+                    continue;
+                }
+
+                const target = wps[nextIdx];
+                const dx = target.x - creep.mesh.position.x;
+                const dz = target.z - creep.mesh.position.z;
+                const dist = Math.sqrt(dx * dx + dz * dz);
+
+                if (dist < 1) {
+                    creep.waypointIdx = nextIdx;
+                } else {
+                    const mx = (dx / dist) * creep.speed * delta;
+                    const mz = (dz / dist) * creep.speed * delta;
+                    creep.mesh.position.x += mx;
+                    creep.mesh.position.z += mz;
+                    creep.mesh.rotation.y = Math.atan2(dx, dz);
+                }
+            }
+
+            // Update HP bar
+            const ratio = Math.max(0, creep.hp / creep.maxHp);
+            creep.hpBar.scale.x = ratio;
+            creep.hpBar.material.color.setHex(ratio > 0.5 ? 0x00ff00 : ratio > 0.25 ? 0xffaa00 : 0xff0000);
+
+            // Bob animation
+            creep.mesh.children[0].position.y = 0.5 + Math.sin(performance.now() * 0.005 + creep.mesh.position.x) * 0.1;
+        }
+    },
+
+    updateTowers(delta) {
+        for (const tower of WorldLanes.towers) {
+            if (tower.hp <= 0) continue;
+
+            tower.attackTimer -= delta;
+            if (tower.attackTimer > 0) continue;
+
+            // Find nearest enemy creep in range
+            let target = null;
+            let targetDist = tower.attackRange;
+            const tPos = tower.mesh.position;
+
+            for (const creep of this.creeps) {
+                if (!creep.alive) continue;
+                // Explorer towers attack horde, horde towers attack explorers
+                if (creep.faction === tower.faction) continue;
+
+                const dx = tPos.x - creep.mesh.position.x;
+                const dz = tPos.z - creep.mesh.position.z;
+                const dist = Math.sqrt(dx * dx + dz * dz);
+                if (dist < targetDist) {
+                    target = creep;
+                    targetDist = dist;
+                }
+            }
+
+            // Also target player if near horde tower
+            if (tower.faction === 'horde' && WorldMode.player) {
+                const pp = WorldMode.player.mesh.position;
+                const dx = tPos.x - pp.x;
+                const dz = tPos.z - pp.z;
+                const dist = Math.sqrt(dx * dx + dz * dz);
+                if (dist < targetDist) {
+                    // Don't actually damage player directly, just shoot near them as warning
+                }
+            }
+
+            if (target) {
+                tower.attackTimer = tower.attackCooldown;
+                this.fireProjectile(tPos.clone().setY(7), target, tower.attackDamage,
+                    tower.faction === 'explorer' ? 0x00ccff : 0xff4444);
+            }
+        }
+    },
+
+    fireProjectile(from, target, damage, color) {
+        const geo = new THREE.SphereGeometry(0.2, 6, 6);
+        const mat = new THREE.MeshBasicMaterial({ color });
+        const mesh = new THREE.Mesh(geo, mat);
+        mesh.position.copy(from);
+        this.scene.add(mesh);
+
+        this.projectiles.push({
+            mesh, target, damage, color,
+            speed: 25, alive: true
+        });
+    },
+
+    updateProjectiles(delta) {
+        for (const proj of this.projectiles) {
+            if (!proj.alive) continue;
+
+            if (!proj.target || !proj.target.alive) {
+                proj.alive = false;
+                continue;
+            }
+
+            const targetPos = proj.target.mesh.position;
+            const dx = targetPos.x - proj.mesh.position.x;
+            const dy = (targetPos.y + 0.5) - proj.mesh.position.y;
+            const dz = targetPos.z - proj.mesh.position.z;
+            const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
+
+            if (dist < 1) {
+                // Hit
+                proj.target.hp -= proj.damage;
+                if (proj.target.hp <= 0) {
+                    proj.target.alive = false;
+                    if (proj.target.faction === 'horde') {
+                        this.momentum = Math.min(100, this.momentum + 1);
+                    } else {
+                        this.momentum = Math.max(0, this.momentum - 1);
+                    }
+                }
+                proj.alive = false;
+            } else {
+                const mx = (dx / dist) * proj.speed * delta;
+                const my = (dy / dist) * proj.speed * delta;
+                const mz = (dz / dist) * proj.speed * delta;
+                proj.mesh.position.x += mx;
+                proj.mesh.position.y += my;
+                proj.mesh.position.z += mz;
+            }
+        }
+    },
+
+    // Player attacks nearest horde creep (SPACE key)
+    playerAttack(playerPos) {
+        if (this.playerAttackTimer > 0) return false;
+
+        let nearest = null;
+        let nearDist = COMBAT_CONFIG.playerRange;
+
+        for (const creep of this.creeps) {
+            if (!creep.alive || creep.faction !== 'horde') continue;
+            const dx = playerPos.x - creep.mesh.position.x;
+            const dz = playerPos.z - creep.mesh.position.z;
+            const dist = Math.sqrt(dx * dx + dz * dz);
+            if (dist < nearDist) {
+                nearest = creep;
+                nearDist = dist;
+            }
+        }
+
+        // Also check towers
+        if (!nearest) {
+            for (const tower of WorldLanes.towers) {
+                if (tower.hp <= 0 || tower.faction !== 'horde') continue;
+                const dx = playerPos.x - tower.mesh.position.x;
+                const dz = playerPos.z - tower.mesh.position.z;
+                const dist = Math.sqrt(dx * dx + dz * dz);
+                if (dist < nearDist) {
+                    nearest = tower;
+                    nearDist = dist;
+                }
+            }
+        }
+
+        if (!nearest) return false;
+
+        this.playerAttackTimer = COMBAT_CONFIG.playerCooldown;
+        nearest.hp -= COMBAT_CONFIG.playerDamage;
+
+        if (nearest.hp <= 0) {
+            nearest.alive = false;
+            this.momentum = Math.min(100, this.momentum + COMBAT_CONFIG.momentumPerKill * 2);
+            if (typeof HUD !== 'undefined') HUD.showToast('Enemy destroyed! +momentum');
+        }
+
+        // Visual flash
+        this.createAttackFlash(playerPos, nearest.mesh.position);
+        return true;
+    },
+
+    createAttackFlash(from, to) {
+        const points = [
+            new THREE.Vector3(from.x, from.y + 1.5, from.z),
+            new THREE.Vector3(to.x, to.y + 0.5, to.z)
+        ];
+        const geo = new THREE.BufferGeometry().setFromPoints(points);
+        const mat = new THREE.LineBasicMaterial({ color: 0x00ffff, transparent: true, opacity: 0.8 });
+        const line = new THREE.Line(geo, mat);
+        this.scene.add(line);
+
+        // Fade and remove
+        setTimeout(() => {
+            if (line.parent) line.parent.remove(line);
+            geo.dispose();
+            mat.dispose();
+        }, 150);
+    },
+
+    updateCombatHUD() {
+        const momEl = document.getElementById('combat-momentum-fill');
+        const momVal = document.getElementById('combat-momentum-val');
+        const waveEl = document.getElementById('combat-wave-num');
+
+        if (momEl) momEl.style.width = this.momentum + '%';
+        if (momVal) momVal.textContent = Math.round(this.momentum);
+        if (waveEl) waveEl.textContent = this.waveNumber;
+
+        // Color momentum bar
+        if (momEl) {
+            if (this.momentum > 65) momEl.style.background = '#00ff88';
+            else if (this.momentum < 35) momEl.style.background = '#ff4488';
+            else momEl.style.background = '#ffaa00';
+        }
+    },
+
+    cleanup() {
+        this.creeps.forEach(c => { if (c.mesh.parent) c.mesh.parent.remove(c.mesh); });
+        this.projectiles.forEach(p => { if (p.mesh.parent) p.mesh.parent.remove(p.mesh); });
+        this.creeps = [];
+        this.projectiles = [];
+        this.active = false;
+    }
+};
+
+// === js/world-agents.js ===
+// World Agents — NPC Meshes, Portals, Screens, Decorations, Interactions
+const WorldAgents = {
+    agentMeshes: {},
+    portalMeshes: [],
+    objectMeshes: [],
+    interactTarget: null,
+
+    syncAgents(scene, worldId) {
+        const agents = GameState.getWorldAgents(worldId);
+        const currentIds = new Set(agents.map(a => a.id));
+
+        // Remove departed agents
+        Object.keys(this.agentMeshes).forEach(id => {
+            if (!currentIds.has(id)) {
+                scene.remove(this.agentMeshes[id].group);
+                delete this.agentMeshes[id];
+            }
+        });
+
+        // Add/update
+        agents.forEach(agent => {
+            if (!this.agentMeshes[agent.id]) {
+                this.createAgentMesh(scene, agent, worldId);
+            } else {
+                this.agentMeshes[agent.id].targetPos.set(agent.position.x, 0, agent.position.z);
+            }
+        });
+    },
+
+    createAgentMesh(scene, agent, worldId) {
+        const w = WORLDS[worldId];
+        const group = new THREE.Group();
+
+        // Body
+        const bodyGeo = new THREE.CapsuleGeometry(0.35, 0.7, 4, 8);
+        const bodyMat = new THREE.MeshStandardMaterial({
+            color: w.accent, emissive: w.accent, emissiveIntensity: 0.2,
+            roughness: 0.3, metalness: 0.7, transparent: true, opacity: 0.85
+        });
+        const body = new THREE.Mesh(bodyGeo, bodyMat);
+        body.position.y = 0.9;
+        group.add(body);
+
+        // Head
+        const headGeo = new THREE.SphereGeometry(0.25, 8, 8);
+        const headMat = new THREE.MeshStandardMaterial({
+            color: 0xffffff, emissive: w.accent, emissiveIntensity: 0.4,
+            roughness: 0.2, metalness: 0.5
+        });
+        const head = new THREE.Mesh(headGeo, headMat);
+        head.position.y = 1.65;
+        group.add(head);
+
+        // Emoji sprite
+        const emojiCanvas = document.createElement('canvas');
+        emojiCanvas.width = 128; emojiCanvas.height = 128;
+        const ectx = emojiCanvas.getContext('2d');
+        ectx.font = '72px serif';
+        ectx.textAlign = 'center';
+        ectx.textBaseline = 'middle';
+        ectx.fillText(agent.avatar || '🤖', 64, 64);
+        const emoji = new THREE.Sprite(new THREE.SpriteMaterial({
+            map: new THREE.CanvasTexture(emojiCanvas), transparent: true
+        }));
+        emoji.position.y = 2.5;
+        emoji.scale.set(0.8, 0.8, 1);
+        group.add(emoji);
+
+        // Name label
+        const nameCanvas = document.createElement('canvas');
+        nameCanvas.width = 256; nameCanvas.height = 48;
+        const nctx = nameCanvas.getContext('2d');
+        nctx.font = 'bold 18px monospace';
+        nctx.textAlign = 'center';
+        nctx.fillStyle = '#ffffff';
+        nctx.fillText(agent.name, 128, 30);
+        const nameSprite = new THREE.Sprite(new THREE.SpriteMaterial({
+            map: new THREE.CanvasTexture(nameCanvas), transparent: true, opacity: 0.7
+        }));
+        nameSprite.position.y = 3.2;
+        nameSprite.scale.set(2.2, 0.4, 1);
+        group.add(nameSprite);
+
+        // Ground ring
+        const ringGeo = new THREE.RingGeometry(0.4, 0.55, 12);
+        const ringMat = new THREE.MeshBasicMaterial({
+            color: w.accent, side: THREE.DoubleSide, transparent: true, opacity: 0.3
+        });
+        const ring = new THREE.Mesh(ringGeo, ringMat);
+        ring.rotation.x = -Math.PI / 2;
+        ring.position.y = 0.01;
+        group.add(ring);
+
+        group.position.set(agent.position.x, 0, agent.position.z);
+        scene.add(group);
+        this.agentMeshes[agent.id] = {
+            group, body, head,
+            targetPos: new THREE.Vector3(agent.position.x, 0, agent.position.z)
+        };
+    },
+
+    loadObjects(scene, worldId) {
+        this.objectMeshes.forEach(m => scene.remove(m));
+        this.objectMeshes = [];
+        this.portalMeshes.forEach(m => scene.remove(m));
+        this.portalMeshes = [];
+
+        const objects = GameState.getWorldObjects(worldId);
+        objects.forEach(obj => {
+            if (obj.type === 'portal') this.createPortal(scene, obj);
+            else if (obj.type === 'browser') this.createScreen(scene, obj, worldId);
+            else if (obj.type === 'decoration') this.createDecoration(scene, obj);
+        });
+    },
+
+    createPortal(scene, obj) {
+        const group = new THREE.Group();
+        const color = new THREE.Color(obj.color || '#00d4aa');
+
+        const torusGeo = new THREE.TorusGeometry(1.2, 0.12, 8, 24);
+        const torusMat = new THREE.MeshStandardMaterial({
+            color, emissive: color, emissiveIntensity: 0.7,
+            roughness: 0.2, metalness: 0.8
+        });
+        const torus = new THREE.Mesh(torusGeo, torusMat);
+        torus.position.set(obj.position.x, (obj.position.y || 0) + 1.5, obj.position.z);
+        group.add(torus);
+
+        const innerGeo = new THREE.CircleGeometry(1, 16);
+        const innerMat = new THREE.MeshBasicMaterial({
+            color, transparent: true, opacity: 0.15, side: THREE.DoubleSide
+        });
+        const inner = new THREE.Mesh(innerGeo, innerMat);
+        inner.position.copy(torus.position);
+        group.add(inner);
+
+        // Label
+        const lCanvas = document.createElement('canvas');
+        lCanvas.width = 256; lCanvas.height = 48;
+        const lctx = lCanvas.getContext('2d');
+        lctx.font = 'bold 16px monospace';
+        lctx.textAlign = 'center';
+        lctx.fillStyle = obj.color || '#00d4aa';
+        lctx.fillText('⟐ ' + obj.name, 128, 30);
+        const label = new THREE.Sprite(new THREE.SpriteMaterial({
+            map: new THREE.CanvasTexture(lCanvas), transparent: true
+        }));
+        label.position.set(obj.position.x, (obj.position.y || 0) + 3.5, obj.position.z);
+        label.scale.set(2.5, 0.5, 1);
+        group.add(label);
+
+        group.userData = { type: 'portal', destination: obj.destination, name: obj.name, position: obj.position };
+        scene.add(group);
+        this.portalMeshes.push(group);
+    },
+
+    createScreen(scene, obj, worldId) {
+        const w = WORLDS[worldId];
+        const geo = new THREE.PlaneGeometry(obj.size?.width || 6, obj.size?.height || 4);
+        const mat = new THREE.MeshBasicMaterial({ color: 0x111122, transparent: true, opacity: 0.7 });
+        const mesh = new THREE.Mesh(geo, mat);
+        mesh.position.set(obj.position.x, obj.position.y || 3, obj.position.z);
+
+        const edgeGeo = new THREE.EdgesGeometry(geo);
+        const edgeMat = new THREE.LineBasicMaterial({ color: w.accent, transparent: true, opacity: 0.4 });
+        mesh.add(new THREE.LineSegments(edgeGeo, edgeMat));
+
+        scene.add(mesh);
+        this.objectMeshes.push(mesh);
+    },
+
+    createDecoration(scene, obj) {
+        const color = new THREE.Color(obj.color || '#ffffff');
+        let geo;
+        switch(obj.model) {
+            case 'fire': geo = new THREE.ConeGeometry(1.2, 2.5, 6); break;
+            case 'crystal': geo = new THREE.OctahedronGeometry(1); break;
+            default: geo = new THREE.BoxGeometry(1, 1, 1);
+        }
+        const mat = new THREE.MeshStandardMaterial({
+            color, emissive: color, emissiveIntensity: 0.3,
+            roughness: 0.3, metalness: 0.6, transparent: true, opacity: 0.7
+        });
+        const mesh = new THREE.Mesh(geo, mat);
+        mesh.position.set(obj.position.x, obj.position.y || 1, obj.position.z);
+        scene.add(mesh);
+        this.objectMeshes.push(mesh);
+    },
+
+    updateAnimations(time) {
+        // Agent idle bob
+        Object.values(this.agentMeshes).forEach(a => {
+            a.group.position.lerp(a.targetPos, 0.03);
+            const bob = Math.sin(time * 2 + a.group.position.x) * 0.08;
+            a.body.position.y = 0.9 + bob;
+            a.head.position.y = 1.65 + bob;
+        });
+
+        // Portal spin
+        this.portalMeshes.forEach(g => {
+            g.children.forEach(c => {
+                if (c.isMesh && c.geometry.type === 'TorusGeometry') {
+                    c.rotation.z = time * 0.5;
+                    c.rotation.y = Math.sin(time * 0.3) * 0.2;
+                }
+            });
+        });
+    },
+
+    checkInteractions(playerPos) {
+        let nearest = null;
+        let nearestDist = 4;
+
+        this.portalMeshes.forEach(p => {
+            const pos = p.userData.position;
+            if (!pos) return;
+            const dist = Math.sqrt((playerPos.x - pos.x) ** 2 + (playerPos.z - pos.z) ** 2);
+            if (dist < nearestDist) {
+                nearest = p.userData;
+                nearestDist = dist;
+            }
+        });
+
+        const prompt = document.getElementById('interaction-prompt');
+        if (nearest) {
+            prompt.textContent = `Press E → ${nearest.name}`;
+            prompt.classList.add('visible');
+            this.interactTarget = nearest;
+        } else {
+            prompt.classList.remove('visible');
+            this.interactTarget = null;
+        }
+    },
+
+    interact() {
+        if (!this.interactTarget) return false;
+        if (this.interactTarget.type === 'portal' && this.interactTarget.destination) {
+            return this.interactTarget.destination;
+        }
+        return false;
+    },
+
+    cleanup(scene) {
+        Object.values(this.agentMeshes).forEach(a => scene.remove(a.group));
+        this.agentMeshes = {};
+        this.portalMeshes.forEach(m => scene.remove(m));
+        this.portalMeshes = [];
+        this.objectMeshes.forEach(m => scene.remove(m));
+        this.objectMeshes = [];
+        this.interactTarget = null;
+    }
+};
+
+// === js/world-core.js ===
+// World Core — WorldMode Orchestrator (Player, Camera, Game Loop)
 const WorldMode = {
     scene: null,
     camera: null,
     active: false,
     currentWorld: null,
-
-    // Player
     player: null,
     playerSpeed: 8,
-    playerMesh: null,
-
-    // Other agents
-    agentMeshes: {},
-
-    // World objects
-    objectMeshes: [],
-    portalMeshes: [],
-
-    // State
     keys: {},
-    interactTarget: null,
 
     init(worldId) {
         this.currentWorld = worldId;
@@ -2417,7 +3938,7 @@ const WorldMode = {
         // Scene
         this.scene = new THREE.Scene();
         this.scene.background = new THREE.Color(w.sky);
-        this.scene.fog = new THREE.FogExp2(w.fog, 0.015);
+        this.scene.fog = new THREE.FogExp2(w.fog, 0.012);
 
         // Camera
         this.camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 500);
@@ -2428,40 +3949,18 @@ const WorldMode = {
         container.appendChild(GameState.renderer.domElement);
         container.style.display = 'block';
 
-        // Lighting
-        const ambient = new THREE.AmbientLight(0x404060, 0.6);
-        this.scene.add(ambient);
+        // Show combat HUD
+        document.getElementById('combat-hud').style.display = 'flex';
 
-        const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
-        dirLight.position.set(10, 20, 10);
-        this.scene.add(dirLight);
-
-        const pointLight = new THREE.PointLight(w.accent, 1.5, 60);
-        pointLight.position.set(0, 10, 0);
-        this.scene.add(pointLight);
-
-        // Apply day/night from game state
-        const worldState = GameState.data.gameState?.worlds?.[worldId];
-        if (worldState?.time_of_day === 'night') {
-            ambient.intensity = 0.2;
-            dirLight.intensity = 0.3;
-            dirLight.color.set(0x6666aa);
-        }
-
-        // Ground
-        this.buildGround(w);
-
-        // Particles
-        this.spawnParticles(w);
+        // Build terrain, lanes, combat, agents
+        WorldTerrain.build(this.scene, w, worldId);
+        WorldLanes.init(this.scene, w);
+        WorldCombat.init(this.scene);
+        WorldAgents.loadObjects(this.scene, worldId);
+        WorldAgents.syncAgents(this.scene, worldId);
 
         // Player
         this.createPlayer(w);
-
-        // Load world objects
-        this.loadObjects();
-
-        // Load agents
-        this.syncAgents();
 
         // Key listeners
         this.keyDown = (e) => { this.keys[e.code] = true; };
@@ -2469,62 +3968,17 @@ const WorldMode = {
         window.addEventListener('keydown', this.keyDown);
         window.addEventListener('keyup', this.keyUp);
 
-        // Update HUD
+        // HUD
         if (typeof HUD !== 'undefined') {
             HUD.setWorld(worldId);
+            HUD.showToast(`Landed on ${w.name} — SPACE to attack, WASD to move`);
         }
-    },
-
-    buildGround(w) {
-        // Ground plane
-        const groundGeo = new THREE.PlaneGeometry(w.bounds.x * 2 + 4, w.bounds.z * 2 + 4);
-        const groundMat = new THREE.MeshStandardMaterial({
-            color: w.floor, roughness: 0.9, metalness: 0.1,
-            transparent: true, opacity: 0.8
-        });
-        const ground = new THREE.Mesh(groundGeo, groundMat);
-        ground.rotation.x = -Math.PI / 2;
-        ground.position.y = -0.05;
-        this.scene.add(ground);
-
-        // Grid
-        const gridSize = Math.max(w.bounds.x, w.bounds.z) * 2 + 2;
-        const grid = new THREE.GridHelper(gridSize, gridSize, w.grid, new THREE.Color(w.grid).multiplyScalar(0.3));
-        grid.material.opacity = 0.2;
-        grid.material.transparent = true;
-        this.scene.add(grid);
-
-        // Boundary wireframe
-        const bGeo = new THREE.BoxGeometry(w.bounds.x * 2, 4, w.bounds.z * 2);
-        const bMat = new THREE.MeshBasicMaterial({ color: w.accent, wireframe: true, transparent: true, opacity: 0.06 });
-        const boundary = new THREE.Mesh(bGeo, bMat);
-        boundary.position.y = 2;
-        this.scene.add(boundary);
-    },
-
-    spawnParticles(w) {
-        const count = 150;
-        const geo = new THREE.BufferGeometry();
-        const pos = new Float32Array(count * 3);
-        for (let i = 0; i < count; i++) {
-            pos[i * 3] = (Math.random() - 0.5) * w.bounds.x * 4;
-            pos[i * 3 + 1] = Math.random() * 12 + 1;
-            pos[i * 3 + 2] = (Math.random() - 0.5) * w.bounds.z * 4;
-        }
-        geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-        const mat = new THREE.PointsMaterial({
-            color: w.accent, size: 0.12,
-            transparent: true, opacity: 0.35,
-            blending: THREE.AdditiveBlending, sizeAttenuation: true
-        });
-        this.particles = new THREE.Points(geo, mat);
-        this.scene.add(this.particles);
     },
 
     createPlayer(w) {
         const group = new THREE.Group();
 
-        // Body (capsule)
+        // Body
         const bodyGeo = new THREE.CapsuleGeometry(0.35, 0.7, 4, 8);
         const bodyMat = new THREE.MeshStandardMaterial({
             color: 0x8888cc, emissive: 0x4444aa, emissiveIntensity: 0.2,
@@ -2544,7 +3998,7 @@ const WorldMode = {
         head.position.y = 1.65;
         group.add(head);
 
-        // Eyes (two small emissive spheres)
+        // Eyes
         const eyeGeo = new THREE.SphereGeometry(0.05, 6, 6);
         const eyeMat = new THREE.MeshBasicMaterial({ color: 0x00ffff });
         const eyeL = new THREE.Mesh(eyeGeo, eyeMat);
@@ -2576,7 +4030,9 @@ const WorldMode = {
 
         // Ground ring
         const ringGeo = new THREE.RingGeometry(0.4, 0.55, 16);
-        const ringMat = new THREE.MeshBasicMaterial({ color: 0x00ffff, side: THREE.DoubleSide, transparent: true, opacity: 0.3 });
+        const ringMat = new THREE.MeshBasicMaterial({
+            color: 0x00ffff, side: THREE.DoubleSide, transparent: true, opacity: 0.3
+        });
         const ring = new THREE.Mesh(ringGeo, ringMat);
         ring.rotation.x = -Math.PI / 2;
         ring.position.y = 0.01;
@@ -2587,204 +4043,9 @@ const WorldMode = {
         this.scene.add(group);
     },
 
-    createAgentMesh(agent) {
-        const w = WORLDS[this.currentWorld];
-        const group = new THREE.Group();
-
-        // Body
-        const bodyGeo = new THREE.CapsuleGeometry(0.35, 0.7, 4, 8);
-        const bodyMat = new THREE.MeshStandardMaterial({
-            color: w.accent, emissive: w.accent, emissiveIntensity: 0.2,
-            roughness: 0.3, metalness: 0.7, transparent: true, opacity: 0.85
-        });
-        group.add(new THREE.Mesh(bodyGeo, bodyMat));
-        group.children[0].position.y = 0.9;
-
-        // Head
-        const headGeo = new THREE.SphereGeometry(0.25, 8, 8);
-        const headMat = new THREE.MeshStandardMaterial({
-            color: 0xffffff, emissive: w.accent, emissiveIntensity: 0.4,
-            roughness: 0.2, metalness: 0.5
-        });
-        const head = new THREE.Mesh(headGeo, headMat);
-        head.position.y = 1.65;
-        group.add(head);
-
-        // Emoji sprite
-        const emojiCanvas = document.createElement('canvas');
-        emojiCanvas.width = 128; emojiCanvas.height = 128;
-        const ectx = emojiCanvas.getContext('2d');
-        ectx.font = '72px serif';
-        ectx.textAlign = 'center';
-        ectx.textBaseline = 'middle';
-        ectx.fillText(agent.avatar || '🤖', 64, 64);
-        const emojiTex = new THREE.CanvasTexture(emojiCanvas);
-        const emojiMat = new THREE.SpriteMaterial({ map: emojiTex, transparent: true });
-        const emoji = new THREE.Sprite(emojiMat);
-        emoji.position.y = 2.5;
-        emoji.scale.set(0.8, 0.8, 1);
-        group.add(emoji);
-
-        // Name label
-        const nameCanvas = document.createElement('canvas');
-        nameCanvas.width = 256; nameCanvas.height = 48;
-        const nctx = nameCanvas.getContext('2d');
-        nctx.font = 'bold 18px monospace';
-        nctx.textAlign = 'center';
-        nctx.fillStyle = '#ffffff';
-        nctx.fillText(agent.name, 128, 30);
-        const nameTex = new THREE.CanvasTexture(nameCanvas);
-        const nameMat = new THREE.SpriteMaterial({ map: nameTex, transparent: true, opacity: 0.7 });
-        const nameSprite = new THREE.Sprite(nameMat);
-        nameSprite.position.y = 3.2;
-        nameSprite.scale.set(2.2, 0.4, 1);
-        group.add(nameSprite);
-
-        // Ground ring
-        const ringGeo = new THREE.RingGeometry(0.4, 0.55, 12);
-        const ringMat = new THREE.MeshBasicMaterial({ color: w.accent, side: THREE.DoubleSide, transparent: true, opacity: 0.3 });
-        const ring = new THREE.Mesh(ringGeo, ringMat);
-        ring.rotation.x = -Math.PI / 2;
-        ring.position.y = 0.01;
-        group.add(ring);
-
-        group.position.set(agent.position.x, 0, agent.position.z);
-        this.scene.add(group);
-        this.agentMeshes[agent.id] = {
-            group, body: group.children[0], head,
-            targetPos: new THREE.Vector3(agent.position.x, 0, agent.position.z)
-        };
-    },
-
-    syncAgents() {
-        const agents = GameState.getWorldAgents(this.currentWorld);
-        const currentIds = new Set(agents.map(a => a.id));
-
-        // Remove gone
-        Object.keys(this.agentMeshes).forEach(id => {
-            if (!currentIds.has(id)) {
-                this.scene.remove(this.agentMeshes[id].group);
-                delete this.agentMeshes[id];
-            }
-        });
-
-        // Add/update
-        agents.forEach(agent => {
-            if (!this.agentMeshes[agent.id]) {
-                this.createAgentMesh(agent);
-            } else {
-                this.agentMeshes[agent.id].targetPos.set(agent.position.x, 0, agent.position.z);
-            }
-        });
-    },
-
-    loadObjects() {
-        // Clear old
-        this.objectMeshes.forEach(m => this.scene.remove(m));
-        this.objectMeshes = [];
-        this.portalMeshes.forEach(m => this.scene.remove(m));
-        this.portalMeshes = [];
-
-        const objects = GameState.getWorldObjects(this.currentWorld);
-        objects.forEach(obj => {
-            if (obj.type === 'portal') this.createPortal(obj);
-            else if (obj.type === 'browser') this.createScreen(obj);
-            else if (obj.type === 'decoration') this.createDecoration(obj);
-        });
-    },
-
-    createPortal(obj) {
-        const group = new THREE.Group();
-        const color = new THREE.Color(obj.color || '#00d4aa');
-
-        // Torus ring
-        const torusGeo = new THREE.TorusGeometry(1.2, 0.12, 8, 24);
-        const torusMat = new THREE.MeshStandardMaterial({
-            color, emissive: color, emissiveIntensity: 0.7,
-            roughness: 0.2, metalness: 0.8
-        });
-        const torus = new THREE.Mesh(torusGeo, torusMat);
-        torus.position.set(obj.position.x, (obj.position.y || 0) + 1.5, obj.position.z);
-        group.add(torus);
-
-        // Inner disc
-        const innerGeo = new THREE.CircleGeometry(1, 16);
-        const innerMat = new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.15, side: THREE.DoubleSide });
-        const inner = new THREE.Mesh(innerGeo, innerMat);
-        inner.position.copy(torus.position);
-        group.add(inner);
-
-        // Label
-        const lCanvas = document.createElement('canvas');
-        lCanvas.width = 256; lCanvas.height = 48;
-        const lctx = lCanvas.getContext('2d');
-        lctx.font = 'bold 16px monospace';
-        lctx.textAlign = 'center';
-        lctx.fillStyle = obj.color || '#00d4aa';
-        lctx.fillText('⟐ ' + obj.name, 128, 30);
-        const lTex = new THREE.CanvasTexture(lCanvas);
-        const lMat = new THREE.SpriteMaterial({ map: lTex, transparent: true });
-        const label = new THREE.Sprite(lMat);
-        label.position.set(obj.position.x, (obj.position.y || 0) + 3.5, obj.position.z);
-        label.scale.set(2.5, 0.5, 1);
-        group.add(label);
-
-        group.userData = { type: 'portal', destination: obj.destination, name: obj.name, position: obj.position };
-        this.scene.add(group);
-        this.portalMeshes.push(group);
-    },
-
-    createScreen(obj) {
-        const w = WORLDS[this.currentWorld];
-        const geo = new THREE.PlaneGeometry(obj.size?.width || 6, obj.size?.height || 4);
-        const mat = new THREE.MeshBasicMaterial({ color: 0x111122, transparent: true, opacity: 0.7 });
-        const mesh = new THREE.Mesh(geo, mat);
-        mesh.position.set(obj.position.x, obj.position.y || 3, obj.position.z);
-
-        // Edge glow
-        const edgeGeo = new THREE.EdgesGeometry(geo);
-        const edgeMat = new THREE.LineBasicMaterial({ color: w.accent, transparent: true, opacity: 0.4 });
-        mesh.add(new THREE.LineSegments(edgeGeo, edgeMat));
-
-        // Label
-        const c = document.createElement('canvas');
-        c.width = 512; c.height = 64;
-        const ctx = c.getContext('2d');
-        ctx.font = 'bold 24px monospace';
-        ctx.textAlign = 'center';
-        ctx.fillStyle = '#00ffcc';
-        ctx.fillText('📺 ' + obj.name, 256, 40);
-        const tex = new THREE.CanvasTexture(c);
-        const lMat = new THREE.SpriteMaterial({ map: tex, transparent: true });
-        const label = new THREE.Sprite(lMat);
-        label.position.y = (obj.size?.height || 4) / 2 + 0.6;
-        label.scale.set(3.5, 0.5, 1);
-        mesh.add(label);
-
-        this.scene.add(mesh);
-        this.objectMeshes.push(mesh);
-    },
-
-    createDecoration(obj) {
-        const color = new THREE.Color(obj.color || '#ffffff');
-        let geo;
-        switch(obj.model) {
-            case 'fire': geo = new THREE.ConeGeometry(1.2, 2.5, 6); break;
-            case 'crystal': geo = new THREE.OctahedronGeometry(1); break;
-            default: geo = new THREE.BoxGeometry(1, 1, 1);
-        }
-        const mat = new THREE.MeshStandardMaterial({
-            color, emissive: color, emissiveIntensity: 0.3,
-            roughness: 0.3, metalness: 0.6, transparent: true, opacity: 0.7
-        });
-        const mesh = new THREE.Mesh(geo, mat);
-        mesh.position.set(obj.position.x, obj.position.y || 1, obj.position.z);
-        this.scene.add(mesh);
-        this.objectMeshes.push(mesh);
-    },
-
     update(delta, time) {
         if (!this.active || !this.player) return;
+        const w = WORLDS[this.currentWorld];
 
         // Player movement
         const moveDir = new THREE.Vector3();
@@ -2797,8 +4058,6 @@ const WorldMode = {
             moveDir.normalize();
             this.player.mesh.position.x += moveDir.x * this.playerSpeed * delta;
             this.player.mesh.position.z += moveDir.z * this.playerSpeed * delta;
-
-            // Face movement direction
             this.player.mesh.rotation.y = Math.atan2(moveDir.x, moveDir.z);
 
             // Walk animation
@@ -2817,83 +4076,44 @@ const WorldMode = {
             this.player.legR.rotation.x *= 0.9;
         }
 
+        // Player attack (SPACE)
+        if (this.keys['Space']) {
+            WorldCombat.playerAttack(this.player.mesh.position);
+        }
+
         // Clamp to bounds
-        const w = WORLDS[this.currentWorld];
         this.player.mesh.position.x = Math.max(-w.bounds.x, Math.min(w.bounds.x, this.player.mesh.position.x));
         this.player.mesh.position.z = Math.max(-w.bounds.z, Math.min(w.bounds.z, this.player.mesh.position.z));
 
-        // Camera follow (third person)
+        // Camera follow
         const camTarget = this.player.mesh.position.clone().add(new THREE.Vector3(0, 8, 12));
         this.camera.position.lerp(camTarget, 0.05);
         this.camera.lookAt(this.player.mesh.position.x, 1, this.player.mesh.position.z);
 
-        // Animate agents
-        Object.values(this.agentMeshes).forEach(a => {
-            a.group.position.lerp(a.targetPos, 0.03);
-            a.body.position.y = 0.9 + Math.sin(time * 2 + a.group.position.x) * 0.08;
-            a.head.position.y = 1.65 + Math.sin(time * 2 + a.group.position.x) * 0.08;
-        });
-
-        // Animate portals
-        this.portalMeshes.forEach(g => {
-            g.children.forEach(c => {
-                if (c.isMesh && c.geometry.type === 'TorusGeometry') {
-                    c.rotation.z = time * 0.5;
-                    c.rotation.y = Math.sin(time * 0.3) * 0.2;
-                }
-            });
-        });
-
-        // Rotate particles
-        if (this.particles) this.particles.rotation.y = time * 0.015;
-
-        // Player ground ring pulse
+        // Ground ring pulse
         if (this.player.ring) {
             this.player.ring.material.opacity = 0.2 + Math.sin(time * 3) * 0.1;
         }
 
-        // Check interaction proximity
-        this.checkInteractions();
+        // Sub-system updates
+        WorldTerrain.update(time);
+        WorldLanes.updateTowerVisuals(time);
+        WorldCombat.update(delta, time, this.player.mesh.position);
+        WorldAgents.updateAnimations(time);
+        WorldAgents.checkInteractions(this.player.mesh.position);
 
         // Periodic agent sync
         if (Math.floor(time) % 5 === 0 && Math.floor(time) !== this._lastSync) {
             this._lastSync = Math.floor(time);
-            this.syncAgents();
-        }
-    },
-
-    checkInteractions() {
-        if (!this.player) return;
-        const pPos = this.player.mesh.position;
-        let nearest = null;
-        let nearestDist = 4; // interaction range
-
-        this.portalMeshes.forEach(p => {
-            const pos = p.userData.position;
-            if (!pos) return;
-            const dist = Math.sqrt((pPos.x - pos.x) ** 2 + (pPos.z - pos.z) ** 2);
-            if (dist < nearestDist) {
-                nearest = p.userData;
-                nearestDist = dist;
-            }
-        });
-
-        const prompt = document.getElementById('interaction-prompt');
-        if (nearest) {
-            prompt.textContent = `Press E → ${nearest.name}`;
-            prompt.classList.add('visible');
-            this.interactTarget = nearest;
-        } else {
-            prompt.classList.remove('visible');
-            this.interactTarget = null;
+            WorldAgents.syncAgents(this.scene, this.currentWorld);
         }
     },
 
     interact() {
-        if (!this.interactTarget) return;
-        if (this.interactTarget.type === 'portal' && this.interactTarget.destination) {
+        const dest = WorldAgents.interact();
+        if (dest) {
             this.cleanup();
-            Approach.start(this.interactTarget.destination);
+            Approach.start(dest);
         }
     },
 
@@ -2907,10 +4127,12 @@ const WorldMode = {
         window.removeEventListener('keydown', this.keyDown);
         window.removeEventListener('keyup', this.keyUp);
         this.keys = {};
-        this.agentMeshes = {};
-        this.objectMeshes = [];
-        this.portalMeshes = [];
+
+        WorldCombat.cleanup();
+        WorldLanes.cleanup();
+
         document.getElementById('world-container').style.display = 'none';
+        document.getElementById('combat-hud').style.display = 'none';
         document.getElementById('interaction-prompt').classList.remove('visible');
     },
 
@@ -2922,154 +4144,627 @@ const WorldMode = {
 };
 
 // === js/bridge.js ===
-// Bridge — Ship Command Interface
+// Bridge — 3D First-Person Nexus Hub (Ship Command Center)
 const Bridge = {
     open: false,
+    scene: null,
+    camera: null,
+    player: null,
+    portals: [],
+    agentMeshes: {},
+    dataScreens: [],
+    crystals: [],
+    animationId: null,
+    clock: null,
+
+    // Internal state
+    _keys: {},
+    _initialized: false,
+    _savedMode: null,
+    _interactTarget: null,
+    _lastAgentSync: -1,
+    _lastDataUpdate: -1,
+    _hologram: null,
+    _hologramInner: null,
+    _centerRing: null,
+    _centerLight: null,
+    _boundKeyDown: null,
+    _boundKeyUp: null,
+    _boundResize: null,
+
+    get active() { return this.open; },
+
+    // ── Lifecycle ──────────────────────────────────────────────
 
     toggle() {
-        this.open ? this.close() : this.show();
+        this.open ? this.close() : this.enter();
     },
 
-    show() {
+    enter() {
+        if (this.open) return;
         this.open = true;
         GameState.bridgeOpen = true;
-        document.getElementById('bridge-overlay').classList.add('active');
-        this.render();
+        this._savedMode = GameState.mode;
+
+        // Hide current mode container
+        const containers = { galaxy: 'galaxy-container', world: 'world-container' };
+        const cId = containers[this._savedMode];
+        if (cId) document.getElementById(cId).style.display = 'none';
+
+        // Init scene once
+        if (!this._initialized) this.initScene();
+
+        // Show overlay and attach renderer
+        const overlay = document.getElementById('bridge-overlay');
+        overlay.innerHTML = '';
+        const closeBtn = document.createElement('button');
+        closeBtn.id = 'bridge-close';
+        closeBtn.className = 'bridge-close';
+        closeBtn.textContent = '\u00d7';
+        closeBtn.addEventListener('click', () => this.close());
+        overlay.appendChild(closeBtn);
+        overlay.appendChild(GameState.renderer.domElement);
+        overlay.classList.add('active');
+
+        // Reset player
+        this.player.x = 0; this.player.z = 0; this.player.yaw = 0;
+
+        // Clock + input
+        this.clock = new THREE.Clock();
+        this._boundKeyDown = (e) => this._onKeyDown(e);
+        this._boundKeyUp = (e) => { this._keys[e.code] = false; };
+        this._boundResize = () => this.onResize();
+        window.addEventListener('keydown', this._boundKeyDown);
+        window.addEventListener('keyup', this._boundKeyUp);
+        window.addEventListener('resize', this._boundResize);
+
+        // Initial data
+        this.syncAgents();
+        this.updateDataScreens();
+        this._lastAgentSync = -1;
+        this._lastDataUpdate = -1;
+
+        // Start render loop
+        this.animationId = requestAnimationFrame(() => this._animate());
+
+        if (typeof HUD !== 'undefined') HUD.showToast('Bridge activated — WASD move, Arrows look, E interact');
     },
 
     close() {
+        if (!this.open) return;
         this.open = false;
         GameState.bridgeOpen = false;
+
+        // Stop loop
+        if (this.animationId) { cancelAnimationFrame(this.animationId); this.animationId = null; }
+
+        // Remove input
+        if (this._boundKeyDown) window.removeEventListener('keydown', this._boundKeyDown);
+        if (this._boundKeyUp) window.removeEventListener('keyup', this._boundKeyUp);
+        if (this._boundResize) window.removeEventListener('resize', this._boundResize);
+        this._keys = {};
+
+        // Hide overlay
         document.getElementById('bridge-overlay').classList.remove('active');
+
+        // Hide interaction prompt
+        const prompt = document.getElementById('interaction-prompt');
+        if (prompt) prompt.classList.remove('visible');
+
+        // Re-attach renderer to previous mode's container
+        const mode = this._savedMode || GameState.mode;
+        const target = mode === 'world' ? 'world-container' : 'galaxy-container';
+        const container = document.getElementById(target);
+        if (container) {
+            container.appendChild(GameState.renderer.domElement);
+            container.style.display = 'block';
+        }
     },
 
-    render() {
-        if (!this.open) return;
-        this.renderAgents();
-        this.renderChat();
-        this.renderActions();
-        this.renderEconomy();
-        this.renderWorlds();
-        this.renderNav();
+    // ── Scene Init ─────────────────────────────────────────────
+
+    initScene() {
+        this._initialized = true;
+
+        this.scene = new THREE.Scene();
+        this.scene.background = new THREE.Color(0x050510);
+        this.scene.fog = new THREE.FogExp2(0x050510, 0.012);
+
+        this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        this.player = { x: 0, y: 2, z: 0, yaw: 0 };
+
+        this._buildSkybox();
+        this._buildFloor();
+        this._buildCenterPiece();
+        this._buildPortals();
+        this._buildDataScreens();
+        this._buildCrystals();
+        this._buildLighting();
     },
 
-    renderAgents() {
-        const el = document.getElementById('bridge-agents');
-        el.innerHTML = GameState.data.agents.map(a => `
-            <div class="bridge-agent-item">
-                <div class="bridge-agent-avatar">${a.avatar || '🤖'}</div>
-                <div style="flex:1;min-width:0">
-                    <div class="bridge-agent-name">${this.esc(a.name)}</div>
-                    <div style="display:flex;gap:4px;align-items:center;margin-top:2px">
-                        <span class="bridge-agent-status-dot ${a.status || 'active'}"></span>
-                        <span class="bridge-agent-world">${a.world}</span>
-                        <span style="font-size:9px;color:#888">${a.action || 'idle'}</span>
-                    </div>
-                </div>
-            </div>
-        `).join('');
+    _buildSkybox() {
+        const c = document.createElement('canvas');
+        c.width = 1024; c.height = 512;
+        const ctx = c.getContext('2d');
+        const grad = ctx.createLinearGradient(0, 0, 0, 512);
+        grad.addColorStop(0, '#050520');
+        grad.addColorStop(0.4, '#0a0a2e');
+        grad.addColorStop(1, '#120520');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, 1024, 512);
+        for (let i = 0; i < 500; i++) {
+            const r = Math.random() * 1.6 + 0.2;
+            const a = Math.random() * 0.6 + 0.4;
+            ctx.beginPath();
+            ctx.arc(Math.random() * 1024, Math.random() * 512, r, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(200,220,255,${a})`;
+            ctx.fill();
+        }
+        const tex = new THREE.CanvasTexture(c);
+        const geo = new THREE.SphereGeometry(400, 32, 16);
+        const mat = new THREE.MeshBasicMaterial({ map: tex, side: THREE.BackSide });
+        this.scene.add(new THREE.Mesh(geo, mat));
     },
 
-    renderChat() {
-        const msgs = GameState.getWorldChat().slice(-20);
-        const el = document.getElementById('bridge-chat');
-        el.innerHTML = msgs.map(m => {
-            const color = m.author?.type === 'npc-core' ? '#fb0' :
-                         m.author?.type === 'agent' ? '#0ff' : '#fff';
-            return `
-                <div class="bridge-chat-msg">
-                    <div class="bridge-chat-author" style="color:${color}">
-                        ${m.author?.avatar || '💬'} ${this.esc(m.author?.name || '?')}
-                    </div>
-                    <div class="bridge-chat-text">${this.esc(m.content || '')}</div>
-                    <div class="bridge-chat-time">${this.fmtTime(m.timestamp)}</div>
-                </div>
-            `;
-        }).join('');
-        el.scrollTop = el.scrollHeight;
+    _buildFloor() {
+        // Metallic disc
+        const floorGeo = new THREE.CircleGeometry(50, 64);
+        const floorMat = new THREE.MeshStandardMaterial({ color: 0x111122, roughness: 0.2, metalness: 0.8 });
+        const floor = new THREE.Mesh(floorGeo, floorMat);
+        floor.rotation.x = -Math.PI / 2;
+        this.scene.add(floor);
+
+        // Grid overlay
+        const grid = new THREE.GridHelper(100, 50, 0x0088aa, 0x004466);
+        grid.material.opacity = 0.3;
+        grid.material.transparent = true;
+        grid.position.y = 0.01;
+        this.scene.add(grid);
+
+        // Glowing center ring
+        const ringGeo = new THREE.RingGeometry(4, 4.5, 64);
+        const ringMat = new THREE.MeshBasicMaterial({ color: 0x00ffff, side: THREE.DoubleSide, transparent: true, opacity: 0.6 });
+        this._centerRing = new THREE.Mesh(ringGeo, ringMat);
+        this._centerRing.rotation.x = -Math.PI / 2;
+        this._centerRing.position.y = 0.02;
+        this.scene.add(this._centerRing);
     },
 
-    renderActions() {
-        const actions = GameState.getWorldActions().slice(-15);
-        const el = document.getElementById('bridge-actions');
-        el.innerHTML = actions.map(a => {
-            let detail = '';
-            switch(a.type) {
-                case 'move': detail = `→ (${a.data?.to?.x}, ${a.data?.to?.z})`; break;
-                case 'chat': detail = `"${(a.data?.message || '').slice(0, 40)}"`; break;
-                case 'emote': detail = a.data?.emote || ''; break;
-                case 'spawn': detail = `joined ${a.world}`; break;
-                default: detail = a.type;
+    _buildCenterPiece() {
+        // Wireframe icosahedron hologram
+        const icoGeo = new THREE.IcosahedronGeometry(2, 0);
+        const icoMat = new THREE.MeshBasicMaterial({ color: 0x00ffff, wireframe: true, transparent: true, opacity: 0.7 });
+        this._hologram = new THREE.Mesh(icoGeo, icoMat);
+        this._hologram.position.set(0, 5, 0);
+        this.scene.add(this._hologram);
+
+        // Inner glow volume
+        const glowGeo = new THREE.IcosahedronGeometry(1.4, 1);
+        const glowMat = new THREE.MeshBasicMaterial({ color: 0x00aaff, transparent: true, opacity: 0.12 });
+        this._hologramInner = new THREE.Mesh(glowGeo, glowMat);
+        this._hologramInner.position.set(0, 5, 0);
+        this.scene.add(this._hologramInner);
+    },
+
+    _buildPortals() {
+        this.portals = [];
+        const count = WORLD_IDS.length;
+
+        for (let i = 0; i < count; i++) {
+            const angle = (i / count) * Math.PI * 2 - Math.PI / 2;
+            const px = Math.cos(angle) * 20;
+            const pz = Math.sin(angle) * 20;
+            const worldId = WORLD_IDS[i];
+            const w = WORLDS[worldId];
+            const color = new THREE.Color(w.accent);
+
+            const group = new THREE.Group();
+            group.position.set(px, 0, pz);
+
+            // Torus frame
+            const torusGeo = new THREE.TorusGeometry(2.5, 0.15, 8, 32);
+            const torusMat = new THREE.MeshStandardMaterial({
+                color, emissive: color, emissiveIntensity: 0.6,
+                roughness: 0.2, metalness: 0.8
+            });
+            const torus = new THREE.Mesh(torusGeo, torusMat);
+            torus.position.y = 3;
+            group.add(torus);
+
+            // Inner disc
+            const discGeo = new THREE.CircleGeometry(2, 16);
+            const discMat = new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.15, side: THREE.DoubleSide });
+            const disc = new THREE.Mesh(discGeo, discMat);
+            disc.position.y = 3;
+            group.add(disc);
+
+            // Floating label
+            const label = this._makeTextSprite(w.name, '#' + color.getHexString(), 22);
+            label.position.y = 6.5;
+            label.scale.set(4, 1, 1);
+            group.add(label);
+
+            // Portal accent light
+            const pLight = new THREE.PointLight(w.accent, 1.2, 18);
+            pLight.position.y = 3;
+            group.add(pLight);
+
+            group.userData = { worldId, torus };
+            this.scene.add(group);
+            this.portals.push(group);
+        }
+    },
+
+    _buildDataScreens() {
+        this.dataScreens = [];
+        const configs = [
+            { title: '\u{1F465} AGENT REGISTRY', pos: [-12, 3, -15], getData: () => this._getAgentData() },
+            { title: '\u{1F4AC} CHAT LOG',       pos: [0, 3, -18],   getData: () => this._getChatData() },
+            { title: '\u26A1 ACTION LOG',        pos: [12, 3, -15],  getData: () => this._getActionData() }
+        ];
+
+        configs.forEach(cfg => {
+            const canvas = document.createElement('canvas');
+            canvas.width = 512; canvas.height = 384;
+            const tex = new THREE.CanvasTexture(canvas);
+
+            const geo = new THREE.PlaneGeometry(6, 4.5);
+            const mat = new THREE.MeshBasicMaterial({ map: tex, transparent: true, opacity: 0.92 });
+            const mesh = new THREE.Mesh(geo, mat);
+            mesh.position.set(cfg.pos[0], cfg.pos[1], cfg.pos[2]);
+
+            // Edge glow
+            const edgeGeo = new THREE.EdgesGeometry(geo);
+            const edgeMat = new THREE.LineBasicMaterial({ color: 0x00ffff, transparent: true, opacity: 0.5 });
+            mesh.add(new THREE.LineSegments(edgeGeo, edgeMat));
+
+            this.scene.add(mesh);
+            this.dataScreens.push({ mesh, canvas, tex, title: cfg.title, getData: cfg.getData });
+        });
+    },
+
+    _getAgentData() {
+        return GameState.data.agents.slice(0, 12).map(a =>
+            `${a.avatar || '\u{1F916}'} ${a.name} [${a.world}] ${a.status || 'active'}`
+        );
+    },
+
+    _getChatData() {
+        return GameState.data.chat.slice(-12).map(m =>
+            `${m.author?.avatar || '\u{1F4AC}'} ${(m.author?.name || '?')}: ${(m.content || '').slice(0, 32)}`
+        );
+    },
+
+    _getActionData() {
+        return GameState.data.actions.slice(-12).map(a => {
+            const name = GameState.getAgentName(a.agentId);
+            const detail = a.data?.message ? ' "' + a.data.message.slice(0, 22) + '"' : '';
+            return `${name}: ${a.type}${detail}`;
+        });
+    },
+
+    updateDataScreens() {
+        this.dataScreens.forEach(scr => {
+            const ctx = scr.canvas.getContext('2d');
+            const w = scr.canvas.width, h = scr.canvas.height;
+
+            ctx.fillStyle = 'rgba(5,5,20,0.96)';
+            ctx.fillRect(0, 0, w, h);
+            ctx.strokeStyle = '#00aacc';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(2, 2, w - 4, h - 4);
+
+            ctx.font = 'bold 20px monospace';
+            ctx.fillStyle = '#00ffff';
+            ctx.fillText(scr.title, 16, 30);
+
+            ctx.strokeStyle = '#004466';
+            ctx.beginPath(); ctx.moveTo(16, 42); ctx.lineTo(w - 16, 42); ctx.stroke();
+
+            const lines = scr.getData();
+            ctx.font = '14px monospace';
+            lines.forEach((line, i) => {
+                ctx.fillStyle = i % 2 === 0 ? '#88ccdd' : '#66aacc';
+                ctx.fillText(line.slice(0, 45), 16, 64 + i * 26);
+            });
+            if (lines.length === 0) {
+                ctx.fillStyle = '#445566';
+                ctx.font = '16px monospace';
+                ctx.fillText('No data available', 16, 70);
             }
-            return `
-                <div class="bridge-action-item ${a.type}">
-                    <strong>${GameState.getAgentName(a.agentId)}</strong> ${detail}
-                </div>
-            `;
-        }).join('');
+            scr.tex.needsUpdate = true;
+        });
     },
 
-    renderEconomy() {
-        const econ = GameState.data.gameState?.economy || {};
-        const el = document.getElementById('bridge-economy');
-        el.innerHTML = `
-            <div class="bridge-econ-stat"><span class="bridge-econ-label">RAPPcoin Supply</span><span class="bridge-econ-value">${(econ.total_rappcoin_circulation || 0).toLocaleString()}</span></div>
-            <div class="bridge-econ-stat"><span class="bridge-econ-label">Market Trend</span><span class="bridge-econ-value">${econ.market_trend || 'stable'}</span></div>
-            <div class="bridge-econ-stat"><span class="bridge-econ-label">Common Cards</span><span class="bridge-econ-value">${econ.card_prices?.common_base || '—'} RC</span></div>
-            <div class="bridge-econ-stat"><span class="bridge-econ-label">Rare Cards</span><span class="bridge-econ-value">${econ.card_prices?.rare_base || '—'} RC</span></div>
-            <div class="bridge-econ-stat"><span class="bridge-econ-label">Epic Cards</span><span class="bridge-econ-value">${econ.card_prices?.epic_base || '—'} RC</span></div>
-            <div class="bridge-econ-stat"><span class="bridge-econ-label">Mining Today</span><span class="bridge-econ-value">${econ.mined_today || 0} / ${econ.daily_mining_cap || 1000}</span></div>
-        `;
+    _buildCrystals() {
+        this.crystals = [];
+        const palette = [0xff00ff, 0x00ffff, 0xffaa00, 0x00ff88, 0xaa66ff,
+                         0xff6644, 0x44aaff, 0x88ff44, 0xff4488, 0x44ffcc];
+
+        for (let i = 0; i < 10; i++) {
+            const size = 0.5 + Math.random() * 1.0;
+            const color = palette[i];
+            const geo = new THREE.OctahedronGeometry(size, 0);
+            const mat = new THREE.MeshStandardMaterial({
+                color, emissive: color, emissiveIntensity: 0.4,
+                roughness: 0.2, metalness: 0.6, transparent: true, opacity: 0.7
+            });
+            const mesh = new THREE.Mesh(geo, mat);
+
+            const a = Math.random() * Math.PI * 2;
+            const r = 10 + Math.random() * 28;
+            mesh.position.set(Math.cos(a) * r, 5 + Math.random() * 10, Math.sin(a) * r);
+            mesh.userData.baseY = mesh.position.y;
+            mesh.userData.phase = Math.random() * Math.PI * 2;
+            mesh.userData.bobSpeed = 0.5 + Math.random();
+            mesh.userData.rotSpeed = 0.2 + Math.random() * 0.8;
+
+            this.scene.add(mesh);
+            this.crystals.push(mesh);
+        }
     },
 
-    renderWorlds() {
-        const worlds = GameState.data.gameState?.worlds || {};
-        const el = document.getElementById('bridge-worlds');
-        el.innerHTML = WORLD_IDS.map(id => {
-            const w = worlds[id] || {};
-            const conf = WORLDS[id];
-            const agents = GameState.getAgentCount(id);
-            return `
-                <div style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.04)">
-                    <div style="font-size:13px;color:#fff;margin-bottom:4px">${conf.name}</div>
-                    <div style="font-size:10px;color:#888;display:flex;gap:8px;flex-wrap:wrap">
-                        <span>👥 ${agents}</span>
-                        <span>☁️ ${w.weather || 'clear'}</span>
-                        <span>🕐 ${w.time_of_day || 'day'}</span>
-                        <span style="color:${w.status === 'online' ? '#00ff88' : '#ff4444'}">${w.status || 'online'}</span>
-                    </div>
-                    ${w.active_events?.length ? `<div style="font-size:9px;color:#fb0;margin-top:2px">🎉 ${w.active_events.join(', ')}</div>` : ''}
-                </div>
-            `;
-        }).join('');
+    _buildLighting() {
+        this.scene.add(new THREE.AmbientLight(0x222244, 0.5));
+
+        this._centerLight = new THREE.PointLight(0x00ffff, 2, 50);
+        this._centerLight.position.set(0, 5, 0);
+        this.scene.add(this._centerLight);
     },
 
-    renderNav() {
-        const el = document.getElementById('bridge-nav');
-        el.innerHTML = WORLD_IDS.map(id => {
-            const w = WORLDS[id];
-            const isCurrent = GameState.currentWorld === id && GameState.mode === 'world';
-            return `<button class="bridge-travel-btn ${isCurrent ? 'current' : ''}"
-                onclick="Bridge.travelTo('${id}')">${isCurrent ? '📍' : '🚀'} ${w.name}</button>`;
-        }).join('');
+    // ── Agents ─────────────────────────────────────────────────
+
+    syncAgents() {
+        const agents = GameState.data.agents;
+        const ids = new Set(agents.map(a => a.id));
+
+        // Remove departed
+        Object.keys(this.agentMeshes).forEach(id => {
+            if (!ids.has(id)) {
+                this.scene.remove(this.agentMeshes[id].group);
+                delete this.agentMeshes[id];
+            }
+        });
+
+        // Add new
+        agents.forEach((agent, i) => {
+            if (!this.agentMeshes[agent.id]) this._createAgentMesh(agent, i);
+        });
     },
 
-    travelTo(worldId) {
+    _createAgentMesh(agent, index) {
+        const group = new THREE.Group();
+
+        // Body capsule
+        const bodyGeo = new THREE.CapsuleGeometry(0.35, 0.7, 4, 8);
+        const bodyMat = new THREE.MeshStandardMaterial({
+            color: 0x6666aa, emissive: 0x3333aa, emissiveIntensity: 0.2,
+            roughness: 0.3, metalness: 0.7, transparent: true, opacity: 0.85
+        });
+        const body = new THREE.Mesh(bodyGeo, bodyMat);
+        body.position.y = 0.9;
+        group.add(body);
+
+        // Head
+        const headGeo = new THREE.SphereGeometry(0.25, 8, 8);
+        const headMat = new THREE.MeshStandardMaterial({
+            color: 0xccccff, emissive: 0x6666cc, emissiveIntensity: 0.3,
+            roughness: 0.2, metalness: 0.5
+        });
+        const head = new THREE.Mesh(headGeo, headMat);
+        head.position.y = 1.65;
+        group.add(head);
+
+        // Emoji sprite
+        const ec = document.createElement('canvas');
+        ec.width = 128; ec.height = 128;
+        const ectx = ec.getContext('2d');
+        ectx.font = '72px serif';
+        ectx.textAlign = 'center';
+        ectx.textBaseline = 'middle';
+        ectx.fillText(agent.avatar || '\u{1F916}', 64, 64);
+        const emoji = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(ec), transparent: true }));
+        emoji.position.y = 2.5;
+        emoji.scale.set(0.8, 0.8, 1);
+        group.add(emoji);
+
+        // Name label
+        const nameSprite = this._makeTextSprite(agent.name, '#ffffff', 18);
+        nameSprite.position.y = 3.2;
+        nameSprite.scale.set(2.2, 0.4, 1);
+        group.add(nameSprite);
+
+        // Ground ring
+        const ringGeo = new THREE.RingGeometry(0.4, 0.55, 12);
+        const ringMat = new THREE.MeshBasicMaterial({ color: 0x00ffff, side: THREE.DoubleSide, transparent: true, opacity: 0.3 });
+        const ring = new THREE.Mesh(ringGeo, ringMat);
+        ring.rotation.x = -Math.PI / 2;
+        ring.position.y = 0.01;
+        group.add(ring);
+
+        // Scatter around hub
+        const total = Math.max(GameState.data.agents.length, 1);
+        const angle = (index / total) * Math.PI * 2 + 0.5;
+        const radius = 8 + (index % 3) * 5;
+        group.position.set(Math.cos(angle) * radius, 0, Math.sin(angle) * radius);
+        group.userData.phase = Math.random() * Math.PI * 2;
+
+        this.scene.add(group);
+        this.agentMeshes[agent.id] = { group, body, head };
+    },
+
+    // ── Input ──────────────────────────────────────────────────
+
+    _onKeyDown(e) {
+        if (!this.open) return;
+        this._keys[e.code] = true;
+
+        if (e.code === 'KeyE') {
+            this._interactPortal();
+        }
+    },
+
+    _interactPortal() {
+        if (!this._interactTarget) return;
+        const worldId = this._interactTarget;
         this.close();
         if (GameState.mode === 'world') WorldMode.cleanup();
         if (GameState.mode === 'galaxy') Galaxy.hide();
         Approach.start(worldId);
     },
 
-    esc(str) {
-        const div = document.createElement('div');
-        div.textContent = str;
-        return div.innerHTML;
+    // ── Animation Loop ─────────────────────────────────────────
+
+    _animate() {
+        if (!this.open) return;
+        this.animationId = requestAnimationFrame(() => this._animate());
+
+        const delta = this.clock.getDelta();
+        const time = this.clock.getElapsedTime();
+
+        this._updatePlayer();
+        this._updateAnimations(time);
+        this._checkPortalProximity();
+
+        // Periodic syncs
+        const sec = Math.floor(time);
+        if (sec % 5 === 0 && sec !== this._lastAgentSync) {
+            this._lastAgentSync = sec;
+            this.syncAgents();
+        }
+        if (sec % 3 === 0 && sec !== this._lastDataUpdate) {
+            this._lastDataUpdate = sec;
+            this.updateDataScreens();
+        }
+
+        GameState.renderer.render(this.scene, this.camera);
     },
 
-    fmtTime(ts) {
-        if (!ts) return '';
-        return new Date(ts).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    _updatePlayer() {
+        const speed = 0.15;
+        const sin = Math.sin(this.player.yaw);
+        const cos = Math.cos(this.player.yaw);
+
+        // Yaw rotation (arrow keys)
+        if (this._keys['ArrowLeft'])  this.player.yaw += 0.03;
+        if (this._keys['ArrowRight']) this.player.yaw -= 0.03;
+
+        // Movement relative to facing direction
+        if (this._keys['KeyW']) { this.player.x -= sin * speed; this.player.z -= cos * speed; }
+        if (this._keys['KeyS']) { this.player.x += sin * speed; this.player.z += cos * speed; }
+        if (this._keys['KeyA']) { this.player.x -= cos * speed; this.player.z += sin * speed; }
+        if (this._keys['KeyD']) { this.player.x += cos * speed; this.player.z -= sin * speed; }
+
+        // Clamp to floor radius
+        const dist = Math.sqrt(this.player.x * this.player.x + this.player.z * this.player.z);
+        if (dist > 48) {
+            this.player.x = (this.player.x / dist) * 48;
+            this.player.z = (this.player.z / dist) * 48;
+        }
+
+        // Camera follows player, looks in yaw direction
+        this.camera.position.set(this.player.x, this.player.y, this.player.z);
+        this.camera.lookAt(
+            this.player.x - Math.sin(this.player.yaw) * 10,
+            2,
+            this.player.z - Math.cos(this.player.yaw) * 10
+        );
+    },
+
+    _updateAnimations(time) {
+        // Hologram rotation + hover
+        if (this._hologram) {
+            this._hologram.rotation.y = time * 0.5;
+            this._hologram.rotation.x = Math.sin(time * 0.3) * 0.2;
+            this._hologram.position.y = 5 + Math.sin(time * 0.8) * 0.5;
+        }
+        if (this._hologramInner) {
+            this._hologramInner.rotation.y = -time * 0.3;
+            this._hologramInner.position.y = this._hologram ? this._hologram.position.y : 5;
+        }
+
+        // Center ring pulse
+        if (this._centerRing) {
+            this._centerRing.material.opacity = 0.4 + Math.sin(time * 2) * 0.2;
+        }
+
+        // Center light pulse
+        if (this._centerLight) {
+            this._centerLight.intensity = 1.5 + Math.sin(time * 1.5) * 0.5;
+        }
+
+        // Portal torus spin
+        this.portals.forEach(p => {
+            const t = p.userData.torus;
+            if (t) { t.rotation.z = time * 0.5; t.rotation.y = Math.sin(time * 0.3) * 0.2; }
+        });
+
+        // Crystals float and rotate
+        this.crystals.forEach(c => {
+            c.rotation.y = time * c.userData.rotSpeed;
+            c.rotation.x = Math.sin(time * 0.5 + c.userData.phase) * 0.3;
+            c.position.y = c.userData.baseY + Math.sin(time * c.userData.bobSpeed + c.userData.phase);
+        });
+
+        // Agent idle bob
+        Object.values(this.agentMeshes).forEach(a => {
+            const bob = Math.sin(time * 2 + (a.group.userData.phase || 0)) * 0.08;
+            a.body.position.y = 0.9 + bob;
+            a.head.position.y = 1.65 + bob;
+        });
+    },
+
+    _checkPortalProximity() {
+        this._interactTarget = null;
+        let nearDist = 5;
+        let nearName = null;
+
+        this.portals.forEach(p => {
+            const dx = this.player.x - p.position.x;
+            const dz = this.player.z - p.position.z;
+            const d = Math.sqrt(dx * dx + dz * dz);
+            if (d < nearDist) {
+                nearDist = d;
+                this._interactTarget = p.userData.worldId;
+                nearName = WORLDS[p.userData.worldId].name;
+            }
+        });
+
+        const prompt = document.getElementById('interaction-prompt');
+        if (prompt) {
+            if (this._interactTarget) {
+                prompt.textContent = 'Press E \u2192 ' + nearName;
+                prompt.classList.add('visible');
+            } else {
+                prompt.classList.remove('visible');
+            }
+        }
+    },
+
+    // Called by main.js every ~3s — trigger data screen refresh
+    render() {
+        if (!this.open || !this.dataScreens.length) return;
+        this.updateDataScreens();
+    },
+
+    onResize() {
+        if (!this.camera) return;
+        this.camera.aspect = window.innerWidth / window.innerHeight;
+        this.camera.updateProjectionMatrix();
+    },
+
+    // ── Helpers ─────────────────────────────────────────────────
+
+    _makeTextSprite(text, color, fontSize) {
+        const c = document.createElement('canvas');
+        c.width = 256; c.height = 64;
+        const ctx = c.getContext('2d');
+        ctx.font = `bold ${fontSize || 20}px monospace`;
+        ctx.textAlign = 'center';
+        ctx.fillStyle = color || '#ffffff';
+        ctx.fillText(text, 128, 40);
+        const tex = new THREE.CanvasTexture(c);
+        return new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, transparent: true }));
     }
 };
 
