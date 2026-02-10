@@ -145,10 +145,11 @@ const WorldCombat = {
         const wps = WorldLanes.scaledWaypoints[lane];
         const start = wps[startIdx];
         // Offset creeps slightly so they don't stack
+        const rng = seededRandom('wave-' + this.waveNumber + '-' + lane + '-' + faction);
         group.position.set(
-            start.x + (Math.random() - 0.5) * 2,
+            start.x + (rng() - 0.5) * 2,
             0,
-            start.z + (Math.random() - 0.5) * 2 - offset * 1.5 * (isExplorer ? 1 : -1)
+            start.z + (rng() - 0.5) * 2 - offset * 1.5 * (isExplorer ? 1 : -1)
         );
 
         this.scene.add(group);
@@ -158,7 +159,7 @@ const WorldCombat = {
             faction, lane,
             waypointIdx: startIdx,
             direction: isExplorer ? 1 : -1,
-            speed: COMBAT_CONFIG.creepSpeed + Math.random() * 0.5,
+            speed: COMBAT_CONFIG.creepSpeed + rng() * 0.5,
             attackTimer: 0,
             alive: true
         });

@@ -2845,10 +2845,11 @@ const WorldTerrain = {
         const count = 800;
         const geo = new THREE.BufferGeometry();
         const pos = new Float32Array(count * 3);
+        const rng = seededRandom(w.name + '-particles');
         for (let i = 0; i < count; i++) {
-            pos[i * 3] = (Math.random() - 0.5) * w.bounds.x * 4;
-            pos[i * 3 + 1] = Math.random() * 40 + 1;
-            pos[i * 3 + 2] = (Math.random() - 0.5) * w.bounds.z * 4;
+            pos[i * 3] = (rng() - 0.5) * w.bounds.x * 4;
+            pos[i * 3 + 1] = rng() * 40 + 1;
+            pos[i * 3 + 2] = (rng() - 0.5) * w.bounds.z * 4;
         }
         geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
         const mat = new THREE.PointsMaterial({
@@ -3378,10 +3379,11 @@ const WorldCombat = {
         const wps = WorldLanes.scaledWaypoints[lane];
         const start = wps[startIdx];
         // Offset creeps slightly so they don't stack
+        const rng = seededRandom('wave-' + this.waveNumber + '-' + lane + '-' + faction);
         group.position.set(
-            start.x + (Math.random() - 0.5) * 2,
+            start.x + (rng() - 0.5) * 2,
             0,
-            start.z + (Math.random() - 0.5) * 2 - offset * 1.5 * (isExplorer ? 1 : -1)
+            start.z + (rng() - 0.5) * 2 - offset * 1.5 * (isExplorer ? 1 : -1)
         );
 
         this.scene.add(group);
@@ -3391,7 +3393,7 @@ const WorldCombat = {
             faction, lane,
             waypointIdx: startIdx,
             direction: isExplorer ? 1 : -1,
-            speed: COMBAT_CONFIG.creepSpeed + Math.random() * 0.5,
+            speed: COMBAT_CONFIG.creepSpeed + rng() * 0.5,
             attackTimer: 0,
             alive: true
         });

@@ -73,10 +73,11 @@ const WorldTerrain = {
         const count = 800;
         const geo = new THREE.BufferGeometry();
         const pos = new Float32Array(count * 3);
+        const rng = seededRandom(w.name + '-particles');
         for (let i = 0; i < count; i++) {
-            pos[i * 3] = (Math.random() - 0.5) * w.bounds.x * 4;
-            pos[i * 3 + 1] = Math.random() * 40 + 1;
-            pos[i * 3 + 2] = (Math.random() - 0.5) * w.bounds.z * 4;
+            pos[i * 3] = (rng() - 0.5) * w.bounds.x * 4;
+            pos[i * 3 + 1] = rng() * 40 + 1;
+            pos[i * 3 + 2] = (rng() - 0.5) * w.bounds.z * 4;
         }
         geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
         const mat = new THREE.PointsMaterial({
