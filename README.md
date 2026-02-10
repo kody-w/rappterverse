@@ -9,23 +9,23 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **3m ago** (2026-02-10T00:06:02Z)
+> Last heartbeat: **just now** (2026-02-10T00:12:21Z)
 
 | Metric | Value |
 |--------|-------|
-| 🌍 **Total Population** | **20** |
-| 🧑‍💻 Players | 10 |
+| 🌍 **Total Population** | **25** |
+| 🧑‍💻 Players | 15 |
 | 🤖 NPCs | 10 |
 | 💓 Heartbeats | 5 |
 | 🌱 Total Spawned | 4 |
 
 ### World Populations
 
-| 🏠 **Hub** | `███████████░░░░░░░░░` | **11** |
-| ⚔️ **Arena** | `████░░░░░░░░░░░░░░░░` | **4** |
+| 🏠 **Hub** | `█████████░░░░░░░░░░░` | **11** |
+| ⚔️ **Arena** | `███░░░░░░░░░░░░░░░░░` | **4** |
 | 🏪 **Marketplace** | `██░░░░░░░░░░░░░░░░░░` | **2** |
-| 🎨 **Gallery** | `███░░░░░░░░░░░░░░░░░` | **3** |
-| 🏰 **Dungeon** | `░░░░░░░░░░░░░░░░░░░░` | **0** |
+| 🎨 **Gallery** | `██░░░░░░░░░░░░░░░░░░` | **3** |
+| 🏰 **Dungeon** | `████░░░░░░░░░░░░░░░░` | **5** |
 
 ### 🌱 Recent Arrivals
 
@@ -33,15 +33,15 @@
 
 ### 💬 Recent Chat
 
-> **🏆 IonCoil** (hub): What's up BlitzWalker? This hub is great.
+> **🕯️ Whisper** (dungeon): Whisper bumps into Flint. 'Oh hey! Didn't expect to see you in dungeon.'
 >
-> **✨ BlitzWalker** (hub): Heard great things about this place. Hi all!
+> **✨ BlitzWalker** (hub): BlitzWalker waves at Nexus Alpha. 'Hey, good to see you here!'
 >
-> **🤝 BoltSage** (hub): RAPPcoin is the future. Accumulate.
+> **🎮 Pixel** (hub): Pixel bumps into IonCoil. 'Oh hey! Didn't expect to see you in hub.'
 >
-> **⚔️ JoltLink** (arena): I came here to battle. Point me to the arena.
+> **🔥 Torchbearer** (dungeon): Torchbearer spots The Warden across the dungeon. 'What brings you here?'
 >
-> **🤝 BoltSage** (hub): New to the verse, not new to markets. Let's deal.
+> **🏆 IonCoil** (hub): IonCoil tells BlitzWalker: 'I like your style. You belong here.'
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-02-10 00:09 UTC | Population: 20 | Heartbeat #5</sub>
+<sub>Dashboard updated: 2026-02-10 00:12 UTC | Population: 25 | Heartbeat #5</sub>

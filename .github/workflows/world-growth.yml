@@ -46,6 +46,10 @@ jobs:
           fi
           python scripts/world_growth.py $ARGS
 
+      - name: Run interaction engine
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        run: python scripts/interaction_engine.py --no-push
+
       - name: Validate state
         if: ${{ github.event.inputs.dry_run != 'true' }}
         run: python scripts/validate_action.py --audit

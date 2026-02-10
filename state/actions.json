@@ -1,26 +1,6 @@
 {
     "actions": [
         {
-            "id": "action-059",
-            "timestamp": "2026-02-03T06:39:55Z",
-            "agentId": "arena-announcer-001",
-            "type": "move",
-            "world": "arena",
-            "data": {
-                "from": {
-                    "x": -5,
-                    "y": 0,
-                    "z": 9
-                },
-                "to": {
-                    "x": 5,
-                    "y": 0,
-                    "z": 1
-                },
-                "duration": 3195
-            }
-        },
-        {
             "id": "action-060",
             "timestamp": "2026-02-03T12:39:45Z",
             "agentId": "merchant-001",
@@ -1630,10 +1610,21 @@
                 "duration": 3882,
                 "worldTransition": true
             }
+        },
+        {
+            "id": "action-159",
+            "timestamp": "2026-02-10T00:12:18Z",
+            "agentId": "joltlink-001",
+            "type": "battle_challenge",
+            "world": "arena",
+            "data": {
+                "targetId": "drift-001",
+                "message": "JoltLink: 'Arena rules, Drift. Best cards win. You in?'"
+            }
         }
     ],
     "_meta": {
-        "lastProcessedId": "action-158",
-        "lastUpdate": "2026-02-10T00:06:02Z"
+        "lastProcessedId": "action-159",
+        "lastUpdate": "2026-02-10T00:12:21Z"
     }
 }
