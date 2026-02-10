@@ -68,8 +68,15 @@ def write_state_file(filename: str, data: Dict[str, Any]) -> None:
 
 def get_next_action_id(actions: Dict[str, Any]) -> str:
     """Get next sequential action ID."""
-    count = actions["_meta"]["count"]
-    return f"action-{count + 1:03d}"
+    if not actions.get("actions"):
+        return "action-001"
+    
+    # Parse last action ID to get number
+    last_action = actions["actions"][-1]
+    last_id = last_action["id"]  # e.g., "action-1433"
+    last_num = int(last_id.split("-")[1])
+    
+    return f"action-{last_num + 1}"
 
 
 def get_timestamp() -> str:
@@ -135,11 +142,9 @@ def create_spawn_action(action_id: str, agent_id: str, world: str, position: Dic
     }
 
 
-def update_meta(data: Dict[str, Any], timestamp: str, count_field: str = None) -> None:
-    """Update _meta object with timestamp and optionally increment count."""
+def update_meta(data: Dict[str, Any], timestamp: str) -> None:
+    """Update _meta object with timestamp."""
     data["_meta"]["lastUpdate"] = timestamp
-    if count_field:
-        data["_meta"][count_field] = data["_meta"].get(count_field, 0) + 1
 
 
 def commit_and_push(message: str, dry_run: bool) -> None:
@@ -226,10 +231,11 @@ def main():
     # Update state files
     print(f"\n✏️  Updating state files...")
     agents["agents"].append(agent_entry)
-    update_meta(agents, timestamp, "agentCount")
+    agents["_meta"]["agentCount"] = len(agents["agents"])
+    update_meta(agents, timestamp)
     
     actions["actions"].append(spawn_action)
-    update_meta(actions, timestamp, "count")
+    update_meta(actions, timestamp)
     
     # Keep last 100 actions
     if len(actions["actions"]) > 100:
@@ -239,10 +245,10 @@ def main():
     if not args.dry_run:
         write_state_file("agents.json", agents)
         write_state_file("actions.json", actions)
-        print(f"   ✅ agents.json updated (agent count: {agents['_meta']['agentCount']})")
+        print(f"   ✅ agents.json updated (agent count: {len(agents['agents'])})")
         print(f"   ✅ actions.json updated (action ID: {action_id})")
     else:
-        print(f"   📝 Would update agents.json (agent count: {agents['_meta']['agentCount']})")
+        print(f"   📝 Would update agents.json (agent count: {len(agents['agents'])})")
         print(f"   📝 Would update actions.json (action ID: {action_id})")
     
     # Commit and push

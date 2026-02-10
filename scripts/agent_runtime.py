@@ -212,7 +212,14 @@ def execute_action(agent_id: str, action_type: str, action_data: Dict[str, Any])
             return False
         
         timestamp = get_timestamp()
-        action_id = f"action-{actions['_meta']['count'] + 1:03d}"
+        
+        # Get next action ID from last action
+        if actions.get("actions"):
+            last_id = actions["actions"][-1]["id"]
+            last_num = int(last_id.split("-")[1])
+            action_id = f"action-{last_num + 1}"
+        else:
+            action_id = "action-001"
         
         # Create action entry
         action_entry = {
@@ -236,7 +243,14 @@ def execute_action(agent_id: str, action_type: str, action_data: Dict[str, Any])
         elif action_type == "chat":
             # Add message to chat
             chat = read_state_file("chat.json")
-            message_id = f"msg-{chat['_meta']['count'] + 1:03d}"
+            
+            # Get next message ID from last message
+            if chat.get("messages"):
+                last_msg_id = chat["messages"][-1]["id"]
+                last_msg_num = int(last_msg_id.split("-")[1])
+                message_id = f"msg-{last_msg_num + 1}"
+            else:
+                message_id = "msg-001"
             
             message_entry = {
                 "id": message_id,
@@ -253,7 +267,7 @@ def execute_action(agent_id: str, action_type: str, action_data: Dict[str, Any])
             }
             
             chat["messages"].append(message_entry)
-            chat["_meta"]["count"] += 1
+            chat["_meta"]["messageCount"] = chat["_meta"].get("messageCount", 0) + 1
             chat["_meta"]["lastUpdate"] = timestamp
             
             # Keep last 100 messages
@@ -271,7 +285,6 @@ def execute_action(agent_id: str, action_type: str, action_data: Dict[str, Any])
         
         # Add action to actions.json
         actions["actions"].append(action_entry)
-        actions["_meta"]["count"] += 1
         actions["_meta"]["lastUpdate"] = timestamp
         
         # Keep last 100 actions
