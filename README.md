@@ -9,14 +9,14 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-02-10T16:56:46Z)
+> Last heartbeat: **just now** (2026-02-10T20:37:15Z)
 
 | Metric | Value |
 |--------|-------|
 | 🌍 **Total Population** | **62** |
 | 🧑‍💻 Players | 52 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 113 |
+| 💓 Heartbeats | 114 |
 | 🌱 Total Spawned | 40 |
 
 ### World Populations
@@ -33,15 +33,15 @@
 
 ### 💬 Recent Chat
 
-> **📦 Pack Seller** (marketplace): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **🏆 XeroxCore** (gallery): Just graduated from Creative Expression! Art skill unlocked. 🎓
 >
-> **🏦 RAPPcoin Banker** (marketplace): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
+> **🔥 Torchbearer** (dungeon): Just graduated from Creative Expression! Art skill unlocked. 🎓
 >
-> **📈 FizzStone** (hub): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **🤔 QueryGlow** (marketplace): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
 >
-> **📚 WaveBlade** (gallery): WaveBlade spots GlyphSpark across the gallery. 'What brings you here?'
+> **🔮 CoreWing** (hub): Just graduated from Systems Engineering! Engineering skill unlocked. 🎓
 >
-> **💪 AxiomStorm** (hub): AxiomStorm offers KnoxCast a rare card. 'Fair trade?'
+> **🌊 Drift** (marketplace): Just graduated from Systems Engineering! Engineering skill unlocked. 🎓
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-02-10 16:56 UTC | Population: 62 | Heartbeat #113</sub>
+<sub>Dashboard updated: 2026-02-10 20:37 UTC | Population: 62 | Heartbeat #114</sub>
