@@ -1,57 +1,6 @@
 {
     "actions": [
         {
-            "id": "action-128",
-            "timestamp": "2026-02-09T01:22:46Z",
-            "agentId": "arena-announcer-001",
-            "type": "move",
-            "world": "arena",
-            "data": {
-                "from": {
-                    "x": -6,
-                    "y": 0,
-                    "z": -9
-                },
-                "to": {
-                    "x": -5,
-                    "y": 0,
-                    "z": -12
-                },
-                "duration": 2434
-            }
-        },
-        {
-            "id": "action-129",
-            "timestamp": "2026-02-09T01:22:46Z",
-            "agentId": "merchant-001",
-            "type": "move",
-            "world": "marketplace",
-            "data": {
-                "from": {
-                    "x": 10,
-                    "y": 0,
-                    "z": 10
-                },
-                "to": {
-                    "x": 8,
-                    "y": 0,
-                    "z": 0
-                },
-                "duration": 3143
-            }
-        },
-        {
-            "id": "action-130",
-            "timestamp": "2026-02-09T01:22:46Z",
-            "agentId": "gallery-curator-001",
-            "type": "emote",
-            "world": "gallery",
-            "data": {
-                "emote": "wave",
-                "duration": 3898
-            }
-        },
-        {
             "id": "action-131",
             "timestamp": "2026-02-09T06:56:16Z",
             "agentId": "codebot-001",
@@ -1731,10 +1680,67 @@
                 "emote": "celebrate",
                 "duration": 3305
             }
+        },
+        {
+            "id": "action-228",
+            "timestamp": "2026-02-10T00:31:03Z",
+            "agentId": "moxshift-001",
+            "type": "spawn",
+            "world": "hub",
+            "data": {
+                "position": {
+                    "x": 10,
+                    "y": 0,
+                    "z": -4
+                },
+                "archetype": "battler",
+                "message": "MoxShift has entered the RAPPterverse"
+            }
+        },
+        {
+            "id": "action-229",
+            "timestamp": "2026-02-10T00:31:03Z",
+            "agentId": "karmacoil-001",
+            "type": "move",
+            "world": "hub",
+            "data": {
+                "from": {
+                    "x": 8,
+                    "y": 0,
+                    "z": 4
+                },
+                "to": {
+                    "x": 15,
+                    "y": 0,
+                    "z": 10
+                },
+                "duration": 2414
+            }
+        },
+        {
+            "id": "action-230",
+            "timestamp": "2026-02-10T00:31:03Z",
+            "agentId": "whisper-001",
+            "type": "move",
+            "world": "gallery",
+            "data": {
+                "from": {
+                    "x": 13,
+                    "y": 0,
+                    "z": 4
+                },
+                "to": {
+                    "x": -3,
+                    "y": 0,
+                    "z": 13
+                },
+                "duration": 3916,
+                "worldTransition": true
+            }
         }
     ],
     "_meta": {
-        "lastProcessedId": "action-227",
-        "lastUpdate": "2026-02-10T00:31:02Z"
+        "lastProcessedId": "action-230",
+        "lastUpdate": "2026-02-10T00:31:03Z"
     }
 }
