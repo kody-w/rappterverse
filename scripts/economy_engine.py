@@ -303,7 +303,10 @@ def generate_item(agent: dict) -> dict:
     item_names = ITEM_NAMES.get(rule["type"], ["Unknown"])
     item_name = random.choice(item_names) + " " + rule["rarity"].title()
 
+    item_id = f"item-{random.randint(10000, 99999)}-{int(datetime.now(timezone.utc).timestamp())}"
+
     return {
+        "id": item_id,
         "type": rule["type"],
         "name": item_name,
         "rarity": rule["rarity"],
@@ -494,6 +497,9 @@ def economy_tick(dry_run: bool = False):
                 inv = inventory.setdefault("inventories", {}).setdefault(
                     agent_id, {"agentId": agent_id, "items": [], "lastUpdate": ts})
                 inv["items"].append(listing["item"])
+                # Ensure transferred item has an ID
+                if not listing["item"].get("id"):
+                    listing["item"]["id"] = f"item-{random.randint(10000, 99999)}-{int(datetime.now(timezone.utc).timestamp())}"
                 inv["lastUpdate"] = ts
 
                 market.setdefault("salesHistory", []).append({

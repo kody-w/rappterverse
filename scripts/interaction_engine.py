@@ -467,7 +467,22 @@ def execute_interaction(
         })
         agent["position"] = new_pos
         if effects.get("both_move"):
-            target["position"] = rand_pos(a_world)
+            target_new_pos = rand_pos(a_world)
+            target["position"] = target_new_pos
+            # Record move action for target too
+            target_action_id = next_id("action-", [a["id"] for a in actions])
+            actions.append({
+                "id": target_action_id,
+                "timestamp": ts,
+                "agentId": target["id"],
+                "type": "move",
+                "world": a_world,
+                "data": {
+                    "from": target.get("position", rand_pos(a_world)),
+                    "to": target_new_pos,
+                    "duration": random.randint(2000, 4000),
+                },
+            })
 
     elif action_type in ("trade_offer", "battle_challenge"):
         actions.append({
@@ -523,6 +538,8 @@ def _transfer_random_item(from_id: str, to_id: str, inventory: dict, preferred_r
         invs.pop(from_id, None)
 
     # Add to receiver
+    if not item.get("id"):
+        item["id"] = f"item-{random.randint(10000, 99999)}"
     to_entry = invs.setdefault(to_id, {"agentId": to_id, "items": [], "currency": "RAPPcoin"})
     to_entry.setdefault("items", []).append(item)
     to_entry["lastUpdate"] = now_iso()
