@@ -1440,10 +1440,17 @@ const WORLDS = {
         bounds: { x: 12, z: 15 },
         orbitRadius: 75, orbitSpeed: 0.1, planetColor: 0x00ddaa,
         landingTerrain: { ground: 0xe8f4f8, sky: 0xddeeff, fog: 0xddeeff }
+    },
+    dungeon: {
+        name: 'Forgotten Dungeon', biome: 'Abyss',
+        sky: 0x050508, floor: 0x0d0d12, accent: 0x6a0dad, grid: 0x3a0066, fog: 0x050508,
+        bounds: { x: 12, z: 12 },
+        orbitRadius: 90, orbitSpeed: 0.08, planetColor: 0x6a0dad,
+        landingTerrain: { ground: 0x1a1020, sky: 0x0a0510, fog: 0x0a0510 }
     }
 };
 
-const WORLD_IDS = ['hub', 'arena', 'marketplace', 'gallery'];
+const WORLD_IDS = ['hub', 'arena', 'marketplace', 'gallery', 'dungeon'];
 
 // Deterministic seeded random (used for procedural generation)
 function seededRandom(seed) {
@@ -2753,8 +2760,13 @@ const Landing = {
         this.beaconLight = null;
         this.beaconMesh = null;
         this.renderer = null;
+    },
+
+    abort() {
+        this.cleanup();
+        GameState.setMode('galaxy');
+        Galaxy.show();
     }
-};
 
 // === js/world-terrain.js ===
 // World Terrain — Ground, Biome Objects, Particles, Lighting
@@ -3967,6 +3979,9 @@ const WorldMode = {
         window.addEventListener('keydown', this.keyDown);
         window.addEventListener('keyup', this.keyUp);
 
+        // Set mode to world so main loop renders us
+        GameState.setMode('world');
+
         // HUD
         if (typeof HUD !== 'undefined') {
             HUD.setWorld(worldId);
@@ -4930,6 +4945,7 @@ const HUD = {
         if (e.code === 'Escape') {
             if (Bridge.open) { Bridge.close(); return; }
             if (GameState.mode === 'approach') { Approach.abort(); return; }
+            if (GameState.mode === 'landing') { Landing.abort(); return; }
             if (GameState.mode === 'world') {
                 // Return to galaxy
                 WorldMode.cleanup();
@@ -4952,6 +4968,8 @@ const HUD = {
             const worldId = WORLD_IDS[idx];
             if (worldId) {
                 if (GameState.mode === 'world') WorldMode.cleanup();
+                if (GameState.mode === 'approach') Approach.abort();
+                if (GameState.mode === 'landing') Landing.abort();
                 if (GameState.mode === 'galaxy') Galaxy.hide();
                 Approach.start(worldId);
             }

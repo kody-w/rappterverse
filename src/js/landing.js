@@ -563,5 +563,10 @@ const Landing = {
         this.beaconLight = null;
         this.beaconMesh = null;
         this.renderer = null;
+    },
+
+    abort() {
+        this.cleanup();
+        GameState.setMode('galaxy');
+        Galaxy.show();
     }
-};

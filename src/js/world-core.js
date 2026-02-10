@@ -48,6 +48,9 @@ const WorldMode = {
         window.addEventListener('keydown', this.keyDown);
         window.addEventListener('keyup', this.keyUp);
 
+        // Set mode to world so main loop renders us
+        GameState.setMode('world');
+
         // HUD
         if (typeof HUD !== 'undefined') {
             HUD.setWorld(worldId);

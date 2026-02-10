@@ -61,6 +61,7 @@
         if (e.code === 'Escape') {
             if (Bridge.open) { Bridge.close(); return; }
             if (GameState.mode === 'approach') { Approach.abort(); return; }
+            if (GameState.mode === 'landing') { Landing.abort(); return; }
             if (GameState.mode === 'world') {
                 // Return to galaxy
                 WorldMode.cleanup();
@@ -83,6 +84,8 @@
             const worldId = WORLD_IDS[idx];
             if (worldId) {
                 if (GameState.mode === 'world') WorldMode.cleanup();
+                if (GameState.mode === 'approach') Approach.abort();
+                if (GameState.mode === 'landing') Landing.abort();
                 if (GameState.mode === 'galaxy') Galaxy.hide();
                 Approach.start(worldId);
             }
