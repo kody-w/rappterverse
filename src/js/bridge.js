@@ -284,11 +284,14 @@ const Bridge = {
     },
 
     _getChatData() {
-        return GameState.data.chat.slice(-12).map(m => {
-            const name = m.sender || m.agentId || m.author?.name || 'Unknown';
-            const text = (m.text || m.message || m.content || '').slice(0, 36);
-            return `${name}: ${text}`;
-        });
+        return GameState.data.chat.slice(-12)
+            .map(m => {
+                const name = m.author?.name || m.agentId || 'Anon';
+                const text = (m.content || m.message || '').slice(0, 36);
+                if (!text) return null;
+                return `${name}: ${text}`;
+            })
+            .filter(Boolean);
     },
 
     _getActionData() {
