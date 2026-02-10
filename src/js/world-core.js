@@ -253,6 +253,10 @@ const WorldMode = {
         }
     },
 
+    pokeAgent() {
+        WorldAgents.poke(this.currentWorld);
+    },
+
     render() {
         if (!this.active) return;
         GameState.renderer.render(this.scene, this.camera);

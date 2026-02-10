@@ -4,6 +4,7 @@ const WorldAgents = {
     portalMeshes: [],
     objectMeshes: [],
     interactTarget: null,
+    pokeTarget: null,
 
     syncAgents(scene, worldId) {
         const agents = GameState.getWorldAgents(worldId);
@@ -221,14 +222,36 @@ const WorldAgents = {
             }
         });
 
+        // Check nearby agents for poke
+        let nearestAgent = null;
+        let nearestAgentDist = 5;
+        Object.entries(this.agentMeshes).forEach(([id, mesh]) => {
+            const pos = mesh.group.position;
+            const dist = Math.sqrt((playerPos.x - pos.x) ** 2 + (playerPos.z - pos.z) ** 2);
+            if (dist < nearestAgentDist) {
+                nearestAgent = { id, name: id, position: pos };
+                nearestAgentDist = dist;
+                // Resolve display name from state
+                const agentData = GameState.data.agents.find(a => a.id === id);
+                if (agentData) nearestAgent.name = agentData.name || id;
+            }
+        });
+
         const prompt = document.getElementById('interaction-prompt');
         if (nearest) {
             prompt.textContent = `Press E → ${nearest.name}`;
             prompt.classList.add('visible');
             this.interactTarget = nearest;
+            this.pokeTarget = null;
+        } else if (nearestAgent) {
+            prompt.textContent = `Press F → Poke ${nearestAgent.name}`;
+            prompt.classList.add('visible');
+            this.interactTarget = null;
+            this.pokeTarget = nearestAgent;
         } else {
             prompt.classList.remove('visible');
             this.interactTarget = null;
+            this.pokeTarget = null;
         }
     },
 
@@ -240,6 +263,98 @@ const WorldAgents = {
         return false;
     },
 
+    poke(worldId) {
+        if (!this.pokeTarget) return;
+        const target = this.pokeTarget;
+        this.pokeTarget = null;
+
+        // Visual feedback — flash the agent's ground ring
+        const mesh = this.agentMeshes[target.id];
+        if (mesh && mesh.group) {
+            const ring = mesh.group.children.find(c => c.geometry && c.geometry.type === 'RingGeometry');
+            if (ring) {
+                const origColor = ring.material.color.getHex();
+                ring.material.color.setHex(0xffff00);
+                ring.material.opacity = 0.8;
+                setTimeout(() => {
+                    ring.material.color.setHex(origColor);
+                    ring.material.opacity = 0.3;
+                }, 1500);
+            }
+        }
+
+        // Show toast
+        this._showToast(`👉 Poked ${target.name}!`);
+
+        // Fire repository_dispatch to trigger agent response
+        this._firePokeDispatch(target.id, worldId);
+    },
+
+    _showToast(message) {
+        let toast = document.getElementById('poke-toast');
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.id = 'poke-toast';
+            toast.style.cssText = `
+                position: fixed; top: 80px; left: 50%; transform: translateX(-50%);
+                background: rgba(10,10,26,0.9); border: 1px solid #ffcc00;
+                padding: 10px 24px; border-radius: 8px; font-size: 14px;
+                color: #ffcc00; letter-spacing: 1px; z-index: 9999;
+                font-family: monospace; transition: opacity 0.3s;
+            `;
+            document.body.appendChild(toast);
+        }
+        toast.textContent = message;
+        toast.style.opacity = '1';
+        toast.style.display = 'block';
+        clearTimeout(this._toastTimeout);
+        this._toastTimeout = setTimeout(() => {
+            toast.style.opacity = '0';
+            setTimeout(() => { toast.style.display = 'none'; }, 300);
+        }, 3000);
+    },
+
+    async _firePokeDispatch(agentId, worldId) {
+        // Record poke locally in state so it shows up immediately
+        const pokeMsg = {
+            id: `msg-poke-${Date.now()}`,
+            timestamp: new Date().toISOString(),
+            world: worldId,
+            author: { id: 'player', name: 'You', avatar: '👤', type: 'human' },
+            content: `👉 poked ${agentId}`,
+            type: 'poke'
+        };
+        GameState.data.chat.push(pokeMsg);
+
+        // Fire repository_dispatch (requires a GitHub token)
+        // This triggers agent-autonomy.yml which makes the agent respond
+        try {
+            const res = await fetch(`https://api.github.com/repos/${REPO}/dispatches`, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/vnd.github.v3+json',
+                    'Authorization': `Bearer ${GameState.pokeToken || ''}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    event_type: 'agent-action',
+                    client_payload: {
+                        agent_id: agentId,
+                        poke: true,
+                        world: worldId
+                    }
+                })
+            });
+            if (res.status === 204) {
+                this._showToast(`👉 Poked ${agentId} — they'll respond shortly!`);
+            } else if (res.status === 401 || res.status === 404) {
+                console.log('[POKE] No token or unauthorized — poke recorded locally only');
+            }
+        } catch(e) {
+            console.log('[POKE] Dispatch failed (offline?) — poke recorded locally', e.message);
+        }
+    },
+
     cleanup(scene) {
         Object.values(this.agentMeshes).forEach(a => scene.remove(a.group));
         this.agentMeshes = {};
@@ -248,5 +363,6 @@ const WorldAgents = {
         this.objectMeshes.forEach(m => scene.remove(m));
         this.objectMeshes = [];
         this.interactTarget = null;
+        this.pokeTarget = null;
     }
 };

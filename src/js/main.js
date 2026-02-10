@@ -57,6 +57,12 @@
             return;
         }
 
+        // Poke agent
+        if (e.code === 'KeyF' && GameState.mode === 'world') {
+            WorldMode.pokeAgent();
+            return;
+        }
+
         // Equipment toggle
         if (e.code === 'KeyG' && GameState.mode === 'world') {
             if (typeof Equipment !== 'undefined') Equipment.toggle();

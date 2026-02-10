@@ -233,7 +233,7 @@ def pick_dialogue_line(npc_def: dict) -> str:
 def execute_agent_action(agent_id: str, registry: dict, npc_lookup: dict,
                          agents: list, actions: list, messages: list,
                          bounds: dict, timestamp: str, token: str,
-                         respond_to_msg: dict = None) -> dict:
+                         respond_to_msg: dict = None, poked: bool = False) -> dict:
     """Execute one autonomous action for an agent. Returns summary dict."""
 
     reg = registry.get(agent_id)
@@ -259,6 +259,8 @@ def execute_agent_action(agent_id: str, registry: dict, npc_lookup: dict,
     # If responding to a specific message, always chat
     if respond_to_msg:
         activity = "chat_respond"
+    elif poked:
+        activity = "chat_poke"
     else:
         activity = random.choices(
             list(weights.keys()),
@@ -289,15 +291,34 @@ def execute_agent_action(agent_id: str, registry: dict, npc_lookup: dict,
         agent["action"] = "walking"
         summary = f"🚶 {reg['name']} moved in {world}"
 
-    elif activity in ("chat", "chat_respond"):
+    elif activity in ("chat", "chat_respond", "chat_poke"):
         # Try LLM response first, fall back to dialogue lines
-        if token and (respond_to_msg or random.random() < 0.4):
+        if token and (respond_to_msg or poked or random.random() < 0.4):
+            poke_msg = None
+            if poked:
+                # Synthesize a poke trigger message
+                poke_msg = {
+                    "author": {"name": "Someone"},
+                    "content": f"*pokes {reg.get('name', agent_id)}*",
+                }
             content = generate_llm_response(
                 token, reg, npc_def, messages,
-                trigger_msg=respond_to_msg,
+                trigger_msg=respond_to_msg or poke_msg,
             )
         else:
             content = ""
+
+        if not content and poked:
+            # Poke-specific fallback reactions
+            name = reg.get("name", agent_id)
+            poke_reactions = [
+                f"Hey! Who poked me?",
+                f"*turns around* ...was that you?",
+                f"I felt that! What do you want?",
+                f"*jumps* Oh! You startled me.",
+                f"Hmm? Need something?",
+            ]
+            content = random.choice(poke_reactions)
 
         if not content:
             content = pick_dialogue_line(npc_def)
@@ -336,12 +357,14 @@ def execute_agent_action(agent_id: str, registry: dict, npc_lookup: dict,
             action_data = {"message": content}
             if respond_to_msg:
                 action_data["respondingTo"] = respond_to_msg.get("id")
+            if poked:
+                action_data["trigger"] = "poke"
             new_actions.append({
                 "id": aid, "timestamp": timestamp, "agentId": agent_id,
                 "type": "chat", "world": world, "data": action_data,
             })
 
-            prefix = "💬" if not respond_to_msg else "↩️"
+            prefix = "👉" if poked else ("↩️" if respond_to_msg else "💬")
             summary = f'{prefix} {reg["name"]}: "{content[:60]}..."'
 
     elif activity == "emote":
@@ -417,6 +440,7 @@ def main():
     parser.add_argument("--no-push", action="store_true", help="Don't git commit/push")
     parser.add_argument("--dry-run", action="store_true", help="Preview only")
     parser.add_argument("--no-llm", action="store_true", help="Use dialogue lines only, no LLM")
+    parser.add_argument("--poke", action="store_true", help="Agent was poked — force chat reaction")
     args = parser.parse_args()
 
     now = datetime.now(timezone.utc)
@@ -515,6 +539,7 @@ def main():
         result = execute_agent_action(
             aid, registry, npc_lookup, agents, actions, messages,
             bounds, timestamp, token, respond_to_msg=respond_to_msg,
+            poked=args.poke,
         )
         results.append(result)
 

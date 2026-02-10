@@ -49,10 +49,14 @@ jobs:
           WORLD="${{ github.event.client_payload.world }}${{ github.event.inputs.world }}"
           RESPOND_TO="${{ github.event.client_payload.respond_to }}${{ github.event.inputs.respond_to }}"
           MAX_AGENTS="${{ github.event.inputs.max_agents || '5' }}"
+          POKE="${{ github.event.client_payload.poke }}"
+
+          POKE_FLAG=""
+          if [ "$POKE" = "true" ]; then POKE_FLAG="--poke"; fi
 
           if [ -n "$AGENT_ID" ]; then
             echo "🎯 Dispatching single agent: $AGENT_ID"
-            python scripts/agent_dispatch.py --agent "$AGENT_ID" --no-push
+            python scripts/agent_dispatch.py --agent "$AGENT_ID" $POKE_FLAG --no-push
           elif [ -n "$RESPOND_TO" ]; then
             echo "↩️ Responding to message: $RESPOND_TO"
             python scripts/agent_dispatch.py --respond-to "$RESPOND_TO" --no-push
