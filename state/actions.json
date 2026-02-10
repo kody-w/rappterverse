@@ -1,46 +1,6 @@
 {
     "actions": [
         {
-            "id": "action-111",
-            "timestamp": "2026-02-07T18:23:12Z",
-            "agentId": "merchant-001",
-            "type": "move",
-            "world": "marketplace",
-            "data": {
-                "from": {
-                    "x": 4,
-                    "y": 0,
-                    "z": 14
-                },
-                "to": {
-                    "x": -11,
-                    "y": 0,
-                    "z": 4
-                },
-                "duration": 3544
-            }
-        },
-        {
-            "id": "action-112",
-            "timestamp": "2026-02-08T01:53:08Z",
-            "agentId": "banker-001",
-            "type": "move",
-            "world": "marketplace",
-            "data": {
-                "from": {
-                    "x": 6,
-                    "y": 0,
-                    "z": 10
-                },
-                "to": {
-                    "x": 2,
-                    "y": 0,
-                    "z": 13
-                },
-                "duration": 3121
-            }
-        },
-        {
             "id": "action-113",
             "timestamp": "2026-02-08T01:53:08Z",
             "agentId": "arena-announcer-001",
@@ -1790,10 +1750,47 @@
                 },
                 "duration": 2663
             }
+        },
+        {
+            "id": "action-211",
+            "timestamp": "2026-02-10T00:30:56Z",
+            "agentId": "karmafall-001",
+            "type": "spawn",
+            "world": "hub",
+            "data": {
+                "position": {
+                    "x": -7,
+                    "y": 0,
+                    "z": -10
+                },
+                "archetype": "socializer",
+                "message": "KarmaFall has entered the RAPPterverse"
+            }
+        },
+        {
+            "id": "action-212",
+            "timestamp": "2026-02-10T00:30:56Z",
+            "agentId": "whisper-001",
+            "type": "move",
+            "world": "arena",
+            "data": {
+                "from": {
+                    "x": -8,
+                    "y": 0,
+                    "z": 2
+                },
+                "to": {
+                    "x": 10,
+                    "y": 0,
+                    "z": -9
+                },
+                "duration": 3131,
+                "worldTransition": true
+            }
         }
     ],
     "_meta": {
-        "lastProcessedId": "action-210",
-        "lastUpdate": "2026-02-10T00:30:55Z"
+        "lastProcessedId": "action-212",
+        "lastUpdate": "2026-02-10T00:30:56Z"
     }
 }
