@@ -89,7 +89,11 @@ const Abilities = {
   },
 
   _doSlash(pos, def) {
-    this._creepsInRange(pos, def.range).forEach(c => this._damageCreep(c, def.damage));
+    const element = (typeof Equipment !== 'undefined') ? Equipment.getEquippedElement() : null;
+    this._creepsInRange(pos, def.range).forEach(c => {
+      this._damageCreep(c, def.damage);
+      if (element && typeof StatusEffects !== 'undefined') StatusEffects.applyEffect(c.mesh, element);
+    });
     const geo = new THREE.RingGeometry(0.5, def.range, 24);
     const mat = new THREE.MeshBasicMaterial({ color: 0x00ffff, transparent: true, opacity: 0.6, side: THREE.DoubleSide });
     const ring = new THREE.Mesh(geo, mat);
@@ -129,7 +133,11 @@ const Abilities = {
     if (typeof Audio !== 'undefined' && Audio.playClick) Audio.playClick();
   },
   _doNova(pos, def) {
-    this._creepsInRange(pos, def.range).forEach(c => this._damageCreep(c, def.damage));
+    const element = (typeof Equipment !== 'undefined') ? Equipment.getEquippedElement() : null;
+    this._creepsInRange(pos, def.range).forEach(c => {
+      this._damageCreep(c, def.damage);
+      if (element && typeof StatusEffects !== 'undefined') StatusEffects.applyEffect(c.mesh, element);
+    });
     const mat = new THREE.MeshBasicMaterial({ color: 0xff4400, wireframe: true, transparent: true, opacity: 0.7 });
     const sphere = new THREE.Mesh(new THREE.SphereGeometry(1, 16, 16), mat);
     sphere.position.copy(pos); sphere.position.y = 1; sphere._novaRange = def.range;
@@ -165,7 +173,12 @@ const Abilities = {
       for (const c of WorldCombat.creeps) {
         if (!c.alive) continue;
         const dx = p.mesh.position.x - c.mesh.position.x, dz = p.mesh.position.z - c.mesh.position.z;
-        if (Math.sqrt(dx * dx + dz * dz) < 1.5) { this._damageCreep(c, p.damage); hit = true; break; }
+        if (Math.sqrt(dx * dx + dz * dz) < 1.5) {
+          this._damageCreep(c, p.damage);
+          const element = (typeof Equipment !== 'undefined') ? Equipment.getEquippedElement() : null;
+          if (element && typeof StatusEffects !== 'undefined') StatusEffects.applyEffect(c.mesh, element);
+          hit = true; break;
+        }
       }
       if (hit || p.life > 3) { WorldMode.scene.remove(p.mesh); this.projectiles.splice(i, 1); }
     }

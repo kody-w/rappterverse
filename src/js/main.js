@@ -57,6 +57,12 @@
             return;
         }
 
+        // Equipment toggle
+        if (e.code === 'KeyG' && GameState.mode === 'world') {
+            if (typeof Equipment !== 'undefined') Equipment.toggle();
+            return;
+        }
+
         // Escape
         if (e.code === 'Escape') {
             if (Bridge.open) { Bridge.close(); return; }

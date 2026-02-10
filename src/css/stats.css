@@ -283,7 +283,10 @@
 .cinematic-active #combo-display,
 .cinematic-active #minimap,
 .cinematic-active #level-badge,
-.cinematic-active #inventory-panel {
+.cinematic-active #inventory-panel,
+.cinematic-active #equipment-panel,
+.cinematic-active #enemy-hero-hud,
+.cinematic-active #status-effects-strip {
     display: none !important;
 }
 .cinematic-active .cinematic-letterbox { height: 10%; }
@@ -300,3 +303,122 @@
 }
 .cinematic-letterbox-top { top: 0; }
 .cinematic-letterbox-bottom { bottom: 0; }
+
+/* ── Status Effects Strip ── */
+#status-effects-strip {
+    position: fixed;
+    bottom: 72px;
+    left: 16px;
+    display: flex;
+    gap: 6px;
+    z-index: var(--z-ui, 100);
+    pointer-events: none;
+}
+
+.status-effect-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    border: 1.5px solid;
+    background: rgba(0,0,0,0.7);
+    position: relative;
+}
+
+.status-effect-icon .effect-timer {
+    font-size: 9px;
+    font-family: var(--font-mono, monospace);
+    color: #fff;
+    margin-top: 1px;
+}
+
+.status-effect-icon.ice    { border-color: #88ccff; text-shadow: 0 0 6px #88ccff; }
+.status-effect-icon.fire   { border-color: #ff4400; text-shadow: 0 0 6px #ff4400; }
+.status-effect-icon.void   { border-color: #8800ff; text-shadow: 0 0 6px #8800ff; }
+.status-effect-icon.cosmic { border-color: #ffd700; text-shadow: 0 0 6px #ffd700; }
+
+/* ── Enemy Hero HUD ── */
+#enemy-hero-hud {
+    position: fixed;
+    top: 60px;
+    right: 16px;
+    width: 220px;
+    background: rgba(5,5,20,0.88);
+    border: 1px solid #cc3333;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-family: var(--font-mono, monospace);
+    z-index: var(--z-ui, 100);
+    display: none;
+}
+
+#enemy-hero-hud.visible { display: block; }
+
+.hero-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.hero-name {
+    color: #ff6644;
+    font-size: 13px;
+    font-weight: bold;
+    text-shadow: 0 0 8px rgba(255,102,68,0.5);
+}
+
+.hero-level {
+    color: #ffcc00;
+    font-size: 11px;
+    font-weight: bold;
+    background: rgba(255,204,0,0.15);
+    padding: 1px 6px;
+    border-radius: 4px;
+}
+
+.hero-bars { display: flex; flex-direction: column; gap: 4px; margin-bottom: 6px; }
+
+.hero-bar {
+    height: 10px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.hero-bar.hp .hero-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #cc2200, #ff4422);
+    width: 100%;
+    transition: width 0.3s;
+    border-radius: 3px;
+}
+
+.hero-bar.mana .hero-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #2244cc, #4488ff);
+    width: 100%;
+    transition: width 0.3s;
+    border-radius: 3px;
+}
+
+.hero-stats {
+    margin-bottom: 4px;
+}
+
+.hero-kda {
+    color: #8899aa;
+    font-size: 10px;
+}
+
+.hero-ai-state {
+    font-size: 11px;
+    font-weight: bold;
+    color: #ff8844;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}

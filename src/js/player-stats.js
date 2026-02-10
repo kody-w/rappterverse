@@ -26,8 +26,17 @@ const PlayerStats = {
   },
 
   takeDamage(amount) {
-    if (this.dead) return;
-    this.hp = Math.max(0, this.hp - amount);
+    if (this.dead || this.shielded) return;
+    let dmg = amount;
+    if (typeof Equipment !== 'undefined') {
+      const stats = Equipment.getStats();
+      dmg = Math.max(1, dmg - (stats.defense || 0) * 0.3);
+      if (stats.dodgeChance && Math.random() < stats.dodgeChance) {
+        if (typeof HUD !== 'undefined') HUD.showToast('DODGED!');
+        return;
+      }
+    }
+    this.hp = Math.max(0, this.hp - dmg);
     this.damageFlashTimer = 0.3;
     if (typeof Audio !== 'undefined' && Audio.playHit) Audio.playHit();
     if (this.hp <= 0) this.die();
@@ -137,6 +146,11 @@ const PlayerStats = {
   },
 
   getDamage() {
-    return this.baseDamage;
+    let dmg = this.baseDamage;
+    if (typeof Equipment !== 'undefined') {
+      const stats = Equipment.getStats();
+      dmg += stats.damage || 0;
+    }
+    return dmg;
   }
 };

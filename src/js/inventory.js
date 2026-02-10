@@ -74,10 +74,19 @@ const Inventory = {
     droppedItems: [],
 
     ITEMS: {
-        health_potion: { id: 'health_potion', name: 'Health Potion', icon: '❤️', stackable: true, maxStack: 10, dropWeight: 40 },
-        mana_crystal:  { id: 'mana_crystal',  name: 'Mana Crystal',  icon: '💎', stackable: true, maxStack: 10, dropWeight: 30 },
-        scrap_metal:   { id: 'scrap_metal',   name: 'Scrap Metal',   icon: '⚙️', stackable: true, maxStack: 20, dropWeight: 20 },
-        power_cell:    { id: 'power_cell',    name: 'Power Cell',    icon: '🔋', stackable: true, maxStack: 5,  dropWeight: 10 },
+        health_potion: { id: 'health_potion', name: 'Health Potion', icon: '❤️', stackable: true, maxStack: 10, dropWeight: 30 },
+        mana_crystal:  { id: 'mana_crystal',  name: 'Mana Crystal',  icon: '💎', stackable: true, maxStack: 10, dropWeight: 25 },
+        scrap_metal:   { id: 'scrap_metal',   name: 'Scrap Metal',   icon: '⚙️', stackable: false, maxStack: 1, dropWeight: 12 },
+        power_cell:    { id: 'power_cell',    name: 'Power Cell',    icon: '🔋', stackable: false, maxStack: 1, dropWeight: 8 },
+        frost_blade:   { id: 'frost_blade',   name: 'Frost Blade',   icon: '🗡️', stackable: false, maxStack: 1, dropWeight: 5 },
+        magma_sword:   { id: 'magma_sword',   name: 'Magma Sword',   icon: '🗡️', stackable: false, maxStack: 1, dropWeight: 4 },
+        void_dagger:   { id: 'void_dagger',   name: 'Void Dagger',   icon: '🗡️', stackable: false, maxStack: 1, dropWeight: 3 },
+        star_blade:    { id: 'star_blade',    name: 'Star Blade',    icon: '🗡️', stackable: false, maxStack: 1, dropWeight: 1 },
+        guardian_plate: { id: 'guardian_plate', name: 'Guardian Plate', icon: '🛡️', stackable: false, maxStack: 1, dropWeight: 4 },
+        nano_armor:    { id: 'nano_armor',    name: 'Nano Armor',    icon: '🛡️', stackable: false, maxStack: 1, dropWeight: 4 },
+        berserker_badge: { id: 'berserker_badge', name: 'Berserker Badge', icon: '🏅', stackable: false, maxStack: 1, dropWeight: 3 },
+        vampiric_fang: { id: 'vampiric_fang', name: 'Vampiric Fang', icon: '🦷', stackable: false, maxStack: 1, dropWeight: 3 },
+        swift_boots:   { id: 'swift_boots',   name: 'Swift Boots',   icon: '👢', stackable: false, maxStack: 1, dropWeight: 3 },
     },
 
     init() {
@@ -136,17 +145,29 @@ const Inventory = {
 
         if (id === 'health_potion') {
             if (typeof PlayerStats !== 'undefined') PlayerStats.heal(30);
-            if (typeof HUD !== 'undefined') HUD.showToast('❤️ Healed +30 HP');
+            if (typeof HUD !== 'undefined') HUD.showToast('Healed +30 HP');
             this.removeItem(slotIndex);
         } else if (id === 'mana_crystal') {
             if (typeof PlayerStats !== 'undefined') PlayerStats.restoreMp(20);
-            if (typeof HUD !== 'undefined') HUD.showToast('💎 Restored +20 MP');
+            if (typeof HUD !== 'undefined') HUD.showToast('Restored +20 MP');
             this.removeItem(slotIndex);
+        } else if (typeof Equipment !== 'undefined' && Equipment.isEquippable(slot.item.name)) {
+            const displaced = Equipment.equipItem(slot.item.name);
+            this.removeItem(slotIndex);
+            if (displaced) this.addItem(this._nameToId(displaced));
+            if (typeof HUD !== 'undefined') HUD.showToast(`Equipped ${slot.item ? slot.item.name : 'item'}`);
         } else {
             if (typeof HUD !== 'undefined') HUD.showToast('Used for crafting');
         }
         this.renderGrid();
         if (typeof Audio !== 'undefined') Audio.playClick();
+    },
+
+    _nameToId(name) {
+        for (const [id, item] of Object.entries(this.ITEMS)) {
+            if (item.name === name) return id;
+        }
+        return null;
     },
 
     removeItem(slotIndex, count) {
@@ -185,7 +206,11 @@ const Inventory = {
         for (const e of entries) { roll -= e.dropWeight; if (roll <= 0) { picked = e; break; } }
 
         if (typeof THREE === 'undefined') return;
-        const colors = { health_potion: 0xff4444, mana_crystal: 0x4488ff, scrap_metal: 0x888888, power_cell: 0x44ff44 };
+        const colors = {
+            health_potion: 0xff4444, mana_crystal: 0x4488ff, scrap_metal: 0x888888, power_cell: 0x44ff44,
+            frost_blade: 0x88ccff, magma_sword: 0xff4400, void_dagger: 0x8800ff, star_blade: 0xffd700,
+            guardian_plate: 0x4488aa, nano_armor: 0x44cc88, berserker_badge: 0xff6622, vampiric_fang: 0xcc0044, swift_boots: 0x66aaff
+        };
         const geo = new THREE.BoxGeometry(0.4, 0.4, 0.4);
         const mat = new THREE.MeshStandardMaterial({ color: colors[picked.id] || 0xffffff, emissive: colors[picked.id] || 0xffffff, emissiveIntensity: 0.5 });
         const mesh = new THREE.Mesh(geo, mat);

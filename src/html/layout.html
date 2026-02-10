@@ -108,6 +108,9 @@
 <div id="damage-vignette"></div>
 <div id="death-overlay"><div class="death-title">DESTROYED</div><div class="death-timer" id="death-timer">Respawning in 3...</div></div>
 
+<!-- ===== STATUS EFFECTS STRIP ===== -->
+<div id="status-effects-strip"></div>
+
 <!-- ===== ABILITY BAR ===== -->
 <div id="ability-bar">
     <div class="ability-slot ready" data-ability="0"><span class="ability-key">1</span>⚔️</div>
@@ -130,10 +133,49 @@
     <div class="inventory-grid" id="inventory-grid"></div>
 </div>
 
+<!-- ===== EQUIPMENT PANEL ===== -->
+<div id="equipment-panel">
+    <div class="equip-title">EQUIPMENT</div>
+    <div class="equip-slots">
+        <div class="equip-slot" data-slot="weapon">
+            <span class="slot-label">Weapon</span>
+            <span class="slot-item">Empty</span>
+            <span class="slot-stats"></span>
+        </div>
+        <div class="equip-slot" data-slot="armor">
+            <span class="slot-label">Armor</span>
+            <span class="slot-item">Empty</span>
+            <span class="slot-stats"></span>
+        </div>
+        <div class="equip-slot" data-slot="accessory">
+            <span class="slot-label">Accessory</span>
+            <span class="slot-item">Empty</span>
+            <span class="slot-stats"></span>
+        </div>
+    </div>
+    <div class="equip-totals"></div>
+</div>
+
 <!-- ===== CINEMATIC OVERLAYS ===== -->
 <div class="cinematic-grain"></div>
 <div class="cinematic-letterbox cinematic-letterbox-top"></div>
 <div class="cinematic-letterbox cinematic-letterbox-bottom"></div>
+
+<!-- ===== ENEMY HERO HUD ===== -->
+<div id="enemy-hero-hud">
+    <div class="hero-header">
+        <span class="hero-name">Primal Ravager</span>
+        <span class="hero-level">Lv.1</span>
+    </div>
+    <div class="hero-bars">
+        <div class="hero-bar hp"><div class="hero-bar-fill"></div></div>
+        <div class="hero-bar mana"><div class="hero-bar-fill"></div></div>
+    </div>
+    <div class="hero-stats">
+        <span class="hero-kda">K:0 D:0 CS:0</span>
+    </div>
+    <div class="hero-ai-state">IDLE</div>
+</div>
 
 <!-- ===== HUD (TOP BAR) ===== -->
 <div class="top-bar" id="top-bar">

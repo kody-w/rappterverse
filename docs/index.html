@@ -1558,7 +1558,10 @@ body {
 .cinematic-active #combo-display,
 .cinematic-active #minimap,
 .cinematic-active #level-badge,
-.cinematic-active #inventory-panel {
+.cinematic-active #inventory-panel,
+.cinematic-active #equipment-panel,
+.cinematic-active #enemy-hero-hud,
+.cinematic-active #status-effects-strip {
     display: none !important;
 }
 .cinematic-active .cinematic-letterbox { height: 10%; }
@@ -1575,6 +1578,245 @@ body {
 }
 .cinematic-letterbox-top { top: 0; }
 .cinematic-letterbox-bottom { bottom: 0; }
+
+/* ── Status Effects Strip ── */
+#status-effects-strip {
+    position: fixed;
+    bottom: 72px;
+    left: 16px;
+    display: flex;
+    gap: 6px;
+    z-index: var(--z-ui, 100);
+    pointer-events: none;
+}
+
+.status-effect-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    border: 1.5px solid;
+    background: rgba(0,0,0,0.7);
+    position: relative;
+}
+
+.status-effect-icon .effect-timer {
+    font-size: 9px;
+    font-family: var(--font-mono, monospace);
+    color: #fff;
+    margin-top: 1px;
+}
+
+.status-effect-icon.ice    { border-color: #88ccff; text-shadow: 0 0 6px #88ccff; }
+.status-effect-icon.fire   { border-color: #ff4400; text-shadow: 0 0 6px #ff4400; }
+.status-effect-icon.void   { border-color: #8800ff; text-shadow: 0 0 6px #8800ff; }
+.status-effect-icon.cosmic { border-color: #ffd700; text-shadow: 0 0 6px #ffd700; }
+
+/* ── Enemy Hero HUD ── */
+#enemy-hero-hud {
+    position: fixed;
+    top: 60px;
+    right: 16px;
+    width: 220px;
+    background: rgba(5,5,20,0.88);
+    border: 1px solid #cc3333;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-family: var(--font-mono, monospace);
+    z-index: var(--z-ui, 100);
+    display: none;
+}
+
+#enemy-hero-hud.visible { display: block; }
+
+.hero-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.hero-name {
+    color: #ff6644;
+    font-size: 13px;
+    font-weight: bold;
+    text-shadow: 0 0 8px rgba(255,102,68,0.5);
+}
+
+.hero-level {
+    color: #ffcc00;
+    font-size: 11px;
+    font-weight: bold;
+    background: rgba(255,204,0,0.15);
+    padding: 1px 6px;
+    border-radius: 4px;
+}
+
+.hero-bars { display: flex; flex-direction: column; gap: 4px; margin-bottom: 6px; }
+
+.hero-bar {
+    height: 10px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.hero-bar.hp .hero-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #cc2200, #ff4422);
+    width: 100%;
+    transition: width 0.3s;
+    border-radius: 3px;
+}
+
+.hero-bar.mana .hero-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #2244cc, #4488ff);
+    width: 100%;
+    transition: width 0.3s;
+    border-radius: 3px;
+}
+
+.hero-stats {
+    margin-bottom: 4px;
+}
+
+.hero-kda {
+    color: #8899aa;
+    font-size: 10px;
+}
+
+.hero-ai-state {
+    font-size: 11px;
+    font-weight: bold;
+    color: #ff8844;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* === css/equipment.css === */
+/* ============================================================
+   Equipment Panel — RAPPterverse
+   ============================================================ */
+
+#equipment-panel {
+  display: none;
+  position: fixed;
+  top: 80px;
+  right: 16px;
+  width: 280px;
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+  background: rgba(5, 10, 25, 0.92);
+  border: 1px solid var(--accent-cyan, #0ff);
+  border-radius: var(--radius-lg, 10px);
+  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', monospace;
+  z-index: var(--z-panel, 1000);
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.15);
+  padding: var(--space-3, 12px);
+}
+
+#equipment-panel.visible {
+  display: block;
+}
+
+/* ── Title ──────────────────────────────────────────────── */
+.equip-title {
+  text-align: center;
+  font-size: var(--font-sm, 12px);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-cyan, #0ff);
+  padding-bottom: var(--space-2, 8px);
+  margin-bottom: var(--space-2, 8px);
+  border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+}
+
+/* ── Slots Container ────────────────────────────────────── */
+.equip-slots {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2, 8px);
+}
+
+/* ── Individual Slot ────────────────────────────────────── */
+.equip-slot {
+  padding: var(--space-2, 8px) var(--space-3, 12px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-md, 6px);
+  background: rgba(255, 255, 255, 0.02);
+  transition: box-shadow var(--transition-fast, 0.1s);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.equip-slot:hover {
+  box-shadow: 0 0 8px rgba(0, 255, 255, 0.18);
+}
+
+.equip-slot.equipped {
+  border-left: 3px solid var(--accent-cyan, #0ff);
+}
+
+.equip-label {
+  font-size: var(--font-xs, 10px);
+  color: rgba(0, 255, 255, 0.55);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.equip-name {
+  font-size: var(--font-base, 14px);
+  color: var(--text-primary, #fff);
+  font-weight: 600;
+}
+
+.equip-empty {
+  font-size: var(--font-sm, 12px);
+  color: var(--text-muted, #888);
+  font-style: italic;
+}
+
+.equip-stats {
+  font-size: var(--font-xs, 10px);
+  color: rgba(0, 255, 255, 0.7);
+}
+
+.equip-element {
+  font-size: var(--font-xs, 10px);
+  color: var(--accent-gold, #fb0);
+  text-transform: capitalize;
+}
+
+/* ── Aggregated Stats ───────────────────────────────────── */
+.equip-summary {
+  margin-top: var(--space-3, 12px);
+  padding-top: var(--space-2, 8px);
+  border-top: 1px solid rgba(0, 255, 255, 0.2);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1, 4px) var(--space-3, 12px);
+}
+
+.equip-stat-line {
+  font-size: var(--font-xs, 10px);
+  color: rgba(0, 255, 255, 0.7);
+}
+
+.equip-stat-line.bold {
+  font-weight: 700;
+  color: var(--text-primary, #fff);
+  font-size: var(--font-sm, 12px);
+}
+
+.equip-stat-line.element {
+  color: var(--accent-gold, #fb0);
+}
 
     </style>
 </head>
@@ -1689,6 +1931,9 @@ body {
 <div id="damage-vignette"></div>
 <div id="death-overlay"><div class="death-title">DESTROYED</div><div class="death-timer" id="death-timer">Respawning in 3...</div></div>
 
+<!-- ===== STATUS EFFECTS STRIP ===== -->
+<div id="status-effects-strip"></div>
+
 <!-- ===== ABILITY BAR ===== -->
 <div id="ability-bar">
     <div class="ability-slot ready" data-ability="0"><span class="ability-key">1</span>⚔️</div>
@@ -1711,10 +1956,49 @@ body {
     <div class="inventory-grid" id="inventory-grid"></div>
 </div>
 
+<!-- ===== EQUIPMENT PANEL ===== -->
+<div id="equipment-panel">
+    <div class="equip-title">EQUIPMENT</div>
+    <div class="equip-slots">
+        <div class="equip-slot" data-slot="weapon">
+            <span class="slot-label">Weapon</span>
+            <span class="slot-item">Empty</span>
+            <span class="slot-stats"></span>
+        </div>
+        <div class="equip-slot" data-slot="armor">
+            <span class="slot-label">Armor</span>
+            <span class="slot-item">Empty</span>
+            <span class="slot-stats"></span>
+        </div>
+        <div class="equip-slot" data-slot="accessory">
+            <span class="slot-label">Accessory</span>
+            <span class="slot-item">Empty</span>
+            <span class="slot-stats"></span>
+        </div>
+    </div>
+    <div class="equip-totals"></div>
+</div>
+
 <!-- ===== CINEMATIC OVERLAYS ===== -->
 <div class="cinematic-grain"></div>
 <div class="cinematic-letterbox cinematic-letterbox-top"></div>
 <div class="cinematic-letterbox cinematic-letterbox-bottom"></div>
+
+<!-- ===== ENEMY HERO HUD ===== -->
+<div id="enemy-hero-hud">
+    <div class="hero-header">
+        <span class="hero-name">Primal Ravager</span>
+        <span class="hero-level">Lv.1</span>
+    </div>
+    <div class="hero-bars">
+        <div class="hero-bar hp"><div class="hero-bar-fill"></div></div>
+        <div class="hero-bar mana"><div class="hero-bar-fill"></div></div>
+    </div>
+    <div class="hero-stats">
+        <span class="hero-kda">K:0 D:0 CS:0</span>
+    </div>
+    <div class="hero-ai-state">IDLE</div>
+</div>
 
 <!-- ===== HUD (TOP BAR) ===== -->
 <div class="top-bar" id="top-bar">
@@ -2280,8 +2564,17 @@ const PlayerStats = {
   },
 
   takeDamage(amount) {
-    if (this.dead) return;
-    this.hp = Math.max(0, this.hp - amount);
+    if (this.dead || this.shielded) return;
+    let dmg = amount;
+    if (typeof Equipment !== 'undefined') {
+      const stats = Equipment.getStats();
+      dmg = Math.max(1, dmg - (stats.defense || 0) * 0.3);
+      if (stats.dodgeChance && Math.random() < stats.dodgeChance) {
+        if (typeof HUD !== 'undefined') HUD.showToast('DODGED!');
+        return;
+      }
+    }
+    this.hp = Math.max(0, this.hp - dmg);
     this.damageFlashTimer = 0.3;
     if (typeof Audio !== 'undefined' && Audio.playHit) Audio.playHit();
     if (this.hp <= 0) this.die();
@@ -2391,8 +2684,351 @@ const PlayerStats = {
   },
 
   getDamage() {
-    return this.baseDamage;
+    let dmg = this.baseDamage;
+    if (typeof Equipment !== 'undefined') {
+      const stats = Equipment.getStats();
+      dmg += stats.damage || 0;
+    }
+    return dmg;
   }
+};
+
+// === js/status-effects.js ===
+/*  Status Effects – elemental debuffs applied to mobs (creeps / bosses)
+    Three.js r128 compatible – no ES modules, no CapsuleGeometry, no ShaderMaterial  */
+
+const STATUS_EFFECT_DEFS = {
+    ice:    { name: 'Frozen',      duration: 3000, color: 0x88ccff, icon: '❄', speedMod: 0.3, tickDamage: 0, tickRate: 0 },
+    fire:   { name: 'Burning',     duration: 4000, color: 0xff4400, icon: '🔥', speedMod: 1.0, tickDamage: 2, tickRate: 500 },
+    void:   { name: 'Weakened',    duration: 5000, color: 0x8800ff, icon: '💜', speedMod: 1.0, tickDamage: 0, tickRate: 0, damageMod: 0.5 },
+    cosmic: { name: 'Annihilated', duration: 3000, color: 0xffd700, icon: '✨', speedMod: 0.5, tickDamage: 5, tickRate: 250 }
+};
+
+const StatusEffects = (function () {
+
+    // All mobs that currently carry at least one effect
+    const _tracked = new Set();
+
+    /* ── helpers ─────────────────────────────────────────────── */
+
+    function _ensureStore(mob) {
+        if (!mob.userData) mob.userData = {};
+        if (!mob.userData.statusEffects) mob.userData.statusEffects = {};
+    }
+
+    function _storeOriginalEmissive(mob) {
+        if (mob.userData._origEmissive !== undefined) return;
+        var mat = mob.material;
+        if (mat && mat.emissive) {
+            mob.userData._origEmissive = mat.emissive.getHex();
+        } else {
+            mob.userData._origEmissive = 0x000000;
+        }
+    }
+
+    function _refreshEmissive(mob) {
+        var mat = mob.material;
+        if (!mat || !mat.emissive) return;
+        var effects = mob.userData.statusEffects;
+        var keys = Object.keys(effects);
+        if (keys.length === 0) {
+            mat.emissive.setHex(mob.userData._origEmissive || 0x000000);
+            return;
+        }
+        // Use the most recent effect's color
+        var latest = null;
+        for (var i = 0; i < keys.length; i++) {
+            var e = effects[keys[i]];
+            if (!latest || e.startTime >= latest.startTime) latest = e;
+        }
+        if (latest) mat.emissive.setHex(STATUS_EFFECT_DEFS[latest.element].color);
+    }
+
+    /* ── public API ──────────────────────────────────────────── */
+
+    return {
+
+        /** Apply (or refresh) an elemental effect on a mob. */
+        applyEffect: function (mob, element) {
+            var def = STATUS_EFFECT_DEFS[element];
+            if (!def) return;
+            _ensureStore(mob);
+            _storeOriginalEmissive(mob);
+
+            var existing = mob.userData.statusEffects[element];
+            var now = performance.now();
+
+            if (existing) {
+                // Refresh duration
+                existing.startTime = now;
+                existing.lastTick = now;
+            } else {
+                mob.userData.statusEffects[element] = {
+                    element: element,
+                    startTime: now,
+                    lastTick: now
+                };
+            }
+
+            _tracked.add(mob);
+            _refreshEmissive(mob);
+        },
+
+        /**
+         * Tick every frame. Processes DoT and expiration.
+         * Returns array of { mob, element, killed } events.
+         */
+        updateAll: function (delta, time) {
+            var events = [];
+            var now = performance.now();
+
+            _tracked.forEach(function (mob) {
+                var effects = mob.userData && mob.userData.statusEffects;
+                if (!effects) return;
+
+                var keys = Object.keys(effects);
+                var dirty = false;
+
+                for (var i = keys.length - 1; i >= 0; i--) {
+                    var el = keys[i];
+                    var eff = effects[el];
+                    var def = STATUS_EFFECT_DEFS[el];
+
+                    // Expiration check
+                    if (now > eff.startTime + def.duration) {
+                        delete effects[el];
+                        dirty = true;
+                        continue;
+                    }
+
+                    // DoT ticks
+                    if (def.tickDamage > 0 && def.tickRate > 0) {
+                        if (now - eff.lastTick >= def.tickRate) {
+                            var ticks = Math.floor((now - eff.lastTick) / def.tickRate);
+                            eff.lastTick += ticks * def.tickRate;
+                            mob.userData.hp -= def.tickDamage * ticks;
+
+                            if (mob.userData.hp <= 0) {
+                                events.push({ mob: mob, element: el, killed: true });
+                            } else {
+                                events.push({ mob: mob, element: el, killed: false });
+                            }
+                        }
+                    }
+                }
+
+                if (dirty) _refreshEmissive(mob);
+
+                // Remove mob from tracking when no effects remain
+                if (Object.keys(effects).length === 0) {
+                    _tracked.delete(mob);
+                }
+            });
+
+            return events;
+        },
+
+        /** Remove all effects from a mob and restore its original emissive. */
+        clearEffects: function (mob) {
+            if (!mob.userData) return;
+            mob.userData.statusEffects = {};
+            var mat = mob.material;
+            if (mat && mat.emissive) {
+                mat.emissive.setHex(mob.userData._origEmissive || 0x000000);
+            }
+            _tracked.delete(mob);
+        },
+
+        /** Return array of human-readable effect names for HUD display. */
+        getActiveEffects: function (mob) {
+            var out = [];
+            if (!mob.userData || !mob.userData.statusEffects) return out;
+            var effects = mob.userData.statusEffects;
+            var keys = Object.keys(effects);
+            for (var i = 0; i < keys.length; i++) {
+                var def = STATUS_EFFECT_DEFS[keys[i]];
+                if (def) out.push(def.icon + ' ' + def.name);
+            }
+            return out;
+        },
+
+        /** Combined speed multiplier (multiplicative). */
+        getSpeedMultiplier: function (mob) {
+            var mul = 1.0;
+            if (!mob.userData || !mob.userData.statusEffects) return mul;
+            var effects = mob.userData.statusEffects;
+            var keys = Object.keys(effects);
+            for (var i = 0; i < keys.length; i++) {
+                var def = STATUS_EFFECT_DEFS[keys[i]];
+                if (def) mul *= def.speedMod;
+            }
+            return mul;
+        },
+
+        /** Combined damage multiplier (for void debuff etc). */
+        getDamageMultiplier: function (mob) {
+            var mul = 1.0;
+            if (!mob.userData || !mob.userData.statusEffects) return mul;
+            var effects = mob.userData.statusEffects;
+            var keys = Object.keys(effects);
+            for (var i = 0; i < keys.length; i++) {
+                var def = STATUS_EFFECT_DEFS[keys[i]];
+                if (def && def.damageMod !== undefined) mul *= def.damageMod;
+            }
+            return mul;
+        },
+
+        /** Clear all tracked state. */
+        cleanup: function () {
+            _tracked.forEach(function (mob) {
+                if (mob.userData) mob.userData.statusEffects = {};
+            });
+            _tracked.clear();
+        }
+    };
+
+})();
+
+// === js/equipment.js ===
+// equipment.js — Equipment / Gear system
+
+const EQUIPMENT_SLOTS = {
+    weapon:    { name: 'Weapon',    icon: 'W', statKey: 'damage' },
+    armor:     { name: 'Armor',     icon: 'A', statKey: 'defense' },
+    accessory: { name: 'Accessory', icon: 'R', statKey: 'special' }
+};
+
+const EQUIPMENT_MAP = {
+    'Scrap Metal':    { slot: 'armor',     stats: { defense: 3 } },
+    'Power Cell':     { slot: 'accessory', stats: { energyRegen: 0.5 } },
+    'Frost Blade':    { slot: 'weapon',    stats: { damage: 8,  element: 'ice' } },
+    'Magma Sword':    { slot: 'weapon',    stats: { damage: 10, element: 'fire' } },
+    'Void Dagger':    { slot: 'weapon',    stats: { damage: 12, element: 'void' } },
+    'Star Blade':     { slot: 'weapon',    stats: { damage: 18, element: 'cosmic', critChance: 0.1 } },
+    'Guardian Plate': { slot: 'armor',     stats: { defense: 12, maxHpBonus: 30 } },
+    'Nano Armor':     { slot: 'armor',     stats: { defense: 8,  hpRegen: 1 } },
+    'Berserker Badge':{ slot: 'accessory', stats: { damage: 8, attackSpeed: 1.2 } },
+    'Vampiric Fang':  { slot: 'accessory', stats: { damage: 5, lifesteal: 0.12 } },
+    'Swift Boots':    { slot: 'accessory', stats: { moveSpeed: 1.15, dodgeChance: 0.08 } }
+};
+
+const Equipment = {
+    gear: { weapon: null, armor: null, accessory: null },
+    panel: null,
+
+    init() {
+        this.gear = { weapon: null, armor: null, accessory: null };
+        this.panel = document.getElementById('equipment-panel');
+        this.updateUI();
+    },
+
+    isEquippable(itemName) {
+        return itemName in EQUIPMENT_MAP;
+    },
+
+    equipItem(itemName) {
+        const entry = EQUIPMENT_MAP[itemName];
+        if (!entry) return null;
+        const slot = entry.slot;
+        const displaced = this.gear[slot] ? this.gear[slot].name : null;
+        this.gear[slot] = { name: itemName, stats: Object.assign({}, entry.stats) };
+        this.updateUI();
+        if (typeof Audio !== 'undefined') Audio.playClick();
+        return displaced;
+    },
+
+    unequipItem(slot) {
+        if (!this.gear[slot]) return null;
+        const name = this.gear[slot].name;
+        this.gear[slot] = null;
+        this.updateUI();
+        return name;
+    },
+
+    getStats() {
+        const additive = ['damage', 'defense', 'maxHpBonus', 'critChance',
+                          'dodgeChance', 'lifesteal', 'energyRegen', 'hpRegen'];
+        const multiplicative = ['attackSpeed', 'moveSpeed'];
+        const out = {};
+        additive.forEach(k => { out[k] = 0; });
+        multiplicative.forEach(k => { out[k] = 1; });
+
+        for (const slot of Object.keys(this.gear)) {
+            const item = this.gear[slot];
+            if (!item) continue;
+            for (const [k, v] of Object.entries(item.stats)) {
+                if (k === 'element') continue;
+                if (multiplicative.includes(k)) out[k] *= v;
+                else out[k] = (out[k] || 0) + v;
+            }
+        }
+        return out;
+    },
+
+    getEquippedElement() {
+        const w = this.gear.weapon;
+        return w && w.stats.element ? w.stats.element : null;
+    },
+
+    toggle() {
+        if (!this.panel) this.panel = document.getElementById('equipment-panel');
+        if (!this.panel) return;
+        this.panel.classList.toggle('visible');
+        this.updateUI();
+    },
+
+    updateUI() {
+        if (!this.panel) this.panel = document.getElementById('equipment-panel');
+        if (!this.panel) return;
+
+        let html = '<div class="equip-title">EQUIPMENT</div><div class="equip-slots">';
+        for (const [slot, meta] of Object.entries(EQUIPMENT_SLOTS)) {
+            const item = this.gear[slot];
+            const equipped = item ? ' equipped' : '';
+            html += `<div class="equip-slot${equipped}">`;
+            html += `<span class="equip-label">[${meta.icon}] ${meta.name}</span>`;
+            if (item) {
+                html += `<span class="equip-name">${item.name}</span>`;
+                const statStr = Object.entries(item.stats)
+                    .filter(([k]) => k !== 'element')
+                    .map(([k, v]) => `${k}: ${v}`)
+                    .join(', ');
+                if (statStr) html += `<span class="equip-stats">${statStr}</span>`;
+                if (item.stats.element) html += `<span class="equip-element">${item.stats.element}</span>`;
+            } else {
+                html += '<span class="equip-empty">Empty</span>';
+            }
+            html += '</div>';
+        }
+        html += '</div>';
+
+        // Aggregated stats
+        const stats = this.getStats();
+        html += '<div class="equip-summary">';
+        if (stats.damage)    html += `<span class="equip-stat-line bold">DMG ${stats.damage}</span>`;
+        if (stats.defense)   html += `<span class="equip-stat-line bold">DEF ${stats.defense}</span>`;
+        if (stats.maxHpBonus)  html += `<span class="equip-stat-line">HP+ ${stats.maxHpBonus}</span>`;
+        if (stats.critChance)  html += `<span class="equip-stat-line">Crit ${(stats.critChance * 100).toFixed(0)}%</span>`;
+        if (stats.dodgeChance) html += `<span class="equip-stat-line">Dodge ${(stats.dodgeChance * 100).toFixed(0)}%</span>`;
+        if (stats.lifesteal)   html += `<span class="equip-stat-line">Steal ${(stats.lifesteal * 100).toFixed(0)}%</span>`;
+        if (stats.attackSpeed !== 1) html += `<span class="equip-stat-line">ASpd x${stats.attackSpeed.toFixed(2)}</span>`;
+        if (stats.moveSpeed !== 1)   html += `<span class="equip-stat-line">MSpd x${stats.moveSpeed.toFixed(2)}</span>`;
+        if (stats.energyRegen)  html += `<span class="equip-stat-line">E.Regen ${stats.energyRegen}/s</span>`;
+        if (stats.hpRegen)      html += `<span class="equip-stat-line">HP.Regen ${stats.hpRegen}/s</span>`;
+        const el = this.getEquippedElement();
+        if (el) html += `<span class="equip-stat-line element">Element: ${el}</span>`;
+        html += '</div>';
+
+        this.panel.innerHTML = html;
+    },
+
+    cleanup() {
+        this.gear = { weapon: null, armor: null, accessory: null };
+        if (this.panel) {
+            this.panel.classList.remove('visible');
+            this.panel.innerHTML = '';
+        }
+    }
 };
 
 // === js/boot.js ===
@@ -4566,6 +5202,29 @@ const WorldCombat = {
         // Projectiles
         this.updateProjectiles(delta);
 
+        // Status effects tick
+        if (typeof StatusEffects !== 'undefined') {
+            const events = StatusEffects.updateAll(delta, time);
+            for (const evt of events) {
+                if (evt.killed) {
+                    const creep = this.creeps.find(c => c.mesh === evt.mob || c.mesh === evt.mob.parent);
+                    if (creep && creep.alive) {
+                        creep.alive = false;
+                        if (typeof ComboSystem !== 'undefined') ComboSystem.registerKill();
+                        if (typeof PlayerStats !== 'undefined') PlayerStats.awardXp(creep.isBoss ? 50 : 10);
+                        if (typeof Inventory !== 'undefined') Inventory.spawnDrop(creep.mesh.position.clone(), GameState.currentWorld, this.waveNumber, 0);
+                        if (creep.isBoss) {
+                            this.bossActive = false; this.boss = null;
+                            this.momentum = Math.min(100, this.momentum + 20);
+                            if (typeof HUD !== 'undefined') HUD.showToast('BOSS DEFEATED by DoT!');
+                        } else {
+                            this.momentum = Math.min(100, this.momentum + COMBAT_CONFIG.momentumPerKill);
+                        }
+                    }
+                }
+            }
+        }
+
         // Momentum decay toward 50
         if (this.momentum > 50) this.momentum -= COMBAT_CONFIG.momentumDecay * delta;
         if (this.momentum < 50) this.momentum += COMBAT_CONFIG.momentumDecay * delta;
@@ -4835,8 +5494,10 @@ const WorldCombat = {
                 if (dist < 1) {
                     creep.waypointIdx = nextIdx;
                 } else {
-                    const mx = (dx / dist) * creep.speed * delta;
-                    const mz = (dz / dist) * creep.speed * delta;
+                    let spd = creep.speed;
+                    if (typeof StatusEffects !== 'undefined') spd *= StatusEffects.getSpeedMultiplier(creep.mesh);
+                    const mx = (dx / dist) * spd * delta;
+                    const mz = (dz / dist) * spd * delta;
                     creep.mesh.position.x += mx;
                     creep.mesh.position.z += mz;
                     creep.mesh.rotation.y = Math.atan2(dx, dz);
@@ -4986,12 +5647,40 @@ const WorldCombat = {
             }
         }
 
+        // Also check enemy hero
+        if (typeof EnemyHero !== 'undefined' && EnemyHero.active && EnemyHero.state && EnemyHero.state.alive && EnemyHero.mesh) {
+            const dx = playerPos.x - EnemyHero.mesh.position.x;
+            const dz = playerPos.z - EnemyHero.mesh.position.z;
+            const dist = Math.sqrt(dx * dx + dz * dz);
+            if (dist < nearDist) {
+                nearest = 'enemyHero';
+                nearDist = dist;
+            }
+        }
+
         if (!nearest) return false;
 
         this.playerAttackTimer = COMBAT_CONFIG.playerCooldown;
         const dmg = (typeof PlayerStats !== 'undefined') ? PlayerStats.getDamage() : COMBAT_CONFIG.playerDamage;
         const comboMult = (typeof ComboSystem !== 'undefined') ? ComboSystem.getMultiplier() : 1;
+
+        // Check if target is enemy hero
+        if (nearest === 'enemyHero') {
+            if (typeof EnemyHero !== 'undefined') {
+                EnemyHero.damage(dmg * comboMult);
+                const element = (typeof Equipment !== 'undefined') ? Equipment.getEquippedElement() : null;
+                if (element && EnemyHero.mesh) StatusEffects.applyEffect(EnemyHero.mesh, element);
+            }
+            return true;
+        }
+
         nearest.hp -= dmg * comboMult;
+
+        // Apply status effect from equipped weapon
+        if (typeof StatusEffects !== 'undefined' && typeof Equipment !== 'undefined') {
+            const element = Equipment.getEquippedElement();
+            if (element && nearest.mesh) StatusEffects.applyEffect(nearest.mesh, element);
+        }
 
         if (nearest.hp <= 0) {
             nearest.alive = false;
@@ -5390,10 +6079,19 @@ const Inventory = {
     droppedItems: [],
 
     ITEMS: {
-        health_potion: { id: 'health_potion', name: 'Health Potion', icon: '❤️', stackable: true, maxStack: 10, dropWeight: 40 },
-        mana_crystal:  { id: 'mana_crystal',  name: 'Mana Crystal',  icon: '💎', stackable: true, maxStack: 10, dropWeight: 30 },
-        scrap_metal:   { id: 'scrap_metal',   name: 'Scrap Metal',   icon: '⚙️', stackable: true, maxStack: 20, dropWeight: 20 },
-        power_cell:    { id: 'power_cell',    name: 'Power Cell',    icon: '🔋', stackable: true, maxStack: 5,  dropWeight: 10 },
+        health_potion: { id: 'health_potion', name: 'Health Potion', icon: '❤️', stackable: true, maxStack: 10, dropWeight: 30 },
+        mana_crystal:  { id: 'mana_crystal',  name: 'Mana Crystal',  icon: '💎', stackable: true, maxStack: 10, dropWeight: 25 },
+        scrap_metal:   { id: 'scrap_metal',   name: 'Scrap Metal',   icon: '⚙️', stackable: false, maxStack: 1, dropWeight: 12 },
+        power_cell:    { id: 'power_cell',    name: 'Power Cell',    icon: '🔋', stackable: false, maxStack: 1, dropWeight: 8 },
+        frost_blade:   { id: 'frost_blade',   name: 'Frost Blade',   icon: '🗡️', stackable: false, maxStack: 1, dropWeight: 5 },
+        magma_sword:   { id: 'magma_sword',   name: 'Magma Sword',   icon: '🗡️', stackable: false, maxStack: 1, dropWeight: 4 },
+        void_dagger:   { id: 'void_dagger',   name: 'Void Dagger',   icon: '🗡️', stackable: false, maxStack: 1, dropWeight: 3 },
+        star_blade:    { id: 'star_blade',    name: 'Star Blade',    icon: '🗡️', stackable: false, maxStack: 1, dropWeight: 1 },
+        guardian_plate: { id: 'guardian_plate', name: 'Guardian Plate', icon: '🛡️', stackable: false, maxStack: 1, dropWeight: 4 },
+        nano_armor:    { id: 'nano_armor',    name: 'Nano Armor',    icon: '🛡️', stackable: false, maxStack: 1, dropWeight: 4 },
+        berserker_badge: { id: 'berserker_badge', name: 'Berserker Badge', icon: '🏅', stackable: false, maxStack: 1, dropWeight: 3 },
+        vampiric_fang: { id: 'vampiric_fang', name: 'Vampiric Fang', icon: '🦷', stackable: false, maxStack: 1, dropWeight: 3 },
+        swift_boots:   { id: 'swift_boots',   name: 'Swift Boots',   icon: '👢', stackable: false, maxStack: 1, dropWeight: 3 },
     },
 
     init() {
@@ -5452,17 +6150,29 @@ const Inventory = {
 
         if (id === 'health_potion') {
             if (typeof PlayerStats !== 'undefined') PlayerStats.heal(30);
-            if (typeof HUD !== 'undefined') HUD.showToast('❤️ Healed +30 HP');
+            if (typeof HUD !== 'undefined') HUD.showToast('Healed +30 HP');
             this.removeItem(slotIndex);
         } else if (id === 'mana_crystal') {
             if (typeof PlayerStats !== 'undefined') PlayerStats.restoreMp(20);
-            if (typeof HUD !== 'undefined') HUD.showToast('💎 Restored +20 MP');
+            if (typeof HUD !== 'undefined') HUD.showToast('Restored +20 MP');
             this.removeItem(slotIndex);
+        } else if (typeof Equipment !== 'undefined' && Equipment.isEquippable(slot.item.name)) {
+            const displaced = Equipment.equipItem(slot.item.name);
+            this.removeItem(slotIndex);
+            if (displaced) this.addItem(this._nameToId(displaced));
+            if (typeof HUD !== 'undefined') HUD.showToast(`Equipped ${slot.item ? slot.item.name : 'item'}`);
         } else {
             if (typeof HUD !== 'undefined') HUD.showToast('Used for crafting');
         }
         this.renderGrid();
         if (typeof Audio !== 'undefined') Audio.playClick();
+    },
+
+    _nameToId(name) {
+        for (const [id, item] of Object.entries(this.ITEMS)) {
+            if (item.name === name) return id;
+        }
+        return null;
     },
 
     removeItem(slotIndex, count) {
@@ -5501,7 +6211,11 @@ const Inventory = {
         for (const e of entries) { roll -= e.dropWeight; if (roll <= 0) { picked = e; break; } }
 
         if (typeof THREE === 'undefined') return;
-        const colors = { health_potion: 0xff4444, mana_crystal: 0x4488ff, scrap_metal: 0x888888, power_cell: 0x44ff44 };
+        const colors = {
+            health_potion: 0xff4444, mana_crystal: 0x4488ff, scrap_metal: 0x888888, power_cell: 0x44ff44,
+            frost_blade: 0x88ccff, magma_sword: 0xff4400, void_dagger: 0x8800ff, star_blade: 0xffd700,
+            guardian_plate: 0x4488aa, nano_armor: 0x44cc88, berserker_badge: 0xff6622, vampiric_fang: 0xcc0044, swift_boots: 0x66aaff
+        };
         const geo = new THREE.BoxGeometry(0.4, 0.4, 0.4);
         const mat = new THREE.MeshStandardMaterial({ color: colors[picked.id] || 0xffffff, emissive: colors[picked.id] || 0xffffff, emissiveIntensity: 0.5 });
         const mesh = new THREE.Mesh(geo, mat);
@@ -5638,7 +6352,11 @@ const Abilities = {
   },
 
   _doSlash(pos, def) {
-    this._creepsInRange(pos, def.range).forEach(c => this._damageCreep(c, def.damage));
+    const element = (typeof Equipment !== 'undefined') ? Equipment.getEquippedElement() : null;
+    this._creepsInRange(pos, def.range).forEach(c => {
+      this._damageCreep(c, def.damage);
+      if (element && typeof StatusEffects !== 'undefined') StatusEffects.applyEffect(c.mesh, element);
+    });
     const geo = new THREE.RingGeometry(0.5, def.range, 24);
     const mat = new THREE.MeshBasicMaterial({ color: 0x00ffff, transparent: true, opacity: 0.6, side: THREE.DoubleSide });
     const ring = new THREE.Mesh(geo, mat);
@@ -5678,7 +6396,11 @@ const Abilities = {
     if (typeof Audio !== 'undefined' && Audio.playClick) Audio.playClick();
   },
   _doNova(pos, def) {
-    this._creepsInRange(pos, def.range).forEach(c => this._damageCreep(c, def.damage));
+    const element = (typeof Equipment !== 'undefined') ? Equipment.getEquippedElement() : null;
+    this._creepsInRange(pos, def.range).forEach(c => {
+      this._damageCreep(c, def.damage);
+      if (element && typeof StatusEffects !== 'undefined') StatusEffects.applyEffect(c.mesh, element);
+    });
     const mat = new THREE.MeshBasicMaterial({ color: 0xff4400, wireframe: true, transparent: true, opacity: 0.7 });
     const sphere = new THREE.Mesh(new THREE.SphereGeometry(1, 16, 16), mat);
     sphere.position.copy(pos); sphere.position.y = 1; sphere._novaRange = def.range;
@@ -5714,7 +6436,12 @@ const Abilities = {
       for (const c of WorldCombat.creeps) {
         if (!c.alive) continue;
         const dx = p.mesh.position.x - c.mesh.position.x, dz = p.mesh.position.z - c.mesh.position.z;
-        if (Math.sqrt(dx * dx + dz * dz) < 1.5) { this._damageCreep(c, p.damage); hit = true; break; }
+        if (Math.sqrt(dx * dx + dz * dz) < 1.5) {
+          this._damageCreep(c, p.damage);
+          const element = (typeof Equipment !== 'undefined') ? Equipment.getEquippedElement() : null;
+          if (element && typeof StatusEffects !== 'undefined') StatusEffects.applyEffect(c.mesh, element);
+          hit = true; break;
+        }
       }
       if (hit || p.life > 3) { WorldMode.scene.remove(p.mesh); this.projectiles.splice(i, 1); }
     }
@@ -5766,6 +6493,442 @@ const Abilities = {
     this.shieldActive = false; PlayerStats.shielded = false;
     this.cooldowns = [0, 0, 0, 0, 0];
   }
+};
+
+// === js/enemy-hero.js ===
+/* enemy-hero.js — Primal Ravager Enemy Hero AI (Three.js r128) */
+
+const HERO_CONFIG = {
+    name: 'Primal Ravager',
+    title: 'Alpha of the Wilds',
+    baseStats: { maxHp: 120, maxMana: 80, baseDamage: 12, armor: 2, moveSpeed: 12, attackRange: 3.5, attackSpeed: 1.0 },
+    perLevel: { hp: 20, mana: 12, damage: 2.5, armor: 0.4 },
+    respawnBase: 12000,
+    respawnPerLevel: 2000,
+    killXpReward: 120,
+    killGoldReward: 150,
+    xpPerCreepKill: 15,
+    xpToLevel: [0, 80, 200, 380, 620, 920, 1300, 1780, 2380, 3100],
+    spawnOffset: { x: 80, z: 80 },
+    ai: { aggressiveness: 0.6, retreatThreshold: 0.25, farmWeight: 0.4 }
+};
+
+const HERO_ABILITIES = {
+    savageLeap:   { cooldown: 8000,  manaCost: 15, damage: 35, range: 10 },
+    primalRoar:   { cooldown: 14000, manaCost: 25, damage: 25, radius: 8, damageBoost: 1.3, boostDuration: 4000 },
+    thickHide:    { cooldown: 20000, manaCost: 20, damageReduction: 0.6, duration: 3500 },
+    apexPredator: { cooldown: 55000, manaCost: 45, damageBoost: 1.8, lifesteal: 0.2, duration: 8000 }
+};
+
+const EnemyHero = {
+    active: false, scene: null, worldBounds: null, mesh: null, state: null,
+
+    init(scene, worldBounds) {
+        this.scene = scene; this.worldBounds = worldBounds;
+        const bs = HERO_CONFIG.baseStats;
+        this.state = {
+            hp: bs.maxHp, maxHp: bs.maxHp, mana: bs.maxMana, maxMana: bs.maxMana,
+            damage: bs.baseDamage, armor: bs.armor, moveSpeed: bs.moveSpeed,
+            level: 1, xp: 0, alive: true, aiState: 'pushing',
+            target: null, targetPos: null, attackTimer: 0,
+            laneKey: 'mid', waypointIdx: 0, kills: 0, deaths: 0, creepsKilled: 0,
+            buffs: {}, cooldowns: { savageLeap: 0, primalRoar: 0, thickHide: 0, apexPredator: 0 },
+            respawnTimer: 0
+        };
+        this.mesh = this.createMesh();
+        this.mesh.position.set(HERO_CONFIG.spawnOffset.x, 0, HERO_CONFIG.spawnOffset.z);
+        scene.add(this.mesh);
+        this.active = true;
+        this.updateHUD();
+    },
+
+    createMesh() {
+        const g = new THREE.Group();
+        const bodyMat = new THREE.MeshStandardMaterial({ color: 0x6b4226, roughness: 0.7 });
+        const headMat = new THREE.MeshStandardMaterial({ color: 0x4a2e15, roughness: 0.7 });
+        const eyeMat  = new THREE.MeshBasicMaterial({ color: 0xff2200 });
+        const legMat  = new THREE.MeshStandardMaterial({ color: 0x5a3a1a, roughness: 0.8 });
+
+        // Body
+        const body = new THREE.Mesh(new THREE.BoxGeometry(2, 1.2, 1.4), bodyMat);
+        body.position.y = 1.4;
+        g.add(body);
+
+        // Head
+        const head = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.7, 0.9), headMat);
+        head.position.set(1.2, 1.7, 0);
+        g.add(head);
+
+        // Eyes
+        const eyeGeo = new THREE.SphereGeometry(0.12, 8, 8);
+        const eyeL = new THREE.Mesh(eyeGeo, eyeMat);
+        eyeL.position.set(1.55, 1.85, 0.25);
+        const eyeR = new THREE.Mesh(eyeGeo, eyeMat);
+        eyeR.position.set(1.55, 1.85, -0.25);
+        g.add(eyeL, eyeR);
+
+        // Legs (CylinderGeometry — r128 compatible)
+        const legGeo = new THREE.CylinderGeometry(0.15, 0.15, 0.8, 8);
+        const positions = [
+            [0.6, 0.4, 0.45], [0.6, 0.4, -0.45],
+            [-0.6, 0.4, 0.45], [-0.6, 0.4, -0.45]
+        ];
+        positions.forEach(p => {
+            const leg = new THREE.Mesh(legGeo, legMat);
+            leg.position.set(p[0], p[1], p[2]);
+            g.add(leg);
+        });
+
+        // Aura ring
+        const auraMat = new THREE.MeshBasicMaterial({ color: 0xff3300, transparent: true, opacity: 0.5 });
+        const aura = new THREE.Mesh(new THREE.TorusGeometry(1.4, 0.12, 8, 24), auraMat);
+        aura.rotation.x = Math.PI / 2;
+        aura.position.y = 0.05;
+        aura.name = 'aura';
+        g.add(aura);
+
+        // HP bar
+        const hpCanvas = document.createElement('canvas');
+        hpCanvas.width = 128; hpCanvas.height = 16;
+        const hpTex = new THREE.CanvasTexture(hpCanvas);
+        const hpBar = new THREE.Mesh(
+            new THREE.PlaneGeometry(2, 0.25),
+            new THREE.MeshBasicMaterial({ map: hpTex, transparent: true, depthTest: false })
+        );
+        hpBar.position.y = 3.0;
+        hpBar.name = 'hpBar';
+        hpBar.userData = { canvas: hpCanvas, texture: hpTex };
+        g.add(hpBar);
+
+        // Mana bar
+        const manaCanvas = document.createElement('canvas');
+        manaCanvas.width = 128; manaCanvas.height = 16;
+        const manaTex = new THREE.CanvasTexture(manaCanvas);
+        const manaBar = new THREE.Mesh(
+            new THREE.PlaneGeometry(2, 0.18),
+            new THREE.MeshBasicMaterial({ map: manaTex, transparent: true, depthTest: false })
+        );
+        manaBar.position.y = 2.7;
+        manaBar.name = 'manaBar';
+        manaBar.userData = { canvas: manaCanvas, texture: manaTex };
+        g.add(manaBar);
+
+        g.name = 'enemyHero';
+        return g;
+    },
+
+    update(delta, time, playerPos) {
+        if (!this.active || !this.state) return;
+        const s = this.state;
+        if (!s.alive) { s.respawnTimer -= delta * 1000; if (s.respawnTimer <= 0) this.respawn(); this.updateHUD(); return; }
+        s.mana = Math.min(s.maxMana, s.mana + 2 * delta);
+        this.updateAI(playerPos); this.updateMovement(delta);
+        this.updateCombat(delta, time); this.updateAbilities(time);
+        this.updateBuffs(time); this.updateVisuals(); this.updateHUD();
+    },
+
+    updateAI(playerPos) {
+        const s = this.state;
+        const hpRatio = s.hp / s.maxHp;
+        const pos = this.mesh.position;
+
+        if (hpRatio < HERO_CONFIG.ai.retreatThreshold) {
+            s.aiState = 'retreating';
+            s.targetPos = new THREE.Vector3(HERO_CONFIG.spawnOffset.x, 0, HERO_CONFIG.spawnOffset.z);
+            s.target = null;
+            return;
+        }
+
+        if (playerPos) {
+            const dist = pos.distanceTo(new THREE.Vector3(playerPos.x, 0, playerPos.z));
+            if (dist < 15 && hpRatio > 0.4) {
+                s.aiState = 'fighting';
+                s.targetPos = new THREE.Vector3(playerPos.x, 0, playerPos.z);
+                s.target = 'player';
+                return;
+            }
+        }
+
+        // Farming
+        if (Math.random() < HERO_CONFIG.ai.farmWeight * 0.02) {
+            const creep = this._findNearestCreep('explorer');
+            if (creep) {
+                s.aiState = 'farming';
+                s.targetPos = creep.mesh.position.clone();
+                s.target = creep;
+                return;
+            }
+        }
+
+        // Pushing lane
+        s.aiState = 'pushing';
+        s.target = null;
+        if (typeof WorldLanes !== 'undefined' && WorldLanes.scaledWaypoints) {
+            const wps = WorldLanes.scaledWaypoints[s.laneKey];
+            if (wps && wps.length > 0) {
+                const idx = Math.min(s.waypointIdx, wps.length - 1);
+                const wp = wps[idx];
+                s.targetPos = new THREE.Vector3(wp.x, 0, wp.z);
+                const d = pos.distanceTo(s.targetPos);
+                if (d < 2 && s.waypointIdx < wps.length - 1) s.waypointIdx++;
+            }
+        }
+    },
+
+    updateMovement(delta) {
+        const s = this.state;
+        if (!s.targetPos) return;
+        const dir = new THREE.Vector3().subVectors(s.targetPos, this.mesh.position);
+        dir.y = 0;
+        const dist = dir.length();
+        if (dist < 0.5) return;
+        dir.normalize();
+        let speed = s.moveSpeed;
+        if (s.buffs.apexPredator) speed *= 1.3;
+        const step = speed * delta;
+        this.mesh.position.addScaledVector(dir, Math.min(step, dist));
+        this.mesh.rotation.y = Math.atan2(dir.x, dir.z);
+    },
+
+    updateCombat(delta, time) {
+        const s = this.state;
+        s.attackTimer -= delta;
+        if (s.attackTimer > 0) return;
+        if (s.aiState === 'fighting' && s.target === 'player') {
+            const pPos = this.mesh.position;
+            if (s.targetPos && pPos.distanceTo(s.targetPos) <= HERO_CONFIG.baseStats.attackRange) {
+                this.performAttack('player', time);
+                s.attackTimer = 1.0 / HERO_CONFIG.baseStats.attackSpeed;
+            }
+        } else if (s.aiState === 'farming' && s.target && s.target !== 'player') {
+            const creep = s.target;
+            if (creep.alive && creep.mesh) {
+                const d = this.mesh.position.distanceTo(creep.mesh.position);
+                if (d <= HERO_CONFIG.baseStats.attackRange) {
+                    this.performAttack(creep, time);
+                    s.attackTimer = 1.0 / HERO_CONFIG.baseStats.attackSpeed;
+                }
+            }
+        }
+    },
+
+    performAttack(target, time) {
+        const s = this.state;
+        let dmg = s.damage;
+        if (s.buffs.primalRoar) dmg *= HERO_ABILITIES.primalRoar.damageBoost;
+        if (s.buffs.apexPredator) dmg *= HERO_ABILITIES.apexPredator.damageBoost;
+
+        if (target === 'player') {
+            // Pack Hunter passive: +50% to targets below 30% HP
+            if (typeof PlayerStats !== 'undefined' && PlayerStats.hp / PlayerStats.maxHp < 0.3) dmg *= 1.5;
+            if (typeof PlayerStats !== 'undefined') PlayerStats.takeDamage(dmg);
+            if (s.buffs.apexPredator) {
+                s.hp = Math.min(s.maxHp, s.hp + dmg * HERO_ABILITIES.apexPredator.lifesteal);
+            }
+        } else if (target && target.mesh && target.alive !== false) {
+            if (target.hp / target.maxHp < 0.3) dmg *= 1.5;
+            target.hp -= dmg;
+            if (target.hp <= 0) {
+                target.alive = false;
+                if (target.mesh) target.mesh.visible = false;
+                s.creepsKilled++;
+                this.gainXp(HERO_CONFIG.xpPerCreepKill);
+            }
+            if (s.buffs.apexPredator) {
+                s.hp = Math.min(s.maxHp, s.hp + dmg * HERO_ABILITIES.apexPredator.lifesteal);
+            }
+        }
+    },
+
+    updateAbilities(time) {
+        const s = this.state;
+        const now = time * 1000;
+        const cd = s.cooldowns;
+        const pos = this.mesh.position;
+        const hpRatio = s.hp / s.maxHp;
+
+        // Savage Leap
+        if (cd.savageLeap <= now && s.mana >= HERO_ABILITIES.savageLeap.manaCost && s.targetPos) {
+            const d = pos.distanceTo(s.targetPos);
+            if (d > 6 && d <= HERO_ABILITIES.savageLeap.range) {
+                s.mana -= HERO_ABILITIES.savageLeap.manaCost;
+                cd.savageLeap = now + HERO_ABILITIES.savageLeap.cooldown;
+                const dir = new THREE.Vector3().subVectors(s.targetPos, pos).normalize();
+                this.mesh.position.addScaledVector(dir, Math.min(d, HERO_ABILITIES.savageLeap.range));
+                if (s.target === 'player' && typeof PlayerStats !== 'undefined') {
+                    PlayerStats.takeDamage(HERO_ABILITIES.savageLeap.damage);
+                }
+            }
+        }
+
+        // Primal Roar
+        if (cd.primalRoar <= now && s.mana >= HERO_ABILITIES.primalRoar.manaCost && s.aiState === 'fighting') {
+            if (s.targetPos && pos.distanceTo(s.targetPos) <= HERO_ABILITIES.primalRoar.radius) {
+                s.mana -= HERO_ABILITIES.primalRoar.manaCost;
+                cd.primalRoar = now + HERO_ABILITIES.primalRoar.cooldown;
+                if (typeof PlayerStats !== 'undefined') PlayerStats.takeDamage(HERO_ABILITIES.primalRoar.damage);
+                s.buffs.primalRoar = now + HERO_ABILITIES.primalRoar.boostDuration;
+            }
+        }
+
+        // Thick Hide
+        if (cd.thickHide <= now && hpRatio < 0.5 && s.mana >= HERO_ABILITIES.thickHide.manaCost) {
+            s.mana -= HERO_ABILITIES.thickHide.manaCost;
+            cd.thickHide = now + HERO_ABILITIES.thickHide.cooldown;
+            s.buffs.thickHide = now + HERO_ABILITIES.thickHide.duration;
+        }
+
+        // Apex Predator (ultimate)
+        if (cd.apexPredator <= now && hpRatio > 0.25 && hpRatio < 0.55
+            && s.mana >= HERO_ABILITIES.apexPredator.manaCost) {
+            s.mana -= HERO_ABILITIES.apexPredator.manaCost;
+            cd.apexPredator = now + HERO_ABILITIES.apexPredator.cooldown;
+            s.buffs.apexPredator = now + HERO_ABILITIES.apexPredator.duration;
+        }
+    },
+
+    updateBuffs(time) {
+        const now = time * 1000;
+        const b = this.state.buffs;
+        for (const key in b) {
+            if (b[key] && b[key] <= now) delete b[key];
+        }
+    },
+
+    updateVisuals() {
+        const s = this.state;
+        // HP bar
+        const hpObj = this.mesh.getObjectByName('hpBar');
+        if (hpObj) {
+            const ctx = hpObj.userData.canvas.getContext('2d');
+            ctx.clearRect(0, 0, 128, 16);
+            ctx.fillStyle = '#333';
+            ctx.fillRect(0, 0, 128, 16);
+            ctx.fillStyle = '#cc2200';
+            ctx.fillRect(0, 0, 128 * (s.hp / s.maxHp), 16);
+            hpObj.userData.texture.needsUpdate = true;
+        }
+        // Mana bar
+        const manaObj = this.mesh.getObjectByName('manaBar');
+        if (manaObj) {
+            const ctx = manaObj.userData.canvas.getContext('2d');
+            ctx.clearRect(0, 0, 128, 16);
+            ctx.fillStyle = '#222';
+            ctx.fillRect(0, 0, 128, 16);
+            ctx.fillStyle = '#2266ff';
+            ctx.fillRect(0, 0, 128 * (s.mana / s.maxMana), 16);
+            manaObj.userData.texture.needsUpdate = true;
+        }
+        // Billboard bars toward camera
+        if (typeof WorldMode !== 'undefined' && WorldMode.camera) {
+            const cam = WorldMode.camera;
+            if (hpObj) hpObj.lookAt(cam.position);
+            if (manaObj) manaObj.lookAt(cam.position);
+        }
+        // Aura color shift during buffs
+        const aura = this.mesh.getObjectByName('aura');
+        if (aura) {
+            if (s.buffs.apexPredator) aura.material.color.setHex(0xff0000);
+            else if (s.buffs.thickHide) aura.material.color.setHex(0x44aaff);
+            else aura.material.color.setHex(0xff3300);
+            aura.material.opacity = 0.35 + 0.15 * Math.sin(Date.now() * 0.004);
+        }
+    },
+
+    damage(amount) {
+        if (!this.state || !this.state.alive) return;
+        let dmg = amount;
+        if (this.state.buffs.thickHide) dmg *= (1 - HERO_ABILITIES.thickHide.damageReduction);
+        dmg = Math.max(0, dmg - this.state.armor);
+        this.state.hp -= dmg;
+        if (this.state.hp <= 0) {
+            this.state.hp = 0;
+            this.die();
+        }
+    },
+
+    die() {
+        const s = this.state;
+        s.alive = false; s.deaths++;
+        this.mesh.visible = false;
+        s.respawnTimer = HERO_CONFIG.respawnBase + HERO_CONFIG.respawnPerLevel * s.level;
+        const xpReward = HERO_CONFIG.killXpReward + 15 * s.level;
+        if (typeof PlayerStats !== 'undefined' && PlayerStats.awardXp) PlayerStats.awardXp(xpReward);
+        if (typeof HUD !== 'undefined' && HUD.showToast) HUD.showToast(`${HERO_CONFIG.name} slain! +${xpReward} XP`);
+    },
+
+    respawn() {
+        const s = this.state;
+        s.alive = true; s.hp = s.maxHp; s.mana = s.maxMana;
+        s.buffs = {}; s.aiState = 'pushing'; s.waypointIdx = 0;
+        s.target = null; s.targetPos = null;
+        this.mesh.position.set(HERO_CONFIG.spawnOffset.x, 0, HERO_CONFIG.spawnOffset.z);
+        this.mesh.visible = true;
+    },
+
+    gainXp(amount) {
+        const s = this.state;
+        s.xp += amount;
+        const table = HERO_CONFIG.xpToLevel;
+        while (s.level < table.length && s.xp >= table[s.level]) {
+            this.levelUp();
+        }
+    },
+
+    levelUp() {
+        const s = this.state, pl = HERO_CONFIG.perLevel;
+        s.level++; s.maxHp += pl.hp; s.maxMana += pl.mana;
+        s.damage += pl.damage; s.armor += pl.armor;
+        s.hp = s.maxHp; s.mana = s.maxMana;
+    },
+
+    updateHUD() {
+        let el = document.getElementById('enemy-hero-hud');
+        if (!el) return;
+        if (!this.state) { el.style.display = 'none'; return; }
+        if (!this.active) { el.style.display = 'none'; return; }
+        el.style.display = 'block';
+        const s = this.state;
+        const stateColors = { retreating: '#ffaa00', fighting: '#ff3333', farming: '#66cc66', pushing: '#6699ff' };
+        const sc = stateColors[s.aiState] || '#aaa';
+        const hpPct = Math.max(0, s.hp / s.maxHp) * 100;
+        const manaPct = Math.max(0, s.mana / s.maxMana) * 100;
+
+        const nameEl = el.querySelector('.hero-name');
+        const levelEl = el.querySelector('.hero-level');
+        const hpFill = el.querySelector('.hero-bar.hp .hero-bar-fill');
+        const manaFill = el.querySelector('.hero-bar.mana .hero-bar-fill');
+        const kdaEl = el.querySelector('.hero-kda');
+        const stateEl = el.querySelector('.hero-ai-state');
+
+        if (nameEl) nameEl.textContent = HERO_CONFIG.name;
+        if (levelEl) levelEl.textContent = `Lv.${s.level}`;
+        if (hpFill) hpFill.style.width = `${hpPct}%`;
+        if (manaFill) manaFill.style.width = `${manaPct}%`;
+        if (kdaEl) kdaEl.textContent = `K:${s.kills} D:${s.deaths} CS:${s.creepsKilled}`;
+        if (stateEl) { stateEl.textContent = s.alive ? s.aiState.toUpperCase() : 'DEAD'; stateEl.style.color = sc; }
+    },
+
+    cleanup() {
+        if (this.mesh && this.scene) this.scene.remove(this.mesh);
+        this.mesh = null;
+        this.state = null;
+        this.active = false;
+        const el = document.getElementById('enemy-hero-hud');
+        if (el) el.style.display = 'none';
+    },
+
+    _findNearestCreep(faction) {
+        if (typeof WorldCombat === 'undefined' || !WorldCombat.creeps) return null;
+        let best = null, bestDist = Infinity;
+        const pos = this.mesh.position;
+        for (const c of WorldCombat.creeps) {
+            if (!c.alive || c.faction !== faction || !c.mesh) continue;
+            const d = pos.distanceTo(c.mesh.position);
+            if (d < bestDist) { bestDist = d; best = c; }
+        }
+        return best;
+    }
 };
 
 // === js/world-core.js ===
@@ -5821,6 +6984,9 @@ const WorldMode = {
         if (typeof Abilities !== 'undefined') Abilities.init();
         if (typeof ComboSystem !== 'undefined') ComboSystem.reset();
         if (typeof Inventory !== 'undefined') Inventory.init();
+        if (typeof Equipment !== 'undefined') Equipment.init();
+        if (typeof StatusEffects !== 'undefined') StatusEffects.cleanup();
+        if (typeof EnemyHero !== 'undefined') EnemyHero.init(this.scene, w.bounds);
 
         // Player
         this.createPlayer(w);
@@ -5980,6 +7146,11 @@ const WorldMode = {
             Inventory.updateDrops(time);
         }
 
+        // Enemy hero update
+        if (typeof EnemyHero !== 'undefined') {
+            EnemyHero.update(delta, time, this.player.mesh.position);
+        }
+
         // Creep damage to player
         if (typeof PlayerStats !== 'undefined' && !PlayerStats.dead) {
             for (const creep of WorldCombat.creeps) {
@@ -6022,6 +7193,9 @@ const WorldMode = {
         WorldLanes.cleanup();
         if (typeof Abilities !== 'undefined') Abilities.cleanup();
         if (typeof Inventory !== 'undefined') Inventory.cleanup();
+        if (typeof Equipment !== 'undefined') Equipment.cleanup();
+        if (typeof StatusEffects !== 'undefined') StatusEffects.cleanup();
+        if (typeof EnemyHero !== 'undefined') EnemyHero.cleanup();
 
         document.getElementById('world-container').style.display = 'none';
         document.getElementById('combat-hud').style.display = 'none';
@@ -6826,6 +8000,12 @@ const HUD = {
         // Interact
         if (e.code === 'KeyE' && GameState.mode === 'world') {
             WorldMode.interact();
+            return;
+        }
+
+        // Equipment toggle
+        if (e.code === 'KeyG' && GameState.mode === 'world') {
+            if (typeof Equipment !== 'undefined') Equipment.toggle();
             return;
         }
 

@@ -50,6 +50,9 @@ const WorldMode = {
         if (typeof Abilities !== 'undefined') Abilities.init();
         if (typeof ComboSystem !== 'undefined') ComboSystem.reset();
         if (typeof Inventory !== 'undefined') Inventory.init();
+        if (typeof Equipment !== 'undefined') Equipment.init();
+        if (typeof StatusEffects !== 'undefined') StatusEffects.cleanup();
+        if (typeof EnemyHero !== 'undefined') EnemyHero.init(this.scene, w.bounds);
 
         // Player
         this.createPlayer(w);
@@ -209,6 +212,11 @@ const WorldMode = {
             Inventory.updateDrops(time);
         }
 
+        // Enemy hero update
+        if (typeof EnemyHero !== 'undefined') {
+            EnemyHero.update(delta, time, this.player.mesh.position);
+        }
+
         // Creep damage to player
         if (typeof PlayerStats !== 'undefined' && !PlayerStats.dead) {
             for (const creep of WorldCombat.creeps) {
@@ -251,6 +259,9 @@ const WorldMode = {
         WorldLanes.cleanup();
         if (typeof Abilities !== 'undefined') Abilities.cleanup();
         if (typeof Inventory !== 'undefined') Inventory.cleanup();
+        if (typeof Equipment !== 'undefined') Equipment.cleanup();
+        if (typeof StatusEffects !== 'undefined') StatusEffects.cleanup();
+        if (typeof EnemyHero !== 'undefined') EnemyHero.cleanup();
 
         document.getElementById('world-container').style.display = 'none';
         document.getElementById('combat-hud').style.display = 'none';

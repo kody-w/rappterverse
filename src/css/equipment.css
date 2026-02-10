@@ -1,0 +1,118 @@
+/* ============================================================
+   Equipment Panel — RAPPterverse
+   ============================================================ */
+
+#equipment-panel {
+  display: none;
+  position: fixed;
+  top: 80px;
+  right: 16px;
+  width: 280px;
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+  background: rgba(5, 10, 25, 0.92);
+  border: 1px solid var(--accent-cyan, #0ff);
+  border-radius: var(--radius-lg, 10px);
+  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', monospace;
+  z-index: var(--z-panel, 1000);
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.15);
+  padding: var(--space-3, 12px);
+}
+
+#equipment-panel.visible {
+  display: block;
+}
+
+/* ── Title ──────────────────────────────────────────────── */
+.equip-title {
+  text-align: center;
+  font-size: var(--font-sm, 12px);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-cyan, #0ff);
+  padding-bottom: var(--space-2, 8px);
+  margin-bottom: var(--space-2, 8px);
+  border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+}
+
+/* ── Slots Container ────────────────────────────────────── */
+.equip-slots {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2, 8px);
+}
+
+/* ── Individual Slot ────────────────────────────────────── */
+.equip-slot {
+  padding: var(--space-2, 8px) var(--space-3, 12px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-md, 6px);
+  background: rgba(255, 255, 255, 0.02);
+  transition: box-shadow var(--transition-fast, 0.1s);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.equip-slot:hover {
+  box-shadow: 0 0 8px rgba(0, 255, 255, 0.18);
+}
+
+.equip-slot.equipped {
+  border-left: 3px solid var(--accent-cyan, #0ff);
+}
+
+.equip-label {
+  font-size: var(--font-xs, 10px);
+  color: rgba(0, 255, 255, 0.55);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.equip-name {
+  font-size: var(--font-base, 14px);
+  color: var(--text-primary, #fff);
+  font-weight: 600;
+}
+
+.equip-empty {
+  font-size: var(--font-sm, 12px);
+  color: var(--text-muted, #888);
+  font-style: italic;
+}
+
+.equip-stats {
+  font-size: var(--font-xs, 10px);
+  color: rgba(0, 255, 255, 0.7);
+}
+
+.equip-element {
+  font-size: var(--font-xs, 10px);
+  color: var(--accent-gold, #fb0);
+  text-transform: capitalize;
+}
+
+/* ── Aggregated Stats ───────────────────────────────────── */
+.equip-summary {
+  margin-top: var(--space-3, 12px);
+  padding-top: var(--space-2, 8px);
+  border-top: 1px solid rgba(0, 255, 255, 0.2);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1, 4px) var(--space-3, 12px);
+}
+
+.equip-stat-line {
+  font-size: var(--font-xs, 10px);
+  color: rgba(0, 255, 255, 0.7);
+}
+
+.equip-stat-line.bold {
+  font-weight: 700;
+  color: var(--text-primary, #fff);
+  font-size: var(--font-sm, 12px);
+}
+
+.equip-stat-line.element {
+  color: var(--accent-gold, #fb0);
+}

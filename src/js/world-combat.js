@@ -63,6 +63,29 @@ const WorldCombat = {
         // Projectiles
         this.updateProjectiles(delta);
 
+        // Status effects tick
+        if (typeof StatusEffects !== 'undefined') {
+            const events = StatusEffects.updateAll(delta, time);
+            for (const evt of events) {
+                if (evt.killed) {
+                    const creep = this.creeps.find(c => c.mesh === evt.mob || c.mesh === evt.mob.parent);
+                    if (creep && creep.alive) {
+                        creep.alive = false;
+                        if (typeof ComboSystem !== 'undefined') ComboSystem.registerKill();
+                        if (typeof PlayerStats !== 'undefined') PlayerStats.awardXp(creep.isBoss ? 50 : 10);
+                        if (typeof Inventory !== 'undefined') Inventory.spawnDrop(creep.mesh.position.clone(), GameState.currentWorld, this.waveNumber, 0);
+                        if (creep.isBoss) {
+                            this.bossActive = false; this.boss = null;
+                            this.momentum = Math.min(100, this.momentum + 20);
+                            if (typeof HUD !== 'undefined') HUD.showToast('BOSS DEFEATED by DoT!');
+                        } else {
+                            this.momentum = Math.min(100, this.momentum + COMBAT_CONFIG.momentumPerKill);
+                        }
+                    }
+                }
+            }
+        }
+
         // Momentum decay toward 50
         if (this.momentum > 50) this.momentum -= COMBAT_CONFIG.momentumDecay * delta;
         if (this.momentum < 50) this.momentum += COMBAT_CONFIG.momentumDecay * delta;
@@ -332,8 +355,10 @@ const WorldCombat = {
                 if (dist < 1) {
                     creep.waypointIdx = nextIdx;
                 } else {
-                    const mx = (dx / dist) * creep.speed * delta;
-                    const mz = (dz / dist) * creep.speed * delta;
+                    let spd = creep.speed;
+                    if (typeof StatusEffects !== 'undefined') spd *= StatusEffects.getSpeedMultiplier(creep.mesh);
+                    const mx = (dx / dist) * spd * delta;
+                    const mz = (dz / dist) * spd * delta;
                     creep.mesh.position.x += mx;
                     creep.mesh.position.z += mz;
                     creep.mesh.rotation.y = Math.atan2(dx, dz);
@@ -483,12 +508,40 @@ const WorldCombat = {
             }
         }
 
+        // Also check enemy hero
+        if (typeof EnemyHero !== 'undefined' && EnemyHero.active && EnemyHero.state && EnemyHero.state.alive && EnemyHero.mesh) {
+            const dx = playerPos.x - EnemyHero.mesh.position.x;
+            const dz = playerPos.z - EnemyHero.mesh.position.z;
+            const dist = Math.sqrt(dx * dx + dz * dz);
+            if (dist < nearDist) {
+                nearest = 'enemyHero';
+                nearDist = dist;
+            }
+        }
+
         if (!nearest) return false;
 
         this.playerAttackTimer = COMBAT_CONFIG.playerCooldown;
         const dmg = (typeof PlayerStats !== 'undefined') ? PlayerStats.getDamage() : COMBAT_CONFIG.playerDamage;
         const comboMult = (typeof ComboSystem !== 'undefined') ? ComboSystem.getMultiplier() : 1;
+
+        // Check if target is enemy hero
+        if (nearest === 'enemyHero') {
+            if (typeof EnemyHero !== 'undefined') {
+                EnemyHero.damage(dmg * comboMult);
+                const element = (typeof Equipment !== 'undefined') ? Equipment.getEquippedElement() : null;
+                if (element && EnemyHero.mesh) StatusEffects.applyEffect(EnemyHero.mesh, element);
+            }
+            return true;
+        }
+
         nearest.hp -= dmg * comboMult;
+
+        // Apply status effect from equipped weapon
+        if (typeof StatusEffects !== 'undefined' && typeof Equipment !== 'undefined') {
+            const element = Equipment.getEquippedElement();
+            if (element && nearest.mesh) StatusEffects.applyEffect(nearest.mesh, element);
+        }
 
         if (nearest.hp <= 0) {
             nearest.alive = false;
