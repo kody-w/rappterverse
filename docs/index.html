@@ -448,6 +448,32 @@ body {
   transform: translateX(-50%);
 }
 
+/* === css/warp.css === */
+/* Warp tunnel overlay */
+#warp-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10001;
+    display: none;
+    pointer-events: none;
+}
+
+#warp-overlay.active {
+    display: block;
+}
+
+#warp-canvas {
+    width: 100%;
+    height: 100%;
+}
+
+.warp-vignette {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.8) 100%);
+    pointer-events: none;
+}
+
 /* === css/approach.css === */
 /* ============================================
    Planet Approach – Cinematic Overlay
@@ -1273,6 +1299,12 @@ body {
 </div>
 <div class="galaxy-label">CLICK A PLANET TO APPROACH • ARROW KEYS TO BROWSE</div>
 
+<!-- ===== WARP TUNNEL ===== -->
+<div id="warp-overlay">
+    <canvas id="warp-canvas"></canvas>
+    <div class="warp-vignette"></div>
+</div>
+
 <!-- ===== APPROACH OVERLAY ===== -->
 <div id="approach-overlay">
     <div class="approach-letterbox-top" id="letterbox-top"></div>
@@ -1339,6 +1371,7 @@ body {
         <span class="combat-wave-num" id="combat-wave-num">0</span>
     </div>
     <div class="combat-hint">SPACE — Attack</div>
+    <div id="weather-label" style="font-size:10px; opacity:0.6; letter-spacing:2px;"></div>
 </div>
 
 <!-- ===== HUD (TOP BAR) ===== -->
@@ -1493,6 +1526,8 @@ const GameState = {
         console.log(`[STATE] ${this.mode} → ${newMode}`);
         this.previousMode = this.mode;
         this.mode = newMode;
+        // Notify audio system of mode change
+        if (typeof Audio !== 'undefined' && Audio.onModeChange) Audio.onModeChange(newMode);
         return true;
     },
 
@@ -1592,6 +1627,286 @@ const DataManager = {
         this.polling = true;
         setInterval(() => this.fetchAllState(), POLL_INTERVAL);
     }
+};
+
+// === js/audio.js ===
+// Procedural audio system — Web Audio API only, no external files
+const Audio = {
+  ctx: null, masterGain: null, musicGain: null, sfxGain: null,
+  initialized: false, _ambientOscs: [], _ambientGains: [],
+  _intensityOsc: null, _currentBiome: null,
+
+  _mtof(m) { return 440 * Math.pow(2, (m - 69) / 12); },
+
+  init() {
+    if (this.initialized) return;
+    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+    this.masterGain = this.ctx.createGain();
+    this.masterGain.gain.value = 0.3;
+    this.masterGain.connect(this.ctx.destination);
+    this.musicGain = this.ctx.createGain();
+    this.musicGain.gain.value = 0.2;
+    this.musicGain.connect(this.masterGain);
+    this.sfxGain = this.ctx.createGain();
+    this.sfxGain.gain.value = 0.5;
+    this.sfxGain.connect(this.masterGain);
+    const resume = () => { if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume(); };
+    document.addEventListener('click', resume);
+    document.addEventListener('keydown', resume);
+    this.initialized = true;
+  },
+
+  _ensureCtx() { if (!this.initialized) this.init(); },
+
+  _noiseBuffer(dur) {
+    const len = this.ctx.sampleRate * dur;
+    const buf = this.ctx.createBuffer(1, len, this.ctx.sampleRate);
+    const d = buf.getChannelData(0);
+    for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+    return buf;
+  },
+
+  // --- Ambient Music ---
+  _biomeChord(biome) {
+    const chords = {
+      Terra:    { notes: [48,52,55],    wave: 'triangle', filter: 0,   shimmer: false },
+      Volcanic: { notes: [48,51,55],    wave: 'sawtooth', filter: 400, shimmer: false },
+      Desert:   { notes: [50,55,57],    wave: 'sine',     filter: 0,   shimmer: false },
+      Crystal:  { notes: [52,56,59,63], wave: 'sine',     filter: 0,   shimmer: true  },
+      Abyss:    { notes: [48,51,54],    wave: 'triangle', filter: 250, shimmer: false },
+    };
+    return chords[biome] || { notes: [45,48,52], wave: 'triangle', filter: 0, shimmer: false };
+  },
+
+  startAmbient(biome) {
+    this._ensureCtx();
+    if (this._currentBiome === biome) return;
+    this.stopAmbient();
+    this._currentBiome = biome;
+    const ch = this._biomeChord(biome), t = this.ctx.currentTime;
+
+    ch.notes.forEach((midi, i) => {
+      const osc = this.ctx.createOscillator();
+      osc.type = ch.wave;
+      osc.frequency.value = this._mtof(midi);
+      // LFO tremolo
+      const lfo = this.ctx.createOscillator();
+      const lfoG = this.ctx.createGain();
+      lfo.type = 'sine';
+      lfo.frequency.value = 0.05 + i * 0.04;
+      lfoG.gain.value = 0.15;
+      lfo.connect(lfoG);
+      const oscG = this.ctx.createGain();
+      oscG.gain.value = 0.0;
+      oscG.gain.linearRampToValueAtTime(0.5 / ch.notes.length, t + 2);
+      lfoG.connect(oscG.gain);
+      let dest = this.musicGain;
+      if (ch.filter > 0) {
+        const lpf = this.ctx.createBiquadFilter();
+        lpf.type = 'lowpass';
+        lpf.frequency.value = ch.filter;
+        lpf.Q.value = 1;
+        lpf.connect(this.musicGain);
+        dest = lpf;
+      }
+      osc.connect(oscG); oscG.connect(dest);
+      osc.start(t); lfo.start(t);
+      this._ambientOscs.push(osc, lfo);
+      this._ambientGains.push(oscG);
+    });
+
+    // Crystal shimmer: high quiet oscillator with fast LFO
+    if (ch.shimmer) {
+      const sh = this.ctx.createOscillator();
+      sh.type = 'sine'; sh.frequency.value = this._mtof(76);
+      const shG = this.ctx.createGain();
+      shG.gain.value = 0.0;
+      shG.gain.linearRampToValueAtTime(0.06, t + 2);
+      const shLfo = this.ctx.createOscillator();
+      shLfo.type = 'sine'; shLfo.frequency.value = 3;
+      const shLG = this.ctx.createGain();
+      shLG.gain.value = 0.06;
+      shLfo.connect(shLG); shLG.connect(shG.gain);
+      sh.connect(shG); shG.connect(this.musicGain);
+      sh.start(t); shLfo.start(t);
+      this._ambientOscs.push(sh, shLfo);
+      this._ambientGains.push(shG);
+    }
+  },
+
+  stopAmbient() {
+    if (!this.ctx) return;
+    const t = this.ctx.currentTime;
+    this._ambientGains.forEach(g => {
+      g.gain.cancelScheduledValues(t);
+      g.gain.setValueAtTime(g.gain.value, t);
+      g.gain.linearRampToValueAtTime(0, t + 2);
+    });
+    const oscs = this._ambientOscs;
+    setTimeout(() => oscs.forEach(o => { try { o.stop(); o.disconnect(); } catch(_){} }), 2200);
+    this._ambientOscs = [];
+    this._ambientGains = [];
+    this._currentBiome = null;
+  },
+
+  setIntensity(level) {
+    this._ensureCtx();
+    const v = Math.max(0, Math.min(1, level));
+    this.musicGain.gain.setTargetAtTime(0.2 + v * 0.15, this.ctx.currentTime, 0.3);
+    if (v > 0.6 && !this._intensityOsc) {
+      const osc = this.ctx.createOscillator();
+      osc.type = 'square'; osc.frequency.value = 2;
+      const g = this.ctx.createGain();
+      g.gain.value = 0.04 * v;
+      osc.connect(g); g.connect(this.musicGain); osc.start();
+      this._intensityOsc = { osc, gain: g };
+    } else if (v <= 0.6 && this._intensityOsc) {
+      try { this._intensityOsc.osc.stop(); this._intensityOsc.osc.disconnect(); } catch(_){}
+      this._intensityOsc = null;
+    }
+    if (this._intensityOsc)
+      this._intensityOsc.gain.gain.setTargetAtTime(0.04 * v, this.ctx.currentTime, 0.2);
+  },
+
+  // --- SFX ---
+  playClick() {
+    this._ensureCtx();
+    const t = this.ctx.currentTime, osc = this.ctx.createOscillator();
+    osc.type = 'triangle'; osc.frequency.value = 800;
+    const g = this.ctx.createGain();
+    g.gain.setValueAtTime(0.4, t);
+    g.gain.exponentialRampToValueAtTime(0.001, t + 0.05);
+    osc.connect(g); g.connect(this.sfxGain);
+    osc.start(t); osc.stop(t + 0.05);
+  },
+
+  playWarp() {
+    this._ensureCtx();
+    const t = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(200, t);
+    osc.frequency.exponentialRampToValueAtTime(2000, t + 1.5);
+    const lpf = this.ctx.createBiquadFilter();
+    lpf.type = 'lowpass';
+    lpf.frequency.setValueAtTime(400, t);
+    lpf.frequency.exponentialRampToValueAtTime(4000, t + 1.5);
+    const g = this.ctx.createGain();
+    g.gain.setValueAtTime(0.3, t);
+    g.gain.setValueAtTime(0.3, t + 1.2);
+    g.gain.exponentialRampToValueAtTime(0.001, t + 1.5);
+    osc.connect(lpf); lpf.connect(g); g.connect(this.sfxGain);
+    osc.start(t); osc.stop(t + 1.5);
+    // Noise burst at end
+    const ns = this.ctx.createBufferSource();
+    ns.buffer = this._noiseBuffer(0.3);
+    const ng = this.ctx.createGain();
+    ng.gain.setValueAtTime(0.0, t + 1.2);
+    ng.gain.linearRampToValueAtTime(0.3, t + 1.3);
+    ng.gain.exponentialRampToValueAtTime(0.001, t + 1.5);
+    ns.connect(ng); ng.connect(this.sfxGain);
+    ns.start(t + 1.2); ns.stop(t + 1.5);
+  },
+
+  playLanding() {
+    this._ensureCtx();
+    const t = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    osc.type = 'sine'; osc.frequency.value = 60;
+    const g = this.ctx.createGain();
+    g.gain.setValueAtTime(0.5, t);
+    g.gain.exponentialRampToValueAtTime(0.001, t + 0.5);
+    osc.connect(g); g.connect(this.sfxGain);
+    osc.start(t); osc.stop(t + 0.5);
+    const ns = this.ctx.createBufferSource();
+    ns.buffer = this._noiseBuffer(0.5);
+    const ng = this.ctx.createGain();
+    ng.gain.setValueAtTime(0.25, t);
+    ng.gain.exponentialRampToValueAtTime(0.001, t + 0.5);
+    ns.connect(ng); ng.connect(this.sfxGain);
+    ns.start(t); ns.stop(t + 0.5);
+  },
+
+  playHit() {
+    this._ensureCtx();
+    const t = this.ctx.currentTime, osc = this.ctx.createOscillator();
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(200, t);
+    osc.frequency.exponentialRampToValueAtTime(80, t + 0.1);
+    const g = this.ctx.createGain();
+    g.gain.setValueAtTime(0.5, t);
+    g.gain.exponentialRampToValueAtTime(0.001, t + 0.1);
+    osc.connect(g); g.connect(this.sfxGain);
+    osc.start(t); osc.stop(t + 0.1);
+  },
+
+  playWaveHorn() {
+    this._ensureCtx();
+    const t = this.ctx.currentTime;
+    [180, 185].forEach(freq => {
+      const osc = this.ctx.createOscillator();
+      osc.type = 'sawtooth'; osc.frequency.value = freq;
+      const lpf = this.ctx.createBiquadFilter();
+      lpf.type = 'lowpass'; lpf.frequency.value = 600;
+      const g = this.ctx.createGain();
+      g.gain.setValueAtTime(0.001, t);
+      g.gain.linearRampToValueAtTime(0.3, t + 0.1);
+      g.gain.setValueAtTime(0.3, t + 0.5);
+      g.gain.linearRampToValueAtTime(0.001, t + 0.8);
+      osc.connect(lpf); lpf.connect(g); g.connect(this.sfxGain);
+      osc.start(t); osc.stop(t + 0.8);
+    });
+  },
+
+  playTowerShot() {
+    this._ensureCtx();
+    const t = this.ctx.currentTime, osc = this.ctx.createOscillator();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(1000, t);
+    osc.frequency.exponentialRampToValueAtTime(200, t + 0.15);
+    const g = this.ctx.createGain();
+    g.gain.setValueAtTime(0.4, t);
+    g.gain.exponentialRampToValueAtTime(0.001, t + 0.15);
+    osc.connect(g); g.connect(this.sfxGain);
+    osc.start(t); osc.stop(t + 0.15);
+  },
+
+  playExplosion() {
+    this._ensureCtx();
+    const t = this.ctx.currentTime;
+    const ns = this.ctx.createBufferSource();
+    ns.buffer = this._noiseBuffer(0.3);
+    const bpf = this.ctx.createBiquadFilter();
+    bpf.type = 'bandpass'; bpf.frequency.value = 200; bpf.Q.value = 0.8;
+    const g = this.ctx.createGain();
+    g.gain.setValueAtTime(0.6, t);
+    g.gain.exponentialRampToValueAtTime(0.001, t + 0.3);
+    ns.connect(bpf); bpf.connect(g); g.connect(this.sfxGain);
+    ns.start(t); ns.stop(t + 0.3);
+  },
+
+  // --- Integration ---
+  onModeChange(newMode) {
+    this._ensureCtx();
+    switch (newMode) {
+      case 'boot':
+        this.stopAmbient(); this.setIntensity(0); break;
+      case 'galaxy':
+      case 'bridge':
+        this.startAmbient('galaxy'); this.setIntensity(0); break;
+      case 'approach':
+        this.setIntensity(0.4); break;
+      case 'landing':
+        this.setIntensity(0); break;
+      case 'world': {
+        const biome = (typeof WORLDS !== 'undefined' && typeof GameState !== 'undefined'
+          && WORLDS[GameState.currentWorld]) ? WORLDS[GameState.currentWorld].biome : 'Terra';
+        this.startAmbient(biome); this.setIntensity(0); break;
+      }
+      default:
+        this.startAmbient('galaxy'); this.setIntensity(0);
+    }
+  }
 };
 
 // === js/boot.js ===
@@ -1731,6 +2046,9 @@ const Galaxy = {
         // Starfield background
         this.createStarfield();
 
+        // Nebulae
+        this.createNebulae();
+
         // Planets
         this.createPlanets();
 
@@ -1783,14 +2101,13 @@ const Galaxy = {
     },
 
     createStarfield() {
-        const count = 2500;
+        const count = 8000;
         const geo = new THREE.BufferGeometry();
         const positions = new Float32Array(count * 3);
         const colors = new Float32Array(count * 3);
         const rng = seededRandom('rappterverse-stars');
 
         for (let i = 0; i < count; i++) {
-            // Distribute in sphere
             const theta = rng() * Math.PI * 2;
             const phi = Math.acos(2 * rng() - 1);
             const r = 300 + rng() * 500;
@@ -1798,11 +2115,25 @@ const Galaxy = {
             positions[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
             positions[i * 3 + 2] = r * Math.cos(phi);
 
-            // Slight color variation
+            // Star color temperature variation
+            const temp = rng();
             const brightness = 0.5 + rng() * 0.5;
-            colors[i * 3] = brightness;
-            colors[i * 3 + 1] = brightness * (0.8 + rng() * 0.2);
-            colors[i * 3 + 2] = brightness;
+            if (temp < 0.3) {
+                // Blue-white hot stars
+                colors[i * 3] = brightness * 0.7;
+                colors[i * 3 + 1] = brightness * 0.8;
+                colors[i * 3 + 2] = brightness;
+            } else if (temp < 0.7) {
+                // Yellow-white sun-like
+                colors[i * 3] = brightness;
+                colors[i * 3 + 1] = brightness * 0.95;
+                colors[i * 3 + 2] = brightness * 0.7;
+            } else {
+                // Orange-red cool stars
+                colors[i * 3] = brightness;
+                colors[i * 3 + 1] = brightness * 0.5;
+                colors[i * 3 + 2] = brightness * 0.3;
+            }
         }
 
         geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
@@ -1816,16 +2147,152 @@ const Galaxy = {
         this.scene.add(this.starField);
     },
 
+    createNebulae() {
+        const rng = seededRandom('rappterverse-nebulae');
+        const nebulaColors = [
+            [{ r: 80, g: 20, b: 120 }, { r: 40, g: 10, b: 80 }, { r: 20, g: 5, b: 50 }],
+            [{ r: 20, g: 40, b: 120 }, { r: 10, g: 20, b: 80 }, { r: 5, g: 10, b: 50 }],
+            [{ r: 100, g: 20, b: 80 }, { r: 60, g: 10, b: 50 }, { r: 30, g: 5, b: 30 }],
+            [{ r: 20, g: 80, b: 100 }, { r: 10, g: 50, b: 60 }, { r: 5, g: 25, b: 35 }],
+            [{ r: 60, g: 20, b: 100 }, { r: 30, g: 10, b: 60 }, { r: 15, g: 5, b: 35 }],
+            [{ r: 20, g: 60, b: 120 }, { r: 10, g: 30, b: 80 }, { r: 5, g: 15, b: 45 }]
+        ];
+        for (let i = 0; i < 6; i++) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 128; canvas.height = 128;
+            const ctx = canvas.getContext('2d');
+            const c = nebulaColors[i];
+            const grad = ctx.createRadialGradient(64, 64, 0, 64, 64, 64);
+            grad.addColorStop(0, `rgba(${c[0].r},${c[0].g},${c[0].b},0.4)`);
+            grad.addColorStop(0.4, `rgba(${c[1].r},${c[1].g},${c[1].b},0.2)`);
+            grad.addColorStop(0.7, `rgba(${c[2].r},${c[2].g},${c[2].b},0.08)`);
+            grad.addColorStop(1, 'rgba(0,0,0,0)');
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, 128, 128);
+            const texture = new THREE.CanvasTexture(canvas);
+            const mat = new THREE.SpriteMaterial({
+                map: texture, transparent: true,
+                blending: THREE.AdditiveBlending,
+                opacity: 0.08 + rng() * 0.07
+            });
+            const sprite = new THREE.Sprite(mat);
+            const theta = rng() * Math.PI * 2;
+            const phi = Math.acos(2 * rng() - 1);
+            const dist = 200 + rng() * 300;
+            sprite.position.set(
+                dist * Math.sin(phi) * Math.cos(theta),
+                dist * Math.sin(phi) * Math.sin(theta),
+                dist * Math.cos(phi)
+            );
+            const scale = 80 + rng() * 70;
+            sprite.scale.set(scale, scale, 1);
+            this.scene.add(sprite);
+        }
+    },
+
+    generatePlanetTexture(biome, color) {
+        const canvas = document.createElement('canvas');
+        canvas.width = 256; canvas.height = 256;
+        const ctx = canvas.getContext('2d');
+        const rng = seededRandom('planet-tex-' + biome);
+
+        // Value noise with smoothstep interpolation
+        function noiseGrid(gridSize) {
+            const grid = [];
+            for (let y = 0; y < gridSize; y++) {
+                grid[y] = [];
+                for (let x = 0; x < gridSize; x++) grid[y][x] = rng();
+            }
+            return grid;
+        }
+        function sampleNoise(grid, x, y) {
+            const gs = grid.length;
+            const gx = (x / 256) * gs;
+            const gy = (y / 256) * gs;
+            const x0 = Math.floor(gx) % gs, y0 = Math.floor(gy) % gs;
+            const x1 = (x0 + 1) % gs, y1 = (y0 + 1) % gs;
+            const fx = gx - Math.floor(gx), fy = gy - Math.floor(gy);
+            const sfx = fx * fx * (3 - 2 * fx), sfy = fy * fy * (3 - 2 * fy);
+            const top = grid[y0][x0] * (1 - sfx) + grid[y0][x1] * sfx;
+            const bot = grid[y1][x0] * (1 - sfx) + grid[y1][x1] * sfx;
+            return top * (1 - sfy) + bot * sfy;
+        }
+        const grids = [noiseGrid(4), noiseGrid(8), noiseGrid(16), noiseGrid(32)];
+        function fbm(x, y) {
+            return sampleNoise(grids[0], x, y) * 0.5 +
+                   sampleNoise(grids[1], x, y) * 0.25 +
+                   sampleNoise(grids[2], x, y) * 0.15 +
+                   sampleNoise(grids[3], x, y) * 0.1;
+        }
+
+        const imgData = ctx.createImageData(256, 256);
+        const d = imgData.data;
+        for (let y = 0; y < 256; y++) {
+            for (let x = 0; x < 256; x++) {
+                const idx = (y * 256 + x) * 4;
+                const n = fbm(x, y);
+                const lat = Math.abs(y - 128) / 128;
+                let r, g, b;
+                switch (biome) {
+                    case 'Terra':
+                        if (lat > 0.85) {
+                            r = 220 + n * 35; g = 230 + n * 25; b = 240;
+                        } else if (n > 0.45) {
+                            r = 40 + n * 60; g = 100 + n * 80; b = 30 + n * 30;
+                        } else {
+                            r = 20 + n * 30; g = 60 + n * 40; b = 140 + n * 60;
+                        }
+                        break;
+                    case 'Volcanic':
+                        r = 30 + n * 30; g = 15 + n * 15; b = 10 + n * 10;
+                        if (n > 0.55 && n < 0.62) {
+                            r = 200 + n * 55; g = 80 + n * 40; b = 10;
+                        }
+                        break;
+                    case 'Desert':
+                        r = 180 + n * 50; g = 150 + n * 40; b = 80 + n * 30;
+                        if (n > 0.5 && n < 0.6) {
+                            r *= 0.75; g *= 0.7; b *= 0.6;
+                        }
+                        break;
+                    case 'Crystal':
+                        r = 180 + n * 50; g = 200 + n * 40; b = 220 + n * 35;
+                        if (n > 0.55) {
+                            r = 50 + n * 60; g = 200 + n * 55; b = 220 + n * 35;
+                        }
+                        break;
+                    case 'Abyss':
+                        r = 15 + n * 20; g = 5 + n * 10; b = 25 + n * 30;
+                        if (n > 0.58 && n < 0.65) {
+                            r = 80 + n * 40; g = 20 + n * 20; b = 120 + n * 60;
+                        }
+                        break;
+                    default:
+                        r = ((color >> 16) & 255) * n;
+                        g = ((color >> 8) & 255) * n;
+                        b = (color & 255) * n;
+                }
+                d[idx] = Math.min(255, r);
+                d[idx + 1] = Math.min(255, g);
+                d[idx + 2] = Math.min(255, b);
+                d[idx + 3] = 255;
+            }
+        }
+        ctx.putImageData(imgData, 0, 0);
+        return new THREE.CanvasTexture(canvas);
+    },
+
     createPlanets() {
         this.planetMeshes = [];
         WORLD_IDS.forEach((id, idx) => {
             const w = WORLDS[id];
             const group = new THREE.Group();
 
-            // Planet sphere
+            // Planet sphere with procedural texture
             const geo = new THREE.SphereGeometry(3 + idx * 0.5, 24, 24);
+            const planetTexture = this.generatePlanetTexture(w.biome, w.planetColor);
             const mat = new THREE.MeshStandardMaterial({
-                color: w.planetColor,
+                map: planetTexture,
                 roughness: 0.6, metalness: 0.3,
                 emissive: w.planetColor,
                 emissiveIntensity: 0.15
@@ -1858,6 +2325,30 @@ const Galaxy = {
             label.position.y = 6;
             label.scale.set(8, 2, 1);
             group.add(label);
+
+            // Planet rings
+            const planetRadius = 3 + idx * 0.5;
+            if (id === 'hub') {
+                // Saturn-like ring
+                const ringGeo = new THREE.RingGeometry(planetRadius + 1.5, planetRadius + 4.5, 64);
+                const ringMat = new THREE.MeshBasicMaterial({
+                    color: w.planetColor, transparent: true, opacity: 0.3,
+                    side: THREE.DoubleSide
+                });
+                const ring = new THREE.Mesh(ringGeo, ringMat);
+                ring.rotation.x = -Math.PI / 2 + 0.35;
+                group.add(ring);
+            } else if (id === 'gallery') {
+                // Thin ice ring
+                const ringGeo = new THREE.RingGeometry(planetRadius + 1, planetRadius + 2, 64);
+                const ringMat = new THREE.MeshBasicMaterial({
+                    color: w.planetColor, transparent: true, opacity: 0.2,
+                    side: THREE.DoubleSide
+                });
+                const ring = new THREE.Mesh(ringGeo, ringMat);
+                ring.rotation.x = -Math.PI / 2 + 0.35;
+                group.add(ring);
+            }
 
             // Set initial orbital position
             const angle = (idx / WORLD_IDS.length) * Math.PI * 2;
@@ -1948,8 +2439,10 @@ const Galaxy = {
             let obj = intersects[0].object;
             while (obj.parent && !obj.userData.worldId) obj = obj.parent;
             if (obj.userData.worldId) {
-                // Click planet → start approach directly (like LEVIATHAN)
-                Approach.start(obj.userData.worldId);
+                // Click planet → warp tunnel → approach (like LEVIATHAN)
+                const wid = obj.userData.worldId;
+                if (typeof Audio !== 'undefined') Audio.playClick();
+                Warp.start(() => Approach.start(wid));
             }
         }
     },
@@ -2012,6 +2505,158 @@ const Galaxy = {
         if (!this.camera) return;
         this.camera.aspect = window.innerWidth / window.innerHeight;
         this.camera.updateProjectionMatrix();
+    }
+};
+
+// === js/warp.js ===
+/* ───────────────────────────────────────────────
+   warp.js — Hyperspace warp tunnel transition
+   Three.js r128 · seededRandom from config.js
+   ─────────────────────────────────────────────── */
+
+const Warp = {
+    active: false,
+    canvas: null,
+    ctx: null,
+    stars: [],
+    progress: 0,
+    duration: 1800,
+    startTime: 0,
+    callback: null,
+    animFrameId: null,
+
+    /* ── Initialise 400 stars and begin the tunnel ── */
+    start(callback) {
+        this.canvas = document.getElementById('warp-canvas');
+        this.ctx = this.canvas.getContext('2d');
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
+
+        const cx = this.canvas.width / 2;
+        const cy = this.canvas.height / 2;
+        const rng = seededRandom('warp-' + Date.now());
+
+        this.stars = [];
+        for (let i = 0; i < 400; i++) {
+            this.stars.push({
+                x: cx,
+                y: cy,
+                prevX: cx,
+                prevY: cy,
+                angle: rng() * Math.PI * 2,
+                speed: 2 + rng() * 6,
+                z: rng()
+            });
+        }
+
+        this.progress = 0;
+        this.startTime = performance.now();
+        this.callback = callback;
+        this.active = true;
+
+        const overlay = document.getElementById('warp-overlay');
+        if (overlay) overlay.classList.add('active');
+
+        if (typeof Audio !== 'undefined') Audio.playWarp();
+
+        this.animate();
+    },
+
+    /* ── Per-frame update ── */
+    animate() {
+        if (!this.active) return;
+
+        const now = performance.now();
+        this.progress = Math.min((now - this.startTime) / this.duration, 1);
+
+        const ctx = this.ctx;
+        const w = this.canvas.width;
+        const h = this.canvas.height;
+        const cx = w / 2;
+        const cy = h / 2;
+
+        // Ease-in acceleration curve
+        const accel = this.progress * this.progress;
+
+        // Clear to black
+        ctx.fillStyle = '#000';
+        ctx.fillRect(0, 0, w, h);
+
+        // ── Draw stars ──
+        for (let i = 0; i < this.stars.length; i++) {
+            const s = this.stars[i];
+            s.prevX = s.x;
+            s.prevY = s.y;
+
+            const velocity = s.speed * (1 + accel * 12);
+            s.x += Math.cos(s.angle) * velocity;
+            s.y += Math.sin(s.angle) * velocity;
+
+            const dx = s.x - cx;
+            const dy = s.y - cy;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            const maxDist = Math.sqrt(cx * cx + cy * cy);
+
+            // Streak line width grows with distance
+            const lw = 1 + (dist / maxDist) * 2;
+
+            // Colour: white core → blue at edges
+            const blue = Math.min(Math.floor(200 + (dist / maxDist) * 55), 255);
+            const green = Math.max(Math.floor(220 - (dist / maxDist) * 180), 40);
+            const alpha = Math.min(0.4 + accel * 0.6, 1);
+            ctx.strokeStyle = `rgba(${green},${green},${blue},${alpha})`;
+            ctx.lineWidth = lw;
+
+            ctx.beginPath();
+            ctx.moveTo(s.prevX, s.prevY);
+            ctx.lineTo(s.x, s.y);
+            ctx.stroke();
+
+            // Reset stars that leave the screen
+            if (s.x < -10 || s.x > w + 10 || s.y < -10 || s.y > h + 10) {
+                s.x = cx;
+                s.y = cy;
+                s.prevX = cx;
+                s.prevY = cy;
+            }
+        }
+
+        // ── Centre glow (pulsing) ──
+        const pulse = 1 + 0.15 * Math.sin(now * 0.008);
+        const glowRadius = (40 + accel * 80) * pulse;
+        const glow = ctx.createRadialGradient(cx, cy, 0, cx, cy, glowRadius);
+        glow.addColorStop(0, `rgba(255,255,255,${0.6 + accel * 0.4})`);
+        glow.addColorStop(0.4, `rgba(180,200,255,${0.3 * accel})`);
+        glow.addColorStop(1, 'rgba(100,140,255,0)');
+        ctx.fillStyle = glow;
+        ctx.fillRect(cx - glowRadius, cy - glowRadius, glowRadius * 2, glowRadius * 2);
+
+        // ── Bright flash at the very end ──
+        if (this.progress > 0.85) {
+            const flash = (this.progress - 0.85) / 0.15;
+            ctx.fillStyle = `rgba(255,255,255,${flash * flash})`;
+            ctx.fillRect(0, 0, w, h);
+        }
+
+        // ── Done? ──
+        if (this.progress >= 1) {
+            this.cleanup();
+            if (this.callback) this.callback();
+            return;
+        }
+
+        this.animFrameId = requestAnimationFrame(() => this.animate());
+    },
+
+    /* ── Tear down ── */
+    cleanup() {
+        this.active = false;
+        if (this.animFrameId) {
+            cancelAnimationFrame(this.animFrameId);
+            this.animFrameId = null;
+        }
+        const overlay = document.getElementById('warp-overlay');
+        if (overlay) overlay.classList.remove('active');
     }
 };
 
@@ -2774,11 +3419,15 @@ const Landing = {
 const WorldTerrain = {
     particles: null,
 
+    weatherType: null,
+    weatherParticles: null,
+
     build(scene, w, worldId) {
         this.buildGround(scene, w);
         this.buildLighting(scene, w);
         this.particles = this.spawnParticles(scene, w);
         this.spawnBiomeObjects(scene, w, worldId);
+        this.initWeather(scene, w, worldId);
     },
 
     buildGround(scene, w) {
@@ -2928,8 +3577,142 @@ const WorldTerrain = {
         }
     },
 
-    update(time) {
+    update(time, delta) {
         if (this.particles) this.particles.rotation.y = time * 0.015;
+        if (delta) this.updateWeather(delta);
+
+        // Update weather label
+        const weatherEl = document.getElementById('weather-label');
+        if (weatherEl && this.weatherType) weatherEl.textContent = this.weatherType.toUpperCase();
+    },
+
+    initWeather(scene, w, worldId) {
+        const rng = seededRandom(worldId + '-weather');
+        const roll = rng();
+        let type = 'clear';
+
+        if (w.biome === 'Terra') {
+            if (roll < 0.4) type = 'clear';
+            else if (roll < 0.7) type = 'rain';
+            else if (roll < 0.9) type = 'fog';
+            else type = 'storm';
+        } else if (w.biome === 'Volcanic') {
+            if (roll < 0.5) type = 'ash';
+            else if (roll < 0.8) type = 'clear';
+            else type = 'ember';
+        } else if (w.biome === 'Desert') {
+            if (roll < 0.4) type = 'clear';
+            else if (roll < 0.8) type = 'sandstorm';
+            else type = 'heat shimmer';
+        } else if (w.biome === 'Crystal') {
+            if (roll < 0.5) type = 'clear';
+            else if (roll < 0.8) type = 'snow';
+            else type = 'aurora';
+        } else if (w.biome === 'Abyss') {
+            if (roll < 0.4) type = 'fog';
+            else if (roll < 0.7) type = 'clear';
+            else type = 'void particles';
+        }
+
+        this.weatherType = type;
+        if (type !== 'clear') {
+            this.weatherParticles = this.createWeatherParticles(scene, w, type);
+        }
+    },
+
+    createWeatherParticles(scene, w, type) {
+        const configs = {
+            rain:           { count: 1000, color: 0xaaccff, size: 0.15, opacity: 0.5 },
+            storm:          { count: 1000, color: 0x8899cc, size: 0.2,  opacity: 0.6 },
+            snow:           { count: 800,  color: 0xffffff, size: 0.25, opacity: 0.6 },
+            sandstorm:      { count: 900,  color: 0xccaa66, size: 0.3,  opacity: 0.45 },
+            ash:            { count: 600,  color: 0x555555, size: 0.2,  opacity: 0.4 },
+            ember:          { count: 500,  color: 0xff6600, size: 0.18, opacity: 0.5 },
+            fog:            { count: 500,  color: 0xffffff, size: 2.0,  opacity: 0.15 },
+            'heat shimmer': { count: 600,  color: 0xffddaa, size: 0.3,  opacity: 0.2 },
+            aurora:         { count: 700,  color: 0x44ffaa, size: 0.4,  opacity: 0.35 },
+            'void particles': { count: 600, color: 0x6600aa, size: 0.25, opacity: 0.4 }
+        };
+        const cfg = configs[type] || configs.rain;
+        const count = cfg.count;
+        const geo = new THREE.BufferGeometry();
+        const pos = new Float32Array(count * 3);
+        const rng = seededRandom(type + '-weather-particles');
+        const bx = w.bounds.x, bz = w.bounds.z;
+        const maxY = (type === 'fog') ? 5 : (type === 'sandstorm' || type === 'heat shimmer') ? 8 : 30;
+
+        for (let i = 0; i < count; i++) {
+            pos[i * 3]     = (rng() - 0.5) * bx * 2;
+            pos[i * 3 + 1] = rng() * maxY;
+            pos[i * 3 + 2] = (rng() - 0.5) * bz * 2;
+        }
+        geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+
+        const mat = new THREE.PointsMaterial({
+            color: cfg.color, size: cfg.size,
+            transparent: true, opacity: cfg.opacity,
+            blending: THREE.AdditiveBlending, sizeAttenuation: true,
+            depthWrite: false
+        });
+        const points = new THREE.Points(geo, mat);
+        points.userData.weatherType = type;
+        points.userData.bounds = { x: bx, z: bz, maxY };
+        scene.add(points);
+        return points;
+    },
+
+    updateWeather(delta) {
+        if (!this.weatherParticles) return;
+        const pts = this.weatherParticles;
+        const pos = pts.geometry.attributes.position.array;
+        const count = pos.length / 3;
+        const type = pts.userData.weatherType;
+        const b = pts.userData.bounds;
+        const t = performance.now() * 0.001;
+
+        for (let i = 0; i < count; i++) {
+            const ix = i * 3, iy = i * 3 + 1, iz = i * 3 + 2;
+            if (type === 'rain' || type === 'storm') {
+                const speed = type === 'storm' ? 25 : 18;
+                pos[iy] -= speed * delta;
+                if (type === 'storm') pos[ix] += 3 * delta;
+                if (pos[iy] < 0) { pos[iy] = b.maxY; pos[ix] = (Math.random() - 0.5) * b.x * 2; }
+            } else if (type === 'snow') {
+                pos[iy] -= 3 * delta;
+                pos[ix] += Math.sin(t + i * 0.1) * 0.5 * delta;
+                if (pos[iy] < 0) { pos[iy] = b.maxY; pos[ix] = (Math.random() - 0.5) * b.x * 2; }
+            } else if (type === 'sandstorm' || type === 'heat shimmer') {
+                pos[ix] += 8 * delta;
+                pos[iy] += Math.sin(t + i) * 0.3 * delta;
+                if (pos[ix] > b.x) pos[ix] = -b.x;
+            } else if (type === 'ash') {
+                pos[iy] += 1.5 * delta;
+                pos[ix] += Math.sin(t * 0.5 + i) * 0.2 * delta;
+                if (pos[iy] > b.maxY) pos[iy] = 0;
+            } else if (type === 'ember') {
+                pos[iy] += 2.5 * delta;
+                pos[ix] += Math.sin(t + i * 0.3) * 0.4 * delta;
+                if (pos[iy] > b.maxY) { pos[iy] = 0; pos[ix] = (Math.random() - 0.5) * b.x * 2; }
+            } else if (type === 'fog') {
+                pos[ix] += Math.sin(t * 0.3 + i * 0.7) * 0.3 * delta;
+                pos[iz] += Math.cos(t * 0.2 + i * 0.5) * 0.3 * delta;
+            } else if (type === 'aurora') {
+                pos[ix] += Math.sin(t * 0.4 + i * 0.2) * 0.6 * delta;
+                pos[iy] += Math.cos(t * 0.3 + i * 0.1) * 0.2 * delta;
+            } else if (type === 'void particles') {
+                pos[ix] += Math.sin(t + i) * 1.5 * delta;
+                pos[iy] += Math.cos(t * 0.7 + i * 0.4) * 1.0 * delta;
+                pos[iz] += Math.sin(t * 0.5 + i * 0.9) * 1.5 * delta;
+                if (pos[iy] < 0) pos[iy] = b.maxY;
+                if (pos[iy] > b.maxY) pos[iy] = 0;
+            }
+            // Wrap horizontal bounds
+            if (pos[ix] > b.x) pos[ix] = -b.x;
+            if (pos[ix] < -b.x) pos[ix] = b.x;
+            if (pos[iz] > b.z) pos[iz] = -b.z;
+            if (pos[iz] < -b.z) pos[iz] = b.z;
+        }
+        pts.geometry.attributes.position.needsUpdate = true;
     }
 };
 
@@ -3260,6 +4043,8 @@ const WorldCombat = {
     playerAttackTimer: 0,
     active: false,
     scene: null,
+    bossActive: false,
+    boss: null,
 
     init(scene) {
         this.scene = scene;
@@ -3270,6 +4055,8 @@ const WorldCombat = {
         this.lastWaveTime = performance.now();
         this.playerAttackTimer = 0;
         this.active = true;
+        this.bossActive = false;
+        this.boss = null;
     },
 
     update(delta, time, playerPos) {
@@ -3342,6 +4129,11 @@ const WorldCombat = {
         }
 
         if (typeof HUD !== 'undefined') HUD.showToast(`Wave ${this.waveNumber} incoming!`);
+
+        // Boss every 5 waves
+        if (this.waveNumber % 5 === 0 && !this.bossActive) {
+            this.spawnBoss();
+        }
     },
 
     createCreep(faction, lane, startIdx, scale, offset) {
@@ -3399,6 +4191,86 @@ const WorldCombat = {
         });
     },
 
+    spawnBoss() {
+        const laneKeys = Object.keys(LANE_DEFS);
+        const rng = seededRandom('boss-' + this.waveNumber);
+        const laneKey = laneKeys[Math.floor(rng() * laneKeys.length)];
+        const wps = WorldLanes.scaledWaypoints[laneKey];
+        if (!wps || wps.length < 2) return;
+
+        const isVoidColossus = (this.waveNumber / 5) % 2 === 1;
+        const bossName = isVoidColossus ? 'Void Colossus' : 'Quantum Overseer';
+        const bossColor = isVoidColossus ? 0x6600aa : 0x00ffcc;
+        const bossHp = isVoidColossus ? 200 : 150;
+        const bossSpeed = isVoidColossus ? 4 : 8;
+        const bossDamage = isVoidColossus ? 25 : 15;
+
+        const group = new THREE.Group();
+
+        // Boss body
+        let bodyGeo;
+        if (isVoidColossus) {
+            bodyGeo = new THREE.SphereGeometry(2, 12, 12);
+        } else {
+            bodyGeo = new THREE.OctahedronGeometry(1.5, 0);
+        }
+        const bodyMat = new THREE.MeshStandardMaterial({
+            color: bossColor, emissive: bossColor, emissiveIntensity: 0.5,
+            roughness: 0.3, metalness: 0.6
+        });
+        const body = new THREE.Mesh(bodyGeo, bodyMat);
+        body.position.y = isVoidColossus ? 2.5 : 2;
+        group.add(body);
+
+        // Boss point light
+        const lightColor = isVoidColossus ? 0x8800dd : 0x00ffcc;
+        const bossLight = new THREE.PointLight(lightColor, 2, 20);
+        bossLight.position.y = 3;
+        group.add(bossLight);
+
+        // Boss HP bar (wider)
+        const hpGeo = new THREE.PlaneGeometry(3, 0.2);
+        const hpMat = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+        const hpBar = new THREE.Mesh(hpGeo, hpMat);
+        hpBar.position.y = isVoidColossus ? 5 : 4;
+        group.add(hpBar);
+
+        // Spawn at end of lane (horde side)
+        const startIdx = wps.length - 1;
+        const start = wps[startIdx];
+        group.position.set(start.x, 0, start.z);
+
+        this.scene.add(group);
+
+        const creep = {
+            mesh: group, hpBar,
+            hp: bossHp, maxHp: bossHp,
+            faction: 'horde', lane: laneKey,
+            waypointIdx: startIdx,
+            direction: -1,
+            speed: bossSpeed,
+            damage: bossDamage,
+            attackTimer: 0,
+            alive: true,
+            isBoss: true,
+            bossName: bossName
+        };
+        this.creeps.push(creep);
+        this.bossActive = true;
+        this.boss = creep;
+
+        // Boss intro overlay
+        const overlay = document.createElement('div');
+        overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.7);z-index:9999;opacity:0;transition:opacity 0.5s;pointer-events:none;';
+        overlay.innerHTML = `<div style="color:${isVoidColossus ? '#aa44ff' : '#00ffcc'};font-size:48px;font-family:monospace;text-transform:uppercase;letter-spacing:8px;text-shadow:0 0 30px currentColor;">${bossName}</div>`;
+        document.body.appendChild(overlay);
+        requestAnimationFrame(() => { overlay.style.opacity = '1'; });
+        setTimeout(() => { overlay.style.opacity = '0'; }, 1500);
+        setTimeout(() => { if (overlay.parentNode) overlay.parentNode.removeChild(overlay); }, 2000);
+
+        if (typeof Audio !== 'undefined' && Audio.playWaveHorn) Audio.playWaveHorn();
+    },
+
     updateCreeps(delta) {
         for (const creep of this.creeps) {
             if (!creep.alive) continue;
@@ -3429,8 +4301,13 @@ const WorldCombat = {
                     enemy.hp -= COMBAT_CONFIG.creepDamage;
                     if (enemy.hp <= 0) {
                         enemy.alive = false;
-                        // Momentum shift
-                        if (enemy.faction === 'horde') {
+                        // Boss death
+                        if (enemy.isBoss) {
+                            this.bossActive = false;
+                            this.boss = null;
+                            this.momentum = Math.min(100, this.momentum + 20);
+                            if (typeof HUD !== 'undefined') HUD.showToast('BOSS DEFEATED!');
+                        } else if (enemy.faction === 'horde') {
                             this.momentum = Math.min(100, this.momentum + COMBAT_CONFIG.momentumPerKill);
                         } else {
                             this.momentum = Math.max(0, this.momentum - COMBAT_CONFIG.momentumPerKill);
@@ -3568,7 +4445,12 @@ const WorldCombat = {
                 proj.target.hp -= proj.damage;
                 if (proj.target.hp <= 0) {
                     proj.target.alive = false;
-                    if (proj.target.faction === 'horde') {
+                    if (proj.target.isBoss) {
+                        this.bossActive = false;
+                        this.boss = null;
+                        this.momentum = Math.min(100, this.momentum + 20);
+                        if (typeof HUD !== 'undefined') HUD.showToast('BOSS DEFEATED!');
+                    } else if (proj.target.faction === 'horde') {
                         this.momentum = Math.min(100, this.momentum + 1);
                     } else {
                         this.momentum = Math.max(0, this.momentum - 1);
@@ -3625,8 +4507,15 @@ const WorldCombat = {
 
         if (nearest.hp <= 0) {
             nearest.alive = false;
-            this.momentum = Math.min(100, this.momentum + COMBAT_CONFIG.momentumPerKill * 2);
-            if (typeof HUD !== 'undefined') HUD.showToast('Enemy destroyed! +momentum');
+            if (nearest.isBoss) {
+                this.bossActive = false;
+                this.boss = null;
+                this.momentum = Math.min(100, this.momentum + 20);
+                if (typeof HUD !== 'undefined') HUD.showToast('BOSS DEFEATED!');
+            } else {
+                this.momentum = Math.min(100, this.momentum + COMBAT_CONFIG.momentumPerKill * 2);
+                if (typeof HUD !== 'undefined') HUD.showToast('Enemy destroyed! +momentum');
+            }
         }
 
         // Visual flash
@@ -4114,7 +5003,7 @@ const WorldMode = {
         }
 
         // Sub-system updates
-        WorldTerrain.update(time);
+        WorldTerrain.update(time, delta);
         WorldLanes.updateTowerVisuals(time);
         WorldCombat.update(delta, time, this.player.mesh.position);
         WorldAgents.updateAnimations(time);
@@ -4963,7 +5852,10 @@ const HUD = {
         if (GameState.mode === 'galaxy' && !Bridge.open) {
             if (e.code === 'ArrowRight' || e.code === 'KeyD') Galaxy.browsePlanets(1);
             if (e.code === 'ArrowLeft' || e.code === 'KeyA') Galaxy.browsePlanets(-1);
-            if (e.code === 'Enter' && Galaxy.selectedPlanetId) Approach.start(Galaxy.selectedPlanetId);
+            if (e.code === 'Enter' && Galaxy.selectedPlanetId) {
+                const wid = Galaxy.selectedPlanetId;
+                Warp.start(() => Approach.start(wid));
+            }
         }
 
         // Quick travel (1-4)

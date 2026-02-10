@@ -28,6 +28,8 @@ const GameState = {
         console.log(`[STATE] ${this.mode} → ${newMode}`);
         this.previousMode = this.mode;
         this.mode = newMode;
+        // Notify audio system of mode change
+        if (typeof Audio !== 'undefined' && Audio.onModeChange) Audio.onModeChange(newMode);
         return true;
     },
 

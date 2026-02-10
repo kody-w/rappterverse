@@ -1,0 +1,24 @@
+/* Warp tunnel overlay */
+#warp-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10001;
+    display: none;
+    pointer-events: none;
+}
+
+#warp-overlay.active {
+    display: block;
+}
+
+#warp-canvas {
+    width: 100%;
+    height: 100%;
+}
+
+.warp-vignette {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.8) 100%);
+    pointer-events: none;
+}

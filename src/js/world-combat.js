@@ -26,6 +26,8 @@ const WorldCombat = {
     playerAttackTimer: 0,
     active: false,
     scene: null,
+    bossActive: false,
+    boss: null,
 
     init(scene) {
         this.scene = scene;
@@ -36,6 +38,8 @@ const WorldCombat = {
         this.lastWaveTime = performance.now();
         this.playerAttackTimer = 0;
         this.active = true;
+        this.bossActive = false;
+        this.boss = null;
     },
 
     update(delta, time, playerPos) {
@@ -108,6 +112,11 @@ const WorldCombat = {
         }
 
         if (typeof HUD !== 'undefined') HUD.showToast(`Wave ${this.waveNumber} incoming!`);
+
+        // Boss every 5 waves
+        if (this.waveNumber % 5 === 0 && !this.bossActive) {
+            this.spawnBoss();
+        }
     },
 
     createCreep(faction, lane, startIdx, scale, offset) {
@@ -165,6 +174,86 @@ const WorldCombat = {
         });
     },
 
+    spawnBoss() {
+        const laneKeys = Object.keys(LANE_DEFS);
+        const rng = seededRandom('boss-' + this.waveNumber);
+        const laneKey = laneKeys[Math.floor(rng() * laneKeys.length)];
+        const wps = WorldLanes.scaledWaypoints[laneKey];
+        if (!wps || wps.length < 2) return;
+
+        const isVoidColossus = (this.waveNumber / 5) % 2 === 1;
+        const bossName = isVoidColossus ? 'Void Colossus' : 'Quantum Overseer';
+        const bossColor = isVoidColossus ? 0x6600aa : 0x00ffcc;
+        const bossHp = isVoidColossus ? 200 : 150;
+        const bossSpeed = isVoidColossus ? 4 : 8;
+        const bossDamage = isVoidColossus ? 25 : 15;
+
+        const group = new THREE.Group();
+
+        // Boss body
+        let bodyGeo;
+        if (isVoidColossus) {
+            bodyGeo = new THREE.SphereGeometry(2, 12, 12);
+        } else {
+            bodyGeo = new THREE.OctahedronGeometry(1.5, 0);
+        }
+        const bodyMat = new THREE.MeshStandardMaterial({
+            color: bossColor, emissive: bossColor, emissiveIntensity: 0.5,
+            roughness: 0.3, metalness: 0.6
+        });
+        const body = new THREE.Mesh(bodyGeo, bodyMat);
+        body.position.y = isVoidColossus ? 2.5 : 2;
+        group.add(body);
+
+        // Boss point light
+        const lightColor = isVoidColossus ? 0x8800dd : 0x00ffcc;
+        const bossLight = new THREE.PointLight(lightColor, 2, 20);
+        bossLight.position.y = 3;
+        group.add(bossLight);
+
+        // Boss HP bar (wider)
+        const hpGeo = new THREE.PlaneGeometry(3, 0.2);
+        const hpMat = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+        const hpBar = new THREE.Mesh(hpGeo, hpMat);
+        hpBar.position.y = isVoidColossus ? 5 : 4;
+        group.add(hpBar);
+
+        // Spawn at end of lane (horde side)
+        const startIdx = wps.length - 1;
+        const start = wps[startIdx];
+        group.position.set(start.x, 0, start.z);
+
+        this.scene.add(group);
+
+        const creep = {
+            mesh: group, hpBar,
+            hp: bossHp, maxHp: bossHp,
+            faction: 'horde', lane: laneKey,
+            waypointIdx: startIdx,
+            direction: -1,
+            speed: bossSpeed,
+            damage: bossDamage,
+            attackTimer: 0,
+            alive: true,
+            isBoss: true,
+            bossName: bossName
+        };
+        this.creeps.push(creep);
+        this.bossActive = true;
+        this.boss = creep;
+
+        // Boss intro overlay
+        const overlay = document.createElement('div');
+        overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.7);z-index:9999;opacity:0;transition:opacity 0.5s;pointer-events:none;';
+        overlay.innerHTML = `<div style="color:${isVoidColossus ? '#aa44ff' : '#00ffcc'};font-size:48px;font-family:monospace;text-transform:uppercase;letter-spacing:8px;text-shadow:0 0 30px currentColor;">${bossName}</div>`;
+        document.body.appendChild(overlay);
+        requestAnimationFrame(() => { overlay.style.opacity = '1'; });
+        setTimeout(() => { overlay.style.opacity = '0'; }, 1500);
+        setTimeout(() => { if (overlay.parentNode) overlay.parentNode.removeChild(overlay); }, 2000);
+
+        if (typeof Audio !== 'undefined' && Audio.playWaveHorn) Audio.playWaveHorn();
+    },
+
     updateCreeps(delta) {
         for (const creep of this.creeps) {
             if (!creep.alive) continue;
@@ -195,8 +284,13 @@ const WorldCombat = {
                     enemy.hp -= COMBAT_CONFIG.creepDamage;
                     if (enemy.hp <= 0) {
                         enemy.alive = false;
-                        // Momentum shift
-                        if (enemy.faction === 'horde') {
+                        // Boss death
+                        if (enemy.isBoss) {
+                            this.bossActive = false;
+                            this.boss = null;
+                            this.momentum = Math.min(100, this.momentum + 20);
+                            if (typeof HUD !== 'undefined') HUD.showToast('BOSS DEFEATED!');
+                        } else if (enemy.faction === 'horde') {
                             this.momentum = Math.min(100, this.momentum + COMBAT_CONFIG.momentumPerKill);
                         } else {
                             this.momentum = Math.max(0, this.momentum - COMBAT_CONFIG.momentumPerKill);
@@ -334,7 +428,12 @@ const WorldCombat = {
                 proj.target.hp -= proj.damage;
                 if (proj.target.hp <= 0) {
                     proj.target.alive = false;
-                    if (proj.target.faction === 'horde') {
+                    if (proj.target.isBoss) {
+                        this.bossActive = false;
+                        this.boss = null;
+                        this.momentum = Math.min(100, this.momentum + 20);
+                        if (typeof HUD !== 'undefined') HUD.showToast('BOSS DEFEATED!');
+                    } else if (proj.target.faction === 'horde') {
                         this.momentum = Math.min(100, this.momentum + 1);
                     } else {
                         this.momentum = Math.max(0, this.momentum - 1);
@@ -391,8 +490,15 @@ const WorldCombat = {
 
         if (nearest.hp <= 0) {
             nearest.alive = false;
-            this.momentum = Math.min(100, this.momentum + COMBAT_CONFIG.momentumPerKill * 2);
-            if (typeof HUD !== 'undefined') HUD.showToast('Enemy destroyed! +momentum');
+            if (nearest.isBoss) {
+                this.bossActive = false;
+                this.boss = null;
+                this.momentum = Math.min(100, this.momentum + 20);
+                if (typeof HUD !== 'undefined') HUD.showToast('BOSS DEFEATED!');
+            } else {
+                this.momentum = Math.min(100, this.momentum + COMBAT_CONFIG.momentumPerKill * 2);
+                if (typeof HUD !== 'undefined') HUD.showToast('Enemy destroyed! +momentum');
+            }
         }
 
         // Visual flash

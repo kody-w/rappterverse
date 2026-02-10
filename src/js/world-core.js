@@ -179,7 +179,7 @@ const WorldMode = {
         }
 
         // Sub-system updates
-        WorldTerrain.update(time);
+        WorldTerrain.update(time, delta);
         WorldLanes.updateTowerVisuals(time);
         WorldCombat.update(delta, time, this.player.mesh.position);
         WorldAgents.updateAnimations(time);

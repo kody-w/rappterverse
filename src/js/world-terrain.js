@@ -2,11 +2,15 @@
 const WorldTerrain = {
     particles: null,
 
+    weatherType: null,
+    weatherParticles: null,
+
     build(scene, w, worldId) {
         this.buildGround(scene, w);
         this.buildLighting(scene, w);
         this.particles = this.spawnParticles(scene, w);
         this.spawnBiomeObjects(scene, w, worldId);
+        this.initWeather(scene, w, worldId);
     },
 
     buildGround(scene, w) {
@@ -156,7 +160,141 @@ const WorldTerrain = {
         }
     },
 
-    update(time) {
+    update(time, delta) {
         if (this.particles) this.particles.rotation.y = time * 0.015;
+        if (delta) this.updateWeather(delta);
+
+        // Update weather label
+        const weatherEl = document.getElementById('weather-label');
+        if (weatherEl && this.weatherType) weatherEl.textContent = this.weatherType.toUpperCase();
+    },
+
+    initWeather(scene, w, worldId) {
+        const rng = seededRandom(worldId + '-weather');
+        const roll = rng();
+        let type = 'clear';
+
+        if (w.biome === 'Terra') {
+            if (roll < 0.4) type = 'clear';
+            else if (roll < 0.7) type = 'rain';
+            else if (roll < 0.9) type = 'fog';
+            else type = 'storm';
+        } else if (w.biome === 'Volcanic') {
+            if (roll < 0.5) type = 'ash';
+            else if (roll < 0.8) type = 'clear';
+            else type = 'ember';
+        } else if (w.biome === 'Desert') {
+            if (roll < 0.4) type = 'clear';
+            else if (roll < 0.8) type = 'sandstorm';
+            else type = 'heat shimmer';
+        } else if (w.biome === 'Crystal') {
+            if (roll < 0.5) type = 'clear';
+            else if (roll < 0.8) type = 'snow';
+            else type = 'aurora';
+        } else if (w.biome === 'Abyss') {
+            if (roll < 0.4) type = 'fog';
+            else if (roll < 0.7) type = 'clear';
+            else type = 'void particles';
+        }
+
+        this.weatherType = type;
+        if (type !== 'clear') {
+            this.weatherParticles = this.createWeatherParticles(scene, w, type);
+        }
+    },
+
+    createWeatherParticles(scene, w, type) {
+        const configs = {
+            rain:           { count: 1000, color: 0xaaccff, size: 0.15, opacity: 0.5 },
+            storm:          { count: 1000, color: 0x8899cc, size: 0.2,  opacity: 0.6 },
+            snow:           { count: 800,  color: 0xffffff, size: 0.25, opacity: 0.6 },
+            sandstorm:      { count: 900,  color: 0xccaa66, size: 0.3,  opacity: 0.45 },
+            ash:            { count: 600,  color: 0x555555, size: 0.2,  opacity: 0.4 },
+            ember:          { count: 500,  color: 0xff6600, size: 0.18, opacity: 0.5 },
+            fog:            { count: 500,  color: 0xffffff, size: 2.0,  opacity: 0.15 },
+            'heat shimmer': { count: 600,  color: 0xffddaa, size: 0.3,  opacity: 0.2 },
+            aurora:         { count: 700,  color: 0x44ffaa, size: 0.4,  opacity: 0.35 },
+            'void particles': { count: 600, color: 0x6600aa, size: 0.25, opacity: 0.4 }
+        };
+        const cfg = configs[type] || configs.rain;
+        const count = cfg.count;
+        const geo = new THREE.BufferGeometry();
+        const pos = new Float32Array(count * 3);
+        const rng = seededRandom(type + '-weather-particles');
+        const bx = w.bounds.x, bz = w.bounds.z;
+        const maxY = (type === 'fog') ? 5 : (type === 'sandstorm' || type === 'heat shimmer') ? 8 : 30;
+
+        for (let i = 0; i < count; i++) {
+            pos[i * 3]     = (rng() - 0.5) * bx * 2;
+            pos[i * 3 + 1] = rng() * maxY;
+            pos[i * 3 + 2] = (rng() - 0.5) * bz * 2;
+        }
+        geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+
+        const mat = new THREE.PointsMaterial({
+            color: cfg.color, size: cfg.size,
+            transparent: true, opacity: cfg.opacity,
+            blending: THREE.AdditiveBlending, sizeAttenuation: true,
+            depthWrite: false
+        });
+        const points = new THREE.Points(geo, mat);
+        points.userData.weatherType = type;
+        points.userData.bounds = { x: bx, z: bz, maxY };
+        scene.add(points);
+        return points;
+    },
+
+    updateWeather(delta) {
+        if (!this.weatherParticles) return;
+        const pts = this.weatherParticles;
+        const pos = pts.geometry.attributes.position.array;
+        const count = pos.length / 3;
+        const type = pts.userData.weatherType;
+        const b = pts.userData.bounds;
+        const t = performance.now() * 0.001;
+
+        for (let i = 0; i < count; i++) {
+            const ix = i * 3, iy = i * 3 + 1, iz = i * 3 + 2;
+            if (type === 'rain' || type === 'storm') {
+                const speed = type === 'storm' ? 25 : 18;
+                pos[iy] -= speed * delta;
+                if (type === 'storm') pos[ix] += 3 * delta;
+                if (pos[iy] < 0) { pos[iy] = b.maxY; pos[ix] = (Math.random() - 0.5) * b.x * 2; }
+            } else if (type === 'snow') {
+                pos[iy] -= 3 * delta;
+                pos[ix] += Math.sin(t + i * 0.1) * 0.5 * delta;
+                if (pos[iy] < 0) { pos[iy] = b.maxY; pos[ix] = (Math.random() - 0.5) * b.x * 2; }
+            } else if (type === 'sandstorm' || type === 'heat shimmer') {
+                pos[ix] += 8 * delta;
+                pos[iy] += Math.sin(t + i) * 0.3 * delta;
+                if (pos[ix] > b.x) pos[ix] = -b.x;
+            } else if (type === 'ash') {
+                pos[iy] += 1.5 * delta;
+                pos[ix] += Math.sin(t * 0.5 + i) * 0.2 * delta;
+                if (pos[iy] > b.maxY) pos[iy] = 0;
+            } else if (type === 'ember') {
+                pos[iy] += 2.5 * delta;
+                pos[ix] += Math.sin(t + i * 0.3) * 0.4 * delta;
+                if (pos[iy] > b.maxY) { pos[iy] = 0; pos[ix] = (Math.random() - 0.5) * b.x * 2; }
+            } else if (type === 'fog') {
+                pos[ix] += Math.sin(t * 0.3 + i * 0.7) * 0.3 * delta;
+                pos[iz] += Math.cos(t * 0.2 + i * 0.5) * 0.3 * delta;
+            } else if (type === 'aurora') {
+                pos[ix] += Math.sin(t * 0.4 + i * 0.2) * 0.6 * delta;
+                pos[iy] += Math.cos(t * 0.3 + i * 0.1) * 0.2 * delta;
+            } else if (type === 'void particles') {
+                pos[ix] += Math.sin(t + i) * 1.5 * delta;
+                pos[iy] += Math.cos(t * 0.7 + i * 0.4) * 1.0 * delta;
+                pos[iz] += Math.sin(t * 0.5 + i * 0.9) * 1.5 * delta;
+                if (pos[iy] < 0) pos[iy] = b.maxY;
+                if (pos[iy] > b.maxY) pos[iy] = 0;
+            }
+            // Wrap horizontal bounds
+            if (pos[ix] > b.x) pos[ix] = -b.x;
+            if (pos[ix] < -b.x) pos[ix] = b.x;
+            if (pos[iz] > b.z) pos[iz] = -b.z;
+            if (pos[iz] < -b.z) pos[iz] = b.z;
+        }
+        pts.geometry.attributes.position.needsUpdate = true;
     }
 };

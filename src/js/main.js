@@ -75,7 +75,10 @@
         if (GameState.mode === 'galaxy' && !Bridge.open) {
             if (e.code === 'ArrowRight' || e.code === 'KeyD') Galaxy.browsePlanets(1);
             if (e.code === 'ArrowLeft' || e.code === 'KeyA') Galaxy.browsePlanets(-1);
-            if (e.code === 'Enter' && Galaxy.selectedPlanetId) Approach.start(Galaxy.selectedPlanetId);
+            if (e.code === 'Enter' && Galaxy.selectedPlanetId) {
+                const wid = Galaxy.selectedPlanetId;
+                Warp.start(() => Approach.start(wid));
+            }
         }
 
         // Quick travel (1-4)
