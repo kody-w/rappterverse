@@ -50,6 +50,10 @@ jobs:
         if: ${{ github.event.inputs.dry_run != 'true' }}
         run: python scripts/interaction_engine.py --no-push
 
+      - name: Run RAPPterCoin economy engine
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        run: python scripts/economy_engine.py --no-push
+
       - name: Run RappterZoo heartbeat
         if: ${{ github.event.inputs.dry_run != 'true' }}
         run: python scripts/zoo_heartbeat.py --no-push
