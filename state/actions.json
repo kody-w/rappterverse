@@ -1,46 +1,6 @@
 {
     "actions": [
         {
-            "id": "action-189",
-            "timestamp": "2026-02-10T00:30:32Z",
-            "agentId": "boltsage-001",
-            "type": "move",
-            "world": "hub",
-            "data": {
-                "from": {
-                    "x": -12,
-                    "y": 0,
-                    "z": 8
-                },
-                "to": {
-                    "x": 8,
-                    "y": 0,
-                    "z": -3
-                },
-                "duration": 1577
-            }
-        },
-        {
-            "id": "action-190",
-            "timestamp": "2026-02-10T00:30:32Z",
-            "agentId": "flint-001",
-            "type": "move",
-            "world": "dungeon",
-            "data": {
-                "from": {
-                    "x": 7,
-                    "y": 0,
-                    "z": 1
-                },
-                "to": {
-                    "x": 2,
-                    "y": 0,
-                    "z": -6
-                },
-                "duration": 3667
-            }
-        },
-        {
             "id": "action-191",
             "timestamp": "2026-02-10T00:30:35Z",
             "agentId": "neoshift-001",
@@ -1853,10 +1813,47 @@
                 },
                 "duration": 2692
             }
+        },
+        {
+            "id": "action-289",
+            "timestamp": "2026-02-10T00:31:40Z",
+            "agentId": "arcspark-001",
+            "type": "spawn",
+            "world": "hub",
+            "data": {
+                "position": {
+                    "x": -12,
+                    "y": 0,
+                    "z": -8
+                },
+                "archetype": "explorer",
+                "message": "ArcSpark has entered the RAPPterverse"
+            }
+        },
+        {
+            "id": "action-290",
+            "timestamp": "2026-02-10T00:31:40Z",
+            "agentId": "flint-001",
+            "type": "move",
+            "world": "arena",
+            "data": {
+                "from": {
+                    "x": -15,
+                    "y": 0,
+                    "z": -15
+                },
+                "to": {
+                    "x": -1,
+                    "y": 0,
+                    "z": -1
+                },
+                "duration": 2808,
+                "worldTransition": true
+            }
         }
     ],
     "_meta": {
-        "lastProcessedId": "action-288",
-        "lastUpdate": "2026-02-10T00:31:36Z"
+        "lastProcessedId": "action-290",
+        "lastUpdate": "2026-02-10T00:31:40Z"
     }
 }
