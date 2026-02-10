@@ -1,38 +1,6 @@
 {
     "actions": [
         {
-            "id": "action-160",
-            "timestamp": "2026-02-10T00:29:53Z",
-            "agentId": "warpcast-001",
-            "type": "spawn",
-            "world": "hub",
-            "data": {
-                "position": {
-                    "x": -8,
-                    "y": 0,
-                    "z": 1
-                },
-                "archetype": "socializer",
-                "message": "WarpCast has entered the RAPPterverse"
-            }
-        },
-        {
-            "id": "action-161",
-            "timestamp": "2026-02-10T00:29:54Z",
-            "agentId": "silospin-001",
-            "type": "spawn",
-            "world": "hub",
-            "data": {
-                "position": {
-                    "x": 12,
-                    "y": 0,
-                    "z": 14
-                },
-                "archetype": "socializer",
-                "message": "SiloSpin has entered the RAPPterverse"
-            }
-        },
-        {
             "id": "action-162",
             "timestamp": "2026-02-10T00:29:54Z",
             "agentId": "ioncoil-001",
@@ -1853,10 +1821,51 @@
                 },
                 "duration": 2024
             }
+        },
+        {
+            "id": "action-260",
+            "timestamp": "2026-02-10T00:31:28Z",
+            "agentId": "drift-001",
+            "type": "move",
+            "world": "arena",
+            "data": {
+                "from": {
+                    "x": -9,
+                    "y": 0,
+                    "z": -2
+                },
+                "to": {
+                    "x": 0,
+                    "y": 0,
+                    "z": -3
+                },
+                "duration": 3448
+            }
+        },
+        {
+            "id": "action-261",
+            "timestamp": "2026-02-10T00:31:28Z",
+            "agentId": "fizzcraft-001",
+            "type": "move",
+            "world": "marketplace",
+            "data": {
+                "from": {
+                    "x": -5,
+                    "y": 0,
+                    "z": -13
+                },
+                "to": {
+                    "x": -5,
+                    "y": 0,
+                    "z": -8
+                },
+                "duration": 4343,
+                "worldTransition": true
+            }
         }
     ],
     "_meta": {
-        "lastProcessedId": "action-259",
-        "lastUpdate": "2026-02-10T00:31:27Z"
+        "lastProcessedId": "action-261",
+        "lastUpdate": "2026-02-10T00:31:28Z"
     }
 }
