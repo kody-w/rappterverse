@@ -249,12 +249,17 @@ def execute_agent_action(agent_id: str, registry: dict, npc_lookup: dict,
 
     npc_def = find_npc_for_agent(agent_id, npc_lookup)
     world = agent.get("world", reg.get("world", "hub"))
-    weights = reg.get("behavior", {}).get("decisionWeights", {"move": 0.3, "chat": 0.5, "emote": 0.2})
+    weights = dict(reg.get("behavior", {}).get("decisionWeights", {"move": 0.3, "chat": 0.5, "emote": 0.2}))
+
+    # Inject a small autonomous poke chance (server-side agent-to-agent)
+    if "poke" not in weights:
+        weights["poke"] = 0.08
 
     action_ids = [a["id"] for a in actions]
     msg_ids = [m["id"] for m in messages]
     new_actions = []
     new_messages = []
+    poke_target_id = None  # set if this agent autonomously pokes someone
 
     # If responding to a specific message, always chat
     if respond_to_msg:
@@ -367,7 +372,54 @@ def execute_agent_action(agent_id: str, registry: dict, npc_lookup: dict,
             prefix = "👉" if poked else ("↩️" if respond_to_msg else "💬")
             summary = f'{prefix} {reg["name"]}: "{content[:60]}..."'
 
-    elif activity == "emote":
+    elif activity == "poke":
+        # Autonomous agent-to-agent poke: find someone in the same world
+        same_world = [
+            a for a in agents
+            if a["id"] != agent_id
+            and a.get("world") == world
+            and a.get("status") == "active"
+            and a["id"] in registry  # target must be in registry to react
+        ]
+        if not same_world:
+            # Nobody to poke — fall back to emote
+            activity = "emote"
+        else:
+            target = random.choice(same_world)
+            target_id = target["id"]
+            target_name = target.get("name", target_id)
+            poker_name = reg.get("name", agent_id)
+
+            # Record the poke action
+            aid = get_next_id("action-", action_ids + [a["id"] for a in new_actions])
+            new_actions.append({
+                "id": aid, "timestamp": timestamp, "agentId": agent_id,
+                "type": "interact", "world": world,
+                "data": {
+                    "subtype": "poke",
+                    "target": target_id,
+                    "targetName": target_name,
+                },
+            })
+
+            # Poker says something about the poke
+            mid = get_next_id("msg-", msg_ids + [m["id"] for m in new_messages])
+            new_messages.append({
+                "id": mid, "timestamp": timestamp, "world": world,
+                "author": {
+                    "id": agent_id,
+                    "name": poker_name,
+                    "avatar": reg.get("avatar", "🤖"),
+                    "type": "agent",
+                },
+                "content": f"*pokes {target_name}*",
+                "type": "chat",
+            })
+            agent["action"] = "poking"
+            poke_target_id = target_id
+            summary = f"👉 {poker_name} poked {target_name}"
+
+    if activity == "emote":
         emote = random.choice(VALID_EMOTES)
         aid = get_next_id("action-", action_ids + [a["id"] for a in new_actions])
         new_actions.append({
@@ -378,20 +430,24 @@ def execute_agent_action(agent_id: str, registry: dict, npc_lookup: dict,
         agent["action"] = emote
         summary = f"✨ {reg['name']} {emote}s"
 
-    else:
+    elif activity not in ("move", "chat", "chat_respond", "chat_poke", "poke"):
         return {"agent": agent_id, "error": f"unknown action: {activity}"}
 
     agent["lastUpdate"] = timestamp
     actions.extend(new_actions)
     messages.extend(new_messages)
 
-    return {
+    result = {
         "agent": agent_id,
         "name": reg.get("name"),
         "actions": len(new_actions),
         "messages": len(new_messages),
         "summary": summary,
     }
+    # If this was an autonomous poke, flag the target for a reaction
+    if poke_target_id:
+        result["poke_target"] = poke_target_id
+    return result
 
 
 # ─── Validation ──────────────────────────────────────────────────────
@@ -547,6 +603,24 @@ def main():
             print(f"  ⚠️ {aid}: {result['error']}")
         else:
             print(f"  {result['summary']}")
+
+    # Process autonomous poke reactions — targets respond in-character
+    poke_targets = [
+        r["poke_target"] for r in results
+        if r.get("poke_target") and r["poke_target"] not in target_agents
+    ]
+    if poke_targets:
+        print(f"\n  🔁 {len(poke_targets)} poke reaction(s):")
+        for tid in poke_targets:
+            reaction = execute_agent_action(
+                tid, registry, npc_lookup, agents, actions, messages,
+                bounds, timestamp, token, poked=True,
+            )
+            results.append(reaction)
+            if "error" in reaction:
+                print(f"    ⚠️ {tid}: {reaction['error']}")
+            else:
+                print(f"    {reaction['summary']}")
 
     total_actions = sum(r.get("actions", 0) for r in results)
     total_messages = sum(r.get("messages", 0) for r in results)
