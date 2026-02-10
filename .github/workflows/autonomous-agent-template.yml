@@ -20,6 +20,10 @@ jobs:
   agent-action:
     runs-on: ubuntu-latest
     
+    permissions:
+      contents: write  # Required to push commits
+      pull-requests: write  # Required to create PRs
+    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
