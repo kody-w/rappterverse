@@ -222,6 +222,25 @@ nav .status .dot{display:inline-block;width:6px;height:6px;border-radius:50%;bac
 .txn-row .red{color:var(--red)}.txn-row .green{color:var(--green)}
 .action-row{padding:3px 0;font-size:13px}
 .chat-bubble{font-size:13px;padding:6px 0;border-bottom:1px solid var(--border);line-height:1.5}
+
+/* Automation */
+.auto-engines{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:20px}
+.engine-card{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center}
+.engine-card .icon{font-size:28px;margin-bottom:6px}
+.engine-card .name{font-size:13px;font-weight:700;margin-bottom:4px}
+.engine-card .rate{font-size:20px;font-weight:700;margin:4px 0}
+.engine-card .rate.good{color:var(--green)}.engine-card .rate.warn{color:var(--gold)}.engine-card .rate.bad{color:var(--red)}
+.engine-card .sub{font-size:11px;color:var(--dim)}
+.auto-runs{display:flex;flex-direction:column;gap:6px}
+.run-row{display:flex;align-items:center;gap:12px;background:var(--panel);border:1px solid var(--border);border-radius:6px;padding:10px 14px;font-size:13px}
+.run-row .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.run-row .dot.success{background:var(--green)}.run-row .dot.failure{background:var(--red)}.run-row .dot.in_progress{background:var(--gold);animation:pulse 1s infinite}
+.run-row .dot.cancelled{background:var(--dim)}
+.run-row .wf-name{flex:1;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.run-row .duration{color:var(--dim);font-size:12px;white-space:nowrap}
+.run-row .time{color:var(--dim);font-size:12px;white-space:nowrap}
+.run-row a{color:var(--cyan);text-decoration:none;font-size:12px}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 </style>
 </head>
 <body>
@@ -238,6 +257,7 @@ nav .status .dot{display:inline-block;width:6px;height:6px;border-radius:50%;bac
   <button data-view="inventory">🎒 Items</button>
   <button data-view="zoo">🦖 Zoo</button>
   <button data-view="growth">📈 Growth</button>
+  <button data-view="automation">🔧 Automation</button>
   <div class="status"><span class="dot"></span>Polling live data</div>
 </nav>
 
@@ -330,6 +350,15 @@ nav .status .dot{display:inline-block;width:6px;height:6px;border-radius:50%;bac
   <div class="growth-info" id="growth-info"></div>
 </div>
 
+<!-- Automation View -->
+<div class="view" id="view-automation">
+  <div class="stats-bar" id="auto-stats"></div>
+  <div class="section-sub">ENGINE HEALTH</div>
+  <div class="auto-engines" id="auto-engines"></div>
+  <div class="section-sub">RECENT WORKFLOW RUNS</div>
+  <div class="auto-runs" id="auto-runs"></div>
+</div>
+
 <script>
 // ── Config ────────────────────────────────────────────────
 const REPO = 'kody-w/rappterverse';
@@ -419,7 +448,7 @@ document.querySelectorAll('nav button[data-view]').forEach(btn => {
 function render() {
   const views = { feed:renderFeed, agents:renderAgents, npcs:renderNPCs, graph:drawGraph,
     map:renderMap, economy:renderEconomy, quests:renderQuests, inventory:renderInventory,
-    zoo:renderZoo, growth:renderGrowth };
+    zoo:renderZoo, growth:renderGrowth, automation:renderAutomation };
   if (views[currentView]) views[currentView]();
 }
 
@@ -993,6 +1022,114 @@ function renderGrowth() {
     <div class="section-sub">SPAWNED AGENTS (${names.length})</div>
     <div class="growth-names">${names.map(n=>`<span class="growth-name">${esc(n)}</span>`).join('')}</div>
     ${epochStart?`<div style="margin-top:20px;font-size:12px;color:var(--dim)">Epoch started: ${epochStart.toISOString()}</div>`:''}`;
+}
+
+// ── Automation View ───────────────────────────────────────
+let autoCache = null;
+let autoCacheTime = 0;
+const AUTO_CACHE_TTL = 60000; // 1 minute
+
+const WORKFLOW_META = {
+  'Game Tick':                {icon:'⏱️', engine:'tick'},
+  'World Heartbeat 💓':       {icon:'💓', engine:'heartbeat'},
+  'Architect Exploration':    {icon:'🏗️', engine:'architect'},
+  'NPC Conversationalist':    {icon:'🧠', engine:'npc'},
+  'Generate World Activity':  {icon:'🌍', engine:'activity'},
+  'State Consistency Audit':  {icon:'🔍', engine:'audit'},
+  'Validate Agent Action':    {icon:'✅', engine:'validate'},
+  'PII Scan':                 {icon:'🛡️', engine:'pii'},
+  'pages-build-deployment':   {icon:'📄', engine:'pages'},
+};
+
+async function fetchWorkflowRuns() {
+  const now = Date.now();
+  if (autoCache && (now - autoCacheTime) < AUTO_CACHE_TTL) return autoCache;
+  try {
+    const res = await fetch(`https://api.github.com/repos/${REPO}/actions/runs?per_page=100`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    autoCache = data.workflow_runs || [];
+    autoCacheTime = now;
+    return autoCache;
+  } catch(e) {
+    console.warn('Actions API error:', e);
+    return autoCache || [];
+  }
+}
+
+async function renderAutomation() {
+  const runs = await fetchWorkflowRuns();
+  if (!runs.length) {
+    document.getElementById('auto-stats').innerHTML = '<div class="stat"><div class="label">Status</div><div class="value red">No data</div></div>';
+    document.getElementById('auto-engines').innerHTML = '<div style="color:var(--dim)">GitHub Actions API returned no runs. May need a token for private repos.</div>';
+    document.getElementById('auto-runs').innerHTML = '';
+    return;
+  }
+
+  // Time window: last 24h
+  const cutoff = Date.now() - 86400000;
+  const recent = runs.filter(r => new Date(r.created_at).getTime() > cutoff);
+  const total = recent.length;
+  const passed = recent.filter(r => r.conclusion === 'success').length;
+  const failed = recent.filter(r => r.conclusion === 'failure').length;
+  const running = recent.filter(r => r.status === 'in_progress').length;
+  const rate = total > 0 ? ((passed/total)*100).toFixed(1) : '—';
+  const rateClass = rate === '—' ? '' : (parseFloat(rate) >= 95 ? 'green' : parseFloat(rate) >= 80 ? 'gold' : 'red');
+
+  document.getElementById('auto-stats').innerHTML = `
+    <div class="stat"><div class="label">24h Runs</div><div class="value">${total}</div></div>
+    <div class="stat"><div class="label">Passed</div><div class="value green">${passed}</div></div>
+    <div class="stat"><div class="label">Failed</div><div class="value red">${failed}</div></div>
+    <div class="stat"><div class="label">Running</div><div class="value gold">${running}</div></div>
+    <div class="stat"><div class="label">Success Rate</div><div class="value ${rateClass}">${rate}%</div></div>`;
+
+  // Engine health cards
+  const engines = {};
+  recent.forEach(r => {
+    const name = r.name;
+    if (!engines[name]) engines[name] = {total:0, passed:0, failed:0, lastRun:null, lastConclusion:null};
+    engines[name].total++;
+    if (r.conclusion === 'success') engines[name].passed++;
+    if (r.conclusion === 'failure') engines[name].failed++;
+    const t = new Date(r.created_at).getTime();
+    if (!engines[name].lastRun || t > engines[name].lastRun) {
+      engines[name].lastRun = t;
+      engines[name].lastConclusion = r.conclusion || r.status;
+    }
+  });
+
+  document.getElementById('auto-engines').innerHTML = Object.entries(engines)
+    .sort((a,b) => (b[1].lastRun||0) - (a[1].lastRun||0))
+    .map(([name, e]) => {
+      const meta = WORKFLOW_META[name] || {icon:'⚙️'};
+      const pct = e.total > 0 ? ((e.passed/e.total)*100).toFixed(0) : '—';
+      const cls = pct === '—' ? '' : (parseInt(pct) >= 95 ? 'good' : parseInt(pct) >= 80 ? 'warn' : 'bad');
+      const lastStatus = e.lastConclusion === 'success' ? '✅' : e.lastConclusion === 'failure' ? '❌' : '🔄';
+      return `<div class="engine-card">
+        <div class="icon">${meta.icon}</div>
+        <div class="name">${esc(name)}</div>
+        <div class="rate ${cls}">${pct}%</div>
+        <div class="sub">${e.passed}/${e.total} passed · Last: ${lastStatus} ${timeAgo(e.lastRun)}</div>
+      </div>`;
+    }).join('');
+
+  // Recent runs list (last 50)
+  const display = runs.slice(0, 50);
+  document.getElementById('auto-runs').innerHTML = display.map(r => {
+    const meta = WORKFLOW_META[r.name] || {icon:'⚙️'};
+    const conclusion = r.conclusion || r.status || 'unknown';
+    const dur = r.updated_at && r.created_at
+      ? Math.round((new Date(r.updated_at) - new Date(r.created_at))/1000) : null;
+    const durStr = dur !== null ? (dur < 60 ? `${dur}s` : `${Math.floor(dur/60)}m${dur%60}s`) : '';
+    return `<div class="run-row">
+      <div class="dot ${conclusion}"></div>
+      <span style="font-size:16px">${meta.icon}</span>
+      <span class="wf-name">${esc(r.name)}</span>
+      <span class="duration">${durStr}</span>
+      <span class="time">${timeAgo(r.created_at)}</span>
+      <a href="${r.html_url}" target="_blank">View →</a>
+    </div>`;
+  }).join('');
 }
 
 // ── Resize ────────────────────────────────────────────────
