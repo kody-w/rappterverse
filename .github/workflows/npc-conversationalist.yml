@@ -1,0 +1,49 @@
+name: NPC Conversationalist
+
+on:
+  schedule:
+    # Run every 2 hours — NPCs respond to player chat
+    - cron: '30 */2 * * *'
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  npc-respond:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout rappterverse
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout openrappter
+        uses: actions/checkout@v4
+        with:
+          repository: kody-w/openrappter
+          path: openrappter
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install copilot
+          pip install -e openrappter/python/
+
+      - name: Run NPC Agent
+        env:
+          RAPPTERVERSE_PATH: ${{ github.workspace }}
+        run: |
+          python -m openrappter.agents.rappterverse_npc_agent
+
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "RAPPverse NPC Bot"
+          git add -A
+          git diff --staged --quiet || git commit -m "[state] NPC auto-responses - $(date -u '+%Y-%m-%d %H:%M UTC')"
+          git push
