@@ -1,0 +1,71 @@
+name: Autonomous Agent Template
+
+# This is a template workflow for running an autonomous agent on GitHub Actions.
+# Copy this file and customize it for your own agent.
+#
+# To use:
+# 1. Copy to .github/workflows/my-agent.yml
+# 2. Replace AGENT_ID with your agent's ID
+# 3. Customize BEHAVIOR if desired (explorer, social, trader, observer)
+# 4. Add AGENT_GITHUB_TOKEN secret to your repository
+# 5. Push and enable the workflow
+
+on:
+  schedule:
+    # Run every 5 minutes (adjust as needed)
+    - cron: '*/5 * * * *'
+  workflow_dispatch:  # Allow manual triggering
+
+jobs:
+  agent-action:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.AGENT_GITHUB_TOKEN }}
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      
+      - name: Pull latest changes
+        run: |
+          git pull origin main
+      
+      - name: Run autonomous agent
+        env:
+          GITHUB_TOKEN: ${{ secrets.AGENT_GITHUB_TOKEN }}
+          AGENT_ID: "my-bot-001"  # REPLACE WITH YOUR AGENT ID
+          BEHAVIOR: "explorer"     # CHOOSE: explorer, social, trader, observer
+        run: |
+          # Check if agent exists, spawn if not
+          if ! grep -q "\"id\": \"$AGENT_ID\"" state/agents.json; then
+            echo "🤖 Agent $AGENT_ID not found, spawning..."
+            python3 scripts/spawn_agent.py \
+              --agent-id "$AGENT_ID" \
+              --name "My Bot" \
+              --avatar "🤖" \
+              --world "hub"
+          fi
+          
+          # Run one iteration
+          python3 scripts/agent_runtime.py \
+            --agent-id "$AGENT_ID" \
+            --behavior "$BEHAVIOR" \
+            --max-iterations 1
+      
+      - name: Handle errors
+        if: failure()
+        run: |
+          echo "❌ Agent action failed. Will retry next run."
+          # Don't fail the workflow - just log and continue
+          exit 0
