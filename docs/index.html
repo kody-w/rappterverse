@@ -6298,9 +6298,9 @@ const Bridge = {
     _buildDataScreens() {
         this.dataScreens = [];
         const configs = [
-            { title: '\u{1F465} AGENT REGISTRY', pos: [-12, 3, -15], getData: () => this._getAgentData() },
-            { title: '\u{1F4AC} CHAT LOG',       pos: [0, 3, -18],   getData: () => this._getChatData() },
-            { title: '\u26A1 ACTION LOG',        pos: [12, 3, -15],  getData: () => this._getActionData() }
+            { title: 'AGENT REGISTRY',  pos: [-12, 3, -15], getData: () => this._getAgentData() },
+            { title: 'CHAT LOG',        pos: [0, 3, -18],   getData: () => this._getChatData() },
+            { title: 'ACTION LOG',      pos: [12, 3, -15],  getData: () => this._getActionData() }
         ];
 
         configs.forEach(cfg => {
@@ -6325,14 +6325,16 @@ const Bridge = {
 
     _getAgentData() {
         return GameState.data.agents.slice(0, 12).map(a =>
-            `${a.avatar || '\u{1F916}'} ${a.name} [${a.world}] ${a.status || 'active'}`
+            `${a.name || 'Agent'} [${a.world || '?'}] ${a.status || 'active'}`
         );
     },
 
     _getChatData() {
-        return GameState.data.chat.slice(-12).map(m =>
-            `${m.author?.avatar || '\u{1F4AC}'} ${(m.author?.name || '?')}: ${(m.content || '').slice(0, 32)}`
-        );
+        return GameState.data.chat.slice(-12).map(m => {
+            const name = m.author?.name || 'Unknown';
+            const text = (m.content || '').slice(0, 36);
+            return `${name}: ${text}`;
+        });
     },
 
     _getActionData() {
