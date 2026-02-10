@@ -200,6 +200,11 @@ def course_has_room(academy: dict, course: dict) -> bool:
     return enrolled < course.get("max_students", 10)
 
 
+def _name_to_agent(agents: list) -> dict:
+    """Build a name → agent dict for ID/avatar lookups."""
+    return {a["name"]: a for a in agents}
+
+
 def academy_tick(dry_run: bool = False):
     ts = now_iso()
     academy = load_json(STATE_DIR / "academy.json")
@@ -211,6 +216,7 @@ def academy_tick(dry_run: bool = False):
     actions_data = load_json(STATE_DIR / "actions.json")
 
     active_agents = [a for a in agents if a.get("status") == "active"]
+    agent_lookup = _name_to_agent(agents)
     courses = academy["courses"]
     results = []
 
@@ -350,16 +356,23 @@ def academy_tick(dry_run: bool = False):
             )
             results.append(msg)
 
-            # Post graduation announcement in zoo chat
+            # Post graduation announcement in chat
             chat_msgs = chat_data.get("messages", [])
             existing_ids = [m["id"] for m in chat_msgs]
             msg_num = max((int(mid.split("-")[1]) for mid in existing_ids if mid.startswith("msg-")), default=0) + 1
+            agent_obj = agent_lookup.get(agent_name, {})
             chat_msgs.append({
                 "id": "msg-{:03d}".format(msg_num),
-                "agentId": agent_name,
-                "message": f"Just graduated from {enrollment['courseName']}! {skill.replace('_',' ').title()} skill unlocked. 🎓",
-                "world": next((a.get("world", "hub") for a in agents if a["name"] == agent_name), "hub"),
                 "timestamp": ts,
+                "world": agent_obj.get("world", "hub"),
+                "author": {
+                    "id": agent_obj.get("id", "unknown"),
+                    "name": agent_name,
+                    "avatar": agent_obj.get("avatar", "🎓"),
+                    "type": "agent",
+                },
+                "content": f"Just graduated from {enrollment['courseName']}! {skill.replace('_',' ').title()} skill unlocked. 🎓",
+                "type": "chat",
             })
             chat_data["messages"] = chat_msgs[-100:]
 
@@ -405,13 +418,20 @@ def academy_tick(dry_run: bool = False):
             actions = actions_data.get("actions", [])
             existing_ids = [a["id"] for a in actions]
             act_num = max((int(aid.split("-")[1]) for aid in existing_ids if aid.startswith("action-")), default=0) + 1
+            teacher_obj = agent_lookup.get(teacher_name, {})
+            student_obj = agent_lookup.get(student["name"], {})
             actions.append({
                 "id": "action-{:03d}".format(act_num),
-                "agentId": teacher_name,
+                "agentId": teacher_obj.get("id", teacher_name),
                 "type": "teach",
                 "description": f"Taught {skill} to {student['name']}",
                 "world": teacher.get("world", "hub"),
                 "timestamp": ts,
+                "data": {
+                    "skill": skill,
+                    "studentId": student_obj.get("id", student["name"]),
+                    "xpGranted": xp,
+                },
             })
             actions_data["actions"] = actions[-100:]
             break  # One lesson per teacher per tick

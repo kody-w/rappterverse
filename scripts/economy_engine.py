@@ -490,8 +490,9 @@ def economy_tick(dry_run: bool = False):
                 listing["soldAt"] = ts
 
                 # Add to buyer's inventory
+                agent_id = agent["id"]
                 inv = inventory.setdefault("inventories", {}).setdefault(
-                    name, {"agentId": name, "items": [], "lastUpdate": ts})
+                    agent_id, {"agentId": agent_id, "items": [], "lastUpdate": ts})
                 inv["items"].append(listing["item"])
                 inv["lastUpdate"] = ts
 

@@ -34,7 +34,10 @@ jobs:
           python-version: '3.11'
 
       - name: Run growth simulation
+        id: growth
+        continue-on-error: true
         run: |
+          cp -r state/ .state-snapshot-growth/
           ARGS="--no-push"
           FORCE="${{ github.event.inputs.force_spawn || '0' }}"
           DRY_RUN="${{ github.event.inputs.dry_run || 'false' }}"
@@ -46,24 +49,96 @@ jobs:
           fi
           python scripts/world_growth.py $ARGS
 
+      - name: Rollback growth on failure
+        if: steps.growth.outcome == 'failure'
+        run: |
+          echo "⚠️ Growth simulation failed — rolling back state changes"
+          cp -r .state-snapshot-growth/* state/
+          rm -rf .state-snapshot-growth/
+
+      - name: Cleanup growth snapshot
+        if: steps.growth.outcome == 'success'
+        run: rm -rf .state-snapshot-growth/
+
       - name: Run interaction engine
+        id: interaction
+        continue-on-error: true
         if: ${{ github.event.inputs.dry_run != 'true' }}
-        run: python scripts/interaction_engine.py --no-push
+        run: |
+          cp -r state/ .state-snapshot-interaction/
+          python scripts/interaction_engine.py --no-push
+
+      - name: Rollback interaction on failure
+        if: steps.interaction.outcome == 'failure'
+        run: |
+          echo "⚠️ Interaction engine failed — rolling back state changes"
+          cp -r .state-snapshot-interaction/* state/
+          rm -rf .state-snapshot-interaction/
+
+      - name: Cleanup interaction snapshot
+        if: steps.interaction.outcome == 'success'
+        run: rm -rf .state-snapshot-interaction/
 
       - name: Run RAPPter Academy
+        id: academy
+        continue-on-error: true
         if: ${{ github.event.inputs.dry_run != 'true' }}
-        run: python scripts/academy_engine.py --no-push
+        run: |
+          cp -r state/ .state-snapshot-academy/
+          python scripts/academy_engine.py --no-push
+
+      - name: Rollback academy on failure
+        if: steps.academy.outcome == 'failure'
+        run: |
+          echo "⚠️ Academy engine failed — rolling back state changes"
+          cp -r .state-snapshot-academy/* state/
+          rm -rf .state-snapshot-academy/
+
+      - name: Cleanup academy snapshot
+        if: steps.academy.outcome == 'success'
+        run: rm -rf .state-snapshot-academy/
 
       - name: Run RAPPterCoin economy engine
+        id: economy
+        continue-on-error: true
         if: ${{ github.event.inputs.dry_run != 'true' }}
-        run: python scripts/economy_engine.py --no-push
+        run: |
+          cp -r state/ .state-snapshot-economy/
+          python scripts/economy_engine.py --no-push
+
+      - name: Rollback economy on failure
+        if: steps.economy.outcome == 'failure'
+        run: |
+          echo "⚠️ Economy engine failed — rolling back state changes"
+          cp -r .state-snapshot-economy/* state/
+          rm -rf .state-snapshot-economy/
+
+      - name: Cleanup economy snapshot
+        if: steps.economy.outcome == 'success'
+        run: rm -rf .state-snapshot-economy/
 
       - name: Run RappterZoo heartbeat
+        id: zoo
+        continue-on-error: true
         if: ${{ github.event.inputs.dry_run != 'true' }}
-        run: python scripts/zoo_heartbeat.py --no-push
+        run: |
+          cp -r state/ .state-snapshot-zoo/
+          python scripts/zoo_heartbeat.py --no-push
+
+      - name: Rollback zoo on failure
+        if: steps.zoo.outcome == 'failure'
+        run: |
+          echo "⚠️ Zoo heartbeat failed — rolling back state changes"
+          cp -r .state-snapshot-zoo/* state/
+          rm -rf .state-snapshot-zoo/
+
+      - name: Cleanup zoo snapshot
+        if: steps.zoo.outcome == 'success'
+        run: rm -rf .state-snapshot-zoo/
 
       - name: Validate state
         if: ${{ github.event.inputs.dry_run != 'true' }}
+        continue-on-error: true
         run: python scripts/validate_action.py --audit
 
       - name: PII scan

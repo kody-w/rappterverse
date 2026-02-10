@@ -29,6 +29,7 @@ VALID_ACTION_TYPES = {
     "move", "chat", "emote", "spawn", "despawn",
     "interact", "trade_offer", "trade_accept", "trade_decline",
     "battle_challenge", "battle_action", "place_object",
+    "teach",
 }
 
 VALID_EMOTES = {"wave", "dance", "bow", "clap", "think", "celebrate", "cheer", "nod"}
