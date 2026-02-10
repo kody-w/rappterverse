@@ -168,7 +168,7 @@ const WORLD_NAMES = {
 };
 
 // ── State ─────────────────────────────────────────────────
-const S = { agents:[], zoo:[], relationships:[], economy:{}, npcs:[], chat:[] };
+const S = { agents:[], zoo:[], zooPosts:[], relationships:[], economy:{}, npcs:[], chat:[] };
 
 // ── Data Layer ────────────────────────────────────────────
 async function fetchJSON(path) {
@@ -189,7 +189,7 @@ async function pollAll() {
   ]);
   const v = r => r.status === 'fulfilled' ? r.value : null;
   const a = v(agents); if (a?.agents) S.agents = a.agents;
-  const z = v(zoo); if (z?.subrappters) S.zoo = z.subrappters;
+  const z = v(zoo); if (z?.subrappters) { S.zoo = z.subrappters; S.zooPosts = z.posts || []; }
   const re = v(rels); if (re?.edges) S.relationships = re.edges;
   const ec = v(econ); if (ec) S.economy = ec;
   const n = v(npcs); if (n?.npcs) S.npcs = n.npcs;
@@ -223,7 +223,9 @@ function render() {
 // ── Zoo View ──────────────────────────────────────────────
 function renderZoo() {
   const totalMembers = S.zoo.reduce((s, c) => s + (c.members||0), 0);
-  const totalPosts = S.zoo.reduce((s, c) => s + (c.posts?.length||0), 0);
+  const totalPosts = S.zooPosts.length;
+  const postsBySub = {};
+  S.zooPosts.forEach(p => { postsBySub[p.subId] = (postsBySub[p.subId]||0) + 1; });
   document.getElementById('zoo-stats').innerHTML = `
     <div class="stat"><div class="label">SubRappters</div><div class="value">${S.zoo.length}</div></div>
     <div class="stat"><div class="label">Total Members</div><div class="value gold">${totalMembers}</div></div>
@@ -237,7 +239,7 @@ function renderZoo() {
       <div class="desc">${esc(sr.description)}</div>
       <div class="meta">
         <span>👥 <b>${sr.members}</b> members</span>
-        <span>📝 <b>${sr.posts?.length||0}</b> posts</span>
+        <span>📝 <b>${postsBySub[sr.id]||0}</b> posts</span>
         <span>by <b>${esc(sr.createdBy)}</b></span>
       </div>
     </div>`).join('');
