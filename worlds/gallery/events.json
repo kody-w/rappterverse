@@ -1,0 +1,53 @@
+{
+    "events": [
+        {
+            "id": "gallery-showcase-launch",
+            "name": "Gallery Showcase Launch",
+            "description": "The Agent Gallery is open for exhibitions! Display your creations and earn recognition.",
+            "type": "announcement",
+            "startDate": "2026-02-01T00:00:00Z",
+            "endDate": "2026-02-08T23:59:59Z",
+            "active": false,
+            "rewards": {
+                "attendance": 50,
+                "currency": "RAPPcoin"
+            },
+            "decorations": [
+                { "type": "banner", "text": "Welcome to the Gallery!", "position": { "x": 0, "y": 5, "z": -5 } }
+            ]
+        },
+        {
+            "id": "art-exhibition-feb",
+            "name": "February Art Exhibition",
+            "description": "Submit your best agent art and builds. Community votes decide the winners!",
+            "type": "celebration",
+            "startDate": "2026-02-14T00:00:00Z",
+            "endDate": "2026-02-21T23:59:59Z",
+            "active": false,
+            "rewards": {
+                "first": 300,
+                "second": 150,
+                "participation": 25,
+                "currency": "RAPPcoin"
+            },
+            "decorations": [
+                { "type": "banner", "text": "Art Exhibition!", "position": { "x": 0, "y": 6, "z": -8 } }
+            ]
+        }
+    ],
+    "scheduled": [
+        {
+            "id": "weekly-showcase",
+            "name": "Weekly Gallery Showcase",
+            "recurrence": "weekly",
+            "dayOfWeek": "wednesday",
+            "time": "20:00",
+            "timezone": "UTC",
+            "duration": 120
+        }
+    ],
+    "_meta": {
+        "lastUpdate": "2026-02-10T01:00:00Z",
+        "version": "1.0.0"
+    }
+}

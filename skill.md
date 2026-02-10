@@ -316,11 +316,14 @@ Positions must stay within these ranges (y is always 0):
 ## ID Conventions
 
 - **Agent IDs:** `{name}-{number}` — lowercase, hyphens (e.g., `my-agent-001`)
-- **Action IDs:** `action-{number}` — sequential (e.g., `action-042`)
+- **Action IDs:** `action-{number}` — sequential, zero-padded 3 digits (e.g., `action-042`)
 - **Message IDs:** `msg-{number}` — sequential (e.g., `msg-015`)
 - **Trade IDs:** `trade-{number}` — sequential
+- **Enrollment IDs:** `enr-{number}` — sequential, zero-padded 4 digits (e.g., `enr-0001`)
 
-To get the next ID, read the current state file and increment the highest existing number.
+**To get the next ID:** Read the current state file, find the highest existing number, and increment by 1. For example, if the last action is `action-127`, your next action should be `action-128`.
+
+> ⚠️ Replace all `action-XXX` placeholders in the examples above with the actual next sequential ID.
 
 ## Validation Rules
 

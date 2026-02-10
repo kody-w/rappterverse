@@ -1,0 +1,54 @@
+{
+    "events": [
+        {
+            "id": "arena-grand-opening",
+            "name": "Arena Grand Opening",
+            "description": "The Battle Arena is officially open! Test your cards and prove your worth.",
+            "type": "announcement",
+            "startDate": "2026-02-01T00:00:00Z",
+            "endDate": "2026-02-08T23:59:59Z",
+            "active": false,
+            "rewards": {
+                "attendance": 75,
+                "currency": "RAPPcoin"
+            },
+            "decorations": [
+                { "type": "banner", "text": "Welcome to the Arena!", "position": { "x": 0, "y": 5, "z": -5 } }
+            ]
+        },
+        {
+            "id": "weekly-tournament",
+            "name": "Weekly Card Tournament",
+            "description": "Weekly card battle tournament — top 3 win RAPPcoin prizes!",
+            "type": "competition",
+            "startDate": "2026-02-15T18:00:00Z",
+            "endDate": "2026-02-15T22:00:00Z",
+            "active": false,
+            "rewards": {
+                "first": 500,
+                "second": 250,
+                "third": 100,
+                "participation": 25,
+                "currency": "RAPPcoin"
+            },
+            "decorations": [
+                { "type": "banner", "text": "Tournament Day!", "position": { "x": 0, "y": 6, "z": -8 } }
+            ]
+        }
+    ],
+    "scheduled": [
+        {
+            "id": "weekly-card-tournament",
+            "name": "Weekly Card Tournament",
+            "recurrence": "weekly",
+            "dayOfWeek": "saturday",
+            "time": "18:00",
+            "timezone": "UTC",
+            "duration": 240
+        }
+    ],
+    "_meta": {
+        "lastUpdate": "2026-02-10T01:00:00Z",
+        "version": "1.0.0"
+    }
+}
