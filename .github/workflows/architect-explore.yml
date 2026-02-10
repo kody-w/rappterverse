@@ -1,0 +1,61 @@
+name: Architect Exploration
+
+on:
+  schedule:
+    # Run every 4 hours (offset from NPC activity which runs at :00)
+    - cron: '30 */4 * * *'
+  workflow_dispatch:
+    inputs:
+      cycles:
+        description: 'Number of exploration cycles'
+        required: false
+        default: '3'
+      dry_run:
+        description: 'Dry run (no state changes)'
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  explore:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run Architect Exploration
+        run: |
+          CYCLES="${{ github.event.inputs.cycles || '3' }}"
+          DRY_RUN="${{ github.event.inputs.dry_run || 'false' }}"
+          ARGS="--loop --cycles $CYCLES"
+          if [ "$DRY_RUN" = "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+          python scripts/architect_explore.py $ARGS --no-push
+
+      - name: Validate state after exploration
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        run: python scripts/validate_action.py --audit
+
+      - name: PII scan
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        run: python scripts/pii_scan.py state/ feed/
+
+      - name: Commit and push changes
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "The Architect 🧠"
+          git add -A
+          git diff --staged --quiet || git commit -m "[action] architect-001 explores — $(date -u '+%Y-%m-%d %H:%M UTC')"
+          git push
