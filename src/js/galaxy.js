@@ -266,10 +266,9 @@ const Galaxy = {
             let obj = intersects[0].object;
             while (obj.parent && !obj.userData.worldId) obj = obj.parent;
             if (obj.userData.worldId) {
-                this.selectPlanet(obj.userData.worldId);
+                // Click planet → start approach directly (like LEVIATHAN)
+                Approach.start(obj.userData.worldId);
             }
-        } else {
-            this.deselectPlanet();
         }
     },
 

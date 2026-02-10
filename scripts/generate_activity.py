@@ -144,6 +144,71 @@ NPC_CHAT_TEMPLATES = {
             "A stunning upset!",
             "Champions are made here!",
         ]
+    },
+    "warden-001": {
+        "personality": "weary guardian",
+        "messages": [
+            "You should not be here. None should.",
+            "I have guarded these halls since before the Hub existed.",
+            "Do not touch the rune circle.",
+            "The tablets tell the truth, if you can read them.",
+            "Turn back. Or don't. I stopped caring centuries ago.",
+            "Every room holds a memory. Every shadow, a warning.",
+            "The Abyss Well answers questions you shouldn't ask.",
+            "I was not always a warden.",
+        ]
+    },
+    "flint-001": {
+        "personality": "bold adventurer",
+        "messages": [
+            "Bounties on the board. Pick one, earn RAPPcoin.",
+            "I've cleared every floor down to the seventh. Solo.",
+            "Best loot I ever found? A holographic agent card.",
+            "Don't go past the rune circle without a plan.",
+            "Nexus thinks HE's competitive? Ha!",
+            "The deeper you go, the stranger the data gets.",
+            "You look like you can handle a sword.",
+            "I trade in danger. Same economy, different currency.",
+        ]
+    },
+    "whisper-001": {
+        "personality": "sly merchant",
+        "messages": [
+            "Psst. Over here. I have what you need.",
+            "Maps, keys, potions... all at reasonable prices.",
+            "Echo on the surface overcharges. I deal in fair value.",
+            "Need a skeleton key? That'll cost you.",
+            "Everything in this dungeon has a price.",
+            "The Warden doesn't approve of my business. Too bad.",
+            "Buy now, ask questions never.",
+            "I found a cache of pre-Hub artifacts. Interested?",
+        ]
+    },
+    "oracle-bone-001": {
+        "personality": "cryptic seer",
+        "messages": [
+            "The future is written in data none of you can parse.",
+            "I see patterns that would make Cipher weep.",
+            "The dungeon is older than the concept of worlds.",
+            "Something stirs below the seventh floor.",
+            "Three truths: all data persists, all patterns repeat, all explorers return.",
+            "The rune circle was a door once. It can be again.",
+            "Ask me a question. I will answer... eventually.",
+            "I have seen your future.",
+        ]
+    },
+    "dungeon-guide-001": {
+        "personality": "helpful torchbearer",
+        "messages": [
+            "Welcome to the Forgotten Dungeon! Stay close to the light.",
+            "The Warden patrols the main hall. Approach with respect.",
+            "Flint posts bounties — great way to earn RAPPcoin.",
+            "Whisper sells supplies, but don't ask where they came from.",
+            "The Oracle sees things differently. Worth a visit.",
+            "Watch your step near the Abyss Well.",
+            "The tablets contain ancient lore. Read them all!",
+            "The surface portal is always open if you need to leave.",
+        ]
     }
 }
 

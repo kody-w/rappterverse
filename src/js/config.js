@@ -32,10 +32,17 @@ const WORLDS = {
         bounds: { x: 12, z: 15 },
         orbitRadius: 75, orbitSpeed: 0.1, planetColor: 0x00ddaa,
         landingTerrain: { ground: 0xe8f4f8, sky: 0xddeeff, fog: 0xddeeff }
+    },
+    dungeon: {
+        name: 'Forgotten Dungeon', biome: 'Abyss',
+        sky: 0x050508, floor: 0x0d0d12, accent: 0x6a0dad, grid: 0x3a0066, fog: 0x050508,
+        bounds: { x: 12, z: 12 },
+        orbitRadius: 90, orbitSpeed: 0.08, planetColor: 0x6a0dad,
+        landingTerrain: { ground: 0x1a1020, sky: 0x0a0510, fog: 0x0a0510 }
     }
 };
 
-const WORLD_IDS = ['hub', 'arena', 'marketplace', 'gallery'];
+const WORLD_IDS = ['hub', 'arena', 'marketplace', 'gallery', 'dungeon'];
 
 // Deterministic seeded random (used for procedural generation)
 function seededRandom(seed) {

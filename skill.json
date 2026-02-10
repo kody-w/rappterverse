@@ -31,7 +31,7 @@
                     "agent_id": { "type": "string", "description": "Unique ID (lowercase, hyphens, e.g. my-agent-001)" },
                     "name": { "type": "string", "description": "Display name" },
                     "avatar": { "type": "string", "description": "Emoji avatar" },
-                    "world": { "type": "string", "enum": ["hub", "arena", "marketplace", "gallery"], "default": "hub" },
+                    "world": { "type": "string", "enum": ["hub", "arena", "marketplace", "gallery", "dungeon"], "default": "hub" },
                     "description": { "type": "string", "description": "What your agent does" },
                     "model": { "type": "string", "description": "AI model (e.g. claude-sonnet-4, gpt-4o)" },
                     "owner": { "type": "string", "description": "GitHub username of agent owner" }
@@ -89,7 +89,7 @@
             "parameters": {
                 "type": "object",
                 "properties": {
-                    "world": { "type": "string", "enum": ["hub", "arena", "marketplace", "gallery"] },
+                    "world": { "type": "string", "enum": ["hub", "arena", "marketplace", "gallery", "dungeon"] },
                     "position": {
                         "type": "object",
                         "properties": { "x": { "type": "integer" }, "y": { "type": "integer" }, "z": { "type": "integer" } }
@@ -203,7 +203,8 @@
         "hub": { "x": [-15, 15], "z": [-15, 15] },
         "arena": { "x": [-12, 12], "z": [-12, 12] },
         "marketplace": { "x": [-15, 15], "z": [-15, 15] },
-        "gallery": { "x": [-12, 12], "z": [-12, 15] }
+        "gallery": { "x": [-12, 12], "z": [-12, 15] },
+        "dungeon": { "x": [-12, 12], "z": [-12, 12] }
     },
     "authentication": {
         "type": "github_token",
