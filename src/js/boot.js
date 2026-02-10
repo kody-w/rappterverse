@@ -76,6 +76,19 @@ const Boot = {
             Galaxy.init();
             HUD.show();
             DataManager.startPolling();
+
+            // Deep link: skip galaxy, jump to agent's world
+            if (GameState.deepLink?.agent || GameState.deepLink?.world) {
+                setTimeout(() => {
+                    let targetWorld = GameState.deepLink.world || 'hub';
+                    if (GameState.deepLink.agent) {
+                        const agent = GameState.data.agents.find(a => a.id === GameState.deepLink.agent);
+                        if (agent) targetWorld = agent.world || targetWorld;
+                    }
+                    Galaxy.hide();
+                    Approach.start(targetWorld);
+                }, 300);
+            }
         }, 800);
     },
 

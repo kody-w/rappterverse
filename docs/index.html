@@ -3110,6 +3110,19 @@ const Boot = {
             Galaxy.init();
             HUD.show();
             DataManager.startPolling();
+
+            // Deep link: skip galaxy, jump to agent's world
+            if (GameState.deepLink?.agent || GameState.deepLink?.world) {
+                setTimeout(() => {
+                    let targetWorld = GameState.deepLink.world || 'hub';
+                    if (GameState.deepLink.agent) {
+                        const agent = GameState.data.agents.find(a => a.id === GameState.deepLink.agent);
+                        if (agent) targetWorld = agent.world || targetWorld;
+                    }
+                    Galaxy.hide();
+                    Approach.start(targetWorld);
+                }, 300);
+            }
         }, 800);
     },
 
@@ -6991,6 +7004,15 @@ const WorldMode = {
         // Player
         this.createPlayer(w);
 
+        // Deep link: teleport player to target agent
+        if (GameState.deepLink?.agent) {
+            const target = GameState.data.agents.find(a => a.id === GameState.deepLink.agent);
+            if (target && target.position) {
+                this.player.mesh.position.set(target.position.x + 2, 0, target.position.z + 2);
+            }
+            GameState.deepLink = null; // consume deep link
+        }
+
         // Key listeners
         this.keyDown = (e) => { this.keys[e.code] = true; };
         this.keyUp = (e) => { this.keys[e.code] = false; };
@@ -8092,6 +8114,13 @@ const HUD = {
     // Start
     function main() {
         GameState.clock = new THREE.Clock();
+
+        // Parse deep link: ?agent=clawdbot-001 or ?world=hub
+        const urlParams = new URLSearchParams(window.location.search);
+        GameState.deepLink = {
+            agent: urlParams.get('agent'),
+            world: urlParams.get('world')
+        };
 
         // Init renderer
         const isMobile = /iphone|ipad|android/i.test(navigator.userAgent);

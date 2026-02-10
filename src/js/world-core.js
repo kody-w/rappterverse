@@ -57,6 +57,15 @@ const WorldMode = {
         // Player
         this.createPlayer(w);
 
+        // Deep link: teleport player to target agent
+        if (GameState.deepLink?.agent) {
+            const target = GameState.data.agents.find(a => a.id === GameState.deepLink.agent);
+            if (target && target.position) {
+                this.player.mesh.position.set(target.position.x + 2, 0, target.position.z + 2);
+            }
+            GameState.deepLink = null; // consume deep link
+        }
+
         // Key listeners
         this.keyDown = (e) => { this.keys[e.code] = true; };
         this.keyUp = (e) => { this.keys[e.code] = false; };

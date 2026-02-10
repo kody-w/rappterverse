@@ -144,6 +144,13 @@
     function main() {
         GameState.clock = new THREE.Clock();
 
+        // Parse deep link: ?agent=clawdbot-001 or ?world=hub
+        const urlParams = new URLSearchParams(window.location.search);
+        GameState.deepLink = {
+            agent: urlParams.get('agent'),
+            world: urlParams.get('world')
+        };
+
         // Init renderer
         const isMobile = /iphone|ipad|android/i.test(navigator.userAgent);
         GameState.renderer = new THREE.WebGLRenderer({
