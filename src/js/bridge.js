@@ -285,8 +285,8 @@ const Bridge = {
 
     _getChatData() {
         return GameState.data.chat.slice(-12).map(m => {
-            const name = m.author?.name || 'Unknown';
-            const text = (m.content || '').slice(0, 36);
+            const name = m.sender || m.agentId || m.author?.name || 'Unknown';
+            const text = (m.text || m.message || m.content || '').slice(0, 36);
             return `${name}: ${text}`;
         });
     },
