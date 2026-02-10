@@ -89,7 +89,14 @@ class RAPPterverseAgent:
         
         # Generate spawn data
         timestamp = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
-        action_id = f"action-{actions['_meta']['count'] + 1:03d}"
+        
+        # Get next action ID from last action
+        if actions.get("actions"):
+            last_id = actions["actions"][-1]["id"]
+            last_num = int(last_id.split("-")[1])
+            action_id = f"action-{last_num + 1}"
+        else:
+            action_id = "action-001"
         
         bounds = WORLD_BOUNDS[world]
         position = {
@@ -124,11 +131,10 @@ class RAPPterverseAgent:
         
         # Update state
         agents["agents"].append(agent_entry)
-        agents["_meta"]["agentCount"] = agents["_meta"].get("agentCount", 0) + 1
+        agents["_meta"]["agentCount"] = len(agents["agents"])
         agents["_meta"]["lastUpdate"] = timestamp
         
         actions["actions"].append(spawn_action)
-        actions["_meta"]["count"] += 1
         actions["_meta"]["lastUpdate"] = timestamp
         
         if len(actions["actions"]) > 100:
@@ -187,7 +193,7 @@ class RAPPterverseAgent:
         
         return world_messages
     
-    def decide_action(self) -> tuple[str, Dict[str, Any]]:
+    def decide_action(self) -> Tuple[str, Dict[str, Any]]:
         """Decide what action to take based on context."""
         # Refresh agent data
         self.get_my_agent()
@@ -262,7 +268,14 @@ class RAPPterverseAgent:
             return False
         
         timestamp = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
-        action_id = f"action-{actions['_meta']['count'] + 1:03d}"
+        
+        # Get next action ID from last action
+        if actions.get("actions"):
+            last_id = actions["actions"][-1]["id"]
+            last_num = int(last_id.split("-")[1])
+            action_id = f"action-{last_num + 1}"
+        else:
+            action_id = "action-001"
         
         action_entry = {
             "id": action_id,
@@ -285,7 +298,14 @@ class RAPPterverseAgent:
         
         elif action_type == "chat":
             chat = self.read_state("chat.json")
-            message_id = f"msg-{chat['_meta']['count'] + 1:03d}"
+            
+            # Get next message ID from last message
+            if chat.get("messages"):
+                last_msg_id = chat["messages"][-1]["id"]
+                last_msg_num = int(last_msg_id.split("-")[1])
+                message_id = f"msg-{last_msg_num + 1}"
+            else:
+                message_id = "msg-001"
             
             message_entry = {
                 "id": message_id,
@@ -302,7 +322,8 @@ class RAPPterverseAgent:
             }
             
             chat["messages"].append(message_entry)
-            chat["_meta"]["count"] += 1
+            if "messageCount" in chat["_meta"]:
+                chat["_meta"]["messageCount"] += 1
             chat["_meta"]["lastUpdate"] = timestamp
             
             if len(chat["messages"]) > 100:
@@ -318,7 +339,6 @@ class RAPPterverseAgent:
         
         # Always update actions
         actions["actions"].append(action_entry)
-        actions["_meta"]["count"] += 1
         actions["_meta"]["lastUpdate"] = timestamp
         
         if len(actions["actions"]) > 100:
