@@ -81,8 +81,27 @@
             }
         }
 
-        // Quick travel (1-4)
-        if (['Digit1','Digit2','Digit3','Digit4'].includes(e.code) && !Bridge.open && GameState.mode !== 'boot') {
+        // Abilities (1-5 in world mode)
+        if (['Digit1','Digit2','Digit3','Digit4','Digit5'].includes(e.code) && GameState.mode === 'world') {
+            const idx = parseInt(e.code.replace('Digit','')) - 1;
+            if (typeof Abilities !== 'undefined') Abilities.useAbility(idx);
+            return;
+        }
+
+        // Inventory toggle
+        if (e.code === 'KeyI' && GameState.mode === 'world') {
+            if (typeof Inventory !== 'undefined') Inventory.toggle();
+            return;
+        }
+
+        // Cinematic mode
+        if (e.code === 'KeyC' && GameState.mode === 'world') {
+            document.body.classList.toggle('cinematic-active');
+            return;
+        }
+
+        // Quick travel (Ctrl+1-4 for non-world modes)
+        if (['Digit1','Digit2','Digit3','Digit4'].includes(e.code) && !Bridge.open && GameState.mode !== 'boot' && GameState.mode !== 'world') {
             const idx = parseInt(e.code.replace('Digit','')) - 1;
             const worldId = WORLD_IDS[idx];
             if (worldId) {

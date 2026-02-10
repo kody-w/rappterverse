@@ -31,6 +31,12 @@ const WorldMode = {
 
         // Show combat HUD
         document.getElementById('combat-hud').style.display = 'flex';
+        const statsBar = document.getElementById('player-stats-bar');
+        if (statsBar) statsBar.style.display = 'flex';
+        const levelBadge = document.getElementById('level-badge');
+        if (levelBadge) levelBadge.style.display = 'block';
+        const abilityBar = document.getElementById('ability-bar');
+        if (abilityBar) abilityBar.style.display = 'flex';
 
         // Build terrain, lanes, combat, agents
         WorldTerrain.build(this.scene, w, worldId);
@@ -38,6 +44,12 @@ const WorldMode = {
         WorldCombat.init(this.scene);
         WorldAgents.loadObjects(this.scene, worldId);
         WorldAgents.syncAgents(this.scene, worldId);
+
+        // Init RPG systems
+        if (typeof PlayerStats !== 'undefined') PlayerStats.init();
+        if (typeof Abilities !== 'undefined') Abilities.init();
+        if (typeof ComboSystem !== 'undefined') ComboSystem.reset();
+        if (typeof Inventory !== 'undefined') Inventory.init();
 
         // Player
         this.createPlayer(w);
@@ -185,6 +197,30 @@ const WorldMode = {
         WorldAgents.updateAnimations(time);
         WorldAgents.checkInteractions(this.player.mesh.position);
 
+        // RPG system updates
+        if (typeof PlayerStats !== 'undefined') {
+            PlayerStats.update(delta);
+            if (PlayerStats.dead) return; // Skip everything while dead
+        }
+        if (typeof Abilities !== 'undefined') Abilities.update(delta);
+        if (typeof ComboSystem !== 'undefined') ComboSystem.update(delta);
+        if (typeof Inventory !== 'undefined') {
+            Inventory.collectNearby(this.player.mesh.position);
+            Inventory.updateDrops(time);
+        }
+
+        // Creep damage to player
+        if (typeof PlayerStats !== 'undefined' && !PlayerStats.dead) {
+            for (const creep of WorldCombat.creeps) {
+                if (!creep.alive || creep.faction !== 'horde') continue;
+                const dx = this.player.mesh.position.x - creep.mesh.position.x;
+                const dz = this.player.mesh.position.z - creep.mesh.position.z;
+                if (Math.sqrt(dx*dx + dz*dz) < 2) {
+                    PlayerStats.takeDamage(creep.isBoss ? 3 * delta : 1 * delta);
+                }
+            }
+        }
+
         // Periodic agent sync
         if (Math.floor(time) % 5 === 0 && Math.floor(time) !== this._lastSync) {
             this._lastSync = Math.floor(time);
@@ -213,10 +249,20 @@ const WorldMode = {
 
         WorldCombat.cleanup();
         WorldLanes.cleanup();
+        if (typeof Abilities !== 'undefined') Abilities.cleanup();
+        if (typeof Inventory !== 'undefined') Inventory.cleanup();
 
         document.getElementById('world-container').style.display = 'none';
         document.getElementById('combat-hud').style.display = 'none';
         document.getElementById('interaction-prompt').classList.remove('visible');
+        const statsBar = document.getElementById('player-stats-bar');
+        if (statsBar) statsBar.style.display = 'none';
+        const levelBadge = document.getElementById('level-badge');
+        if (levelBadge) levelBadge.style.display = 'none';
+        const abilityBar = document.getElementById('ability-bar');
+        if (abilityBar) abilityBar.style.display = 'none';
+        const comboEl = document.getElementById('combo-display');
+        if (comboEl) comboEl.style.display = 'none';
     },
 
     onResize() {

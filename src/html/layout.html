@@ -97,6 +97,44 @@
     <div id="weather-label" style="font-size:10px; opacity:0.6; letter-spacing:2px;"></div>
 </div>
 
+<!-- ===== PLAYER STATS BAR ===== -->
+<div id="player-stats-bar">
+    <div class="stat-row"><span class="stat-label">HP</span><div class="stat-bar-container"><div class="stat-bar-fill" id="hp-fill"></div></div><span class="stat-text" id="hp-text">100/100</span></div>
+    <div class="stat-row"><span class="stat-label">MP</span><div class="stat-bar-container"><div class="stat-bar-fill" id="mp-fill"></div></div><span class="stat-text" id="mp-text">50/50</span></div>
+    <div class="stat-row"><span class="stat-label">EN</span><div class="stat-bar-container"><div class="stat-bar-fill" id="energy-fill"></div></div><span class="stat-text" id="energy-text">100/100</span></div>
+    <div class="stat-row"><span class="stat-label">XP</span><div class="stat-bar-container"><div class="stat-bar-fill" id="xp-fill"></div></div><span class="stat-text" id="xp-text">0/100</span></div>
+</div>
+<div id="level-badge">LVL 1</div>
+<div id="damage-vignette"></div>
+<div id="death-overlay"><div class="death-title">DESTROYED</div><div class="death-timer" id="death-timer">Respawning in 3...</div></div>
+
+<!-- ===== ABILITY BAR ===== -->
+<div id="ability-bar">
+    <div class="ability-slot ready" data-ability="0"><span class="ability-key">1</span>⚔️</div>
+    <div class="ability-slot ready" data-ability="1"><span class="ability-key">2</span>🔵</div>
+    <div class="ability-slot ready" data-ability="2"><span class="ability-key">3</span>🛡️</div>
+    <div class="ability-slot ready" data-ability="3"><span class="ability-key">4</span>💨</div>
+    <div class="ability-slot ready" data-ability="4"><span class="ability-key">5</span>💥</div>
+</div>
+
+<!-- ===== COMBO DISPLAY ===== -->
+<div id="combo-display">
+    <div class="combo-count" id="combo-count">0</div>
+    <div class="combo-grade" id="combo-grade">D</div>
+    <div class="combo-multiplier" id="combo-multiplier">x1.0</div>
+</div>
+
+<!-- ===== INVENTORY ===== -->
+<div id="inventory-panel">
+    <div class="inventory-title">INVENTORY [I]</div>
+    <div class="inventory-grid" id="inventory-grid"></div>
+</div>
+
+<!-- ===== CINEMATIC OVERLAYS ===== -->
+<div class="cinematic-grain"></div>
+<div class="cinematic-letterbox cinematic-letterbox-top"></div>
+<div class="cinematic-letterbox cinematic-letterbox-bottom"></div>
+
 <!-- ===== HUD (TOP BAR) ===== -->
 <div class="top-bar" id="top-bar">
     <div class="top-bar-left">

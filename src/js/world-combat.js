@@ -486,10 +486,17 @@ const WorldCombat = {
         if (!nearest) return false;
 
         this.playerAttackTimer = COMBAT_CONFIG.playerCooldown;
-        nearest.hp -= COMBAT_CONFIG.playerDamage;
+        const dmg = (typeof PlayerStats !== 'undefined') ? PlayerStats.getDamage() : COMBAT_CONFIG.playerDamage;
+        const comboMult = (typeof ComboSystem !== 'undefined') ? ComboSystem.getMultiplier() : 1;
+        nearest.hp -= dmg * comboMult;
 
         if (nearest.hp <= 0) {
             nearest.alive = false;
+            if (typeof ComboSystem !== 'undefined') ComboSystem.registerKill();
+            if (typeof PlayerStats !== 'undefined') PlayerStats.awardXp(nearest.isBoss ? 50 : 10);
+            if (typeof Inventory !== 'undefined' && nearest.mesh) {
+                Inventory.spawnDrop(nearest.mesh.position.clone(), GameState.currentWorld, this.waveNumber, this.creeps.indexOf(nearest));
+            }
             if (nearest.isBoss) {
                 this.bossActive = false;
                 this.boss = null;
@@ -497,7 +504,6 @@ const WorldCombat = {
                 if (typeof HUD !== 'undefined') HUD.showToast('BOSS DEFEATED!');
             } else {
                 this.momentum = Math.min(100, this.momentum + COMBAT_CONFIG.momentumPerKill * 2);
-                if (typeof HUD !== 'undefined') HUD.showToast('Enemy destroyed! +momentum');
             }
         }
 

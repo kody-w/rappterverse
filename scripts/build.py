@@ -21,6 +21,7 @@ CSS_FILES = [
     'css/world.css',
     'css/bridge.css',
     'css/hud.css',
+    'css/stats.css',
 ]
 
 JS_FILES = [
@@ -28,6 +29,7 @@ JS_FILES = [
     'js/state.js',
     'js/data.js',
     'js/audio.js',
+    'js/player-stats.js',
     'js/boot.js',
     'js/galaxy.js',
     'js/warp.js',
@@ -37,6 +39,8 @@ JS_FILES = [
     'js/world-lanes.js',
     'js/world-combat.js',
     'js/world-agents.js',
+    'js/inventory.js',
+    'js/abilities.js',
     'js/world-core.js',
     'js/bridge.js',
     'js/hud.js',

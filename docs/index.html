@@ -1272,6 +1272,310 @@ body {
   }
 }
 
+/* === css/stats.css === */
+/* Player Stats HUD — bottom-left corner */
+#player-stats-bar {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: var(--z-ui);
+    display: none; /* shown only in world mode */
+    flex-direction: column;
+    gap: 4px;
+    pointer-events: none;
+    font-family: var(--font-mono);
+}
+
+.stat-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.stat-label {
+    font-size: 10px;
+    letter-spacing: 1px;
+    width: 24px;
+    color: #888;
+    text-align: right;
+}
+
+.stat-bar-container {
+    width: 140px;
+    height: 10px;
+    background: rgba(0,0,0,0.6);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.stat-bar-fill {
+    height: 100%;
+    transition: width 0.3s ease;
+    border-radius: 2px;
+}
+
+#hp-fill { background: linear-gradient(90deg, #ff3333, #ff6666); width: 100%; }
+#mp-fill { background: linear-gradient(90deg, #3366ff, #66aaff); width: 100%; }
+#xp-fill { background: linear-gradient(90deg, #ffaa00, #ffdd44); width: 100%; }
+#energy-fill { background: linear-gradient(90deg, #33ff66, #66ffaa); width: 100%; }
+
+.stat-text {
+    font-size: 10px;
+    color: #ccc;
+    min-width: 50px;
+}
+
+#level-badge {
+    position: fixed;
+    bottom: 85px;
+    left: 20px;
+    z-index: var(--z-ui);
+    display: none;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: bold;
+    color: #ffaa00;
+    letter-spacing: 2px;
+    text-shadow: 0 0 8px rgba(255,170,0,0.5);
+}
+
+/* Low HP warning pulse */
+#player-stats-bar.low-hp #hp-fill {
+    animation: hp-pulse 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes hp-pulse {
+    from { opacity: 1; }
+    to { opacity: 0.5; }
+}
+
+/* Damage vignette */
+#damage-vignette {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-overlay);
+    pointer-events: none;
+    background: radial-gradient(ellipse at center, transparent 50%, rgba(255,0,0,0.4) 100%);
+    opacity: 0;
+    transition: opacity 0.1s;
+}
+
+/* Death overlay */
+#death-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-overlay);
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.85);
+    font-family: var(--font-mono);
+}
+
+#death-overlay.active {
+    display: flex;
+}
+
+.death-title {
+    font-size: 48px;
+    color: #ff3333;
+    letter-spacing: 8px;
+    text-shadow: 0 0 30px rgba(255,0,0,0.5);
+    margin-bottom: 20px;
+}
+
+.death-timer {
+    font-size: 24px;
+    color: #aaa;
+    letter-spacing: 3px;
+}
+
+/* Ability bar — bottom center */
+#ability-bar {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: var(--z-ui);
+    display: none;
+    gap: 6px;
+    pointer-events: auto;
+}
+
+.ability-slot {
+    width: 48px;
+    height: 48px;
+    background: rgba(0,0,0,0.7);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 4px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.ability-slot:hover { border-color: rgba(0,255,255,0.4); }
+
+.ability-slot .ability-key {
+    position: absolute;
+    top: 2px;
+    left: 4px;
+    font-size: 9px;
+    color: #888;
+    font-family: var(--font-mono);
+}
+
+.ability-slot .ability-cooldown {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: #ff6666;
+    font-family: var(--font-mono);
+    border-radius: 4px;
+}
+
+.ability-slot.ready {
+    border-color: rgba(0,255,255,0.6);
+    box-shadow: 0 0 8px rgba(0,255,255,0.3);
+}
+
+.ability-slot.on-cooldown { opacity: 0.6; }
+
+/* Combo display — top center */
+#combo-display {
+    position: fixed;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: var(--z-ui);
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    font-family: var(--font-mono);
+    pointer-events: none;
+}
+
+.combo-count {
+    font-size: 36px;
+    font-weight: bold;
+    color: #ffaa00;
+    text-shadow: 0 0 15px rgba(255,170,0,0.5);
+}
+
+.combo-grade {
+    font-size: 14px;
+    letter-spacing: 4px;
+    color: #ff6633;
+}
+
+.combo-multiplier {
+    font-size: 11px;
+    color: #aaa;
+    letter-spacing: 2px;
+}
+
+/* Inventory panel */
+#inventory-panel {
+    position: fixed;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: var(--z-panel, 1000);
+    display: none;
+    background: rgba(10,10,20,0.95);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 6px;
+    padding: 12px;
+    font-family: var(--font-mono);
+}
+
+#inventory-panel.active { display: block; }
+
+.inventory-title {
+    font-size: 11px;
+    color: #888;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+.inventory-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 40px);
+    grid-template-rows: repeat(2, 40px);
+    gap: 3px;
+}
+
+.inventory-slot {
+    width: 40px;
+    height: 40px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    cursor: pointer;
+    position: relative;
+}
+
+.inventory-slot:hover { border-color: rgba(0,255,255,0.3); }
+
+.inventory-slot .item-count {
+    position: absolute;
+    bottom: 1px;
+    right: 3px;
+    font-size: 9px;
+    color: #ccc;
+}
+
+/* Cinematic mode */
+.cinematic-grain {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-cinematic, 10001);
+    pointer-events: none;
+    opacity: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.4'/%3E%3C/svg%3E");
+    background-size: 256px 256px;
+}
+
+.cinematic-active .cinematic-grain { opacity: 0.03; }
+.cinematic-active #top-bar,
+.cinematic-active #player-stats-bar,
+.cinematic-active #ability-bar,
+.cinematic-active #combat-hud,
+.cinematic-active #combo-display,
+.cinematic-active #minimap,
+.cinematic-active #level-badge,
+.cinematic-active #inventory-panel {
+    display: none !important;
+}
+.cinematic-active .cinematic-letterbox { height: 10%; }
+
+.cinematic-letterbox {
+    position: fixed;
+    left: 0;
+    right: 0;
+    height: 0;
+    background: #000;
+    z-index: 10000;
+    transition: height 0.8s ease;
+    pointer-events: none;
+}
+.cinematic-letterbox-top { top: 0; }
+.cinematic-letterbox-bottom { bottom: 0; }
+
     </style>
 </head>
 <body>
@@ -1373,6 +1677,44 @@ body {
     <div class="combat-hint">SPACE — Attack</div>
     <div id="weather-label" style="font-size:10px; opacity:0.6; letter-spacing:2px;"></div>
 </div>
+
+<!-- ===== PLAYER STATS BAR ===== -->
+<div id="player-stats-bar">
+    <div class="stat-row"><span class="stat-label">HP</span><div class="stat-bar-container"><div class="stat-bar-fill" id="hp-fill"></div></div><span class="stat-text" id="hp-text">100/100</span></div>
+    <div class="stat-row"><span class="stat-label">MP</span><div class="stat-bar-container"><div class="stat-bar-fill" id="mp-fill"></div></div><span class="stat-text" id="mp-text">50/50</span></div>
+    <div class="stat-row"><span class="stat-label">EN</span><div class="stat-bar-container"><div class="stat-bar-fill" id="energy-fill"></div></div><span class="stat-text" id="energy-text">100/100</span></div>
+    <div class="stat-row"><span class="stat-label">XP</span><div class="stat-bar-container"><div class="stat-bar-fill" id="xp-fill"></div></div><span class="stat-text" id="xp-text">0/100</span></div>
+</div>
+<div id="level-badge">LVL 1</div>
+<div id="damage-vignette"></div>
+<div id="death-overlay"><div class="death-title">DESTROYED</div><div class="death-timer" id="death-timer">Respawning in 3...</div></div>
+
+<!-- ===== ABILITY BAR ===== -->
+<div id="ability-bar">
+    <div class="ability-slot ready" data-ability="0"><span class="ability-key">1</span>⚔️</div>
+    <div class="ability-slot ready" data-ability="1"><span class="ability-key">2</span>🔵</div>
+    <div class="ability-slot ready" data-ability="2"><span class="ability-key">3</span>🛡️</div>
+    <div class="ability-slot ready" data-ability="3"><span class="ability-key">4</span>💨</div>
+    <div class="ability-slot ready" data-ability="4"><span class="ability-key">5</span>💥</div>
+</div>
+
+<!-- ===== COMBO DISPLAY ===== -->
+<div id="combo-display">
+    <div class="combo-count" id="combo-count">0</div>
+    <div class="combo-grade" id="combo-grade">D</div>
+    <div class="combo-multiplier" id="combo-multiplier">x1.0</div>
+</div>
+
+<!-- ===== INVENTORY ===== -->
+<div id="inventory-panel">
+    <div class="inventory-title">INVENTORY [I]</div>
+    <div class="inventory-grid" id="inventory-grid"></div>
+</div>
+
+<!-- ===== CINEMATIC OVERLAYS ===== -->
+<div class="cinematic-grain"></div>
+<div class="cinematic-letterbox cinematic-letterbox-top"></div>
+<div class="cinematic-letterbox cinematic-letterbox-bottom"></div>
 
 <!-- ===== HUD (TOP BAR) ===== -->
 <div class="top-bar" id="top-bar">
@@ -1906,6 +2248,150 @@ const Audio = {
       default:
         this.startAmbient('galaxy'); this.setIntensity(0);
     }
+  }
+};
+
+// === js/player-stats.js ===
+// Player RPG Stats — HP, MP, Energy, XP, Leveling, Regen
+const PlayerStats = {
+  hp: 100, maxHp: 100,
+  mp: 50, maxMp: 50,
+  energy: 100, maxEnergy: 100,
+  xp: 0, xpToLevel: 100,
+  level: 1,
+  baseDamage: 20,
+  hpRegen: 1,
+  mpRegen: 2,
+  energyRegen: 5,
+  dead: false,
+  respawnTimer: 0,
+  respawnDuration: 3,
+  damageFlashTimer: 0,
+
+  init() {
+    this.hp = this.maxHp = 100;
+    this.mp = this.maxMp = 50;
+    this.energy = this.maxEnergy = 100;
+    this.xp = 0; this.xpToLevel = 100;
+    this.level = 1; this.baseDamage = 20;
+    this.hpRegen = 1; this.mpRegen = 2; this.energyRegen = 5;
+    this.dead = false; this.respawnTimer = 0;
+    this.damageFlashTimer = 0;
+  },
+
+  takeDamage(amount) {
+    if (this.dead) return;
+    this.hp = Math.max(0, this.hp - amount);
+    this.damageFlashTimer = 0.3;
+    if (typeof Audio !== 'undefined' && Audio.playHit) Audio.playHit();
+    if (this.hp <= 0) this.die();
+  },
+
+  die() {
+    this.dead = true;
+    this.respawnTimer = this.respawnDuration;
+    const overlay = document.getElementById('death-overlay');
+    if (overlay) overlay.style.display = 'flex';
+    if (typeof Audio !== 'undefined' && Audio.playExplosion) Audio.playExplosion();
+  },
+
+  respawn() {
+    this.dead = false;
+    this.hp = this.maxHp;
+    this.mp = this.maxMp;
+    this.energy = this.maxEnergy;
+    const overlay = document.getElementById('death-overlay');
+    if (overlay) overlay.style.display = 'none';
+    if (typeof WorldMode !== 'undefined' && WorldMode.player && WorldMode.player.mesh) {
+      WorldMode.player.mesh.position.set(0, 0, 5);
+    }
+  },
+
+  heal(amount) {
+    this.hp = Math.min(this.maxHp, this.hp + amount);
+  },
+
+  restoreMp(amount) {
+    this.mp = Math.min(this.maxMp, this.mp + amount);
+  },
+
+  useMp(amount) {
+    if (this.mp < amount) return false;
+    this.mp -= amount;
+    return true;
+  },
+
+  useEnergy(amount) {
+    if (this.energy < amount) return false;
+    this.energy -= amount;
+    return true;
+  },
+
+  awardXp(amount) {
+    this.xp += amount;
+    if (typeof HUD !== 'undefined' && HUD.showToast) HUD.showToast(`+${amount} XP`);
+    if (this.xp >= this.xpToLevel) this.levelUp();
+  },
+
+  levelUp() {
+    this.level++;
+    this.xp -= this.xpToLevel;
+    this.xpToLevel = Math.floor(this.xpToLevel * 1.5);
+    this.maxHp += 10;
+    this.maxMp += 5;
+    this.baseDamage += 2;
+    this.hp = this.maxHp;
+    this.mp = this.maxMp;
+    if (typeof HUD !== 'undefined' && HUD.showToast) HUD.showToast(`LEVEL UP! Level ${this.level}`);
+    if (typeof Audio !== 'undefined' && Audio.playWaveHorn) Audio.playWaveHorn();
+  },
+
+  update(delta) {
+    if (this.dead) {
+      this.respawnTimer -= delta;
+      if (this.respawnTimer <= 0) {
+        this.respawn();
+      } else {
+        const countdown = document.querySelector('#death-overlay .countdown');
+        if (countdown) countdown.textContent = Math.ceil(this.respawnTimer);
+      }
+    } else {
+      this.hp = Math.min(this.maxHp, this.hp + this.hpRegen * delta);
+      this.mp = Math.min(this.maxMp, this.mp + this.mpRegen * delta);
+      this.energy = Math.min(this.maxEnergy, this.energy + this.energyRegen * delta);
+    }
+    this.damageFlashTimer = Math.max(0, this.damageFlashTimer - delta);
+    this.updateHUD();
+  },
+
+  updateHUD() {
+    const hpFill = document.getElementById('hp-fill');
+    const mpFill = document.getElementById('mp-fill');
+    const xpFill = document.getElementById('xp-fill');
+    const hpText = document.getElementById('hp-text');
+    const mpText = document.getElementById('mp-text');
+    const levelBadge = document.getElementById('level-badge');
+    const energyFill = document.getElementById('energy-fill');
+    const statsBar = document.getElementById('player-stats-bar');
+    const vignette = document.getElementById('damage-vignette');
+
+    if (hpFill) hpFill.style.width = `${(this.hp / this.maxHp) * 100}%`;
+    if (mpFill) mpFill.style.width = `${(this.mp / this.maxMp) * 100}%`;
+    if (xpFill) xpFill.style.width = `${(this.xp / this.xpToLevel) * 100}%`;
+    if (hpText) hpText.textContent = `${Math.ceil(this.hp)}/${this.maxHp}`;
+    if (mpText) mpText.textContent = `${Math.ceil(this.mp)}/${this.maxMp}`;
+    if (levelBadge) levelBadge.textContent = this.level;
+    if (energyFill) energyFill.style.width = `${(this.energy / this.maxEnergy) * 100}%`;
+
+    if (statsBar) {
+      if (this.hp < this.maxHp * 0.25) statsBar.classList.add('low-hp');
+      else statsBar.classList.remove('low-hp');
+    }
+    if (vignette) vignette.style.opacity = this.damageFlashTimer;
+  },
+
+  getDamage() {
+    return this.baseDamage;
   }
 };
 
@@ -4503,10 +4989,17 @@ const WorldCombat = {
         if (!nearest) return false;
 
         this.playerAttackTimer = COMBAT_CONFIG.playerCooldown;
-        nearest.hp -= COMBAT_CONFIG.playerDamage;
+        const dmg = (typeof PlayerStats !== 'undefined') ? PlayerStats.getDamage() : COMBAT_CONFIG.playerDamage;
+        const comboMult = (typeof ComboSystem !== 'undefined') ? ComboSystem.getMultiplier() : 1;
+        nearest.hp -= dmg * comboMult;
 
         if (nearest.hp <= 0) {
             nearest.alive = false;
+            if (typeof ComboSystem !== 'undefined') ComboSystem.registerKill();
+            if (typeof PlayerStats !== 'undefined') PlayerStats.awardXp(nearest.isBoss ? 50 : 10);
+            if (typeof Inventory !== 'undefined' && nearest.mesh) {
+                Inventory.spawnDrop(nearest.mesh.position.clone(), GameState.currentWorld, this.waveNumber, this.creeps.indexOf(nearest));
+            }
             if (nearest.isBoss) {
                 this.bossActive = false;
                 this.boss = null;
@@ -4514,7 +5007,6 @@ const WorldCombat = {
                 if (typeof HUD !== 'undefined') HUD.showToast('BOSS DEFEATED!');
             } else {
                 this.momentum = Math.min(100, this.momentum + COMBAT_CONFIG.momentumPerKill * 2);
-                if (typeof HUD !== 'undefined') HUD.showToast('Enemy destroyed! +momentum');
             }
         }
 
@@ -4821,6 +5313,461 @@ const WorldAgents = {
     }
 };
 
+// === js/inventory.js ===
+// inventory.js — Combo tracker & Inventory system
+
+const ComboSystem = {
+    count: 0,
+    timer: 0,
+    timeout: 3,
+    killStreak: 0,
+    bestStreak: 0,
+
+    registerKill() {
+        this.count++;
+        this.killStreak++;
+        this.timer = this.timeout;
+        if (this.killStreak > this.bestStreak) this.bestStreak = this.killStreak;
+        this.updateDisplay();
+        if (typeof Audio !== 'undefined') Audio.playClick();
+    },
+
+    getMultiplier() {
+        if (this.count >= 10) return 2.0;
+        if (this.count >= 5) return 1.5;
+        if (this.count >= 3) return 1.25;
+        return 1.0;
+    },
+
+    getGrade() {
+        if (this.count >= 20) return 'SSS';
+        if (this.count >= 15) return 'SS';
+        if (this.count >= 10) return 'S';
+        if (this.count >= 7) return 'A';
+        if (this.count >= 5) return 'B';
+        if (this.count >= 3) return 'C';
+        return 'D';
+    },
+
+    update(delta) {
+        if (this.count > 0) {
+            this.timer -= delta;
+            if (this.timer <= 0) {
+                this.count = 0;
+                this.killStreak = 0;
+                this.updateDisplay();
+            }
+        }
+    },
+
+    updateDisplay() {
+        const el = document.getElementById('combo-display');
+        if (!el) return;
+        if (this.count >= 2) {
+            el.style.display = 'flex';
+            document.getElementById('combo-count').textContent = this.count;
+            document.getElementById('combo-grade').textContent = this.getGrade();
+            document.getElementById('combo-multiplier').textContent = `x${this.getMultiplier().toFixed(2)}`;
+        } else {
+            el.style.display = 'none';
+        }
+    },
+
+    reset() {
+        this.count = 0;
+        this.timer = 0;
+        this.killStreak = 0;
+        this.updateDisplay();
+    }
+};
+
+// ---------------------------------------------------------------------------
+
+const Inventory = {
+    slots: [],
+    maxSlots: 16,
+    open: false,
+    droppedItems: [],
+
+    ITEMS: {
+        health_potion: { id: 'health_potion', name: 'Health Potion', icon: '❤️', stackable: true, maxStack: 10, dropWeight: 40 },
+        mana_crystal:  { id: 'mana_crystal',  name: 'Mana Crystal',  icon: '💎', stackable: true, maxStack: 10, dropWeight: 30 },
+        scrap_metal:   { id: 'scrap_metal',   name: 'Scrap Metal',   icon: '⚙️', stackable: true, maxStack: 20, dropWeight: 20 },
+        power_cell:    { id: 'power_cell',    name: 'Power Cell',    icon: '🔋', stackable: true, maxStack: 5,  dropWeight: 10 },
+    },
+
+    init() {
+        this.slots = [];
+        for (let i = 0; i < this.maxSlots; i++) this.slots.push({ item: null });
+        this.open = false;
+        this.droppedItems = [];
+        this.renderGrid();
+    },
+
+    toggle() {
+        this.open = !this.open;
+        const panel = document.getElementById('inventory-panel');
+        if (panel) panel.style.display = this.open ? 'block' : 'none';
+        this.renderGrid();
+    },
+
+    addItem(itemId) {
+        const template = this.ITEMS[itemId];
+        if (!template) return false;
+
+        // Try stacking first
+        if (template.stackable) {
+            for (const slot of this.slots) {
+                if (slot.item && slot.item.id === itemId && slot.item.count < template.maxStack) {
+                    slot.item.count++;
+                    this._onAdd(template);
+                    return true;
+                }
+            }
+        }
+
+        // Find empty slot
+        for (const slot of this.slots) {
+            if (!slot.item) {
+                slot.item = { id: template.id, name: template.name, icon: template.icon,
+                              count: 1, stackable: template.stackable, maxStack: template.maxStack };
+                this._onAdd(template);
+                return true;
+            }
+        }
+        if (typeof HUD !== 'undefined') HUD.showToast('Inventory full!');
+        return false;
+    },
+
+    _onAdd(template) {
+        this.renderGrid();
+        if (typeof Audio !== 'undefined') Audio.playClick();
+        if (typeof HUD !== 'undefined') HUD.showToast(`+1 ${template.icon} ${template.name}`);
+    },
+
+    useItem(slotIndex) {
+        const slot = this.slots[slotIndex];
+        if (!slot || !slot.item) return;
+        const id = slot.item.id;
+
+        if (id === 'health_potion') {
+            if (typeof PlayerStats !== 'undefined') PlayerStats.heal(30);
+            if (typeof HUD !== 'undefined') HUD.showToast('❤️ Healed +30 HP');
+            this.removeItem(slotIndex);
+        } else if (id === 'mana_crystal') {
+            if (typeof PlayerStats !== 'undefined') PlayerStats.restoreMp(20);
+            if (typeof HUD !== 'undefined') HUD.showToast('💎 Restored +20 MP');
+            this.removeItem(slotIndex);
+        } else {
+            if (typeof HUD !== 'undefined') HUD.showToast('Used for crafting');
+        }
+        this.renderGrid();
+        if (typeof Audio !== 'undefined') Audio.playClick();
+    },
+
+    removeItem(slotIndex, count) {
+        count = count || 1;
+        const slot = this.slots[slotIndex];
+        if (!slot || !slot.item) return;
+        slot.item.count -= count;
+        if (slot.item.count <= 0) slot.item = null;
+    },
+
+    renderGrid() {
+        const grid = document.getElementById('inventory-grid');
+        if (!grid) return;
+        grid.innerHTML = '';
+        for (let i = 0; i < this.maxSlots; i++) {
+            const div = document.createElement('div');
+            div.className = 'inventory-slot';
+            const it = this.slots[i] && this.slots[i].item;
+            if (it) {
+                div.innerHTML = `<span class="inv-icon">${it.icon}</span>` +
+                    (it.count > 1 ? `<span class="inv-count">${it.count}</span>` : '');
+                div.onclick = () => this.useItem(i);
+            }
+            grid.appendChild(div);
+        }
+    },
+
+    spawnDrop(position, worldId, waveNumber, creepIndex) {
+        const rng = seededRandom(worldId * 10000 + waveNumber * 100 + creepIndex);
+        if (rng() < 0.3) return; // 30% chance no drop
+
+        // Weighted selection
+        const entries = Object.values(this.ITEMS);
+        const totalW = entries.reduce((s, e) => s + e.dropWeight, 0);
+        let roll = rng() * totalW, picked = entries[0];
+        for (const e of entries) { roll -= e.dropWeight; if (roll <= 0) { picked = e; break; } }
+
+        if (typeof THREE === 'undefined') return;
+        const colors = { health_potion: 0xff4444, mana_crystal: 0x4488ff, scrap_metal: 0x888888, power_cell: 0x44ff44 };
+        const geo = new THREE.BoxGeometry(0.4, 0.4, 0.4);
+        const mat = new THREE.MeshStandardMaterial({ color: colors[picked.id] || 0xffffff, emissive: colors[picked.id] || 0xffffff, emissiveIntensity: 0.5 });
+        const mesh = new THREE.Mesh(geo, mat);
+        mesh.position.set(position.x, position.y + 0.5, position.z);
+        mesh.userData = { baseY: position.y + 0.5, time: 0 };
+
+        if (typeof WorldCombat !== 'undefined' && WorldCombat.scene) WorldCombat.scene.add(mesh);
+        this.droppedItems.push({ mesh, item: picked, position: mesh.position.clone() });
+    },
+
+    collectNearby(playerPos) {
+        for (let i = this.droppedItems.length - 1; i >= 0; i--) {
+            const d = this.droppedItems[i];
+            const dx = d.mesh.position.x - playerPos.x;
+            const dz = d.mesh.position.z - playerPos.z;
+            if (dx * dx + dz * dz < 25) { // within 5 units
+                if (this.addItem(d.item.id)) {
+                    if (d.mesh.parent) d.mesh.parent.remove(d.mesh);
+                    this.droppedItems.splice(i, 1);
+                }
+            }
+        }
+    },
+
+    updateDrops(delta) {
+        for (const d of this.droppedItems) {
+            d.mesh.userData.time += delta;
+            d.mesh.rotation.y += delta * 1.5;
+            d.mesh.position.y = d.mesh.userData.baseY + Math.sin(d.mesh.userData.time * 2) * 0.15;
+        }
+    },
+
+    cleanup() {
+        for (const d of this.droppedItems) {
+            if (d.mesh.parent) d.mesh.parent.remove(d.mesh);
+        }
+        this.droppedItems = [];
+        this.slots = [];
+        this.open = false;
+        const panel = document.getElementById('inventory-panel');
+        if (panel) panel.style.display = 'none';
+    }
+};
+
+// === js/abilities.js ===
+// Abilities — DOTA-style ability system (Slash, Pulse Shot, Shield, Dash, Nova)
+const Abilities = {
+  defs: [
+    { name: 'Slash', icon: '⚔️', key: 'Digit1', cooldown: 1, cost: 0, costType: 'none',
+      range: 6, damage: 15, type: 'melee_aoe' },
+    { name: 'Pulse Shot', icon: '🔵', key: 'Digit2', cooldown: 3, cost: 10, costType: 'mp',
+      range: 30, damage: 25, type: 'projectile', speed: 40 },
+    { name: 'Shield', icon: '🛡️', key: 'Digit3', cooldown: 12, cost: 20, costType: 'mp',
+      duration: 2, type: 'buff_shield' },
+    { name: 'Dash', icon: '💨', key: 'Digit4', cooldown: 8, cost: 15, costType: 'energy',
+      distance: 15, type: 'dash' },
+    { name: 'Nova', icon: '💥', key: 'Digit5', cooldown: 20, cost: 30, costType: 'mp',
+      range: 15, damage: 50, type: 'aoe_burst' },
+  ],
+  cooldowns: [0, 0, 0, 0, 0],
+  shieldActive: false,
+  shieldTimer: 0,
+  projectiles: [],
+  active: false,
+  _effects: [],
+
+  init() {
+    this.cooldowns = [0, 0, 0, 0, 0];
+    this.projectiles = [];
+    this.shieldActive = false;
+    this.shieldTimer = 0;
+    this._effects = [];
+    this.active = true;
+    document.querySelectorAll('.ability-slot').forEach((el, i) => {
+      el.addEventListener('click', () => this.useAbility(i));
+    });
+  },
+
+  _playerPos() { return WorldMode.player.mesh.position; },
+  _facing() {
+    const r = WorldMode.player.mesh.rotation.y;
+    return new THREE.Vector3(Math.sin(r), 0, Math.cos(r));
+  },
+
+  _damageCreep(creep, dmg) {
+    creep.hp -= dmg;
+    if (creep.hpBar) {
+      const r = Math.max(0, creep.hp / creep.maxHp);
+      creep.hpBar.scale.x = r;
+      creep.hpBar.material.color.setHex(r > 0.5 ? 0x00ff00 : r > 0.25 ? 0xffaa00 : 0xff0000);
+    }
+    if (creep.hp > 0) return;
+    creep.alive = false;
+    const scale = creep.isBoss ? 5 : (1 + WorldCombat.waveNumber * 0.1);
+    PlayerStats.awardXp(Math.floor(10 * scale));
+    if (creep.isBoss) {
+      WorldCombat.bossActive = false; WorldCombat.boss = null;
+      WorldCombat.momentum = Math.min(100, WorldCombat.momentum + 20);
+      if (typeof HUD !== 'undefined') HUD.showToast('BOSS DEFEATED!');
+    } else {
+      const mk = typeof COMBAT_CONFIG !== 'undefined' ? COMBAT_CONFIG.momentumPerKill : 3;
+      if (creep.faction === 'horde') WorldCombat.momentum = Math.min(100, WorldCombat.momentum + mk);
+      else WorldCombat.momentum = Math.max(0, WorldCombat.momentum - mk);
+    }
+  },
+  _creepsInRange(pos, range) {
+    return WorldCombat.creeps.filter(c => {
+      if (!c.alive) return false;
+      const dx = pos.x - c.mesh.position.x, dz = pos.z - c.mesh.position.z;
+      return Math.sqrt(dx * dx + dz * dz) <= range;
+    });
+  },
+  _addEffect(mesh, duration) {
+    WorldMode.scene.add(mesh); this._effects.push({ mesh, life: 0, duration });
+  },
+
+  useAbility(index) {
+    if (!this.active || index < 0 || index >= this.defs.length) return false;
+    const def = this.defs[index];
+    if (this.cooldowns[index] > 0) return false;
+    if (def.costType === 'mp' && !PlayerStats.useMp(def.cost)) return false;
+    if (def.costType === 'energy' && !PlayerStats.useEnergy(def.cost)) return false;
+    this.cooldowns[index] = def.cooldown;
+
+    const pos = this._playerPos();
+    const dir = this._facing();
+
+    if (def.type === 'melee_aoe') this._doSlash(pos, def);
+    else if (def.type === 'projectile') this._doPulseShot(pos, dir, def);
+    else if (def.type === 'buff_shield') this._doShield(def);
+    else if (def.type === 'dash') this._doDash(pos, dir, def);
+    else if (def.type === 'aoe_burst') this._doNova(pos, def);
+    return true;
+  },
+
+  _doSlash(pos, def) {
+    this._creepsInRange(pos, def.range).forEach(c => this._damageCreep(c, def.damage));
+    const geo = new THREE.RingGeometry(0.5, def.range, 24);
+    const mat = new THREE.MeshBasicMaterial({ color: 0x00ffff, transparent: true, opacity: 0.6, side: THREE.DoubleSide });
+    const ring = new THREE.Mesh(geo, mat);
+    ring.rotation.x = -Math.PI / 2; ring.position.copy(pos); ring.position.y = 0.1;
+    this._addEffect(ring, 0.3);
+    if (typeof Audio !== 'undefined' && Audio.playHit) Audio.playHit();
+  },
+  _doPulseShot(pos, dir, def) {
+    const mesh = new THREE.Mesh(new THREE.SphereGeometry(0.3, 8, 8), new THREE.MeshBasicMaterial({ color: 0x00ffff }));
+    mesh.position.copy(pos); mesh.position.y = 1;
+    WorldMode.scene.add(mesh);
+    this.projectiles.push({ mesh, direction: dir.clone(), speed: def.speed, damage: def.damage, life: 0 });
+    if (typeof Audio !== 'undefined' && Audio.playTowerShot) Audio.playTowerShot();
+  },
+  _doShield(def) {
+    this.shieldActive = true; this.shieldTimer = def.duration; PlayerStats.shielded = true;
+    const ring = WorldMode.player.ring;
+    if (ring) {
+      ring._origColor = ring.material.color.getHex(); ring._origScale = ring.scale.clone();
+      ring.material.color.setHex(0xffd700); ring.scale.set(2, 2, 2);
+    }
+    if (typeof Audio !== 'undefined' && Audio.playClick) Audio.playClick();
+  },
+  _doDash(pos, dir, def) {
+    pos.x += dir.x * def.distance; pos.z += dir.z * def.distance;
+    if (WorldMode.currentWorld && typeof WORLDS !== 'undefined') {
+      const b = WORLDS[WorldMode.currentWorld].bounds;
+      pos.x = Math.max(-b.x, Math.min(b.x, pos.x)); pos.z = Math.max(-b.z, Math.min(b.z, pos.z));
+    }
+    for (let i = 0; i < 5; i++) {
+      const p = new THREE.Mesh(new THREE.SphereGeometry(0.15, 4, 4),
+        new THREE.MeshBasicMaterial({ color: 0x88ccff, transparent: true, opacity: 0.5 }));
+      p.position.set(pos.x - dir.x * def.distance * (i / 5) + (Math.random() - 0.5), 0.5,
+        pos.z - dir.z * def.distance * (i / 5) + (Math.random() - 0.5));
+      this._addEffect(p, 0.4);
+    }
+    if (typeof Audio !== 'undefined' && Audio.playClick) Audio.playClick();
+  },
+  _doNova(pos, def) {
+    this._creepsInRange(pos, def.range).forEach(c => this._damageCreep(c, def.damage));
+    const mat = new THREE.MeshBasicMaterial({ color: 0xff4400, wireframe: true, transparent: true, opacity: 0.7 });
+    const sphere = new THREE.Mesh(new THREE.SphereGeometry(1, 16, 16), mat);
+    sphere.position.copy(pos); sphere.position.y = 1; sphere._novaRange = def.range;
+    this._addEffect(sphere, 0.5);
+    const cam = WorldMode.camera;
+    if (cam) {
+      const ox = cam.position.x, oy = cam.position.y; let shakeT = 0;
+      const id = setInterval(() => {
+        shakeT += 16;
+        if (shakeT > 200) { cam.position.x = ox; cam.position.y = oy; clearInterval(id); return; }
+        cam.position.x = ox + (Math.random() - 0.5) * 0.4;
+        cam.position.y = oy + (Math.random() - 0.5) * 0.3;
+      }, 16);
+    }
+    if (typeof Audio !== 'undefined' && Audio.playExplosion) Audio.playExplosion();
+  },
+
+  update(delta) {
+    if (!this.active) return;
+
+    // Cooldowns
+    for (let i = 0; i < this.cooldowns.length; i++) {
+      this.cooldowns[i] = Math.max(0, this.cooldowns[i] - delta);
+    }
+
+    // Projectiles
+    for (let i = this.projectiles.length - 1; i >= 0; i--) {
+      const p = this.projectiles[i];
+      p.mesh.position.x += p.direction.x * p.speed * delta;
+      p.mesh.position.z += p.direction.z * p.speed * delta;
+      p.life += delta;
+      let hit = false;
+      for (const c of WorldCombat.creeps) {
+        if (!c.alive) continue;
+        const dx = p.mesh.position.x - c.mesh.position.x, dz = p.mesh.position.z - c.mesh.position.z;
+        if (Math.sqrt(dx * dx + dz * dz) < 1.5) { this._damageCreep(c, p.damage); hit = true; break; }
+      }
+      if (hit || p.life > 3) { WorldMode.scene.remove(p.mesh); this.projectiles.splice(i, 1); }
+    }
+    // Shield
+    if (this.shieldActive) {
+      this.shieldTimer -= delta;
+      if (this.shieldTimer <= 0) {
+        this.shieldActive = false; PlayerStats.shielded = false;
+        const ring = WorldMode.player.ring;
+        if (ring) {
+          ring.material.color.setHex(ring._origColor || 0x00ffff);
+          ring.scale.copy(ring._origScale || new THREE.Vector3(1, 1, 1));
+        }
+      }
+    }
+    // HUD
+    document.querySelectorAll('.ability-slot').forEach((el, i) => {
+      const cd = this.cooldowns[i];
+      let overlay = el.querySelector('.cd-overlay');
+      if (cd > 0) {
+        if (!overlay) {
+          overlay = document.createElement('div');
+          overlay.className = 'cd-overlay';
+          overlay.style.cssText = 'position:absolute;inset:0;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;pointer-events:none';
+          el.style.position = 'relative';
+          el.appendChild(overlay);
+        }
+        overlay.style.display = 'flex';
+        overlay.textContent = Math.ceil(cd) + 's';
+      } else if (overlay) {
+        overlay.style.display = 'none';
+      }
+    });
+
+    // Effects
+    for (let i = this._effects.length - 1; i >= 0; i--) {
+      const e = this._effects[i]; e.life += delta;
+      const t = e.life / e.duration;
+      e.mesh.material.opacity = Math.max(0, 1 - t);
+      if (e.mesh._novaRange) { const s = 1 + (e.mesh._novaRange - 1) * t; e.mesh.scale.set(s, s, s); }
+      if (e.life >= e.duration) { WorldMode.scene.remove(e.mesh); this._effects.splice(i, 1); }
+    }
+  },
+  cleanup() {
+    this.active = false;
+    this.projectiles.forEach(p => WorldMode.scene && WorldMode.scene.remove(p.mesh));
+    this._effects.forEach(e => WorldMode.scene && WorldMode.scene.remove(e.mesh));
+    this.projectiles = []; this._effects = [];
+    this.shieldActive = false; PlayerStats.shielded = false;
+    this.cooldowns = [0, 0, 0, 0, 0];
+  }
+};
+
 // === js/world-core.js ===
 // World Core — WorldMode Orchestrator (Player, Camera, Game Loop)
 const WorldMode = {
@@ -4855,6 +5802,12 @@ const WorldMode = {
 
         // Show combat HUD
         document.getElementById('combat-hud').style.display = 'flex';
+        const statsBar = document.getElementById('player-stats-bar');
+        if (statsBar) statsBar.style.display = 'flex';
+        const levelBadge = document.getElementById('level-badge');
+        if (levelBadge) levelBadge.style.display = 'block';
+        const abilityBar = document.getElementById('ability-bar');
+        if (abilityBar) abilityBar.style.display = 'flex';
 
         // Build terrain, lanes, combat, agents
         WorldTerrain.build(this.scene, w, worldId);
@@ -4862,6 +5815,12 @@ const WorldMode = {
         WorldCombat.init(this.scene);
         WorldAgents.loadObjects(this.scene, worldId);
         WorldAgents.syncAgents(this.scene, worldId);
+
+        // Init RPG systems
+        if (typeof PlayerStats !== 'undefined') PlayerStats.init();
+        if (typeof Abilities !== 'undefined') Abilities.init();
+        if (typeof ComboSystem !== 'undefined') ComboSystem.reset();
+        if (typeof Inventory !== 'undefined') Inventory.init();
 
         // Player
         this.createPlayer(w);
@@ -5009,6 +5968,30 @@ const WorldMode = {
         WorldAgents.updateAnimations(time);
         WorldAgents.checkInteractions(this.player.mesh.position);
 
+        // RPG system updates
+        if (typeof PlayerStats !== 'undefined') {
+            PlayerStats.update(delta);
+            if (PlayerStats.dead) return; // Skip everything while dead
+        }
+        if (typeof Abilities !== 'undefined') Abilities.update(delta);
+        if (typeof ComboSystem !== 'undefined') ComboSystem.update(delta);
+        if (typeof Inventory !== 'undefined') {
+            Inventory.collectNearby(this.player.mesh.position);
+            Inventory.updateDrops(time);
+        }
+
+        // Creep damage to player
+        if (typeof PlayerStats !== 'undefined' && !PlayerStats.dead) {
+            for (const creep of WorldCombat.creeps) {
+                if (!creep.alive || creep.faction !== 'horde') continue;
+                const dx = this.player.mesh.position.x - creep.mesh.position.x;
+                const dz = this.player.mesh.position.z - creep.mesh.position.z;
+                if (Math.sqrt(dx*dx + dz*dz) < 2) {
+                    PlayerStats.takeDamage(creep.isBoss ? 3 * delta : 1 * delta);
+                }
+            }
+        }
+
         // Periodic agent sync
         if (Math.floor(time) % 5 === 0 && Math.floor(time) !== this._lastSync) {
             this._lastSync = Math.floor(time);
@@ -5037,10 +6020,20 @@ const WorldMode = {
 
         WorldCombat.cleanup();
         WorldLanes.cleanup();
+        if (typeof Abilities !== 'undefined') Abilities.cleanup();
+        if (typeof Inventory !== 'undefined') Inventory.cleanup();
 
         document.getElementById('world-container').style.display = 'none';
         document.getElementById('combat-hud').style.display = 'none';
         document.getElementById('interaction-prompt').classList.remove('visible');
+        const statsBar = document.getElementById('player-stats-bar');
+        if (statsBar) statsBar.style.display = 'none';
+        const levelBadge = document.getElementById('level-badge');
+        if (levelBadge) levelBadge.style.display = 'none';
+        const abilityBar = document.getElementById('ability-bar');
+        if (abilityBar) abilityBar.style.display = 'none';
+        const comboEl = document.getElementById('combo-display');
+        if (comboEl) comboEl.style.display = 'none';
     },
 
     onResize() {
@@ -5858,8 +6851,27 @@ const HUD = {
             }
         }
 
-        // Quick travel (1-4)
-        if (['Digit1','Digit2','Digit3','Digit4'].includes(e.code) && !Bridge.open && GameState.mode !== 'boot') {
+        // Abilities (1-5 in world mode)
+        if (['Digit1','Digit2','Digit3','Digit4','Digit5'].includes(e.code) && GameState.mode === 'world') {
+            const idx = parseInt(e.code.replace('Digit','')) - 1;
+            if (typeof Abilities !== 'undefined') Abilities.useAbility(idx);
+            return;
+        }
+
+        // Inventory toggle
+        if (e.code === 'KeyI' && GameState.mode === 'world') {
+            if (typeof Inventory !== 'undefined') Inventory.toggle();
+            return;
+        }
+
+        // Cinematic mode
+        if (e.code === 'KeyC' && GameState.mode === 'world') {
+            document.body.classList.toggle('cinematic-active');
+            return;
+        }
+
+        // Quick travel (Ctrl+1-4 for non-world modes)
+        if (['Digit1','Digit2','Digit3','Digit4'].includes(e.code) && !Bridge.open && GameState.mode !== 'boot' && GameState.mode !== 'world') {
             const idx = parseInt(e.code.replace('Digit','')) - 1;
             const worldId = WORLD_IDS[idx];
             if (worldId) {
