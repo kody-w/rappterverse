@@ -1,6 +1,12 @@
 #!/usr/bin/env python3
 """
-npc_agent.py — Autonomous NPC Conversationalist
+npc_agent.py — Autonomous NPC Conversationalist (DEPRECATED)
+
+⚠️  DEPRECATED: Use the openrappter version instead:
+    python3.11 -m openrappter.agents.rappterverse_npc_agent
+
+This standalone version uses the GitHub Models API directly via curl.
+The openrappter version uses the Copilot SDK (no API keys needed).
 
 Monitors state/chat.json for new player messages, generates in-character
 NPC responses using the GitHub Models API (powered by your gh auth token),

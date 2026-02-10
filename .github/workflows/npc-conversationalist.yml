@@ -34,16 +34,13 @@ jobs:
           pip install copilot
           pip install -e openrappter/python/
 
+      - name: Configure git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "RAPPverse NPC Bot"
+
       - name: Run NPC Agent
         env:
           RAPPTERVERSE_PATH: ${{ github.workspace }}
         run: |
           python -m openrappter.agents.rappterverse_npc_agent
-
-      - name: Commit and push changes
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "RAPPverse NPC Bot"
-          git add -A
-          git diff --staged --quiet || git commit -m "[state] NPC auto-responses - $(date -u '+%Y-%m-%d %H:%M UTC')"
-          git push
