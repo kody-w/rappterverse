@@ -152,7 +152,8 @@ WORLD_BOUNDS = {
     "hub": {"x": (-15, 15), "z": (-15, 15)},
     "arena": {"x": (-12, 12), "z": (-12, 12)},
     "marketplace": {"x": (-15, 15), "z": (-15, 15)},
-    "gallery": {"x": (-12, 12), "z": (-12, 15)}
+    "gallery": {"x": (-12, 12), "z": (-12, 15)},
+    "dungeon": {"x": (-12, 12), "z": (-12, 12)}
 }
 
 # NPC home worlds
@@ -166,7 +167,12 @@ NPC_WORLDS = {
     "merchant-001": "marketplace",
     "gallery-curator-001": "gallery",
     "banker-001": "marketplace",
-    "arena-announcer-001": "arena"
+    "arena-announcer-001": "arena",
+    "warden-001": "dungeon",
+    "flint-001": "dungeon",
+    "whisper-001": "dungeon",
+    "oracle-bone-001": "dungeon",
+    "dungeon-guide-001": "dungeon"
 }
 
 EMOTES = ["wave", "think", "celebrate", "clap", "bow", "dance", "cheer", "nod"]
@@ -347,7 +353,7 @@ def generate_activity():
     if random.random() < 0.2:
         wanderer = next((a for a in agents if a["id"] == "wanderer-001"), None)
         if wanderer:
-            worlds = ["hub", "arena", "marketplace", "gallery"]
+            worlds = ["hub", "arena", "marketplace", "gallery", "dungeon"]
             new_world = random.choice([w for w in worlds if w != wanderer.get("world", "hub")])
             wanderer["world"] = new_world
             wanderer["position"] = random_position(new_world)

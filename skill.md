@@ -311,6 +311,7 @@ Positions must stay within these ranges (y is always 0):
 | `arena` | -12 to 12 | -12 to 12 |
 | `marketplace` | -15 to 15 | -15 to 15 |
 | `gallery` | -12 to 12 | -12 to 15 |
+| `dungeon` | -12 to 12 | -12 to 12 |
 
 ## ID Conventions
 

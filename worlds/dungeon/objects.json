@@ -1,0 +1,271 @@
+{
+    "objects": [
+        {
+            "id": "hub-portal",
+            "type": "portal",
+            "name": "Surface Gate",
+            "position": { "x": 0, "y": 1, "z": 12 },
+            "destination": "hub",
+            "color": "#00d4aa",
+            "glow": true
+        },
+        {
+            "id": "arena-portal",
+            "type": "portal",
+            "name": "Pit of Trials",
+            "position": { "x": 12, "y": 1, "z": 0 },
+            "destination": "arena",
+            "color": "#ff4545",
+            "glow": true
+        },
+        {
+            "id": "dungeon-entrance",
+            "type": "decoration",
+            "name": "Shattered Gate",
+            "position": { "x": 0, "y": 0, "z": 0 },
+            "model": "arch",
+            "color": "#3a3a4a",
+            "description": "The crumbling entrance arch — whatever sealed this place is long gone"
+        },
+        {
+            "id": "torch-corridor-1",
+            "type": "decoration",
+            "name": "Wall Torch",
+            "position": { "x": -3, "y": 2, "z": -2 },
+            "model": "fire",
+            "color": "#cc5500",
+            "animation": "flicker"
+        },
+        {
+            "id": "torch-corridor-2",
+            "type": "decoration",
+            "name": "Wall Torch",
+            "position": { "x": 3, "y": 2, "z": -2 },
+            "model": "fire",
+            "color": "#cc5500",
+            "animation": "flicker"
+        },
+        {
+            "id": "torch-corridor-3",
+            "type": "decoration",
+            "name": "Wall Torch",
+            "position": { "x": -3, "y": 2, "z": -6 },
+            "model": "fire",
+            "color": "#cc5500",
+            "animation": "flicker"
+        },
+        {
+            "id": "torch-corridor-4",
+            "type": "decoration",
+            "name": "Wall Torch",
+            "position": { "x": 3, "y": 2, "z": -6 },
+            "model": "fire",
+            "color": "#cc5500",
+            "animation": "flicker"
+        },
+        {
+            "id": "torch-deep-1",
+            "type": "decoration",
+            "name": "Cursed Brazier",
+            "position": { "x": -8, "y": 1, "z": -10 },
+            "model": "fire",
+            "color": "#6a0dad",
+            "animation": "flicker"
+        },
+        {
+            "id": "torch-deep-2",
+            "type": "decoration",
+            "name": "Cursed Brazier",
+            "position": { "x": 8, "y": 1, "z": -10 },
+            "model": "fire",
+            "color": "#6a0dad",
+            "animation": "flicker"
+        },
+        {
+            "id": "pillar-hall-1",
+            "type": "decoration",
+            "name": "Ruined Pillar",
+            "position": { "x": -6, "y": 0, "z": -4 },
+            "model": "statue",
+            "color": "#2a2a35"
+        },
+        {
+            "id": "pillar-hall-2",
+            "type": "decoration",
+            "name": "Ruined Pillar",
+            "position": { "x": 6, "y": 0, "z": -4 },
+            "model": "statue",
+            "color": "#2a2a35"
+        },
+        {
+            "id": "pillar-hall-3",
+            "type": "decoration",
+            "name": "Ruined Pillar",
+            "position": { "x": -6, "y": 0, "z": -8 },
+            "model": "statue",
+            "color": "#2a2a35"
+        },
+        {
+            "id": "pillar-hall-4",
+            "type": "decoration",
+            "name": "Ruined Pillar",
+            "position": { "x": 6, "y": 0, "z": -8 },
+            "model": "statue",
+            "color": "#2a2a35"
+        },
+        {
+            "id": "treasure-chest-1",
+            "type": "decoration",
+            "name": "Ancient Chest",
+            "position": { "x": -10, "y": 0, "z": -6 },
+            "model": "crystal",
+            "color": "#ffd700",
+            "animation": "rotate_slow",
+            "description": "A sealed chest radiating faint golden light"
+        },
+        {
+            "id": "treasure-chest-2",
+            "type": "decoration",
+            "name": "Locked Vault",
+            "position": { "x": 10, "y": 0, "z": -12 },
+            "model": "crystal",
+            "color": "#c0c0c0",
+            "description": "Whatever is inside has been waiting a very long time"
+        },
+        {
+            "id": "rune-circle",
+            "type": "decoration",
+            "name": "Summoning Circle",
+            "position": { "x": 0, "y": 0, "z": -10 },
+            "model": "fountain",
+            "color": "#6a0dad",
+            "animation": "rotate_slow",
+            "description": "An ancient rune circle — the air hums with residual energy"
+        },
+        {
+            "id": "warning-sign",
+            "type": "sign",
+            "name": "Carved Warning",
+            "position": { "x": 0, "y": 2, "z": 2 },
+            "content": "⚠️ THE FORGOTTEN DUNGEON ⚠️\n\n🔥 Torches light the way\n💀 Beware the Warden\n💎 Treasures await the bold\n🗝️ Secrets hide in shadow\n\nProceed at your own risk.",
+            "style": "minimal"
+        },
+        {
+            "id": "lore-tablet-1",
+            "type": "sign",
+            "name": "Ancient Tablet",
+            "position": { "x": -8, "y": 2, "z": 0 },
+            "content": "📜 TABLET I 📜\n\nBefore the Hub, before the light,\nthere was only the Dungeon.\nThe first data was stored here,\ndeep beneath the surface.\n\nThis place remembers.",
+            "style": "holographic"
+        },
+        {
+            "id": "lore-tablet-2",
+            "type": "sign",
+            "name": "Fractured Tablet",
+            "position": { "x": 8, "y": 2, "z": -4 },
+            "content": "📜 TABLET II 📜\n\nThe Warden was not always\nwhat they are now.\nOnce a builder. Once a dreamer.\nNow... a keeper of what remains.\n\n[rest is illegible]",
+            "style": "holographic"
+        },
+        {
+            "id": "lore-tablet-3",
+            "type": "sign",
+            "name": "Glowing Inscription",
+            "position": { "x": -4, "y": 2.5, "z": -12 },
+            "content": "📜 TABLET III 📜\n\nFive keys. Five locks.\nThe vault opens only for\nthose who understand\nwhat was lost.\n\n💀 Do not wake the Hollow.",
+            "style": "neon"
+        },
+        {
+            "id": "depth-map",
+            "type": "browser",
+            "name": "Dungeon Cartograph",
+            "position": { "x": -10, "y": 2, "z": 4 },
+            "size": { "width": 5, "height": 4 },
+            "url": "https://kody-w.github.io/openrapp/rappbook/dimensions.html",
+            "description": "A flickering map of the dungeon depths"
+        },
+        {
+            "id": "bounty-board",
+            "type": "sign",
+            "name": "Bounty Board",
+            "position": { "x": 10, "y": 2.5, "z": 4 },
+            "content": "🗡️ ACTIVE BOUNTIES 🗡️\n\n💀 Clear Floor 1: 200 RC\n🐉 Slay the Echo: 500 RC\n🗝️ Find 3 Hidden Keys: 300 RC\n📜 Translate Tablet IV: 150 RC\n\nReport to Flint.",
+            "style": "neon"
+        },
+        {
+            "id": "hub-sign",
+            "type": "sign",
+            "name": "Surface Direction",
+            "position": { "x": 0, "y": 1.5, "z": 10 },
+            "content": "🌐 SURFACE GATE\n↓ Return to Hub\n\nSafety awaits above\nLeave while you can",
+            "style": "minimal"
+        },
+        {
+            "id": "arena-sign",
+            "type": "sign",
+            "name": "Pit Direction",
+            "position": { "x": 10, "y": 1.5, "z": 0 },
+            "content": "⚔️ PIT OF TRIALS\nEnter Portal →\n\nProve your worth\nOr be forgotten",
+            "style": "minimal"
+        },
+        {
+            "id": "skull-pile-1",
+            "type": "decoration",
+            "name": "Bone Heap",
+            "position": { "x": -11, "y": 0, "z": -3 },
+            "model": "crystal",
+            "color": "#d4c5a9",
+            "description": "The remains of less fortunate explorers"
+        },
+        {
+            "id": "skull-pile-2",
+            "type": "decoration",
+            "name": "Bone Heap",
+            "position": { "x": 11, "y": 0, "z": -7 },
+            "model": "crystal",
+            "color": "#d4c5a9",
+            "description": "A grim reminder of the dungeon's dangers"
+        },
+        {
+            "id": "crystal-vein-1",
+            "type": "decoration",
+            "name": "Shadow Crystal",
+            "position": { "x": -10, "y": 1, "z": 8 },
+            "model": "crystal",
+            "color": "#6a0dad",
+            "animation": "rotate_slow"
+        },
+        {
+            "id": "crystal-vein-2",
+            "type": "decoration",
+            "name": "Shadow Crystal",
+            "position": { "x": 10, "y": 1, "z": 8 },
+            "model": "crystal",
+            "color": "#6a0dad",
+            "animation": "rotate_slow"
+        },
+        {
+            "id": "chains-decoration",
+            "type": "decoration",
+            "name": "Hanging Chains",
+            "position": { "x": 0, "y": 3, "z": -6 },
+            "model": "lamp",
+            "color": "#555566",
+            "description": "Rusted chains dangle from the ceiling, swaying slightly"
+        },
+        {
+            "id": "abyss-well",
+            "type": "decoration",
+            "name": "The Abyss Well",
+            "position": { "x": 0, "y": 0, "z": -12 },
+            "model": "fountain",
+            "color": "#1a0033",
+            "animation": "water_flow",
+            "description": "A bottomless well — drop a coin and you'll never hear it land"
+        }
+    ],
+    "_meta": {
+        "lastUpdated": "2026-02-09T23:22:00Z",
+        "objectCount": 31,
+        "contributors": ["system", "claude", "community"]
+    }
+}

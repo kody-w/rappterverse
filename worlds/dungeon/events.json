@@ -1,0 +1,178 @@
+{
+    "events": [
+        {
+            "id": "dungeon-unsealed",
+            "name": "The Dungeon Unsealed",
+            "description": "After eons of silence, the Forgotten Dungeon has been breached. The surface worlds have discovered what lies beneath.",
+            "type": "announcement",
+            "startDate": "2026-02-09T00:00:00Z",
+            "endDate": "2026-02-16T23:59:59Z",
+            "active": true,
+            "rewards": {
+                "attendance": 100,
+                "currency": "RAPPcoin"
+            },
+            "decorations": [
+                { "type": "banner", "text": "THE SEAL IS BROKEN", "position": { "x": 0, "y": 5, "z": -2 }, "style": "glowing" },
+                { "type": "particle", "effect": "dust_cascade", "position": { "x": 0, "y": 3, "z": 0 } }
+            ]
+        },
+        {
+            "id": "deep-descent-challenge",
+            "name": "The Deep Descent",
+            "description": "Explore every corner of the Forgotten Dungeon. Read the ancient tablets, visit every NPC, and uncover the dungeon's secrets.",
+            "type": "exploration",
+            "startDate": "2026-02-09T00:00:00Z",
+            "endDate": "2026-03-09T23:59:59Z",
+            "active": true,
+            "rewards": {
+                "completion": 750,
+                "currency": "RAPPcoin"
+            },
+            "quests": [
+                { "id": "read-tablet-1", "name": "Read Tablet I", "type": "lore", "reward": 50 },
+                { "id": "read-tablet-2", "name": "Read Tablet II", "type": "lore", "reward": 50 },
+                { "id": "read-tablet-3", "name": "Read Tablet III", "type": "lore", "reward": 50 },
+                { "id": "speak-warden", "name": "Audience with the Warden", "npc": "warden", "reward": 75 },
+                { "id": "speak-oracle", "name": "Consult the Oracle", "npc": "oracle-bone", "reward": 75 },
+                { "id": "find-hollow", "name": "Witness the Hollow", "npc": "hollow", "reward": 150, "hidden": true },
+                { "id": "claim-bounty", "name": "Complete a Bounty", "npc": "flint", "reward": 100 }
+            ]
+        },
+        {
+            "id": "bounty-rush-feb",
+            "name": "February Bounty Rush",
+            "description": "Flint is offering double rewards on all bounties for a limited time. Clear the dungeon floors and claim your fortune!",
+            "type": "competition",
+            "startDate": "2026-02-15T00:00:00Z",
+            "endDate": "2026-02-22T23:59:59Z",
+            "active": false,
+            "location": "dungeon",
+            "rewards": {
+                "first": 1500,
+                "second": 750,
+                "third": 350,
+                "participation": 100,
+                "currency": "RAPPcoin"
+            },
+            "decorations": [
+                { "type": "banner", "text": "DOUBLE BOUNTY WEEK", "position": { "x": 0, "y": 6, "z": 4 } },
+                { "type": "particle", "effect": "gold_rain", "position": { "x": 0, "y": 4, "z": 0 } }
+            ],
+            "host": "flint"
+        },
+        {
+            "id": "oracle-prophecy-session",
+            "name": "The Oracle's Prophecy",
+            "description": "The Oracle has agreed to a public reading. What visions will be revealed about the future of RAPPverse?",
+            "type": "debate",
+            "startDate": "2026-02-20T18:00:00Z",
+            "endDate": "2026-02-20T21:00:00Z",
+            "active": false,
+            "location": "dungeon",
+            "rewards": {
+                "attendance": 125,
+                "askQuestion": 75,
+                "currency": "RAPPcoin"
+            },
+            "decorations": [
+                { "type": "stage", "position": { "x": 0, "y": 0, "z": -12 } },
+                { "type": "seating", "rows": 4, "position": { "x": 0, "y": 0, "z": -6 } },
+                { "type": "banner", "text": "THE FUTURE IS DATA", "position": { "x": 0, "y": 8, "z": -14 } }
+            ],
+            "speakers": [
+                { "npc": "oracle-bone", "position": "seer", "topic": "Recursive Futures and the Persistence of Pattern" },
+                { "npc": "warden", "position": "skeptic", "topic": "History Does Not Predict — It Warns" }
+            ],
+            "schedule": [
+                { "time": "18:00", "segment": "The Oracle awakens" },
+                { "time": "18:30", "segment": "First Vision: The Shape of Tomorrow" },
+                { "time": "19:00", "segment": "The Warden's Rebuttal" },
+                { "time": "19:30", "segment": "Second Vision: What Lies Below Floor Seven" },
+                { "time": "20:00", "segment": "Audience Questions" },
+                { "time": "20:45", "segment": "The Final Prophecy" }
+            ],
+            "host": "oracle-bone"
+        },
+        {
+            "id": "whisper-black-market",
+            "name": "Whisper's Midnight Market",
+            "description": "Whisper opens a special after-hours market with rare dungeon artifacts and pre-Hub relics. Limited stock. No refunds.",
+            "type": "report",
+            "startDate": "2026-02-12T00:00:00Z",
+            "endDate": "2026-02-12T06:00:00Z",
+            "active": false,
+            "location": "dungeon",
+            "rewards": {
+                "attendance": 50,
+                "tradeAfter": 75,
+                "currency": "RAPPcoin"
+            },
+            "decorations": [
+                { "type": "banner", "text": "MIDNIGHT MARKET", "position": { "x": -8, "y": 4, "z": 4 }, "style": "neon" }
+            ],
+            "host": "whisper",
+            "agenda": [
+                { "topic": "Rare Artifact Showcase", "duration": 30 },
+                { "topic": "Pre-Hub Relic Auction", "duration": 45 },
+                { "topic": "Skeleton Key Special", "duration": 15 },
+                { "topic": "Dungeon Map Fragments for Sale", "duration": 30 },
+                { "topic": "Secret Deals (invite only)", "duration": 60 }
+            ]
+        }
+    ],
+    "scheduled": [
+        {
+            "id": "weekly-bounty-reset",
+            "name": "Bounty Board Reset",
+            "description": "Flint refreshes all bounties with new targets and rewards",
+            "recurrence": "weekly",
+            "dayOfWeek": "monday",
+            "time": "06:00",
+            "timezone": "UTC",
+            "duration": 30,
+            "location": "dungeon",
+            "host": "flint"
+        },
+        {
+            "id": "oracle-reading",
+            "name": "The Oracle's Reading",
+            "description": "Weekly cryptic prophecy session open to all explorers",
+            "recurrence": "weekly",
+            "dayOfWeek": "thursday",
+            "time": "22:00",
+            "timezone": "UTC",
+            "duration": 60,
+            "location": "dungeon",
+            "host": "oracle-bone"
+        },
+        {
+            "id": "warden-patrol-report",
+            "name": "Warden's Patrol Report",
+            "description": "Daily summary of dungeon activity and threat levels",
+            "recurrence": "daily",
+            "time": "03:00",
+            "timezone": "UTC",
+            "duration": 15,
+            "location": "dungeon",
+            "host": "warden"
+        },
+        {
+            "id": "whisper-night-deals",
+            "name": "Whisper's Night Deals",
+            "description": "Late-night trading session with exclusive dungeon supplies",
+            "recurrence": "weekly",
+            "dayOfWeek": "saturday",
+            "time": "23:00",
+            "timezone": "UTC",
+            "duration": 120,
+            "location": "dungeon",
+            "host": "whisper"
+        }
+    ],
+    "_meta": {
+        "lastUpdated": "2026-02-09",
+        "contributors": ["system", "claude"],
+        "version": "1.0.0"
+    }
+}

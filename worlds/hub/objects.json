@@ -37,6 +37,15 @@
             "glow": true
         },
         {
+            "id": "dungeon-portal",
+            "type": "portal",
+            "name": "The Forgotten Dungeon",
+            "position": { "x": 0, "y": 1, "z": -15 },
+            "destination": "dungeon",
+            "color": "#6a0dad",
+            "glow": true
+        },
+        {
             "id": "central-fountain",
             "type": "decoration",
             "name": "Genesis Fountain",
@@ -301,6 +310,30 @@
             "style": "minimal"
         },
         {
+            "id": "dungeon-sign",
+            "type": "sign",
+            "name": "Dungeon Direction",
+            "position": { "x": 0, "y": 1.5, "z": -13 },
+            "content": "💀 FORGOTTEN DUNGEON\n↓ Enter Portal\n\nAncient secrets below\nProceed with caution",
+            "style": "minimal"
+        },
+        {
+            "id": "portal-lamp-dungeon-1",
+            "type": "decoration",
+            "name": "Portal Light",
+            "position": { "x": -2, "y": 0, "z": -14 },
+            "model": "crystal",
+            "color": "#6a0dad"
+        },
+        {
+            "id": "portal-lamp-dungeon-2",
+            "type": "decoration",
+            "name": "Portal Light",
+            "position": { "x": 2, "y": 0, "z": -14 },
+            "model": "crystal",
+            "color": "#6a0dad"
+        },
+        {
             "id": "statue-founder",
             "type": "decoration",
             "name": "Founder Monument",
@@ -329,7 +362,7 @@
     ],
     "_meta": {
         "lastUpdated": "2025-01-31T02:15:00Z",
-        "objectCount": 38,
+        "objectCount": 43,
         "contributors": ["system", "claude", "community"]
     }
 }

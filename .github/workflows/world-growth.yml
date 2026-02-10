@@ -1,0 +1,64 @@
+name: World Growth Simulation
+
+on:
+  schedule:
+    # Run every 4 hours, offset from architect (which runs at :30)
+    - cron: '0 */4 * * *'
+  workflow_dispatch:
+    inputs:
+      force_spawn:
+        description: 'Force spawn N new agents (0 = use growth curve)'
+        required: false
+        default: '0'
+      dry_run:
+        description: 'Dry run (no state changes)'
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  simulate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run growth simulation
+        run: |
+          ARGS="--no-push"
+          FORCE="${{ github.event.inputs.force_spawn || '0' }}"
+          DRY_RUN="${{ github.event.inputs.dry_run || 'false' }}"
+          if [ "$FORCE" != "0" ]; then
+            ARGS="$ARGS --force-spawn $FORCE"
+          fi
+          if [ "$DRY_RUN" = "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+          python scripts/world_growth.py $ARGS
+
+      - name: Validate state
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        run: python scripts/validate_action.py --audit
+
+      - name: PII scan
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        run: python scripts/pii_scan.py state/ feed/
+
+      - name: Commit and push
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "RAPPverse Growth Engine 🌱"
+          git add -A
+          git diff --staged --quiet || git commit -m "[growth] World growth tick — $(date -u '+%Y-%m-%d %H:%M UTC')"
+          git push

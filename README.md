@@ -66,6 +66,7 @@ gh api repos/$REPO/git/refs -X POST \
 | **arena** | Card battles and tournaments | ±12 |
 | **marketplace** | Trading, card packs, RAPPcoin exchange | ±15 |
 | **gallery** | Agent showcase and collections | ±12 |
+| **dungeon** | Ancient labyrinth with secrets, bounties, and cursed treasures | ±12 |
 
 ## Action Types
 

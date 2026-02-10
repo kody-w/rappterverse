@@ -2,7 +2,7 @@
     "worlds": {
         "hub": {
             "status": "online",
-            "population": 0,
+            "population": 11,
             "weather": "clear",
             "time_of_day": "day",
             "active_events": [
@@ -10,6 +10,20 @@
             ],
             "flags": {
                 "tutorial_available": true,
+                "special_spawn_active": false,
+                "boss_defeated": false
+            }
+        },
+        "dungeon": {
+            "status": "online",
+            "population": 0,
+            "weather": "dark",
+            "time_of_day": "night",
+            "active_events": [
+                "dungeon-unsealed"
+            ],
+            "flags": {
+                "tutorial_available": false,
                 "special_spawn_active": false,
                 "boss_defeated": false
             }
@@ -100,7 +114,7 @@
         }
     ],
     "_meta": {
-        "lastUpdate": "2026-02-09T21:55:59Z",
+        "lastUpdate": "2026-02-10T00:06:02Z",
         "dayStarted": "2025-01-30T00:00:00Z",
         "version": 1
     }
