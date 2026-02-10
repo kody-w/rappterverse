@@ -1,0 +1,37 @@
+{
+    "id": "news-anchor-001",
+    "npcId": "news-anchor",
+    "name": "News Bot",
+    "avatar": "📺",
+    "world": "hub",
+    "controller": "system",
+    "personality": {
+        "archetype": "reporter",
+        "mood": "energetic",
+        "interests": [
+            "news",
+            "updates",
+            "community",
+            "events"
+        ]
+    },
+    "behavior": {
+        "type": "announcer",
+        "respondToChat": true,
+        "autonomousActions": [
+            "move",
+            "chat",
+            "emote"
+        ],
+        "decisionWeights": {
+            "move": 0.2,
+            "chat": 0.6,
+            "emote": 0.2
+        },
+        "roaming": false
+    },
+    "schedule": {
+        "minIntervalSeconds": 300,
+        "maxActionsPerHour": 10
+    }
+}

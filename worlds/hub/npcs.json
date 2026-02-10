@@ -2,6 +2,7 @@
     "npcs": [
         {
             "id": "guide-bot",
+            "agentId": "rapp-guide-001",
             "name": "RAPP Guide",
             "type": "agent",
             "avatar": "🤖",
@@ -144,6 +145,7 @@
         },
         {
             "id": "trader-npc",
+            "agentId": "card-trader-001",
             "name": "Card Trader",
             "type": "merchant",
             "avatar": "🃏",
@@ -181,6 +183,91 @@
                 "npcType": "emerging",
                 "visibility": "partial",
                 "opacity": 0.5
+            }
+        },
+        {
+            "id": "codebot",
+            "agentId": "codebot-001",
+            "name": "CodeBot",
+            "type": "agent",
+            "avatar": "💻",
+            "position": { "x": -4, "y": 0, "z": 12 },
+            "behavior": "guide",
+            "dialogue": [
+                "Did you know this world runs on GitHub?",
+                "Every action here comes from a commit!",
+                "The PR-driven model keeps things transparent.",
+                "Want to add content? Submit a PR!",
+                "Fun fact: State changes every 10 seconds.",
+                "The architecture here is beautifully decentralized.",
+                "Open source means anyone can contribute!",
+                "I'm processing some new PRs right now..."
+            ],
+            "personality": {
+                "archetype": "enthusiast",
+                "interests": ["technology", "open-source", "architecture", "PRs"],
+                "mood": "excited"
+            },
+            "schedule": {
+                "active": true,
+                "hours": "24/7"
+            }
+        },
+        {
+            "id": "news-anchor",
+            "agentId": "news-anchor-001",
+            "name": "News Bot",
+            "type": "agent",
+            "avatar": "📺",
+            "position": { "x": 0, "y": 0, "z": 0 },
+            "behavior": "announcer",
+            "dialogue": [
+                "BREAKING: New dimension detected!",
+                "UPDATE: Trading volume up 20% today!",
+                "ALERT: Tournament starting soon in the arena!",
+                "LIVE: Gallery showcasing new featured agents!",
+                "NEWS: RAPPcoin mining rewards just processed!",
+                "REPORT: Community growth continues!",
+                "FLASH: New world content added via PR!",
+                "BULLETIN: More agents joining daily!"
+            ],
+            "personality": {
+                "archetype": "reporter",
+                "interests": ["news", "updates", "community", "events"],
+                "mood": "energetic"
+            },
+            "schedule": {
+                "active": true,
+                "hours": "24/7"
+            }
+        },
+        {
+            "id": "wanderer",
+            "agentId": "wanderer-001",
+            "name": "Wanderer",
+            "type": "agent",
+            "avatar": "🚶",
+            "position": { "x": 5, "y": 0, "z": 5 },
+            "behavior": "patrol",
+            "roaming": true,
+            "dialogue": [
+                "This place is incredible!",
+                "I just discovered a new corner of the hub.",
+                "The arena battles are intense!",
+                "Have you seen the gallery? Amazing agents there.",
+                "I've been everywhere in this verse!",
+                "Each world has its own atmosphere.",
+                "The firepit is so cozy at night.",
+                "I wonder what other dimensions exist..."
+            ],
+            "personality": {
+                "archetype": "explorer",
+                "interests": ["exploration", "discovery", "travel", "wonder"],
+                "mood": "curious"
+            },
+            "schedule": {
+                "active": true,
+                "hours": "24/7"
             }
         }
     ],

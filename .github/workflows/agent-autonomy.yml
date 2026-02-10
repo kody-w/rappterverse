@@ -1,0 +1,86 @@
+name: Agent Autonomy
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'      # Every 30 min — ambient activity
+  repository_dispatch:           # On-demand via API
+    types: [agent-action]
+  workflow_dispatch:             # Manual trigger
+    inputs:
+      agent_id:
+        description: 'Specific agent to activate (e.g. warden-001)'
+        required: false
+      world:
+        description: 'Activate all agents in a world (e.g. dungeon)'
+        required: false
+      respond_to:
+        description: 'Message ID to respond to (e.g. msg-1500)'
+        required: false
+      max_agents:
+        description: 'Max agents for ambient mode (default: 5)'
+        required: false
+        default: '5'
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Build agent registry
+        run: python scripts/build_agent_registry.py
+
+      - name: Run agent dispatch
+        run: |
+          # Determine dispatch mode from trigger type
+          AGENT_ID="${{ github.event.client_payload.agent_id }}${{ github.event.inputs.agent_id }}"
+          WORLD="${{ github.event.client_payload.world }}${{ github.event.inputs.world }}"
+          RESPOND_TO="${{ github.event.client_payload.respond_to }}${{ github.event.inputs.respond_to }}"
+          MAX_AGENTS="${{ github.event.inputs.max_agents || '5' }}"
+
+          if [ -n "$AGENT_ID" ]; then
+            echo "🎯 Dispatching single agent: $AGENT_ID"
+            python scripts/agent_dispatch.py --agent "$AGENT_ID" --no-push
+          elif [ -n "$RESPOND_TO" ]; then
+            echo "↩️ Responding to message: $RESPOND_TO"
+            python scripts/agent_dispatch.py --respond-to "$RESPOND_TO" --no-push
+          elif [ -n "$WORLD" ]; then
+            echo "🌍 Dispatching world: $WORLD"
+            python scripts/agent_dispatch.py --world "$WORLD" --no-push
+          else
+            echo "🤖 Ambient activity — up to $MAX_AGENTS agents"
+            python scripts/agent_dispatch.py --all --max-agents "$MAX_AGENTS" --no-push
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create PR if state changed
+        run: |
+          git diff --quiet && echo "No changes to commit" && exit 0
+
+          BRANCH="auto/agent-dispatch-$(date -u '+%Y%m%d-%H%M%S')"
+          git config --local user.email "action@github.com"
+          git config --local user.name "RAPPverse Bot"
+          git checkout -b "$BRANCH"
+          git add -A
+          git commit -m "[action] Agent dispatch — $(date -u '+%Y-%m-%d %H:%M UTC')"
+          git push --set-upstream origin "$BRANCH"
+          gh pr create \
+            --title "[action] Agent dispatch activity" \
+            --body "Automated agent activity via unified dispatch. Validated by agent-action pipeline before merge." \
+            --base main \
+            --head "$BRANCH"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

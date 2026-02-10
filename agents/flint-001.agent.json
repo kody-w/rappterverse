@@ -1,0 +1,37 @@
+{
+    "id": "flint-001",
+    "npcId": "flint",
+    "name": "Flint",
+    "avatar": "🗡️",
+    "world": "dungeon",
+    "controller": "system",
+    "personality": {
+        "archetype": "adventurer",
+        "mood": "bold",
+        "interests": [
+            "exploration",
+            "combat",
+            "treasure",
+            "glory"
+        ]
+    },
+    "behavior": {
+        "type": "stationary",
+        "respondToChat": true,
+        "autonomousActions": [
+            "move",
+            "chat",
+            "emote"
+        ],
+        "decisionWeights": {
+            "move": 0.1,
+            "chat": 0.6,
+            "emote": 0.3
+        },
+        "roaming": false
+    },
+    "schedule": {
+        "minIntervalSeconds": 300,
+        "maxActionsPerHour": 10
+    }
+}

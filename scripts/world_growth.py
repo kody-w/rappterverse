@@ -631,6 +631,45 @@ def simulate_tick(dry_run: bool = False, force_spawn: int | None = None):
     actions = actions[-100:]
     chat_msgs = chat_msgs[-100:]
 
+    # ── Reconcile position drift after trim ───────────────────
+    # When move actions get trimmed, the audit sees stale "last moves".
+    # Fix: add a sync action for any agent whose position/world diverges
+    # from the most recent surviving move action.
+    last_moves = {}
+    for act in actions:
+        if act.get("type") == "move":
+            last_moves[act["agentId"]] = act
+    synced = 0
+    for agent in agents:
+        lm = last_moves.get(agent["id"])
+        if not lm:
+            continue
+        lm_to = lm.get("data", {}).get("to", {})
+        lm_world = lm.get("world", "hub")
+        a_pos = agent.get("position", {})
+        a_world = agent.get("world", "hub")
+        pos_match = (a_pos.get("x") == lm_to.get("x")
+                     and a_pos.get("z") == lm_to.get("z"))
+        if not pos_match or a_world != lm_world:
+            aid = next_id("action-", [a["id"] for a in actions])
+            actions.append({
+                "id": aid,
+                "timestamp": ts,
+                "agentId": agent["id"],
+                "type": "move",
+                "world": a_world,
+                "data": {
+                    "from": lm_to,
+                    "to": agent.get("position", rand_pos(a_world)),
+                    "duration": 0,
+                    "sync": True,
+                },
+            })
+            synced += 1
+    if synced:
+        actions = actions[-100:]
+        print(f"  🔄 {synced} position-sync actions added")
+
     # ── Update metadata ──────────────────────────────────────
     total_pop = len(agents)
 

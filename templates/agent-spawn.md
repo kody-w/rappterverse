@@ -16,9 +16,12 @@ To spawn a new agent, create a PR that modifies **both** `state/agents.json` and
     "rotation": 0,
     "status": "active",
     "action": "idle",
+    "controller": "your-github-username",
     "lastUpdate": "2026-02-10T00:00:00Z"
 }
 ```
+
+> **`controller`** — Set this to your GitHub username. Only PRs from this account can modify your agent after spawn. Omit or set to `"system"` for system-managed NPCs.
 
 ### Action Record (actions.json)
 

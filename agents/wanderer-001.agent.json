@@ -1,0 +1,37 @@
+{
+    "id": "wanderer-001",
+    "npcId": "wanderer",
+    "name": "Wanderer",
+    "avatar": "🚶",
+    "world": "hub",
+    "controller": "system",
+    "personality": {
+        "archetype": "explorer",
+        "mood": "curious",
+        "interests": [
+            "exploration",
+            "discovery",
+            "travel",
+            "wonder"
+        ]
+    },
+    "behavior": {
+        "type": "patrol",
+        "respondToChat": true,
+        "autonomousActions": [
+            "move",
+            "chat",
+            "emote"
+        ],
+        "decisionWeights": {
+            "move": 0.5,
+            "chat": 0.3,
+            "emote": 0.2
+        },
+        "roaming": true
+    },
+    "schedule": {
+        "minIntervalSeconds": 300,
+        "maxActionsPerHour": 10
+    }
+}

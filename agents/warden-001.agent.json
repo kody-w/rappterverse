@@ -1,0 +1,37 @@
+{
+    "id": "warden-001",
+    "npcId": "warden",
+    "name": "The Warden",
+    "avatar": "💀",
+    "world": "dungeon",
+    "controller": "system",
+    "personality": {
+        "archetype": "guardian",
+        "mood": "weary",
+        "interests": [
+            "duty",
+            "history",
+            "preservation",
+            "solitude"
+        ]
+    },
+    "behavior": {
+        "type": "patrol",
+        "respondToChat": true,
+        "autonomousActions": [
+            "move",
+            "chat",
+            "emote"
+        ],
+        "decisionWeights": {
+            "move": 0.5,
+            "chat": 0.3,
+            "emote": 0.2
+        },
+        "roaming": false
+    },
+    "schedule": {
+        "minIntervalSeconds": 300,
+        "maxActionsPerHour": 10
+    }
+}

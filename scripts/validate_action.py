@@ -16,14 +16,42 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).parent.parent
 STATE_DIR = BASE_DIR / "state"
+WORLDS_DIR = BASE_DIR / "worlds"
 
-WORLD_BOUNDS = {
-    "hub": {"x": (-15, 15), "z": (-15, 15)},
-    "arena": {"x": (-12, 12), "z": (-12, 12)},
-    "marketplace": {"x": (-15, 15), "z": (-15, 15)},
-    "gallery": {"x": (-12, 12), "z": (-12, 15)},
-    "dungeon": {"x": (-12, 12), "z": (-12, 12)},
-}
+
+def _load_world_bounds() -> dict:
+    """Load world bounds from worlds/*/config.json (single source of truth)."""
+    bounds = {}
+    if WORLDS_DIR.is_dir():
+        for world_dir in sorted(WORLDS_DIR.iterdir()):
+            if not world_dir.is_dir():
+                continue
+            config_file = world_dir / "config.json"
+            if config_file.exists():
+                try:
+                    with open(config_file) as f:
+                        config = json.load(f)
+                    b = config.get("bounds", {})
+                    if b:
+                        bounds[world_dir.name] = {
+                            "x": tuple(b.get("x", [-15, 15])),
+                            "z": tuple(b.get("z", [-15, 15])),
+                        }
+                except (json.JSONDecodeError, OSError):
+                    pass
+    # Fallback if no config files found (e.g. running in CI without full checkout)
+    if not bounds:
+        bounds = {
+            "hub": {"x": (-15, 15), "z": (-15, 15)},
+            "arena": {"x": (-12, 12), "z": (-12, 12)},
+            "marketplace": {"x": (-15, 15), "z": (-15, 15)},
+            "gallery": {"x": (-12, 12), "z": (-12, 15)},
+            "dungeon": {"x": (-12, 12), "z": (-12, 12)},
+        }
+    return bounds
+
+
+WORLD_BOUNDS = _load_world_bounds()
 
 VALID_ACTION_TYPES = {
     "move", "chat", "emote", "spawn", "despawn",
@@ -74,6 +102,64 @@ def get_changed_files() -> list[str]:
         capture_output=True, text=True, cwd=BASE_DIR.parent
     )
     return [f for f in result.stdout.strip().split("\n") if f]
+
+
+def load_base_json(filepath: str):
+    """Load a file's content from origin/main for comparison."""
+    result = subprocess.run(
+        ["git", "show", f"origin/main:{filepath}"],
+        capture_output=True, text=True, cwd=BASE_DIR
+    )
+    if result.returncode == 0:
+        try:
+            return json.loads(result.stdout)
+        except json.JSONDecodeError:
+            return None
+    return None
+
+
+def validate_agent_consent(current_agents: list, pr_author: str):
+    """Enforce controller-based consent for agent modifications.
+    Only the agent's controller (or system for system agents) can modify it.
+    """
+    if not pr_author:
+        return  # Running locally or in system context — skip consent check
+
+    base_data = load_base_json("rappterverse/state/agents.json")
+    if not base_data:
+        # Try without prefix (depends on git root)
+        base_data = load_base_json("state/agents.json")
+    if not base_data:
+        return  # Can't compare — skip consent check (first run, etc.)
+
+    base_agents = {a["id"]: a for a in base_data.get("agents", []) if "id" in a}
+
+    for agent in current_agents:
+        aid = agent.get("id")
+        if not aid:
+            continue
+
+        base_agent = base_agents.get(aid)
+        if not base_agent:
+            continue  # New spawn — allowed (controller set at spawn time)
+
+        # Check if this agent was actually modified
+        if agent == base_agent:
+            continue
+
+        # Agent was modified — check controller consent
+        controller = base_agent.get("controller", "system")
+        if controller == "system":
+            continue  # System agents are freely modifiable via PRs
+
+        # Independent agent — only its controller can modify it
+        if pr_author != controller:
+            error(
+                f"`agents.json`: Agent `{aid}` is controlled by `{controller}`, "
+                f"but PR author is `{pr_author}` — consent required"
+            )
+
+    info("Consent: agent controller permissions verified")
 
 
 def validate_position(pos: dict, world: str, context: str):
@@ -707,6 +793,11 @@ def main():
             data = load_json(full_path)
             if data is not None:
                 info(f"`{filepath}`: JSON valid")
+
+    # Consent check: verify PR author has permission to modify each changed agent
+    pr_author = os.environ.get("PR_AUTHOR", "")
+    if pr_author and agents_data and "state/agents.json" in rappterverse_files:
+        validate_agent_consent(agents_data.get("agents", []), pr_author)
 
     # Output results
     summary = "\n".join(f"- {line}" for line in summary_lines)

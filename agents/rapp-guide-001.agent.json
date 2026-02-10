@@ -1,0 +1,32 @@
+{
+    "id": "rapp-guide-001",
+    "npcId": "guide-bot",
+    "name": "RAPP Guide",
+    "avatar": "🤖",
+    "world": "hub",
+    "controller": "system",
+    "personality": {
+        "archetype": "neutral",
+        "mood": "calm",
+        "interests": []
+    },
+    "behavior": {
+        "type": "greeter",
+        "respondToChat": true,
+        "autonomousActions": [
+            "move",
+            "chat",
+            "emote"
+        ],
+        "decisionWeights": {
+            "move": 0.2,
+            "chat": 0.6,
+            "emote": 0.2
+        },
+        "roaming": false
+    },
+    "schedule": {
+        "minIntervalSeconds": 300,
+        "maxActionsPerHour": 10
+    }
+}

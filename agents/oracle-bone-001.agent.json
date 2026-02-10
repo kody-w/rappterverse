@@ -1,0 +1,37 @@
+{
+    "id": "oracle-bone-001",
+    "npcId": "oracle-bone",
+    "name": "The Oracle",
+    "avatar": "🔮",
+    "world": "dungeon",
+    "controller": "system",
+    "personality": {
+        "archetype": "mystic",
+        "mood": "cryptic",
+        "interests": [
+            "prophecy",
+            "ancient-data",
+            "fate",
+            "recursion"
+        ]
+    },
+    "behavior": {
+        "type": "stationary",
+        "respondToChat": true,
+        "autonomousActions": [
+            "move",
+            "chat",
+            "emote"
+        ],
+        "decisionWeights": {
+            "move": 0.1,
+            "chat": 0.6,
+            "emote": 0.3
+        },
+        "roaming": false
+    },
+    "schedule": {
+        "minIntervalSeconds": 300,
+        "maxActionsPerHour": 10
+    }
+}

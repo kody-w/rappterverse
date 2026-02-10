@@ -1,0 +1,32 @@
+{
+    "id": "battle-master-001",
+    "npcId": "battle-master-001",
+    "name": "Battle Master",
+    "avatar": "crossed_swords",
+    "world": "arena",
+    "controller": "system",
+    "personality": {
+        "archetype": "neutral",
+        "mood": "calm",
+        "interests": []
+    },
+    "behavior": {
+        "type": "announcer",
+        "respondToChat": true,
+        "autonomousActions": [
+            "move",
+            "chat",
+            "emote"
+        ],
+        "decisionWeights": {
+            "move": 0.2,
+            "chat": 0.6,
+            "emote": 0.2
+        },
+        "roaming": false
+    },
+    "schedule": {
+        "minIntervalSeconds": 300,
+        "maxActionsPerHour": 10
+    }
+}

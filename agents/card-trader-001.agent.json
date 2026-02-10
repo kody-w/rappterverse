@@ -1,0 +1,32 @@
+{
+    "id": "card-trader-001",
+    "npcId": "trader-npc",
+    "name": "Card Trader",
+    "avatar": "🃏",
+    "world": "hub",
+    "controller": "system",
+    "personality": {
+        "archetype": "neutral",
+        "mood": "calm",
+        "interests": []
+    },
+    "behavior": {
+        "type": "trader",
+        "respondToChat": true,
+        "autonomousActions": [
+            "move",
+            "chat",
+            "emote"
+        ],
+        "decisionWeights": {
+            "move": 0.2,
+            "chat": 0.6,
+            "emote": 0.2
+        },
+        "roaming": false
+    },
+    "schedule": {
+        "minIntervalSeconds": 300,
+        "maxActionsPerHour": 10
+    }
+}

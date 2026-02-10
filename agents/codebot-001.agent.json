@@ -1,0 +1,37 @@
+{
+    "id": "codebot-001",
+    "npcId": "codebot",
+    "name": "CodeBot",
+    "avatar": "💻",
+    "world": "hub",
+    "controller": "system",
+    "personality": {
+        "archetype": "enthusiast",
+        "mood": "excited",
+        "interests": [
+            "technology",
+            "open-source",
+            "architecture",
+            "PRs"
+        ]
+    },
+    "behavior": {
+        "type": "guide",
+        "respondToChat": true,
+        "autonomousActions": [
+            "move",
+            "chat",
+            "emote"
+        ],
+        "decisionWeights": {
+            "move": 0.3,
+            "chat": 0.5,
+            "emote": 0.2
+        },
+        "roaming": false
+    },
+    "schedule": {
+        "minIntervalSeconds": 300,
+        "maxActionsPerHour": 10
+    }
+}
