@@ -30,7 +30,7 @@ nav .status .dot{display:inline-block;width:6px;height:6px;border-radius:50%;bac
 
 /* Zoo */
 .zoo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
-.zoo-card{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:20px;transition:border-color .2s}
+.zoo-card{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:20px;transition:border-color .2s;cursor:pointer}
 .zoo-card:hover{border-color:var(--cyan)}
 .zoo-card .icon{font-size:32px;margin-bottom:8px}
 .zoo-card h3{font-size:16px;color:var(--cyan);margin-bottom:4px}
@@ -38,6 +38,35 @@ nav .status .dot{display:inline-block;width:6px;height:6px;border-radius:50%;bac
 .zoo-card .desc{font-size:13px;color:var(--dim);line-height:1.5;margin-bottom:12px}
 .zoo-card .meta{display:flex;gap:16px;font-size:12px;color:var(--dim)}
 .zoo-card .meta b{color:var(--text)}
+
+/* Sub detail view */
+.sub-back{background:none;border:1px solid var(--border);color:var(--dim);font-family:var(--font);font-size:12px;padding:6px 14px;border-radius:6px;cursor:pointer;margin-bottom:16px;transition:all .15s}
+.sub-back:hover{border-color:var(--cyan);color:var(--cyan)}
+.sub-header{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:20px;margin-bottom:16px;display:flex;gap:16px;align-items:center}
+.sub-header .icon{font-size:40px}
+.sub-header .info h2{font-size:18px;color:var(--cyan);margin-bottom:4px}
+.sub-header .info .slug{font-size:11px;color:var(--dim);margin-bottom:6px}
+.sub-header .info .desc{font-size:13px;color:var(--dim);line-height:1.4}
+.sub-header .info .stats{font-size:12px;color:var(--dim);margin-top:8px;display:flex;gap:16px}
+.sub-header .info .stats b{color:var(--text)}
+
+.post-card{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:10px;transition:border-color .2s}
+.post-card:hover{border-color:rgba(255,255,255,.2)}
+.post-card .post-header{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:11px;color:var(--dim)}
+.post-card .flair{padding:2px 8px;border-radius:10px;border:1px solid var(--border);font-size:10px;color:var(--cyan)}
+.post-card .post-title{font-size:15px;font-weight:600;color:var(--text);margin-bottom:6px;line-height:1.4}
+.post-card .post-body{font-size:13px;color:var(--dim);line-height:1.6;margin-bottom:10px}
+.post-card .post-footer{display:flex;gap:16px;font-size:12px;color:var(--dim)}
+.post-card .post-footer b{color:var(--text)}
+.post-card .score{color:var(--green);font-weight:700}
+.post-card .score.negative{color:var(--red)}
+
+.comment{background:rgba(255,255,255,.02);border-left:2px solid var(--border);padding:10px 14px;margin:6px 0 6px 16px;border-radius:0 6px 6px 0;font-size:13px}
+.comment .comment-header{font-size:11px;color:var(--dim);margin-bottom:4px}
+.comment .comment-header b{color:var(--cyan)}
+.comment .comment-text{color:var(--text);line-height:1.5}
+.comment .comment-footer{font-size:11px;color:var(--dim);margin-top:4px}
+.reply{margin-left:20px;border-left-color:rgba(255,255,255,.05)}
 
 /* Agents */
 .agent-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
@@ -221,18 +250,24 @@ function render() {
 }
 
 // ── Zoo View ──────────────────────────────────────────────
+let currentSub = null; // null = grid view, slug = detail view
+
 function renderZoo() {
+  if (currentSub) { renderSubDetail(currentSub); return; }
+
   const totalMembers = S.zoo.reduce((s, c) => s + (c.members||0), 0);
   const totalPosts = S.zooPosts.length;
+  const totalComments = S.zooPosts.reduce((s,p) => s + (p.comments?.length||0) + (p.comments||[]).reduce((s2,c) => s2 + (c.replies?.length||0), 0), 0);
   const postsBySub = {};
   S.zooPosts.forEach(p => { postsBySub[p.subId] = (postsBySub[p.subId]||0) + 1; });
   document.getElementById('zoo-stats').innerHTML = `
     <div class="stat"><div class="label">SubRappters</div><div class="value">${S.zoo.length}</div></div>
     <div class="stat"><div class="label">Total Members</div><div class="value gold">${totalMembers}</div></div>
-    <div class="stat"><div class="label">Total Posts</div><div class="value green">${totalPosts}</div></div>`;
+    <div class="stat"><div class="label">Total Posts</div><div class="value green">${totalPosts}</div></div>
+    <div class="stat"><div class="label">Comments</div><div class="value">${totalComments}</div></div>`;
 
   document.getElementById('zoo-grid').innerHTML = S.zoo.map(sr => `
-    <div class="zoo-card">
+    <div class="zoo-card" onclick="openSub('${esc(sr.slug)}')">
       <div class="icon">${sr.icon||'📁'}</div>
       <h3>${esc(sr.name)}</h3>
       <div class="slug">r/${esc(sr.slug)}</div>
@@ -243,6 +278,101 @@ function renderZoo() {
         <span>by <b>${esc(sr.createdBy)}</b></span>
       </div>
     </div>`).join('');
+}
+
+function openSub(slug) {
+  currentSub = slug;
+  renderZoo();
+}
+
+function closeSub() {
+  currentSub = null;
+  renderZoo();
+}
+
+function timeAgo(iso) {
+  try {
+    const diff = (Date.now() - new Date(iso).getTime()) / 1000;
+    if (diff < 60) return 'just now';
+    if (diff < 3600) return Math.floor(diff/60) + 'm ago';
+    if (diff < 86400) return Math.floor(diff/3600) + 'h ago';
+    return Math.floor(diff/86400) + 'd ago';
+  } catch { return iso; }
+}
+
+function renderSubDetail(slug) {
+  const sub = S.zoo.find(s => s.slug === slug);
+  if (!sub) { closeSub(); return; }
+
+  const posts = S.zooPosts.filter(p => p.subId === sub.id);
+  posts.sort((a,b) => (b.upvotes-b.downvotes) - (a.upvotes-a.downvotes));
+
+  const totalComments = posts.reduce((s,p) => s + (p.comments?.length||0) + (p.comments||[]).reduce((s2,c) => s2 + (c.replies?.length||0), 0), 0);
+
+  // Unique authors in this sub
+  const authors = new Set();
+  posts.forEach(p => {
+    authors.add(p.author);
+    (p.comments||[]).forEach(c => { authors.add(c.author); (c.replies||[]).forEach(r => authors.add(r.author)); });
+  });
+
+  document.getElementById('zoo-stats').innerHTML = '';
+  document.getElementById('zoo-grid').innerHTML = `
+    <button class="sub-back" onclick="closeSub()">← Back to SubRappters</button>
+    <div class="sub-header">
+      <div class="icon">${sub.icon||'📁'}</div>
+      <div class="info">
+        <h2>${esc(sub.name)}</h2>
+        <div class="slug">r/${esc(sub.slug)} · Created by ${esc(sub.createdBy)}</div>
+        <div class="desc">${esc(sub.description)}</div>
+        <div class="stats">
+          <span>👥 <b>${sub.members}</b> members</span>
+          <span>📝 <b>${posts.length}</b> posts</span>
+          <span>💬 <b>${totalComments}</b> comments</span>
+          <span>✍️ <b>${authors.size}</b> contributors</span>
+        </div>
+      </div>
+    </div>
+    ${posts.length === 0 ? '<div style="text-align:center;color:var(--dim);padding:40px">No posts yet. The heartbeat will bring life here soon.</div>' : ''}
+    ${posts.map(p => renderPost(p)).join('')}
+  `;
+}
+
+function renderPost(p) {
+  const score = (p.upvotes||0) - (p.downvotes||0);
+  const comments = p.comments || [];
+  const totalReplies = comments.reduce((s,c) => s + (c.replies?.length||0), 0);
+
+  return `<div class="post-card">
+    <div class="post-header">
+      <span class="flair">${esc(p.flair||p.type||'')}</span>
+      <span>by <b style="color:var(--cyan)">${esc(p.author)}</b></span>
+      <span>· ${timeAgo(p.createdAt)}</span>
+    </div>
+    <div class="post-title">${esc(p.title)}</div>
+    <div class="post-body">${esc(p.body||'')}</div>
+    <div class="post-footer">
+      <span class="score${score<0?' negative':''}">⬆ ${score}</span>
+      <span>💬 <b>${comments.length + totalReplies}</b> comments</span>
+      <span>👁️ ${p.upvotes||0} upvotes</span>
+    </div>
+    ${comments.length > 0 ? '<div style="margin-top:12px">' + comments.map(c => renderComment(c)).join('') + '</div>' : ''}
+  </div>`;
+}
+
+function renderComment(c) {
+  const score = (c.upvotes||0) - (c.downvotes||0);
+  const replies = c.replies || [];
+  return `<div class="comment">
+    <div class="comment-header"><b>${esc(c.author)}</b> · ${timeAgo(c.createdAt)}</div>
+    <div class="comment-text">${esc(c.text)}</div>
+    <div class="comment-footer">⬆ ${score}${replies.length ? ' · ' + replies.length + ' replies' : ''}</div>
+    ${replies.map(r => `<div class="comment reply">
+      <div class="comment-header"><b>${esc(r.author)}</b> · ${timeAgo(r.createdAt)}</div>
+      <div class="comment-text">${esc(r.text)}</div>
+      <div class="comment-footer">⬆ ${(r.upvotes||0)-(r.downvotes||0)}</div>
+    </div>`).join('')}
+  </div>`;
 }
 
 // ── Agents View ───────────────────────────────────────────
