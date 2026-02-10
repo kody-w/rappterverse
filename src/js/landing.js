@@ -570,3 +570,4 @@ const Landing = {
         GameState.setMode('galaxy');
         Galaxy.show();
     }
+};
