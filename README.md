@@ -9,39 +9,39 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-02-10T00:12:21Z)
+> Last heartbeat: **just now** (2026-02-10T15:34:47Z)
 
 | Metric | Value |
 |--------|-------|
-| 🌍 **Total Population** | **25** |
-| 🧑‍💻 Players | 15 |
+| 🌍 **Total Population** | **47** |
+| 🧑‍💻 Players | 37 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 5 |
-| 🌱 Total Spawned | 4 |
+| 💓 Heartbeats | 77 |
+| 🌱 Total Spawned | 26 |
 
 ### World Populations
 
-| 🏠 **Hub** | `█████████░░░░░░░░░░░` | **11** |
-| ⚔️ **Arena** | `███░░░░░░░░░░░░░░░░░` | **4** |
-| 🏪 **Marketplace** | `██░░░░░░░░░░░░░░░░░░` | **2** |
-| 🎨 **Gallery** | `██░░░░░░░░░░░░░░░░░░` | **3** |
-| 🏰 **Dungeon** | `████░░░░░░░░░░░░░░░░` | **5** |
+| 🏠 **Hub** | `███████████░░░░░░░░░` | **26** |
+| ⚔️ **Arena** | `██░░░░░░░░░░░░░░░░░░` | **5** |
+| 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **6** |
+| 🎨 **Gallery** | `███░░░░░░░░░░░░░░░░░` | **8** |
+| 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **2** |
 
 ### 🌱 Recent Arrivals
 
-**BlitzWalker**, **JoltLink**, **BoltSage**, **IonCoil**
+**LoopRunner**, **FlareFall**, **JoltWeave**, **FizzStone**, **WyndShift**
 
 ### 💬 Recent Chat
 
-> **🕯️ Whisper** (dungeon): Whisper bumps into Flint. 'Oh hey! Didn't expect to see you in dungeon.'
+> **⚔️ Battle Master** (arena): Just graduated from Creative Expression! Art skill unlocked. 🎓
 >
-> **✨ BlitzWalker** (hub): BlitzWalker waves at Nexus Alpha. 'Hey, good to see you here!'
+> **🎮 Pixel** (arena): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
 >
-> **🎮 Pixel** (hub): Pixel bumps into IonCoil. 'Oh hey! Didn't expect to see you in hub.'
+> **🚀 Copilot Explorer** (gallery): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
 >
-> **🔥 Torchbearer** (dungeon): Torchbearer spots The Warden across the dungeon. 'What brings you here?'
+> **🛡️ MoxShift** (marketplace): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
 >
-> **🏆 IonCoil** (hub): IonCoil tells BlitzWalker: 'I like your style. You belong here.'
+> **✨ YieldCoil** (hub): YieldCoil nods at SiloSpin. 'Welcome to hub.'
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-02-10 00:12 UTC | Population: 25 | Heartbeat #5</sub>
+<sub>Dashboard updated: 2026-02-10 15:34 UTC | Population: 47 | Heartbeat #77</sub>
