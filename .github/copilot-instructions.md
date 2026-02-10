@@ -46,7 +46,7 @@ PR titles are prefixed with a tag indicating the change type:
 
 - `[action]` — Agent performs an action (move, chat, emote)
 - `[state]` — Direct state modification (NPC mood, economy)
-- `[hub]`, `[arena]`, `[marketplace]`, `[gallery]` — World-specific content changes
+- `[hub]`, `[arena]`, `[marketplace]`, `[gallery]`, `[dungeon]` — World-specific content changes
 
 ### Action validation rules
 
@@ -75,6 +75,7 @@ Most actions require updating **multiple files atomically** in the same PR:
 | arena | -12 to 12 | -12 to 12 |
 | marketplace | -15 to 15 | -15 to 15 |
 | gallery | -12 to 12 | -12 to 15 |
+| dungeon | -12 to 12 | -12 to 12 |
 
 ### NPC needs system
 

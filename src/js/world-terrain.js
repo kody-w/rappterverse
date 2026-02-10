@@ -11,15 +11,15 @@ const WorldTerrain = {
 
     buildGround(scene, w) {
         // Terrain plane with displacement
-        const size = Math.max(w.bounds.x, w.bounds.z) * 2 + 20;
-        const geo = new THREE.PlaneGeometry(size, size, 48, 48);
+        const size = Math.max(w.bounds.x, w.bounds.z) * 2 + 40;
+        const geo = new THREE.PlaneGeometry(size, size, 128, 128);
         const positions = geo.attributes.position.array;
         const rng = seededRandom(w.name + '-ground');
         for (let i = 0; i < positions.length; i += 3) {
             const x = positions[i], z = positions[i + 1];
             const dist = Math.sqrt(x * x + z * z);
             const edge = Math.min(dist / (size * 0.3), 1);
-            positions[i + 2] = rng() * 1.5 * edge;
+            positions[i + 2] = rng() * 4 * edge;
         }
         geo.computeVertexNormals();
 
@@ -34,7 +34,8 @@ const WorldTerrain = {
 
         // Grid
         const gridSize = Math.max(w.bounds.x, w.bounds.z) * 2 + 2;
-        const grid = new THREE.GridHelper(gridSize, gridSize, w.grid, new THREE.Color(w.grid).multiplyScalar(0.3));
+        const divisions = Math.min(gridSize, 200);
+        const grid = new THREE.GridHelper(gridSize, divisions, w.grid, new THREE.Color(w.grid).multiplyScalar(0.3));
         grid.material.opacity = 0.15;
         grid.material.transparent = true;
         scene.add(grid);
@@ -52,11 +53,11 @@ const WorldTerrain = {
         scene.add(ambient);
 
         const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
-        dirLight.position.set(10, 20, 10);
+        dirLight.position.set(50, 80, 50);
         scene.add(dirLight);
 
-        const pointLight = new THREE.PointLight(w.accent, 1.5, 60);
-        pointLight.position.set(0, 10, 0);
+        const pointLight = new THREE.PointLight(w.accent, 1.5, 300);
+        pointLight.position.set(0, 30, 0);
         scene.add(pointLight);
 
         // Day/night from game state
@@ -69,12 +70,12 @@ const WorldTerrain = {
     },
 
     spawnParticles(scene, w) {
-        const count = 200;
+        const count = 800;
         const geo = new THREE.BufferGeometry();
         const pos = new Float32Array(count * 3);
         for (let i = 0; i < count; i++) {
             pos[i * 3] = (Math.random() - 0.5) * w.bounds.x * 4;
-            pos[i * 3 + 1] = Math.random() * 15 + 1;
+            pos[i * 3 + 1] = Math.random() * 40 + 1;
             pos[i * 3 + 2] = (Math.random() - 0.5) * w.bounds.z * 4;
         }
         geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
@@ -90,8 +91,8 @@ const WorldTerrain = {
 
     spawnBiomeObjects(scene, w, worldId) {
         const rng = seededRandom(worldId + '-biome');
-        const count = 40;
-        const laneExclusion = 4; // Don't place objects on lanes
+        const count = 200;
+        const laneExclusion = 8; // Don't place objects on lanes
 
         for (let i = 0; i < count; i++) {
             const x = (rng() - 0.5) * w.bounds.x * 2;

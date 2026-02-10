@@ -5,7 +5,7 @@ const WorldMode = {
     active: false,
     currentWorld: null,
     player: null,
-    playerSpeed: 8,
+    playerSpeed: 25,
     keys: {},
 
     init(worldId) {
@@ -18,10 +18,10 @@ const WorldMode = {
         // Scene
         this.scene = new THREE.Scene();
         this.scene.background = new THREE.Color(w.sky);
-        this.scene.fog = new THREE.FogExp2(w.fog, 0.012);
+        this.scene.fog = new THREE.FogExp2(w.fog, 0.002);
 
         // Camera
-        this.camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 500);
+        this.camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 2000);
 
         // Renderer
         const container = document.getElementById('world-container');

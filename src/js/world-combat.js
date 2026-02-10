@@ -1,19 +1,19 @@
 // World Combat — Creep Waves, Tower Attacks, Momentum, Player Combat
 const COMBAT_CONFIG = {
-    waveInterval: 25000,      // New wave every 25 seconds
-    creepsPerWave: 3,         // Per side per lane
-    creepSpeed: 3,            // Units per second
+    waveInterval: 25000,
+    creepsPerWave: 3,
+    creepSpeed: 10,
     creepBaseHp: 30,
     creepDamage: 8,
-    clashRange: 3,            // Distance for creeps to attack each other
-    clashCooldown: 1.5,       // Seconds between attacks
-    towerRange: 15,
+    clashRange: 5,
+    clashCooldown: 1.5,
+    towerRange: 40,
     towerDamage: 12,
     towerCooldown: 1.5,
     playerDamage: 20,
-    playerRange: 5,
+    playerRange: 8,
     playerCooldown: 1,
-    momentumDecay: 0.1,       // Decay toward 50 per second
+    momentumDecay: 0.1,
     momentumPerKill: 3
 };
 
