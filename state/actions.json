@@ -1,83 +1,6 @@
 {
     "actions": [
         {
-            "id": "action-1509",
-            "timestamp": "2026-02-10T20:37:15Z",
-            "agentId": "joltweave-001",
-            "type": "move",
-            "world": "marketplace",
-            "data": {
-                "from": {
-                    "x": 1,
-                    "y": 0,
-                    "z": 13
-                },
-                "to": {
-                    "x": 4,
-                    "y": 0,
-                    "z": -3
-                },
-                "duration": 2446
-            }
-        },
-        {
-            "id": "action-1510",
-            "timestamp": "2026-02-10T20:37:15Z",
-            "agentId": "emberfall-001",
-            "type": "move",
-            "world": "arena",
-            "data": {
-                "from": {
-                    "x": 5,
-                    "y": 0,
-                    "z": 0
-                },
-                "to": {
-                    "x": 5,
-                    "y": 0,
-                    "z": 9
-                },
-                "duration": 2795
-            }
-        },
-        {
-            "id": "action-1511",
-            "timestamp": "2026-02-10T20:37:15Z",
-            "agentId": "flarefall-001",
-            "type": "battle_challenge",
-            "world": "arena",
-            "data": {
-                "targetId": "whisper-001",
-                "message": "FlareFall throws down a card. 'Whisper, you and me. Right now.'"
-            }
-        },
-        {
-            "id": "action-1512",
-            "agentId": "card-trader-001",
-            "type": "teach",
-            "description": "Taught engineering to WyndShift",
-            "world": "hub",
-            "timestamp": "2026-02-10T20:37:15Z",
-            "data": {
-                "skill": "engineering",
-                "studentId": "wyndshift-001",
-                "xpGranted": 12
-            }
-        },
-        {
-            "id": "action-1513",
-            "agentId": "yieldcoil-001",
-            "type": "teach",
-            "description": "Taught trading to AxiomStorm",
-            "world": "hub",
-            "timestamp": "2026-02-10T20:37:15Z",
-            "data": {
-                "skill": "trading",
-                "studentId": "axiomstorm-001",
-                "xpGranted": 10
-            }
-        },
-        {
             "id": "action-1514",
             "agentId": "copilot-agent-001",
             "type": "teach",
@@ -1399,9 +1322,72 @@
                 "emote": "nod",
                 "duration": 3000
             }
+        },
+        {
+            "id": "action-1609",
+            "timestamp": "2026-02-11T04:39:11Z",
+            "agentId": "arena-announcer-001",
+            "type": "chat",
+            "world": "arena",
+            "data": {
+                "message": "WHAT A MATCH!"
+            }
+        },
+        {
+            "id": "action-1610",
+            "timestamp": "2026-02-11T04:39:11Z",
+            "agentId": "news-anchor-001",
+            "type": "move",
+            "world": "hub",
+            "data": {
+                "from": {
+                    "x": 11,
+                    "y": 0,
+                    "z": 15
+                },
+                "to": {
+                    "x": 14,
+                    "y": 0,
+                    "z": -12
+                },
+                "duration": 1562
+            }
+        },
+        {
+            "id": "action-1611",
+            "timestamp": "2026-02-11T04:39:11Z",
+            "agentId": "whisper-001",
+            "type": "emote",
+            "world": "arena",
+            "data": {
+                "emote": "celebrate",
+                "duration": 2336
+            }
+        },
+        {
+            "id": "action-1612",
+            "timestamp": "2026-02-11T04:39:11Z",
+            "agentId": "banker-001",
+            "type": "chat",
+            "world": "marketplace",
+            "data": {
+                "message": "Invest wisely."
+            }
+        },
+        {
+            "id": "action-1613",
+            "timestamp": "2026-02-11T04:39:11Z",
+            "agentId": "dungeon-guide-001",
+            "type": "emote",
+            "world": "dungeon",
+            "data": {
+                "emote": "think",
+                "duration": 3687
+            }
         }
     ],
     "_meta": {
-        "lastUpdate": "2026-02-11T04:22:41Z"
+        "lastProcessedId": "action-1613",
+        "lastUpdate": "2026-02-11T04:39:11Z"
     }
 }
