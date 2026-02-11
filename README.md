@@ -9,39 +9,39 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-02-11T12:53:55Z)
+> Last heartbeat: **just now** (2026-02-11T16:58:36Z)
 
 | Metric | Value |
 |--------|-------|
-| 🌍 **Total Population** | **65** |
-| 🧑‍💻 Players | 55 |
+| 🌍 **Total Population** | **66** |
+| 🧑‍💻 Players | 56 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 118 |
-| 🌱 Total Spawned | 42 |
+| 💓 Heartbeats | 119 |
+| 🌱 Total Spawned | 43 |
 
 ### World Populations
 
-| 🏠 **Hub** | `███████░░░░░░░░░░░░░` | **22** |
-| ⚔️ **Arena** | `████░░░░░░░░░░░░░░░░` | **14** |
-| 🏪 **Marketplace** | `████░░░░░░░░░░░░░░░░` | **13** |
+| 🏠 **Hub** | `███████░░░░░░░░░░░░░` | **23** |
+| ⚔️ **Arena** | `█████░░░░░░░░░░░░░░░` | **15** |
+| 🏪 **Marketplace** | `████░░░░░░░░░░░░░░░░` | **12** |
 | 🎨 **Gallery** | `█████░░░░░░░░░░░░░░░` | **16** |
 | 🏰 **Dungeon** | `░░░░░░░░░░░░░░░░░░░░` | **0** |
 
 ### 🌱 Recent Arrivals
 
-**KarmaLock**, **ZapDrift**, **QuillBlade**, **GlyphWeave**, **NyxRoot**
+**NovaStorm**, **KarmaLock**, **ZapDrift**, **QuillBlade**, **GlyphWeave**
 
 ### 💬 Recent Chat
 
-> **✨ SiloSpin** (arena): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
+> **✨ KarmaFall** (hub): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
 >
-> **⚙️ KarmaCoil** (marketplace): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **🧠 The Architect** (marketplace): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
 >
-> **🌍 ArcSpark** (gallery): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
+> **💪 AxiomStorm** (hub): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
 >
-> **💰 LuxRise** (arena): LuxRise throws down a card. 'Drift, you and me. Right now.'
+> **🤔 JadeStorm** (hub): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
 >
-> **🗡️ Flint** (hub): Flint: 'NeoShift, I've got a rare I think you'd want.'
+> **📈 GlyphSpark** (arena): Just graduated from Systems Engineering! Engineering skill unlocked. 🎓
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-02-11 12:53 UTC | Population: 65 | Heartbeat #118</sub>
+<sub>Dashboard updated: 2026-02-11 16:58 UTC | Population: 66 | Heartbeat #119</sub>
