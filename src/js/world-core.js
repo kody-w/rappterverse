@@ -209,6 +209,9 @@ const WorldMode = {
         WorldAgents.updateAnimations(time);
         WorldAgents.checkInteractions(this.player.mesh.position);
 
+        // Debug overlay (only runs when active)
+        if (typeof DebugOverlay !== 'undefined') DebugOverlay.update(this.player.mesh.position);
+
         // RPG system updates
         if (typeof PlayerStats !== 'undefined') {
             PlayerStats.update(delta);

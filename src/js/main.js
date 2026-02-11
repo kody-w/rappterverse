@@ -32,6 +32,16 @@
 
     // Keyboard
     document.addEventListener('keydown', (e) => {
+        // Track keys for debug overlay
+        if (typeof DebugOverlay !== 'undefined') DebugOverlay.recordKey(e.code);
+
+        // Debug overlay toggle (Ctrl+Shift+D)
+        if (e.code === 'KeyD' && e.ctrlKey && e.shiftKey) {
+            e.preventDefault();
+            if (typeof DebugOverlay !== 'undefined') DebugOverlay.toggle();
+            return;
+        }
+
         // Boot skip
         if (e.code === 'Space' && GameState.mode === 'boot') {
             e.preventDefault();

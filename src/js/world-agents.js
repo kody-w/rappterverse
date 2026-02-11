@@ -264,9 +264,13 @@ const WorldAgents = {
     },
 
     poke(worldId) {
-        if (!this.pokeTarget) return;
+        if (!this.pokeTarget) {
+            if (typeof DebugOverlay !== 'undefined') DebugOverlay.logEvent('poke() called but pokeTarget=null');
+            return;
+        }
         const target = this.pokeTarget;
         this.pokeTarget = null;
+        if (typeof DebugOverlay !== 'undefined') DebugOverlay.logEvent(`POKE → ${target.id} (${target.name})`);
 
         // Visual feedback — flash the agent's ground ring
         const mesh = this.agentMeshes[target.id];
@@ -280,7 +284,11 @@ const WorldAgents = {
                     ring.material.color.setHex(origColor);
                     ring.material.opacity = 0.3;
                 }, 1500);
+            } else {
+                if (typeof DebugOverlay !== 'undefined') DebugOverlay.logEvent('⚠️ No RingGeometry found on mesh');
             }
+        } else {
+            if (typeof DebugOverlay !== 'undefined') DebugOverlay.logEvent('⚠️ No mesh found for ' + target.id);
         }
 
         // Show toast
@@ -330,10 +338,32 @@ const WorldAgents = {
         try {
             const token = GameState.pokeToken || localStorage.getItem('rappterverse-token') || '';
             if (!token) {
-                console.log('[POKE] No token — poke recorded locally only');
+                if (typeof DebugOverlay !== 'undefined') DebugOverlay.logEvent('dispatch: no token (local only)');
                 return;
             }
+            if (typeof DebugOverlay !== 'undefined') DebugOverlay.logEvent('dispatch: firing → ' + agentId);
             const res = await fetch(`https://api.github.com/repos/${REPO}/dispatches`, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/vnd.github.v3+json',
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    event_type: 'agent-action',
+                    client_payload: { agent_id: agentId, poke: true, world: worldId }
+                })
+            });
+            if (res.status === 204) {
+                this._showToast(`👉 Poked ${agentId} — they'll respond shortly!`);
+                if (typeof DebugOverlay !== 'undefined') DebugOverlay.logEvent('dispatch: ✅ 204 OK');
+            } else {
+                if (typeof DebugOverlay !== 'undefined') DebugOverlay.logEvent(`dispatch: ❌ ${res.status}`);
+            }
+        } catch(e) {
+            if (typeof DebugOverlay !== 'undefined') DebugOverlay.logEvent('dispatch: ❌ ' + e.message);
+        }
+    },
                 method: 'POST',
                 headers: {
                     'Accept': 'application/vnd.github.v3+json',

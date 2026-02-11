@@ -48,6 +48,7 @@ JS_FILES=(
     src/js/world-lanes.js
     src/js/world-combat.js
     src/js/world-agents.js
+    src/js/debug.js
     src/js/inventory.js
     src/js/abilities.js
     src/js/enemy-hero.js
