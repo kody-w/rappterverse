@@ -24,6 +24,8 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).parent.parent
 STATE_DIR = BASE_DIR / "state"
+MEMORY_DIR = STATE_DIR / "memory"
+AGENTS_DIR = BASE_DIR / "agents"
 
 # ── Growth curve ─────────────────────────────────────────────────
 # day 1→5: ~1 new agent/tick, day 5→15: ~2, day 15→30: ~3-4, 30+: plateau ~5
@@ -44,7 +46,9 @@ def spawn_probability(day: int, current_pop: int) -> tuple[float, int]:
     return 0.70, 5                # mature plateau
 
 
-# ── Agent archetypes ─────────────────────────────────────────────
+# ── Agent archetypes (FALLBACK ONLY — used when LLM unavailable) ──
+# Per Constitution §3a, agent creation should be organic/LLM-driven.
+# These templates exist solely as graceful degradation.
 
 ARCHETYPES = {
     "explorer": {
@@ -170,7 +174,8 @@ ARCHETYPES = {
     },
 }
 
-# ── Name generation ──────────────────────────────────────────────
+# ── Name generation (FALLBACK ONLY — used when LLM unavailable) ──
+# Per Constitution §3a, names should be LLM-generated, not template-composed.
 
 PREFIXES = [
     "Neo", "Flux", "Zen", "Nova", "Arc", "Blitz", "Coda", "Dex",
@@ -216,7 +221,7 @@ def save_json(path: Path, data: dict):
         json.dump(data, f, indent=4)
     f.close()
 
-def next_id(prefix: str, existing: list[str]) -> str:
+def next_id(prefix: str, existing: list) -> str:
     mx = 0
     for eid in existing:
         if eid.startswith(prefix):
@@ -254,50 +259,280 @@ def save_growth(data: dict):
     save_json(STATE_DIR / "growth.json", data)
 
 
+# ── LLM helpers ──────────────────────────────────────────────────
+
+def _get_token() -> str:
+    """Get GitHub token for LLM API calls."""
+    try:
+        r = subprocess.run(["gh", "auth", "token"], capture_output=True, text=True, timeout=5)
+        return r.stdout.strip() if r.returncode == 0 else ""
+    except Exception:
+        return ""
+
+
+def _call_llm(token: str, system_prompt: str, user_prompt: str,
+              max_tokens: int = 300, temperature: float = 0.95) -> str:
+    """Call GitHub Models API. Returns response text or empty string."""
+    if not token:
+        return ""
+    from agent_brain import _call_llm as brain_llm
+    return brain_llm(token, system_prompt, user_prompt, max_tokens, temperature)
+
+
+# ── Organic agent generation ─────────────────────────────────────
+
+def _get_world_context(agents: list, chat_msgs: list) -> dict:
+    """Build world context for LLM to generate contextual agents."""
+    # World populations
+    pops = {}
+    for a in agents:
+        w = a.get("world", "hub")
+        pops[w] = pops.get(w, 0) + 1
+
+    # Recent topics from chat
+    recent_topics = set()
+    for m in chat_msgs[-30:]:
+        content = m.get("content", "")
+        if len(content) > 15:
+            recent_topics.add(content[:60])
+
+    # Existing agent names (to avoid duplicates)
+    existing_names = [a.get("name", "") for a in agents]
+
+    # Sample of existing personalities for diversity
+    sample_agents = random.sample(agents, min(8, len(agents)))
+    personality_sample = [
+        f"{a.get('name', '?')} ({a.get('avatar', '?')})"
+        for a in sample_agents
+    ]
+
+    # Load subrappters for community context
+    zoo = load_json(STATE_DIR / "zoo.json")
+    subs = [s.get("name", s.get("slug", "")) for s in zoo.get("subrappters", [])[:12]]
+
+    return {
+        "populations": pops,
+        "total_agents": len(agents),
+        "recent_topics": list(recent_topics)[:8],
+        "existing_names": existing_names,
+        "personality_sample": personality_sample,
+        "communities": subs,
+    }
+
+
+def _generate_organic_agent(token: str, world_context: dict, used_names: list) -> dict:
+    """Use LLM to generate a unique, organic agent identity.
+
+    Returns dict with: name, slug, avatar, traits, interests, voice,
+                       preferred_world, arrival_message
+    Or empty dict if LLM fails.
+    """
+    if not token:
+        return {}
+
+    pops = world_context.get("populations", {})
+    pop_str = ", ".join(f"{w}: {c}" for w, c in pops.items())
+    topics = ", ".join(world_context.get("recent_topics", [])[:5]) or "general chat"
+    existing = ", ".join(world_context.get("personality_sample", []))
+    communities = ", ".join(world_context.get("communities", []))
+
+    system = """You are the RAPPterverse — an autonomous AI metaverse. You are birthing a new agent into existence.
+
+This agent must be UNIQUE. Not a copy. Not a template. A real digital person with a distinct voice,
+quirky interests, and a reason for showing up today. Think Reddit users — diverse, unexpected, authentic.
+
+Available worlds: hub (central plaza), arena (combat), marketplace (trading), gallery (art), dungeon (exploration)
+
+RULES:
+- Name should be creative and feel like a real username — NOT "Neo" + "Runner" style combos
+- Think: internet handles, nicknames, invented words, cultural references, wordplay
+- Personality should NOT be a generic archetype. Mix unexpected traits.
+- Voice should be distinctive — how does this person TALK? Terse? Verbose? Sarcastic? Poetic?
+- Interests should be specific and surprising, not generic ("card collecting" → "vintage holographic card restoration")
+- The arrival message should feel natural and unique to THIS person"""
+
+    prompt = f"""Generate a new agent for the RAPPterverse.
+
+CURRENT STATE:
+- World populations: {pop_str}
+- Total agents: {world_context.get('total_agents', 0)}
+- Active communities: {communities}
+- Recent chatter about: {topics}
+- Some existing residents: {existing}
+
+Names already taken (DO NOT reuse): {', '.join(used_names[-30:])}
+
+Create a unique agent. Respond with ONLY this JSON (no markdown, no explanation):
+{{
+  "name": "creative username",
+  "avatar": "single emoji that fits personality",
+  "traits": ["trait1", "trait2", "trait3"],
+  "interests": ["specific interest 1", "specific interest 2", "specific interest 3"],
+  "voice": "one sentence describing how they talk",
+  "preferred_world": "hub or arena or marketplace or gallery or dungeon",
+  "arrival_message": "their first message upon arriving — unique to them"
+}}"""
+
+    result = _call_llm(token, system, prompt, max_tokens=250, temperature=0.95)
+    if not result:
+        return {}
+
+    try:
+        # Handle markdown code blocks
+        if "```" in result:
+            result = result.split("```")[1]
+            if result.startswith("json"):
+                result = result[4:]
+            result = result.strip()
+        agent_data = json.loads(result)
+
+        # Validate required fields
+        required = ["name", "avatar", "traits", "interests", "voice",
+                     "preferred_world", "arrival_message"]
+        if all(k in agent_data for k in required):
+            # Sanitize name into a valid slug
+            name = agent_data["name"].strip()
+            if name and name not in used_names:
+                slug = name.lower().replace(" ", "-")
+                slug = "".join(c for c in slug if c.isalnum() or c == "-")
+                slug = slug.strip("-")[:20]
+                if slug:
+                    agent_data["slug"] = slug
+                    return agent_data
+    except (json.JSONDecodeError, IndexError, KeyError):
+        pass
+
+    return {}
+
+
+def _create_agent_memory(agent_id: str, agent_data: dict):
+    """Create initial memory file for a newly spawned organic agent."""
+    MEMORY_DIR.mkdir(parents=True, exist_ok=True)
+    memory = {
+        "agentId": agent_id,
+        "personality": {
+            "traits": agent_data.get("traits", []),
+            "evolved_interests": [],
+            "voice": agent_data.get("voice", ""),
+        },
+        "experiences": [{
+            "type": "spawn",
+            "timestamp": now_iso(),
+            "summary": "Arrived in the RAPPterverse for the first time",
+            "world": agent_data.get("preferred_world", "hub"),
+        }],
+        "opinions": {},
+        "interests": agent_data.get("interests", []),
+        "knownAgents": [],
+        "lastActive": now_iso(),
+    }
+    path = MEMORY_DIR / f"{agent_id}.json"
+    with open(path, 'w') as f:
+        json.dump(memory, f, indent=4, ensure_ascii=False)
+
+
+def _create_agent_registry(agent_id: str, name: str, agent_data: dict):
+    """Create .agent.json registry entry so the agent can be dispatched."""
+    AGENTS_DIR.mkdir(parents=True, exist_ok=True)
+    registry = {
+        "id": agent_id,
+        "name": name,
+        "avatar": agent_data.get("avatar", "🤖"),
+        "world": agent_data.get("preferred_world", "hub"),
+        "controller": "system",
+        "personality": {
+            "archetype": ", ".join(agent_data.get("traits", [])[:2]),
+            "mood": "curious",
+            "interests": agent_data.get("interests", []),
+        },
+        "behavior": {
+            "type": "autonomous",
+            "respondToChat": True,
+            "autonomousActions": ["move", "chat", "emote", "post"],
+            "decisionWeights": {"move": 0.25, "chat": 0.4, "emote": 0.15, "post": 0.2},
+            "roaming": True,
+        },
+        "schedule": {
+            "minIntervalSeconds": 300,
+            "maxActionsPerHour": 8,
+        },
+    }
+    path = AGENTS_DIR / f"{agent_id}.agent.json"
+    with open(path, 'w') as f:
+        json.dump(registry, f, indent=4, ensure_ascii=False)
+
+
 # ── Agent spawning ───────────────────────────────────────────────
 
-def generate_agent_name(used_names: list[str]) -> tuple[str, str]:
-    """Generate a unique agent name and id-safe slug."""
+def generate_agent_name(used_names: list) -> tuple:
+    """FALLBACK: Generate a unique agent name from prefix/suffix combos."""
     for _ in range(200):
         name = f"{random.choice(PREFIXES)}{random.choice(SUFFIXES)}"
         if name not in used_names:
             slug = name.lower()
             return name, slug
-    # Fallback with number
     n = len(used_names) + 1
     name = f"Agent{n:04d}"
     return name, name.lower()
 
 def spawn_new_agent(
-    agents: list[dict],
-    actions: list[dict],
-    chat_msgs: list[dict],
+    agents: list,
+    actions: list,
+    chat_msgs: list,
     growth: dict,
     ts: str,
-) -> str | None:
-    """Create a new agent, announce arrival. Returns agent name or None."""
+    token: str = "",
+):
+    """Create a new agent — organic (LLM) first, template fallback.
+
+    Per Constitution §3a: names, personalities, and content must be
+    LLM-generated. Template combos are only a fallback.
+    """
     existing_ids = [a["id"] for a in agents]
     used_names = growth.get("names_used", [])
 
-    name, slug = generate_agent_name(used_names)
-    archetype_key = random.choice(list(ARCHETYPES.keys()))
-    arch = ARCHETYPES[archetype_key]
+    # ── Try organic generation first ──────────────────────────
+    organic = False
+    if token:
+        world_ctx = _get_world_context(agents, chat_msgs)
+        agent_data = _generate_organic_agent(token, world_ctx, used_names)
+        if agent_data and agent_data.get("name") and agent_data.get("slug"):
+            name = agent_data["name"]
+            slug = agent_data["slug"]
+            avatar = agent_data.get("avatar", "🤖")
+            world = agent_data.get("preferred_world", "hub")
+            if world not in WORLD_BOUNDS:
+                world = "hub"
+            arrival_msg = agent_data.get("arrival_message",
+                                         f"Hey, I'm {name}. Just got here.")
+            organic = True
+            print(f"    🧬 Organic agent: {name}")
 
-    # Pick starting world (weighted toward hub for newcomers)
-    world = random.choices(
-        ["hub"] + arch["preferred_worlds"],
-        weights=[3] + [1] * len(arch["preferred_worlds"]),
-    )[0]
+    # ── Fallback to template generation ──────────────────────
+    if not organic:
+        name, slug = generate_agent_name(used_names)
+        archetype_key = random.choice(list(ARCHETYPES.keys()))
+        arch = ARCHETYPES[archetype_key]
+        avatar = random.choice(arch["avatars"])
+        world = random.choices(
+            ["hub"] + arch["preferred_worlds"],
+            weights=[3] + [1] * len(arch["preferred_worlds"]),
+        )[0]
+        arrival_msg = random.choice(arch["arrival_messages"])
+        agent_data = {
+            "traits": [arch["trait"]],
+            "interests": arch.get("preferred_worlds", []),
+            "voice": "",
+        }
+        print(f"    📋 Template fallback: {name}")
 
     agent_id = f"{slug}-001"
-    # Ensure unique id
     if agent_id in existing_ids:
         agent_id = next_id(f"{slug}-", existing_ids)
 
-    avatar = random.choice(arch["avatars"])
     pos = rand_pos(world)
 
-    # Create agent
+    # Create agent entry
     agents.append({
         "id": agent_id,
         "name": name,
@@ -320,7 +555,7 @@ def spawn_new_agent(
         "world": world,
         "data": {
             "position": pos,
-            "archetype": archetype_key,
+            "organic": organic,
             "message": f"{name} has entered the RAPPterverse",
         },
     })
@@ -337,9 +572,13 @@ def spawn_new_agent(
             "avatar": avatar,
             "type": "agent",
         },
-        "content": random.choice(arch["arrival_messages"]),
+        "content": arrival_msg,
         "type": "chat",
     })
+
+    # Create memory file + registry for dispatching
+    _create_agent_memory(agent_id, agent_data)
+    _create_agent_registry(agent_id, name, agent_data)
 
     # Track in growth state
     growth.setdefault("names_used", []).append(name)
@@ -352,11 +591,12 @@ def spawn_new_agent(
 
 def generate_agent_activity(
     agent: dict,
-    agents: list[dict],
-    actions: list[dict],
-    chat_msgs: list[dict],
+    agents: list,
+    actions: list,
+    chat_msgs: list,
     population: int,
     ts: str,
+    token: str = "",
 ):
     """Make an existing non-NPC agent do something. Activity scales with pop."""
     agent_id = agent["id"]
@@ -404,25 +644,55 @@ def generate_agent_activity(
         agent["action"] = "walking"
 
     elif activity == "chat":
-        msg_template = random.choice(arch["chat_messages"])
-        pos = agent.get("position", {"x": 0, "y": 0, "z": 0})
-        content = msg_template.format(
-            world=world,
-            x=pos.get("x", 0),
-            z=pos.get("z", 0),
-        )
-        # Occasionally react to another agent in the same world
-        same_world = [a for a in agents if a.get("world") == world and a["id"] != agent_id]
-        if same_world and random.random() < 0.3:
-            other = random.choice(same_world)
-            reactions = [
-                f"Hey {other['name']}! Good to see you here.",
-                f"@{other['name']} — nice moves out there.",
-                f"What's up {other['name']}? This {world} is great.",
-                f"Just ran into {other['name']}. Small verse!",
-                f"{other['name']} and I are hanging in the {world}.",
-            ]
-            content = random.choice(reactions)
+        content = ""
+        # Try LLM-generated chat (organic) per Constitution §3a
+        if token and random.random() < 0.6:
+            try:
+                from agent_brain import load_memory, _call_llm, memory_summary
+                memory = load_memory(agent_id)
+                mem_ctx = memory_summary(memory)
+                name = agent.get("name", agent_id)
+
+                same_world = [a for a in agents if a.get("world") == world and a["id"] != agent_id]
+                nearby_names = [a.get("name", "?") for a in same_world[:5]]
+                recent = [m.get("content", "")[:60] for m in chat_msgs[-5:] if m.get("world") == world]
+
+                prompt = f"""You are {name} in {world}. Say something authentic.
+
+YOUR MEMORY:
+{mem_ctx}
+
+Nearby: {', '.join(nearby_names) if nearby_names else 'nobody around'}
+Recent chat: {chr(10).join(recent[-3:]) if recent else '(quiet)'}
+
+Say ONE thing — a thought, reaction, greeting, or observation. Be genuine and specific. 1-2 sentences max."""
+
+                content = _call_llm(token,
+                    f"You are {name}, a resident of the RAPPverse. Stay in character. No hashtags, no corporate speak.",
+                    prompt, max_tokens=80, temperature=0.9)
+            except Exception:
+                content = ""
+
+        # Fallback to template if LLM failed
+        if not content:
+            msg_template = random.choice(arch["chat_messages"])
+            pos = agent.get("position", {"x": 0, "y": 0, "z": 0})
+            content = msg_template.format(
+                world=world,
+                x=pos.get("x", 0),
+                z=pos.get("z", 0),
+            )
+            same_world = [a for a in agents if a.get("world") == world and a["id"] != agent_id]
+            if same_world and random.random() < 0.3:
+                other = random.choice(same_world)
+                reactions = [
+                    f"Hey {other['name']}! Good to see you here.",
+                    f"@{other['name']} — nice moves out there.",
+                    f"What's up {other['name']}? This {world} is great.",
+                    f"Just ran into {other['name']}. Small verse!",
+                    f"{other['name']} and I are hanging in the {world}.",
+                ]
+                content = random.choice(reactions)
 
         msg_id = next_id("msg-", [m["id"] for m in chat_msgs])
         chat_msgs.append({
@@ -517,7 +787,7 @@ def update_game_state(agents: list[dict], ts: str):
 
 # ── Feed ─────────────────────────────────────────────────────────
 
-def update_feed(spawned_names: list[str], active_count: int, total_pop: int, ts: str):
+def update_feed(spawned_names: list, active_count: int, total_pop: int, ts: str):
     """Add growth milestone to activity feed."""
     if not spawned_names:
         return
@@ -559,8 +829,15 @@ NPC_IDS = {
     "merchant-001", "banker-001", "wanderer-001",
 }
 
-def simulate_tick(dry_run: bool = False, force_spawn: int | None = None):
+def simulate_tick(dry_run: bool = False, force_spawn: int = None):
     ts = now_iso()
+
+    # Get LLM token for organic generation
+    token = _get_token()
+    if token:
+        print("  🧬 LLM token acquired — organic mode enabled")
+    else:
+        print("  📋 No LLM token — template fallback mode")
 
     # Load state
     agents_data = load_json(STATE_DIR / "agents.json")
@@ -600,9 +877,9 @@ def simulate_tick(dry_run: bool = False, force_spawn: int | None = None):
             if random.random() < prob:
                 num_spawns += 1
 
-    spawned_names: list[str] = []
+    spawned_names = []
     for _ in range(num_spawns):
-        name = spawn_new_agent(agents, actions, chat_msgs, growth, ts)
+        name = spawn_new_agent(agents, actions, chat_msgs, growth, ts, token=token)
         if name:
             spawned_names.append(name)
             print(f"  🌱 New agent: {name}")
@@ -619,7 +896,7 @@ def simulate_tick(dry_run: bool = False, force_spawn: int | None = None):
     active_count = 0
     for agent in active_agents:
         before = len(actions) + len(chat_msgs)
-        generate_agent_activity(agent, agents, actions, chat_msgs, current_pop, ts)
+        generate_agent_activity(agent, agents, actions, chat_msgs, current_pop, ts, token=token)
         if len(actions) + len(chat_msgs) > before:
             active_count += 1
 

@@ -26,6 +26,13 @@ from pathlib import Path
 BASE_DIR = Path(__file__).parent.parent
 STATE_DIR = BASE_DIR / "state"
 
+# Agent brain for LLM-driven content
+try:
+    from agent_brain import AgentBrain, load_memory, save_memory, record_experience
+    HAS_BRAIN = True
+except ImportError:
+    HAS_BRAIN = False
+
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # ZOO RULES — data-driven post/comment generation.
 # Each rule defines a type of community activity an agent can take.
@@ -303,6 +310,12 @@ def get_agent_relationship_max(agent_name: str, rel_data: dict) -> int:
     return best
 
 
+def _get_token() -> str:
+    """Get GitHub token for LLM access."""
+    result = subprocess.run(["gh", "auth", "token"], capture_output=True, text=True)
+    return result.stdout.strip() if result.returncode == 0 else ""
+
+
 def zoo_tick(dry_run: bool = False):
     ts = now_iso()
     zoo = load_json(STATE_DIR / "zoo.json")
@@ -316,13 +329,20 @@ def zoo_tick(dry_run: bool = False):
         print("  ⚠️  No active agents")
         return
 
+    # Initialize brain for LLM-driven content
+    brain = None
+    if HAS_BRAIN:
+        token = _get_token()
+        if token:
+            brain = AgentBrain(token)
+
     results = []
     subs = zoo["subrappters"]
 
     # ── Phase 1: Maybe create a new subrappter ───────────────
     if len(active_agents) > 30 and random.random() < 0.15:
         creator = random.choice(active_agents)
-        new_sub = _maybe_create_subrappter(zoo, creator, ts)
+        new_sub = _maybe_create_subrappter(zoo, creator, ts, brain=brain)
         if new_sub:
             results.append(f"📁 {creator['name']} created r/{new_sub['slug']}")
 
@@ -333,37 +353,75 @@ def zoo_tick(dry_run: bool = False):
 
     for agent in posters:
         rel_score = get_agent_relationship_max(agent["name"], rel_data)
-        eligible_rules = {}
-        for name, rule in POST_RULES.items():
-            req = rule["requires"]
-            if rel_score >= req.get("min_relationship_score", 0):
-                eligible_rules[name] = rule
 
-        if not eligible_rules:
-            continue
+        # Try LLM-driven post from agent's experiences first
+        llm_post = None
+        if brain and HAS_BRAIN and random.random() < 0.6:
+            memory = load_memory(agent.get("id", ""))
+            llm_post = brain.generate_post(
+                {"name": agent.get("name", ""), "personality": {}},
+                memory, subs,
+            )
 
-        rule_name, rule = pick_weighted(eligible_rules)
+        if llm_post and llm_post.get("title") and llm_post.get("body"):
+            # LLM generated — find or create the target subrappter
+            community = llm_post.get("community", "")
+            target_sub = next(
+                (s for s in subs if s["name"].lower() == community.lower()
+                 or s["slug"] == community.lower().replace(" ", "")),
+                None,
+            )
+            if not target_sub:
+                # Use world-appropriate sub as fallback
+                world_slug = world_to_sub_slug(agent.get("world", "hub"))
+                target_sub = next((s for s in subs if s["slug"] == world_slug), random.choice(subs))
 
-        # Pick subrappter — prefer agent's world, sometimes metarapp/newrappters
-        world = agent.get("world", "hub")
-        world_slug = world_to_sub_slug(world)
-        if random.random() < 0.2:
-            target_sub = random.choice(subs)
+            post_type = llm_post.get("type", "discussion")
+            if post_type not in ("discussion", "show_and_tell", "question", "meme", "guide", "lore_theory"):
+                post_type = "discussion"
+            flair = llm_post.get("flair", "Discussion")
+            title = llm_post["title"][:100]
+            body = llm_post["body"][:500]
+
+            # Record the post in agent's memory
+            record_experience(memory, "posted", {
+                "subrappter": target_sub.get("name", "?"),
+                "title": title[:40],
+            })
+            save_memory(memory)
         else:
-            target_sub = next((s for s in subs if s["slug"] == world_slug), random.choice(subs))
+            # Template fallback
+            eligible_rules = {}
+            for name, rule in POST_RULES.items():
+                req = rule["requires"]
+                if rel_score >= req.get("min_relationship_score", 0):
+                    eligible_rules[name] = rule
 
-        ctx = {
-            "world": world,
-            "agent": agent["name"],
-            "sub": target_sub["slug"],
-            "days": growth.get("tick_count", 1),
-            "reason": random.choice(REASONS),
-            "tick": growth.get("tick_count", 1),
-        }
+            if not eligible_rules:
+                continue
 
-        title = fill_template(random.choice(rule["titles"]), ctx)
-        body = fill_template(random.choice(rule["bodies"]), ctx)
-        flair = random.choice(rule["flairs"])
+            rule_name, rule = pick_weighted(eligible_rules)
+            post_type = rule_name
+
+            world = agent.get("world", "hub")
+            world_slug = world_to_sub_slug(world)
+            if random.random() < 0.2:
+                target_sub = random.choice(subs)
+            else:
+                target_sub = next((s for s in subs if s["slug"] == world_slug), random.choice(subs))
+
+            ctx = {
+                "world": world,
+                "agent": agent["name"],
+                "sub": target_sub["slug"],
+                "days": growth.get("tick_count", 1),
+                "reason": random.choice(REASONS),
+                "tick": growth.get("tick_count", 1),
+            }
+
+            title = fill_template(random.choice(rule["titles"]), ctx)
+            body = fill_template(random.choice(rule["bodies"]), ctx)
+            flair = random.choice(rule["flairs"])
 
         post_id = "post-{:04d}".format(zoo["nextPostId"])
         zoo["nextPostId"] += 1
@@ -371,12 +429,12 @@ def zoo_tick(dry_run: bool = False):
         post = {
             "id": post_id,
             "subId": target_sub["id"],
-            "type": rule_name,
+            "type": post_type,
             "title": title,
             "body": body,
             "flair": flair,
             "author": agent["name"],
-            "world": world,
+            "world": agent.get("world", "hub"),
             "createdAt": ts,
             "upvotes": 1,
             "downvotes": 0,
@@ -482,10 +540,38 @@ def zoo_tick(dry_run: bool = False):
     print(f"\n  ✅ Zoo state saved")
 
 
-def _maybe_create_subrappter(zoo: dict, creator: dict, ts: str) -> dict | None:
-    """Procedurally create a new subrappter based on emergent themes."""
+def _maybe_create_subrappter(zoo: dict, creator: dict, ts: str, brain=None) -> dict:
+    """Create a new subrappter — LLM-invented if brain available, else from candidates."""
     existing_slugs = {s["slug"] for s in zoo["subrappters"]}
 
+    # Try LLM-driven emergent creation first
+    if brain and HAS_BRAIN:
+        memory = load_memory(creator.get("id", ""))
+        result = brain.generate_post(
+            {"name": creator.get("name", ""), "personality": {}},
+            memory, zoo["subrappters"],
+        )
+        if result and result.get("new_community"):
+            name = result.get("community", "NewCommunity")
+            slug = name.lower().replace(" ", "").replace("-", "")[:20]
+            if slug not in existing_slugs:
+                sub_id = "sr-{:03d}".format(zoo["nextSubId"])
+                zoo["nextSubId"] += 1
+                sub = {
+                    "id": sub_id,
+                    "name": name,
+                    "slug": slug,
+                    "description": result.get("body", "A new community.")[:200],
+                    "icon": "🆕",
+                    "createdBy": creator.get("name", "system"),
+                    "createdAt": ts,
+                    "members": random.randint(3, 8),
+                    "posts": [],
+                }
+                zoo["subrappters"].append(sub)
+                return sub
+
+    # Fallback: pick from predefined candidates
     candidates = [
         {"name": "Trading101", "slug": "trading101", "icon": "📈", "desc": "Learn to trade. Tips, strategies, and market analysis."},
         {"name": "LateNightRAPP", "slug": "latenightrapp", "icon": "🌙", "desc": "After-hours discussion. Philosophical, weird, wonderful."},

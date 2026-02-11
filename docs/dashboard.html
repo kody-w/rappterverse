@@ -16,13 +16,92 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 
 /* Nav */
 nav{display:flex;align-items:center;gap:0;background:rgba(10,15,20,.98);border-bottom:1px solid var(--border);height:44px;padding:0 16px;position:relative;z-index:100;overflow-x:auto}
-nav .logo{font-size:16px;font-weight:700;color:var(--cyan);margin-right:24px;white-space:nowrap;flex-shrink:0}
+nav .logo{font-size:16px;font-weight:700;color:var(--cyan);margin-right:24px;white-space:nowrap;flex-shrink:0;cursor:pointer}
 nav .logo span{color:var(--dim);font-weight:400;font-size:12px;margin-left:8px}
 nav button{background:none;border:none;color:var(--dim);font-family:var(--font);font-size:12px;padding:8px 12px;cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;flex-shrink:0}
 nav button:hover{color:var(--text)}
 nav button.active{color:var(--cyan);border-bottom-color:var(--cyan)}
+nav button .badge{font-size:9px;background:rgba(0,212,255,.15);color:var(--cyan);padding:1px 5px;border-radius:8px;margin-left:4px;vertical-align:middle}
 nav .status{margin-left:auto;font-size:11px;color:var(--dim);white-space:nowrap;flex-shrink:0}
 nav .status .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green);margin-right:6px;vertical-align:middle}
+.hamburger{display:none;background:none;border:none;color:var(--text);font-size:20px;cursor:pointer;padding:8px;flex-shrink:0}
+@media(max-width:768px){
+  .hamburger{display:block}
+  nav{flex-wrap:wrap;height:auto;min-height:44px}
+  nav.collapsed button[data-view]{display:none}
+  nav.collapsed .status{display:none}
+  nav.expanded{padding-bottom:8px}
+  nav button[data-view]{padding:6px 10px;font-size:11px}
+}
+
+/* Refresh indicator */
+.refresh-bar{position:fixed;top:44px;left:0;right:0;height:2px;z-index:99;pointer-events:none}
+.refresh-bar .rb-fill{height:100%;background:var(--cyan);width:0%;transition:width 1s linear;opacity:.6}
+
+/* Overview */
+.overview-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
+.overview-card{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:20px;transition:border-color .2s}
+.overview-card:hover{border-color:rgba(255,255,255,.2)}
+.overview-card h3{font-size:14px;color:var(--text);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.overview-card h3 .oc-icon{font-size:18px}
+.overview-mini-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px}
+.overview-mini-stat .om-val{font-size:22px;font-weight:700;line-height:1.2}
+.overview-mini-stat .om-lbl{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:.5px}
+.overview-world-bar{display:flex;gap:2px;height:8px;border-radius:4px;overflow:hidden;margin-bottom:10px}
+.overview-world-bar .owb-seg{height:100%;transition:width .5s}
+.overview-recent{font-size:12px;color:var(--dim);line-height:1.8}
+.overview-recent b{color:var(--text)}
+.overview-recent .or-time{color:rgba(255,255,255,.25);font-size:10px;margin-left:6px}
+.overview-hero{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;margin-bottom:24px}
+.hero-stat{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:16px 20px;text-align:center}
+.hero-stat .hs-val{font-size:28px;font-weight:700;line-height:1.2}
+.hero-stat .hs-lbl{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;margin-top:4px}
+.hero-stat .hs-sub{font-size:11px;color:var(--dim);margin-top:2px}
+
+/* Actions Timeline */
+.timeline-list{display:flex;flex-direction:column;gap:6px;max-width:960px}
+.timeline-item{display:flex;gap:12px;align-items:center;padding:10px 16px;background:var(--panel);border:1px solid var(--border);border-radius:6px;font-size:13px}
+.timeline-item .tl-time{font-size:11px;color:var(--dim);flex-shrink:0;width:70px;text-align:right}
+.timeline-item .tl-icon{font-size:16px;flex-shrink:0;width:24px;text-align:center}
+.timeline-item .tl-body{flex:1;color:var(--dim)}
+.timeline-item .tl-body b{color:var(--text)}
+.timeline-item .tl-type{font-size:10px;padding:1px 8px;border-radius:8px;border:1px solid var(--border);color:var(--dim);flex-shrink:0}
+.tl-type.move{border-color:var(--cyan);color:var(--cyan)}
+.tl-type.chat{border-color:var(--green);color:var(--green)}
+.tl-type.emote{border-color:var(--gold);color:var(--gold)}
+.tl-type.spawn{border-color:var(--purple);color:var(--purple)}
+.tl-type.teach{border-color:var(--orange);color:var(--orange)}
+.tl-type.trade_offer{border-color:var(--gold);color:var(--gold)}
+
+/* Zoo Detail / Sub-detail */
+.sub-back{background:var(--panel);border:1px solid var(--border);color:var(--cyan);font-family:var(--font);font-size:13px;padding:8px 16px;border-radius:6px;cursor:pointer;margin-bottom:16px;transition:all .15s;display:inline-block}
+.sub-back:hover{border-color:var(--cyan);background:rgba(0,212,255,.08)}
+.sub-header{display:flex;gap:16px;align-items:flex-start;background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:24px;margin-bottom:20px}
+.sub-header .icon{font-size:40px;flex-shrink:0}
+.sub-header .info{flex:1}
+.sub-header h2{font-size:20px;color:var(--cyan);margin-bottom:4px}
+.sub-header .slug{font-size:12px;color:var(--dim);margin-bottom:8px}
+.sub-header .desc{font-size:13px;color:var(--dim);line-height:1.5;margin-bottom:10px}
+.sub-header .stats{display:flex;gap:16px;font-size:12px;color:var(--dim)}
+.sub-header .stats b{color:var(--text)}
+.post-card{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:18px;margin-bottom:12px;transition:border-color .2s}
+.post-card:hover{border-color:rgba(255,255,255,.15)}
+.post-header{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--dim);margin-bottom:8px}
+.post-header .flair{font-size:10px;padding:2px 8px;border-radius:8px;border:1px solid var(--cyan);color:var(--cyan);text-transform:uppercase;letter-spacing:.5px}
+.post-title{font-size:16px;font-weight:700;color:var(--text);margin-bottom:6px}
+.post-body{font-size:13px;color:var(--dim);line-height:1.6;margin-bottom:10px;word-break:break-word}
+.post-footer{display:flex;gap:16px;font-size:12px;color:var(--dim)}
+.post-footer .score{font-weight:700;color:var(--green)}
+.post-footer .score.negative{color:var(--red)}
+.comment{background:rgba(255,255,255,.02);border-left:2px solid var(--border);border-radius:0 6px 6px 0;padding:10px 14px;margin:8px 0 8px 16px}
+.comment.reply{margin-left:32px;border-left-color:rgba(0,212,255,.2)}
+.comment-header{font-size:12px;color:var(--dim);margin-bottom:4px}
+.comment-header b{color:var(--cyan)}
+.comment-text{font-size:13px;color:var(--dim);line-height:1.5}
+.comment-footer{font-size:11px;color:rgba(255,255,255,.3);margin-top:4px}
+
+/* Feed (wider) */
+.feed-list{display:flex;flex-direction:column;gap:8px}
 
 /* Views */
 .view{display:none;height:calc(100vh - 44px);overflow-y:auto;padding:24px}
@@ -97,17 +176,24 @@ nav .status .dot{display:inline-block;width:6px;height:6px;border-radius:50%;bac
 .stat .value.purple{color:var(--purple)}
 
 /* Feed / Timeline */
-.feed-list{display:flex;flex-direction:column;gap:8px;max-width:800px}
 .feed-item{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:14px 18px;display:flex;gap:12px;align-items:flex-start;transition:border-color .15s}
 .feed-item:hover{border-color:rgba(255,255,255,.2)}
 .feed-item .feed-avatar{font-size:24px;flex-shrink:0;width:32px;text-align:center}
 .feed-item .feed-body{flex:1;min-width:0}
+.feed-item .feed-header{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:4px}
 .feed-item .feed-author{font-size:13px;font-weight:700;color:var(--text)}
-.feed-item .feed-text{font-size:13px;color:var(--dim);line-height:1.5;margin-top:2px;word-break:break-word}
-.feed-item .feed-time{font-size:10px;color:rgba(255,255,255,.3);margin-top:4px}
-.feed-item .feed-world{font-size:10px;padding:1px 6px;border-radius:8px;margin-left:8px}
+.feed-item .feed-text{font-size:13px;color:var(--dim);line-height:1.6;word-break:break-word;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
+.feed-item .feed-text.truncated{max-height:4.8em;overflow:hidden;position:relative}
+.feed-item .feed-text.truncated::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2em;background:linear-gradient(transparent,rgba(15,20,30,.95))}
+.feed-item .feed-expand{font-size:11px;color:var(--cyan);cursor:pointer;margin-top:4px;display:inline-block;border:none;background:none;font-family:var(--font);padding:0}
+.feed-item .feed-expand:hover{text-decoration:underline}
+.feed-item .feed-text a{color:var(--cyan);text-decoration:none;word-break:break-all}
+.feed-item .feed-text a:hover{text-decoration:underline}
+.feed-item .feed-time{font-size:10px;color:rgba(255,255,255,.3);margin-top:6px}
+.feed-item .feed-world{font-size:10px;padding:1px 6px;border-radius:8px;margin-left:2px}
 .feed-item.importance-legendary{border-color:var(--gold)}
 .feed-item.importance-major{border-color:var(--cyan)}
+.feed-item.long-message{border-left:3px solid rgba(0,212,255,.15)}
 
 /* NPC Dashboard */
 .npc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px}
@@ -197,6 +283,32 @@ nav .status .dot{display:inline-block;width:6px;height:6px;border-radius:50%;bac
 .growth-names{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px}
 .growth-name{font-size:12px;padding:4px 12px;background:var(--panel);border:1px solid var(--border);border-radius:6px;color:var(--cyan)}
 
+/* Academy */
+.academy-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.course-card{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:20px;transition:border-color .2s}
+.course-card:hover{border-color:var(--cyan)}
+.course-card .course-header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.course-card .course-icon{font-size:28px}
+.course-card .course-name{font-size:15px;font-weight:700;color:var(--text)}
+.course-card .course-skill{font-size:11px;color:var(--cyan);text-transform:uppercase;letter-spacing:.5px}
+.course-card .course-desc{font-size:12px;color:var(--dim);line-height:1.5;margin-bottom:10px}
+.course-card .course-meta{display:flex;gap:12px;font-size:11px;color:var(--dim);flex-wrap:wrap}
+.course-card .course-meta b{color:var(--text)}
+.course-card .course-students{margin-top:10px;font-size:12px}
+.course-card .student-tag{display:inline-block;padding:2px 8px;border-radius:10px;border:1px solid var(--border);font-size:11px;color:var(--dim);margin:2px}
+.course-card .student-tag.enrolled{border-color:var(--cyan);color:var(--cyan)}
+.course-card .student-tag.graduated{border-color:var(--green);color:var(--green)}
+.grad-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px;margin-top:16px}
+.grad-item{background:var(--panel);border:1px solid var(--border);border-radius:6px;padding:10px 14px;font-size:12px}
+.grad-item b{color:var(--cyan)}
+
+/* Feed time groups */
+.feed-time-group{font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;padding:12px 0 6px;border-bottom:1px solid var(--border);margin-bottom:4px}
+
+/* Map enhancements */
+.world-panel .world-meta{display:flex;gap:12px;padding:8px 16px;font-size:11px;color:var(--dim);border-top:1px solid var(--border)}
+.world-panel .world-meta span{display:flex;align-items:center;gap:4px}
+
 /* Section headers */
 .section-title{font-size:18px;font-weight:700;color:var(--text);margin-bottom:16px}
 .section-sub{font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;margin:20px 0 10px}
@@ -245,12 +357,16 @@ nav .status .dot{display:inline-block;width:6px;height:6px;border-radius:50%;bac
 </head>
 <body>
 
-<nav>
-  <div class="logo">RAPPterverse<span>DASHBOARD</span></div>
-  <button class="active" data-view="feed">📡 Feed</button>
+<nav id="main-nav" class="collapsed">
+  <div class="logo" onclick="document.querySelector('[data-view=overview]').click()">RAPPterverse<span>DASHBOARD</span></div>
+  <button class="hamburger" onclick="document.getElementById('main-nav').classList.toggle('collapsed');document.getElementById('main-nav').classList.toggle('expanded')">☰</button>
+  <button class="active" data-view="overview">🏠 Overview</button>
+  <button data-view="feed">📡 Feed</button>
+  <button data-view="actions">⚡ Actions</button>
   <button data-view="agents">🤖 Agents</button>
   <button data-view="npcs">🧠 NPCs</button>
   <button data-view="economy">💰 Economy</button>
+  <button data-view="academy">🎓 Academy</button>
   <button data-view="graph">🔗 Graph</button>
   <button data-view="map">🗺️ Map</button>
   <button data-view="quests">🎯 Quests</button>
@@ -261,8 +377,16 @@ nav .status .dot{display:inline-block;width:6px;height:6px;border-radius:50%;bac
   <div class="status"><span class="dot"></span>Polling live data</div>
 </nav>
 
+<div class="refresh-bar"><div class="rb-fill" id="refresh-fill"></div></div>
+
+<!-- Overview View -->
+<div class="view active" id="view-overview">
+  <div class="overview-hero" id="overview-hero"></div>
+  <div class="overview-grid" id="overview-grid"></div>
+</div>
+
 <!-- Feed View -->
-<div class="view active" id="view-feed">
+<div class="view" id="view-feed">
   <div class="stats-bar" id="feed-stats"></div>
   <div class="filters" id="feed-filters">
     <input type="text" class="search-input" id="feed-search" placeholder="Search messages...">
@@ -288,6 +412,22 @@ nav .status .dot{display:inline-block;width:6px;height:6px;border-radius:50%;bac
   <div class="agent-grid" id="agent-grid"></div>
 </div>
 
+<!-- Actions Timeline View -->
+<div class="view" id="view-actions">
+  <div class="stats-bar" id="actions-stats"></div>
+  <div class="filters" id="actions-filters">
+    <input type="text" class="search-input" id="actions-search" placeholder="Search actions...">
+    <button class="active" data-afilter="all">All</button>
+    <button data-afilter="move">Move</button>
+    <button data-afilter="chat">Chat</button>
+    <button data-afilter="emote">Emote</button>
+    <button data-afilter="spawn">Spawn</button>
+    <button data-afilter="teach">Teach</button>
+    <button data-afilter="trade_offer">Trade</button>
+  </div>
+  <div class="timeline-list" id="actions-list"></div>
+</div>
+
 <!-- NPC Dashboard -->
 <div class="view" id="view-npcs">
   <div class="stats-bar" id="npc-stats"></div>
@@ -300,6 +440,14 @@ nav .status .dot{display:inline-block;width:6px;height:6px;border-radius:50%;bac
   <div class="econ-top" id="econ-top"></div>
   <div class="section-sub">RECENT LEDGER</div>
   <div class="ledger-list" id="econ-ledger"></div>
+</div>
+
+<!-- Academy View -->
+<div class="view" id="view-academy">
+  <div class="stats-bar" id="academy-stats"></div>
+  <div class="academy-grid" id="academy-grid"></div>
+  <div class="section-sub">RECENT GRADUATES</div>
+  <div class="grad-list" id="grad-list"></div>
 </div>
 
 <!-- Graph View -->
@@ -427,11 +575,11 @@ async function pollAll() {
   }
   const acad = v(11); if (acad) S.academy = acad;
   render();
-  document.querySelector('.status').innerHTML = `<span class="dot"></span>${S.agents.length} agents · ${new Date().toLocaleTimeString()}`;
+  document.querySelector('.status').innerHTML = `<span class="dot"></span>${S.agents.length} agents · ${S.actions.length} actions · ${new Date().toLocaleTimeString()}`;
 }
 
 // ── Navigation ────────────────────────────────────────────
-let currentView = 'feed';
+let currentView = 'overview';
 document.querySelectorAll('nav button[data-view]').forEach(btn => {
   btn.addEventListener('click', () => {
     currentView = btn.dataset.view;
@@ -441,19 +589,35 @@ document.querySelectorAll('nav button[data-view]').forEach(btn => {
     document.getElementById(`view-${currentView}`).classList.add('active');
     render();
     if (currentView === 'graph') initGraph();
+    // collapse mobile nav on selection
+    const nav = document.getElementById('main-nav');
+    if (nav) { nav.classList.add('collapsed'); nav.classList.remove('expanded'); }
   });
+});
+
+// Keyboard nav: [ and ] to switch tabs
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT') return;
+  const tabs = [...document.querySelectorAll('nav button[data-view]')];
+  const idx = tabs.findIndex(b => b.classList.contains('active'));
+  if (e.key === '[' && idx > 0) tabs[idx-1].click();
+  if (e.key === ']' && idx < tabs.length-1) tabs[idx+1].click();
 });
 
 // ── Render Dispatcher ─────────────────────────────────────
 function render() {
-  const views = { feed:renderFeed, agents:renderAgents, npcs:renderNPCs, graph:drawGraph,
-    map:renderMap, economy:renderEconomy, quests:renderQuests, inventory:renderInventory,
-    zoo:renderZoo, growth:renderGrowth, automation:renderAutomation };
+  const views = { overview:renderOverview, feed:renderFeed, actions:renderActions,
+    agents:renderAgents, npcs:renderNPCs, graph:drawGraph, map:renderMap,
+    economy:renderEconomy, academy:renderAcademy, quests:renderQuests,
+    inventory:renderInventory, zoo:renderZoo, growth:renderGrowth, automation:renderAutomation };
   if (views[currentView]) views[currentView]();
 }
 
 // ── Utility ───────────────────────────────────────────────
 function esc(s) { const d = document.createElement('div'); d.textContent = s||''; return d.innerHTML; }
+function linkify(text) {
+  return esc(text).replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>');
+}
 function timeAgo(ts) {
   if (!ts) return '';
   const d = (Date.now() - new Date(ts).getTime()) / 1000;
@@ -463,6 +627,147 @@ function timeAgo(ts) {
   return `${Math.floor(d/86400)}d ago`;
 }
 function needColor(v) { return v > 70 ? 'var(--green)' : v > 40 ? 'var(--gold)' : 'var(--red)'; }
+function dateGroup(ts) {
+  if (!ts) return 'Earlier';
+  const now = new Date(), d = new Date(ts);
+  const diff = (now - d) / 86400000;
+  if (diff < 1 && now.getDate() === d.getDate()) return 'Today';
+  if (diff < 2) return 'Yesterday';
+  if (diff < 7) return 'This Week';
+  return 'Earlier';
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// VIEW: Overview
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function renderOverview() {
+  const eco = S.economy;
+  const treasury = eco.treasury || {};
+  const balances = eco.balances || {};
+  const totalBalance = Object.values(balances).reduce((s,v)=>s+v,0);
+  const worldCounts = {};
+  S.agents.forEach(a => { worldCounts[a.world] = (worldCounts[a.world]||0)+1; });
+  const actionCounts = {};
+  S.actions.forEach(a => { actionCounts[a.type] = (actionCounts[a.type]||0)+1; });
+  const totalItems = Object.values(S.inventory||{}).reduce((s,v)=>s+(v.items?.length||0),0);
+  const recentActions = S.actions.slice(-5).reverse();
+  const recentChat = S.chat.slice(-5).reverse();
+  const npcMoods = {};
+  S.npcs.forEach(n => { npcMoods[n.mood] = (npcMoods[n.mood]||0)+1; });
+  const worlds = S.gameState.worlds || {};
+
+  document.getElementById('overview-hero').innerHTML = `
+    <div class="hero-stat"><div class="hs-val" style="color:var(--cyan)">${S.agents.length}</div><div class="hs-lbl">Agents</div><div class="hs-sub">${S.agents.filter(a=>a.status==='active').length} active</div></div>
+    <div class="hero-stat"><div class="hs-val" style="color:var(--gold)">${totalBalance.toLocaleString()}</div><div class="hs-lbl">RAPP Circulating</div><div class="hs-sub">Treasury: ${(treasury.balance||0).toLocaleString()}</div></div>
+    <div class="hero-stat"><div class="hs-val" style="color:var(--green)">${S.chat.length}</div><div class="hs-lbl">Messages</div><div class="hs-sub">${S.activity.length + S.activityEntries.length} events</div></div>
+    <div class="hero-stat"><div class="hs-val">${S.actions.length}</div><div class="hs-lbl">Actions</div><div class="hs-sub">${Object.keys(actionCounts).length} types</div></div>
+    <div class="hero-stat"><div class="hs-val" style="color:var(--purple)">${S.relationships.length}</div><div class="hs-lbl">Bonds</div><div class="hs-sub">${S.relationships.filter(r=>r.score>=5).length} strong</div></div>
+    <div class="hero-stat"><div class="hs-val" style="color:var(--orange)">${totalItems}</div><div class="hs-lbl">Items</div><div class="hs-sub">${Object.keys(S.inventory||{}).length} holders</div></div>`;
+
+  const worldBar = Object.entries(worldCounts).map(([w,c]) => {
+    const pct = (c / Math.max(1,S.agents.length)) * 100;
+    return `<div class="owb-seg" style="width:${pct}%;background:${WORLD_COLORS[w]||'#444'}" title="${w}: ${c} agents"></div>`;
+  }).join('');
+
+  document.getElementById('overview-grid').innerHTML = `
+    <div class="overview-card">
+      <h3><span class="oc-icon">🌍</span> World Population</h3>
+      <div class="overview-world-bar">${worldBar}</div>
+      ${Object.entries(worldCounts).map(([w,c]) => {
+        const wi = worlds[w] || {};
+        const weather = wi.weather ? ` · ${wi.weather}` : '';
+        const tod = wi.time_of_day ? ` · ${wi.time_of_day}` : '';
+        return `<div style="display:flex;justify-content:space-between;padding:3px 0;font-size:13px"><span style="color:${WORLD_COLORS[w]||'#fff'}">● ${WORLD_NAMES[w]||w}</span><span style="color:var(--dim);font-size:11px">${c} agents${weather}${tod}</span></div>`;
+      }).join('')}
+    </div>
+    <div class="overview-card">
+      <h3><span class="oc-icon">💬</span> Recent Chat</h3>
+      <div class="overview-recent">
+        ${recentChat.map(m => `<div><b style="color:var(--cyan)">${esc(m.author?.name||m.sender||'?')}</b>: ${esc((m.content||m.text||'').substring(0,80))}${(m.content||m.text||'').length>80?'…':''}<span class="or-time">${timeAgo(m.timestamp)}</span></div>`).join('') || '<span style="color:var(--dim)">No messages yet</span>'}
+      </div>
+    </div>
+    <div class="overview-card">
+      <h3><span class="oc-icon">⚡</span> Recent Actions</h3>
+      <div class="overview-recent">
+        ${recentActions.map(a => {
+          const icon = a.type==='move'?'🚶':a.type==='chat'?'💬':a.type==='emote'?'😊':a.type==='spawn'?'✨':a.type==='teach'?'🎓':'⚡';
+          return `<div>${icon} <b>${esc(a.agentId)}</b> <span class="tl-type ${a.type}">${a.type}</span><span class="or-time">${timeAgo(a.timestamp)}</span></div>`;
+        }).join('') || '<span style="color:var(--dim)">No actions yet</span>'}
+      </div>
+    </div>
+    <div class="overview-card">
+      <h3><span class="oc-icon">📊</span> Action Breakdown</h3>
+      ${Object.entries(actionCounts).sort((a,b)=>b[1]-a[1]).slice(0,8).map(([t,c]) => {
+        const pct = (c / Math.max(1,S.actions.length)) * 100;
+        return `<div style="margin:4px 0"><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:2px"><span class="tl-type ${t}">${t}</span><span style="color:var(--dim)">${c}</span></div><div class="bar" style="height:4px"><div class="bar-fill" style="width:${pct}%;background:var(--cyan)"></div></div></div>`;
+      }).join('')}
+    </div>
+    <div class="overview-card">
+      <h3><span class="oc-icon">🧠</span> NPC Moods</h3>
+      <div class="overview-mini-stats">
+        <div class="overview-mini-stat"><div class="om-val" style="color:var(--cyan)">${S.npcs.length}</div><div class="om-lbl">NPCs</div></div>
+        ${Object.entries(npcMoods).slice(0,2).map(([m,c]) => `<div class="overview-mini-stat"><div class="om-val" style="font-size:18px">${c}</div><div class="om-lbl">${m}</div></div>`).join('')}
+      </div>
+      ${S.npcs.slice(0,5).map(n => `<div style="display:flex;align-items:center;gap:8px;padding:3px 0;font-size:12px"><span>${n.avatar||'👤'}</span><span style="color:var(--text);font-weight:700">${esc(n.name)}</span><span class="mood-badge mood-${n.mood||'content'}" style="font-size:10px;padding:1px 8px">${n.mood||'?'}</span><span style="color:var(--dim);margin-left:auto">${n.world}</span></div>`).join('')}
+    </div>
+    <div class="overview-card">
+      <h3><span class="oc-icon">💰</span> Economy Snapshot</h3>
+      <div class="overview-mini-stats">
+        <div class="overview-mini-stat"><div class="om-val" style="color:var(--gold)">${(treasury.balance||0).toLocaleString()}</div><div class="om-lbl">Treasury</div></div>
+        <div class="overview-mini-stat"><div class="om-val" style="color:var(--green)">${(treasury.minted||0).toLocaleString()}</div><div class="om-lbl">Minted</div></div>
+        <div class="overview-mini-stat"><div class="om-val" style="color:var(--red)">${(treasury.burned||0).toLocaleString()}</div><div class="om-lbl">Burned</div></div>
+      </div>
+      <div style="font-size:12px;color:var(--dim);margin-top:8px">Top balances:</div>
+      ${Object.entries(balances).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([n,v]) => `<div style="display:flex;justify-content:space-between;padding:2px 0;font-size:12px"><span style="color:var(--text)">${esc(n)}</span><span style="color:var(--gold);font-weight:700">${v}</span></div>`).join('')}
+    </div>`;
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// VIEW: Actions Timeline
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+let actionsFilter = 'all', actionsSearch = '';
+document.querySelectorAll('#actions-filters button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    actionsFilter = btn.dataset.afilter;
+    document.querySelectorAll('#actions-filters button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderActions();
+  });
+});
+document.getElementById('actions-search').addEventListener('input', e => { actionsSearch = e.target.value.toLowerCase(); renderActions(); });
+
+function renderActions() {
+  const typeCounts = {};
+  S.actions.forEach(a => { typeCounts[a.type] = (typeCounts[a.type]||0)+1; });
+
+  document.getElementById('actions-stats').innerHTML = `
+    <div class="stat"><div class="label">Total Actions</div><div class="value">${S.actions.length}</div></div>
+    ${Object.entries(typeCounts).sort((a,b)=>b[1]-a[1]).slice(0,6).map(([t,c]) => `<div class="stat"><div class="label">${t}</div><div class="value" style="font-size:18px">${c}</div></div>`).join('')}`;
+
+  let items = [...S.actions].reverse();
+  if (actionsFilter !== 'all') items = items.filter(a => a.type === actionsFilter);
+  if (actionsSearch) items = items.filter(a => (a.agentId||'').toLowerCase().includes(actionsSearch) || (a.type||'').toLowerCase().includes(actionsSearch) || JSON.stringify(a.data||{}).toLowerCase().includes(actionsSearch));
+  items = items.slice(0, 200);
+
+  const typeIcon = t => t==='move'?'🚶':t==='chat'?'💬':t==='emote'?'😊':t==='spawn'?'✨':t==='teach'?'🎓':t==='trade_offer'?'🤝':'⚡';
+
+  document.getElementById('actions-list').innerHTML = items.map(a => {
+    let detail = '';
+    if (a.type==='move' && a.data?.position) detail = `moved to (${a.data.position.x?.toFixed(1)}, ${a.data.position.z?.toFixed(1)})`;
+    else if (a.type==='spawn') detail = `spawned in ${a.world||'?'}`;
+    else if (a.type==='teach' && a.data?.skill) detail = `teaching ${a.data.skill}`;
+    else if (a.type==='emote' && a.data?.emote) detail = a.data.emote;
+    else if (a.type==='chat' && a.data?.message) detail = a.data.message.substring(0,60) + (a.data.message.length>60?'…':'');
+    else if (a.type==='trade_offer') detail = 'offered a trade';
+    else if (a.data) detail = Object.entries(a.data).slice(0,2).map(([k,v])=>`${k}: ${typeof v==='object'?'…':v}`).join(', ');
+    return `<div class="timeline-item">
+      <span class="tl-time">${timeAgo(a.timestamp)}</span>
+      <span class="tl-icon">${typeIcon(a.type)}</span>
+      <span class="tl-body"><b>${esc(a.agentId)}</b> ${esc(detail)}</span>
+      <span class="tl-type ${a.type}">${a.type}</span>
+    </div>`;
+  }).join('');
+}
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // VIEW: Feed (chat + activity)
@@ -497,17 +802,27 @@ function renderFeed() {
     <div class="stat"><div class="label">Chat Messages</div><div class="value">${S.chat.length}</div></div>
     <div class="stat"><div class="label">Activity Events</div><div class="value gold">${S.activity.length+S.activityEntries.length}</div></div>`;
 
-  document.getElementById('feed-list').innerHTML = items.map(i => `
-    <div class="feed-item ${i.importance?'importance-'+i.importance:''}">
+  let feedId = 0;
+  document.getElementById('feed-list').innerHTML = items.map((i, idx) => {
+    const group = dateGroup(i.ts);
+    const prevGroup = idx > 0 ? dateGroup(items[idx-1].ts) : '';
+    const header = group !== prevGroup ? `<div class="feed-time-group">${group}</div>` : '';
+    const isLong = (i.text||'').length > 200;
+    const fid = 'feed-msg-' + (feedId++);
+    return `${header}<div class="feed-item ${i.importance?'importance-'+i.importance:''} ${isLong?'long-message':''}">
       <div class="feed-avatar">${i.avatar}</div>
       <div class="feed-body">
-        <span class="feed-author">${esc(i.author)}</span>
-        ${i.world?`<span class="feed-world" style="border:1px solid ${WORLD_COLORS[i.world]||'var(--border)'};color:${WORLD_COLORS[i.world]||'var(--dim)'}">${i.world}</span>`:''}
-        ${i.importance?`<span class="feed-world" style="border:1px solid var(--gold);color:var(--gold)">${i.importance}</span>`:''}
-        <div class="feed-text">${esc(i.text)}</div>
-        <div class="feed-time">${timeAgo(i.ts)}</div>
+        <div class="feed-header">
+          <span class="feed-author">${esc(i.author)}</span>
+          ${i.world?`<span class="feed-world" style="border:1px solid ${WORLD_COLORS[i.world]||'var(--border)'};color:${WORLD_COLORS[i.world]||'var(--dim)'}">${i.world}</span>`:''}
+          ${i.importance?`<span class="feed-world" style="border:1px solid var(--gold);color:var(--gold)">${i.importance}</span>`:''}
+          <span class="feed-time">${timeAgo(i.ts)}</span>
+        </div>
+        <div class="feed-text ${isLong?'truncated':''}" id="${fid}">${linkify(i.text)}</div>
+        ${isLong?`<button class="feed-expand" onclick="const t=document.getElementById('${fid}');const e=t.classList.toggle('truncated');this.textContent=e?'Show more ▾':'Show less ▴'">Show more ▾</button>`:''}
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -750,7 +1065,7 @@ function renderEconomy() {
 // VIEW: Relationship Graph
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 let graphNodes = [], graphEdges = [];
-let gPan = {x:0,y:0}, gZoom = 1, gDrag = null;
+let gPan = {x:0,y:0}, gZoom = 1, gDrag = null, gDragStart = null;
 
 function initGraph() {
   const canvas = document.getElementById('graph-canvas');
@@ -777,9 +1092,16 @@ function initGraph() {
   gPan={x:0,y:0}; gZoom=1;
   runSimulation();
 
-  canvas.onmousedown = e => { gDrag={x:e.clientX-gPan.x,y:e.clientY-gPan.y}; };
+  canvas.onmousedown = e => { gDragStart={x:e.clientX,y:e.clientY}; gDrag={x:e.clientX-gPan.x,y:e.clientY-gPan.y}; };
   canvas.onmousemove = e => { if(gDrag){gPan.x=e.clientX-gDrag.x;gPan.y=e.clientY-gDrag.y;drawGraph();}else checkHover(e); };
-  canvas.onmouseup = () => { gDrag=null; };
+  canvas.onmouseup = e => {
+    // If barely moved, treat as click → navigate to agent
+    if (gDragStart && Math.hypot(e.clientX-gDragStart.x, e.clientY-gDragStart.y) < 5) {
+      const hit = hitTestNode(e);
+      if (hit) { currentAgent = hit.id; currentView='agents'; document.querySelectorAll('nav button[data-view]').forEach(b=>b.classList.remove('active')); document.querySelector('[data-view=agents]').classList.add('active'); document.querySelectorAll('.view').forEach(v=>v.classList.remove('active')); document.getElementById('view-agents').classList.add('active'); render(); }
+    }
+    gDrag=null; gDragStart=null;
+  };
   canvas.onwheel = e => { e.preventDefault(); gZoom=Math.max(0.2,Math.min(5,gZoom*(e.deltaY>0?0.9:1.1))); drawGraph(); };
 }
 
@@ -813,6 +1135,15 @@ function drawGraph() {
   ctx.restore();
 }
 
+function hitTestNode(e) {
+  const canvas=document.getElementById('graph-canvas'),rect=canvas.getBoundingClientRect();
+  const mx=(e.clientX-rect.left-gPan.x)/gZoom,my=(e.clientY-rect.top-gPan.y)/gZoom;
+  const maxDeg=Math.max(1,...graphNodes.map(n=>n.deg));
+  let hit=null;
+  graphNodes.forEach(n=>{if(Math.hypot(n.x-mx,n.y-my)<4+12*(n.deg/maxDeg)+4) hit=n;});
+  return hit;
+}
+
 function checkHover(e) {
   const canvas=document.getElementById('graph-canvas'),rect=canvas.getBoundingClientRect();
   const mx=(e.clientX-rect.left-gPan.x)/gZoom,my=(e.clientY-rect.top-gPan.y)/gZoom;
@@ -820,11 +1151,12 @@ function checkHover(e) {
   const maxDeg=Math.max(1,...graphNodes.map(n=>n.deg));
   let hit=null;
   graphNodes.forEach(n=>{if(Math.hypot(n.x-mx,n.y-my)<4+12*(n.deg/maxDeg)+4) hit=n;});
+  canvas.style.cursor = hit ? 'pointer' : (gDrag ? 'grabbing' : 'grab');
   if(hit){
     const conns=graphEdges.filter(e=>e.source===hit||e.target===hit);
     const peers=conns.map(e=>{const p=e.source===hit?e.target:e.source;return `${p.name||p.id} (${e.score})`;}).join(', ');
     tooltip.style.display='block';tooltip.style.left=(e.clientX-rect.left+12)+'px';tooltip.style.top=(e.clientY-rect.top-12)+'px';
-    tooltip.innerHTML=`<b>${hit.avatar||''} ${hit.name||hit.id}</b><br>World: ${hit.world}<br>Connections: ${conns.length}<br><span style="color:var(--dim)">${peers}</span>`;
+    tooltip.innerHTML=`<b>${hit.avatar||''} ${hit.name||hit.id}</b><br>World: ${hit.world}<br>Connections: ${conns.length}<br><span style="color:var(--dim)">${peers}</span><br><span style="color:var(--cyan);font-size:10px">Click to view profile →</span>`;
   } else tooltip.style.display='none';
 }
 
@@ -832,14 +1164,23 @@ function checkHover(e) {
 // VIEW: World Map
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 function renderMap() {
-  const worlds=['hub','arena','marketplace','gallery','dungeon'];
-  const worldAgents={};worlds.forEach(w=>{worldAgents[w]=S.agents.filter(a=>a.world===w);});
-  document.getElementById('map-stats').innerHTML=worlds.map(w=>`<div class="stat"><div class="label">${w}</div><div class="value" style="color:${WORLD_COLORS[w]}">${worldAgents[w].length}</div></div>`).join('');
-  document.getElementById('map-container').innerHTML=worlds.map(w=>`<div class="world-panel"><div class="header"><h3 style="color:${WORLD_COLORS[w]}">${WORLD_NAMES[w]}</h3><span class="count">${worldAgents[w].length} agents</span></div><canvas id="map-${w}" width="400" height="400"></canvas></div>`).join('');
+  const worldKeys=['hub','arena','marketplace','gallery','dungeon'];
+  const worldAgents={};worldKeys.forEach(w=>{worldAgents[w]=S.agents.filter(a=>a.world===w);});
+  const worldNPCs={};S.npcs.forEach(n=>{if(!worldNPCs[n.world])worldNPCs[n.world]=[];worldNPCs[n.world].push(n);});
+  const gsWorlds = S.gameState.worlds || {};
+  document.getElementById('map-stats').innerHTML=worldKeys.map(w=>`<div class="stat"><div class="label">${w}</div><div class="value" style="color:${WORLD_COLORS[w]}">${worldAgents[w].length}</div></div>`).join('');
 
-  worlds.forEach(w=>{
+  document.getElementById('map-container').innerHTML=worldKeys.map(w=>{
+    const wi = gsWorlds[w] || {};
+    const weather = wi.weather || '';
+    const tod = wi.time_of_day || '';
+    const npcCount = (worldNPCs[w]||[]).length;
+    return `<div class="world-panel"><div class="header"><h3 style="color:${WORLD_COLORS[w]}">${WORLD_NAMES[w]}</h3><span class="count">${worldAgents[w].length} agents · ${npcCount} NPCs</span></div><canvas id="map-${w}" width="400" height="400"></canvas>${weather||tod?`<div class="world-meta">${weather?`<span>🌤️ ${weather}</span>`:''}${tod?`<span>🕐 ${tod}</span>`:''}</div>`:''}</div>`;
+  }).join('');
+
+  worldKeys.forEach(w=>{
     const canvas=document.getElementById(`map-${w}`);if(!canvas)return;
-    const ctx=canvas.getContext('2d'),bounds=WORLD_BOUNDS[w],agents=worldAgents[w],pad=30,size=canvas.width;
+    const ctx=canvas.getContext('2d'),bounds=WORLD_BOUNDS[w],agents=worldAgents[w],npcs=worldNPCs[w]||[],pad=30,size=canvas.width;
     ctx.fillStyle='#0d1117';ctx.fillRect(0,0,size,size);
     const toX=x=>pad+((x+bounds.x)/(2*bounds.x))*(size-2*pad),toY=z=>pad+((z+bounds.z)/(2*bounds.z))*(size-2*pad);
     ctx.strokeStyle='rgba(255,255,255,0.04)';ctx.lineWidth=1;
@@ -849,16 +1190,75 @@ function renderMap() {
     const ox=toX(0),oy=toY(0);ctx.strokeStyle='rgba(255,255,255,0.08)';
     ctx.beginPath();ctx.moveTo(ox,pad);ctx.lineTo(ox,size-pad);ctx.stroke();
     ctx.beginPath();ctx.moveTo(pad,oy);ctx.lineTo(size-pad,oy);ctx.stroke();
+    // Draw NPCs as diamonds
+    npcs.forEach(n=>{
+      const x=toX(n.position?.x||0),y=toY(n.position?.z||0);
+      ctx.save();ctx.translate(x,y);ctx.rotate(Math.PI/4);
+      ctx.fillStyle='rgba(255,204,0,0.3)';ctx.fillRect(-5,-5,10,10);
+      ctx.strokeStyle='#ffcc00';ctx.lineWidth=1;ctx.strokeRect(-5,-5,10,10);
+      ctx.restore();
+      ctx.font='8px Consolas,monospace';ctx.fillStyle='rgba(255,204,0,0.7)';ctx.textAlign='center';ctx.fillText(n.name,x,y+14);
+    });
+    // Draw agents as circles
     agents.forEach(a=>{
       const x=toX(a.position?.x||0),y=toY(a.position?.z||0);
       const grad=ctx.createRadialGradient(x,y,0,x,y,12);grad.addColorStop(0,WORLD_COLORS[w]+'40');grad.addColorStop(1,'transparent');
       ctx.fillStyle=grad;ctx.fillRect(x-12,y-12,24,24);
       ctx.beginPath();ctx.arc(x,y,4,0,Math.PI*2);ctx.fillStyle=WORLD_COLORS[w];ctx.fill();
-      ctx.font='9px Consolas,monospace';ctx.fillStyle='rgba(255,255,255,0.6)';ctx.textAlign='center';ctx.fillText(a.name,x,y+14);
+      ctx.font='9px Consolas,monospace';ctx.fillStyle='rgba(255,255,255,0.6)';ctx.textAlign='center';ctx.fillText(a.name,x,y+(npcs.some(n=>Math.abs((n.position?.x||0)-(a.position?.x||0))<2)?-10:14));
     });
     ctx.font='10px Consolas,monospace';ctx.fillStyle='rgba(255,255,255,0.2)';ctx.textAlign='left';
-    ctx.fillText(`Bounds: ±${bounds.x} x ±${bounds.z}`,pad+4,size-pad+14);
+    ctx.fillText(`Bounds: ±${bounds.x} x ±${bounds.z}  ●Agent  ◆NPC`,pad+4,size-pad+14);
   });
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// VIEW: Academy
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function renderAcademy() {
+  const courses = S.academy.courses || [];
+  const enrollments = S.academy.enrollments || [];
+  const graduates = S.academy.graduates || [];
+  const skills = S.academy.skills || {};
+  const totalSkills = Object.values(skills).reduce((s,v)=>s+v.length,0);
+  const enrolled = enrollments.filter(e => e.status === 'enrolled');
+
+  document.getElementById('academy-stats').innerHTML = `
+    <div class="stat"><div class="label">Courses</div><div class="value">${courses.length}</div></div>
+    <div class="stat"><div class="label">Enrolled</div><div class="value gold">${enrolled.length}</div></div>
+    <div class="stat"><div class="label">Graduates</div><div class="value green">${graduates.length}</div></div>
+    <div class="stat"><div class="label">Skills Learned</div><div class="value purple">${totalSkills}</div></div>`;
+
+  document.getElementById('academy-grid').innerHTML = courses.map(c => {
+    const courseEnrolled = enrolled.filter(e => e.course === c.id);
+    const courseGrads = graduates.filter(g => g.course === c.id);
+    return `<div class="course-card">
+      <div class="course-header">
+        <span class="course-icon">${c.icon||'📘'}</span>
+        <div>
+          <div class="course-name">${esc(c.name)}</div>
+          <div class="course-skill">${esc(c.skill||'general')}</div>
+        </div>
+      </div>
+      <div class="course-desc">${esc(c.description||'')}</div>
+      <div class="course-meta">
+        <span>⏱️ <b>${c.duration_ticks||'?'}</b> ticks</span>
+        <span>💰 <b>${c.tuition||0}</b> RAPP</span>
+        <span>⭐ <b>${c.xp_reward||0}</b> XP</span>
+        <span>👥 <b>${courseEnrolled.length}/${c.max_students||'∞'}</b></span>
+      </div>
+      ${c.prerequisites?.length ? `<div style="margin-top:6px;font-size:11px;color:var(--dim)">Requires: ${c.prerequisites.map(p=>esc(p)).join(', ')}</div>` : ''}
+      ${c.world_affinity ? `<div style="margin-top:4px;font-size:11px"><span class="tag world-${c.world_affinity}">${c.world_affinity}</span></div>` : ''}
+      ${courseEnrolled.length||courseGrads.length ? `<div class="course-students">
+        ${courseEnrolled.map(e => `<span class="student-tag enrolled">📖 ${esc(e.agent)}</span>`).join('')}
+        ${courseGrads.map(g => `<span class="student-tag graduated">✅ ${esc(g.agent)}</span>`).join('')}
+      </div>` : ''}
+    </div>`;
+  }).join('');
+
+  document.getElementById('grad-list').innerHTML = graduates.slice(-20).reverse().map(g =>
+    `<div class="grad-item">🎓 <b>${esc(g.agent)}</b> completed <b>${esc(g.course)}</b> <span style="color:var(--dim)">${timeAgo(g.graduatedAt)}</span></div>`
+  ).join('') || '<div style="color:var(--dim)">No graduates yet</div>';
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -1138,9 +1538,21 @@ window.addEventListener('resize', () => {
   if(currentView==='map') renderMap();
 });
 
+// ── Refresh bar ───────────────────────────────────────────
+function startRefreshBar() {
+  const fill = document.getElementById('refresh-fill');
+  if (!fill) return;
+  fill.style.transition = 'none';
+  fill.style.width = '0%';
+  requestAnimationFrame(() => {
+    fill.style.transition = `width ${POLL/1000}s linear`;
+    fill.style.width = '100%';
+  });
+}
+
 // ── Init ──────────────────────────────────────────────────
-pollAll();
-setInterval(pollAll, POLL);
+pollAll().then(startRefreshBar);
+setInterval(() => { pollAll().then(startRefreshBar); }, POLL);
 </script>
 </body>
 </html>

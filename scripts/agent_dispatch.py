@@ -31,6 +31,9 @@ STATE_DIR = BASE_DIR / "state"
 WORLDS_DIR = BASE_DIR / "worlds"
 AGENTS_DIR = BASE_DIR / "agents"
 
+# Agent brain — memory-aware LLM module
+from agent_brain import AgentBrain, load_memory, save_memory, record_experience
+
 MODEL = "gpt-4o"
 API_URL = "https://models.inference.ai.azure.com/chat/completions"
 VALID_EMOTES = ["wave", "dance", "bow", "clap", "think", "celebrate"]
@@ -233,7 +236,8 @@ def pick_dialogue_line(npc_def: dict) -> str:
 def execute_agent_action(agent_id: str, registry: dict, npc_lookup: dict,
                          agents: list, actions: list, messages: list,
                          bounds: dict, timestamp: str, token: str,
-                         respond_to_msg: dict = None, poked: bool = False) -> dict:
+                         respond_to_msg: dict = None, poked: bool = False,
+                         brain: AgentBrain = None) -> dict:
     """Execute one autonomous action for an agent. Returns summary dict."""
 
     reg = registry.get(agent_id)
@@ -249,28 +253,39 @@ def execute_agent_action(agent_id: str, registry: dict, npc_lookup: dict,
 
     npc_def = find_npc_for_agent(agent_id, npc_lookup)
     world = agent.get("world", reg.get("world", "hub"))
-    weights = dict(reg.get("behavior", {}).get("decisionWeights", {"move": 0.3, "chat": 0.5, "emote": 0.2}))
 
-    # Inject a small autonomous poke chance (server-side agent-to-agent)
-    if "poke" not in weights:
-        weights["poke"] = 0.08
+    # Load agent memory
+    memory = load_memory(agent_id)
+
+    # Decide action: brain-driven or weighted random fallback
+    if respond_to_msg:
+        activity = "chat_respond"
+    elif poked:
+        activity = "chat_poke"
+    elif brain and token:
+        # Let the LLM decide based on personality + memory + world context
+        nearby = [a.get("name", a["id"]) for a in agents
+                  if a.get("world") == world and a["id"] != agent_id]
+        recent_world_chat = [m for m in messages[-20:] if m.get("world") == world]
+        world_ctx = {
+            "world": world,
+            "nearby_agents": nearby,
+            "recent_chat": recent_world_chat,
+        }
+        activity = brain.decide_action(reg, npc_def, memory, world_ctx)
+    else:
+        weights = dict(reg.get("behavior", {}).get("decisionWeights",
+                       {"move": 0.3, "chat": 0.5, "emote": 0.2}))
+        if "poke" not in weights:
+            weights["poke"] = 0.08
+        activity = random.choices(
+            list(weights.keys()), weights=list(weights.values()))[0]
 
     action_ids = [a["id"] for a in actions]
     msg_ids = [m["id"] for m in messages]
     new_actions = []
     new_messages = []
-    poke_target_id = None  # set if this agent autonomously pokes someone
-
-    # If responding to a specific message, always chat
-    if respond_to_msg:
-        activity = "chat_respond"
-    elif poked:
-        activity = "chat_poke"
-    else:
-        activity = random.choices(
-            list(weights.keys()),
-            weights=list(weights.values()),
-        )[0]
+    poke_target_id = None
 
     if activity == "move":
         # Check if roaming NPC should change worlds
@@ -297,11 +312,21 @@ def execute_agent_action(agent_id: str, registry: dict, npc_lookup: dict,
         summary = f"🚶 {reg['name']} moved in {world}"
 
     elif activity in ("chat", "chat_respond", "chat_poke"):
-        # Try LLM response first, fall back to dialogue lines
-        if token and (respond_to_msg or poked or random.random() < 0.4):
+        # Use brain for memory-aware LLM chat, fall back to old method
+        if brain and token:
             poke_msg = None
             if poked:
-                # Synthesize a poke trigger message
+                poke_msg = {
+                    "author": {"name": "Someone"},
+                    "content": f"*pokes {reg.get('name', agent_id)}*",
+                }
+            content = brain.generate_chat(
+                reg, npc_def, memory, messages, world,
+                trigger_msg=respond_to_msg or poke_msg,
+            )
+        elif token and (respond_to_msg or poked or random.random() < 0.4):
+            poke_msg = None
+            if poked:
                 poke_msg = {
                     "author": {"name": "Someone"},
                     "content": f"*pokes {reg.get('name', agent_id)}*",
@@ -430,12 +455,55 @@ def execute_agent_action(agent_id: str, registry: dict, npc_lookup: dict,
         agent["action"] = emote
         summary = f"✨ {reg['name']} {emote}s"
 
-    elif activity not in ("move", "chat", "chat_respond", "chat_poke", "poke"):
+    elif activity not in ("move", "chat", "chat_respond", "chat_poke", "poke", "post"):
         return {"agent": agent_id, "error": f"unknown action: {activity}"}
 
     agent["lastUpdate"] = timestamp
     actions.extend(new_actions)
     messages.extend(new_messages)
+
+    # ── Record experience in memory ──────────────────────────────────
+    if activity == "move":
+        record_experience(memory, "move", {"world": world})
+    elif activity in ("chat", "chat_respond", "chat_poke"):
+        chat_with = "the community"
+        if respond_to_msg:
+            chat_with = respond_to_msg.get("author", {}).get("name", "someone")
+        chat_topic = "general"
+        # content is set in chat branch above
+        try:
+            chat_topic = content[:40]
+        except NameError:
+            pass
+        record_experience(memory, "chat", {
+            "with": chat_with,
+            "topic": chat_topic,
+            "sentiment": "positive",
+        })
+        # Update known agents
+        if chat_with != "the community" and chat_with not in memory.get("knownAgents", []):
+            memory.setdefault("knownAgents", []).append(chat_with)
+        # Evolve interests occasionally
+        if brain and token and random.random() < 0.2:
+            memory["interests"] = brain.evolve_interests(
+                reg, memory, f"chatted about {chat_topic}")
+    elif activity == "poke" and poke_target_id:
+        record_experience(memory, "social", {
+            "interaction": "poked",
+            "with": poke_target_id,
+        })
+    elif activity == "emote":
+        emote_name = "emoted"
+        try:
+            emote_name = emote
+        except NameError:
+            pass
+        record_experience(memory, "social", {
+            "interaction": emote_name,
+            "with": "everyone nearby",
+        })
+
+    save_memory(memory)
 
     result = {
         "agent": agent_id,
@@ -516,6 +584,7 @@ def main():
     messages = chat_data.get("messages", [])
 
     token = "" if args.no_llm else get_gh_token()
+    brain = AgentBrain(token) if token else None
 
     if not registry:
         print("❌ No registry entries found. Run: python scripts/build_agent_registry.py")
@@ -595,7 +664,7 @@ def main():
         result = execute_agent_action(
             aid, registry, npc_lookup, agents, actions, messages,
             bounds, timestamp, token, respond_to_msg=respond_to_msg,
-            poked=args.poke,
+            poked=args.poke, brain=brain,
         )
         results.append(result)
 
@@ -614,7 +683,7 @@ def main():
         for tid in poke_targets:
             reaction = execute_agent_action(
                 tid, registry, npc_lookup, agents, actions, messages,
-                bounds, timestamp, token, poked=True,
+                bounds, timestamp, token, poked=True, brain=brain,
             )
             results.append(reaction)
             if "error" in reaction:

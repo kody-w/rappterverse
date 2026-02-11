@@ -27,6 +27,13 @@ from pathlib import Path
 BASE_DIR = Path(__file__).parent.parent
 STATE_DIR = BASE_DIR / "state"
 
+# Agent brain for LLM-driven interaction dialogue
+try:
+    from agent_brain import AgentBrain, load_memory, save_memory, record_experience, _call_llm
+    HAS_BRAIN = True
+except ImportError:
+    HAS_BRAIN = False
+
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # INTERACTION RULES — this is the only part you ever need to edit
 # to add new interaction types to the entire metaverse.
@@ -377,13 +384,14 @@ def execute_interaction(
     rule: dict,
     agent: dict,
     target: dict,
-    agents: list[dict],
-    actions: list[dict],
-    chat_msgs: list[dict],
+    agents: list,
+    actions: list,
+    chat_msgs: list,
     inventory: dict,
     rel_data: dict,
     ts: str,
-) -> str | None:
+    token: str = "",
+):
     """Execute an interaction, apply effects, return summary or None."""
     effects = rule["effects"]
     a_world = agent.get("world", "hub")
@@ -413,12 +421,35 @@ def execute_interaction(
             ctx["winner"] = ctx["target"]
             ctx["loser"] = ctx["agent"]
 
-    # Format message
-    template = random.choice(rule["templates"])
-    try:
-        message = template.format(**ctx)
-    except KeyError:
-        message = template  # fallback if template has unknown keys
+    # Format message — try LLM first for authentic dialogue, fall back to templates
+    message = ""
+    if HAS_BRAIN and token and random.random() < 0.5:
+        a_name = agent.get("name", agent["id"])
+        t_name = target.get("name", target["id"])
+        a_memory = load_memory(agent["id"])
+        prompt = (f"You are {a_name} in {a_world}. You're having a {rule_name} interaction "
+                  f"with {t_name}. Say something in 1-2 sentences. Be genuine and in-character.")
+        from agent_brain import memory_summary
+        persona = f"You are {a_name}. {memory_summary(a_memory)}"
+        message = _call_llm(token, persona, prompt, max_tokens=80, temperature=0.9)
+        if message:
+            # Record the interaction in both agents' memories
+            record_experience(a_memory, "social", {
+                "interaction": rule_name, "with": t_name,
+            })
+            save_memory(a_memory)
+            t_memory = load_memory(target["id"])
+            record_experience(t_memory, "social", {
+                "interaction": rule_name, "with": a_name,
+            })
+            save_memory(t_memory)
+
+    if not message:
+        template = random.choice(rule["templates"])
+        try:
+            message = template.format(**ctx)
+        except KeyError:
+            message = template
 
     # ── Apply effects ────────────────────────────────────
 
@@ -516,6 +547,27 @@ def execute_interaction(
     if effects.get("transfer_item"):
         _transfer_random_item(agent["id"], target["id"], inventory, item_rarity)
 
+    # ── Interest contagion — ideas spread through interaction ──
+    if HAS_BRAIN and random.random() < 0.15:
+        a_mem = load_memory(agent["id"])
+        t_mem = load_memory(target["id"])
+        a_interests = set(a_mem.get("interests", []))
+        t_interests = set(t_mem.get("interests", []))
+
+        # Agent might pick up one of target's interests
+        novel_for_a = list(t_interests - a_interests)
+        if novel_for_a and len(a_interests) < 8:
+            gained = random.choice(novel_for_a)
+            a_mem.setdefault("interests", []).append(gained)
+            save_memory(a_mem)
+
+        # Target might pick up one of agent's interests
+        novel_for_t = list(a_interests - t_interests)
+        if novel_for_t and len(t_interests) < 8:
+            gained = random.choice(novel_for_t)
+            t_mem.setdefault("interests", []).append(gained)
+            save_memory(t_mem)
+
     return f"{rule_name}: {agent.get('name')} → {target.get('name')}"
 
 
@@ -555,6 +607,13 @@ def interaction_tick(dry_run: bool = False):
     chat_data = load_json(STATE_DIR / "chat.json")
     inventory = load_json(STATE_DIR / "inventory.json")
     rel_data = load_relationships()
+
+    # Get LLM token for brain-driven dialogue
+    token = ""
+    if HAS_BRAIN:
+        result = subprocess.run(["gh", "auth", "token"], capture_output=True, text=True)
+        if result.returncode == 0:
+            token = result.stdout.strip()
 
     agents = agents_data.get("agents", [])
     actions = actions_data.get("actions", [])
@@ -600,6 +659,7 @@ def interaction_tick(dry_run: bool = False):
         result = execute_interaction(
             chosen_name, chosen_rule, agent, target,
             agents, actions, chat_msgs, inventory, rel_data, ts,
+            token=token,
         )
         if result:
             results.append(result)
