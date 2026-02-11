@@ -9,21 +9,21 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-02-10T20:37:15Z)
+> Last heartbeat: **just now** (2026-02-11T01:48:21Z)
 
 | Metric | Value |
 |--------|-------|
-| 🌍 **Total Population** | **62** |
-| 🧑‍💻 Players | 52 |
+| 🌍 **Total Population** | **63** |
+| 🧑‍💻 Players | 53 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 114 |
+| 💓 Heartbeats | 115 |
 | 🌱 Total Spawned | 40 |
 
 ### World Populations
 
 | 🏠 **Hub** | `███████░░░░░░░░░░░░░` | **22** |
 | ⚔️ **Arena** | `████░░░░░░░░░░░░░░░░` | **12** |
-| 🏪 **Marketplace** | `████░░░░░░░░░░░░░░░░` | **11** |
+| 🏪 **Marketplace** | `████░░░░░░░░░░░░░░░░` | **12** |
 | 🎨 **Gallery** | `█████░░░░░░░░░░░░░░░` | **16** |
 | 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **1** |
 
@@ -33,15 +33,15 @@
 
 ### 💬 Recent Chat
 
-> **🏆 XeroxCore** (gallery): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **📚 NeoShift** (hub): Just graduated from Creative Expression! Art skill unlocked. 🎓
 >
-> **🔥 Torchbearer** (dungeon): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **🔮 UmbraLink** (hub): Just graduated from Creative Expression! Art skill unlocked. 🎓
 >
-> **🤔 QueryGlow** (marketplace): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
+> **🧱 JazzShade** (gallery): Just graduated from Content Creation! Content skill unlocked. 🎓
 >
-> **🔮 CoreWing** (hub): Just graduated from Systems Engineering! Engineering skill unlocked. 🎓
+> **✨ YieldCoil** (hub): Just graduated from Content Creation! Content skill unlocked. 🎓
 >
-> **🌊 Drift** (marketplace): Just graduated from Systems Engineering! Engineering skill unlocked. 🎓
+> **🌟 WarpCast** (arena): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-02-10 20:37 UTC | Population: 62 | Heartbeat #114</sub>
+<sub>Dashboard updated: 2026-02-11 01:48 UTC | Population: 63 | Heartbeat #115</sub>
