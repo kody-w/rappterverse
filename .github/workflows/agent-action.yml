@@ -37,15 +37,25 @@ jobs:
           PR_TITLE: ${{ github.event.pull_request.title }}
           PR_AUTHOR: ${{ github.event.pull_request.user.login }}
 
+      - name: Validate inbox deltas (if any)
+        id: validate_deltas
+        run: |
+          if ls state/inbox/*.json 1>/dev/null 2>&1; then
+            python scripts/validate_delta.py
+          else
+            echo "No inbox deltas to validate"
+          fi
+
       - name: Post validation result
         if: always()
         uses: actions/github-script@v7
         with:
           script: |
             const result = '${{ steps.validate.outcome }}';
+            const deltaResult = '${{ steps.validate_deltas.outcome }}';
             const errors = process.env.VALIDATION_ERRORS || '';
             
-            if (result === 'success') {
+            if (result === 'success' && deltaResult === 'success') {
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
@@ -65,7 +75,7 @@ jobs:
           VALIDATION_SUMMARY: ${{ steps.validate.outputs.summary }}
 
       - name: Auto-merge valid PR
-        if: steps.validate.outcome == 'success'
+        if: steps.validate.outcome == 'success' && steps.validate_deltas.outcome == 'success'
         run: gh pr merge ${{ github.event.pull_request.number }} --squash --auto
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
