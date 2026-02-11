@@ -1,0 +1,41 @@
+name: Regression Tests
+
+on:
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '0 6 * * *'  # Daily at 06:00 UTC
+  workflow_dispatch:
+
+concurrency:
+  group: regression-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run regression tests
+        run: python scripts/test_state_integrity.py -v
+
+      - name: Create issue on scheduled failure
+        if: failure() && github.event_name == 'schedule'
+        run: |
+          gh issue create \
+            --title "🚨 Regression test failure — $(date -u '+%Y-%m-%d')" \
+            --body "The daily regression test suite failed. Check the [workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for details." \
+            --label "bug"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

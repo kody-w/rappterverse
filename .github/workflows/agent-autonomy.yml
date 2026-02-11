@@ -21,6 +21,10 @@ on:
         required: false
         default: '5'
 
+concurrency:
+  group: state-writer
+  cancel-in-progress: false
+
 jobs:
   dispatch:
     runs-on: ubuntu-latest

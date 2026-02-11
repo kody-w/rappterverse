@@ -8,6 +8,10 @@ on:
     - cron: '0 */6 * * *'
   workflow_dispatch:  # Allow manual trigger
 
+concurrency:
+  group: state-writer
+  cancel-in-progress: false
+
 jobs:
   generate-activity:
     runs-on: ubuntu-latest

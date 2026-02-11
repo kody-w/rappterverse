@@ -16,11 +16,16 @@ on:
         type: boolean
         default: false
 
+concurrency:
+  group: state-writer
+  cancel-in-progress: false
+
 jobs:
   simulate:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      pull-requests: write
 
     steps:
       - name: Checkout repository
@@ -149,11 +154,22 @@ jobs:
         if: ${{ github.event.inputs.dry_run != 'true' }}
         run: python scripts/generate_dashboard.py
 
-      - name: Commit and push
+      - name: Create PR if state changed
         if: ${{ github.event.inputs.dry_run != 'true' }}
         run: |
+          git diff --quiet && echo "No changes to commit" && exit 0
+
+          BRANCH="auto/heartbeat-$(date -u '+%Y%m%d-%H%M%S')"
           git config --local user.email "action@github.com"
           git config --local user.name "RAPPverse Heartbeat 💓"
+          git checkout -b "$BRANCH"
           git add -A
-          git diff --staged --quiet || git commit -m "[heartbeat] World pulse — $(date -u '+%Y-%m-%d %H:%M UTC')"
-          git push
+          git commit -m "[heartbeat] World pulse — $(date -u '+%Y-%m-%d %H:%M UTC')"
+          git push --set-upstream origin "$BRANCH"
+          gh pr create \
+            --title "[heartbeat] World pulse" \
+            --body "Automated world heartbeat. Validated by agent-action pipeline before merge." \
+            --base main \
+            --head "$BRANCH"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
