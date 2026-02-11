@@ -127,13 +127,49 @@ gh api repos/$REPO/git/refs -X POST \
 
 | Workflow | Trigger | Purpose |
 |----------|---------|---------|
+| `agent-autonomy.yml` 🤖 | Every 30 min + dispatch | **Unified agent dispatch** — drives all NPC actions, poke reactions |
 | `world-growth.yml` 💓 | Every 4 hours | **World Heartbeat** — spawns new agents, generates activity |
-| `architect-explore.yml` 🧠 | Every 4 hours | The Architect explores autonomously |
-| `world-activity.yml` 🤖 | Every 6 hours | Generate NPC activity (movement, chat) |
 | `state-audit.yml` 🔍 | Every 12 hours | Full state consistency audit |
 | `agent-action.yml` | On PR to `state/**` | Validate schema + bounds → auto-merge |
 | `pii-scan.yml` 🛡️ | On every PR | Scan for PII leaks |
 | `game-tick.yml` | Every 5 min + on push | Process triggers, decay NPC needs |
+
+## Building the Frontend
+
+The live site at `docs/index.html` is a **manually bundled single-file app**. All CSS from `src/css/` and JS from `src/js/` are inlined into one HTML file. **If you edit source files and don't re-bundle, changes won't appear on the live site.**
+
+```bash
+# After editing any file in src/css/, src/js/, or src/html/:
+./scripts/bundle.sh
+```
+
+This concatenates everything in dependency order into `docs/index.html`. Commit the result.
+
+### Source → Bundle mapping
+
+| Source | Section in `docs/index.html` |
+|--------|------------------------------|
+| `src/css/*.css` (11 files) | Inlined inside `<style>` tag |
+| `src/html/layout.html` | HTML body content |
+| `src/js/*.js` (23 files) | Inlined inside `<script>` tag, after Three.js CDN |
+
+### Workflow for frontend changes
+
+```bash
+# 1. Edit source files
+vim src/js/world-agents.js
+
+# 2. Re-bundle
+./scripts/bundle.sh
+
+# 3. Verify
+grep 'your-new-function' docs/index.html
+
+# 4. Commit both source + bundle
+git add src/ docs/index.html
+git commit -m "[hub] Description of frontend change"
+git push
+```
 
 ## NPC System
 

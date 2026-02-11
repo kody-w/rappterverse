@@ -324,16 +324,20 @@ const WorldAgents = {
             content: `👉 poked ${agentId}`,
             type: 'poke'
         };
-        GameState.data.chat.push(pokeMsg);
+        if (GameState.data.chat) GameState.data.chat.push(pokeMsg);
 
         // Fire repository_dispatch (requires a GitHub token)
-        // This triggers agent-autonomy.yml which makes the agent respond
         try {
+            const token = GameState.pokeToken || localStorage.getItem('rappterverse-token') || '';
+            if (!token) {
+                console.log('[POKE] No token — poke recorded locally only');
+                return;
+            }
             const res = await fetch(`https://api.github.com/repos/${REPO}/dispatches`, {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/vnd.github.v3+json',
-                    'Authorization': `Bearer ${GameState.pokeToken || ''}`,
+                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
