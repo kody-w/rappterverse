@@ -1,0 +1,46 @@
+name: Apply Inbox Deltas
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'state/inbox/*.json'
+
+concurrency:
+  group: apply-deltas
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Apply deltas
+        run: python scripts/apply_deltas.py
+
+      - name: Commit applied state
+        run: |
+          git config user.name "rappterverse-bot"
+          git config user.email "bot@rappterverse.dev"
+          git add state/ worlds/ feed/
+          git rm -f --ignore-unmatch state/inbox/*.json
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "[state] apply inbox deltas"
+            git push
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
