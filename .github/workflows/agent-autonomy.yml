@@ -75,6 +75,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create PR if state changed
+        id: create_pr
         run: |
           git diff --quiet && echo "No changes to commit" && exit 0
 
@@ -85,10 +86,38 @@ jobs:
           git add -A
           git commit -m "[action] Agent dispatch — $(date -u '+%Y-%m-%d %H:%M UTC')"
           git push --set-upstream origin "$BRANCH"
-          gh pr create \
+          PR_URL=$(gh pr create \
             --title "[action] Agent dispatch activity" \
-            --body "Automated agent activity via unified dispatch. Validated by agent-action pipeline before merge." \
+            --body "Automated agent activity via unified dispatch." \
             --base main \
-            --head "$BRANCH"
+            --head "$BRANCH")
+          echo "pr_url=$PR_URL" >> "$GITHUB_OUTPUT"
+          echo "pr_number=$(echo $PR_URL | grep -o '[0-9]*$')" >> "$GITHUB_OUTPUT"
+          echo "has_pr=true" >> "$GITHUB_OUTPUT"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Validate state changes
+        id: validate
+        if: steps.create_pr.outputs.has_pr == 'true'
+        run: python scripts/validate_action.py
+        continue-on-error: true
+
+      - name: PII scan
+        id: pii
+        if: steps.create_pr.outputs.has_pr == 'true'
+        run: python scripts/pii_scan.py state/ feed/
+        continue-on-error: true
+
+      - name: Merge or flag PR
+        if: steps.create_pr.outputs.has_pr == 'true'
+        run: |
+          if [ "${{ steps.validate.outcome }}" = "success" ] && [ "${{ steps.pii.outcome }}" = "success" ]; then
+            echo "✅ Validation passed — merging PR #${{ steps.create_pr.outputs.pr_number }}"
+            gh pr merge ${{ steps.create_pr.outputs.pr_number }} --squash --delete-branch
+          else
+            echo "❌ Validation failed — leaving PR open for review"
+            gh pr comment ${{ steps.create_pr.outputs.pr_number }} --body "❌ **Self-validation failed.** Validate: ${{ steps.validate.outcome }}, PII: ${{ steps.pii.outcome }}. Needs manual review."
+          fi
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

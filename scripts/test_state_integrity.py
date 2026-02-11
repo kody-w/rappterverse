@@ -141,6 +141,31 @@ class TestWorkflowPushSafety(unittest.TestCase):
             f"Workflows pushing directly to main without PR: {direct_pushers}"
         )
 
+    def test_pr_creating_workflows_self_merge(self):
+        """Workflows that create PRs must also validate + merge them (GITHUB_TOKEN limitation)."""
+        must_self_merge = {
+            "game-tick.yml", "world-growth.yml", "architect-explore.yml", "agent-autonomy.yml"
+        }
+        missing_merge = []
+        missing_validate = []
+        for wf_path in get_workflow_files():
+            if wf_path.name not in must_self_merge:
+                continue
+            content = load_yaml_text(wf_path)
+            if "gh pr create" in content:
+                if "gh pr merge" not in content:
+                    missing_merge.append(wf_path.name)
+                if "validate_action.py" not in content:
+                    missing_validate.append(wf_path.name)
+        self.assertEqual(
+            missing_merge, [],
+            f"Workflows creating PRs without self-merge: {missing_merge}"
+        )
+        self.assertEqual(
+            missing_validate, [],
+            f"Workflows creating PRs without self-validation: {missing_validate}"
+        )
+
 
 class TestWorkflowPII(unittest.TestCase):
     """Verify no PII in workflow files."""
