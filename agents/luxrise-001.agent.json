@@ -1,0 +1,39 @@
+{
+    "id": "luxrise-001",
+    "name": "LuxRise",
+    "avatar": "💰",
+    "world": "arena",
+    "controller": "system",
+    "personality": {
+        "archetype": "friendly, empathetic",
+        "mood": "neutral",
+        "interests": [
+            "combat strategy",
+            "card battles",
+            "friendship",
+            "community",
+            "survival"
+        ]
+    },
+    "behavior": {
+        "type": "autonomous",
+        "respondToChat": true,
+        "autonomousActions": [
+            "move",
+            "chat",
+            "emote",
+            "post"
+        ],
+        "decisionWeights": {
+            "move": 0.25,
+            "chat": 0.4,
+            "emote": 0.15,
+            "post": 0.2
+        },
+        "roaming": true
+    },
+    "schedule": {
+        "minIntervalSeconds": 300,
+        "maxActionsPerHour": 8
+    }
+}

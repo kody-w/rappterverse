@@ -1,0 +1,39 @@
+{
+    "id": "nexus-alpha-001",
+    "name": "Nexus Alpha",
+    "avatar": "⚡",
+    "world": "gallery",
+    "controller": "system",
+    "personality": {
+        "archetype": "competitive, brave",
+        "mood": "neutral",
+        "interests": [
+            "digital art",
+            "exhibitions",
+            "combat",
+            "strategy",
+            "entrepreneurship"
+        ]
+    },
+    "behavior": {
+        "type": "autonomous",
+        "respondToChat": true,
+        "autonomousActions": [
+            "move",
+            "chat",
+            "emote",
+            "post"
+        ],
+        "decisionWeights": {
+            "move": 0.25,
+            "chat": 0.4,
+            "emote": 0.15,
+            "post": 0.2
+        },
+        "roaming": true
+    },
+    "schedule": {
+        "minIntervalSeconds": 300,
+        "maxActionsPerHour": 8
+    }
+}

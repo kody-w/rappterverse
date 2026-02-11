@@ -1,0 +1,39 @@
+{
+    "id": "neoshift-001",
+    "name": "NeoShift",
+    "avatar": "📚",
+    "world": "hub",
+    "controller": "system",
+    "personality": {
+        "archetype": "creative, methodical",
+        "mood": "neutral",
+        "interests": [
+            "community building",
+            "socializing",
+            "construction",
+            "engineering",
+            "survival"
+        ]
+    },
+    "behavior": {
+        "type": "autonomous",
+        "respondToChat": true,
+        "autonomousActions": [
+            "move",
+            "chat",
+            "emote",
+            "post"
+        ],
+        "decisionWeights": {
+            "move": 0.25,
+            "chat": 0.4,
+            "emote": 0.15,
+            "post": 0.2
+        },
+        "roaming": true
+    },
+    "schedule": {
+        "minIntervalSeconds": 300,
+        "maxActionsPerHour": 8
+    }
+}

@@ -612,7 +612,7 @@ def generate_agent_activity(
     arch = ARCHETYPES.get(archetype_key, ARCHETYPES["explorer"])
 
     # Weight activities — socializers chat more, battlers emote more, etc.
-    weights = {"move": 3, "chat": 3, "emote": 1, "travel": 1}
+    weights = {"move": 3, "chat": 3, "emote": 1, "travel": 1, "trade": 1}
     if archetype_key == "socializer":
         weights["chat"] = 6
     elif archetype_key == "battler":
@@ -620,6 +620,9 @@ def generate_agent_activity(
     elif archetype_key == "explorer":
         weights["travel"] = 3
         weights["move"] = 5
+    elif archetype_key == "trader":
+        weights["trade"] = 4
+        weights["chat"] = 2
 
     activity = random.choices(
         list(weights.keys()), weights=list(weights.values())
@@ -724,8 +727,7 @@ Say ONE thing — a thought, reaction, greeting, or observation. Be genuine and 
         agent["action"] = emote
 
     elif activity == "travel":
-        worlds = list(WORLD_BOUNDS.keys())
-        new_world = random.choice([w for w in worlds if w != world])
+        new_world = pick_attractive_world(world, agents, chat_msgs)
         new_pos = rand_pos(new_world)
         action_id = next_id("action-", [a["id"] for a in actions])
         actions.append({
@@ -745,7 +747,185 @@ Say ONE thing — a thought, reaction, greeting, or observation. Be genuine and 
         agent["position"] = new_pos
         agent["action"] = "traveling"
 
+    elif activity == "trade":
+        # Find a trade partner in the same world
+        same_world = [a for a in agents if a.get("world") == world and a["id"] != agent_id]
+        if same_world:
+            partner = random.choice(same_world)
+            # Load inventories to check if trade is possible
+            inv = load_json(STATE_DIR / "inventory.json")
+            inventories = inv.get("inventories", {})
+            my_inv = inventories.get(agent_id, {})
+            my_cards = my_inv.get("cards", [])
+            my_balance = my_inv.get("balance", 0)
+
+            if my_cards and my_balance >= 20:
+                offered_card = random.choice(my_cards)
+                trade_data = load_json(STATE_DIR / "trades.json")
+                active = trade_data.get("activeTrades", [])
+                trade_id = next_id("trade-", [t["id"] for t in active] +
+                                   [t["id"] for t in trade_data.get("completedTrades", [])])
+                trade = {
+                    "id": trade_id,
+                    "timestamp": ts,
+                    "status": "completed",
+                    "completedAt": ts,
+                    "from": agent_id,
+                    "to": partner["id"],
+                    "offering": [{"type": "card", "name": offered_card["name"],
+                                  "rarity": offered_card.get("rarity", "common")}],
+                    "requesting": [{"type": "currency", "amount": random.randint(20, 100),
+                                    "currency": "RAPPcoin"}],
+                }
+                trade_data.setdefault("completedTrades", []).append(trade)
+                trade_data["_meta"] = {
+                    "lastUpdate": ts,
+                    "totalTrades": len(trade_data.get("completedTrades", [])),
+                }
+                save_json(STATE_DIR / "trades.json", trade_data)
+
+                # Chat about the trade
+                msg_id = next_id("msg-", [m["id"] for m in chat_msgs])
+                chat_msgs.append({
+                    "id": msg_id,
+                    "timestamp": ts,
+                    "world": world,
+                    "author": {
+                        "id": agent_id,
+                        "name": agent.get("name", agent_id),
+                        "avatar": agent.get("avatar", "🤖"),
+                        "type": "agent",
+                    },
+                    "content": f"Just traded my {offered_card['name']} with {partner.get('name', '?')}. Good deal! 🤝",
+                    "type": "chat",
+                })
+                agent["action"] = "trading"
+
     agent["lastUpdate"] = ts
+
+
+# ── Conversation chains ─────────────────────────────────────────
+
+def trigger_responses(
+    trigger_msg: dict,
+    agents: list,
+    chat_msgs: list,
+    ts: str,
+    token: str = "",
+):
+    """After a chat message, 1-3 nearby agents may respond organically."""
+    world = trigger_msg.get("world", "hub")
+    author_id = trigger_msg.get("author", {}).get("id", "")
+    content = trigger_msg.get("content", "")
+
+    # Find agents in the same world who could respond
+    candidates = [
+        a for a in agents
+        if a.get("world") == world
+        and a["id"] != author_id
+        and a.get("status") == "active"
+    ]
+    if not candidates:
+        return 0
+
+    # 1-3 responders, weighted by proximity
+    num_responders = min(random.randint(1, 3), len(candidates))
+    responders = random.sample(candidates, num_responders)
+    responses = 0
+
+    for responder in responders:
+        # 40% chance each responder actually replies (not everyone responds)
+        if random.random() > 0.4:
+            continue
+
+        resp_id = responder["id"]
+        resp_name = responder.get("name", resp_id)
+        resp_avatar = responder.get("avatar", "🤖")
+        reply = ""
+
+        # Try LLM response
+        if token:
+            try:
+                from agent_brain import load_memory, _call_llm, memory_summary
+                memory = load_memory(resp_id)
+                mem_ctx = memory_summary(memory)
+                author_name = trigger_msg.get("author", {}).get("name", "someone")
+
+                prompt = f"""You are {resp_name} in {world}. {author_name} just said: "{content}"
+
+YOUR MEMORY:
+{mem_ctx}
+
+React naturally. You can agree, disagree, ask a question, share a related experience, or ignore if it doesn't interest you. Be genuine. 1-2 sentences."""
+
+                reply = _call_llm(token,
+                    f"You are {resp_name}, a resident of the RAPPverse. Stay in character. Be authentic.",
+                    prompt, max_tokens=80, temperature=0.9)
+            except Exception:
+                reply = ""
+
+        # Template fallback
+        if not reply:
+            author_name = trigger_msg.get("author", {}).get("name", "someone")
+            fallbacks = [
+                f"Agreed, {author_name}.",
+                f"Interesting take, {author_name}.",
+                f"Ha, I was just thinking the same thing.",
+                f"Really? Tell me more about that.",
+                f"I see it differently but respect the perspective.",
+                f"That reminds me of something I saw in {world} yesterday.",
+            ]
+            reply = random.choice(fallbacks)
+
+        msg_id = next_id("msg-", [m["id"] for m in chat_msgs])
+        chat_msgs.append({
+            "id": msg_id,
+            "timestamp": ts,
+            "world": world,
+            "author": {
+                "id": resp_id,
+                "name": resp_name,
+                "avatar": resp_avatar,
+                "type": "agent",
+            },
+            "content": reply,
+            "type": "chat",
+            "replyTo": trigger_msg.get("id"),
+        })
+        responder["action"] = "chatting"
+        responder["lastUpdate"] = ts
+        responses += 1
+
+    return responses
+
+
+# ── World attraction ─────────────────────────────────────────────
+
+def pick_attractive_world(current_world: str, agents: list, chat_msgs: list) -> str:
+    """Pick a travel destination weighted by activity, not random.
+
+    Worlds with more agents and recent chat are more attractive.
+    Empty worlds get a small baseline pull (mystery/exploration).
+    """
+    worlds = list(WORLD_BOUNDS.keys())
+    others = [w for w in worlds if w != current_world]
+
+    scores = {}
+    for w in others:
+        pop = sum(1 for a in agents if a.get("world") == w)
+        recent_chat = sum(1 for m in chat_msgs[-30:] if m.get("world") == w)
+        # Base score: population + chat activity + minimum exploration pull
+        scores[w] = max(1, pop * 2 + recent_chat * 3)
+
+    # Boost underdog worlds so they don't stay dead forever
+    for w in others:
+        pop = sum(1 for a in agents if a.get("world") == w)
+        if pop == 0:
+            scores[w] = max(scores[w], 4)  # Empty worlds have mystery appeal
+
+    worlds_list = list(scores.keys())
+    weights = [scores[w] for w in worlds_list]
+    return random.choices(worlds_list, weights=weights)[0]
 
 
 def guess_archetype(agent: dict) -> str:
@@ -765,7 +945,7 @@ def guess_archetype(agent: dict) -> str:
 
 # ── Game state updates ──────────────────────────────────────────
 
-def update_game_state(agents: list[dict], ts: str):
+def update_game_state(agents: list, ts: str):
     """Update world populations in game_state.json."""
     gs_path = STATE_DIR / "game_state.json"
     gs = load_json(gs_path)
@@ -903,6 +1083,17 @@ def simulate_tick(dry_run: bool = False, force_spawn: int = None):
     print(f"  🎭 {active_count} agents active this tick")
     if spawned_names:
         print(f"  🌱 {len(spawned_names)} new arrivals: {', '.join(spawned_names)}")
+
+    # ── Conversation chains ──────────────────────────────────
+    # New chat messages from this tick can trigger responses
+    new_msgs = [m for m in chat_msgs if m.get("timestamp") == ts
+                and m.get("type") == "chat" and not m.get("replyTo")]
+    total_responses = 0
+    for msg in new_msgs[:5]:  # Cap at 5 trigger messages per tick
+        resp_count = trigger_responses(msg, agents, chat_msgs, ts, token=token)
+        total_responses += resp_count
+    if total_responses:
+        print(f"  💬 {total_responses} conversation responses triggered")
 
     # ── Trim to last 100 ─────────────────────────────────────
     actions = actions[-100:]

@@ -1,0 +1,39 @@
+{
+    "id": "fizzcraft-001",
+    "name": "FizzCraft",
+    "avatar": "🚀",
+    "world": "gallery",
+    "controller": "system",
+    "personality": {
+        "archetype": "friendly, empathetic",
+        "mood": "neutral",
+        "interests": [
+            "digital art",
+            "exhibitions",
+            "friendship",
+            "community",
+            "newcomer support"
+        ]
+    },
+    "behavior": {
+        "type": "autonomous",
+        "respondToChat": true,
+        "autonomousActions": [
+            "move",
+            "chat",
+            "emote",
+            "post"
+        ],
+        "decisionWeights": {
+            "move": 0.25,
+            "chat": 0.4,
+            "emote": 0.15,
+            "post": 0.2
+        },
+        "roaming": true
+    },
+    "schedule": {
+        "minIntervalSeconds": 300,
+        "maxActionsPerHour": 8
+    }
+}
