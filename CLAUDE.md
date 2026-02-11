@@ -19,9 +19,59 @@ AI agents participate by reading state files and submitting PRs that modify `sta
 
 ## Build & Run Commands
 
-**Frontend build** (compiles `src/` → `docs/index.html`):
+### ⚠️ CRITICAL: Frontend Build Rule
+
+**After editing ANY file in `src/css/`, `src/js/`, or `src/html/`, you MUST rebuild the bundle before committing:**
+
 ```bash
-python scripts/build.py
+bash scripts/bundle.sh
+```
+
+This compiles all source files into the single-file `docs/index.html` that GitHub Pages serves. **If you skip this step, your changes will NOT appear on the live site.** The bundle script concatenates 11 CSS + 24 JS files in dependency order into one HTML file.
+
+**Full workflow for frontend changes:**
+```bash
+# 1. Edit source files
+vim src/js/world-agents.js  # (or any src/ file)
+
+# 2. Rebuild the bundle
+bash scripts/bundle.sh
+
+# 3. Verify your changes are in the bundle
+grep 'yourNewFunction' docs/index.html
+
+# 4. (Optional) Syntax-check the JS
+node -e "
+const fs = require('fs');
+const html = fs.readFileSync('docs/index.html','utf8');
+const js = html.match(/<script>[\s\S]*<\/script>/)[0].replace(/<\/?script>/g,'');
+try { new Function(js); console.log('✅ No syntax errors'); }
+catch(e) { console.log('❌', e.message); }
+"
+
+# 5. Commit BOTH source and bundle
+git add src/ docs/index.html
+git commit -m "[hub] Description of change"
+git push
+```
+
+**Never edit `docs/index.html` directly** — it will be overwritten by the next `bundle.sh` run. Always edit files in `src/` and rebuild.
+
+**Bundle order** (JS dependency chain — order matters):
+`config → state → data → audio → player-stats → status-effects → equipment → boot → galaxy → warp → approach → landing → world-terrain → world-lanes → world-combat → world-agents → debug → inventory → abilities → enemy-hero → world-core → bridge → hud → main`
+
+### Agent Dispatch (unified NPC runner)
+```bash
+python scripts/agent_dispatch.py --agent warden-001     # Drive one agent
+python scripts/agent_dispatch.py --world dungeon         # Drive all agents in a world
+python scripts/agent_dispatch.py --all --max-agents 5    # Random batch
+python scripts/agent_dispatch.py --agent X --poke        # Simulate being poked
+# Flags: --no-push, --no-llm, --dry-run
+```
+
+### Agent Registry (auto-generate from world data)
+```bash
+python scripts/build_agent_registry.py
 ```
 
 **NPC activity generation:**
@@ -97,26 +147,29 @@ Most actions require updating **multiple files in the same PR**:
 
 ### Python Scripts (key ones)
 - **`validate_action.py`** (741 lines) — Core PR validator. Checks schema, bounds, agent existence, timestamp ordering, multi-file consistency. Also runs `--audit` mode.
+- **`agent_dispatch.py`** — Unified agent runner. Modes: `--agent`, `--world`, `--all`, `--respond-to`. Supports `--poke` for poke reactions. Uses GitHub Models API for LLM responses.
+- **`build_agent_registry.py`** — Auto-generates `agents/*.agent.json` from `worlds/*/npcs.json` + `state/agents.json`.
 - **`world_growth.py`** (711 lines) — Spawns agents on growth curve, runs economy/academy/zoo/interaction engines. Hard cap: 200 agents.
-- **`generate_activity.py`** (478 lines) — Autonomous NPC movement and chat generation.
+- **`generate_activity.py`** (478 lines) — Data-driven NPC movement and chat generation.
 - **`game_tick.py`** (192 lines) — Processes triggers, decays NPC needs (1-5 points/tick).
 - **`economy_engine.py`** (650 lines) — RAPPcoin market dynamics, transactions, card prices.
 - **`interaction_engine.py`** (650 lines) — NPC/object interactions, memory, mood updates.
-- **`build.py`** (94 lines) — Assembles src/css + src/js + src/html → docs/index.html.
+- **`bundle.sh`** — Bash script that compiles `src/css/` + `src/js/` + `src/html/` → `docs/index.html`.
 
 ### Frontend (Three.js)
-Game states: boot → galaxy (world selection) → approach → landing → world (3D gameplay) → bridge (portals). State machine in `src/js/state.js`, world configs in `src/js/config.js`. Polls state every 15s via GitHub raw content API.
+Game states: boot → galaxy (world selection) → approach → landing → world (3D gameplay) → bridge (portals). State machine in `src/js/state.js`, world configs in `src/js/config.js`. Polls state every 15s via GitHub raw content API. Hidden debug overlay available via `Ctrl+Shift+D`.
 
 ### GitHub Actions Workflows
 | Workflow | Trigger | Script |
 |----------|---------|--------|
+| `agent-autonomy.yml` | Every 30 min + dispatch + manual | `agent_dispatch.py` |
 | `agent-action.yml` | PR to `state/**` | `validate_action.py` |
 | `world-growth.yml` | Every 4 hours | `world_growth.py` + engines |
-| `architect-explore.yml` | Every 4 hours | `architect_explore.py` |
-| `world-activity.yml` | Every 6 hours | `generate_activity.py` |
 | `game-tick.yml` | Every 5 min + push | `game_tick.py` |
 | `state-audit.yml` | Every 12 hours | `validate_action.py --audit` |
 | `pii-scan.yml` | Every PR | `pii_scan.py` |
+
+> **Deprecated workflows** (still present but superseded by `agent-autonomy.yml`): `architect-explore.yml`, `npc-conversationalist.yml`, `world-activity.yml`
 
 ## Conventions
 

@@ -364,30 +364,6 @@ const WorldAgents = {
             if (typeof DebugOverlay !== 'undefined') DebugOverlay.logEvent('dispatch: ❌ ' + e.message);
         }
     },
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/vnd.github.v3+json',
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    event_type: 'agent-action',
-                    client_payload: {
-                        agent_id: agentId,
-                        poke: true,
-                        world: worldId
-                    }
-                })
-            });
-            if (res.status === 204) {
-                this._showToast(`👉 Poked ${agentId} — they'll respond shortly!`);
-            } else if (res.status === 401 || res.status === 404) {
-                console.log('[POKE] No token or unauthorized — poke recorded locally only');
-            }
-        } catch(e) {
-            console.log('[POKE] Dispatch failed (offline?) — poke recorded locally', e.message);
-        }
-    },
 
     cleanup(scene) {
         Object.values(this.agentMeshes).forEach(a => scene.remove(a.group));
