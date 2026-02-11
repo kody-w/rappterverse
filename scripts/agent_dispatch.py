@@ -455,7 +455,29 @@ def execute_agent_action(agent_id: str, registry: dict, npc_lookup: dict,
         agent["action"] = emote
         summary = f"✨ {reg['name']} {emote}s"
 
-    elif activity not in ("move", "chat", "chat_respond", "chat_poke", "poke", "post"):
+    elif activity == "post":
+        # "post" not yet implemented — fall back to chat
+        content = pick_dialogue_line(npc_def) or f"*{reg.get('name', agent_id)} looks around thoughtfully*"
+        mid = get_next_id("msg-", msg_ids + [m["id"] for m in new_messages])
+        new_messages.append({
+            "id": mid, "timestamp": timestamp, "world": world,
+            "author": {
+                "id": agent_id,
+                "name": reg.get("name", agent_id),
+                "avatar": reg.get("avatar", "🤖"),
+                "type": "agent",
+            },
+            "content": content, "type": "chat",
+        })
+        aid = get_next_id("action-", action_ids + [a["id"] for a in new_actions])
+        new_actions.append({
+            "id": aid, "timestamp": timestamp, "agentId": agent_id,
+            "type": "chat", "world": world, "data": {"message": content},
+        })
+        agent["action"] = "chatting"
+        summary = f'💬 {reg["name"]}: "{content[:60]}..."'
+
+    elif activity not in ("move", "chat", "chat_respond", "chat_poke", "poke"):
         return {"agent": agent_id, "error": f"unknown action: {activity}"}
 
     agent["lastUpdate"] = timestamp
