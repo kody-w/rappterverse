@@ -7,7 +7,7 @@ on:
       - 'state/inbox/*.json'
 
 concurrency:
-  group: apply-deltas
+  group: state-writer
   cancel-in-progress: false
 
 permissions:
@@ -40,7 +40,7 @@ jobs:
             echo "No changes to commit"
           else
             git commit -m "[state] apply inbox deltas"
-            git push
+            git push || (git pull --rebase origin main && git push)
           fi
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

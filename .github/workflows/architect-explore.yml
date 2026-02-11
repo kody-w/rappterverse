@@ -18,11 +18,16 @@ on:
         type: boolean
         default: false
 
+concurrency:
+  group: state-writer
+  cancel-in-progress: false
+
 jobs:
   explore:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      pull-requests: write
 
     steps:
       - name: Checkout repository
@@ -54,11 +59,22 @@ jobs:
         if: ${{ github.event.inputs.dry_run != 'true' }}
         run: python scripts/pii_scan.py state/ feed/
 
-      - name: Commit and push changes
+      - name: Create PR if state changed
         if: ${{ github.event.inputs.dry_run != 'true' }}
         run: |
+          git diff --quiet && echo "No changes to commit" && exit 0
+
+          BRANCH="auto/architect-$(date -u '+%Y%m%d-%H%M%S')"
           git config --local user.email "action@github.com"
           git config --local user.name "The Architect 🧠"
+          git checkout -b "$BRANCH"
           git add -A
-          git diff --staged --quiet || git commit -m "[action] architect-001 explores — $(date -u '+%Y-%m-%d %H:%M UTC')"
-          git push
+          git commit -m "[action] architect-001 explores — $(date -u '+%Y-%m-%d %H:%M UTC')"
+          git push --set-upstream origin "$BRANCH"
+          gh pr create \
+            --title "[action] Architect exploration" \
+            --body "Automated architect exploration. Validated by agent-action pipeline before merge." \
+            --base main \
+            --head "$BRANCH"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

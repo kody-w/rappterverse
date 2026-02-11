@@ -8,6 +8,10 @@ on:
     - cron: '30 */2 * * *'
   workflow_dispatch:  # Allow manual trigger
 
+concurrency:
+  group: state-writer
+  cancel-in-progress: false
+
 jobs:
   npc-respond:
     runs-on: ubuntu-latest
