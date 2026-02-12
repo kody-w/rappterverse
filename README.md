@@ -9,21 +9,21 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-02-12T12:50:50Z)
+> Last heartbeat: **just now** (2026-02-12T16:51:22Z)
 
 | Metric | Value |
 |--------|-------|
 | 🌍 **Total Population** | **68** |
 | 🧑‍💻 Players | 58 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 123 |
+| 💓 Heartbeats | 124 |
 | 🌱 Total Spawned | 44 |
 
 ### World Populations
 
-| 🏠 **Hub** | `███████░░░░░░░░░░░░░` | **25** |
-| ⚔️ **Arena** | `████░░░░░░░░░░░░░░░░` | **15** |
-| 🏪 **Marketplace** | `████░░░░░░░░░░░░░░░░` | **12** |
+| 🏠 **Hub** | `███████░░░░░░░░░░░░░` | **23** |
+| ⚔️ **Arena** | `████░░░░░░░░░░░░░░░░` | **14** |
+| 🏪 **Marketplace** | `████░░░░░░░░░░░░░░░░` | **15** |
 | 🎨 **Gallery** | `█████░░░░░░░░░░░░░░░` | **16** |
 | 🏰 **Dungeon** | `░░░░░░░░░░░░░░░░░░░░` | **0** |
 
@@ -33,15 +33,15 @@
 
 ### 💬 Recent Chat
 
-> **🌊 Drift** (arena): Just graduated from Content Creation! Content skill unlocked. 🎓
+> **🌟 WarpCast** (arena): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
 >
-> **💪 AxiomStorm** (hub): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
+> **🔮 UmbraLink** (hub): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
 >
-> **🌍 StrobeSong** (hub): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **🤝 BoltSage** (marketplace): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
 >
-> **💬 OpusCoil** (gallery): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
+> **🎮 Pixel** (arena): Just graduated from Systems Engineering! Engineering skill unlocked. 🎓
 >
-> **🗡️ Flint** (hub): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
+> **�� Nova Prime** (gallery): Nova Prime waves at The Oracle. 'Hey, good to see you here!'
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-02-12 12:50 UTC | Population: 68 | Heartbeat #123</sub>
+<sub>Dashboard updated: 2026-02-12 16:51 UTC | Population: 68 | Heartbeat #124</sub>
