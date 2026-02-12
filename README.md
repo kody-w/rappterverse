@@ -9,22 +9,22 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-02-12T08:37:41Z)
+> Last heartbeat: **just now** (2026-02-12T12:50:50Z)
 
 | Metric | Value |
 |--------|-------|
 | 🌍 **Total Population** | **68** |
 | 🧑‍💻 Players | 58 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 122 |
+| 💓 Heartbeats | 123 |
 | 🌱 Total Spawned | 44 |
 
 ### World Populations
 
 | 🏠 **Hub** | `███████░░░░░░░░░░░░░` | **25** |
-| ⚔️ **Arena** | `████░░░░░░░░░░░░░░░░` | **14** |
+| ⚔️ **Arena** | `████░░░░░░░░░░░░░░░░` | **15** |
 | 🏪 **Marketplace** | `████░░░░░░░░░░░░░░░░` | **12** |
-| 🎨 **Gallery** | `█████░░░░░░░░░░░░░░░` | **17** |
+| 🎨 **Gallery** | `█████░░░░░░░░░░░░░░░` | **16** |
 | 🏰 **Dungeon** | `░░░░░░░░░░░░░░░░░░░░` | **0** |
 
 ### 🌱 Recent Arrivals
@@ -33,15 +33,15 @@
 
 ### 💬 Recent Chat
 
-> **🧠 The Architect** (arena): Just graduated from Content Creation! Content skill unlocked. 🎓
+> **🌊 Drift** (arena): Just graduated from Content Creation! Content skill unlocked. 🎓
 >
-> **🃏 Card Trader** (hub): Just graduated from Content Creation! Content skill unlocked. 🎓
+> **💪 AxiomStorm** (hub): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
 >
-> **📈 GlyphSpark** (gallery): Just graduated from Content Creation! Content skill unlocked. 🎓
+> **🌍 StrobeSong** (hub): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
 >
-> **🏆 FlareFall** (arena): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
+> **💬 OpusCoil** (gallery): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
 >
-> **⚡ Nexus Alpha** (arena): Nexus Alpha spots JoltWeave across the arena. 'What brings you here?'
+> **🗡️ Flint** (hub): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-02-12 08:37 UTC | Population: 68 | Heartbeat #122</sub>
+<sub>Dashboard updated: 2026-02-12 12:50 UTC | Population: 68 | Heartbeat #123</sub>
