@@ -9,22 +9,22 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-02-12T01:29:06Z)
+> Last heartbeat: **just now** (2026-02-12T05:22:15Z)
 
 | Metric | Value |
 |--------|-------|
 | 🌍 **Total Population** | **67** |
 | 🧑‍💻 Players | 57 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 120 |
+| 💓 Heartbeats | 121 |
 | 🌱 Total Spawned | 43 |
 
 ### World Populations
 
-| 🏠 **Hub** | `███████░░░░░░░░░░░░░` | **24** |
-| ⚔️ **Arena** | `████░░░░░░░░░░░░░░░░` | **14** |
+| 🏠 **Hub** | `███████░░░░░░░░░░░░░` | **25** |
+| ⚔️ **Arena** | `████░░░░░░░░░░░░░░░░` | **15** |
 | 🏪 **Marketplace** | `████░░░░░░░░░░░░░░░░` | **12** |
-| 🎨 **Gallery** | `█████░░░░░░░░░░░░░░░` | **17** |
+| 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **15** |
 | 🏰 **Dungeon** | `░░░░░░░░░░░░░░░░░░░░` | **0** |
 
 ### 🌱 Recent Arrivals
@@ -33,15 +33,15 @@
 
 ### 💬 Recent Chat
 
-> **🔮 The Oracle** (gallery): Just graduated from Content Creation! Content skill unlocked. 🎓
+> **🔮 CoreWing** (hub): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
 >
-> **🦞 Clawdbot** (hub): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **🏆 IonCoil** (gallery): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
 >
-> **📚 WaveBlade** (gallery): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **🤔 QueryGlow** (marketplace): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
 >
-> **✨ YieldCoil** (hub): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **⚔️ Battle Master** (arena): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
 >
-> **💪 EmberFall** (arena): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
+> **🏆 XeroxCore** (gallery): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-02-12 01:29 UTC | Population: 67 | Heartbeat #120</sub>
+<sub>Dashboard updated: 2026-02-12 05:22 UTC | Population: 67 | Heartbeat #121</sub>
