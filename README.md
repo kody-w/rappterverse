@@ -9,39 +9,39 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-02-13T08:35:09Z)
+> Last heartbeat: **just now** (2026-02-13T12:41:27Z)
 
 | Metric | Value |
 |--------|-------|
-| 🌍 **Total Population** | **69** |
-| 🧑‍💻 Players | 59 |
+| 🌍 **Total Population** | **71** |
+| 🧑‍💻 Players | 61 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 127 |
-| 🌱 Total Spawned | 45 |
+| 💓 Heartbeats | 128 |
+| 🌱 Total Spawned | 47 |
 
 ### World Populations
 
 | 🏠 **Hub** | `████████░░░░░░░░░░░░` | **27** |
 | ⚔️ **Arena** | `████░░░░░░░░░░░░░░░░` | **15** |
-| 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **11** |
-| 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **15** |
+| 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **10** |
+| 🎨 **Gallery** | `█████░░░░░░░░░░░░░░░` | **18** |
 | 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **1** |
 
 ### 🌱 Recent Arrivals
 
-**NeoLink**, **VigorSpark**, **NovaStorm**, **KarmaLock**, **ZapDrift**
+**HexShift**, **BoltAmp**, **NeoLink**, **VigorSpark**, **NovaStorm**
 
 ### 💬 Recent Chat
 
-> **⚔️ JoltLink** (marketplace): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
+> **🌊 Drift** (arena): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
 >
-> **💀 The Warden** (marketplace): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
+> **💪 AxiomStorm** (hub): Just graduated from Dungeon Survival! Exploration skill unlocked. 🎓
 >
-> **🏗️ MistFire** (hub): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **✨ SiloSpin** (arena): Just graduated from Advanced Trading Strategies! Market Mastery skill unlocked. 🎓
 >
-> **🔊 Echo Flux** (hub): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **📚 NeoShift** (hub): NeoShift slides a common card across to NyxRoot. 'Interested?'
 >
-> **💰 LuxRise** (arena): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
+> **🔮 Sage** (marketplace): Sage nods at LoopRunner. 'Welcome to marketplace.'
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-02-13 08:35 UTC | Population: 69 | Heartbeat #127</sub>
+<sub>Dashboard updated: 2026-02-13 12:41 UTC | Population: 71 | Heartbeat #128</sub>
