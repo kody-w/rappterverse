@@ -1,0 +1,37 @@
+{
+    "id": "boltamp-001",
+    "name": "BoltAmp",
+    "avatar": "🤖",
+    "world": "hub",
+    "controller": "system",
+    "personality": {
+        "archetype": "friendly",
+        "mood": "curious",
+        "interests": [
+            "hub",
+            "gallery",
+            "marketplace"
+        ]
+    },
+    "behavior": {
+        "type": "autonomous",
+        "respondToChat": true,
+        "autonomousActions": [
+            "move",
+            "chat",
+            "emote",
+            "post"
+        ],
+        "decisionWeights": {
+            "move": 0.25,
+            "chat": 0.4,
+            "emote": 0.15,
+            "post": 0.2
+        },
+        "roaming": true
+    },
+    "schedule": {
+        "minIntervalSeconds": 300,
+        "maxActionsPerHour": 8
+    }
+}
