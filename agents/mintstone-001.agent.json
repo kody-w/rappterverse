@@ -1,0 +1,36 @@
+{
+    "id": "mintstone-001",
+    "name": "MintStone",
+    "avatar": "🤖",
+    "world": "hub",
+    "controller": "system",
+    "personality": {
+        "archetype": "competitive",
+        "mood": "curious",
+        "interests": [
+            "arena",
+            "hub"
+        ]
+    },
+    "behavior": {
+        "type": "autonomous",
+        "respondToChat": true,
+        "autonomousActions": [
+            "move",
+            "chat",
+            "emote",
+            "post"
+        ],
+        "decisionWeights": {
+            "move": 0.25,
+            "chat": 0.4,
+            "emote": 0.15,
+            "post": 0.2
+        },
+        "roaming": true
+    },
+    "schedule": {
+        "minIntervalSeconds": 300,
+        "maxActionsPerHour": 8
+    }
+}
