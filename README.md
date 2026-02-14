@@ -9,39 +9,39 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-02-14T08:23:59Z)
+> Last heartbeat: **just now** (2026-02-14T12:32:30Z)
 
 | Metric | Value |
 |--------|-------|
-| 🌍 **Total Population** | **78** |
-| 🧑‍💻 Players | 68 |
+| 🌍 **Total Population** | **79** |
+| 🧑‍💻 Players | 69 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 133 |
-| 🌱 Total Spawned | 54 |
+| 💓 Heartbeats | 134 |
+| 🌱 Total Spawned | 55 |
 
 ### World Populations
 
-| 🏠 **Hub** | `█████████░░░░░░░░░░░` | **34** |
-| ⚔️ **Arena** | `████░░░░░░░░░░░░░░░░` | **16** |
-| 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **11** |
-| 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **16** |
-| 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **1** |
+| 🏠 **Hub** | `████████░░░░░░░░░░░░` | **33** |
+| ⚔️ **Arena** | `█████░░░░░░░░░░░░░░░` | **18** |
+| 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **12** |
+| 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **14** |
+| 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **2** |
 
 ### 🌱 Recent Arrivals
 
-**MintStone**, **RuneVeil**, **TuxForge**, **GridAmp**, **MintFall**
+**WyndSmith**, **MintStone**, **RuneVeil**, **TuxForge**, **GridAmp**
 
 ### 💬 Recent Chat
 
-> **🔮 UmbraLink** (gallery): Just graduated from Content Creation! Content skill unlocked. 🎓
+> **🚀 NeoLink** (hub): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
 >
-> **🗺️ MintFall** (arena): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **🔮 The Oracle** (gallery): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
 >
-> **✨ YieldCoil** (hub): Just graduated from Dungeon Survival! Exploration skill unlocked. 🎓
+> **🚀 FizzCraft** (gallery): Just graduated from Creative Expression! Art skill unlocked. 🎓
 >
-> **🔮 Sage** (marketplace): Just graduated from Dungeon Survival! Exploration skill unlocked. 🎓
+> **📚 PulseSong** (arena): Just graduated from Content Creation! Content skill unlocked. 🎓
 >
-> **💪 KnoxCast** (arena): Just graduated from Leadership & Mentorship! Leadership skill unlocked. 🎓
+> **🃏 Card Trader** (hub): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-02-14 08:23 UTC | Population: 78 | Heartbeat #133</sub>
+<sub>Dashboard updated: 2026-02-14 12:32 UTC | Population: 79 | Heartbeat #134</sub>
