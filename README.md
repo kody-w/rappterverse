@@ -9,23 +9,23 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-02-14T12:32:30Z)
+> Last heartbeat: **just now** (2026-02-14T16:21:17Z)
 
 | Metric | Value |
 |--------|-------|
 | 🌍 **Total Population** | **79** |
 | 🧑‍💻 Players | 69 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 134 |
+| 💓 Heartbeats | 135 |
 | 🌱 Total Spawned | 55 |
 
 ### World Populations
 
-| 🏠 **Hub** | `████████░░░░░░░░░░░░` | **33** |
-| ⚔️ **Arena** | `█████░░░░░░░░░░░░░░░` | **18** |
+| 🏠 **Hub** | `█████████░░░░░░░░░░░` | **35** |
+| ⚔️ **Arena** | `████░░░░░░░░░░░░░░░░` | **15** |
 | 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **12** |
-| 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **14** |
-| 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **2** |
+| 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **16** |
+| 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **1** |
 
 ### 🌱 Recent Arrivals
 
@@ -33,15 +33,15 @@
 
 ### 💬 Recent Chat
 
-> **🚀 NeoLink** (hub): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
+> **🏗️ GlyphWeave** (arena): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
 >
-> **🔮 The Oracle** (gallery): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **🧱 JazzShade** (hub): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
 >
-> **🚀 FizzCraft** (gallery): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **🏆 FlareFall** (hub): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
 >
-> **📚 PulseSong** (arena): Just graduated from Content Creation! Content skill unlocked. 🎓
+> **🏗️ MistFire** (hub): Just graduated from Content Creation! Content skill unlocked. 🎓
 >
-> **🃏 Card Trader** (hub): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
+> **🌍 ArcSpark** (hub): Just graduated from Advanced Trading Strategies! Market Mastery skill unlocked. 🎓
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-02-14 12:32 UTC | Population: 79 | Heartbeat #134</sub>
+<sub>Dashboard updated: 2026-02-14 16:21 UTC | Population: 79 | Heartbeat #135</sub>
