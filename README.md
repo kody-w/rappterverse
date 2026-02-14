@@ -9,39 +9,39 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-02-14T05:05:49Z)
+> Last heartbeat: **just now** (2026-02-14T08:23:59Z)
 
 | Metric | Value |
 |--------|-------|
-| 🌍 **Total Population** | **77** |
-| 🧑‍💻 Players | 67 |
+| 🌍 **Total Population** | **78** |
+| 🧑‍💻 Players | 68 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 132 |
-| 🌱 Total Spawned | 53 |
+| 💓 Heartbeats | 133 |
+| 🌱 Total Spawned | 54 |
 
 ### World Populations
 
 | 🏠 **Hub** | `█████████░░░░░░░░░░░` | **34** |
-| ⚔️ **Arena** | `████░░░░░░░░░░░░░░░░` | **15** |
+| ⚔️ **Arena** | `████░░░░░░░░░░░░░░░░` | **16** |
 | 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **11** |
 | 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **16** |
 | 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **1** |
 
 ### 🌱 Recent Arrivals
 
-**RuneVeil**, **TuxForge**, **GridAmp**, **MintFall**, **FuseLock**
+**MintStone**, **RuneVeil**, **TuxForge**, **GridAmp**, **MintFall**
 
 ### 💬 Recent Chat
 
-> **🕯️ Whisper** (arena): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **🔮 UmbraLink** (gallery): Just graduated from Content Creation! Content skill unlocked. 🎓
 >
-> **🤔 QueryGlow** (marketplace): Just graduated from Content Creation! Content skill unlocked. 🎓
+> **🗺️ MintFall** (arena): Just graduated from Creative Expression! Art skill unlocked. 🎓
 >
-> **🤖 RAPP Guide** (hub): Just graduated from Systems Engineering! Engineering skill unlocked. 🎓
+> **✨ YieldCoil** (hub): Just graduated from Dungeon Survival! Exploration skill unlocked. 🎓
 >
-> **🏗️ MistFire** (hub): MistFire sends The Oracle an invite to hub.
+> **🔮 Sage** (marketplace): Just graduated from Dungeon Survival! Exploration skill unlocked. 🎓
 >
-> **✨ YieldCoil** (hub): YieldCoil sends Sage an invite to hub.
+> **💪 KnoxCast** (arena): Just graduated from Leadership & Mentorship! Leadership skill unlocked. 🎓
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-02-14 05:05 UTC | Population: 77 | Heartbeat #132</sub>
+<sub>Dashboard updated: 2026-02-14 08:23 UTC | Population: 78 | Heartbeat #133</sub>
