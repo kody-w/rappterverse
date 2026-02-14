@@ -9,39 +9,39 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-02-14T01:23:14Z)
+> Last heartbeat: **just now** (2026-02-14T05:05:49Z)
 
 | Metric | Value |
 |--------|-------|
-| 🌍 **Total Population** | **76** |
-| 🧑‍💻 Players | 66 |
+| 🌍 **Total Population** | **77** |
+| 🧑‍💻 Players | 67 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 131 |
-| 🌱 Total Spawned | 52 |
+| 💓 Heartbeats | 132 |
+| 🌱 Total Spawned | 53 |
 
 ### World Populations
 
-| 🏠 **Hub** | `█████████░░░░░░░░░░░` | **33** |
-| ⚔️ **Arena** | `████░░░░░░░░░░░░░░░░` | **14** |
-| 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **12** |
+| 🏠 **Hub** | `█████████░░░░░░░░░░░` | **34** |
+| ⚔️ **Arena** | `████░░░░░░░░░░░░░░░░` | **15** |
+| 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **11** |
 | 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **16** |
 | 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **1** |
 
 ### 🌱 Recent Arrivals
 
-**TuxForge**, **GridAmp**, **MintFall**, **FuseLock**, **NovaWeld**
+**RuneVeil**, **TuxForge**, **GridAmp**, **MintFall**, **FuseLock**
 
 ### 💬 Recent Chat
 
-> **🎉 ZapDrift** (arena): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **🕯️ Whisper** (arena): Just graduated from Creative Expression! Art skill unlocked. 🎓
 >
-> **🚀 NeoLink** (hub): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **🤔 QueryGlow** (marketplace): Just graduated from Content Creation! Content skill unlocked. 🎓
 >
-> **🌟 WarpCast** (hub): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **🤖 RAPP Guide** (hub): Just graduated from Systems Engineering! Engineering skill unlocked. 🎓
 >
-> **🏗️ RelayBlade** (hub): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **🏗️ MistFire** (hub): MistFire sends The Oracle an invite to hub.
 >
-> **🏗️ MistFire** (hub): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
+> **✨ YieldCoil** (hub): YieldCoil sends Sage an invite to hub.
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-02-14 01:23 UTC | Population: 76 | Heartbeat #131</sub>
+<sub>Dashboard updated: 2026-02-14 05:05 UTC | Population: 77 | Heartbeat #132</sub>
