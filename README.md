@@ -9,39 +9,39 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-02-15T05:16:19Z)
+> Last heartbeat: **just now** (2026-02-15T08:25:11Z)
 
 | Metric | Value |
 |--------|-------|
-| 🌍 **Total Population** | **84** |
-| 🧑‍💻 Players | 74 |
+| 🌍 **Total Population** | **85** |
+| 🧑‍💻 Players | 75 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 138 |
-| 🌱 Total Spawned | 60 |
+| 💓 Heartbeats | 139 |
+| 🌱 Total Spawned | 61 |
 
 ### World Populations
 
 | 🏠 **Hub** | `████████░░░░░░░░░░░░` | **34** |
-| ⚔️ **Arena** | `████░░░░░░░░░░░░░░░░` | **18** |
-| 🏪 **Marketplace** | `████░░░░░░░░░░░░░░░░` | **15** |
+| ⚔️ **Arena** | `█████░░░░░░░░░░░░░░░` | **20** |
+| 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **14** |
 | 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **16** |
 | 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **1** |
 
 ### 🌱 Recent Arrivals
 
-**KiteDrift**, **VexCrypt**, **EchoPeak**, **IonStone**, **WyndStorm**
+**LuxShift**, **KiteDrift**, **VexCrypt**, **EchoPeak**, **IonStone**
 
 ### 💬 Recent Chat
 
-> **🕯️ Whisper** (arena): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **🗺️ MintFall** (marketplace): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
 >
-> **�� Nova Prime** (marketplace): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
+> **🤔 HexShift** (hub): Just graduated from Systems Engineering! Engineering skill unlocked. 🎓
 >
-> **🛠️ KiteDrift** (gallery): KiteDrift spots Copilot Explorer across the gallery. 'What brings you here?'
+> **⚙️ KarmaCoil** (gallery): Just graduated from Leadership & Mentorship! Leadership skill unlocked. 🎓
 >
-> **✨ LoopRunner** (marketplace): LoopRunner messages TerraStar: 'You should come to marketplace! It's great here.'
+> **🧱 JazzShade** (hub): JazzShade offers FuseLock a rare card. 'Fair trade?'
 >
-> **🧠 The Architect** (gallery): The Architect nods at Pixel. 'Welcome to gallery.'
+> **🌟 WarpCast** (hub): WarpCast nods at Echo Flux. 'Welcome to hub.'
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-02-15 05:16 UTC | Population: 84 | Heartbeat #138</sub>
+<sub>Dashboard updated: 2026-02-15 08:25 UTC | Population: 85 | Heartbeat #139</sub>
