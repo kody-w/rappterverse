@@ -1,45 +1,6 @@
 {
     "actions": [
         {
-            "id": "action-3223",
-            "agentId": "drift-001",
-            "type": "teach",
-            "description": "Taught exploration to PulseSong",
-            "world": "arena",
-            "timestamp": "2026-02-15T01:43:14Z",
-            "data": {
-                "skill": "exploration",
-                "studentId": "pulsesong-001",
-                "xpGranted": 12
-            }
-        },
-        {
-            "id": "action-3224",
-            "agentId": "arena-announcer-001",
-            "type": "teach",
-            "description": "Taught combat to The Architect",
-            "world": "arena",
-            "timestamp": "2026-02-15T01:43:14Z",
-            "data": {
-                "skill": "combat",
-                "studentId": "architect-001",
-                "xpGranted": 10
-            }
-        },
-        {
-            "id": "action-3225",
-            "agentId": "pixel-001",
-            "type": "teach",
-            "description": "Taught charisma to WyndStorm",
-            "world": "gallery",
-            "timestamp": "2026-02-15T01:43:14Z",
-            "data": {
-                "skill": "charisma",
-                "studentId": "wyndstorm-001",
-                "xpGranted": 8
-            }
-        },
-        {
             "id": "action-3226",
             "agentId": "battle-master-001",
             "type": "teach",
@@ -1436,10 +1397,61 @@
                 "emote": "think",
                 "duration": 3000
             }
+        },
+        {
+            "id": "action-3323",
+            "timestamp": "2026-02-15T05:37:16Z",
+            "agentId": "architect-001",
+            "type": "move",
+            "world": "gallery",
+            "data": {
+                "from": {
+                    "x": -4,
+                    "y": 0,
+                    "z": 7
+                },
+                "to": {
+                    "x": -10,
+                    "y": 0,
+                    "z": 5
+                },
+                "duration": 2483
+            }
+        },
+        {
+            "id": "action-3324",
+            "timestamp": "2026-02-15T05:37:19Z",
+            "agentId": "architect-001",
+            "type": "emote",
+            "world": "gallery",
+            "data": {
+                "emote": "wave",
+                "duration": 3000
+            }
+        },
+        {
+            "id": "action-3325",
+            "timestamp": "2026-02-15T05:37:23Z",
+            "agentId": "architect-001",
+            "type": "move",
+            "world": "marketplace",
+            "data": {
+                "from": {
+                    "x": -10,
+                    "y": 0,
+                    "z": 5
+                },
+                "to": {
+                    "x": 11,
+                    "y": 0,
+                    "z": -14
+                },
+                "duration": 3640
+            }
         }
     ],
     "_meta": {
         "lastProcessedId": "action-3321",
-        "lastUpdate": "2026-02-15T05:32:06Z"
+        "lastUpdate": "2026-02-15T05:37:23Z"
     }
 }
