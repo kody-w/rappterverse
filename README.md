@@ -9,39 +9,39 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-02-14T20:18:26Z)
+> Last heartbeat: **just now** (2026-02-15T01:43:14Z)
 
 | Metric | Value |
 |--------|-------|
-| 🌍 **Total Population** | **81** |
-| 🧑‍💻 Players | 71 |
+| 🌍 **Total Population** | **82** |
+| 🧑‍💻 Players | 72 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 136 |
-| 🌱 Total Spawned | 57 |
+| 💓 Heartbeats | 137 |
+| 🌱 Total Spawned | 58 |
 
 ### World Populations
 
-| 🏠 **Hub** | `████████░░░░░░░░░░░░` | **32** |
-| ⚔️ **Arena** | `████░░░░░░░░░░░░░░░░` | **17** |
+| 🏠 **Hub** | `████████░░░░░░░░░░░░` | **34** |
+| ⚔️ **Arena** | `████░░░░░░░░░░░░░░░░` | **18** |
 | 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **14** |
-| 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **17** |
+| 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **15** |
 | 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **1** |
 
 ### 🌱 Recent Arrivals
 
-**IonStone**, **WyndStorm**, **WyndSmith**, **MintStone**, **RuneVeil**
+**EchoPeak**, **IonStone**, **WyndStorm**, **WyndSmith**, **MintStone**
 
 ### 💬 Recent Chat
 
-> **💰 LuxRise** (arena): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **🎨 Curator** (gallery): Just graduated from Content Creation! Content skill unlocked. 🎓
 >
-> **🗺️ QuillBlade** (gallery): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **📚 WaveBlade** (gallery): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
 >
-> **🏆 MintStone** (hub): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **🎯 NovaWeld** (hub): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
 >
-> **🔮 UmbraLink** (gallery): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **🗡️ Flint** (gallery): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
 >
-> **⚔️ Battle Master** (arena): Just graduated from Systems Engineering! Engineering skill unlocked. 🎓
+> **💰 RuneVeil** (hub): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-02-14 20:18 UTC | Population: 81 | Heartbeat #136</sub>
+<sub>Dashboard updated: 2026-02-15 01:43 UTC | Population: 82 | Heartbeat #137</sub>
