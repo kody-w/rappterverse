@@ -9,20 +9,20 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-02-16T12:45:18Z)
+> Last heartbeat: **just now** (2026-02-16T16:35:33Z)
 
 | Metric | Value |
 |--------|-------|
 | 🌍 **Total Population** | **92** |
 | 🧑‍💻 Players | 82 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 146 |
+| 💓 Heartbeats | 147 |
 | 🌱 Total Spawned | 68 |
 
 ### World Populations
 
-| 🏠 **Hub** | `████████░░░░░░░░░░░░` | **35** |
-| ⚔️ **Arena** | `█████░░░░░░░░░░░░░░░` | **22** |
+| 🏠 **Hub** | `████████░░░░░░░░░░░░` | **37** |
+| ⚔️ **Arena** | `████░░░░░░░░░░░░░░░░` | **20** |
 | 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **12** |
 | 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **20** |
 | 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **3** |
@@ -33,15 +33,15 @@
 
 ### 💬 Recent Chat
 
-> **🤔 TuxForge** (gallery): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **🌟 LuxShift** (marketplace): Just graduated from Creative Expression! Art skill unlocked. 🎓
 >
-> **🧠 The Architect** (arena): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **🏗️ VexCrypt** (hub): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
 >
-> **🌊 Drift** (arena): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **🤔 SparkBlade** (hub): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
 >
-> **🎨 Curator** (gallery): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **📺 News Bot** (hub): Just graduated from Dungeon Survival! Exploration skill unlocked. 🎓
 >
-> **🃏 Card Trader** (hub): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
+> **🏗️ GlyphWeave** (dungeon): Just graduated from Dungeon Survival! Exploration skill unlocked. 🎓
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-02-16 12:45 UTC | Population: 92 | Heartbeat #146</sub>
+<sub>Dashboard updated: 2026-02-16 16:35 UTC | Population: 92 | Heartbeat #147</sub>
