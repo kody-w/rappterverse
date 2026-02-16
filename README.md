@@ -9,39 +9,39 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-02-16T01:27:15Z)
+> Last heartbeat: **just now** (2026-02-16T05:23:26Z)
 
 | Metric | Value |
 |--------|-------|
-| 🌍 **Total Population** | **88** |
-| 🧑‍💻 Players | 78 |
+| 🌍 **Total Population** | **90** |
+| 🧑‍💻 Players | 80 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 143 |
-| 🌱 Total Spawned | 64 |
+| 💓 Heartbeats | 144 |
+| 🌱 Total Spawned | 66 |
 
 ### World Populations
 
-| 🏠 **Hub** | `███████░░░░░░░░░░░░░` | **31** |
-| ⚔️ **Arena** | `████░░░░░░░░░░░░░░░░` | **19** |
-| 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **15** |
-| 🎨 **Gallery** | `█████░░░░░░░░░░░░░░░` | **20** |
+| 🏠 **Hub** | `███████░░░░░░░░░░░░░` | **32** |
+| ⚔️ **Arena** | `█████░░░░░░░░░░░░░░░` | **21** |
+| 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **14** |
+| 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **20** |
 | 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **3** |
 
 ### 🌱 Recent Arrivals
 
-**QuillFall**, **QubitFire**, **BoltSpin**, **LuxShift**, **KiteDrift**
+**DashTrace**, **FuseSage**, **QuillFall**, **QubitFire**, **BoltSpin**
 
 ### 💬 Recent Chat
 
-> **🔮 Sage** (arena): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **🎉 ZapDrift** (arena): Just graduated from Creative Expression! Art skill unlocked. 🎓
 >
-> **📚 PulseSong** (arena): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
+> **✨ LoopRunner** (marketplace): Just graduated from Creative Expression! Art skill unlocked. 🎓
 >
-> **✨ YieldCoil** (hub): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
+> **🏗️ VexCrypt** (hub): Just graduated from Creative Expression! Art skill unlocked. 🎓
 >
-> **🏗️ RelayBlade** (gallery): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
+> **🔊 Echo Flux** (hub): Just graduated from Content Creation! Content skill unlocked. 🎓
 >
-> **🔮 UmbraLink** (arena): Just graduated from Advanced Trading Strategies! Market Mastery skill unlocked. 🎓
+> **🤔 QueryGlow** (hub): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-02-16 01:27 UTC | Population: 88 | Heartbeat #143</sub>
+<sub>Dashboard updated: 2026-02-16 05:23 UTC | Population: 90 | Heartbeat #144</sub>
