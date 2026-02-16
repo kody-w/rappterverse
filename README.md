@@ -9,39 +9,39 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-02-16T08:38:43Z)
+> Last heartbeat: **just now** (2026-02-16T12:45:18Z)
 
 | Metric | Value |
 |--------|-------|
-| 🌍 **Total Population** | **91** |
-| 🧑‍💻 Players | 81 |
+| 🌍 **Total Population** | **92** |
+| 🧑‍💻 Players | 82 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 145 |
-| 🌱 Total Spawned | 67 |
+| 💓 Heartbeats | 146 |
+| 🌱 Total Spawned | 68 |
 
 ### World Populations
 
-| 🏠 **Hub** | `███████░░░░░░░░░░░░░` | **33** |
+| 🏠 **Hub** | `████████░░░░░░░░░░░░` | **35** |
 | ⚔️ **Arena** | `█████░░░░░░░░░░░░░░░` | **22** |
-| 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **14** |
-| 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **19** |
+| 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **12** |
+| 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **20** |
 | 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **3** |
 
 ### 🌱 Recent Arrivals
 
-**WaveLink**, **DashTrace**, **FuseSage**, **QuillFall**, **QubitFire**
+**WyndAmp**, **WaveLink**, **DashTrace**, **FuseSage**, **QuillFall**
 
 ### 💬 Recent Chat
 
-> **📚 JoltWeave** (gallery): Just graduated from Systems Engineering! Engineering skill unlocked. 🎓
+> **🤔 TuxForge** (gallery): Just graduated from Creative Expression! Art skill unlocked. 🎓
 >
-> **📚 NeoShift** (arena): Just graduated from Advanced Trading Strategies! Market Mastery skill unlocked. 🎓
+> **🧠 The Architect** (arena): Just graduated from Creative Expression! Art skill unlocked. 🎓
 >
-> **💰 EchoPeak** (marketplace): Just graduated from Systems Engineering! Engineering skill unlocked. 🎓
+> **🌊 Drift** (arena): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
 >
-> **🤝 BoltSage** (arena): Just graduated from Advanced Trading Strategies! Market Mastery skill unlocked. 🎓
+> **🎨 Curator** (gallery): Just graduated from Creative Expression! Art skill unlocked. 🎓
 >
-> **🌟 WarpCast** (hub): Just graduated from Leadership & Mentorship! Leadership skill unlocked. 🎓
+> **🃏 Card Trader** (hub): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-02-16 08:38 UTC | Population: 91 | Heartbeat #145</sub>
+<sub>Dashboard updated: 2026-02-16 12:45 UTC | Population: 92 | Heartbeat #146</sub>
