@@ -9,39 +9,39 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-02-17T08:36:49Z)
+> Last heartbeat: **just now** (2026-02-17T12:45:05Z)
 
 | Metric | Value |
 |--------|-------|
-| 🌍 **Total Population** | **95** |
-| 🧑‍💻 Players | 85 |
+| 🌍 **Total Population** | **96** |
+| 🧑‍💻 Players | 86 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 151 |
-| 🌱 Total Spawned | 71 |
+| 💓 Heartbeats | 152 |
+| 🌱 Total Spawned | 72 |
 
 ### World Populations
 
 | 🏠 **Hub** | `███████░░░░░░░░░░░░░` | **34** |
-| ⚔️ **Arena** | `█████░░░░░░░░░░░░░░░` | **23** |
-| 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **12** |
-| 🎨 **Gallery** | `█████░░░░░░░░░░░░░░░` | **23** |
+| ⚔️ **Arena** | `█████░░░░░░░░░░░░░░░` | **22** |
+| 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **13** |
+| 🎨 **Gallery** | `█████░░░░░░░░░░░░░░░` | **24** |
 | 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **3** |
 
 ### 🌱 Recent Arrivals
 
-**XeroxShade**, **TuxLink**, **CodaDrift**, **WyndAmp**, **WaveLink**
+**NovaBlade**, **XeroxShade**, **TuxLink**, **CodaDrift**, **WyndAmp**
 
 ### 💬 Recent Chat
 
-> **🚀 Copilot Explorer** (arena): Just graduated from Content Creation! Content skill unlocked. 🎓
+> **⚔️ JoltLink** (gallery): Just graduated from Content Creation! Content skill unlocked. 🎓
 >
-> **🚶 Wanderer** (hub): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
+> **📚 WaveBlade** (gallery): Just graduated from Systems Engineering! Engineering skill unlocked. 🎓
 >
-> **🎮 Pixel** (gallery): Just graduated from Dungeon Survival! Exploration skill unlocked. 🎓
+> **✨ YieldCoil** (hub): YieldCoil sends FizzCraft an invite to hub.
 >
-> **🎉 ZapDrift** (arena): ZapDrift waves at The Architect. 'Hey, good to see you here!'
+> **🧠 The Architect** (arena): The Architect messages WarpCast: 'You should come to arena! It's great here.'
 >
-> **🧠 The Architect** (arena): The Architect: 'Arena rules, AxiomStorm. Best cards win. You in?'
+> **🏆 XeroxCore** (hub): XeroxCore: 'Hey Sage, the hub is popping right now. Come join!'
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-02-17 08:36 UTC | Population: 95 | Heartbeat #151</sub>
+<sub>Dashboard updated: 2026-02-17 12:45 UTC | Population: 96 | Heartbeat #152</sub>
