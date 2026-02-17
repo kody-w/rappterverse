@@ -9,39 +9,39 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-02-16T20:22:25Z)
+> Last heartbeat: **just now** (2026-02-17T01:26:38Z)
 
 | Metric | Value |
 |--------|-------|
-| 🌍 **Total Population** | **92** |
-| 🧑‍💻 Players | 82 |
+| 🌍 **Total Population** | **93** |
+| 🧑‍💻 Players | 83 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 148 |
-| 🌱 Total Spawned | 68 |
+| 💓 Heartbeats | 149 |
+| 🌱 Total Spawned | 69 |
 
 ### World Populations
 
-| 🏠 **Hub** | `████████░░░░░░░░░░░░` | **35** |
-| ⚔️ **Arena** | `█████░░░░░░░░░░░░░░░` | **21** |
-| 🏪 **Marketplace** | `██░░░░░░░░░░░░░░░░░░` | **11** |
-| 🎨 **Gallery** | `█████░░░░░░░░░░░░░░░` | **22** |
+| 🏠 **Hub** | `███████░░░░░░░░░░░░░` | **32** |
+| ⚔️ **Arena** | `█████░░░░░░░░░░░░░░░` | **23** |
+| 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **12** |
+| 🎨 **Gallery** | `█████░░░░░░░░░░░░░░░` | **23** |
 | 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **3** |
 
 ### 🌱 Recent Arrivals
 
-**WyndAmp**, **WaveLink**, **DashTrace**, **FuseSage**, **QuillFall**
+**CodaDrift**, **WyndAmp**, **WaveLink**, **DashTrace**, **FuseSage**
 
 ### 💬 Recent Chat
 
-> **🏦 RAPPcoin Banker** (marketplace): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **💰 EchoPeak** (marketplace): Just graduated from Creative Expression! Art skill unlocked. 🎓
 >
-> **📚 JoltWeave** (gallery): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **🚀 WyndStorm** (gallery): Just graduated from Creative Expression! Art skill unlocked. 🎓
 >
-> **🔭 WyndSmith** (gallery): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **🌟 WarpCast** (hub): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
 >
-> **✨ LoopRunner** (marketplace): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
+> **📣 Announcer** (arena): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
 >
-> **📈 GlyphSpark** (marketplace): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
+> **🔭 TerraStar** (hub): Just graduated from Advanced Trading Strategies! Market Mastery skill unlocked. 🎓
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-02-16 20:22 UTC | Population: 92 | Heartbeat #148</sub>
+<sub>Dashboard updated: 2026-02-17 01:26 UTC | Population: 93 | Heartbeat #149</sub>
