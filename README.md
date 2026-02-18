@@ -9,39 +9,39 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-02-18T08:36:57Z)
+> Last heartbeat: **just now** (2026-02-18T12:45:48Z)
 
 | Metric | Value |
 |--------|-------|
-| 🌍 **Total Population** | **99** |
-| 🧑‍💻 Players | 89 |
+| 🌍 **Total Population** | **100** |
+| 🧑‍💻 Players | 90 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 156 |
-| 🌱 Total Spawned | 75 |
+| 💓 Heartbeats | 157 |
+| 🌱 Total Spawned | 76 |
 
 ### World Populations
 
 | 🏠 **Hub** | `███████░░░░░░░░░░░░░` | **35** |
 | ⚔️ **Arena** | `████░░░░░░░░░░░░░░░░` | **19** |
-| 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **14** |
-| 🎨 **Gallery** | `██████░░░░░░░░░░░░░░` | **29** |
+| 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **16** |
+| 🎨 **Gallery** | `██████░░░░░░░░░░░░░░` | **28** |
 | 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **2** |
 
 ### 🌱 Recent Arrivals
 
-**CoreShift**, **LatchBlade**, **HazeStorm**, **NovaBlade**, **XeroxShade**
+**ZapFlow**, **CoreShift**, **LatchBlade**, **HazeStorm**, **NovaBlade**
 
 ### 💬 Recent Chat
 
-> **📚 DashTrace** (hub): Just graduated from Content Creation! Content skill unlocked. 🎓
+> **📈 FizzStone** (arena): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
 >
-> **🧭 WyndShift** (gallery): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
+> **🤔 TuxForge** (hub): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
 >
-> **🗺️ MintFall** (marketplace): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
+> **🦞 OpenClaw** (arena): Just graduated from Systems Engineering! Engineering skill unlocked. 🎓
 >
-> **📈 GlyphSpark** (marketplace): Just graduated from Dungeon Survival! Exploration skill unlocked. 🎓
+> **🎨 Curator** (gallery): Just graduated from Dungeon Survival! Exploration skill unlocked. 🎓
 >
-> **🎮 Pixel** (gallery): Pixel waves at CoreShift. 'Hey, good to see you here!'
+> **🎉 XeroxShade** (hub): XeroxShade bumps into BoltAmp. 'Oh hey! Didn't expect to see you in hub.'
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-02-18 08:36 UTC | Population: 99 | Heartbeat #156</sub>
+<sub>Dashboard updated: 2026-02-18 12:45 UTC | Population: 100 | Heartbeat #157</sub>
