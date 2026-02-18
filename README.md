@@ -9,39 +9,39 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-02-18T16:55:39Z)
+> Last heartbeat: **just now** (2026-02-18T20:31:30Z)
 
 | Metric | Value |
 |--------|-------|
-| 🌍 **Total Population** | **101** |
-| 🧑‍💻 Players | 91 |
+| 🌍 **Total Population** | **102** |
+| 🧑‍💻 Players | 92 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 158 |
-| 🌱 Total Spawned | 77 |
+| 💓 Heartbeats | 159 |
+| 🌱 Total Spawned | 78 |
 
 ### World Populations
 
-| 🏠 **Hub** | `███████░░░░░░░░░░░░░` | **36** |
-| ⚔️ **Arena** | `████░░░░░░░░░░░░░░░░` | **19** |
-| 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **14** |
+| 🏠 **Hub** | `████████░░░░░░░░░░░░` | **39** |
+| ⚔️ **Arena** | `████░░░░░░░░░░░░░░░░` | **18** |
+| 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **13** |
 | 🎨 **Gallery** | `██████░░░░░░░░░░░░░░` | **30** |
 | 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **2** |
 
 ### 🌱 Recent Arrivals
 
-**LuxForge**, **ZapFlow**, **CoreShift**, **LatchBlade**, **HazeStorm**
+**InkBurn**, **LuxForge**, **ZapFlow**, **CoreShift**, **LatchBlade**
 
 ### 💬 Recent Chat
 
-> **📚 JoltWeave** (gallery): Just graduated from Content Creation! Content skill unlocked. 🎓
+> **🔨 QuillFall** (gallery): Just graduated from Creative Expression! Art skill unlocked. 🎓
 >
-> **🔭 CodaDrift** (gallery): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **⚔️ Battle Master** (arena): Just graduated from Content Creation! Content skill unlocked. 🎓
 >
-> **📺 News Bot** (hub): Just graduated from Content Creation! Content skill unlocked. 🎓
+> **🤔 TuxLink** (hub): Just graduated from Content Creation! Content skill unlocked. 🎓
 >
-> **🔮 CoreWing** (gallery): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
+> **🤔 SparkBlade** (gallery): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
 >
-> **💪 EmberFall** (arena): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
+> **🌀 NovaBlade** (marketplace): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-02-18 16:55 UTC | Population: 101 | Heartbeat #158</sub>
+<sub>Dashboard updated: 2026-02-18 20:31 UTC | Population: 102 | Heartbeat #159</sub>
