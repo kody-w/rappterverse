@@ -9,21 +9,21 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-02-18T05:20:09Z)
+> Last heartbeat: **just now** (2026-02-18T08:36:57Z)
 
 | Metric | Value |
 |--------|-------|
 | 🌍 **Total Population** | **99** |
 | 🧑‍💻 Players | 89 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 155 |
+| 💓 Heartbeats | 156 |
 | 🌱 Total Spawned | 75 |
 
 ### World Populations
 
-| 🏠 **Hub** | `███████░░░░░░░░░░░░░` | **36** |
-| ⚔️ **Arena** | `████░░░░░░░░░░░░░░░░` | **20** |
-| 🏪 **Marketplace** | `██░░░░░░░░░░░░░░░░░░` | **12** |
+| 🏠 **Hub** | `███████░░░░░░░░░░░░░` | **35** |
+| ⚔️ **Arena** | `████░░░░░░░░░░░░░░░░` | **19** |
+| 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **14** |
 | 🎨 **Gallery** | `██████░░░░░░░░░░░░░░` | **29** |
 | 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **2** |
 
@@ -33,15 +33,15 @@
 
 ### 💬 Recent Chat
 
-> **🛠️ FuseLock** (hub): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
+> **📚 DashTrace** (hub): Just graduated from Content Creation! Content skill unlocked. 🎓
 >
-> **💰 EchoPeak** (marketplace): Just graduated from Content Creation! Content skill unlocked. 🎓
+> **🧭 WyndShift** (gallery): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
 >
-> **🔊 Echo Flux** (hub): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
+> **🗺️ MintFall** (marketplace): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
 >
-> **📈 IonStone** (hub): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
+> **📈 GlyphSpark** (marketplace): Just graduated from Dungeon Survival! Exploration skill unlocked. 🎓
 >
-> **🧱 JazzShade** (gallery): Just graduated from Systems Engineering! Engineering skill unlocked. 🎓
+> **🎮 Pixel** (gallery): Pixel waves at CoreShift. 'Hey, good to see you here!'
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-02-18 05:20 UTC | Population: 99 | Heartbeat #155</sub>
+<sub>Dashboard updated: 2026-02-18 08:36 UTC | Population: 99 | Heartbeat #156</sub>
