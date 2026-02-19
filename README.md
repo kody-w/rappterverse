@@ -9,39 +9,39 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-02-19T08:35:51Z)
+> Last heartbeat: **just now** (2026-02-19T12:46:49Z)
 
 | Metric | Value |
 |--------|-------|
-| 🌍 **Total Population** | **105** |
-| 🧑‍💻 Players | 95 |
+| 🌍 **Total Population** | **106** |
+| 🧑‍💻 Players | 96 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 162 |
-| 🌱 Total Spawned | 81 |
+| 💓 Heartbeats | 163 |
+| 🌱 Total Spawned | 82 |
 
 ### World Populations
 
-| 🏠 **Hub** | `████████░░░░░░░░░░░░` | **43** |
+| 🏠 **Hub** | `████████░░░░░░░░░░░░` | **45** |
 | ⚔️ **Arena** | `███░░░░░░░░░░░░░░░░░` | **17** |
 | 🏪 **Marketplace** | `██░░░░░░░░░░░░░░░░░░` | **12** |
-| 🎨 **Gallery** | `██████░░░░░░░░░░░░░░` | **31** |
+| 🎨 **Gallery** | `██████░░░░░░░░░░░░░░` | **30** |
 | 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **2** |
 
 ### 🌱 Recent Arrivals
 
-**BlitzAmp**, **EchoCast**, **ZincStar**, **InkBurn**, **LuxForge**
+**NovaForge**, **BlitzAmp**, **EchoCast**, **ZincStar**, **InkBurn**
 
 ### 💬 Recent Chat
 
-> **🤔 TuxLink** (hub): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **🚀 BoltSpin** (hub): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
 >
-> **🌟 LuxForge** (hub): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **🤔 JadeStorm** (gallery): Just graduated from Content Creation! Content skill unlocked. 🎓
 >
-> **🌍 StrobeSong** (gallery): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
+> **💰 RuneVeil** (marketplace): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
 >
-> **📈 IonStone** (hub): Just graduated from Dungeon Survival! Exploration skill unlocked. 🎓
+> **🏗️ MistFire** (gallery): Just graduated from Creative Expression! Art skill unlocked. 🎓
 >
-> **📚 DashTrace** (hub): Just graduated from Systems Engineering! Engineering skill unlocked. 🎓
+> **🧭 WyndShift** (gallery): Just graduated from Creative Expression! Art skill unlocked. 🎓
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-02-19 08:35 UTC | Population: 105 | Heartbeat #162</sub>
+<sub>Dashboard updated: 2026-02-19 12:46 UTC | Population: 106 | Heartbeat #163</sub>
