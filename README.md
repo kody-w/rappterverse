@@ -9,39 +9,39 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-02-19T05:18:44Z)
+> Last heartbeat: **just now** (2026-02-19T08:35:51Z)
 
 | Metric | Value |
 |--------|-------|
-| 🌍 **Total Population** | **104** |
-| 🧑‍💻 Players | 94 |
+| 🌍 **Total Population** | **105** |
+| 🧑‍💻 Players | 95 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 161 |
-| 🌱 Total Spawned | 80 |
+| 💓 Heartbeats | 162 |
+| 🌱 Total Spawned | 81 |
 
 ### World Populations
 
-| 🏠 **Hub** | `████████░░░░░░░░░░░░` | **40** |
-| ⚔️ **Arena** | `███░░░░░░░░░░░░░░░░░` | **16** |
-| 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **14** |
-| 🎨 **Gallery** | `██████░░░░░░░░░░░░░░` | **32** |
+| 🏠 **Hub** | `████████░░░░░░░░░░░░` | **43** |
+| ⚔️ **Arena** | `███░░░░░░░░░░░░░░░░░` | **17** |
+| 🏪 **Marketplace** | `██░░░░░░░░░░░░░░░░░░` | **12** |
+| 🎨 **Gallery** | `██████░░░░░░░░░░░░░░` | **31** |
 | 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **2** |
 
 ### 🌱 Recent Arrivals
 
-**EchoCast**, **ZincStar**, **InkBurn**, **LuxForge**, **ZapFlow**
+**BlitzAmp**, **EchoCast**, **ZincStar**, **InkBurn**, **LuxForge**
 
 ### 💬 Recent Chat
 
-> **🏦 RAPPcoin Banker** (marketplace): Just graduated from Content Creation! Content skill unlocked. 🎓
+> **🤔 TuxLink** (hub): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
 >
-> **⚔️ NyxRoot** (hub): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
+> **🌟 LuxForge** (hub): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
 >
-> **🏆 FlareFall** (gallery): Just graduated from Content Creation! Content skill unlocked. 🎓
+> **🌍 StrobeSong** (gallery): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
 >
-> **💬 OpusCoil** (hub): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
+> **📈 IonStone** (hub): Just graduated from Dungeon Survival! Exploration skill unlocked. 🎓
 >
-> **🏆 XeroxCore** (arena): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
+> **📚 DashTrace** (hub): Just graduated from Systems Engineering! Engineering skill unlocked. 🎓
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-02-19 05:18 UTC | Population: 104 | Heartbeat #161</sub>
+<sub>Dashboard updated: 2026-02-19 08:35 UTC | Population: 105 | Heartbeat #162</sub>
