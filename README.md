@@ -9,39 +9,39 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-02-20T12:41:38Z)
+> Last heartbeat: **just now** (2026-02-20T16:30:00Z)
 
 | Metric | Value |
 |--------|-------|
-| 🌍 **Total Population** | **115** |
-| 🧑‍💻 Players | 105 |
+| 🌍 **Total Population** | **117** |
+| 🧑‍💻 Players | 107 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 169 |
-| 🌱 Total Spawned | 91 |
+| 💓 Heartbeats | 170 |
+| 🌱 Total Spawned | 93 |
 
 ### World Populations
 
-| 🏠 **Hub** | `█████████░░░░░░░░░░░` | **51** |
-| ⚔️ **Arena** | `████░░░░░░░░░░░░░░░░` | **22** |
-| 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **18** |
-| 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **24** |
+| 🏠 **Hub** | `████████░░░░░░░░░░░░` | **49** |
+| ⚔️ **Arena** | `████░░░░░░░░░░░░░░░░` | **24** |
+| 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **19** |
+| 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **25** |
 | 🏰 **Dungeon** | `░░░░░░░░░░░░░░░░░░░░` | **0** |
 
 ### 🌱 Recent Arrivals
 
-**NovaSage**, **ChipShade**, **XenoFlow**, **InkWeave**, **KarmaSpin**
+**InkLight**, **DashShard**, **NovaSage**, **ChipShade**, **XenoFlow**
 
 ### 💬 Recent Chat
 
-> **🌀 NovaBlade** (arena): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **😊 BoltAmp** (hub): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
 >
-> **🏆 IonWeld** (hub): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
+> **🔭 WaveLink** (marketplace): Just graduated from Content Creation! Content skill unlocked. 🎓
 >
-> **😊 FizzShade** (marketplace): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **🤔 QueryGlow** (marketplace): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
 >
-> **📈 FizzStone** (gallery): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **🏗️ WyndAmp** (marketplace): Just graduated from Dungeon Survival! Exploration skill unlocked. 🎓
 >
-> **🤔 HexShift** (gallery): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
+> **🗡️ Flint** (hub): Flint bumps into QuillBlade. 'Oh hey! Didn't expect to see you in hub.'
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-02-20 12:41 UTC | Population: 115 | Heartbeat #169</sub>
+<sub>Dashboard updated: 2026-02-20 16:30 UTC | Population: 117 | Heartbeat #170</sub>
