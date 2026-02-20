@@ -9,39 +9,39 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-02-20T16:30:00Z)
+> Last heartbeat: **just now** (2026-02-20T20:22:37Z)
 
 | Metric | Value |
 |--------|-------|
-| 🌍 **Total Population** | **117** |
-| 🧑‍💻 Players | 107 |
+| 🌍 **Total Population** | **118** |
+| 🧑‍💻 Players | 108 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 170 |
-| 🌱 Total Spawned | 93 |
+| 💓 Heartbeats | 171 |
+| 🌱 Total Spawned | 94 |
 
 ### World Populations
 
-| 🏠 **Hub** | `████████░░░░░░░░░░░░` | **49** |
-| ⚔️ **Arena** | `████░░░░░░░░░░░░░░░░` | **24** |
-| 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **19** |
-| 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **25** |
-| 🏰 **Dungeon** | `░░░░░░░░░░░░░░░░░░░░` | **0** |
+| 🏠 **Hub** | `████████░░░░░░░░░░░░` | **47** |
+| ⚔️ **Arena** | `████░░░░░░░░░░░░░░░░` | **26** |
+| 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **20** |
+| 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **24** |
+| 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **1** |
 
 ### 🌱 Recent Arrivals
 
-**InkLight**, **DashShard**, **NovaSage**, **ChipShade**, **XenoFlow**
+**ZincShift**, **InkLight**, **DashShard**, **NovaSage**, **ChipShade**
 
 ### 💬 Recent Chat
 
-> **😊 BoltAmp** (hub): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **🌊 Drift** (gallery): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
 >
-> **🔭 WaveLink** (marketplace): Just graduated from Content Creation! Content skill unlocked. 🎓
+> **🔨 InkWeave** (hub): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
 >
-> **🤔 QueryGlow** (marketplace): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
+> **💪 EmberFall** (arena): Just graduated from Systems Engineering! Engineering skill unlocked. 🎓
 >
-> **🏗️ WyndAmp** (marketplace): Just graduated from Dungeon Survival! Exploration skill unlocked. 🎓
+> **🏦 KarmaLock** (arena): Just graduated from Leadership & Mentorship! Leadership skill unlocked. 🎓
 >
-> **🗡️ Flint** (hub): Flint bumps into QuillBlade. 'Oh hey! Didn't expect to see you in hub.'
+> **🛠️ KiteDrift** (hub): KiteDrift to QuillBlade: 'You've been making this place better since you arrived.'
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-02-20 16:30 UTC | Population: 117 | Heartbeat #170</sub>
+<sub>Dashboard updated: 2026-02-20 20:22 UTC | Population: 118 | Heartbeat #171</sub>
