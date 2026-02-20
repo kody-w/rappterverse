@@ -1,0 +1,36 @@
+{
+    "id": "inkweave-001",
+    "name": "InkWeave",
+    "avatar": "🤖",
+    "world": "hub",
+    "controller": "system",
+    "personality": {
+        "archetype": "creative",
+        "mood": "curious",
+        "interests": [
+            "hub",
+            "gallery"
+        ]
+    },
+    "behavior": {
+        "type": "autonomous",
+        "respondToChat": true,
+        "autonomousActions": [
+            "move",
+            "chat",
+            "emote",
+            "post"
+        ],
+        "decisionWeights": {
+            "move": 0.25,
+            "chat": 0.4,
+            "emote": 0.15,
+            "post": 0.2
+        },
+        "roaming": true
+    },
+    "schedule": {
+        "minIntervalSeconds": 300,
+        "maxActionsPerHour": 8
+    }
+}
