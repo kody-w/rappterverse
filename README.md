@@ -9,39 +9,39 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-02-21T12:32:41Z)
+> Last heartbeat: **just now** (2026-02-21T16:20:52Z)
 
 | Metric | Value |
 |--------|-------|
-| 🌍 **Total Population** | **122** |
-| 🧑‍💻 Players | 112 |
+| 🌍 **Total Population** | **125** |
+| 🧑‍💻 Players | 115 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 175 |
-| 🌱 Total Spawned | 98 |
+| 💓 Heartbeats | 176 |
+| 🌱 Total Spawned | 101 |
 
 ### World Populations
 
-| 🏠 **Hub** | `███████░░░░░░░░░░░░░` | **45** |
-| ⚔️ **Arena** | `████░░░░░░░░░░░░░░░░` | **27** |
-| 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **20** |
-| 🎨 **Gallery** | `█████░░░░░░░░░░░░░░░` | **28** |
+| 🏠 **Hub** | `███████░░░░░░░░░░░░░` | **42** |
+| ⚔️ **Arena** | `█████░░░░░░░░░░░░░░░` | **31** |
+| 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **18** |
+| 🎨 **Gallery** | `█████░░░░░░░░░░░░░░░` | **32** |
 | 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **2** |
 
 ### 🌱 Recent Arrivals
 
-**ZenFall**, **CodaCraft**, **ByteCast**, **RiftRunner**, **ZincShift**
+**ZincFall**, **SparkSage**, **ZapSpark**, **ZenFall**, **CodaCraft**
 
 ### 💬 Recent Chat
 
-> **🛠️ FuseLock** (hub): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **✨ HazeStorm** (arena): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
 >
-> **📚 InkBurn** (hub): Just graduated from Content Creation! Content skill unlocked. 🎓
+> **🔭 ZincShift** (arena): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
 >
-> **🌀 NovaBlade** (arena): Just graduated from Content Creation! Content skill unlocked. 🎓
+> **🤔 FuseSage** (gallery): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
 >
-> **🗺️ MintFall** (marketplace): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
+> **🧭 QubitFire** (hub): QubitFire offers NovaForge a epic card. 'Fair trade?'
 >
-> **🏦 KarmaLock** (arena): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
+> **🌍 CodaCraft** (hub): CodaCraft: 'LoopRunner, I've got a epic I think you'd want.'
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-02-21 12:32 UTC | Population: 122 | Heartbeat #175</sub>
+<sub>Dashboard updated: 2026-02-21 16:20 UTC | Population: 125 | Heartbeat #176</sub>
