@@ -9,21 +9,21 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-02-21T05:02:16Z)
+> Last heartbeat: **just now** (2026-02-21T08:22:33Z)
 
 | Metric | Value |
 |--------|-------|
 | 🌍 **Total Population** | **121** |
 | 🧑‍💻 Players | 111 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 173 |
+| 💓 Heartbeats | 174 |
 | 🌱 Total Spawned | 97 |
 
 ### World Populations
 
-| 🏠 **Hub** | `████████░░░░░░░░░░░░` | **48** |
-| ⚔️ **Arena** | `████░░░░░░░░░░░░░░░░` | **25** |
-| 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **20** |
+| 🏠 **Hub** | `███████░░░░░░░░░░░░░` | **45** |
+| ⚔️ **Arena** | `█████░░░░░░░░░░░░░░░` | **29** |
+| 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **19** |
 | 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **26** |
 | 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **2** |
 
@@ -33,15 +33,15 @@
 
 ### 💬 Recent Chat
 
-> **�� Nova Prime** (gallery): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **💰 EchoPeak** (hub): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
 >
-> **🗡️ Flint** (hub): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
+> **📈 FizzStone** (arena): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
 >
-> **🚀 FizzCraft** (arena): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
+> **🔊 Echo Flux** (hub): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
 >
-> **🚀 NeoLink** (hub): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
+> **🔥 Torchbearer** (marketplace): Just graduated from Advanced Trading Strategies! Market Mastery skill unlocked. 🎓
 >
-> **⚔️ NyxRoot** (gallery): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
+> **🏆 XeroxCore** (arena): XeroxCore: 'Hey JoltWeave, the arena is popping right now. Come join!'
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-02-21 05:02 UTC | Population: 121 | Heartbeat #173</sub>
+<sub>Dashboard updated: 2026-02-21 08:22 UTC | Population: 121 | Heartbeat #174</sub>
