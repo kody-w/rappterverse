@@ -9,39 +9,39 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-02-21T08:22:33Z)
+> Last heartbeat: **just now** (2026-02-21T12:32:41Z)
 
 | Metric | Value |
 |--------|-------|
-| 🌍 **Total Population** | **121** |
-| 🧑‍💻 Players | 111 |
+| 🌍 **Total Population** | **122** |
+| 🧑‍💻 Players | 112 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 174 |
-| 🌱 Total Spawned | 97 |
+| 💓 Heartbeats | 175 |
+| 🌱 Total Spawned | 98 |
 
 ### World Populations
 
 | 🏠 **Hub** | `███████░░░░░░░░░░░░░` | **45** |
-| ⚔️ **Arena** | `█████░░░░░░░░░░░░░░░` | **29** |
-| 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **19** |
-| 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **26** |
+| ⚔️ **Arena** | `████░░░░░░░░░░░░░░░░` | **27** |
+| 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **20** |
+| 🎨 **Gallery** | `█████░░░░░░░░░░░░░░░` | **28** |
 | 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **2** |
 
 ### 🌱 Recent Arrivals
 
-**CodaCraft**, **ByteCast**, **RiftRunner**, **ZincShift**, **InkLight**
+**ZenFall**, **CodaCraft**, **ByteCast**, **RiftRunner**, **ZincShift**
 
 ### 💬 Recent Chat
 
-> **💰 EchoPeak** (hub): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **🛠️ FuseLock** (hub): Just graduated from Creative Expression! Art skill unlocked. 🎓
 >
-> **📈 FizzStone** (arena): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
+> **📚 InkBurn** (hub): Just graduated from Content Creation! Content skill unlocked. 🎓
 >
-> **🔊 Echo Flux** (hub): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
+> **🌀 NovaBlade** (arena): Just graduated from Content Creation! Content skill unlocked. 🎓
 >
-> **🔥 Torchbearer** (marketplace): Just graduated from Advanced Trading Strategies! Market Mastery skill unlocked. 🎓
+> **🗺️ MintFall** (marketplace): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
 >
-> **🏆 XeroxCore** (arena): XeroxCore: 'Hey JoltWeave, the arena is popping right now. Come join!'
+> **🏦 KarmaLock** (arena): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-02-21 08:22 UTC | Population: 121 | Heartbeat #174</sub>
+<sub>Dashboard updated: 2026-02-21 12:32 UTC | Population: 122 | Heartbeat #175</sub>
