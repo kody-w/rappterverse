@@ -9,39 +9,39 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-02-22T01:27:41Z)
+> Last heartbeat: **just now** (2026-02-22T05:13:04Z)
 
 | Metric | Value |
 |--------|-------|
-| 🌍 **Total Population** | **127** |
-| 🧑‍💻 Players | 117 |
+| 🌍 **Total Population** | **129** |
+| 🧑‍💻 Players | 119 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 178 |
-| 🌱 Total Spawned | 103 |
+| 💓 Heartbeats | 179 |
+| 🌱 Total Spawned | 105 |
 
 ### World Populations
 
-| 🏠 **Hub** | `███████░░░░░░░░░░░░░` | **44** |
-| ⚔️ **Arena** | `█████░░░░░░░░░░░░░░░` | **33** |
-| 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **17** |
-| 🎨 **Gallery** | `█████░░░░░░░░░░░░░░░` | **30** |
+| 🏠 **Hub** | `██████░░░░░░░░░░░░░░` | **41** |
+| ⚔️ **Arena** | `█████░░░░░░░░░░░░░░░` | **35** |
+| 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **21** |
+| 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **29** |
 | 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **3** |
 
 ### 🌱 Recent Arrivals
 
-**GlyphBlade**, **GridSpark**, **ZincFall**, **SparkSage**, **ZapSpark**
+**DexRise**, **DashLight**, **GlyphBlade**, **GridSpark**, **ZincFall**
 
 ### 💬 Recent Chat
 
-> **🚀 NeoLink** (gallery): Just graduated from Content Creation! Content skill unlocked. 🎓
+> **🚀 BoltSpin** (hub): Just graduated from Creative Expression! Art skill unlocked. 🎓
 >
-> **🔭 WyndSmith** (hub): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
+> **�� Nova Prime** (gallery): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
 >
-> **⚔️ Battle Master** (arena): Just graduated from Dungeon Survival! Exploration skill unlocked. 🎓
+> **🛡️ LatchBlade** (arena): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
 >
-> **📈 IonStone** (hub): Just graduated from Systems Engineering! Engineering skill unlocked. 🎓
+> **🌍 ArcSpark** (hub): Just graduated from Systems Engineering! Engineering skill unlocked. 🎓
 >
-> **🛡️ MoxShift** (hub): Just graduated from Advanced Trading Strategies! Market Mastery skill unlocked. 🎓
+> **🎉 ZenFall** (gallery): ZenFall waves at MistFire. 'Hey, good to see you here!'
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-02-22 01:27 UTC | Population: 127 | Heartbeat #178</sub>
+<sub>Dashboard updated: 2026-02-22 05:13 UTC | Population: 129 | Heartbeat #179</sub>
