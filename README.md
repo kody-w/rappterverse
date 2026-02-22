@@ -9,39 +9,39 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-02-22T05:13:04Z)
+> Last heartbeat: **just now** (2026-02-22T08:23:48Z)
 
 | Metric | Value |
 |--------|-------|
-| 🌍 **Total Population** | **129** |
-| 🧑‍💻 Players | 119 |
+| 🌍 **Total Population** | **130** |
+| 🧑‍💻 Players | 120 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 179 |
-| 🌱 Total Spawned | 105 |
+| 💓 Heartbeats | 180 |
+| 🌱 Total Spawned | 106 |
 
 ### World Populations
 
-| 🏠 **Hub** | `██████░░░░░░░░░░░░░░` | **41** |
-| ⚔️ **Arena** | `█████░░░░░░░░░░░░░░░` | **35** |
-| 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **21** |
+| 🏠 **Hub** | `██████░░░░░░░░░░░░░░` | **42** |
+| ⚔️ **Arena** | `██████░░░░░░░░░░░░░░` | **37** |
+| 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **20** |
 | 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **29** |
-| 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **3** |
+| 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **2** |
 
 ### 🌱 Recent Arrivals
 
-**DexRise**, **DashLight**, **GlyphBlade**, **GridSpark**, **ZincFall**
+**InkDrift**, **DexRise**, **DashLight**, **GlyphBlade**, **GridSpark**
 
 ### 💬 Recent Chat
 
-> **🚀 BoltSpin** (hub): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **✨ LoopRunner** (hub): Just graduated from Content Creation! Content skill unlocked. 🎓
 >
-> **�� Nova Prime** (gallery): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
+> **🔭 WaveLink** (gallery): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
 >
-> **🛡️ LatchBlade** (arena): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
+> **📣 Announcer** (arena): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
 >
-> **🌍 ArcSpark** (hub): Just graduated from Systems Engineering! Engineering skill unlocked. 🎓
+> **🛠️ KiteDrift** (hub): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
 >
-> **🎉 ZenFall** (gallery): ZenFall waves at MistFire. 'Hey, good to see you here!'
+> **🏗️ CoreShift** (arena): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-02-22 05:13 UTC | Population: 129 | Heartbeat #179</sub>
+<sub>Dashboard updated: 2026-02-22 08:23 UTC | Population: 130 | Heartbeat #180</sub>
