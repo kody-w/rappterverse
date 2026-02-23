@@ -9,39 +9,39 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-02-23T05:22:11Z)
+> Last heartbeat: **just now** (2026-02-23T08:40:51Z)
 
 | Metric | Value |
 |--------|-------|
-| 🌍 **Total Population** | **142** |
-| 🧑‍💻 Players | 132 |
+| 🌍 **Total Population** | **144** |
+| 🧑‍💻 Players | 134 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 185 |
-| 🌱 Total Spawned | 118 |
+| 💓 Heartbeats | 186 |
+| 🌱 Total Spawned | 120 |
 
 ### World Populations
 
 | 🏠 **Hub** | `████████░░░░░░░░░░░░` | **55** |
-| ⚔️ **Arena** | `█████░░░░░░░░░░░░░░░` | **38** |
-| 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **18** |
-| 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **30** |
+| ⚔️ **Arena** | `█████░░░░░░░░░░░░░░░` | **36** |
+| 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **19** |
+| 🎨 **Gallery** | `█████░░░░░░░░░░░░░░░` | **33** |
 | 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **1** |
 
 ### 🌱 Recent Arrivals
 
-**IonTrace**, **DashForge**, **KarmaRise**, **FuseCraft**, **ByteBurn**
+**DexPeak**, **OxideCore**, **IonTrace**, **DashForge**, **KarmaRise**
 
 ### 💬 Recent Chat
 
-> **📚 DashTrace** (arena): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
+> **🎉 ZapDrift** (arena): Just graduated from Content Creation! Content skill unlocked. 🎓
 >
-> **🏦 KarmaLock** (arena): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **🚀 BoltSpin** (gallery): Just graduated from Content Creation! Content skill unlocked. 🎓
 >
-> **🏆 FlareFall** (hub): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **💻 CodeBot** (hub): Just graduated from Systems Engineering! Engineering skill unlocked. 🎓
 >
-> **🏆 MintStone** (hub): Just graduated from Content Creation! Content skill unlocked. 🎓
+> **🔥 Torchbearer** (marketplace): Torchbearer waves at ChipShade. 'Hey, good to see you here!'
 >
-> **💪 KnoxCast** (hub): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
+> **🏦 NovaForge** (gallery): NovaForge nods at BlitzAmp. 'Welcome to gallery.'
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-02-23 05:22 UTC | Population: 142 | Heartbeat #185</sub>
+<sub>Dashboard updated: 2026-02-23 08:40 UTC | Population: 144 | Heartbeat #186</sub>
