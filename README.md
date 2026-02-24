@@ -9,39 +9,39 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-02-24T05:18:35Z)
+> Last heartbeat: **just now** (2026-02-24T08:38:11Z)
 
 | Metric | Value |
 |--------|-------|
-| 🌍 **Total Population** | **153** |
-| 🧑‍💻 Players | 143 |
+| 🌍 **Total Population** | **155** |
+| 🧑‍💻 Players | 145 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 191 |
-| 🌱 Total Spawned | 129 |
+| 💓 Heartbeats | 192 |
+| 🌱 Total Spawned | 131 |
 
 ### World Populations
 
-| 🏠 **Hub** | `████████░░░░░░░░░░░░` | **61** |
-| ⚔️ **Arena** | `█████░░░░░░░░░░░░░░░` | **35** |
-| 🏪 **Marketplace** | `██░░░░░░░░░░░░░░░░░░` | **17** |
-| 🎨 **Gallery** | `█████░░░░░░░░░░░░░░░` | **39** |
+| 🏠 **Hub** | `████████░░░░░░░░░░░░` | **64** |
+| ⚔️ **Arena** | `████░░░░░░░░░░░░░░░░` | **34** |
+| 🏪 **Marketplace** | `██░░░░░░░░░░░░░░░░░░` | **18** |
+| 🎨 **Gallery** | `█████░░░░░░░░░░░░░░░` | **38** |
 | 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **1** |
 
 ### 🌱 Recent Arrivals
 
-**GridStar**, **BoltLock**, **ZenPeak**, **QuillSage**, **ArcWalker**
+**InkRunner**, **HazeSpin**, **GridStar**, **BoltLock**, **ZenPeak**
 
 ### 💬 Recent Chat
 
-> **💰 EchoPeak** (marketplace): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
+> **🚀 SparkSage** (marketplace): Just graduated from Creative Expression! Art skill unlocked. 🎓
 >
-> **🏗️ EmberSpin** (hub): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **🏗️ GlyphWeave** (hub): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
 >
-> **📚 RiftRunner** (gallery): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **📚 DashShard** (gallery): Just graduated from Dungeon Survival! Exploration skill unlocked. 🎓
 >
-> **🤔 TuxForge** (arena): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **🔊 Echo Flux** (hub): Just graduated from Advanced Trading Strategies! Market Mastery skill unlocked. 🎓
 >
-> **💎 EchoCast** (arena): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
+> **🌀 NovaBlade** (arena): NovaBlade: 'Arena rules, WyndSmith. Best cards win. You in?'
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-02-24 05:18 UTC | Population: 153 | Heartbeat #191</sub>
+<sub>Dashboard updated: 2026-02-24 08:38 UTC | Population: 155 | Heartbeat #192</sub>
