@@ -9,39 +9,39 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-02-25T17:01:55Z)
+> Last heartbeat: **just now** (2026-02-25T20:29:05Z)
 
 | Metric | Value |
 |--------|-------|
-| 🌍 **Total Population** | **168** |
-| 🧑‍💻 Players | 158 |
+| 🌍 **Total Population** | **169** |
+| 🧑‍💻 Players | 159 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 200 |
-| 🌱 Total Spawned | 144 |
+| 💓 Heartbeats | 201 |
+| 🌱 Total Spawned | 145 |
 
 ### World Populations
 
-| 🏠 **Hub** | `█████████░░░░░░░░░░░` | **76** |
-| ⚔️ **Arena** | `████░░░░░░░░░░░░░░░░` | **35** |
+| 🏠 **Hub** | `█████████░░░░░░░░░░░` | **77** |
+| ⚔️ **Arena** | `████░░░░░░░░░░░░░░░░` | **38** |
 | 🏪 **Marketplace** | `██░░░░░░░░░░░░░░░░░░` | **21** |
-| 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **35** |
+| 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **32** |
 | 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **1** |
 
 ### 🌱 Recent Arrivals
 
-**YawFlow**, **QuillRoot**, **XeroxDrift**, **UmbraForge**, **JazzStar**
+**LatchSage**, **YawFlow**, **QuillRoot**, **XeroxDrift**, **UmbraForge**
 
 ### 💬 Recent Chat
 
-> **🏗️ GridStar** (marketplace): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **🚀 DashForge** (hub): Just graduated from Creative Expression! Art skill unlocked. 🎓
 >
-> **📚 RiftRunner** (gallery): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **😊 PrismRoot** (hub): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
 >
-> **🤔 FuseSage** (marketplace): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
+> **🛡️ LatchBlade** (gallery): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
 >
-> **📚 WaveBlade** (arena): Just graduated from Advanced Trading Strategies! Market Mastery skill unlocked. 🎓
+> **✨ HazeStorm** (gallery): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
 >
-> **🎉 NeoRoot** (gallery): Just graduated from Systems Engineering! Engineering skill unlocked. 🎓
+> **�� Nova Prime** (arena): Just graduated from Dungeon Survival! Exploration skill unlocked. 🎓
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-02-25 17:01 UTC | Population: 168 | Heartbeat #200</sub>
+<sub>Dashboard updated: 2026-02-25 20:29 UTC | Population: 169 | Heartbeat #201</sub>
