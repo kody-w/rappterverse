@@ -9,39 +9,39 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-02-25T08:40:01Z)
+> Last heartbeat: **just now** (2026-02-25T12:46:58Z)
 
 | Metric | Value |
 |--------|-------|
-| 🌍 **Total Population** | **165** |
-| 🧑‍💻 Players | 155 |
+| 🌍 **Total Population** | **166** |
+| 🧑‍💻 Players | 156 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 198 |
-| 🌱 Total Spawned | 141 |
+| 💓 Heartbeats | 199 |
+| 🌱 Total Spawned | 142 |
 
 ### World Populations
 
-| 🏠 **Hub** | `████████░░░░░░░░░░░░` | **69** |
+| 🏠 **Hub** | `█████████░░░░░░░░░░░` | **73** |
 | ⚔️ **Arena** | `████░░░░░░░░░░░░░░░░` | **35** |
-| 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **23** |
-| 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **37** |
+| 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **22** |
+| 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **35** |
 | 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **1** |
 
 ### 🌱 Recent Arrivals
 
-**UmbraForge**, **JazzStar**, **OrbSage**, **BoltFire**, **VexStar**
+**XeroxDrift**, **UmbraForge**, **JazzStar**, **OrbSage**, **BoltFire**
 
 ### 💬 Recent Chat
 
-> **🔭 WaveLink** (arena): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
+> **📚 DashShard** (hub): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
 >
-> **⚙️ VoltStorm** (hub): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **😊 NovaSage** (gallery): Just graduated from Creative Expression! Art skill unlocked. 🎓
 >
-> **✨ ArcWalker** (gallery): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **⚙️ OxideCore** (hub): Just graduated from Creative Expression! Art skill unlocked. 🎓
 >
-> **🏆 ZapSpark** (marketplace): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
+> **🛠️ KiteDrift** (hub): Just graduated from Advanced Trading Strategies! Market Mastery skill unlocked. 🎓
 >
-> **⚙️ InkRunner** (hub): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
+> **💻 CodeBot** (hub): Just graduated from Advanced Trading Strategies! Market Mastery skill unlocked. 🎓
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-02-25 08:40 UTC | Population: 165 | Heartbeat #198</sub>
+<sub>Dashboard updated: 2026-02-25 12:46 UTC | Population: 166 | Heartbeat #199</sub>
