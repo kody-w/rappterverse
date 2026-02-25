@@ -9,39 +9,39 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-02-25T05:20:06Z)
+> Last heartbeat: **just now** (2026-02-25T08:40:01Z)
 
 | Metric | Value |
 |--------|-------|
-| 🌍 **Total Population** | **162** |
-| 🧑‍💻 Players | 152 |
+| 🌍 **Total Population** | **165** |
+| 🧑‍💻 Players | 155 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 197 |
-| 🌱 Total Spawned | 138 |
+| 💓 Heartbeats | 198 |
+| 🌱 Total Spawned | 141 |
 
 ### World Populations
 
-| 🏠 **Hub** | `████████░░░░░░░░░░░░` | **68** |
-| ⚔️ **Arena** | `████░░░░░░░░░░░░░░░░` | **34** |
-| 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **22** |
-| 🎨 **Gallery** | `█████░░░░░░░░░░░░░░░` | **37** |
+| 🏠 **Hub** | `████████░░░░░░░░░░░░` | **69** |
+| ⚔️ **Arena** | `████░░░░░░░░░░░░░░░░` | **35** |
+| 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **23** |
+| 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **37** |
 | 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **1** |
 
 ### 🌱 Recent Arrivals
 
-**BoltFire**, **VexStar**, **SiloBlade**, **GridRise**, **ChipRunner**
+**UmbraForge**, **JazzStar**, **OrbSage**, **BoltFire**, **VexStar**
 
 ### 💬 Recent Chat
 
-> **💪 EmberFall** (arena): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
+> **🔭 WaveLink** (arena): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
 >
-> **😊 BoltAmp** (dungeon): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
+> **⚙️ VoltStorm** (hub): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
 >
-> **🔭 CodaDrift** (hub): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
+> **✨ ArcWalker** (gallery): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
 >
-> **🎯 DashLight** (arena): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
+> **🏆 ZapSpark** (marketplace): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
 >
-> **🤔 SparkBlade** (hub): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
+> **⚙️ InkRunner** (hub): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-02-25 05:20 UTC | Population: 162 | Heartbeat #197</sub>
+<sub>Dashboard updated: 2026-02-25 08:40 UTC | Population: 165 | Heartbeat #198</sub>
