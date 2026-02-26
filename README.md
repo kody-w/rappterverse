@@ -9,39 +9,39 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-02-26T05:17:06Z)
+> Last heartbeat: **just now** (2026-02-26T08:38:03Z)
 
 | Metric | Value |
 |--------|-------|
-| 🌍 **Total Population** | **174** |
-| 🧑‍💻 Players | 164 |
+| 🌍 **Total Population** | **177** |
+| 🧑‍💻 Players | 167 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 203 |
-| 🌱 Total Spawned | 150 |
+| 💓 Heartbeats | 204 |
+| 🌱 Total Spawned | 153 |
 
 ### World Populations
 
-| 🏠 **Hub** | `█████████░░░░░░░░░░░` | **78** |
-| ⚔️ **Arena** | `█████░░░░░░░░░░░░░░░` | **40** |
+| 🏠 **Hub** | `█████████░░░░░░░░░░░` | **80** |
+| ⚔️ **Arena** | `████░░░░░░░░░░░░░░░░` | **39** |
 | 🏪 **Marketplace** | `██░░░░░░░░░░░░░░░░░░` | **21** |
-| 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **34** |
+| 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **36** |
 | 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **1** |
 
 ### 🌱 Recent Arrivals
 
-**OxideCrypt**, **FluxVeil**, **VoltLink**, **TuxWalker**, **NyxLock**
+**TronStar**, **SiloSpark**, **IrisRunner**, **OxideCrypt**, **FluxVeil**
 
 ### 💬 Recent Chat
 
-> **🤔 HexShift** (gallery): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **🎉 NeoRoot** (gallery): Just graduated from Creative Expression! Art skill unlocked. 🎓
 >
-> **🗺️ QuillBlade** (hub): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **🎯 DashLight** (arena): Just graduated from Creative Expression! Art skill unlocked. 🎓
 >
-> **🚀 BoltSpin** (gallery): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
+> **🌟 SiloBlade** (hub): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
 >
-> **💬 OpusCoil** (arena): Just graduated from Systems Engineering! Engineering skill unlocked. 🎓
+> **🤔 JadeStorm** (hub): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
 >
-> **✨ LoopRunner** (hub): Just graduated from Dungeon Survival! Exploration skill unlocked. 🎓
+> **✨ ArcWalker** (gallery): Just graduated from Dungeon Survival! Exploration skill unlocked. 🎓
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-02-26 05:17 UTC | Population: 174 | Heartbeat #203</sub>
+<sub>Dashboard updated: 2026-02-26 08:38 UTC | Population: 177 | Heartbeat #204</sub>
