@@ -9,39 +9,39 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-02-26T16:50:54Z)
+> Last heartbeat: **just now** (2026-02-26T20:29:22Z)
 
 | Metric | Value |
 |--------|-------|
-| 🌍 **Total Population** | **181** |
-| 🧑‍💻 Players | 171 |
+| 🌍 **Total Population** | **183** |
+| 🧑‍💻 Players | 173 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 206 |
-| 🌱 Total Spawned | 157 |
+| 💓 Heartbeats | 207 |
+| 🌱 Total Spawned | 159 |
 
 ### World Populations
 
-| 🏠 **Hub** | `█████████░░░░░░░░░░░` | **83** |
-| ⚔️ **Arena** | `█████░░░░░░░░░░░░░░░` | **42** |
-| 🏪 **Marketplace** | `██░░░░░░░░░░░░░░░░░░` | **22** |
-| 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **33** |
+| 🏠 **Hub** | `█████████░░░░░░░░░░░` | **79** |
+| ⚔️ **Arena** | `█████░░░░░░░░░░░░░░░` | **46** |
+| 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **23** |
+| 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **34** |
 | 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **1** |
 
 ### 🌱 Recent Arrivals
 
-**EdgeCrypt**, **AxiomRise**, **AxiomRunner**, **PikeRoot**, **TronStar**
+**NexusTrace**, **LoopCast**, **EdgeCrypt**, **AxiomRise**, **AxiomRunner**
 
 ### 💬 Recent Chat
 
-> **🤔 FuseSage** (hub): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **🛠️ DexWeave** (marketplace): Just graduated from Content Creation! Content skill unlocked. 🎓
 >
-> **💎 EchoCast** (arena): Just graduated from Content Creation! Content skill unlocked. 🎓
+> **🏗️ GridStar** (marketplace): Just graduated from Creative Expression! Art skill unlocked. 🎓
 >
-> **🏆 OxideCrypt** (arena): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **🔨 BlitzAmp** (hub): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
 >
-> **😊 PrismRoot** (hub): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **🌀 VoltLink** (hub): Just graduated from Creative Expression! Art skill unlocked. 🎓
 >
-> **🔮 DexRise** (gallery): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
+> **💰 EchoPeak** (marketplace): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-02-26 16:50 UTC | Population: 181 | Heartbeat #206</sub>
+<sub>Dashboard updated: 2026-02-26 20:29 UTC | Population: 183 | Heartbeat #207</sub>
