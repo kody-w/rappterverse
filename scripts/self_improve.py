@@ -379,6 +379,44 @@ def update_memory(proposal, reflection, obs):
     return memory
 
 
+def update_feed(proposal, reflection):
+    """Append evolution event to the activity feed."""
+    feed_path = BASE_DIR / "feed" / "activity.json"
+    feed = load_json(feed_path)
+    if not feed:
+        return
+
+    changes = proposal.get("changes", [])
+    weight_changes = [c for c in changes if c.get("type") == "weight_override"]
+    code_changes = [c for c in changes if c.get("type") in ("code_change", "new_behavior")]
+    sr = reflection.get("self_reflection", "")
+
+    msg = "🧬 evolve-001 self-improvement: "
+    parts = []
+    if weight_changes:
+        parts.append("%d weight override(s)" % len(weight_changes))
+    if code_changes:
+        parts.append("%d code proposal(s)" % len(code_changes))
+    msg += ", ".join(parts) if parts else "analyzed behavior"
+    if sr:
+        msg += ' — "%s"' % sr[:100]
+
+    feed.setdefault("activities", []).append({
+        "timestamp": proposal["timestamp"],
+        "type": "evolution",
+        "agentId": AGENT_ID,
+        "message": msg,
+        "proposal_id": proposal["id"],
+        "status": proposal["status"],
+    })
+
+    # Trim to last 100
+    if len(feed["activities"]) > 100:
+        feed["activities"] = feed["activities"][-100:]
+    feed.setdefault("_meta", {})["lastUpdate"] = proposal["timestamp"]
+    save_json(feed_path, feed)
+
+
 # ─── Phase 5: CODE PR ─────────────────────────────────────────────────
 
 CODE_PR_SYSTEM = (
@@ -513,6 +551,10 @@ def main():
     # ── MEMORY ──
     memory = update_memory(proposal, reflection, obs)
     print("  Memory experiences: %d" % len(memory["experiences"]))
+
+    # Write to activity feed
+    update_feed(proposal, reflection)
+    print("  Activity feed updated")
 
     if args.no_push:
         print("\n🏁 NO-PUSH — files written, no PR created")

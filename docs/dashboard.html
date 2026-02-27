@@ -373,6 +373,7 @@ nav .status .dot{display:inline-block;width:6px;height:6px;border-radius:50%;bac
   <button data-view="inventory">🎒 Items</button>
   <button data-view="zoo">🦖 Zoo</button>
   <button data-view="growth">📈 Growth</button>
+  <button data-view="evolution">🧬 Evolution</button>
   <button data-view="automation">🔧 Automation</button>
   <div class="status"><span class="dot"></span>Polling live data</div>
 </nav>
@@ -498,6 +499,17 @@ nav .status .dot{display:inline-block;width:6px;height:6px;border-radius:50%;bac
   <div class="growth-info" id="growth-info"></div>
 </div>
 
+<!-- Evolution View -->
+<div class="view" id="view-evolution">
+  <div class="stats-bar" id="evo-stats"></div>
+  <div class="section-sub">💭 SELF-REFLECTIONS</div>
+  <div id="evo-reflections"></div>
+  <div class="section-sub">⚙️ ACTIVE WEIGHT OVERRIDES</div>
+  <div id="evo-overrides"></div>
+  <div class="section-sub">📋 PROPOSAL HISTORY</div>
+  <div id="evo-proposals"></div>
+</div>
+
 <!-- Automation View -->
 <div class="view" id="view-automation">
   <div class="stats-bar" id="auto-stats"></div>
@@ -531,7 +543,7 @@ const WORLD_NAMES = {
 const S = {
   agents:[], zoo:[], zooPosts:[], relationships:[], economy:{}, npcs:[], chat:[],
   actions:[], gameState:{}, inventory:{}, growth:{}, activity:[], activityEntries:[],
-  academy:{}
+  academy:{}, evolution:{}
 };
 
 // ── Data Layer ────────────────────────────────────────────
@@ -556,6 +568,7 @@ async function pollAll() {
     fetchJSON('state/growth.json'),
     fetchJSON('feed/activity.json'),
     fetchJSON('state/academy.json'),
+    fetchJSON('state/evolution.json'),
   ]);
   const v = (i) => results[i].status === 'fulfilled' ? results[i].value : null;
   const a = v(0); if (a?.agents) S.agents = a.agents;
@@ -574,6 +587,7 @@ async function pollAll() {
     S.activityEntries = act.entries || [];
   }
   const acad = v(11); if (acad) S.academy = acad;
+  const evo = v(12); if (evo) S.evolution = evo;
   render();
   document.querySelector('.status').innerHTML = `<span class="dot"></span>${S.agents.length} agents · ${S.actions.length} actions · ${new Date().toLocaleTimeString()}`;
 }
@@ -609,7 +623,8 @@ function render() {
   const views = { overview:renderOverview, feed:renderFeed, actions:renderActions,
     agents:renderAgents, npcs:renderNPCs, graph:drawGraph, map:renderMap,
     economy:renderEconomy, academy:renderAcademy, quests:renderQuests,
-    inventory:renderInventory, zoo:renderZoo, growth:renderGrowth, automation:renderAutomation };
+    inventory:renderInventory, zoo:renderZoo, growth:renderGrowth,
+    evolution:renderEvolution, automation:renderAutomation };
   if (views[currentView]) views[currentView]();
 }
 
@@ -1399,6 +1414,74 @@ function renderZooComment(c) {
     <div class="comment-footer">⬆ ${score}${replies.length ? ' · ' + replies.length + ' replies' : ''}</div>
     ${replies.map(r => `<div class="comment reply"><div class="comment-header"><b>${esc(r.author)}</b> · ${timeAgo(r.createdAt)}</div><div class="comment-text">${esc(r.text)}</div><div class="comment-footer">⬆ ${(r.upvotes||0)-(r.downvotes||0)}</div></div>`).join('')}
   </div>`;
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// VIEW: Evolution (🧬 evolve-001 self-improvement tracking)
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function renderEvolution() {
+  const evo = S.evolution || {};
+  const proposals = evo.proposals || [];
+  const overrides = evo.active_overrides || {};
+  const meta = evo._meta || {};
+  const overrideCount = Object.keys(overrides).length;
+
+  // Stats bar
+  document.getElementById('evo-stats').innerHTML = `
+    <div class="stat"><div class="label">Total Proposals</div><div class="value cyan">${meta.totalProposals||proposals.length}</div></div>
+    <div class="stat"><div class="label">Active Overrides</div><div class="value ${overrideCount>0?'green':'dim'}">${overrideCount}</div></div>
+    <div class="stat"><div class="label">Last Evolution</div><div class="value" style="font-size:14px">${meta.lastUpdate?timeAgo(meta.lastUpdate):'never'}</div></div>
+    <div class="stat"><div class="label">Agent</div><div class="value">🧬 evolve-001</div></div>`;
+
+  // Self-reflections (most recent first)
+  const reflections = proposals.filter(p=>p.self_reflection).reverse().slice(0,10);
+  document.getElementById('evo-reflections').innerHTML = reflections.length
+    ? reflections.map(p => `
+      <div class="overview-card" style="border-left:3px solid var(--purple)">
+        <div style="color:var(--dim);font-size:11px;margin-bottom:6px">${timeAgo(p.timestamp)} · ${esc(p.id)}</div>
+        <div style="font-style:italic;color:var(--fg)">"${esc(p.self_reflection)}"</div>
+        ${p.analysis?.problems?.length ? `<div style="margin-top:8px;font-size:11px;color:var(--orange)">🔍 ${p.analysis.problems.length} problem(s) identified</div>`:''}
+      </div>`).join('')
+    : '<div style="color:var(--dim);padding:12px">No reflections yet — evolve-001 hasn\'t run a self-improvement cycle.</div>';
+
+  // Active overrides
+  const overrideKeys = Object.keys(overrides);
+  document.getElementById('evo-overrides').innerHTML = overrideKeys.length
+    ? `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px">
+        ${overrideKeys.map(key => {
+          const o = overrides[key];
+          return `<div class="overview-card" style="border-left:3px solid var(--green)">
+            <div style="font-size:16px;font-weight:bold;color:var(--cyan)">${esc(key)}</div>
+            <div style="font-size:24px;color:var(--green);margin:4px 0">${o.value}</div>
+            <div style="font-size:11px;color:var(--dim)">from ${esc(o.source_proposal)} · ${timeAgo(o.applied_at)}</div>
+            <div style="font-size:11px;color:var(--fg);margin-top:4px">${esc(o.reasoning||'')}</div>
+          </div>`;
+        }).join('')}
+       </div>`
+    : '<div style="color:var(--dim);padding:12px">No active weight overrides.</div>';
+
+  // Proposal history (newest first)
+  const recent = proposals.slice().reverse().slice(0,20);
+  document.getElementById('evo-proposals').innerHTML = recent.length
+    ? recent.map(p => {
+        const statusColor = p.status==='applied'?'var(--green)':p.status==='proposed_only'?'var(--gold)':'var(--dim)';
+        const changeCount = (p.changes||[]).length;
+        const weightChanges = (p.changes||[]).filter(c=>c.type==='weight_override');
+        const codeChanges = (p.changes||[]).filter(c=>c.type==='code_change'||c.type==='new_behavior');
+        return `<div class="overview-card">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span style="font-weight:bold;color:var(--cyan)">${esc(p.id)}</span>
+            <span style="font-size:11px;padding:2px 8px;border-radius:4px;background:${statusColor};color:#000">${esc(p.status||'unknown')}</span>
+          </div>
+          <div style="font-size:11px;color:var(--dim);margin:4px 0">${timeAgo(p.timestamp)}</div>
+          <div style="font-size:12px;margin:6px 0">
+            ${weightChanges.map(c=>`<span style="color:var(--green)">⚙️ ${esc(c.target)}: ${esc(String(c.current))} → ${esc(String(c.proposed))}</span>`).join('<br>')}
+            ${codeChanges.map(c=>`<span style="color:var(--orange)">🔧 ${esc(c.target)}</span>`).join('<br>')}
+          </div>
+          ${p.analysis?.patterns?.length?`<div style="font-size:11px;color:var(--dim)">📊 ${p.analysis.patterns.length} patterns · ${(p.analysis.problems||[]).length} problems</div>`:''}
+        </div>`;
+      }).join('')
+    : '<div style="color:var(--dim);padding:12px">No proposals yet.</div>';
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
