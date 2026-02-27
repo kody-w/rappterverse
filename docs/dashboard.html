@@ -771,7 +771,7 @@ function renderActions() {
   if (actionsSearch) items = items.filter(a => (a.agentId||'').toLowerCase().includes(actionsSearch) || (a.type||'').toLowerCase().includes(actionsSearch) || JSON.stringify(a.data||{}).toLowerCase().includes(actionsSearch));
   items = items.slice(0, 200);
 
-  const typeIcon = t => t==='move'?'🚶':t==='chat'?'💬':t==='emote'?'😊':t==='spawn'?'✨':t==='teach'?'🎓':t==='trade_offer'?'🤝':t==='tip'?'🪙':t==='challenge'?'⚔️':t==='enroll'?'📚':t==='interact'?'👉':'⚡';
+  const typeIcon = t => t==='move'?'🚶':t==='chat'?'💬':t==='emote'?'😊':t==='spawn'?'✨':t==='teach'?'🎓':t==='trade_offer'?'🤝':t==='tip'?'🪙':t==='challenge'?'⚔️':t==='enroll'?'📚':t==='interact'?'👉':t==='defend'?'🛡️':t==='attack'?'🐉':'⚡';
 
   document.getElementById('actions-list').innerHTML = items.map(a => {
     let detail = '';
@@ -786,6 +786,8 @@ function renderActions() {
     else if (a.type==='challenge') detail = `challenged ${a.data?.targetName||'?'} to a duel ⚔️`;
     else if (a.type==='enroll') detail = `enrolled in ${a.data?.courseName||'?'} 📚`;
     else if (a.type==='interact' && a.data?.subtype==='poke') detail = `poked ${a.data?.targetName||'?'}`;
+    else if (a.type==='defend') detail = `🛡️ defending against ${a.data?.targetName||'?'} (${a.data?.damage||'?'} dmg)`;
+    else if (a.type==='attack') detail = `🐉 ${a.data?.attackerName||'?'} attacks! (${a.data?.attackerHp||'?'} HP)`;
     else if (a.data) detail = Object.entries(a.data).slice(0,2).map(([k,v])=>`${k}: ${typeof v==='object'?'…':v}`).join(', ');
     return `<div class="timeline-item">
       <span class="tl-time">${timeAgo(a.timestamp)}</span>

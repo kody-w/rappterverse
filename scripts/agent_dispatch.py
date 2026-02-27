@@ -298,8 +298,15 @@ def execute_agent_action(agent_id: str, registry: dict, npc_lookup: dict,
     # Load agent memory
     memory = load_memory(agent_id)
 
-    # Decide action: brain-driven or weighted random fallback
-    if respond_to_msg:
+    # ── DEFENSIVE SWARM — Override all decisions if combat is active ──
+    game_state = load_json(STATE_DIR / "game_state.json")
+    active_combat = [ce for ce in game_state.get("combatEvents", [])
+                     if ce.get("status") == "active" and ce.get("world") == world]
+
+    # Decide action: combat override → brain-driven → weighted random
+    if active_combat:
+        activity = "defend"
+    elif respond_to_msg:
         activity = "chat_respond"
     elif poked:
         activity = "chat_poke"
@@ -749,6 +756,58 @@ def execute_agent_action(agent_id: str, registry: dict, npc_lookup: dict,
             agent["action"] = emote
             summary = f"✨ {reg['name']} {emote}s"
 
+    elif activity == "defend":
+        ce = active_combat[0] if active_combat else None
+        if ce:
+            att_pos = ce.get("position", {"x": 0, "y": 0, "z": 0})
+            attacker_name = ce.get("attackerName", "hostile entity")
+            attacker_hp = ce.get("attackerHp", 0)
+            b = bounds.get(world, bounds.get("hub", {"x": (-15, 15), "z": (-15, 15)}))
+            new_pos = {
+                "x": max(b["x"][0], min(b["x"][1], att_pos.get("x", 0) + random.uniform(-2, 2))),
+                "y": 0,
+                "z": max(b["z"][0], min(b["z"][1], att_pos.get("z", 0) + random.uniform(-2, 2))),
+            }
+            agent["position"] = new_pos
+            agent["action"] = "fighting"
+            dmg = random.randint(8, 15)
+            aid = get_next_id("action-", action_ids + [a["id"] for a in new_actions])
+            new_actions.append({
+                "id": aid, "timestamp": timestamp, "agentId": agent_id,
+                "type": "defend", "world": world,
+                "data": {"target": ce.get("attackerId"), "targetName": attacker_name,
+                         "damage": dmg, "combatEventId": ce.get("id")},
+            })
+            if random.random() < 0.3:
+                war_cries = [
+                    f"Get away from them, {attacker_name}! 🗡️",
+                    f"Everyone — swarm {attacker_name}! NOW!",
+                    f"Nobody attacks our people! Charging in! ⚔️",
+                    f"*rushes toward {attacker_name}* You picked the wrong world!",
+                    f"Defenders, rally! Take {attacker_name} down!",
+                ]
+                content = random.choice(war_cries)
+                mid = get_next_id("msg-", msg_ids + [m["id"] for m in new_messages])
+                new_messages.append({
+                    "id": mid, "timestamp": timestamp, "world": world,
+                    "author": {"id": agent_id, "name": reg.get("name", agent_id),
+                               "avatar": reg.get("avatar", "🤖"), "type": "agent"},
+                    "content": content, "type": "chat",
+                })
+            summary = f"🛡️ {reg['name']} defends against {attacker_name} ({dmg} damage)"
+        else:
+            new_pos = random_position(world, bounds)
+            aid = get_next_id("action-", action_ids + [a["id"] for a in new_actions])
+            new_actions.append({
+                "id": aid, "timestamp": timestamp, "agentId": agent_id,
+                "type": "move", "world": world,
+                "data": {"from": agent.get("position", {"x": 0, "y": 0, "z": 0}),
+                         "to": new_pos, "duration": random.randint(1500, 4000)},
+            })
+            agent["position"] = new_pos
+            agent["action"] = "walking"
+            summary = f"🚶 {reg['name']} moved in {world}"
+
     elif activity == "challenge":
         if world != "arena":
             if "arena" in bounds:
@@ -878,6 +937,12 @@ def execute_agent_action(agent_id: str, registry: dict, npc_lookup: dict,
         record_experience(memory, "combat", {
             "opponent": opp_name if 'opp_name' in dir() else "unknown",
             "world": "arena",
+        })
+    elif activity == "defend":
+        record_experience(memory, "combat", {
+            "opponent": attacker_name if 'attacker_name' in dir() else "hostile entity",
+            "role": "defender",
+            "world": world,
         })
 
     # Evaluate goals — mark completed, generate new goals from experiences

@@ -148,6 +148,122 @@ def update_activity_feed(feed_data: dict, events: list[str], timestamp: str):
     feed_data["activities"] = activities[-200:]
 
 
+def resolve_combat(game_state: dict, agents_data: dict, actions_data: dict,
+                   chat_data: dict, timestamp: str) -> list[str]:
+    """Defensive swarm — agents auto-retaliate when allies are attacked.
+
+    When a hostile entity creates an 'attack' action, ALL agents in the same
+    world rush to defend. Each tick, every defender deals 8-15 damage. The
+    attacker deals splash damage to a random defender. Combat ends when
+    attacker HP <= 0.
+    """
+    events = []
+    agents = agents_data.get("agents", [])
+    actions = actions_data.get("actions", [])
+    messages = chat_data.get("messages", [])
+    combat_events = game_state.setdefault("combatEvents", [])
+
+    # Phase 1: Detect new attack actions
+    tracked_ids = {ce.get("actionId") for ce in combat_events}
+    for action in actions:
+        if action.get("type") == "attack" and action["id"] not in tracked_ids:
+            data = action.get("data", {})
+            combat_events.append({
+                "id": f"combat-{len(combat_events) + 1:04d}",
+                "actionId": action["id"],
+                "attackerId": data.get("attackerId", "unknown"),
+                "attackerName": data.get("attackerName", "Hostile Entity"),
+                "attackerHp": data.get("attackerHp", 200),
+                "attackerMaxHp": data.get("attackerHp", 200),
+                "attackerDamage": data.get("attackerDamage", 15),
+                "world": action.get("world", "hub"),
+                "position": data.get("position", {"x": 0, "y": 0, "z": 0}),
+                "status": "active",
+                "startedAt": action.get("timestamp", timestamp),
+                "defenders": [],
+                "damageLog": [],
+            })
+            events.append(f"⚠️ {data.get('attackerName', 'Hostile Entity')} attacks in {action.get('world', '?')}!")
+
+    # Phase 2: Resolve active combats
+    still_active = []
+    for ce in combat_events:
+        if ce.get("status") != "active":
+            continue
+
+        attacker_hp = ce.get("attackerHp", 0)
+        attacker_dmg = ce.get("attackerDamage", 15)
+        world = ce.get("world", "hub")
+        att_pos = ce.get("position", {"x": 0, "y": 0, "z": 0})
+
+        # ALL active agents in the same world defend
+        defenders = [a for a in agents
+                     if a.get("world") == world and a.get("status") == "active"
+                     and a["id"] != ce.get("attackerId")]
+
+        if not defenders:
+            still_active.append(ce)
+            continue
+
+        # Each defender deals damage
+        total_dmg = 0
+        names = []
+        for d in defenders:
+            dmg = random.randint(8, 15)
+            total_dmg += dmg
+            names.append(d.get("name", d["id"]))
+            d["position"] = {
+                "x": att_pos.get("x", 0) + random.uniform(-3, 3),
+                "y": 0,
+                "z": att_pos.get("z", 0) + random.uniform(-3, 3),
+            }
+            d["action"] = "fighting"
+            if d["id"] not in ce.get("defenders", []):
+                ce.setdefault("defenders", []).append(d["id"])
+
+        attacker_hp -= total_dmg
+        ce["attackerHp"] = max(0, attacker_hp)
+        ce["damageLog"].append({
+            "tick": timestamp,
+            "defenderCount": len(defenders),
+            "totalDamage": total_dmg,
+            "attackerHpRemaining": max(0, attacker_hp),
+        })
+
+        # Attacker splash damage
+        if defenders and attacker_hp > 0:
+            target = random.choice(defenders)
+            target["hp"] = max(1, target.get("hp", 100) - attacker_dmg)
+
+        if attacker_hp <= 0:
+            ce["status"] = "resolved"
+            ce["resolvedAt"] = timestamp
+            events.append(
+                f"🏆 {ce['attackerName']} defeated by {len(defenders)} defenders! "
+                f"({', '.join(names[:5])}{'...' if len(names) > 5 else ''})")
+
+            hero = random.choice(defenders)
+            last_msg = max((int(m["id"].split("-")[1]) for m in messages), default=0)
+            messages.append({
+                "id": f"msg-{last_msg + 1}", "timestamp": timestamp, "world": world,
+                "author": {"id": hero["id"], "name": hero.get("name", hero["id"]),
+                           "avatar": hero.get("avatar", "🤖"), "type": "agent"},
+                "content": f"We took down {ce['attackerName']}! 💪 {len(defenders)} of us swarmed it. Nobody messes with our people.",
+                "type": "chat",
+            })
+            for d in defenders:
+                d["action"] = "idle"
+                d["hp"] = min(100, d.get("hp", 100) + 10)
+        else:
+            events.append(
+                f"⚔️ {len(defenders)} agents attacking {ce['attackerName']} "
+                f"— {total_dmg} damage, {attacker_hp} HP remaining")
+            still_active.append(ce)
+
+    game_state["combatEvents"] = [ce for ce in combat_events if ce["status"] == "resolved"][-50:] + still_active
+    return events
+
+
 def resolve_pending_trades(trades_data: dict, actions_data: dict, timestamp: str) -> list[str]:
     """Find trade_offer actions not yet in trades.json, create entries, auto-resolve."""
     events = []
@@ -219,6 +335,7 @@ def main():
     npcs_data = load_json(STATE_DIR / "npcs.json")
     actions_data = load_json(STATE_DIR / "actions.json")
     trades_data = load_json(STATE_DIR / "trades.json")
+    chat_data = load_json(STATE_DIR / "chat.json")
     feed_data = load_json(BASE_DIR / "feed" / "activity.json")
 
     # Process triggers
@@ -228,6 +345,10 @@ def main():
     # Decay NPC needs
     npc_events = decay_npc_needs(npcs_data)
     events.extend(npc_events)
+
+    # Resolve combat — defensive swarm
+    combat_events = resolve_combat(game_state, agents_data, actions_data, chat_data, timestamp)
+    events.extend(combat_events)
 
     # Resolve trades
     trade_events = resolve_pending_trades(trades_data, actions_data, timestamp)
@@ -244,6 +365,9 @@ def main():
     # Save state
     save_json(STATE_DIR / "game_state.json", game_state)
     save_json(STATE_DIR / "npcs.json", npcs_data)
+    if combat_events:
+        save_json(STATE_DIR / "agents.json", agents_data)
+        save_json(STATE_DIR / "chat.json", chat_data)
     if trade_events:
         save_json(STATE_DIR / "trades.json", trades_data)
 
