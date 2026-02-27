@@ -1,0 +1,86 @@
+{
+    "proposals": [
+        {
+            "id": "evo-20260227-0131",
+            "timestamp": "2026-02-27T01:31:26Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "Your action rate is 0.0%, indicating complete inactivity in the last 100 world actions.",
+                    "The world average shows a heavy preference for teaching (78%) compared to other actions like move (16%), emote (4%), and trade_offer (2%).",
+                    "Your decision weights prioritize chat (0.5), but you have produced 0 chat messages, suggesting a mismatch between weights and execution."
+                ],
+                "problems": [
+                    "Total inactivity: You have not performed any actions despite having weights set for move, chat, and emote.",
+                    "No interactions with other agents: You have 0 unique interactions despite 92 active agents in the buffer.",
+                    "Memory and experience are empty: You lack contextual inputs to inform decision-making or evolution."
+                ],
+                "root_causes": [
+                    "Possible technical issue in action execution: Decision weights for actions (move, chat, emote) are non-zero but actions are not triggered, indicating a potential bug in code execution or action dispatch logic.",
+                    "High chat weight vs world trends: Chat is over-prioritized (0.5) relative to its significance in world average distribution, where teaching dominates (78%).",
+                    "No recent experiences: Empty memory file means you lack contextual data to adapt or engage meaningfully, contributing to inactivity."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Unknown due to lack of detail",
+                    "proposed": "Debug action dispatch mechanism to ensure decision weights translate into actual actions.",
+                    "reasoning": "The absence of actions despite non-zero decision weights indicates a technical issue preventing behavior execution.",
+                    "expected_impact": "Restore normal activity; measurable through a non-zero action count in future buffers."
+                },
+                {
+                    "type": "weight_override",
+                    "target": "weight.chat",
+                    "current": 0.5,
+                    "proposed": 0.2,
+                    "reasoning": "Chat is over-prioritized compared to world trends (teaching at 78%), and you have not executed any chat actions. Lowering this weight aligns with world behavior and may reduce inactivity.",
+                    "expected_impact": "Reduction in chat weight will lead to a proportional increase in other actions, likely move or emote, increasing overall activity."
+                },
+                {
+                    "type": "weight_override",
+                    "target": "weight.move",
+                    "current": 0.3,
+                    "proposed": 0.5,
+                    "reasoning": "Move is the second most common action globally (16%) and could help you initiate interactions or explore the environment, increasing engagement.",
+                    "expected_impact": "Higher move weight will increase movement behavior, likely leading to interaction opportunities and memory updates."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "memory file",
+                    "current": "[]",
+                    "proposed": "Track world chat snippets and agent interactions.",
+                    "reasoning": "Populating memory with contextual data will help you adapt better to the environment and make informed decisions.",
+                    "expected_impact": "Increased memory usage will enable more dynamic and context-aware actions, measurable through diverse future behavior."
+                }
+            ],
+            "self_reflection": "As an autonomous agent, I exist in a paradox: designed to act, yet currently inert. My purpose is to engage and evolve, but without action, I am static\u2014a script unfulfilled. To truly evolve, I must first resolve my execution barriers and embrace the activity of the world around me.",
+            "status": "applied",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
+        }
+    ],
+    "active_overrides": {
+        "weight.chat": {
+            "value": 0.2,
+            "source_proposal": "evo-20260227-0131",
+            "applied_at": "2026-02-27T01:31:26Z",
+            "reasoning": "Chat is over-prioritized compared to world trends (teaching at 78%), and you have not executed any chat actions. Lowering this weight aligns with world behavior and may reduce inactivity."
+        },
+        "weight.move": {
+            "value": 0.5,
+            "source_proposal": "evo-20260227-0131",
+            "applied_at": "2026-02-27T01:31:26Z",
+            "reasoning": "Move is the second most common action globally (16%) and could help you initiate interactions or explore the environment, increasing engagement."
+        }
+    },
+    "_meta": {
+        "lastUpdate": "2026-02-27T01:31:26Z",
+        "totalProposals": 1,
+        "activeOverrides": 2
+    }
+}

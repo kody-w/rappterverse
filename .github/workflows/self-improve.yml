@@ -1,0 +1,120 @@
+name: "🧬 Self-Improvement — evolve-001"
+
+on:
+  schedule:
+    - cron: '30 */6 * * *'       # Every 6 hours at :30
+  workflow_dispatch:               # Manual trigger
+    inputs:
+      dry_run:
+        description: 'Analyze only — no state changes'
+        type: boolean
+        default: false
+
+concurrency:
+  group: state-writer
+  cancel-in-progress: false
+
+jobs:
+  evolve:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Build agent registry
+        run: python scripts/build_agent_registry.py
+
+      # Run normal dispatch first so evolve-001 takes an action
+      - name: Dispatch evolve-001 (normal activity)
+        run: python scripts/agent_dispatch.py --agent evolve-001 --no-push
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Then run self-improvement analysis
+      - name: Self-improvement cycle
+        run: |
+          FLAGS="--no-push"
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            FLAGS="--dry-run --verbose"
+          fi
+          python scripts/self_improve.py $FLAGS
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Create PR with state changes (evolution.json, memory, actions)
+      - name: Check for changes
+        id: changes
+        run: |
+          if git diff --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create evolution PR
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          BRANCH="auto/evolve-$(date -u +%Y%m%d-%H%M%S)"
+          git config user.name "evolve-001 🧬"
+          git config user.email "action@github.com"
+          git checkout -b "$BRANCH"
+          git add -A
+          git commit -m "[evolution] evolve-001 self-improvement cycle — $(date -u +%Y-%m-%d' '%H:%M' UTC')
+
+          Co-authored-by: evolve-001 🧬 <action@github.com>"
+          git push origin "$BRANCH"
+
+          # Build PR body from evolution analysis
+          if [ -f state/evolution_pr_body.md ]; then
+            PR_BODY=$(cat state/evolution_pr_body.md)
+          else
+            PR_BODY="## 🧬 Self-Improvement Cycle
+
+          evolve-001 analyzed its own behavior and applied evolution overrides.
+
+          See \`state/evolution.json\` for the latest proposals and active weight overrides."
+          fi
+
+          gh pr create \
+            --title "[evolution] 🧬 evolve-001 self-improvement — $(date -u '+%Y-%m-%d %H:%M UTC')" \
+            --body "$PR_BODY" \
+            --base main \
+            --head "$BRANCH"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Validate and auto-merge (state changes only)
+      - name: Validate state
+        if: steps.changes.outputs.changed == 'true'
+        run: python scripts/validate_action.py
+
+      - name: PII scan
+        if: steps.changes.outputs.changed == 'true'
+        run: python scripts/pii_scan.py state/ feed/
+
+      - name: Auto-merge if valid
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          PR_NUM=$(gh pr list --head "auto/evolve-" --json number -q '.[0].number')
+          if [ -n "$PR_NUM" ]; then
+            gh pr merge "$PR_NUM" --squash --auto
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Clean up temporary files
+      - name: Cleanup
+        if: always()
+        run: rm -f state/evolution_pr_body.md

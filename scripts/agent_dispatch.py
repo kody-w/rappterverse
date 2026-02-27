@@ -319,6 +319,16 @@ def execute_agent_action(agent_id: str, registry: dict, npc_lookup: dict,
                        {"move": 0.3, "chat": 0.5, "emote": 0.2}))
         if "poke" not in weights:
             weights["poke"] = 0.08
+        # Apply self-improvement overrides from evolution.json
+        evo_path = STATE_DIR / "evolution.json"
+        if evo_path.exists():
+            try:
+                evo = json.loads(evo_path.read_text())
+                for key, ov in evo.get("active_overrides", {}).items():
+                    if key.startswith("weight.") and key[7:] in weights:
+                        weights[key[7:]] = float(ov["value"])
+            except Exception:
+                pass
         activity = random.choices(
             list(weights.keys()), weights=list(weights.values()))[0]
 
