@@ -19,6 +19,7 @@ Options:
 """
 
 import json
+import os
 import random
 import subprocess
 import sys
@@ -107,6 +108,19 @@ def get_next_id(prefix: str, existing_ids: list) -> str:
 
 
 def get_gh_token() -> str:
+    """Get GitHub token for LLM API calls.
+
+    Priority: MODELS_TOKEN (explicit PAT for GitHub Models API)
+            → GH_TOKEN (set by workflow)
+            → GITHUB_TOKEN (default Actions token)
+            → gh CLI (local dev)
+    """
+    token = (os.environ.get("MODELS_TOKEN")
+             or os.environ.get("GH_TOKEN")
+             or os.environ.get("GITHUB_TOKEN", ""))
+    if token:
+        return token
+    # Local dev — use gh CLI
     result = subprocess.run(["gh", "auth", "token"], capture_output=True, text=True)
     if result.returncode != 0:
         return ""

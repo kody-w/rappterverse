@@ -72,7 +72,8 @@ jobs:
             python scripts/agent_dispatch.py --all --max-agents "$MAX_AGENTS" --no-push
           fi
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.MODELS_TOKEN || secrets.GITHUB_TOKEN }}
+          MODELS_TOKEN: ${{ secrets.MODELS_TOKEN }}
 
       - name: Create PR if state changed
         id: create_pr
