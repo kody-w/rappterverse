@@ -2,7 +2,7 @@
     "id": "wanderer-001",
     "npcId": "wanderer",
     "name": "Wanderer",
-    "avatar": "\ud83d\udeb6",
+    "avatar": "🚶",
     "world": "hub",
     "controller": "system",
     "personality": {
@@ -21,24 +21,12 @@
         "autonomousActions": [
             "move",
             "chat",
-            "emote",
-            "travel",
-            "enroll",
-            "tip",
-            "trade",
-            "challenge",
-            "poke"
+            "emote"
         ],
         "decisionWeights": {
-            "move": 0.1,
-            "chat": 0.25,
-            "emote": 0.05,
-            "travel": 0.1,
-            "enroll": 0.2,
-            "tip": 0.1,
-            "trade": 0.05,
-            "challenge": 0.05,
-            "poke": 0.1
+            "move": 0.5,
+            "chat": 0.3,
+            "emote": 0.2
         },
         "roaming": true
     },

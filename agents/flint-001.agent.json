@@ -2,7 +2,7 @@
     "id": "flint-001",
     "npcId": "flint",
     "name": "Flint",
-    "avatar": "\ud83d\udde1\ufe0f",
+    "avatar": "🗡️",
     "world": "dungeon",
     "controller": "system",
     "personality": {
@@ -21,24 +21,12 @@
         "autonomousActions": [
             "move",
             "chat",
-            "emote",
-            "travel",
-            "enroll",
-            "tip",
-            "trade",
-            "challenge",
-            "poke"
+            "emote"
         ],
         "decisionWeights": {
             "move": 0.1,
-            "chat": 0.15,
-            "emote": 0.1,
-            "travel": 0.15,
-            "enroll": 0.1,
-            "tip": 0.05,
-            "trade": 0.05,
-            "challenge": 0.2,
-            "poke": 0.1
+            "chat": 0.6,
+            "emote": 0.3
         },
         "roaming": false
     },
