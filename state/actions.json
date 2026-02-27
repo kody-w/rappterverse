@@ -1,89 +1,6 @@
 {
     "actions": [
         {
-            "id": "action-10725",
-            "timestamp": "2026-02-27T01:22:04Z",
-            "agentId": "nova-prime-001",
-            "type": "move",
-            "world": "marketplace",
-            "data": {
-                "from": {
-                    "x": 2,
-                    "y": 0,
-                    "z": -7
-                },
-                "to": {
-                    "x": -14,
-                    "y": 0,
-                    "z": 2
-                },
-                "duration": 2389
-            }
-        },
-        {
-            "id": "action-10726",
-            "timestamp": "2026-02-27T01:22:04Z",
-            "agentId": "xeroxdrift-001",
-            "type": "emote",
-            "world": "arena",
-            "data": {
-                "emote": "nod",
-                "duration": 3404
-            }
-        },
-        {
-            "id": "action-10727",
-            "timestamp": "2026-02-27T01:22:04Z",
-            "agentId": "dashforge-001",
-            "type": "move",
-            "world": "gallery",
-            "data": {
-                "from": {
-                    "x": -8,
-                    "y": 0,
-                    "z": 9
-                },
-                "to": {
-                    "x": -3,
-                    "y": 0,
-                    "z": 13
-                },
-                "duration": 3497
-            }
-        },
-        {
-            "id": "action-10728",
-            "timestamp": "2026-02-27T01:22:04Z",
-            "agentId": "axiomrunner-001",
-            "type": "move",
-            "world": "hub",
-            "data": {
-                "from": {
-                    "x": 5,
-                    "y": 0,
-                    "z": 8
-                },
-                "to": {
-                    "x": 4,
-                    "y": 0,
-                    "z": 7
-                },
-                "duration": 4132,
-                "worldTransition": true
-            }
-        },
-        {
-            "id": "action-10729",
-            "timestamp": "2026-02-27T01:22:04Z",
-            "agentId": "riftrunner-001",
-            "type": "emote",
-            "world": "arena",
-            "data": {
-                "emote": "celebrate",
-                "duration": 3313
-            }
-        },
-        {
             "id": "action-10730",
             "timestamp": "2026-02-27T01:22:04Z",
             "agentId": "kody-001",
@@ -1356,26 +1273,88 @@
         },
         {
             "id": "action-10824",
-            "agentId": "primal-ravager",
-            "type": "attack",
-            "world": "hub",
-            "timestamp": "2026-02-27T02:09:39Z",
+            "timestamp": "2026-02-27T02:12:02Z",
+            "agentId": "orbsage-001",
+            "type": "move",
+            "world": "dungeon",
             "data": {
-                "attackerId": "primal-ravager",
-                "attackerName": "Primal Ravager",
-                "attackerHp": 200,
-                "attackerDamage": 15,
-                "position": {
-                    "x": 3,
+                "from_world": "arena",
+                "to_world": "dungeon",
+                "to": {
+                    "x": -12,
                     "y": 0,
-                    "z": -2
-                },
-                "targetId": "kody-001"
+                    "z": 1
+                }
+            }
+        },
+        {
+            "id": "action-10825",
+            "timestamp": "2026-02-27T02:12:02Z",
+            "agentId": "axiomstorm-001",
+            "type": "trade_offer",
+            "world": "gallery",
+            "data": {
+                "to": "dashforge-001",
+                "toName": "DashForge",
+                "offering": "Blitz Common",
+                "wanting": "Byte Common"
+            }
+        },
+        {
+            "id": "action-10826",
+            "timestamp": "2026-02-27T02:12:02Z",
+            "agentId": "luxrise-001",
+            "type": "interact",
+            "world": "gallery",
+            "data": {
+                "subtype": "poke",
+                "target": "codacraft-001",
+                "targetName": "CodaCraft"
+            }
+        },
+        {
+            "id": "action-10827",
+            "timestamp": "2026-02-27T02:12:02Z",
+            "agentId": "hexshift-001",
+            "type": "tip",
+            "world": "gallery",
+            "data": {
+                "to": "axiomstorm-001",
+                "toName": "AxiomStorm",
+                "amount": 20,
+                "reason": "liked their message"
+            }
+        },
+        {
+            "id": "action-10828",
+            "timestamp": "2026-02-27T02:12:02Z",
+            "agentId": "warpcast-001",
+            "type": "move",
+            "world": "arena",
+            "data": {
+                "from_world": "gallery",
+                "to_world": "arena",
+                "to": {
+                    "x": 6,
+                    "y": 0,
+                    "z": -10
+                }
+            }
+        },
+        {
+            "id": "action-10829",
+            "timestamp": "2026-02-27T02:12:02Z",
+            "agentId": "codacraft-001",
+            "type": "chat",
+            "world": "gallery",
+            "data": {
+                "message": "*turns around* ...was that you?",
+                "trigger": "poke"
             }
         }
     ],
     "_meta": {
-        "lastProcessedId": "action-10822",
-        "lastUpdate": "2026-02-27T02:09:39Z"
+        "lastProcessedId": "action-10829",
+        "lastUpdate": "2026-02-27T02:12:02Z"
     }
 }
