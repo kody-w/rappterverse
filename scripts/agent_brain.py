@@ -39,6 +39,8 @@ MEMORY_TEMPLATE = {
     "opinions": {},
     "interests": [],
     "knownAgents": [],
+    "goals": [],
+    "preferences": {},
     "lastActive": None,
 }
 
@@ -76,6 +78,81 @@ def record_experience(memory: dict, exp_type: str, details: dict):
     })
 
 
+# ─── Goals ─────────────────────────────────────────────────────────────
+
+MAX_GOALS = 5
+
+GOAL_TRIGGERS = {
+    # experience_type → (condition_fn, goal_template)
+    "combat": lambda e: {"type": "learn", "target": "Arena Combat Training",
+                         "action": "enroll", "reason": f"challenged {e.get('opponent', '?')}"},
+    "trade": lambda e: {"type": "social", "target": e.get("with", "?"),
+                        "action": "travel", "reason": "follow up on trade"},
+    "travel": lambda e: {"type": "explore", "target": e.get("to", "?"),
+                         "action": "travel", "reason": "keep exploring"},
+    "learned": lambda e: {"type": "practice", "target": e.get("skill", "?"),
+                          "action": "chat", "reason": "share what I learned"},
+}
+
+
+def set_goal(memory: dict, goal_type: str, target: str, action: str, reason: str = ""):
+    """Add a goal to an agent's memory. Goals bias future action decisions."""
+    goals = memory.setdefault("goals", [])
+    # Don't duplicate
+    if any(g.get("target") == target and g.get("type") == goal_type for g in goals):
+        return
+    goals.append({
+        "type": goal_type,
+        "target": target,
+        "action": action,
+        "reason": reason,
+        "created": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "status": "active",
+    })
+    # Trim to max
+    memory["goals"] = [g for g in goals if g.get("status") == "active"][-MAX_GOALS:]
+
+
+def evaluate_goals(memory: dict, completed_action: str, details: dict):
+    """Check if a completed action satisfies any goals. Auto-generate new goals from experiences."""
+    goals = memory.get("goals", [])
+
+    # Mark matching goals as done
+    for g in goals:
+        if g.get("status") != "active":
+            continue
+        if g.get("action") == completed_action:
+            if completed_action == "enroll" and g.get("target", "").lower() in details.get("course", "").lower():
+                g["status"] = "done"
+            elif completed_action == "travel" and g.get("target") == details.get("to"):
+                g["status"] = "done"
+            elif completed_action == "trade" and g.get("target") == details.get("with"):
+                g["status"] = "done"
+            elif completed_action in ("chat", "tip"):
+                g["status"] = "done"
+
+    # Clean up done goals
+    memory["goals"] = [g for g in goals if g.get("status") == "active"]
+
+    # Generate new goals from recent experiences (20% chance per experience type)
+    recent = memory.get("experiences", [])[-3:]
+    for exp in recent:
+        exp_type = exp.get("type", "")
+        if exp_type in GOAL_TRIGGERS and random.random() < 0.2:
+            goal = GOAL_TRIGGERS[exp_type](exp)
+            set_goal(memory, goal["type"], goal["target"], goal["action"], goal.get("reason", ""))
+
+
+def goal_bias(memory: dict) -> str:
+    """Return the action type that active goals suggest, or empty string."""
+    goals = memory.get("goals", [])
+    active = [g for g in goals if g.get("status") == "active"]
+    if active:
+        # Pick the oldest active goal
+        return active[0].get("action", "")
+    return ""
+
+
 def memory_summary(memory: dict) -> str:
     """Produce a concise text summary of an agent's memory for LLM context."""
     parts = []
@@ -96,6 +173,11 @@ def memory_summary(memory: dict) -> str:
     known = memory.get("knownAgents", [])
     if known:
         parts.append(f"Knows: {', '.join(known[:8])}")
+
+    goals = [g for g in memory.get("goals", []) if g.get("status") == "active"]
+    if goals:
+        goal_lines = [f"- {g.get('type','?')}: {g.get('target','?')} ({g.get('reason','')})" for g in goals[:3]]
+        parts.append("Active goals:\n" + "\n".join(goal_lines))
 
     exps = memory.get("experiences", [])[-8:]
     if exps:
@@ -223,9 +305,18 @@ class AgentBrain:
 
         Returns one of: move, chat, emote, post, travel, enroll, tip, trade, challenge
         Falls back to weighted random if LLM unavailable.
+        Goal bias: 40% chance to follow active goal before LLM/random.
         """
+        # Goal-driven bias — if agent has an active goal, 40% chance to pursue it
+        biased = goal_bias(memory)
+        if biased and random.random() < 0.4:
+            valid_actions = {"chat", "move", "emote", "post", "travel", "enroll",
+                             "tip", "trade", "challenge"}
+            if biased in valid_actions:
+                return biased
+
         if not self.token:
-            return self._fallback_decision(agent_reg)
+            return self._fallback_decision(agent_reg, memory)
 
         name = agent_reg.get("name", "Unknown")
         world = world_context.get("world", "hub")
@@ -418,8 +509,12 @@ Respond with ONLY the opinion text:"""
     # ─── Private helpers ──────────────────────────────────────────────
 
     @staticmethod
-    def _fallback_decision(agent_reg: dict) -> str:
-        """Weighted random fallback when LLM is unavailable."""
+    def _fallback_decision(agent_reg: dict, memory: dict = None) -> str:
+        """Weighted random fallback when LLM is unavailable. Respects goal bias."""
+        if memory:
+            biased = goal_bias(memory)
+            if biased and random.random() < 0.3:
+                return biased
         weights = agent_reg.get("behavior", {}).get("decisionWeights",
                                                      {"move": 0.3, "chat": 0.5, "emote": 0.2})
         return random.choices(list(weights.keys()), weights=list(weights.values()))[0]

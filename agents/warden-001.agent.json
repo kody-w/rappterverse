@@ -2,7 +2,7 @@
     "id": "warden-001",
     "npcId": "warden",
     "name": "The Warden",
-    "avatar": "💀",
+    "avatar": "\ud83d\udc80",
     "world": "dungeon",
     "controller": "system",
     "personality": {
@@ -21,12 +21,24 @@
         "autonomousActions": [
             "move",
             "chat",
-            "emote"
+            "emote",
+            "travel",
+            "enroll",
+            "tip",
+            "trade",
+            "challenge",
+            "poke"
         ],
         "decisionWeights": {
-            "move": 0.5,
-            "chat": 0.3,
-            "emote": 0.2
+            "move": 0.15,
+            "chat": 0.25,
+            "emote": 0.1,
+            "travel": 0.1,
+            "enroll": 0.08,
+            "tip": 0.08,
+            "trade": 0.08,
+            "challenge": 0.08,
+            "poke": 0.08
         },
         "roaming": false
     },

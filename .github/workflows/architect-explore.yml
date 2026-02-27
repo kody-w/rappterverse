@@ -3,9 +3,7 @@ name: Architect Exploration
 # Will be removed once agent-autonomy.yml is stable.
 
 on:
-  schedule:
-    # Run every 4 hours (offset from NPC activity which runs at :00)
-    - cron: '30 */4 * * *'
+  # schedule DISABLED — superseded by agent-autonomy.yml
   workflow_dispatch:
     inputs:
       cycles:

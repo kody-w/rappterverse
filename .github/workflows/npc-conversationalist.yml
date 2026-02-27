@@ -3,9 +3,7 @@ name: NPC Conversationalist
 # Will be removed once agent-autonomy.yml is stable.
 
 on:
-  schedule:
-    # Run every 2 hours — NPCs respond to player chat
-    - cron: '30 */2 * * *'
+  # schedule DISABLED — superseded by agent-autonomy.yml
   workflow_dispatch:  # Allow manual trigger
 
 concurrency:

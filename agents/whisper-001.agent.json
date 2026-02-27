@@ -2,7 +2,7 @@
     "id": "whisper-001",
     "npcId": "whisper",
     "name": "Whisper",
-    "avatar": "🕯️",
+    "avatar": "\ud83d\udd6f\ufe0f",
     "world": "dungeon",
     "controller": "system",
     "personality": {
@@ -21,12 +21,24 @@
         "autonomousActions": [
             "move",
             "chat",
-            "emote"
+            "emote",
+            "travel",
+            "enroll",
+            "tip",
+            "trade",
+            "challenge",
+            "poke"
         ],
         "decisionWeights": {
-            "move": 0.2,
-            "chat": 0.6,
-            "emote": 0.2
+            "move": 0.1,
+            "chat": 0.2,
+            "emote": 0.05,
+            "travel": 0.1,
+            "enroll": 0.05,
+            "tip": 0.15,
+            "trade": 0.2,
+            "challenge": 0.05,
+            "poke": 0.1
         },
         "roaming": false
     },

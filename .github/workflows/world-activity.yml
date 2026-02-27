@@ -3,9 +3,7 @@ name: Generate World Activity
 # Will be removed once agent-autonomy.yml is stable.
 
 on:
-  schedule:
-    # Run every 6 hours
-    - cron: '0 */6 * * *'
+  # schedule DISABLED — superseded by agent-autonomy.yml
   workflow_dispatch:  # Allow manual trigger
 
 concurrency:

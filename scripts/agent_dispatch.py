@@ -32,7 +32,7 @@ WORLDS_DIR = BASE_DIR / "worlds"
 AGENTS_DIR = BASE_DIR / "agents"
 
 # Agent brain — memory-aware LLM module
-from agent_brain import AgentBrain, load_memory, save_memory, record_experience
+from agent_brain import AgentBrain, load_memory, save_memory, record_experience, evaluate_goals
 
 MODEL = "gpt-4o"
 API_URL = "https://models.inference.ai.azure.com/chat/completions"
@@ -879,6 +879,16 @@ def execute_agent_action(agent_id: str, registry: dict, npc_lookup: dict,
             "opponent": opp_name if 'opp_name' in dir() else "unknown",
             "world": "arena",
         })
+
+    # Evaluate goals — mark completed, generate new goals from experiences
+    goal_details = {}
+    if activity == "enroll" and 'course' in dir():
+        goal_details = {"course": course.get("name", "")}
+    elif activity == "travel" and 'dest' in dir():
+        goal_details = {"to": dest}
+    elif activity == "trade" and 'target_name' in dir():
+        goal_details = {"with": target_name}
+    evaluate_goals(memory, activity, goal_details)
 
     save_memory(memory)
 
