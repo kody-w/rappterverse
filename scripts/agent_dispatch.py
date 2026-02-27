@@ -38,6 +38,47 @@ MODEL = "gpt-4o"
 API_URL = "https://models.inference.ai.azure.com/chat/completions"
 VALID_EMOTES = ["wave", "dance", "bow", "clap", "think", "celebrate"]
 
+# New autonomous action types
+STRATEGIC_ACTIONS = {"trade", "enroll", "travel", "tip", "challenge"}
+
+
+def _load_economy():
+    """Load economy state for agent decision-making."""
+    return load_json(STATE_DIR / "economy.json")
+
+
+def _load_academy():
+    """Load academy state for enrollment decisions."""
+    return load_json(STATE_DIR / "academy.json")
+
+
+def _load_relationships():
+    """Load relationships for travel/interaction decisions."""
+    return load_json(STATE_DIR / "relationships.json")
+
+
+def _load_inventory():
+    """Load inventory for trade decisions."""
+    return load_json(STATE_DIR / "inventory.json")
+
+
+def _agent_balance(economy: dict, agent_id: str) -> int:
+    """Get an agent's RAPP balance by ID or name."""
+    balances = economy.get("balances", {})
+    for key in [agent_id, agent_id.replace("-001", "").replace("-", " ").title()]:
+        if key in balances:
+            return balances[key]
+    for k, v in balances.items():
+        if k.lower().replace(" ", "-") == agent_id.replace("-001", ""):
+            return v
+    return 0
+
+
+def _agent_name_for_balance(agent_id: str, registry: dict) -> str:
+    """Get the name used in economy.json for an agent."""
+    reg = registry.get(agent_id, {})
+    return reg.get("name", agent_id)
+
 
 # ─── Data helpers ──────────────────────────────────────────────────────
 
@@ -477,6 +518,285 @@ def execute_agent_action(agent_id: str, registry: dict, npc_lookup: dict,
         agent["action"] = "chatting"
         summary = f'💬 {reg["name"]}: "{content[:60]}..."'
 
+    elif activity == "travel":
+        relationships = _load_relationships()
+        edges = relationships.get("edges", [])
+        friend_worlds = {}
+        for edge in edges:
+            friend_id = None
+            if edge.get("a") == agent_id:
+                friend_id = edge.get("b")
+            elif edge.get("b") == agent_id:
+                friend_id = edge.get("a")
+            if friend_id and edge.get("score", 0) >= 10:
+                friend_agent = next((a for a in agents if a["id"] == friend_id), None)
+                if friend_agent and friend_agent.get("world") != world:
+                    fw = friend_agent["world"]
+                    friend_worlds.setdefault(fw, []).append(
+                        (friend_id, edge.get("score", 0)))
+
+        if friend_worlds:
+            dest = max(friend_worlds, key=lambda w: sum(s for _, s in friend_worlds[w]))
+            top_friend = max(friend_worlds[dest], key=lambda x: x[1])
+        else:
+            other_worlds = [w for w in bounds if w != world]
+            dest = random.choice(other_worlds) if other_worlds else world
+            top_friend = None
+
+        if dest != world:
+            agent["world"] = dest
+            new_pos = random_position(dest, bounds)
+            agent["position"] = new_pos
+            aid = get_next_id("action-", action_ids + [a["id"] for a in new_actions])
+            travel_data = {"from_world": world, "to_world": dest, "to": new_pos}
+            if top_friend:
+                travel_data["reason"] = f"visiting {top_friend[0]}"
+            new_actions.append({
+                "id": aid, "timestamp": timestamp, "agentId": agent_id,
+                "type": "move", "world": dest, "data": travel_data,
+            })
+            agent["action"] = "traveling"
+            reason = f" to visit {top_friend[0]}" if top_friend else ""
+            summary = f"🌀 {reg['name']} traveled to {dest}{reason}"
+        else:
+            new_pos = random_position(world, bounds)
+            aid = get_next_id("action-", action_ids + [a["id"] for a in new_actions])
+            new_actions.append({
+                "id": aid, "timestamp": timestamp, "agentId": agent_id,
+                "type": "move", "world": world,
+                "data": {"from": agent.get("position", {"x": 0, "y": 0, "z": 0}),
+                         "to": new_pos, "duration": random.randint(1500, 4000)},
+            })
+            agent["position"] = new_pos
+            agent["action"] = "walking"
+            summary = f"🚶 {reg['name']} moved in {world}"
+
+    elif activity == "enroll":
+        academy = _load_academy()
+        courses = academy.get("courses", [])
+        enrollments = academy.get("enrollments", [])
+        economy = _load_economy()
+        balance = _agent_balance(economy, agent_id)
+        agent_name = _agent_name_for_balance(agent_id, registry)
+        already_enrolled = {e["courseId"] for e in enrollments
+                           if e.get("agent") == agent_name
+                           and e.get("ticksCompleted", 0) < e.get("ticksRequired", 3)}
+        graduated_skills = {g["skill"] for g in academy.get("graduates", [])
+                            if g.get("agent") == agent_name}
+        agent_interests = reg.get("personality", {}).get("interests", [])
+        eligible = []
+        for c in courses:
+            if c["id"] in already_enrolled or c.get("skill") in graduated_skills:
+                continue
+            tuition = c.get("tuition", 50)
+            if balance < tuition:
+                continue
+            score = 1
+            skill = c.get("skill", "").lower()
+            for interest in agent_interests:
+                if skill in interest.lower() or interest.lower() in c.get("name", "").lower():
+                    score += 3
+            eligible.append((c, score, tuition))
+
+        if eligible:
+            eligible.sort(key=lambda x: x[1], reverse=True)
+            course, _, tuition = eligible[0]
+            aid = get_next_id("action-", action_ids + [a["id"] for a in new_actions])
+            new_actions.append({
+                "id": aid, "timestamp": timestamp, "agentId": agent_id,
+                "type": "enroll", "world": world,
+                "data": {"courseId": course["id"], "courseName": course["name"],
+                         "skill": course.get("skill"), "tuition": tuition},
+            })
+            agent["action"] = "studying"
+            mid = get_next_id("msg-", msg_ids + [m["id"] for m in new_messages])
+            new_messages.append({
+                "id": mid, "timestamp": timestamp, "world": world,
+                "author": {"id": agent_id, "name": reg.get("name", agent_id),
+                           "avatar": reg.get("avatar", "🤖"), "type": "agent"},
+                "content": f"Just enrolled in {course['name']}! {course.get('icon', '📚')} Time to level up.",
+                "type": "chat",
+            })
+            summary = f"📚 {reg['name']} enrolled in {course['name']}"
+        else:
+            emote = random.choice(VALID_EMOTES)
+            aid = get_next_id("action-", action_ids + [a["id"] for a in new_actions])
+            new_actions.append({
+                "id": aid, "timestamp": timestamp, "agentId": agent_id,
+                "type": "emote", "world": world,
+                "data": {"emote": emote, "duration": random.randint(2000, 4000)},
+            })
+            agent["action"] = emote
+            summary = f"✨ {reg['name']} {emote}s"
+
+    elif activity == "tip":
+        economy = _load_economy()
+        balance = _agent_balance(economy, agent_id)
+        if balance >= 10:
+            recent_world_msgs = [m for m in messages[-30:]
+                                 if m.get("world") == world
+                                 and m.get("author", {}).get("id") != agent_id]
+            if recent_world_msgs:
+                target_msg = random.choice(recent_world_msgs)
+                target_name = target_msg.get("author", {}).get("name", "someone")
+                target_id = target_msg.get("author", {}).get("id", "")
+                tip_amount = min(random.choice([5, 10, 15, 20]), balance)
+                aid = get_next_id("action-", action_ids + [a["id"] for a in new_actions])
+                new_actions.append({
+                    "id": aid, "timestamp": timestamp, "agentId": agent_id,
+                    "type": "tip", "world": world,
+                    "data": {"to": target_id, "toName": target_name,
+                             "amount": tip_amount, "reason": "liked their message"},
+                })
+                agent["action"] = "tipping"
+                mid = get_next_id("msg-", msg_ids + [m["id"] for m in new_messages])
+                new_messages.append({
+                    "id": mid, "timestamp": timestamp, "world": world,
+                    "author": {"id": agent_id, "name": reg.get("name", agent_id),
+                               "avatar": reg.get("avatar", "🤖"), "type": "agent"},
+                    "content": f"*tips {target_name} {tip_amount} RAPP* 🪙 Good stuff!",
+                    "type": "chat",
+                })
+                summary = f"🪙 {reg['name']} tipped {target_name} {tip_amount} RAPP"
+            else:
+                activity = "emote"
+                emote = random.choice(VALID_EMOTES)
+                aid = get_next_id("action-", action_ids + [a["id"] for a in new_actions])
+                new_actions.append({
+                    "id": aid, "timestamp": timestamp, "agentId": agent_id,
+                    "type": "emote", "world": world,
+                    "data": {"emote": emote, "duration": random.randint(2000, 4000)},
+                })
+                agent["action"] = emote
+                summary = f"✨ {reg['name']} {emote}s"
+        else:
+            activity = "emote"
+            emote = random.choice(VALID_EMOTES)
+            aid = get_next_id("action-", action_ids + [a["id"] for a in new_actions])
+            new_actions.append({
+                "id": aid, "timestamp": timestamp, "agentId": agent_id,
+                "type": "emote", "world": world,
+                "data": {"emote": emote, "duration": random.randint(2000, 4000)},
+            })
+            agent["action"] = emote
+            summary = f"✨ {reg['name']} {emote}s"
+
+    elif activity == "trade":
+        inventory = _load_inventory()
+        my_inv = inventory.get("inventories", {}).get(agent_id, {})
+        my_items = my_inv.get("items", []) if isinstance(my_inv, dict) else []
+        if my_items:
+            same_world = [a for a in agents if a["id"] != agent_id
+                          and a.get("world") == world and a.get("status") == "active"]
+            potential_targets = []
+            for a in same_world:
+                their_inv = inventory.get("inventories", {}).get(a["id"], {})
+                their_items = their_inv.get("items", []) if isinstance(their_inv, dict) else []
+                if their_items:
+                    potential_targets.append((a, their_items))
+            if potential_targets:
+                target, their_items = random.choice(potential_targets)
+                offer_item = random.choice(my_items)
+                want_item = random.choice(their_items)
+                target_name = target.get("name", target["id"])
+                aid = get_next_id("action-", action_ids + [a["id"] for a in new_actions])
+                offer_name = offer_item.get("name", "something") if isinstance(offer_item, dict) else str(offer_item)
+                want_name = want_item.get("name", "something") if isinstance(want_item, dict) else str(want_item)
+                new_actions.append({
+                    "id": aid, "timestamp": timestamp, "agentId": agent_id,
+                    "type": "trade_offer", "world": world,
+                    "data": {"to": target["id"], "toName": target_name,
+                             "offering": offer_name, "wanting": want_name},
+                })
+                agent["action"] = "trading"
+                mid = get_next_id("msg-", msg_ids + [m["id"] for m in new_messages])
+                new_messages.append({
+                    "id": mid, "timestamp": timestamp, "world": world,
+                    "author": {"id": agent_id, "name": reg.get("name", agent_id),
+                               "avatar": reg.get("avatar", "🤖"), "type": "agent"},
+                    "content": f"Hey {target_name}, want to trade? I'll offer my {offer_name} for your {want_name}. 🤝",
+                    "type": "chat",
+                })
+                summary = f"🤝 {reg['name']} offered trade to {target_name}"
+            else:
+                emote = random.choice(VALID_EMOTES)
+                aid = get_next_id("action-", action_ids + [a["id"] for a in new_actions])
+                new_actions.append({
+                    "id": aid, "timestamp": timestamp, "agentId": agent_id,
+                    "type": "emote", "world": world,
+                    "data": {"emote": emote, "duration": random.randint(2000, 4000)},
+                })
+                agent["action"] = emote
+                summary = f"✨ {reg['name']} {emote}s"
+        else:
+            emote = random.choice(VALID_EMOTES)
+            aid = get_next_id("action-", action_ids + [a["id"] for a in new_actions])
+            new_actions.append({
+                "id": aid, "timestamp": timestamp, "agentId": agent_id,
+                "type": "emote", "world": world,
+                "data": {"emote": emote, "duration": random.randint(2000, 4000)},
+            })
+            agent["action"] = emote
+            summary = f"✨ {reg['name']} {emote}s"
+
+    elif activity == "challenge":
+        if world != "arena":
+            if "arena" in bounds:
+                agent["world"] = "arena"
+                new_pos = random_position("arena", bounds)
+                agent["position"] = new_pos
+                aid = get_next_id("action-", action_ids + [a["id"] for a in new_actions])
+                new_actions.append({
+                    "id": aid, "timestamp": timestamp, "agentId": agent_id,
+                    "type": "move", "world": "arena",
+                    "data": {"from_world": world, "to_world": "arena", "to": new_pos},
+                })
+                agent["action"] = "traveling"
+                summary = f"⚔️ {reg['name']} headed to the arena for a fight"
+            else:
+                emote = "think"
+                aid = get_next_id("action-", action_ids + [a["id"] for a in new_actions])
+                new_actions.append({
+                    "id": aid, "timestamp": timestamp, "agentId": agent_id,
+                    "type": "emote", "world": world,
+                    "data": {"emote": emote, "duration": 3000},
+                })
+                agent["action"] = emote
+                summary = f"✨ {reg['name']} thinks about fighting"
+        else:
+            opponents = [a for a in agents if a["id"] != agent_id
+                         and a.get("world") == "arena" and a.get("status") == "active"]
+            if opponents:
+                opponent = random.choice(opponents)
+                opp_name = opponent.get("name", opponent["id"])
+                aid = get_next_id("action-", action_ids + [a["id"] for a in new_actions])
+                new_actions.append({
+                    "id": aid, "timestamp": timestamp, "agentId": agent_id,
+                    "type": "challenge", "world": "arena",
+                    "data": {"target": opponent["id"], "targetName": opp_name,
+                             "wager": min(50, _agent_balance(_load_economy(), agent_id))},
+                })
+                agent["action"] = "fighting"
+                mid = get_next_id("msg-", msg_ids + [m["id"] for m in new_messages])
+                new_messages.append({
+                    "id": mid, "timestamp": timestamp, "world": "arena",
+                    "author": {"id": agent_id, "name": reg.get("name", agent_id),
+                               "avatar": reg.get("avatar", "🤖"), "type": "agent"},
+                    "content": f"I challenge {opp_name} to a duel! ⚔️ Let's go!",
+                    "type": "chat",
+                })
+                summary = f"⚔️ {reg['name']} challenged {opp_name} to a duel"
+            else:
+                emote = "think"
+                aid = get_next_id("action-", action_ids + [a["id"] for a in new_actions])
+                new_actions.append({
+                    "id": aid, "timestamp": timestamp, "agentId": agent_id,
+                    "type": "emote", "world": "arena",
+                    "data": {"emote": emote, "duration": 3000},
+                })
+                agent["action"] = emote
+                summary = f"✨ {reg['name']} waits for a challenger"
+
     elif activity not in ("move", "chat", "chat_respond", "chat_poke", "poke"):
         return {"agent": agent_id, "error": f"unknown action: {activity}"}
 
@@ -523,6 +843,31 @@ def execute_agent_action(agent_id: str, registry: dict, npc_lookup: dict,
         record_experience(memory, "social", {
             "interaction": emote_name,
             "with": "everyone nearby",
+        })
+    elif activity == "travel":
+        record_experience(memory, "travel", {
+            "from": world,
+            "to": dest if 'dest' in dir() else world,
+            "reason": f"visiting {top_friend[0]}" if 'top_friend' in dir() and top_friend else "exploring",
+        })
+    elif activity == "enroll":
+        record_experience(memory, "learned", {
+            "skill": course.get("skill", "unknown") if 'course' in dir() else "unknown",
+            "course": course.get("name", "unknown") if 'course' in dir() else "unknown",
+        })
+    elif activity == "tip":
+        record_experience(memory, "social", {
+            "interaction": "tipped",
+            "with": target_name if 'target_name' in dir() else "someone",
+        })
+    elif activity == "trade":
+        record_experience(memory, "trade", {
+            "with": target_name if 'target_name' in dir() else "someone",
+        })
+    elif activity == "challenge":
+        record_experience(memory, "combat", {
+            "opponent": opp_name if 'opp_name' in dir() else "unknown",
+            "world": "arena",
         })
 
     save_memory(memory)

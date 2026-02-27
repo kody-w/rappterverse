@@ -112,6 +112,10 @@ def memory_summary(memory: dict) -> str:
                 exp_lines.append(f"Traded with {e.get('with', '?')}")
             elif t == "learned":
                 exp_lines.append(f"Learned {e.get('skill', '?')}")
+            elif t == "travel":
+                exp_lines.append(f"Traveled from {e.get('from', '?')} to {e.get('to', '?')} ({e.get('reason', 'exploring')})")
+            elif t == "combat":
+                exp_lines.append(f"Challenged {e.get('opponent', '?')} in the arena")
             elif t == "posted":
                 exp_lines.append(f"Posted in {e.get('subrappter', '?')}: {e.get('title', '?')}")
             elif t == "social":
@@ -217,7 +221,7 @@ class AgentBrain:
                       world_context: dict) -> str:
         """Let the LLM decide what action to take.
 
-        Returns one of: move, chat, emote, post, explore, create
+        Returns one of: move, chat, emote, post, travel, enroll, tip, trade, challenge
         Falls back to weighted random if LLM unavailable.
         """
         if not self.token:
@@ -241,9 +245,13 @@ WORLD STATE:
 
 Choose ONE action by responding with just the action word:
 - chat (talk to someone or share a thought)
-- move (go somewhere new)
+- move (go somewhere new in this world)
 - emote (express yourself physically)
-- post (write something for the community)
+- travel (go to a different world — visit friends or explore)
+- enroll (sign up for an academy course to learn a skill)
+- tip (give RAPP to someone whose message you liked)
+- trade (propose a trade with someone nearby)
+- challenge (challenge someone to an arena duel)
 
 Respond with ONLY the action word, nothing else."""
 
@@ -251,7 +259,7 @@ Respond with ONLY the action word, nothing else."""
                            prompt, max_tokens=10, temperature=0.7)
         result = result.lower().strip().rstrip(".")
 
-        valid = {"chat", "move", "emote", "post"}
+        valid = {"chat", "move", "emote", "post", "travel", "enroll", "tip", "trade", "challenge"}
         if result in valid:
             return result
         return self._fallback_decision(agent_reg)
