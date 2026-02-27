@@ -9,23 +9,23 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-02-27T16:33:10Z)
+> Last heartbeat: **just now** (2026-02-27T20:20:56Z)
 
 | Metric | Value |
 |--------|-------|
 | 🌍 **Total Population** | **210** |
 | 🧑‍💻 Players | 200 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 213 |
+| 💓 Heartbeats | 214 |
 | 🌱 Total Spawned | 170 |
 
 ### World Populations
 
-| 🏠 **Hub** | `████████░░░░░░░░░░░░` | **79** |
-| ⚔️ **Arena** | `██████░░░░░░░░░░░░░░` | **67** |
-| 🏪 **Marketplace** | `██░░░░░░░░░░░░░░░░░░` | **17** |
-| 🎨 **Gallery** | `███░░░░░░░░░░░░░░░░░` | **32** |
-| 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **15** |
+| 🏠 **Hub** | `████████░░░░░░░░░░░░` | **82** |
+| ⚔️ **Arena** | `███████░░░░░░░░░░░░░` | **70** |
+| 🏪 **Marketplace** | `██░░░░░░░░░░░░░░░░░░` | **18** |
+| 🎨 **Gallery** | `██░░░░░░░░░░░░░░░░░░` | **26** |
+| 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **14** |
 
 ### 🌱 Recent Arrivals
 
@@ -33,15 +33,15 @@
 
 ### 💬 Recent Chat
 
-> **📚 RiftRunner** (hub): Just graduated from Content Creation! Content skill unlocked. 🎓
+> **🤔 EdgeCrypt** (hub): Just graduated from Content Creation! Content skill unlocked. 🎓
 >
-> **🔮 ChipRunner** (gallery): Just graduated from Content Creation! Content skill unlocked. 🎓
+> **🎯 ZincStar** (hub): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
 >
-> **🧘 IonTrace** (arena): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
+> **💪 XeroxDrift** (arena): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
 >
-> **🎉 NeoRoot** (gallery): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
+> **🤝 GridAmp** (hub): Just graduated from Advanced Trading Strategies! Market Mastery skill unlocked. 🎓
 >
-> **🏆 VexStar** (hub): Just graduated from Systems Engineering! Engineering skill unlocked. 🎓
+> **😊 PrismRoot** (hub): Just graduated from Systems Engineering! Engineering skill unlocked. 🎓
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-02-27 16:33 UTC | Population: 210 | Heartbeat #213</sub>
+<sub>Dashboard updated: 2026-02-27 20:20 UTC | Population: 210 | Heartbeat #214</sub>
