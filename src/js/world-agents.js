@@ -158,8 +158,22 @@ const WorldAgents = {
 
     createScreen(scene, obj, worldId) {
         const w = WORLDS[worldId];
-        const geo = new THREE.PlaneGeometry(obj.size?.width || 6, obj.size?.height || 4);
-        const mat = new THREE.MeshBasicMaterial({ color: 0x111122, transparent: true, opacity: 0.7 });
+        const width = obj.size?.width || 6;
+        const height = obj.size?.height || 4;
+        const geo = new THREE.PlaneGeometry(width, height);
+
+        // Create canvas texture for live chat feed
+        const canvas = document.createElement('canvas');
+        canvas.width = 512; canvas.height = 340;
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#0a0f18';
+        ctx.fillRect(0, 0, 512, 340);
+        ctx.fillStyle = '#00d4ff';
+        ctx.font = 'bold 16px Consolas, monospace';
+        ctx.fillText('💬 World Chat — Loading...', 16, 28);
+
+        const tex = new THREE.CanvasTexture(canvas);
+        const mat = new THREE.MeshBasicMaterial({ map: tex, transparent: true, opacity: 0.92 });
         const mesh = new THREE.Mesh(geo, mat);
         mesh.position.set(obj.position.x, obj.position.y || 3, obj.position.z);
 
@@ -167,8 +181,61 @@ const WorldAgents = {
         const edgeMat = new THREE.LineBasicMaterial({ color: w.accent, transparent: true, opacity: 0.4 });
         mesh.add(new THREE.LineSegments(edgeGeo, edgeMat));
 
+        // Store for live updates
+        mesh.userData.chatCanvas = canvas;
+        mesh.userData.chatCtx = ctx;
+        mesh.userData.chatTex = tex;
+        mesh.userData.chatWorldId = worldId;
+        mesh.userData.isScreen = true;
+
         scene.add(mesh);
         this.objectMeshes.push(mesh);
+    },
+
+    updateScreens() {
+        // Render live chat onto in-world screen objects
+        const msgs = GameState.data.chat || [];
+        this.objectMeshes.forEach(mesh => {
+            if (!mesh.userData.isScreen) return;
+            const ctx = mesh.userData.chatCtx;
+            const tex = mesh.userData.chatTex;
+            const worldId = mesh.userData.chatWorldId;
+            if (!ctx || !tex) return;
+
+            const worldMsgs = msgs.filter(m => m.world === worldId).slice(-8);
+
+            ctx.fillStyle = '#0a0f18';
+            ctx.fillRect(0, 0, 512, 340);
+
+            // Header
+            const wName = WORLDS[worldId]?.name || worldId;
+            ctx.fillStyle = '#00d4ff';
+            ctx.font = 'bold 14px Consolas, monospace';
+            ctx.fillText(`💬 ${wName} Chat`, 16, 24);
+            ctx.fillStyle = 'rgba(255,255,255,0.1)';
+            ctx.fillRect(12, 32, 488, 1);
+
+            // Messages
+            ctx.font = '12px Consolas, monospace';
+            worldMsgs.forEach((m, i) => {
+                const y = 52 + i * 36;
+                const author = m.author?.name || '?';
+                const avatar = m.author?.avatar || '🤖';
+                const text = (m.content || '').substring(0, 50);
+
+                ctx.fillStyle = '#00d4ff';
+                ctx.fillText(`${avatar} ${author}`, 16, y);
+                ctx.fillStyle = 'rgba(255,255,255,0.6)';
+                ctx.fillText(text, 16, y + 14);
+            });
+
+            if (worldMsgs.length === 0) {
+                ctx.fillStyle = 'rgba(255,255,255,0.3)';
+                ctx.fillText('No messages yet...', 16, 52);
+            }
+
+            tex.needsUpdate = true;
+        });
     },
 
     createDecoration(scene, obj) {

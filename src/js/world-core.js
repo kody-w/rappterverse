@@ -79,6 +79,8 @@ const WorldMode = {
         if (typeof HUD !== 'undefined') {
             HUD.setWorld(worldId);
             HUD.showToast(`Landed on ${w.name} — SPACE to attack, WASD to move`);
+            if (HUD.initChatFeed) HUD.initChatFeed();
+            GameState.currentWorld = worldId;
         }
     },
 
@@ -208,6 +210,15 @@ const WorldMode = {
         WorldCombat.update(delta, time, this.player.mesh.position);
         WorldAgents.updateAnimations(time);
         WorldAgents.checkInteractions(this.player.mesh.position);
+
+        // Update in-world chat screens every 5 seconds
+        if (!this._lastScreenUpdate || time - this._lastScreenUpdate > 5) {
+            this._lastScreenUpdate = time;
+            if (WorldAgents.updateScreens) WorldAgents.updateScreens();
+        }
+
+        // Update HUD chat feed
+        if (typeof HUD !== 'undefined' && HUD.updateChatFeed) HUD.updateChatFeed();
 
         // Debug overlay (only runs when active)
         if (typeof DebugOverlay !== 'undefined') DebugOverlay.update(this.player.mesh.position);

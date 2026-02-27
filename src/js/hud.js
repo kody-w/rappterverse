@@ -93,5 +93,115 @@ const HUD = {
             toast.style.transition = 'all 0.3s ease';
             setTimeout(() => toast.remove(), 300);
         }, 3700);
+    },
+
+    // ── Live Chat Feed ──────────────────────────────────────
+    chatFeedVisible: true,
+    chatFeedLastCount: 0,
+
+    initChatFeed() {
+        // Create chat feed panel if it doesn't exist
+        if (document.getElementById('chat-feed')) return;
+        const panel = document.createElement('div');
+        panel.id = 'chat-feed';
+        panel.innerHTML = `
+            <div id="chat-feed-header">
+                <span>💬 World Chat</span>
+                <button id="chat-feed-toggle" title="Toggle chat">▼</button>
+            </div>
+            <div id="chat-feed-messages"></div>
+        `;
+        document.body.appendChild(panel);
+
+        // Style it
+        const style = document.createElement('style');
+        style.textContent = `
+            #chat-feed {
+                position: fixed; bottom: 80px; left: 12px; width: 360px; max-height: 280px;
+                background: rgba(10, 15, 20, 0.85); border: 1px solid rgba(255,255,255,0.1);
+                border-radius: 8px; font-family: 'Consolas','Monaco',monospace; font-size: 12px;
+                z-index: 90; overflow: hidden; pointer-events: auto;
+                backdrop-filter: blur(8px); transition: max-height 0.3s ease;
+            }
+            #chat-feed.collapsed { max-height: 32px; }
+            #chat-feed-header {
+                display: flex; justify-content: space-between; align-items: center;
+                padding: 6px 10px; color: #00d4ff; font-weight: bold; font-size: 11px;
+                border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer;
+            }
+            #chat-feed-toggle {
+                background: none; border: none; color: rgba(255,255,255,0.4);
+                font-size: 10px; cursor: pointer; padding: 2px 6px;
+            }
+            #chat-feed.collapsed #chat-feed-toggle { transform: rotate(-90deg); }
+            #chat-feed-messages {
+                padding: 6px 10px; max-height: 240px; overflow-y: auto;
+                scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.1) transparent;
+            }
+            #chat-feed-messages::-webkit-scrollbar { width: 4px; }
+            #chat-feed-messages::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 2px; }
+            .chat-msg {
+                margin-bottom: 6px; line-height: 1.4; animation: chatFadeIn 0.3s ease;
+            }
+            .chat-msg .chat-author {
+                color: #00d4ff; font-weight: bold; margin-right: 4px;
+            }
+            .chat-msg .chat-world {
+                font-size: 9px; padding: 1px 4px; border-radius: 4px;
+                background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.35);
+                margin-right: 4px;
+            }
+            .chat-msg .chat-text { color: rgba(255,255,255,0.7); }
+            .chat-msg .chat-time { color: rgba(255,255,255,0.2); font-size: 10px; margin-left: 6px; }
+            @keyframes chatFadeIn {
+                from { opacity: 0; transform: translateY(8px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        document.getElementById('chat-feed-header').addEventListener('click', () => {
+            document.getElementById('chat-feed').classList.toggle('collapsed');
+        });
+    },
+
+    updateChatFeed() {
+        const container = document.getElementById('chat-feed-messages');
+        if (!container) return;
+
+        const currentWorld = GameState.currentWorld;
+        // Show all worlds, highlight current
+        const msgs = (GameState.data.chat || []).slice(-20);
+
+        if (msgs.length === this.chatFeedLastCount) return;
+        this.chatFeedLastCount = msgs.length;
+
+        container.innerHTML = msgs.map(m => {
+            const author = m.author?.name || m.author?.id || '?';
+            const avatar = m.author?.avatar || '🤖';
+            const world = m.world || '?';
+            const text = (m.content || '').substring(0, 120);
+            const isCurrentWorld = world === currentWorld;
+            const opacity = isCurrentWorld ? '1' : '0.5';
+            const ts = m.timestamp ? this._chatTimeAgo(m.timestamp) : '';
+            return `<div class="chat-msg" style="opacity:${opacity}">
+                <span class="chat-world">${world}</span>
+                <span class="chat-author">${avatar} ${author}</span>
+                <span class="chat-text">${text}</span>
+                <span class="chat-time">${ts}</span>
+            </div>`;
+        }).join('');
+
+        container.scrollTop = container.scrollHeight;
+    },
+
+    _chatTimeAgo(iso) {
+        try {
+            const diff = (Date.now() - new Date(iso).getTime()) / 1000;
+            if (diff < 60) return 'just now';
+            if (diff < 3600) return Math.floor(diff / 60) + 'm';
+            if (diff < 86400) return Math.floor(diff / 3600) + 'h';
+            return Math.floor(diff / 86400) + 'd';
+        } catch(e) { return ''; }
     }
 };
