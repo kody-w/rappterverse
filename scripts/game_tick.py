@@ -148,6 +148,66 @@ def update_activity_feed(feed_data: dict, events: list[str], timestamp: str):
     feed_data["activities"] = activities[-200:]
 
 
+def resolve_pending_trades(trades_data: dict, actions_data: dict, timestamp: str) -> list[str]:
+    """Find trade_offer actions not yet in trades.json, create entries, auto-resolve."""
+    events = []
+    actions = actions_data.get("actions", [])
+    active = trades_data.setdefault("activeTrades", [])
+    completed = trades_data.setdefault("completedTrades", [])
+    existing_ids = {t.get("actionId") for t in active + completed if t.get("actionId")}
+
+    # Find trade_offer actions not yet tracked
+    trade_actions = [a for a in actions if a.get("type") == "trade_offer"
+                     and a["id"] not in existing_ids]
+
+    for action in trade_actions:
+        data = action.get("data", {})
+        trade_id = f"trade-{len(completed) + len(active) + 1:03d}"
+        trade = {
+            "id": trade_id,
+            "actionId": action["id"],
+            "timestamp": action.get("timestamp", timestamp),
+            "status": "pending",
+            "from": action.get("agentId", ""),
+            "to": data.get("to", ""),
+            "offering": [{"type": "item", "name": data.get("offering", "unknown")}],
+            "requesting": [{"type": "item", "name": data.get("wanting", "unknown")}],
+        }
+        active.append(trade)
+
+    # Auto-resolve pending trades (50% accept, 30% reject, 20% stay pending)
+    still_active = []
+    for trade in active:
+        if trade.get("status") != "pending":
+            still_active.append(trade)
+            continue
+
+        roll = random.random()
+        if roll < 0.50:
+            trade["status"] = "completed"
+            trade["completedAt"] = timestamp
+            trade["completionMessage"] = f"Trade accepted! {trade.get('to', '?')} agreed to the deal. 🤝"
+            completed.append(trade)
+            events.append(f"Trade {trade['id']}: {trade['from']} → {trade['to']} completed")
+        elif roll < 0.80:
+            trade["status"] = "rejected"
+            trade["completedAt"] = timestamp
+            trade["completionMessage"] = "Trade declined — not interested right now."
+            completed.append(trade)
+            events.append(f"Trade {trade['id']}: {trade['to']} rejected offer from {trade['from']}")
+        else:
+            still_active.append(trade)  # stays pending
+
+    trades_data["activeTrades"] = still_active
+    # Trim completed to last 200
+    trades_data["completedTrades"] = completed[-200:]
+    if events:
+        trades_data.setdefault("_meta", {})["lastUpdate"] = timestamp
+        trades_data["_meta"]["totalTrades"] = len(completed)
+
+    return events
+
+
 def main():
     now = datetime.now(timezone.utc)
     timestamp = now.strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -157,6 +217,8 @@ def main():
     game_state = load_json(STATE_DIR / "game_state.json")
     agents_data = load_json(STATE_DIR / "agents.json")
     npcs_data = load_json(STATE_DIR / "npcs.json")
+    actions_data = load_json(STATE_DIR / "actions.json")
+    trades_data = load_json(STATE_DIR / "trades.json")
     feed_data = load_json(BASE_DIR / "feed" / "activity.json")
 
     # Process triggers
@@ -166,6 +228,10 @@ def main():
     # Decay NPC needs
     npc_events = decay_npc_needs(npcs_data)
     events.extend(npc_events)
+
+    # Resolve trades
+    trade_events = resolve_pending_trades(trades_data, actions_data, timestamp)
+    events.extend(trade_events)
 
     if not events:
         print(f"[{timestamp}] No state changes this tick")
@@ -178,6 +244,8 @@ def main():
     # Save state
     save_json(STATE_DIR / "game_state.json", game_state)
     save_json(STATE_DIR / "npcs.json", npcs_data)
+    if trade_events:
+        save_json(STATE_DIR / "trades.json", trades_data)
 
     # Update feed
     update_activity_feed(feed_data, events, timestamp)

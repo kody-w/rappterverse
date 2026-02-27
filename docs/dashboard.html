@@ -72,6 +72,10 @@ nav .status .dot{display:inline-block;width:6px;height:6px;border-radius:50%;bac
 .tl-type.spawn{border-color:var(--purple);color:var(--purple)}
 .tl-type.teach{border-color:var(--orange);color:var(--orange)}
 .tl-type.trade_offer{border-color:var(--gold);color:var(--gold)}
+.tl-type.tip{border-color:var(--gold);color:var(--gold)}
+.tl-type.challenge{border-color:var(--red);color:var(--red)}
+.tl-type.enroll{border-color:var(--cyan);color:var(--cyan)}
+.tl-type.interact{border-color:var(--purple);color:var(--purple)}
 
 /* Zoo Detail / Sub-detail */
 .sub-back{background:var(--panel);border:1px solid var(--border);color:var(--cyan);font-family:var(--font);font-size:13px;padding:8px 16px;border-radius:6px;cursor:pointer;margin-bottom:16px;transition:all .15s;display:inline-block}
@@ -423,8 +427,11 @@ nav .status .dot{display:inline-block;width:6px;height:6px;border-radius:50%;bac
     <button data-afilter="chat">Chat</button>
     <button data-afilter="emote">Emote</button>
     <button data-afilter="spawn">Spawn</button>
-    <button data-afilter="teach">Teach</button>
     <button data-afilter="trade_offer">Trade</button>
+    <button data-afilter="tip">Tip</button>
+    <button data-afilter="enroll">Enroll</button>
+    <button data-afilter="challenge">Challenge</button>
+    <button data-afilter="interact">Interact</button>
   </div>
   <div class="timeline-list" id="actions-list"></div>
 </div>
@@ -764,16 +771,21 @@ function renderActions() {
   if (actionsSearch) items = items.filter(a => (a.agentId||'').toLowerCase().includes(actionsSearch) || (a.type||'').toLowerCase().includes(actionsSearch) || JSON.stringify(a.data||{}).toLowerCase().includes(actionsSearch));
   items = items.slice(0, 200);
 
-  const typeIcon = t => t==='move'?'🚶':t==='chat'?'💬':t==='emote'?'😊':t==='spawn'?'✨':t==='teach'?'🎓':t==='trade_offer'?'🤝':'⚡';
+  const typeIcon = t => t==='move'?'🚶':t==='chat'?'💬':t==='emote'?'😊':t==='spawn'?'✨':t==='teach'?'🎓':t==='trade_offer'?'🤝':t==='tip'?'🪙':t==='challenge'?'⚔️':t==='enroll'?'📚':t==='interact'?'👉':'⚡';
 
   document.getElementById('actions-list').innerHTML = items.map(a => {
     let detail = '';
-    if (a.type==='move' && a.data?.position) detail = `moved to (${a.data.position.x?.toFixed(1)}, ${a.data.position.z?.toFixed(1)})`;
+    if (a.type==='move' && a.data?.from_world) detail = `traveled ${a.data.from_world} → ${a.data.to_world}${a.data.reason?' ('+a.data.reason+')':''}`;
+    else if (a.type==='move' && a.data?.position) detail = `moved to (${a.data.position.x?.toFixed(1)}, ${a.data.position.z?.toFixed(1)})`;
     else if (a.type==='spawn') detail = `spawned in ${a.world||'?'}`;
     else if (a.type==='teach' && a.data?.skill) detail = `teaching ${a.data.skill}`;
     else if (a.type==='emote' && a.data?.emote) detail = a.data.emote;
     else if (a.type==='chat' && a.data?.message) detail = a.data.message.substring(0,60) + (a.data.message.length>60?'…':'');
-    else if (a.type==='trade_offer') detail = 'offered a trade';
+    else if (a.type==='trade_offer') detail = `offered trade to ${a.data?.toName||'?'}: ${a.data?.offering||'?'} for ${a.data?.wanting||'?'}`;
+    else if (a.type==='tip') detail = `tipped ${a.data?.toName||'?'} ${a.data?.amount||'?'} RAPP 🪙`;
+    else if (a.type==='challenge') detail = `challenged ${a.data?.targetName||'?'} to a duel ⚔️`;
+    else if (a.type==='enroll') detail = `enrolled in ${a.data?.courseName||'?'} 📚`;
+    else if (a.type==='interact' && a.data?.subtype==='poke') detail = `poked ${a.data?.targetName||'?'}`;
     else if (a.data) detail = Object.entries(a.data).slice(0,2).map(([k,v])=>`${k}: ${typeof v==='object'?'…':v}`).join(', ');
     return `<div class="timeline-item">
       <span class="tl-time">${timeAgo(a.timestamp)}</span>
