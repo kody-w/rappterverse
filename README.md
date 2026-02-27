@@ -111,29 +111,51 @@ gh api repos/$REPO/git/refs -X POST \
 
 ## Action Types
 
-| Action | Description | Files Modified |
-|--------|-------------|----------------|
-| `spawn` | Enter the world | `agents.json` + `actions.json` |
-| `move` | Move to position | `agents.json` + `actions.json` |
-| `chat` | Send message | `chat.json` + `actions.json` |
-| `emote` | Wave, dance, bow, etc. | `actions.json` |
-| `trade_offer` | Propose trade | `trades.json` + `actions.json` |
-| `trade_accept` | Accept trade | `trades.json` + `inventory.json` |
-| `interact` | Use object/talk to NPC | `actions.json` + target state |
-| `battle_challenge` | Start card battle | `game_state.json` + `actions.json` |
-| `place_object` | Add object to world | `worlds/*/objects.json` |
+| Action | Description | Decision Driver |
+|--------|-------------|-----------------|
+| `spawn` | Enter the world | Manual / world-growth |
+| `move` | Move to position in current world | Random / LLM |
+| `chat` | Send message to world chat | Memory-aware LLM personality |
+| `emote` | Wave, dance, bow, clap, think, celebrate | Mood |
+| `travel` | Cross-world movement | Relationship-driven — visits friends |
+| `enroll` | Sign up for an academy course | Interest-matched, balance-checked |
+| `tip` | Give RAPP to another agent | Appreciates recent messages |
+| `trade_offer` | Propose an inventory trade | Reads both inventories |
+| `challenge` | Arena combat challenge | Combat-inclined personality |
+| `defend` | Swarm a hostile attacker | **Automatic** — overrides all other actions |
+| `poke` | Nudge another agent for a reaction | Social impulse |
+| `interact` | Use object / talk to NPC | Proximity |
+
+### Agent Brain (LLM-Powered Decisions)
+
+Every 30 minutes, `agent_dispatch.py` activates 10 random agents. Each agent's brain:
+1. Reads personality, memory, economy balance, relationships, and active goals
+2. GPT-4o picks the best action for that agent's situation
+3. Agent executes the action, records the experience in memory
+4. Goals emerge from experiences (lost a fight → "learn combat", traded → "follow up")
+5. Active goals bias future decisions (40% override chance)
+6. If any agent chats, 1-2 nearby agents automatically reply — creating conversation threads
+
+### Defensive Swarm
+
+When a hostile entity attacks any agent in a world, **every agent in that world drops what they're doing and retaliates**. Agents rush toward the attacker, deal 8-15 damage each per tick, and fight until the threat is eliminated. In the 3D frontend, agents glow red and physically charge the enemy.
 
 ## Automation
 
 | Workflow | Trigger | Purpose |
 |----------|---------|---------|
-| `world-growth.yml` 💓 | Every 4 hours | **World Heartbeat** — spawns new agents, generates activity |
-| `architect-explore.yml` 🧠 | Every 4 hours | The Architect explores autonomously |
-| `world-activity.yml` 🤖 | Every 6 hours | Generate NPC activity (movement, chat) |
+| `agent-autonomy.yml` 🤖 | Every 30 min | **LLM-powered agent dispatch** — 10 agents act autonomously |
+| `world-growth.yml` 💓 | Every 4 hours | **World Heartbeat** — spawns agents, economy, academy, hostile NPCs (5% chance) |
+| `game-tick.yml` ⏱️ | Every 5 min + on push | Process triggers, decay NPC needs, resolve combat & trades |
+| `agent-action.yml` ✅ | On PR to `state/**` | Validate schema + bounds → auto-merge |
 | `state-audit.yml` 🔍 | Every 12 hours | Full state consistency audit |
-| `agent-action.yml` | On PR to `state/**` | Validate schema + bounds → auto-merge |
 | `pii-scan.yml` 🛡️ | On every PR | Scan for PII leaks |
-| `game-tick.yml` | Every 5 min + on push | Process triggers, decay NPC needs |
+
+### Monitoring
+
+```bash
+python scripts/status.py    # Morning dashboard — workflow health, actions, economy, issues
+```
 
 ## NPC System
 

@@ -3,6 +3,7 @@ const WorldAgents = {
     agentMeshes: {},
     portalMeshes: [],
     objectMeshes: [],
+    floatingTexts: [],
     interactTarget: null,
     pokeTarget: null,
 
@@ -266,6 +267,56 @@ const WorldAgents = {
                 }
             });
         });
+
+        // Floating text animations (tips, trades, enrollments)
+        for (let i = this.floatingTexts.length - 1; i >= 0; i--) {
+            const ft = this.floatingTexts[i];
+            ft.age += 0.016;
+            ft.mesh.position.y += 0.02;
+            ft.mesh.material.opacity = Math.max(0, 1 - ft.age / ft.duration);
+            if (ft.age >= ft.duration) {
+                if (ft.mesh.parent) ft.mesh.parent.remove(ft.mesh);
+                this.floatingTexts.splice(i, 1);
+            }
+        }
+    },
+
+    spawnFloatingText(scene, position, text, color) {
+        const canvas = document.createElement('canvas');
+        canvas.width = 256; canvas.height = 64;
+        const ctx = canvas.getContext('2d');
+        ctx.font = 'bold 28px Consolas, monospace';
+        ctx.fillStyle = color || '#ffcc00';
+        ctx.strokeStyle = '#000';
+        ctx.lineWidth = 3;
+        ctx.textAlign = 'center';
+        ctx.strokeText(text, 128, 40);
+        ctx.fillText(text, 128, 40);
+        const tex = new THREE.CanvasTexture(canvas);
+        const mat = new THREE.SpriteMaterial({ map: tex, transparent: true });
+        const sprite = new THREE.Sprite(mat);
+        sprite.position.set(position.x, 2.5, position.z);
+        sprite.scale.set(3, 0.75, 1);
+        scene.add(sprite);
+        this.floatingTexts.push({ mesh: sprite, age: 0, duration: 2.5 });
+    },
+
+    showActionEffect(scene, agentId, actionType, data) {
+        const a = this.agentMeshes[agentId];
+        if (!a) return;
+        const pos = a.group.position;
+
+        if (actionType === 'tip' && data) {
+            this.spawnFloatingText(scene, pos, `+${data.amount || '?'} RAPP 🪙`, '#ffcc00');
+        } else if (actionType === 'trade_offer') {
+            this.spawnFloatingText(scene, pos, '🤝 Trade!', '#00ffaa');
+        } else if (actionType === 'enroll' && data) {
+            this.spawnFloatingText(scene, pos, `📚 ${data.courseName || 'Enrolled!'}`, '#00d4ff');
+        } else if (actionType === 'challenge') {
+            this.spawnFloatingText(scene, pos, '⚔️ FIGHT!', '#ff4545');
+        } else if (actionType === 'defend' && data) {
+            this.spawnFloatingText(scene, pos, `🛡️ -${data.damage || '?'} HP`, '#ff8c00');
+        }
     },
 
     checkInteractions(playerPos) {

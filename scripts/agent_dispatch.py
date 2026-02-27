@@ -1157,6 +1157,44 @@ def main():
             else:
                 print(f"    {reaction['summary']}")
 
+    # Conversation threads — when an agent chats, 1-2 nearby agents reply
+    chat_results = [r for r in results if "error" not in r
+                    and r.get("messages", 0) > 0]
+    if chat_results and not args.dry_run:
+        # Find the new chat messages
+        new_msgs = [m for m in messages if m.get("timestamp") == timestamp
+                    and m.get("type") == "chat"]
+        replied_agents = set(target_agents) | set(poke_targets)
+        thread_count = 0
+        for msg in new_msgs[:3]:  # max 3 conversation starters per run
+            msg_world = msg.get("world", "hub")
+            author_id = msg.get("author", {}).get("id", "")
+            # Find 1-2 agents in same world who haven't acted yet
+            candidates = [
+                aid for aid, reg_entry in registry.items()
+                if aid not in replied_agents
+                and aid != author_id
+                and reg_entry.get("controller", "system") == "system"
+                and reg_entry.get("behavior", {}).get("respondToChat", True)
+                and any(a.get("world") == msg_world and a["id"] == aid
+                        for a in agents)
+            ]
+            if not candidates:
+                continue
+            responders = random.sample(candidates, min(random.randint(1, 2), len(candidates)))
+            for rid in responders:
+                reply = execute_agent_action(
+                    rid, registry, npc_lookup, agents, actions, messages,
+                    bounds, timestamp, token, respond_to_msg=msg, brain=brain,
+                )
+                results.append(reply)
+                replied_agents.add(rid)
+                if "error" not in reply:
+                    thread_count += 1
+                    print(f"    ↩️ {reply['summary']}")
+        if thread_count:
+            print(f"\n  💬 {thread_count} conversation reply(ies)")
+
     total_actions = sum(r.get("actions", 0) for r in results)
     total_messages = sum(r.get("messages", 0) for r in results)
 

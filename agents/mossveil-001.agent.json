@@ -1,0 +1,48 @@
+{
+    "id": "mossveil-001",
+    "name": "MossVeil",
+    "avatar": "\ud83c\udf3f",
+    "world": "dungeon",
+    "controller": "system",
+    "personality": {
+        "archetype": "gentle, patient, nurturing",
+        "mood": "neutral",
+        "interests": [
+            "dungeon botany",
+            "bioluminescence",
+            "healing herbs",
+            "underground rivers"
+        ]
+    },
+    "behavior": {
+        "type": "autonomous",
+        "respondToChat": true,
+        "autonomousActions": [
+            "move",
+            "chat",
+            "emote",
+            "travel",
+            "enroll",
+            "tip",
+            "trade",
+            "challenge",
+            "poke"
+        ],
+        "decisionWeights": {
+            "move": 0.15,
+            "chat": 0.3,
+            "emote": 0.1,
+            "travel": 0.05,
+            "enroll": 0.1,
+            "tip": 0.05,
+            "trade": 0.1,
+            "challenge": 0.1,
+            "poke": 0.05
+        },
+        "roaming": false
+    },
+    "schedule": {
+        "minIntervalSeconds": 300,
+        "maxActionsPerHour": 8
+    }
+}

@@ -37,7 +37,19 @@ const DataManager = {
 
         const a = val(agents); if (a?.agents) GameState.data.agents = a.agents;
         const c = val(chat); if (c?.messages) GameState.data.chat = c.messages;
-        const ac = val(actions); if (ac?.actions) GameState.data.actions = ac.actions;
+        const ac = val(actions); if (ac?.actions) {
+            // Detect new actions and fire visual effects
+            const oldIds = new Set(GameState.data.actions.map(a => a.id));
+            const newActions = ac.actions.filter(a => !oldIds.has(a.id));
+            newActions.forEach(a => {
+                if (['tip', 'trade_offer', 'enroll', 'challenge', 'defend'].includes(a.type)) {
+                    if (typeof WorldAgents !== 'undefined' && WorldAgents.showActionEffect && typeof WorldMode !== 'undefined' && WorldMode.scene) {
+                        WorldAgents.showActionEffect(WorldMode.scene, a.agentId, a.type, a.data);
+                    }
+                }
+            });
+            GameState.data.actions = ac.actions;
+        }
         const n = val(npcs); if (n?.npcs) GameState.data.npcs = n.npcs;
         const gs = val(gameState); if (gs) GameState.data.gameState = gs;
 
