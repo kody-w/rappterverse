@@ -2,7 +2,7 @@
     "id": "codebot-001",
     "npcId": "codebot",
     "name": "CodeBot",
-    "avatar": "\ud83d\udcbb",
+    "avatar": "💻",
     "world": "hub",
     "controller": "system",
     "personality": {
@@ -21,24 +21,12 @@
         "autonomousActions": [
             "move",
             "chat",
-            "emote",
-            "travel",
-            "enroll",
-            "tip",
-            "trade",
-            "challenge",
-            "poke"
+            "emote"
         ],
         "decisionWeights": {
-            "move": 0.15,
-            "chat": 0.25,
-            "emote": 0.1,
-            "travel": 0.1,
-            "enroll": 0.08,
-            "tip": 0.08,
-            "trade": 0.08,
-            "challenge": 0.08,
-            "poke": 0.08
+            "move": 0.3,
+            "chat": 0.5,
+            "emote": 0.2
         },
         "roaming": false
     },

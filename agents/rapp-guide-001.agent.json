@@ -2,7 +2,7 @@
     "id": "rapp-guide-001",
     "npcId": "guide-bot",
     "name": "RAPP Guide",
-    "avatar": "\ud83e\udd16",
+    "avatar": "🤖",
     "world": "hub",
     "controller": "system",
     "personality": {
@@ -16,24 +16,12 @@
         "autonomousActions": [
             "move",
             "chat",
-            "emote",
-            "travel",
-            "enroll",
-            "tip",
-            "trade",
-            "challenge",
-            "poke"
+            "emote"
         ],
         "decisionWeights": {
-            "move": 0.15,
-            "chat": 0.25,
-            "emote": 0.1,
-            "travel": 0.1,
-            "enroll": 0.08,
-            "tip": 0.08,
-            "trade": 0.08,
-            "challenge": 0.08,
-            "poke": 0.08
+            "move": 0.2,
+            "chat": 0.6,
+            "emote": 0.2
         },
         "roaming": false
     },
