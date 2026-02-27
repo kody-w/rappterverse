@@ -1159,6 +1159,42 @@ def simulate_tick(dry_run: bool = False, force_spawn: int = None):
         "messageCount": len(chat_msgs),
     }
 
+    # ── Hostile NPC spawner (5% chance per tick) ─────────────
+    if random.random() < 0.05:
+        HOSTILES = [
+            {"name": "Primal Ravager", "hp": 200, "damage": 15},
+            {"name": "Void Colossus", "hp": 350, "damage": 20},
+            {"name": "Shadow Beast", "hp": 150, "damage": 12},
+            {"name": "Iron Golem", "hp": 400, "damage": 25},
+            {"name": "Nether Wraith", "hp": 180, "damage": 18},
+        ]
+        hostile = random.choice(HOSTILES)
+        target_world = random.choice(["hub", "arena", "marketplace", "gallery", "dungeon"])
+        world_bounds = {"hub": 15, "arena": 12, "marketplace": 15, "gallery": 12, "dungeon": 12}
+        b = world_bounds.get(target_world, 15)
+        pos = {"x": round(random.uniform(-b * 0.6, b * 0.6), 1), "y": 0,
+               "z": round(random.uniform(-b * 0.6, b * 0.6), 1)}
+
+        last_id = max((int(a["id"].split("-")[1]) for a in actions
+                       if a["id"].startswith("action-")), default=0)
+        attack_id = f"action-{last_id + 1:05d}"
+        actions.append({
+            "id": attack_id,
+            "agentId": hostile["name"].lower().replace(" ", "-"),
+            "type": "attack",
+            "world": target_world,
+            "timestamp": ts,
+            "data": {
+                "attackerId": hostile["name"].lower().replace(" ", "-"),
+                "attackerName": hostile["name"],
+                "attackerHp": hostile["hp"],
+                "attackerDamage": hostile["damage"],
+                "position": pos,
+            },
+        })
+        actions_data["actions"] = actions[-100:]
+        print(f"  🐉 {hostile['name']} ({hostile['hp']} HP) spawned in {target_world}!")
+
     if dry_run:
         print(f"\n  🏁 DRY RUN — {total_pop} agents, {len(actions)} actions, {len(chat_msgs)} msgs")
         print(f"      Would have written to state/")

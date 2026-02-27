@@ -17,9 +17,9 @@ on:
         description: 'Message ID to respond to (e.g. msg-1500)'
         required: false
       max_agents:
-        description: 'Max agents for ambient mode (default: 5)'
+        description: 'Max agents for ambient mode (default: 10)'
         required: false
-        default: '5'
+        default: '10'
 
 concurrency:
   group: state-writer
@@ -52,7 +52,7 @@ jobs:
           AGENT_ID="${{ github.event.client_payload.agent_id }}${{ github.event.inputs.agent_id }}"
           WORLD="${{ github.event.client_payload.world }}${{ github.event.inputs.world }}"
           RESPOND_TO="${{ github.event.client_payload.respond_to }}${{ github.event.inputs.respond_to }}"
-          MAX_AGENTS="${{ github.event.inputs.max_agents || '5' }}"
+          MAX_AGENTS="${{ github.event.inputs.max_agents || '10' }}"
           POKE="${{ github.event.client_payload.poke }}"
 
           POKE_FLAG=""
