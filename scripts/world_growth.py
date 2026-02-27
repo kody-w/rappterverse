@@ -1170,10 +1170,12 @@ def simulate_tick(dry_run: bool = False, force_spawn: int = None):
         ]
         hostile = random.choice(HOSTILES)
         target_world = random.choice(["hub", "arena", "marketplace", "gallery", "dungeon"])
-        world_bounds = {"hub": 15, "arena": 12, "marketplace": 15, "gallery": 12, "dungeon": 12}
-        b = world_bounds.get(target_world, 15)
-        pos = {"x": round(random.uniform(-b * 0.6, b * 0.6), 1), "y": 0,
-               "z": round(random.uniform(-b * 0.6, b * 0.6), 1)}
+        world_bounds = {"hub": {"x": 15, "z": 15}, "arena": {"x": 12, "z": 12},
+                        "marketplace": {"x": 15, "z": 15}, "gallery": {"x": 12, "z": 15},
+                        "dungeon": {"x": 12, "z": 12}}
+        wb = world_bounds.get(target_world, {"x": 15, "z": 15})
+        pos = {"x": round(random.uniform(-wb["x"] * 0.6, wb["x"] * 0.6), 1), "y": 0,
+               "z": round(random.uniform(-wb["z"] * 0.6, wb["z"] * 0.6), 1)}
 
         last_id = max((int(a["id"].split("-")[1]) for a in actions
                        if a["id"].startswith("action-")), default=0)

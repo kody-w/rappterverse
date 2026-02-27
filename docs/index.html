@@ -5873,7 +5873,15 @@ const WorldAgents = {
         scene.add(group);
         this.agentMeshes[agent.id] = {
             group, body, head,
-            targetPos: new THREE.Vector3(agent.position.x, 0, agent.position.z)
+            targetPos: new THREE.Vector3(agent.position.x, 0, agent.position.z),
+            // Client-side autonomous behavior state
+            homePos: new THREE.Vector3(agent.position.x, 0, agent.position.z),
+            wanderTarget: null,
+            behaviorTimer: Math.random() * 8,  // stagger so they don't all act at once
+            behaviorState: 'idle',  // idle, walking, looking, socializing, emoting
+            stateTimer: 0,
+            lookDir: 0,
+            socialTarget: null,
         };
     },
 
@@ -6085,11 +6093,135 @@ const WorldAgents = {
                     a.body.material.emissiveIntensity = 0.6;
                 }
             } else {
-                // Normal behavior — lerp to target position with idle bob
-                a.group.position.lerp(a.targetPos, 0.03);
-                const bob = Math.sin(time * 2 + a.group.position.x) * 0.08;
-                a.body.position.y = 0.9 + bob;
-                a.head.position.y = 1.65 + bob;
+                // ── ANIMAL CROSSING-STYLE AUTONOMOUS BEHAVIOR ──
+                const dt = 0.016; // ~60fps
+                a.behaviorTimer -= dt;
+                a.stateTimer -= dt;
+
+                // When behavior timer expires, pick a new behavior
+                if (a.behaviorTimer <= 0) {
+                    const roll = Math.random();
+                    const agentPos = a.group.position;
+
+                    if (roll < 0.35) {
+                        // WANDER — pick a random point near home and walk to it
+                        const wanderRadius = 4 + Math.random() * 6;
+                        const angle = Math.random() * Math.PI * 2;
+                        a.wanderTarget = new THREE.Vector3(
+                            a.homePos.x + Math.cos(angle) * wanderRadius,
+                            0,
+                            a.homePos.z + Math.sin(angle) * wanderRadius
+                        );
+                        a.behaviorState = 'walking';
+                        a.stateTimer = 3 + Math.random() * 5;
+                        a.behaviorTimer = a.stateTimer + 1;
+                    } else if (roll < 0.55) {
+                        // SOCIALIZE — walk toward a nearby agent
+                        const others = Object.entries(this.agentMeshes);
+                        const nearby = others.filter(([oid, o]) => {
+                            if (oid === id) return false;
+                            const d = agentPos.distanceTo(o.group.position);
+                            return d < 15 && d > 1;
+                        });
+                        if (nearby.length > 0) {
+                            const [tid, target] = nearby[Math.floor(Math.random() * nearby.length)];
+                            a.socialTarget = target;
+                            a.behaviorState = 'socializing';
+                            a.stateTimer = 3 + Math.random() * 4;
+                            a.behaviorTimer = a.stateTimer + 2;
+                        } else {
+                            a.behaviorState = 'looking';
+                            a.stateTimer = 2 + Math.random() * 3;
+                            a.behaviorTimer = a.stateTimer + 1;
+                        }
+                    } else if (roll < 0.75) {
+                        // LOOK AROUND — stand still and rotate
+                        a.behaviorState = 'looking';
+                        a.lookDir = (Math.random() - 0.5) * 0.03;
+                        a.stateTimer = 2 + Math.random() * 4;
+                        a.behaviorTimer = a.stateTimer + 1;
+                    } else if (roll < 0.88) {
+                        // EMOTE — quick animation burst
+                        a.behaviorState = 'emoting';
+                        a.stateTimer = 1.5 + Math.random() * 2;
+                        a.behaviorTimer = a.stateTimer + 2;
+                    } else {
+                        // IDLE — just stand and breathe
+                        a.behaviorState = 'idle';
+                        a.stateTimer = 3 + Math.random() * 5;
+                        a.behaviorTimer = a.stateTimer;
+                    }
+                }
+
+                // Execute current behavior
+                const pos = a.group.position;
+                if (a.behaviorState === 'walking' && a.wanderTarget) {
+                    const dx = a.wanderTarget.x - pos.x;
+                    const dz = a.wanderTarget.z - pos.z;
+                    const dist = Math.sqrt(dx * dx + dz * dz);
+                    if (dist > 0.3 && a.stateTimer > 0) {
+                        const speed = 0.025 + Math.random() * 0.005;
+                        pos.x += (dx / dist) * speed;
+                        pos.z += (dz / dist) * speed;
+                        // Walking bob — bouncy stride
+                        const stride = Math.sin(time * 8 + pos.x * 2) * 0.06;
+                        a.body.position.y = 0.9 + Math.abs(stride);
+                        a.head.position.y = 1.65 + Math.abs(stride);
+                        // Rotate to face movement direction
+                        a.group.rotation.y = Math.atan2(dx, dz);
+                    } else {
+                        a.behaviorState = 'idle';
+                        a.stateTimer = 1;
+                    }
+                } else if (a.behaviorState === 'socializing' && a.socialTarget) {
+                    const target = a.socialTarget.group.position;
+                    const dx = target.x - pos.x;
+                    const dz = target.z - pos.z;
+                    const dist = Math.sqrt(dx * dx + dz * dz);
+                    if (dist > 2 && a.stateTimer > 1) {
+                        // Walk toward friend
+                        const speed = 0.03;
+                        pos.x += (dx / dist) * speed;
+                        pos.z += (dz / dist) * speed;
+                        a.group.rotation.y = Math.atan2(dx, dz);
+                        const stride = Math.sin(time * 8) * 0.05;
+                        a.body.position.y = 0.9 + Math.abs(stride);
+                        a.head.position.y = 1.65 + Math.abs(stride);
+                    } else {
+                        // Face friend and do a little nod
+                        a.group.rotation.y = Math.atan2(dx, dz);
+                        const nod = Math.sin(time * 3) * 0.04;
+                        a.body.position.y = 0.9 + nod;
+                        a.head.position.y = 1.65 + nod * 1.5;
+                    }
+                } else if (a.behaviorState === 'looking') {
+                    // Slowly rotate in place
+                    a.group.rotation.y += a.lookDir;
+                    const bob = Math.sin(time * 1.5 + pos.x) * 0.04;
+                    a.body.position.y = 0.9 + bob;
+                    a.head.position.y = 1.65 + bob;
+                } else if (a.behaviorState === 'emoting') {
+                    // Excited bounce + spin
+                    const bounce = Math.abs(Math.sin(time * 10)) * 0.15;
+                    a.body.position.y = 0.9 + bounce;
+                    a.head.position.y = 1.65 + bounce;
+                    a.group.rotation.y += 0.05;
+                } else {
+                    // Idle — gentle breathing bob
+                    const bob = Math.sin(time * 2 + pos.x) * 0.05;
+                    a.body.position.y = 0.9 + bob;
+                    a.head.position.y = 1.65 + bob;
+                }
+
+                // When server updates targetPos (new state poll), walk there instead
+                const serverDist = pos.distanceTo(a.targetPos);
+                if (serverDist > 1.5) {
+                    // Server says agent moved — override local behavior
+                    a.wanderTarget = a.targetPos.clone();
+                    a.behaviorState = 'walking';
+                    a.stateTimer = 8;
+                    a.behaviorTimer = 10;
+                }
 
                 // Restore original color if swarm ended
                 if (a.body.material && a.body.material._originalEmissive !== undefined) {
