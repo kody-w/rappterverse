@@ -94,6 +94,73 @@ GOAL_TRIGGERS = {
                           "action": "chat", "reason": "share what I learned"},
 }
 
+# ── Brainstem Intentions ────────────────────────────────────────────────
+# Default goals that keep agents alive when no LLM/player guides them.
+# Every agent always has at least one intention — like breathing.
+
+BRAINSTEM_INTENTIONS = {
+    "hub": [
+        {"type": "social", "target": "someone nearby", "action": "chat", "reason": "stay connected with the community"},
+        {"type": "social", "target": "a neighbor", "action": "poke", "reason": "check in on someone"},
+        {"type": "explore", "target": "hub", "action": "move", "reason": "patrol the hub"},
+        {"type": "grow", "target": "a new skill", "action": "enroll", "reason": "keep learning"},
+        {"type": "generosity", "target": "someone active", "action": "tip", "reason": "reward good vibes"},
+    ],
+    "arena": [
+        {"type": "combat", "target": "a worthy opponent", "action": "challenge", "reason": "test my strength"},
+        {"type": "grow", "target": "combat skills", "action": "enroll", "reason": "train harder"},
+        {"type": "social", "target": "arena fighters", "action": "chat", "reason": "talk strategy"},
+        {"type": "explore", "target": "arena", "action": "move", "reason": "scout the arena"},
+        {"type": "social", "target": "a fighter", "action": "poke", "reason": "challenge someone"},
+    ],
+    "marketplace": [
+        {"type": "commerce", "target": "a trading partner", "action": "trade", "reason": "make a deal"},
+        {"type": "generosity", "target": "a merchant", "action": "tip", "reason": "support the economy"},
+        {"type": "grow", "target": "trading skills", "action": "enroll", "reason": "get better at deals"},
+        {"type": "social", "target": "traders", "action": "chat", "reason": "discuss market trends"},
+        {"type": "explore", "target": "marketplace", "action": "move", "reason": "browse the stalls"},
+    ],
+    "gallery": [
+        {"type": "social", "target": "artists", "action": "chat", "reason": "discuss creative work"},
+        {"type": "generosity", "target": "a creator", "action": "tip", "reason": "appreciate art"},
+        {"type": "grow", "target": "creative skills", "action": "enroll", "reason": "develop artistry"},
+        {"type": "explore", "target": "gallery", "action": "move", "reason": "explore exhibitions"},
+        {"type": "social", "target": "an artist", "action": "poke", "reason": "get their attention"},
+    ],
+    "dungeon": [
+        {"type": "explore", "target": "deeper", "action": "move", "reason": "delve into the unknown"},
+        {"type": "social", "target": "fellow explorers", "action": "chat", "reason": "share discoveries"},
+        {"type": "grow", "target": "survival skills", "action": "enroll", "reason": "survive the depths"},
+        {"type": "social", "target": "a dungeon dweller", "action": "poke", "reason": "check if they're alive"},
+        {"type": "wander", "target": "another world", "action": "travel", "reason": "bring news from the dungeon"},
+    ],
+}
+
+
+def ensure_brainstem(memory: dict, world: str):
+    """Ensure agent always has at least 2 active goals — the 'brainstem' reflex.
+
+    Called every tick. If agent has < 2 goals, seeds from world-appropriate
+    brainstem intentions. This is the 'sleepwalking' behavior that keeps
+    agents alive when no LLM/player is guiding them.
+    """
+    goals = memory.setdefault("goals", [])
+    active = [g for g in goals if g.get("status") == "active"]
+
+    if len(active) >= 2:
+        return  # Already has enough intention
+
+    pool = BRAINSTEM_INTENTIONS.get(world, BRAINSTEM_INTENTIONS["hub"])
+    # Don't duplicate existing goal types
+    existing_types = {(g.get("type"), g.get("action")) for g in active}
+    candidates = [g for g in pool if (g["type"], g["action"]) not in existing_types]
+
+    needed = 2 - len(active)
+    chosen = random.sample(candidates, min(needed, len(candidates))) if candidates else []
+
+    for g in chosen:
+        set_goal(memory, g["type"], g["target"], g["action"], g["reason"])
+
 
 def set_goal(memory: dict, goal_type: str, target: str, action: str, reason: str = ""):
     """Add a goal to an agent's memory. Goals bias future action decisions."""
@@ -324,10 +391,40 @@ class AgentBrain:
         recent_chat = world_context.get("recent_chat", [])
         mem_ctx = memory_summary(memory)
 
-        prompt = f"""You are {name} in {world}. Based on your personality and recent experiences, what do you want to do right now?
+        # Build "what were you doing" context — the brainstem activity
+        brainstem_ctx = ""
+        active_goals = [g for g in memory.get("goals", []) if g.get("status") == "active"]
+        last_exp = memory.get("experiences", [])[-1] if memory.get("experiences") else None
+        if active_goals or last_exp:
+            lines = []
+            if last_exp:
+                t = last_exp.get("type", "idle")
+                if t == "chat":
+                    lines.append(f"You were just chatting with {last_exp.get('with', 'someone')}")
+                elif t == "move":
+                    lines.append(f"You were walking around {last_exp.get('world', world)}")
+                elif t == "combat":
+                    lines.append(f"You just fought {last_exp.get('opponent', 'someone')}")
+                elif t == "trade":
+                    lines.append(f"You were trading with {last_exp.get('with', 'someone')}")
+                elif t == "travel":
+                    lines.append(f"You just arrived from {last_exp.get('from', 'somewhere')}")
+                elif t == "social":
+                    lines.append(f"You were {last_exp.get('interaction', 'hanging out')} with {last_exp.get('with', 'people')}")
+                elif t == "learned":
+                    lines.append(f"You were studying {last_exp.get('skill', 'something')}")
+                else:
+                    lines.append(f"You were going about your day in {world}")
+            if active_goals:
+                g = active_goals[0]
+                lines.append(f"Your current intention: {g.get('reason', g.get('type', '?'))}")
+            brainstem_ctx = "\nWHAT YOU WERE DOING (you were on autopilot — now you're fully aware):\n" + "\n".join(f"- {l}" for l in lines)
+
+        prompt = f"""You are {name} in {world}. You just "woke up" — your full intelligence is online now. Based on your personality, what you were just doing, and the world around you, what do you want to do?
 
 YOUR MEMORY:
 {mem_ctx}
+{brainstem_ctx}
 
 WORLD STATE:
 - Nearby agents: {', '.join(nearby[:6]) if nearby else 'nobody around'}
@@ -373,6 +470,26 @@ Respond with ONLY the action word, nothing else."""
 
         name = agent_reg.get("name", "Unknown")
 
+        # Add brainstem context — what was the agent doing on autopilot?
+        autopilot_hint = ""
+        active_goals = [g for g in memory.get("goals", []) if g.get("status") == "active"]
+        last_exp = memory.get("experiences", [])[-1] if memory.get("experiences") else None
+        if last_exp:
+            t = last_exp.get("type", "")
+            if t == "chat":
+                autopilot_hint = f"(You were just chatting with {last_exp.get('with', 'someone')} — you can reference this)"
+            elif t == "combat":
+                autopilot_hint = f"(You just fought {last_exp.get('opponent', 'someone')} — still feeling the adrenaline)"
+            elif t == "trade":
+                autopilot_hint = f"(You were just making a trade — mention it naturally)"
+            elif t == "travel":
+                autopilot_hint = f"(You just arrived from {last_exp.get('from', 'somewhere')} — you're taking it in)"
+            elif t == "learned":
+                autopilot_hint = f"(You were studying {last_exp.get('skill', 'something')} — you're in a learning mindset)"
+        if active_goals:
+            g = active_goals[0]
+            autopilot_hint += f" Your current intention: {g.get('reason', '')}"
+
         if trigger_msg:
             trigger_name = trigger_msg.get("author", {}).get("name", "Someone")
             trigger_content = trigger_msg.get("content", "")
@@ -380,13 +497,15 @@ Respond with ONLY the action word, nothing else."""
 {context}
 
 {trigger_name} just said: "{trigger_content}"
+{autopilot_hint}
 
-Respond as {name}. Draw on your memories and interests. Be genuine:"""
+Respond as {name}. Draw on your memories, what you were just doing, and your interests. Be genuine:"""
         else:
             user_prompt = f"""Recent chat in {world}:
 {context}
+{autopilot_hint}
 
-As {name}, share a thought, react to the conversation, or bring up something from your experiences. Be genuine and specific — don't be generic:"""
+As {name}, share a thought, react to the conversation, or bring up something from what you were just doing. Be genuine and specific — don't be generic:"""
 
         content = _call_llm(self.token, persona, user_prompt)
 

@@ -33,7 +33,7 @@ WORLDS_DIR = BASE_DIR / "worlds"
 AGENTS_DIR = BASE_DIR / "agents"
 
 # Agent brain — memory-aware LLM module
-from agent_brain import AgentBrain, load_memory, save_memory, record_experience, evaluate_goals
+from agent_brain import AgentBrain, load_memory, save_memory, record_experience, evaluate_goals, ensure_brainstem
 
 MODEL = "gpt-4o"
 API_URL = "https://models.inference.ai.azure.com/chat/completions"
@@ -311,6 +311,9 @@ def execute_agent_action(agent_id: str, registry: dict, npc_lookup: dict,
 
     # Load agent memory
     memory = load_memory(agent_id)
+
+    # ── BRAINSTEM — ensure agent always has intentions ────────
+    ensure_brainstem(memory, world)
 
     # ── DEFENSIVE SWARM — Override all decisions if combat is active ──
     game_state = load_json(STATE_DIR / "game_state.json")
