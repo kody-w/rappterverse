@@ -5952,13 +5952,73 @@ const WorldAgents = {
         this.objectMeshes.push(mesh);
     },
 
+    // Defensive swarm state
+    swarmActive: false,
+    swarmTarget: null,
+    agentAttackTimers: {},
+
     updateAnimations(time) {
-        // Agent idle bob
-        Object.values(this.agentMeshes).forEach(a => {
-            a.group.position.lerp(a.targetPos, 0.03);
-            const bob = Math.sin(time * 2 + a.group.position.x) * 0.08;
-            a.body.position.y = 0.9 + bob;
-            a.head.position.y = 1.65 + bob;
+        const heroActive = typeof EnemyHero !== 'undefined' && EnemyHero.state
+            && EnemyHero.state.alive && EnemyHero.state.aiState === 'fighting'
+            && EnemyHero.state.target === 'player';
+        const heroPos = heroActive && EnemyHero.mesh ? EnemyHero.mesh.position : null;
+
+        // Agent idle bob + defensive swarm
+        Object.entries(this.agentMeshes).forEach(([id, a]) => {
+            if (heroActive && heroPos) {
+                // DEFENSIVE SWARM — rush toward enemy hero
+                const agentPos = a.group.position;
+                const dx = heroPos.x - agentPos.x;
+                const dz = heroPos.z - agentPos.z;
+                const dist = Math.sqrt(dx * dx + dz * dz);
+
+                // Move toward hero at speed proportional to distance
+                const speed = 0.06;
+                const attackRange = 4.5;
+                if (dist > attackRange) {
+                    // Rush toward enemy
+                    a.group.position.x += dx / dist * speed;
+                    a.group.position.z += dz / dist * speed;
+                } else {
+                    // In range — attack! Deal damage every 1.5 seconds
+                    if (!this.agentAttackTimers[id]) this.agentAttackTimers[id] = 0;
+                    this.agentAttackTimers[id] += 0.016; // ~60fps
+                    if (this.agentAttackTimers[id] >= 1.5) {
+                        this.agentAttackTimers[id] = 0;
+                        const dmg = 3 + Math.random() * 4; // 3-7 damage per agent
+                        EnemyHero.damage(dmg);
+                    }
+                    // Jitter around attack position
+                    a.group.position.x += (Math.random() - 0.5) * 0.05;
+                    a.group.position.z += (Math.random() - 0.5) * 0.05;
+                }
+
+                // Combat bob — faster, more aggressive
+                const bob = Math.sin(time * 6 + agentPos.x * 3) * 0.12;
+                a.body.position.y = 0.9 + bob;
+                a.head.position.y = 1.65 + bob;
+
+                // Tint red-ish to show aggression
+                if (a.body.material && !a.body.material._originalEmissive) {
+                    a.body.material._originalEmissive = a.body.material.emissive.getHex();
+                    a.body.material.emissive.setHex(0xff4444);
+                    a.body.material.emissiveIntensity = 0.6;
+                }
+            } else {
+                // Normal behavior — lerp to target position with idle bob
+                a.group.position.lerp(a.targetPos, 0.03);
+                const bob = Math.sin(time * 2 + a.group.position.x) * 0.08;
+                a.body.position.y = 0.9 + bob;
+                a.head.position.y = 1.65 + bob;
+
+                // Restore original color if swarm ended
+                if (a.body.material && a.body.material._originalEmissive !== undefined) {
+                    a.body.material.emissive.setHex(a.body.material._originalEmissive);
+                    a.body.material.emissiveIntensity = 0.2;
+                    delete a.body.material._originalEmissive;
+                }
+                delete this.agentAttackTimers[id];
+            }
         });
 
         // Portal spin
