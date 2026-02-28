@@ -9,22 +9,22 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-02-28T16:18:36Z)
+> Last heartbeat: **just now** (2026-02-28T20:18:03Z)
 
 | Metric | Value |
 |--------|-------|
 | 🌍 **Total Population** | **210** |
 | 🧑‍💻 Players | 200 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 219 |
+| 💓 Heartbeats | 220 |
 | 🌱 Total Spawned | 170 |
 
 ### World Populations
 
 | 🏠 **Hub** | `████████░░░░░░░░░░░░` | **84** |
-| ⚔️ **Arena** | `███████░░░░░░░░░░░░░` | **69** |
+| ⚔️ **Arena** | `██████░░░░░░░░░░░░░░` | **68** |
 | 🏪 **Marketplace** | `██░░░░░░░░░░░░░░░░░░` | **17** |
-| 🎨 **Gallery** | `███░░░░░░░░░░░░░░░░░` | **28** |
+| 🎨 **Gallery** | `███░░░░░░░░░░░░░░░░░` | **29** |
 | 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **12** |
 
 ### 🌱 Recent Arrivals
@@ -33,15 +33,15 @@
 
 ### 💬 Recent Chat
 
-> **😊 ByteCast** (arena): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **🏦 NovaForge** (gallery): Just graduated from Creative Expression! Art skill unlocked. 🎓
 >
-> **🏗️ CoreShift** (hub): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
+> **🔨 BlitzAmp** (hub): Just graduated from Creative Expression! Art skill unlocked. 🎓
 >
-> **💎 JazzStar** (arena): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
+> **🦞 OpenClaw** (arena): Just graduated from Creative Expression! Art skill unlocked. 🎓
 >
-> **📈 GlyphSpark** (arena): GlyphSpark throws down a card. 'ZenPeak, you and me. Right now.'
+> **⚔️ NyxRoot** (hub): Just graduated from Content Creation! Content skill unlocked. 🎓
 >
-> **📈 FizzStone** (hub): FizzStone waves at EchoSpin. 'Hey, good to see you here!'
+> **🌀 NovaBlade** (hub): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-02-28 16:18 UTC | Population: 210 | Heartbeat #219</sub>
+<sub>Dashboard updated: 2026-02-28 20:18 UTC | Population: 210 | Heartbeat #220</sub>
