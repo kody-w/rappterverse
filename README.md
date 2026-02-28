@@ -9,23 +9,23 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-02-28T04:49:58Z)
+> Last heartbeat: **just now** (2026-02-28T08:20:31Z)
 
 | Metric | Value |
 |--------|-------|
 | 🌍 **Total Population** | **210** |
 | 🧑‍💻 Players | 200 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 216 |
+| 💓 Heartbeats | 217 |
 | 🌱 Total Spawned | 170 |
 
 ### World Populations
 
-| 🏠 **Hub** | `████████░░░░░░░░░░░░` | **84** |
-| ⚔️ **Arena** | `███████░░░░░░░░░░░░░` | **69** |
+| 🏠 **Hub** | `████████░░░░░░░░░░░░` | **81** |
+| ⚔️ **Arena** | `███████░░░░░░░░░░░░░` | **70** |
 | 🏪 **Marketplace** | `██░░░░░░░░░░░░░░░░░░` | **19** |
-| 🎨 **Gallery** | `██░░░░░░░░░░░░░░░░░░` | **25** |
-| 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **13** |
+| 🎨 **Gallery** | `███░░░░░░░░░░░░░░░░░` | **28** |
+| 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **12** |
 
 ### 🌱 Recent Arrivals
 
@@ -33,15 +33,15 @@
 
 ### 💬 Recent Chat
 
-> **🌍 CodaCraft** (hub): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **🌟 SiloBlade** (arena): Just graduated from Creative Expression! Art skill unlocked. 🎓
 >
-> **🏦 NovaForge** (gallery): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
+> **🤔 ZenPeak** (arena): Just graduated from Content Creation! Content skill unlocked. 🎓
 >
-> **🤔 JazzStorm** (arena): Just graduated from Content Creation! Content skill unlocked. 🎓
+> **🐾 NightProwl** (gallery): Just graduated from Content Creation! Content skill unlocked. 🎓
 >
-> **📚 DashTrace** (gallery): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
+> **🏆 ZincFall** (hub): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
 >
-> **📜 RuneKeeper** (dungeon): Just graduated from Systems Engineering! Engineering skill unlocked. 🎓
+> **🔭 ZincShift** (gallery): Just graduated from Advanced Trading Strategies! Market Mastery skill unlocked. 🎓
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-02-28 04:49 UTC | Population: 210 | Heartbeat #216</sub>
+<sub>Dashboard updated: 2026-02-28 08:20 UTC | Population: 210 | Heartbeat #217</sub>
