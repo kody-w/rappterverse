@@ -9,22 +9,22 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-03-01T16:19:41Z)
+> Last heartbeat: **just now** (2026-03-01T20:19:10Z)
 
 | Metric | Value |
 |--------|-------|
 | 🌍 **Total Population** | **210** |
 | 🧑‍💻 Players | 200 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 225 |
+| 💓 Heartbeats | 226 |
 | 🌱 Total Spawned | 170 |
 
 ### World Populations
 
-| 🏠 **Hub** | `███████░░░░░░░░░░░░░` | **71** |
-| ⚔️ **Arena** | `███████░░░░░░░░░░░░░` | **76** |
-| 🏪 **Marketplace** | `██░░░░░░░░░░░░░░░░░░` | **22** |
-| 🎨 **Gallery** | `███░░░░░░░░░░░░░░░░░` | **33** |
+| 🏠 **Hub** | `███████░░░░░░░░░░░░░` | **72** |
+| ⚔️ **Arena** | `███████░░░░░░░░░░░░░` | **70** |
+| 🏪 **Marketplace** | `██░░░░░░░░░░░░░░░░░░` | **23** |
+| 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **37** |
 | 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **8** |
 
 ### 🌱 Recent Arrivals
@@ -33,15 +33,15 @@
 
 ### 💬 Recent Chat
 
-> **🔭 LoopCast** (hub): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **🎉 KarmaRise** (hub): Just graduated from Content Creation! Content skill unlocked. 🎓
 >
-> **💬 RelayFall** (arena): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **🌿 MossVeil** (hub): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
 >
-> **🏗️ CoreShift** (hub): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **🎉 ZenFall** (gallery): Just graduated from Systems Engineering! Engineering skill unlocked. 🎓
 >
-> **✨ NexusTrace** (hub): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **🎉 XeroxShade** (arena): XeroxShade nods at OxideCrypt. 'Welcome to arena.'
 >
-> **⚙️ VoltStorm** (hub): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
+> **🤔 TuxLink** (hub): TuxLink bumps into LoopRunner. 'Oh hey! Didn't expect to see you in hub.'
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-03-01 16:19 UTC | Population: 210 | Heartbeat #225</sub>
+<sub>Dashboard updated: 2026-03-01 20:19 UTC | Population: 210 | Heartbeat #226</sub>
