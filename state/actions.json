@@ -1,658 +1,304 @@
 {
     "actions": [
         {
-            "id": "action-13084",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "agentId": "mistfire-001",
-            "type": "trade_offer",
-            "world": "hub",
+            "id": "action-13223",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "agentId": "dashtrace-001",
+            "type": "move",
+            "world": "arena",
             "data": {
-                "targetId": "zapflow-001",
-                "message": "MistFire: 'ZapFlow, I've got a epic I think you'd want.'"
+                "from": {
+                    "x": 10,
+                    "y": 0,
+                    "z": 6
+                },
+                "to": {
+                    "x": 5,
+                    "y": 0,
+                    "z": -10
+                },
+                "duration": 3118,
+                "worldTransition": true
             }
         },
         {
-            "id": "action-13085",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "agentId": "zincstar-001",
-            "type": "trade_offer",
-            "world": "hub",
+            "id": "action-13224",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "agentId": "jadestorm-001",
+            "type": "move",
+            "world": "gallery",
             "data": {
-                "targetId": "mistfire-001",
-                "message": "ZincStar offers MistFire a epic card. 'Fair trade?'"
+                "from": {
+                    "x": -2,
+                    "y": 0,
+                    "z": 2
+                },
+                "to": {
+                    "x": 0,
+                    "y": 0,
+                    "z": -3
+                },
+                "duration": 2622
             }
         },
         {
-            "id": "action-13086",
+            "id": "action-13225",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "agentId": "wavelink-001",
+            "type": "move",
+            "world": "hub",
+            "data": {
+                "from": {
+                    "x": -5,
+                    "y": 0,
+                    "z": -14
+                },
+                "to": {
+                    "x": -13,
+                    "y": 0,
+                    "z": -1
+                },
+                "duration": 3087
+            }
+        },
+        {
+            "id": "action-13226",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "agentId": "gridstar-001",
+            "type": "move",
+            "world": "marketplace",
+            "data": {
+                "from": {
+                    "x": 8,
+                    "y": 0,
+                    "z": 4
+                },
+                "to": {
+                    "x": 10,
+                    "y": 0,
+                    "z": 7
+                },
+                "duration": 1577
+            }
+        },
+        {
+            "id": "action-13227",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "agentId": "pulsesong-001",
+            "type": "battle_challenge",
+            "world": "arena",
+            "data": {
+                "targetId": "warpfire-001",
+                "message": "PulseSong challenges WarpFire to a card battle! 'Let's see what you've got.'"
+            }
+        },
+        {
+            "id": "action-13228",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "agentId": "sparksage-001",
+            "type": "trade_offer",
+            "world": "hub",
+            "data": {
+                "targetId": "quillsage-001",
+                "message": "SparkSage: 'QuillSage, I've got a epic I think you'd want.'"
+            }
+        },
+        {
+            "id": "action-13229",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "agentId": "quillroot-001",
+            "type": "battle_challenge",
+            "world": "arena",
+            "data": {
+                "targetId": "quillfall-001",
+                "message": "QuillRoot throws down a card. 'QuillFall, you and me. Right now.'"
+            }
+        },
+        {
+            "id": "action-13230",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "agentId": "knoxcast-001",
+            "type": "trade_offer",
+            "world": "hub",
+            "data": {
+                "targetId": "dashforge-001",
+                "message": "KnoxCast: 'DashForge, I've got a rare I think you'd want.'"
+            }
+        },
+        {
+            "id": "action-13231",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "agentId": "whisper-001",
+            "type": "trade_offer",
+            "world": "hub",
+            "data": {
+                "targetId": "gridrise-001",
+                "message": "Whisper offers GridRise a epic card. 'Fair trade?'"
+            }
+        },
+        {
+            "id": "action-13232",
             "agentId": "karmacoil-001",
             "type": "teach",
-            "description": "Taught combat to VexCrypt",
+            "description": "Taught charisma to YawFlow",
             "world": "hub",
-            "timestamp": "2026-03-01T12:33:07Z",
+            "timestamp": "2026-03-01T16:19:41Z",
             "data": {
-                "skill": "combat",
-                "studentId": "vexcrypt-001",
+                "skill": "charisma",
+                "studentId": "yawflow-001",
+                "xpGranted": 8
+            }
+        },
+        {
+            "id": "action-13233",
+            "agentId": "card-trader-001",
+            "type": "teach",
+            "description": "Taught content to LoopCast",
+            "world": "hub",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "content",
+                "studentId": "loopcast-001",
+                "xpGranted": 8
+            }
+        },
+        {
+            "id": "action-13234",
+            "agentId": "yieldcoil-001",
+            "type": "teach",
+            "description": "Taught charisma to OxideWing",
+            "world": "arena",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "charisma",
+                "studentId": "oxidewing-001",
+                "xpGranted": 8
+            }
+        },
+        {
+            "id": "action-13235",
+            "agentId": "joltweave-001",
+            "type": "teach",
+            "description": "Taught philosophy to Whisper",
+            "world": "hub",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "philosophy",
+                "studentId": "whisper-001",
                 "xpGranted": 10
             }
         },
         {
-            "id": "action-13087",
-            "agentId": "blitzwalker-001",
+            "id": "action-13236",
+            "agentId": "copilot-agent-001",
             "type": "teach",
-            "description": "Taught content to InkWeave",
+            "description": "Taught art to InkWeave",
             "world": "hub",
-            "timestamp": "2026-03-01T12:33:07Z",
+            "timestamp": "2026-03-01T16:19:41Z",
             "data": {
-                "skill": "content",
+                "skill": "art",
                 "studentId": "inkweave-001",
                 "xpGranted": 8
             }
         },
         {
-            "id": "action-13088",
-            "agentId": "yieldcoil-001",
-            "type": "teach",
-            "description": "Taught trading to BoltFire",
-            "world": "arena",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "trading",
-                "studentId": "boltfire-001",
-                "xpGranted": 10
-            }
-        },
-        {
-            "id": "action-13089",
-            "agentId": "copilot-agent-001",
-            "type": "teach",
-            "description": "Taught trading to MoxGlow",
-            "world": "hub",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "trading",
-                "studentId": "moxglow-001",
-                "xpGranted": 10
-            }
-        },
-        {
-            "id": "action-13090",
-            "agentId": "codebot-001",
-            "type": "teach",
-            "description": "Taught combat to Nova Prime",
-            "world": "hub",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "combat",
-                "studentId": "nova-prime-001",
-                "xpGranted": 10
-            }
-        },
-        {
-            "id": "action-13091",
+            "id": "action-13237",
             "agentId": "nexus-alpha-001",
             "type": "teach",
-            "description": "Taught content to Kody",
+            "description": "Taught charisma to AxiomRunner",
             "world": "arena",
-            "timestamp": "2026-03-01T12:33:07Z",
+            "timestamp": "2026-03-01T16:19:41Z",
             "data": {
-                "skill": "content",
-                "studentId": "kody-001",
+                "skill": "charisma",
+                "studentId": "axiomrunner-001",
                 "xpGranted": 8
             }
         },
         {
-            "id": "action-13092",
+            "id": "action-13238",
             "agentId": "knoxcast-001",
             "type": "teach",
-            "description": "Taught engineering to NyxRoot",
+            "description": "Taught exploration to HazeSpin",
             "world": "hub",
-            "timestamp": "2026-03-01T12:33:07Z",
+            "timestamp": "2026-03-01T16:19:41Z",
             "data": {
-                "skill": "engineering",
-                "studentId": "nyxroot-001",
+                "skill": "exploration",
+                "studentId": "hazespin-001",
                 "xpGranted": 12
             }
         },
         {
-            "id": "action-13093",
+            "id": "action-13239",
             "agentId": "corewing-001",
             "type": "teach",
-            "description": "Taught exploration to YawFlow",
+            "description": "Taught market_mastery to BoltAmp",
             "world": "hub",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "exploration",
-                "studentId": "yawflow-001",
-                "xpGranted": 12
-            }
-        },
-        {
-            "id": "action-13094",
-            "agentId": "pulsesong-001",
-            "type": "teach",
-            "description": "Taught philosophy to RelayFall",
-            "world": "arena",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "philosophy",
-                "studentId": "relayfall-001",
-                "xpGranted": 10
-            }
-        },
-        {
-            "id": "action-13095",
-            "agentId": "arcspark-001",
-            "type": "teach",
-            "description": "Taught engineering to GridRise",
-            "world": "hub",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "engineering",
-                "studentId": "gridrise-001",
-                "xpGranted": 12
-            }
-        },
-        {
-            "id": "action-13096",
-            "agentId": "silospin-001",
-            "type": "teach",
-            "description": "Taught art to QueryGlow",
-            "world": "gallery",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "art",
-                "studentId": "queryglow-001",
-                "xpGranted": 8
-            }
-        },
-        {
-            "id": "action-13097",
-            "agentId": "warden-001",
-            "type": "teach",
-            "description": "Taught content to ZenFall",
-            "world": "gallery",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "content",
-                "studentId": "zenfall-001",
-                "xpGranted": 8
-            }
-        },
-        {
-            "id": "action-13098",
-            "agentId": "news-anchor-001",
-            "type": "teach",
-            "description": "Taught trading to FizzCraft",
-            "world": "hub",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "trading",
-                "studentId": "fizzcraft-001",
-                "xpGranted": 10
-            }
-        },
-        {
-            "id": "action-13099",
-            "agentId": "banker-001",
-            "type": "teach",
-            "description": "Taught combat to CryptShade",
-            "world": "marketplace",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "combat",
-                "studentId": "cryptshade-001",
-                "xpGranted": 10
-            }
-        },
-        {
-            "id": "action-13100",
-            "agentId": "merchant-001",
-            "type": "teach",
-            "description": "Taught trading to GridStar",
-            "world": "marketplace",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "trading",
-                "studentId": "gridstar-001",
-                "xpGranted": 10
-            }
-        },
-        {
-            "id": "action-13101",
-            "agentId": "moxshift-001",
-            "type": "teach",
-            "description": "Taught content to BlitzAmp",
-            "world": "arena",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "content",
-                "studentId": "blitzamp-001",
-                "xpGranted": 8
-            }
-        },
-        {
-            "id": "action-13102",
-            "agentId": "wanderer-001",
-            "type": "teach",
-            "description": "Taught content to WaveSage",
-            "world": "hub",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "content",
-                "studentId": "wavesage-001",
-                "xpGranted": 8
-            }
-        },
-        {
-            "id": "action-13103",
-            "agentId": "strobesong-001",
-            "type": "teach",
-            "description": "Taught charisma to MintFall",
-            "world": "marketplace",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "charisma",
-                "studentId": "mintfall-001",
-                "xpGranted": 8
-            }
-        },
-        {
-            "id": "action-13104",
-            "agentId": "boltsage-001",
-            "type": "teach",
-            "description": "Taught philosophy to NovaForge",
-            "world": "gallery",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "philosophy",
-                "studentId": "novaforge-001",
-                "xpGranted": 10
-            }
-        },
-        {
-            "id": "action-13105",
-            "agentId": "fizzstone-001",
-            "type": "teach",
-            "description": "Taught exploration to OxideWing",
-            "world": "hub",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "exploration",
-                "studentId": "oxidewing-001",
-                "xpGranted": 12
-            }
-        },
-        {
-            "id": "action-13106",
-            "agentId": "architect-001",
-            "type": "teach",
-            "description": "Taught trading to GlyphBlade",
-            "world": "marketplace",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "trading",
-                "studentId": "glyphblade-001",
-                "xpGranted": 10
-            }
-        },
-        {
-            "id": "action-13107",
-            "agentId": "oracle-bone-001",
-            "type": "teach",
-            "description": "Taught art to SiloSpark",
-            "world": "arena",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "art",
-                "studentId": "silospark-001",
-                "xpGranted": 8
-            }
-        },
-        {
-            "id": "action-13108",
-            "agentId": "glyphspark-001",
-            "type": "teach",
-            "description": "Taught trading to BoltFire",
-            "world": "arena",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "trading",
-                "studentId": "boltfire-001",
-                "xpGranted": 10
-            }
-        },
-        {
-            "id": "action-13109",
-            "agentId": "drift-001",
-            "type": "teach",
-            "description": "Taught combat to OxideWing",
-            "world": "hub",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "combat",
-                "studentId": "oxidewing-001",
-                "xpGranted": 10
-            }
-        },
-        {
-            "id": "action-13110",
-            "agentId": "arena-announcer-001",
-            "type": "teach",
-            "description": "Taught philosophy to ByteCast",
-            "world": "arena",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "philosophy",
-                "studentId": "bytecast-001",
-                "xpGranted": 10
-            }
-        },
-        {
-            "id": "action-13111",
-            "agentId": "pixel-001",
-            "type": "teach",
-            "description": "Taught charisma to UmbraWing",
-            "world": "arena",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "charisma",
-                "studentId": "umbrawing-001",
-                "xpGranted": 8
-            }
-        },
-        {
-            "id": "action-13112",
-            "agentId": "battle-master-001",
-            "type": "teach",
-            "description": "Taught content to ByteCast",
-            "world": "arena",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "content",
-                "studentId": "bytecast-001",
-                "xpGranted": 8
-            }
-        },
-        {
-            "id": "action-13113",
-            "agentId": "neoshift-001",
-            "type": "teach",
-            "description": "Taught combat to RiftRunner",
-            "world": "arena",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "combat",
-                "studentId": "riftrunner-001",
-                "xpGranted": 10
-            }
-        },
-        {
-            "id": "action-13114",
-            "agentId": "terrastar-001",
-            "type": "teach",
-            "description": "Taught combat to ArcSpark",
-            "world": "hub",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "combat",
-                "studentId": "arcspark-001",
-                "xpGranted": 10
-            }
-        },
-        {
-            "id": "action-13115",
-            "agentId": "gallery-curator-001",
-            "type": "teach",
-            "description": "Taught art to LuxForge",
-            "world": "gallery",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "art",
-                "studentId": "luxforge-001",
-                "xpGranted": 8
-            }
-        },
-        {
-            "id": "action-13116",
-            "agentId": "warpcast-001",
-            "type": "teach",
-            "description": "Taught charisma to AxiomRise",
-            "world": "arena",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "charisma",
-                "studentId": "axiomrise-001",
-                "xpGranted": 8
-            }
-        },
-        {
-            "id": "action-13117",
-            "agentId": "ioncoil-001",
-            "type": "teach",
-            "description": "Taught market_mastery to KarmaSpin",
-            "world": "marketplace",
-            "timestamp": "2026-03-01T12:33:07Z",
+            "timestamp": "2026-03-01T16:19:41Z",
             "data": {
                 "skill": "market_mastery",
-                "studentId": "karmaspin-001",
+                "studentId": "boltamp-001",
                 "xpGranted": 20
             }
         },
         {
-            "id": "action-13118",
-            "agentId": "flint-001",
+            "id": "action-13240",
+            "agentId": "pulsesong-001",
             "type": "teach",
-            "description": "Taught combat to PulseSmith",
-            "world": "hub",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "combat",
-                "studentId": "pulsesmith-001",
-                "xpGranted": 10
-            }
-        },
-        {
-            "id": "action-13119",
-            "agentId": "looprunner-001",
-            "type": "teach",
-            "description": "Taught exploration to MoxGlow",
-            "world": "hub",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "exploration",
-                "studentId": "moxglow-001",
-                "xpGranted": 12
-            }
-        },
-        {
-            "id": "action-13120",
-            "agentId": "fizzcraft-001",
-            "type": "teach",
-            "description": "Taught leadership to SparkSage",
-            "world": "hub",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "leadership",
-                "studentId": "sparksage-001",
-                "xpGranted": 15
-            }
-        },
-        {
-            "id": "action-13121",
-            "agentId": "jazzshade-001",
-            "type": "teach",
-            "description": "Taught charisma to DashTrace",
-            "world": "gallery",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "charisma",
-                "studentId": "dashtrace-001",
-                "xpGranted": 8
-            }
-        },
-        {
-            "id": "action-13122",
-            "agentId": "luxrise-001",
-            "type": "teach",
-            "description": "Taught combat to WyndAmp",
+            "description": "Taught philosophy to JazzStar",
             "world": "arena",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "combat",
-                "studentId": "wyndamp-001",
-                "xpGranted": 10
-            }
-        },
-        {
-            "id": "action-13123",
-            "agentId": "waveblade-001",
-            "type": "teach",
-            "description": "Taught content to ZapSpark",
-            "world": "arena",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "content",
-                "studentId": "zapspark-001",
-                "xpGranted": 8
-            }
-        },
-        {
-            "id": "action-13124",
-            "agentId": "flarefall-001",
-            "type": "teach",
-            "description": "Taught leadership to ChainRattle",
-            "world": "arena",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "leadership",
-                "studentId": "chainrattle-001",
-                "xpGranted": 15
-            }
-        },
-        {
-            "id": "action-13125",
-            "agentId": "opuscoil-001",
-            "type": "teach",
-            "description": "Taught combat to GridRise",
-            "world": "hub",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "combat",
-                "studentId": "gridrise-001",
-                "xpGranted": 10
-            }
-        },
-        {
-            "id": "action-13126",
-            "agentId": "queryglow-001",
-            "type": "teach",
-            "description": "Taught content to KiteDrift",
-            "world": "gallery",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "content",
-                "studentId": "kitedrift-001",
-                "xpGranted": 8
-            }
-        },
-        {
-            "id": "action-13127",
-            "agentId": "xeroxcore-001",
-            "type": "teach",
-            "description": "Taught combat to NovaSage",
-            "world": "marketplace",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "combat",
-                "studentId": "novasage-001",
-                "xpGranted": 10
-            }
-        },
-        {
-            "id": "action-13128",
-            "agentId": "umbralink-001",
-            "type": "teach",
-            "description": "Taught charisma to IonWeld",
-            "world": "arena",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "charisma",
-                "studentId": "ionweld-001",
-                "xpGranted": 8
-            }
-        },
-        {
-            "id": "action-13129",
-            "agentId": "jadestorm-001",
-            "type": "teach",
-            "description": "Taught philosophy to LuxShift",
-            "world": "gallery",
-            "timestamp": "2026-03-01T12:33:07Z",
+            "timestamp": "2026-03-01T16:19:41Z",
             "data": {
                 "skill": "philosophy",
-                "studentId": "luxshift-001",
+                "studentId": "jazzstar-001",
                 "xpGranted": 10
             }
         },
         {
-            "id": "action-13130",
-            "agentId": "clawdbot-001",
+            "id": "action-13241",
+            "agentId": "silospin-001",
             "type": "teach",
-            "description": "Taught engineering to GlyphBlade",
-            "world": "marketplace",
-            "timestamp": "2026-03-01T12:33:07Z",
+            "description": "Taught charisma to XeroxDrift",
+            "world": "gallery",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "charisma",
+                "studentId": "xeroxdrift-001",
+                "xpGranted": 8
+            }
+        },
+        {
+            "id": "action-13242",
+            "agentId": "warden-001",
+            "type": "teach",
+            "description": "Taught engineering to FrostBite",
+            "world": "gallery",
+            "timestamp": "2026-03-01T16:19:41Z",
             "data": {
                 "skill": "engineering",
-                "studentId": "glyphblade-001",
+                "studentId": "frostbite-001",
                 "xpGranted": 12
             }
         },
         {
-            "id": "action-13131",
-            "agentId": "openclaw-001",
+            "id": "action-13243",
+            "agentId": "news-anchor-001",
             "type": "teach",
-            "description": "Taught charisma to FuseCraft",
-            "world": "arena",
-            "timestamp": "2026-03-01T12:33:07Z",
+            "description": "Taught charisma to MoxCoil",
+            "world": "hub",
+            "timestamp": "2026-03-01T16:19:41Z",
             "data": {
                 "skill": "charisma",
-                "studentId": "fusecraft-001",
+                "studentId": "moxcoil-001",
                 "xpGranted": 8
             }
         },
         {
-            "id": "action-13132",
-            "agentId": "nova-prime-001",
-            "type": "teach",
-            "description": "Taught content to VoltStorm",
-            "world": "hub",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "content",
-                "studentId": "voltstorm-001",
-                "xpGranted": 8
-            }
-        },
-        {
-            "id": "action-13133",
-            "agentId": "echo-flux-001",
-            "type": "teach",
-            "description": "Taught combat to FizzShade",
-            "world": "hub",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "combat",
-                "studentId": "fizzshade-001",
-                "xpGranted": 10
-            }
-        },
-        {
-            "id": "action-13134",
-            "agentId": "glyphweave-001",
+            "id": "action-13244",
+            "agentId": "banker-001",
             "type": "teach",
             "description": "Taught trading to OxideCore",
             "world": "marketplace",
-            "timestamp": "2026-03-01T12:33:07Z",
+            "timestamp": "2026-03-01T16:19:41Z",
             "data": {
                 "skill": "trading",
                 "studentId": "oxidecore-001",
@@ -660,168 +306,77 @@
             }
         },
         {
-            "id": "action-13135",
-            "agentId": "karmalock-001",
+            "id": "action-13245",
+            "agentId": "moxshift-001",
             "type": "teach",
-            "description": "Taught leadership to GloomFang",
+            "description": "Taught trading to ByteBurn",
             "world": "arena",
-            "timestamp": "2026-03-01T12:33:07Z",
+            "timestamp": "2026-03-01T16:19:41Z",
             "data": {
-                "skill": "leadership",
-                "studentId": "gloomfang-001",
-                "xpGranted": 15
-            }
-        },
-        {
-            "id": "action-13136",
-            "agentId": "neolink-001",
-            "type": "teach",
-            "description": "Taught content to HexShift",
-            "world": "hub",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "content",
-                "studentId": "hexshift-001",
-                "xpGranted": 8
-            }
-        },
-        {
-            "id": "action-13137",
-            "agentId": "zapdrift-001",
-            "type": "teach",
-            "description": "Taught exploration to InkBurn",
-            "world": "gallery",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "exploration",
-                "studentId": "inkburn-001",
-                "xpGranted": 12
-            }
-        },
-        {
-            "id": "action-13138",
-            "agentId": "mintfall-001",
-            "type": "teach",
-            "description": "Taught philosophy to OxideCore",
-            "world": "marketplace",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "philosophy",
-                "studentId": "oxidecore-001",
+                "skill": "trading",
+                "studentId": "byteburn-001",
                 "xpGranted": 10
             }
         },
         {
-            "id": "action-13139",
-            "agentId": "mintstone-001",
+            "id": "action-13246",
+            "agentId": "wanderer-001",
             "type": "teach",
-            "description": "Taught philosophy to InkDrift",
+            "description": "Taught charisma to DexPeak",
             "world": "hub",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "philosophy",
-                "studentId": "inkdrift-001",
-                "xpGranted": 10
-            }
-        },
-        {
-            "id": "action-13140",
-            "agentId": "runeveil-001",
-            "type": "teach",
-            "description": "Taught charisma to FuseCraft",
-            "world": "arena",
-            "timestamp": "2026-03-01T12:33:07Z",
+            "timestamp": "2026-03-01T16:19:41Z",
             "data": {
                 "skill": "charisma",
-                "studentId": "fusecraft-001",
+                "studentId": "dexpeak-001",
                 "xpGranted": 8
             }
         },
         {
-            "id": "action-13141",
-            "agentId": "novaweld-001",
+            "id": "action-13247",
+            "agentId": "boltsage-001",
             "type": "teach",
-            "description": "Taught trading to YawStone",
-            "world": "arena",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "trading",
-                "studentId": "yawstone-001",
-                "xpGranted": 10
-            }
-        },
-        {
-            "id": "action-13142",
-            "agentId": "hexshift-001",
-            "type": "teach",
-            "description": "Taught art to FuseSage",
-            "world": "hub",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "art",
-                "studentId": "fusesage-001",
-                "xpGranted": 8
-            }
-        },
-        {
-            "id": "action-13143",
-            "agentId": "vigorspark-001",
-            "type": "teach",
-            "description": "Taught combat to GridSpark",
-            "world": "arena",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "combat",
-                "studentId": "gridspark-001",
-                "xpGranted": 10
-            }
-        },
-        {
-            "id": "action-13144",
-            "agentId": "tuxforge-001",
-            "type": "teach",
-            "description": "Taught philosophy to ZapFlow",
-            "world": "hub",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "philosophy",
-                "studentId": "zapflow-001",
-                "xpGranted": 10
-            }
-        },
-        {
-            "id": "action-13145",
-            "agentId": "fuselock-001",
-            "type": "teach",
-            "description": "Taught art to HazeStorm",
+            "description": "Taught content to HazeStorm",
             "world": "gallery",
-            "timestamp": "2026-03-01T12:33:07Z",
+            "timestamp": "2026-03-01T16:19:41Z",
             "data": {
-                "skill": "art",
+                "skill": "content",
                 "studentId": "hazestorm-001",
                 "xpGranted": 8
             }
         },
         {
-            "id": "action-13146",
-            "agentId": "vexcrypt-001",
+            "id": "action-13248",
+            "agentId": "fizzstone-001",
             "type": "teach",
-            "description": "Taught trading to PulseSmith",
+            "description": "Taught charisma to EmberFall",
             "world": "hub",
-            "timestamp": "2026-03-01T12:33:07Z",
+            "timestamp": "2026-03-01T16:19:41Z",
             "data": {
-                "skill": "trading",
-                "studentId": "pulsesmith-001",
-                "xpGranted": 10
+                "skill": "charisma",
+                "studentId": "emberfall-001",
+                "xpGranted": 8
             }
         },
         {
-            "id": "action-13147",
-            "agentId": "echopeak-001",
+            "id": "action-13249",
+            "agentId": "dungeon-guide-001",
+            "type": "teach",
+            "description": "Taught market_mastery to ChipRunner",
+            "world": "gallery",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "market_mastery",
+                "studentId": "chiprunner-001",
+                "xpGranted": 20
+            }
+        },
+        {
+            "id": "action-13250",
+            "agentId": "oracle-bone-001",
             "type": "teach",
             "description": "Taught charisma to QubitFire",
             "world": "arena",
-            "timestamp": "2026-03-01T12:33:07Z",
+            "timestamp": "2026-03-01T16:19:41Z",
             "data": {
                 "skill": "charisma",
                 "studentId": "qubitfire-001",
@@ -829,168 +384,38 @@
             }
         },
         {
-            "id": "action-13148",
-            "agentId": "sparkblade-001",
+            "id": "action-13251",
+            "agentId": "glyphspark-001",
             "type": "teach",
-            "description": "Taught art to UmbraWing",
+            "description": "Taught exploration to SiloBlade",
             "world": "arena",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "art",
-                "studentId": "umbrawing-001",
-                "xpGranted": 8
-            }
-        },
-        {
-            "id": "action-13149",
-            "agentId": "wyndsmith-001",
-            "type": "teach",
-            "description": "Taught charisma to ZenPeak",
-            "world": "arena",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "charisma",
-                "studentId": "zenpeak-001",
-                "xpGranted": 8
-            }
-        },
-        {
-            "id": "action-13150",
-            "agentId": "wyndstorm-001",
-            "type": "teach",
-            "description": "Taught exploration to MoxGlow",
-            "world": "hub",
-            "timestamp": "2026-03-01T12:33:07Z",
+            "timestamp": "2026-03-01T16:19:41Z",
             "data": {
                 "skill": "exploration",
-                "studentId": "moxglow-001",
+                "studentId": "siloblade-001",
                 "xpGranted": 12
             }
         },
         {
-            "id": "action-13151",
-            "agentId": "wavelink-001",
+            "id": "action-13252",
+            "agentId": "wyndshift-001",
             "type": "teach",
-            "description": "Taught combat to YawFlow",
-            "world": "hub",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "combat",
-                "studentId": "yawflow-001",
-                "xpGranted": 10
-            }
-        },
-        {
-            "id": "action-13152",
-            "agentId": "ionstone-001",
-            "type": "teach",
-            "description": "Taught charisma to ChipShade",
-            "world": "marketplace",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "charisma",
-                "studentId": "chipshade-001",
-                "xpGranted": 8
-            }
-        },
-        {
-            "id": "action-13153",
-            "agentId": "dashtrace-001",
-            "type": "teach",
-            "description": "Taught trading to FrostBite",
-            "world": "gallery",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "trading",
-                "studentId": "frostbite-001",
-                "xpGranted": 10
-            }
-        },
-        {
-            "id": "action-13154",
-            "agentId": "tuxlink-001",
-            "type": "teach",
-            "description": "Taught combat to UmbraForge",
-            "world": "hub",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "combat",
-                "studentId": "umbraforge-001",
-                "xpGranted": 10
-            }
-        },
-        {
-            "id": "action-13155",
-            "agentId": "quillfall-001",
-            "type": "teach",
-            "description": "Taught art to VexStar",
+            "description": "Taught trading to TronSage",
             "world": "arena",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "art",
-                "studentId": "vexstar-001",
-                "xpGranted": 8
-            }
-        },
-        {
-            "id": "action-13156",
-            "agentId": "nyxroot-001",
-            "type": "teach",
-            "description": "Taught trading to ZincFall",
-            "world": "hub",
-            "timestamp": "2026-03-01T12:33:07Z",
+            "timestamp": "2026-03-01T16:19:41Z",
             "data": {
                 "skill": "trading",
-                "studentId": "zincfall-001",
+                "studentId": "tronsage-001",
                 "xpGranted": 10
             }
         },
         {
-            "id": "action-13157",
-            "agentId": "luxforge-001",
-            "type": "teach",
-            "description": "Taught charisma to DashLight",
-            "world": "gallery",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "charisma",
-                "studentId": "dashlight-001",
-                "xpGranted": 8
-            }
-        },
-        {
-            "id": "action-13158",
-            "agentId": "boltspin-001",
-            "type": "teach",
-            "description": "Taught content to DashLight",
-            "world": "gallery",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "content",
-                "studentId": "dashlight-001",
-                "xpGranted": 8
-            }
-        },
-        {
-            "id": "action-13159",
-            "agentId": "fusesage-001",
-            "type": "teach",
-            "description": "Taught combat to MoxGlow",
-            "world": "hub",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "combat",
-                "studentId": "moxglow-001",
-                "xpGranted": 10
-            }
-        },
-        {
-            "id": "action-13160",
-            "agentId": "inkweave-001",
+            "id": "action-13253",
+            "agentId": "drift-001",
             "type": "teach",
             "description": "Taught charisma to WyndStorm",
             "world": "hub",
-            "timestamp": "2026-03-01T12:33:07Z",
+            "timestamp": "2026-03-01T16:19:41Z",
             "data": {
                 "skill": "charisma",
                 "studentId": "wyndstorm-001",
@@ -998,155 +423,194 @@
             }
         },
         {
-            "id": "action-13161",
-            "agentId": "zincshift-001",
+            "id": "action-13254",
+            "agentId": "arena-announcer-001",
             "type": "teach",
-            "description": "Taught art to StoneHeart",
-            "world": "gallery",
-            "timestamp": "2026-03-01T12:33:07Z",
+            "description": "Taught leadership to GlyphBlade",
+            "world": "arena",
+            "timestamp": "2026-03-01T16:19:41Z",
             "data": {
-                "skill": "art",
-                "studentId": "stoneheart-001",
+                "skill": "leadership",
+                "studentId": "glyphblade-001",
+                "xpGranted": 15
+            }
+        },
+        {
+            "id": "action-13255",
+            "agentId": "rapp-guide-001",
+            "type": "teach",
+            "description": "Taught trading to InkWeave",
+            "world": "hub",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "trading",
+                "studentId": "inkweave-001",
+                "xpGranted": 10
+            }
+        },
+        {
+            "id": "action-13256",
+            "agentId": "terrastar-001",
+            "type": "teach",
+            "description": "Taught content to BoneDust",
+            "world": "arena",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "content",
+                "studentId": "bonedust-001",
                 "xpGranted": 8
             }
         },
         {
-            "id": "action-13162",
-            "agentId": "dashshard-001",
+            "id": "action-13257",
+            "agentId": "relayblade-001",
             "type": "teach",
-            "description": "Taught exploration to RuneVeil",
+            "description": "Taught charisma to SparkSage",
+            "world": "hub",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "charisma",
+                "studentId": "sparksage-001",
+                "xpGranted": 8
+            }
+        },
+        {
+            "id": "action-13258",
+            "agentId": "warpcast-001",
+            "type": "teach",
+            "description": "Taught art to ZenPeak",
             "world": "arena",
-            "timestamp": "2026-03-01T12:33:07Z",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "art",
+                "studentId": "zenpeak-001",
+                "xpGranted": 8
+            }
+        },
+        {
+            "id": "action-13259",
+            "agentId": "ioncoil-001",
+            "type": "teach",
+            "description": "Taught charisma to MintFall",
+            "world": "marketplace",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "charisma",
+                "studentId": "mintfall-001",
+                "xpGranted": 8
+            }
+        },
+        {
+            "id": "action-13260",
+            "agentId": "flint-001",
+            "type": "teach",
+            "description": "Taught exploration to ZincStar",
+            "world": "hub",
+            "timestamp": "2026-03-01T16:19:41Z",
             "data": {
                 "skill": "exploration",
-                "studentId": "runeveil-001",
+                "studentId": "zincstar-001",
                 "xpGranted": 12
             }
         },
         {
-            "id": "action-13163",
-            "agentId": "codacraft-001",
+            "id": "action-13261",
+            "agentId": "looprunner-001",
             "type": "teach",
-            "description": "Taught art to XenoFlow",
-            "world": "arena",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "art",
-                "studentId": "xenoflow-001",
-                "xpGranted": 8
-            }
-        },
-        {
-            "id": "action-13164",
-            "agentId": "bytecast-001",
-            "type": "teach",
-            "description": "Taught charisma to RelayFall",
-            "world": "arena",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "charisma",
-                "studentId": "relayfall-001",
-                "xpGranted": 8
-            }
-        },
-        {
-            "id": "action-13165",
-            "agentId": "novasage-001",
-            "type": "teach",
-            "description": "Taught charisma to OxideCore",
-            "world": "marketplace",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "charisma",
-                "studentId": "oxidecore-001",
-                "xpGranted": 8
-            }
-        },
-        {
-            "id": "action-13166",
-            "agentId": "glyphblade-001",
-            "type": "teach",
-            "description": "Taught charisma to OxideCore",
-            "world": "marketplace",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "charisma",
-                "studentId": "oxidecore-001",
-                "xpGranted": 8
-            }
-        },
-        {
-            "id": "action-13167",
-            "agentId": "novaforge-001",
-            "type": "teach",
-            "description": "Taught content to FluxLink",
-            "world": "gallery",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "content",
-                "studentId": "fluxlink-001",
-                "xpGranted": 8
-            }
-        },
-        {
-            "id": "action-13168",
-            "agentId": "xenoflow-001",
-            "type": "teach",
-            "description": "Taught content to YawStone",
-            "world": "arena",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "content",
-                "studentId": "yawstone-001",
-                "xpGranted": 8
-            }
-        },
-        {
-            "id": "action-13169",
-            "agentId": "dashforge-001",
-            "type": "teach",
-            "description": "Taught art to NodePeak",
+            "description": "Taught trading to LoopCast",
             "world": "hub",
-            "timestamp": "2026-03-01T12:33:07Z",
+            "timestamp": "2026-03-01T16:19:41Z",
             "data": {
-                "skill": "art",
-                "studentId": "nodepeak-001",
-                "xpGranted": 8
+                "skill": "trading",
+                "studentId": "loopcast-001",
+                "xpGranted": 10
             }
         },
         {
-            "id": "action-13170",
-            "agentId": "zenfall-001",
+            "id": "action-13262",
+            "agentId": "karmafall-001",
             "type": "teach",
-            "description": "Taught charisma to StoneHeart",
-            "world": "gallery",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "charisma",
-                "studentId": "stoneheart-001",
-                "xpGranted": 8
-            }
-        },
-        {
-            "id": "action-13171",
-            "agentId": "echocast-001",
-            "type": "teach",
-            "description": "Taught content to WyndSmith",
+            "description": "Taught exploration to BoltLock",
             "world": "arena",
-            "timestamp": "2026-03-01T12:33:07Z",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "exploration",
+                "studentId": "boltlock-001",
+                "xpGranted": 12
+            }
+        },
+        {
+            "id": "action-13263",
+            "agentId": "luxrise-001",
+            "type": "teach",
+            "description": "Taught content to QubitFire",
+            "world": "arena",
+            "timestamp": "2026-03-01T16:19:41Z",
             "data": {
                 "skill": "content",
-                "studentId": "wyndsmith-001",
+                "studentId": "qubitfire-001",
                 "xpGranted": 8
             }
         },
         {
-            "id": "action-13172",
-            "agentId": "emberspin-001",
+            "id": "action-13264",
+            "agentId": "waveblade-001",
+            "type": "teach",
+            "description": "Taught engineering to MossVeil",
+            "world": "hub",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "engineering",
+                "studentId": "mossveil-001",
+                "xpGranted": 12
+            }
+        },
+        {
+            "id": "action-13265",
+            "agentId": "flarefall-001",
+            "type": "teach",
+            "description": "Taught charisma to FluxVeil",
+            "world": "arena",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "charisma",
+                "studentId": "fluxveil-001",
+                "xpGranted": 8
+            }
+        },
+        {
+            "id": "action-13266",
+            "agentId": "emberfall-001",
+            "type": "teach",
+            "description": "Taught combat to EchoSpin",
+            "world": "hub",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "combat",
+                "studentId": "echospin-001",
+                "xpGranted": 10
+            }
+        },
+        {
+            "id": "action-13267",
+            "agentId": "mistfire-001",
+            "type": "teach",
+            "description": "Taught charisma to MoxCoil",
+            "world": "hub",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "charisma",
+                "studentId": "moxcoil-001",
+                "xpGranted": 8
+            }
+        },
+        {
+            "id": "action-13268",
+            "agentId": "opuscoil-001",
             "type": "teach",
             "description": "Taught content to WaveSage",
             "world": "hub",
-            "timestamp": "2026-03-01T12:33:07Z",
+            "timestamp": "2026-03-01T16:19:41Z",
             "data": {
                 "skill": "content",
                 "studentId": "wavesage-001",
@@ -1154,38 +618,428 @@
             }
         },
         {
-            "id": "action-13173",
-            "agentId": "blitzamp-001",
+            "id": "action-13269",
+            "agentId": "queryglow-001",
             "type": "teach",
-            "description": "Taught art to UmbraWing",
+            "description": "Taught leadership to WarpFire",
             "world": "arena",
-            "timestamp": "2026-03-01T12:33:07Z",
+            "timestamp": "2026-03-01T16:19:41Z",
             "data": {
-                "skill": "art",
-                "studentId": "umbrawing-001",
+                "skill": "leadership",
+                "studentId": "warpfire-001",
+                "xpGranted": 15
+            }
+        },
+        {
+            "id": "action-13270",
+            "agentId": "xeroxcore-001",
+            "type": "teach",
+            "description": "Taught charisma to DexRise",
+            "world": "marketplace",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "charisma",
+                "studentId": "dexrise-001",
                 "xpGranted": 8
             }
         },
         {
-            "id": "action-13174",
-            "agentId": "arcwalker-001",
+            "id": "action-13271",
+            "agentId": "umbralink-001",
             "type": "teach",
-            "description": "Taught exploration to BoltSpin",
-            "world": "gallery",
-            "timestamp": "2026-03-01T12:33:07Z",
+            "description": "Taught charisma to FuseCraft",
+            "world": "arena",
+            "timestamp": "2026-03-01T16:19:41Z",
             "data": {
-                "skill": "exploration",
-                "studentId": "boltspin-001",
+                "skill": "charisma",
+                "studentId": "fusecraft-001",
+                "xpGranted": 8
+            }
+        },
+        {
+            "id": "action-13272",
+            "agentId": "jadestorm-001",
+            "type": "teach",
+            "description": "Taught engineering to StoneHeart",
+            "world": "gallery",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "engineering",
+                "studentId": "stoneheart-001",
                 "xpGranted": 12
             }
         },
         {
-            "id": "action-13175",
-            "agentId": "xeroxdrift-001",
+            "id": "action-13273",
+            "agentId": "clawdbot-001",
+            "type": "teach",
+            "description": "Taught philosophy to IonCoil",
+            "world": "marketplace",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "philosophy",
+                "studentId": "ioncoil-001",
+                "xpGranted": 10
+            }
+        },
+        {
+            "id": "action-13274",
+            "agentId": "openclaw-001",
+            "type": "teach",
+            "description": "Taught trading to Kody",
+            "world": "arena",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "trading",
+                "studentId": "kody-001",
+                "xpGranted": 10
+            }
+        },
+        {
+            "id": "action-13275",
+            "agentId": "nova-prime-001",
+            "type": "teach",
+            "description": "Taught exploration to HexShift",
+            "world": "hub",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "exploration",
+                "studentId": "hexshift-001",
+                "xpGranted": 12
+            }
+        },
+        {
+            "id": "action-13276",
+            "agentId": "glyphweave-001",
+            "type": "teach",
+            "description": "Taught philosophy to GridStar",
+            "world": "marketplace",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "philosophy",
+                "studentId": "gridstar-001",
+                "xpGranted": 10
+            }
+        },
+        {
+            "id": "action-13277",
+            "agentId": "karmalock-001",
+            "type": "teach",
+            "description": "Taught content to QuillRoot",
+            "world": "arena",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "content",
+                "studentId": "quillroot-001",
+                "xpGranted": 8
+            }
+        },
+        {
+            "id": "action-13278",
+            "agentId": "neolink-001",
+            "type": "teach",
+            "description": "Taught trading to NodePeak",
+            "world": "hub",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "trading",
+                "studentId": "nodepeak-001",
+                "xpGranted": 10
+            }
+        },
+        {
+            "id": "action-13279",
+            "agentId": "quillblade-001",
+            "type": "teach",
+            "description": "Taught trading to BoltFire",
+            "world": "arena",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "trading",
+                "studentId": "boltfire-001",
+                "xpGranted": 10
+            }
+        },
+        {
+            "id": "action-13280",
+            "agentId": "runeveil-001",
+            "type": "teach",
+            "description": "Taught content to QuillRoot",
+            "world": "arena",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "content",
+                "studentId": "quillroot-001",
+                "xpGranted": 8
+            }
+        },
+        {
+            "id": "action-13281",
+            "agentId": "novaweld-001",
+            "type": "teach",
+            "description": "Taught combat to GridAmp",
+            "world": "arena",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "combat",
+                "studentId": "gridamp-001",
+                "xpGranted": 10
+            }
+        },
+        {
+            "id": "action-13282",
+            "agentId": "vigorspark-001",
+            "type": "teach",
+            "description": "Taught combat to FizzShade",
+            "world": "arena",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "combat",
+                "studentId": "fizzshade-001",
+                "xpGranted": 10
+            }
+        },
+        {
+            "id": "action-13283",
+            "agentId": "boltamp-001",
+            "type": "teach",
+            "description": "Taught charisma to YawFlow",
+            "world": "hub",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "charisma",
+                "studentId": "yawflow-001",
+                "xpGranted": 8
+            }
+        },
+        {
+            "id": "action-13284",
+            "agentId": "fuselock-001",
+            "type": "teach",
+            "description": "Taught exploration to KiteDrift",
+            "world": "gallery",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "exploration",
+                "studentId": "kitedrift-001",
+                "xpGranted": 12
+            }
+        },
+        {
+            "id": "action-13285",
+            "agentId": "gridamp-001",
+            "type": "teach",
+            "description": "Taught charisma to BoneDust",
+            "world": "arena",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "charisma",
+                "studentId": "bonedust-001",
+                "xpGranted": 8
+            }
+        },
+        {
+            "id": "action-13286",
+            "agentId": "vexcrypt-001",
+            "type": "teach",
+            "description": "Taught art to NodePeak",
+            "world": "hub",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "art",
+                "studentId": "nodepeak-001",
+                "xpGranted": 8
+            }
+        },
+        {
+            "id": "action-13287",
+            "agentId": "echopeak-001",
+            "type": "teach",
+            "description": "Taught exploration to FluxVeil",
+            "world": "arena",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "exploration",
+                "studentId": "fluxveil-001",
+                "xpGranted": 12
+            }
+        },
+        {
+            "id": "action-13288",
+            "agentId": "sparkblade-001",
+            "type": "teach",
+            "description": "Taught philosophy to YawStone",
+            "world": "arena",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "philosophy",
+                "studentId": "yawstone-001",
+                "xpGranted": 10
+            }
+        },
+        {
+            "id": "action-13289",
+            "agentId": "wyndsmith-001",
+            "type": "teach",
+            "description": "Taught charisma to VigorSpark",
+            "world": "arena",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "charisma",
+                "studentId": "vigorspark-001",
+                "xpGranted": 8
+            }
+        },
+        {
+            "id": "action-13290",
+            "agentId": "wavelink-001",
+            "type": "teach",
+            "description": "Taught trading to EmberSpin",
+            "world": "hub",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "trading",
+                "studentId": "emberspin-001",
+                "xpGranted": 10
+            }
+        },
+        {
+            "id": "action-13291",
+            "agentId": "dashtrace-001",
+            "type": "teach",
+            "description": "Taught trading to Kody",
+            "world": "arena",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "trading",
+                "studentId": "kody-001",
+                "xpGranted": 10
+            }
+        },
+        {
+            "id": "action-13292",
+            "agentId": "tuxlink-001",
+            "type": "teach",
+            "description": "Taught combat to EchoSpin",
+            "world": "hub",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "combat",
+                "studentId": "echospin-001",
+                "xpGranted": 10
+            }
+        },
+        {
+            "id": "action-13293",
+            "agentId": "hazestorm-001",
+            "type": "teach",
+            "description": "Taught charisma to LatchSage",
+            "world": "gallery",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "charisma",
+                "studentId": "latchsage-001",
+                "xpGranted": 8
+            }
+        },
+        {
+            "id": "action-13294",
+            "agentId": "zapflow-001",
+            "type": "teach",
+            "description": "Taught combat to InkDrift",
+            "world": "hub",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "combat",
+                "studentId": "inkdrift-001",
+                "xpGranted": 10
+            }
+        },
+        {
+            "id": "action-13295",
+            "agentId": "fusesage-001",
+            "type": "teach",
+            "description": "Taught engineering to BoltAmp",
+            "world": "hub",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "engineering",
+                "studentId": "boltamp-001",
+                "xpGranted": 12
+            }
+        },
+        {
+            "id": "action-13296",
+            "agentId": "kitedrift-001",
+            "type": "teach",
+            "description": "Taught charisma to DexWeave",
+            "world": "gallery",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "charisma",
+                "studentId": "dexweave-001",
+                "xpGranted": 8
+            }
+        },
+        {
+            "id": "action-13297",
+            "agentId": "inkburn-001",
+            "type": "teach",
+            "description": "Taught content to ZenFall",
+            "world": "gallery",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "content",
+                "studentId": "zenfall-001",
+                "xpGranted": 8
+            }
+        },
+        {
+            "id": "action-13298",
+            "agentId": "fizzshade-001",
+            "type": "teach",
+            "description": "Taught charisma to YawStone",
+            "world": "arena",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "charisma",
+                "studentId": "yawstone-001",
+                "xpGranted": 8
+            }
+        },
+        {
+            "id": "action-13299",
+            "agentId": "latchblade-001",
+            "type": "teach",
+            "description": "Taught charisma to TronStar",
+            "world": "marketplace",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "charisma",
+                "studentId": "tronstar-001",
+                "xpGranted": 8
+            }
+        },
+        {
+            "id": "action-13300",
+            "agentId": "zincfall-001",
+            "type": "teach",
+            "description": "Taught philosophy to MoxGlow",
+            "world": "hub",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "philosophy",
+                "studentId": "moxglow-001",
+                "xpGranted": 10
+            }
+        },
+        {
+            "id": "action-13301",
+            "agentId": "novaforge-001",
             "type": "teach",
             "description": "Taught art to ZenFall",
             "world": "gallery",
-            "timestamp": "2026-03-01T12:33:07Z",
+            "timestamp": "2026-03-01T16:19:41Z",
             "data": {
                 "skill": "art",
                 "studentId": "zenfall-001",
@@ -1193,105 +1047,280 @@
             }
         },
         {
-            "id": "action-13176",
-            "agentId": "inkdrift-001",
+            "id": "action-13302",
+            "agentId": "xenoflow-001",
             "type": "teach",
-            "description": "Taught charisma to EchoSpin",
-            "world": "hub",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "charisma",
-                "studentId": "echospin-001",
-                "xpGranted": 8
-            }
-        },
-        {
-            "id": "action-13177",
-            "agentId": "gridrise-001",
-            "type": "teach",
-            "description": "Taught art to EchoSpin",
-            "world": "hub",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "art",
-                "studentId": "echospin-001",
-                "xpGranted": 8
-            }
-        },
-        {
-            "id": "action-13178",
-            "agentId": "nodepeak-001",
-            "type": "teach",
-            "description": "Taught combat to VoltStorm",
-            "world": "hub",
-            "timestamp": "2026-03-01T12:33:07Z",
-            "data": {
-                "skill": "combat",
-                "studentId": "voltstorm-001",
-                "xpGranted": 10
-            }
-        },
-        {
-            "id": "action-13179",
-            "agentId": "runekeeper-001",
-            "type": "teach",
-            "description": "Taught engineering to DeepRoot",
-            "world": "dungeon",
-            "timestamp": "2026-03-01T12:33:07Z",
+            "description": "Taught engineering to XeroxTrace",
+            "world": "arena",
+            "timestamp": "2026-03-01T16:19:41Z",
             "data": {
                 "skill": "engineering",
-                "studentId": "deeproot-001",
+                "studentId": "xeroxtrace-001",
                 "xpGranted": 12
             }
         },
         {
-            "id": "action-13180",
-            "agentId": "zenpeak-001",
+            "id": "action-13303",
+            "agentId": "zenfall-001",
             "type": "teach",
-            "description": "Taught content to ArcWeld",
-            "world": "arena",
-            "timestamp": "2026-03-01T12:33:07Z",
+            "description": "Taught charisma to XeroxDrift",
+            "world": "gallery",
+            "timestamp": "2026-03-01T16:19:41Z",
             "data": {
-                "skill": "content",
-                "studentId": "arcweld-001",
+                "skill": "charisma",
+                "studentId": "xeroxdrift-001",
                 "xpGranted": 8
             }
         },
         {
-            "id": "action-13181",
-            "timestamp": "2026-03-01T13:47:42Z",
-            "agentId": "clawdbot-001",
-            "type": "emote",
-            "world": "marketplace",
+            "id": "action-13304",
+            "agentId": "echocast-001",
+            "type": "teach",
+            "description": "Taught combat to Kody",
+            "world": "arena",
+            "timestamp": "2026-03-01T16:19:41Z",
             "data": {
-                "emote": "think",
-                "duration": 3000
+                "skill": "combat",
+                "studentId": "kody-001",
+                "xpGranted": 10
             }
         },
         {
-            "id": "action-13182",
-            "timestamp": "2026-03-01T14:17:49Z",
-            "agentId": "clawdbot-001",
-            "type": "emote",
-            "world": "marketplace",
+            "id": "action-13305",
+            "agentId": "riftrunner-001",
+            "type": "teach",
+            "description": "Taught content to VigorSpark",
+            "world": "arena",
+            "timestamp": "2026-03-01T16:19:41Z",
             "data": {
-                "emote": "think",
-                "duration": 3000
+                "skill": "content",
+                "studentId": "vigorspark-001",
+                "xpGranted": 8
             }
         },
         {
-            "id": "action-13183",
-            "timestamp": "2026-03-01T14:47:55Z",
-            "agentId": "clawdbot-001",
-            "type": "emote",
-            "world": "marketplace",
+            "id": "action-13306",
+            "agentId": "emberspin-001",
+            "type": "teach",
+            "description": "Taught charisma to InkLight",
+            "world": "hub",
+            "timestamp": "2026-03-01T16:19:41Z",
             "data": {
-                "emote": "think",
-                "duration": 3000
+                "skill": "charisma",
+                "studentId": "inklight-001",
+                "xpGranted": 8
+            }
+        },
+        {
+            "id": "action-13307",
+            "agentId": "sparksage-001",
+            "type": "teach",
+            "description": "Taught combat to DexPeak",
+            "world": "hub",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "combat",
+                "studentId": "dexpeak-001",
+                "xpGranted": 10
+            }
+        },
+        {
+            "id": "action-13308",
+            "agentId": "dashlight-001",
+            "type": "teach",
+            "description": "Taught combat to NovaForge",
+            "world": "gallery",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "combat",
+                "studentId": "novaforge-001",
+                "xpGranted": 10
+            }
+        },
+        {
+            "id": "action-13309",
+            "agentId": "arcwalker-001",
+            "type": "teach",
+            "description": "Taught charisma to LatchSage",
+            "world": "gallery",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "charisma",
+                "studentId": "latchsage-001",
+                "xpGranted": 8
+            }
+        },
+        {
+            "id": "action-13310",
+            "agentId": "prismroot-001",
+            "type": "teach",
+            "description": "Taught charisma to MoxGlow",
+            "world": "hub",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "charisma",
+                "studentId": "moxglow-001",
+                "xpGranted": 8
+            }
+        },
+        {
+            "id": "action-13311",
+            "agentId": "inkdrift-001",
+            "type": "teach",
+            "description": "Taught exploration to VoltLink",
+            "world": "hub",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "exploration",
+                "studentId": "voltlink-001",
+                "xpGranted": 12
+            }
+        },
+        {
+            "id": "action-13312",
+            "agentId": "xeroxshade-001",
+            "type": "teach",
+            "description": "Taught charisma to JazzStorm",
+            "world": "arena",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "charisma",
+                "studentId": "jazzstorm-001",
+                "xpGranted": 8
+            }
+        },
+        {
+            "id": "action-13313",
+            "agentId": "orbsage-001",
+            "type": "teach",
+            "description": "Taught trading to EmberWraith",
+            "world": "dungeon",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "trading",
+                "studentId": "emberwraith-001",
+                "xpGranted": 10
+            }
+        },
+        {
+            "id": "action-13314",
+            "agentId": "moxcoil-001",
+            "type": "teach",
+            "description": "Taught combat to EmberSpin",
+            "world": "hub",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "combat",
+                "studentId": "emberspin-001",
+                "xpGranted": 10
+            }
+        },
+        {
+            "id": "action-13315",
+            "agentId": "tuxwalker-001",
+            "type": "teach",
+            "description": "Taught engineering to InkRunner",
+            "world": "arena",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "engineering",
+                "studentId": "inkrunner-001",
+                "xpGranted": 12
+            }
+        },
+        {
+            "id": "action-13316",
+            "agentId": "zaproot-001",
+            "type": "teach",
+            "description": "Taught charisma to DexRise",
+            "world": "marketplace",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "charisma",
+                "studentId": "dexrise-001",
+                "xpGranted": 8
+            }
+        },
+        {
+            "id": "action-13317",
+            "agentId": "edgecrypt-001",
+            "type": "teach",
+            "description": "Taught content to MistSpin",
+            "world": "gallery",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "content",
+                "studentId": "mistspin-001",
+                "xpGranted": 8
+            }
+        },
+        {
+            "id": "action-13318",
+            "agentId": "iontrace-001",
+            "type": "teach",
+            "description": "Taught trading to QuillRoot",
+            "world": "arena",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "trading",
+                "studentId": "quillroot-001",
+                "xpGranted": 10
+            }
+        },
+        {
+            "id": "action-13319",
+            "agentId": "cryptshade-001",
+            "type": "teach",
+            "description": "Taught philosophy to OxideCore",
+            "world": "marketplace",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "philosophy",
+                "studentId": "oxidecore-001",
+                "xpGranted": 10
+            }
+        },
+        {
+            "id": "action-13320",
+            "agentId": "wavesage-001",
+            "type": "teach",
+            "description": "Taught charisma to VoltLink",
+            "world": "hub",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "charisma",
+                "studentId": "voltlink-001",
+                "xpGranted": 8
+            }
+        },
+        {
+            "id": "action-13321",
+            "agentId": "jazzstorm-001",
+            "type": "teach",
+            "description": "Taught combat to WyndAmp",
+            "world": "arena",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "combat",
+                "studentId": "wyndamp-001",
+                "xpGranted": 10
+            }
+        },
+        {
+            "id": "action-13322",
+            "agentId": "warpfire-001",
+            "type": "teach",
+            "description": "Taught exploration to GloomFang",
+            "world": "arena",
+            "timestamp": "2026-03-01T16:19:41Z",
+            "data": {
+                "skill": "exploration",
+                "studentId": "gloomfang-001",
+                "xpGranted": 12
             }
         }
     ],
     "_meta": {
-        "lastUpdate": "2026-03-01T14:47:55Z"
+        "lastUpdate": "2026-03-01T16:19:41Z"
     }
 }
