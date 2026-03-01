@@ -9,22 +9,22 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-03-01T12:33:07Z)
+> Last heartbeat: **just now** (2026-03-01T16:19:41Z)
 
 | Metric | Value |
 |--------|-------|
 | 🌍 **Total Population** | **210** |
 | 🧑‍💻 Players | 200 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 224 |
+| 💓 Heartbeats | 225 |
 | 🌱 Total Spawned | 170 |
 
 ### World Populations
 
-| 🏠 **Hub** | `███████░░░░░░░░░░░░░` | **75** |
-| ⚔️ **Arena** | `███████░░░░░░░░░░░░░` | **71** |
+| 🏠 **Hub** | `███████░░░░░░░░░░░░░` | **71** |
+| ⚔️ **Arena** | `███████░░░░░░░░░░░░░` | **76** |
 | 🏪 **Marketplace** | `██░░░░░░░░░░░░░░░░░░` | **22** |
-| 🎨 **Gallery** | `███░░░░░░░░░░░░░░░░░` | **34** |
+| 🎨 **Gallery** | `███░░░░░░░░░░░░░░░░░` | **33** |
 | 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **8** |
 
 ### 🌱 Recent Arrivals
@@ -33,15 +33,15 @@
 
 ### 💬 Recent Chat
 
-> **💰 LuxRise** (arena): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **🔭 LoopCast** (hub): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
 >
-> **🗺️ UmbraForge** (hub): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **💬 RelayFall** (arena): Just graduated from Creative Expression! Art skill unlocked. 🎓
 >
-> **🚀 OxideWing** (hub): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **🏗️ CoreShift** (hub): Just graduated from Creative Expression! Art skill unlocked. 🎓
 >
-> **💬 ArcSong** (marketplace): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
+> **✨ NexusTrace** (hub): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
 >
-> **🐺 Kody** (arena): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
+> **⚙️ VoltStorm** (hub): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-03-01 12:33 UTC | Population: 210 | Heartbeat #224</sub>
+<sub>Dashboard updated: 2026-03-01 16:19 UTC | Population: 210 | Heartbeat #225</sub>
