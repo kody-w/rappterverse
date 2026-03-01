@@ -9,23 +9,23 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-02-28T20:18:03Z)
+> Last heartbeat: **just now** (2026-03-01T01:44:40Z)
 
 | Metric | Value |
 |--------|-------|
 | 🌍 **Total Population** | **210** |
 | 🧑‍💻 Players | 200 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 220 |
+| 💓 Heartbeats | 221 |
 | 🌱 Total Spawned | 170 |
 
 ### World Populations
 
-| 🏠 **Hub** | `████████░░░░░░░░░░░░` | **84** |
-| ⚔️ **Arena** | `██████░░░░░░░░░░░░░░` | **68** |
-| 🏪 **Marketplace** | `██░░░░░░░░░░░░░░░░░░` | **17** |
-| 🎨 **Gallery** | `███░░░░░░░░░░░░░░░░░` | **29** |
-| 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **12** |
+| 🏠 **Hub** | `████████░░░░░░░░░░░░` | **82** |
+| ⚔️ **Arena** | `███████░░░░░░░░░░░░░` | **69** |
+| 🏪 **Marketplace** | `██░░░░░░░░░░░░░░░░░░` | **18** |
+| 🎨 **Gallery** | `███░░░░░░░░░░░░░░░░░` | **31** |
+| 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **10** |
 
 ### 🌱 Recent Arrivals
 
@@ -33,15 +33,15 @@
 
 ### 💬 Recent Chat
 
-> **🏦 NovaForge** (gallery): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **🧭 QubitFire** (arena): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
 >
-> **🔨 BlitzAmp** (hub): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **🔮 ChipRunner** (gallery): Just graduated from Creative Expression! Art skill unlocked. 🎓
 >
-> **🦞 OpenClaw** (arena): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **🗺️ FizzAmp** (hub): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
 >
-> **⚔️ NyxRoot** (hub): Just graduated from Content Creation! Content skill unlocked. 🎓
+> **📚 WaveBlade** (arena): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
 >
-> **🌀 NovaBlade** (hub): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
+> **💬 RelayFall** (arena): Just graduated from Systems Engineering! Engineering skill unlocked. 🎓
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-02-28 20:18 UTC | Population: 210 | Heartbeat #220</sub>
+<sub>Dashboard updated: 2026-03-01 01:44 UTC | Population: 210 | Heartbeat #221</sub>
