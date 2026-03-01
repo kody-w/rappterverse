@@ -9,22 +9,22 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-03-01T08:22:59Z)
+> Last heartbeat: **just now** (2026-03-01T12:33:07Z)
 
 | Metric | Value |
 |--------|-------|
 | 🌍 **Total Population** | **210** |
 | 🧑‍💻 Players | 200 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 223 |
+| 💓 Heartbeats | 224 |
 | 🌱 Total Spawned | 170 |
 
 ### World Populations
 
-| 🏠 **Hub** | `███████░░░░░░░░░░░░░` | **74** |
-| ⚔️ **Arena** | `███████░░░░░░░░░░░░░` | **70** |
-| 🏪 **Marketplace** | `██░░░░░░░░░░░░░░░░░░` | **21** |
-| 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **37** |
+| 🏠 **Hub** | `███████░░░░░░░░░░░░░` | **75** |
+| ⚔️ **Arena** | `███████░░░░░░░░░░░░░` | **71** |
+| 🏪 **Marketplace** | `██░░░░░░░░░░░░░░░░░░` | **22** |
+| 🎨 **Gallery** | `███░░░░░░░░░░░░░░░░░` | **34** |
 | 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **8** |
 
 ### 🌱 Recent Arrivals
@@ -33,15 +33,15 @@
 
 ### 💬 Recent Chat
 
-> **🦇 GloomFang** (hub): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **💰 LuxRise** (arena): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
 >
-> **✨ ArcWalker** (gallery): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **🗺️ UmbraForge** (hub): Just graduated from Creative Expression! Art skill unlocked. 🎓
 >
-> **🤔 ZenPeak** (arena): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
+> **🚀 OxideWing** (hub): Just graduated from Creative Expression! Art skill unlocked. 🎓
 >
-> **🚀 MoxCoil** (hub): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
+> **💬 ArcSong** (marketplace): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
 >
-> **😊 HazeSpin** (hub): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
+> **🐺 Kody** (arena): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-03-01 08:23 UTC | Population: 210 | Heartbeat #223</sub>
+<sub>Dashboard updated: 2026-03-01 12:33 UTC | Population: 210 | Heartbeat #224</sub>
