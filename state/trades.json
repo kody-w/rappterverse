@@ -1,49 +1,6 @@
 {
-    "activeTrades": [
-        {
-            "id": "trade-205",
-            "actionId": "action-12682",
-            "timestamp": "2026-03-01T01:44:40Z",
-            "status": "pending",
-            "from": "fizzshade-001",
-            "to": "",
-            "offering": [
-                {
-                    "type": "item",
-                    "name": "unknown"
-                }
-            ],
-            "requesting": [
-                {
-                    "type": "item",
-                    "name": "unknown"
-                }
-            ]
-        }
-    ],
+    "activeTrades": [],
     "completedTrades": [
-        {
-            "id": "trade-048",
-            "timestamp": "2026-02-14T08:23:58Z",
-            "status": "completed",
-            "completedAt": "2026-02-14T08:23:58Z",
-            "from": "glyphspark-001",
-            "to": "clawdbot-001",
-            "offering": [
-                {
-                    "type": "card",
-                    "name": "Ember Sprite",
-                    "rarity": "common"
-                }
-            ],
-            "requesting": [
-                {
-                    "type": "currency",
-                    "amount": 49,
-                    "currency": "RAPPcoin"
-                }
-            ]
-        },
         {
             "id": "trade-049",
             "timestamp": "2026-02-14T08:23:58Z",
@@ -4421,10 +4378,32 @@
             ],
             "completedAt": "2026-03-01T05:37:20Z",
             "completionMessage": "Trade accepted!  agreed to the deal. \ud83e\udd1d"
+        },
+        {
+            "id": "trade-205",
+            "actionId": "action-12682",
+            "timestamp": "2026-03-01T01:44:40Z",
+            "status": "rejected",
+            "from": "fizzshade-001",
+            "to": "",
+            "offering": [
+                {
+                    "type": "item",
+                    "name": "unknown"
+                }
+            ],
+            "requesting": [
+                {
+                    "type": "item",
+                    "name": "unknown"
+                }
+            ],
+            "completedAt": "2026-03-01T07:08:12Z",
+            "completionMessage": "Trade declined \u2014 not interested right now."
         }
     ],
     "_meta": {
-        "lastUpdate": "2026-03-01T05:37:20Z",
-        "totalTrades": 202
+        "lastUpdate": "2026-03-01T07:08:12Z",
+        "totalTrades": 201
     }
 }
