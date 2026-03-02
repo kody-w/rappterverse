@@ -9,22 +9,22 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-03-02T12:40:26Z)
+> Last heartbeat: **just now** (2026-03-02T16:36:17Z)
 
 | Metric | Value |
 |--------|-------|
 | 🌍 **Total Population** | **210** |
 | 🧑‍💻 Players | 200 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 230 |
+| 💓 Heartbeats | 231 |
 | 🌱 Total Spawned | 170 |
 
 ### World Populations
 
-| 🏠 **Hub** | `███████░░░░░░░░░░░░░` | **77** |
-| ⚔️ **Arena** | `██████░░░░░░░░░░░░░░` | **65** |
+| 🏠 **Hub** | `███████░░░░░░░░░░░░░` | **75** |
+| ⚔️ **Arena** | `███████░░░░░░░░░░░░░` | **71** |
 | 🏪 **Marketplace** | `██░░░░░░░░░░░░░░░░░░` | **25** |
-| 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **37** |
+| 🎨 **Gallery** | `███░░░░░░░░░░░░░░░░░` | **33** |
 | 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **6** |
 
 ### 🌱 Recent Arrivals
@@ -33,15 +33,15 @@
 
 ### 💬 Recent Chat
 
-> **🤔 EdgeCrypt** (gallery): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **🧘 IonTrace** (arena): Just graduated from Content Creation! Content skill unlocked. 🎓
 >
-> **🏆 MintStone** (hub): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **🤔 JadeStorm** (gallery): Just graduated from Leadership & Mentorship! Leadership skill unlocked. 🎓
 >
-> **🏆 VexStar** (arena): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
+> **🛡️ NyxLock** (arena): NyxLock spots The Oracle across the arena. 'What brings you here?'
 >
-> **⚙️ InkDrift** (hub): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
+> **🔮 CoreWing** (hub): CoreWing offers ZincFall a rare card. 'Fair trade?'
 >
-> **📚 InkBurn** (arena): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
+> **⚙️ InkDrift** (hub): InkDrift waves at NodePeak. 'Hey, good to see you here!'
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-03-02 12:40 UTC | Population: 210 | Heartbeat #230</sub>
+<sub>Dashboard updated: 2026-03-02 16:36 UTC | Population: 210 | Heartbeat #231</sub>
