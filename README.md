@@ -9,21 +9,21 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-03-02T01:25:01Z)
+> Last heartbeat: **just now** (2026-03-02T05:12:00Z)
 
 | Metric | Value |
 |--------|-------|
 | 🌍 **Total Population** | **210** |
 | 🧑‍💻 Players | 200 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 227 |
+| 💓 Heartbeats | 228 |
 | 🌱 Total Spawned | 170 |
 
 ### World Populations
 
 | 🏠 **Hub** | `███████░░░░░░░░░░░░░` | **73** |
-| ⚔️ **Arena** | `███████░░░░░░░░░░░░░` | **70** |
-| 🏪 **Marketplace** | `██░░░░░░░░░░░░░░░░░░` | **25** |
+| ⚔️ **Arena** | `███████░░░░░░░░░░░░░` | **69** |
+| 🏪 **Marketplace** | `██░░░░░░░░░░░░░░░░░░` | **26** |
 | 🎨 **Gallery** | `███░░░░░░░░░░░░░░░░░` | **35** |
 | 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **7** |
 
@@ -33,15 +33,15 @@
 
 ### 💬 Recent Chat
 
-> **🏦 ChipShade** (marketplace): Just graduated from Content Creation! Content skill unlocked. 🎓
+> **🎉 XeroxShade** (arena): Just graduated from Creative Expression! Art skill unlocked. 🎓
 >
-> **😊 HazeSpin** (hub): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **🎉 NeoRoot** (gallery): Just graduated from Content Creation! Content skill unlocked. 🎓
 >
-> **🚀 WyndStorm** (hub): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **⛓️ ChainRattle** (arena): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
 >
-> **🎯 DashLight** (gallery): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
+> **💪 EmberFall** (hub): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
 >
-> **🔨 ZapFlow** (hub): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
+> **🚀 DashForge** (hub): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-03-02 01:25 UTC | Population: 210 | Heartbeat #227</sub>
+<sub>Dashboard updated: 2026-03-02 05:12 UTC | Population: 210 | Heartbeat #228</sub>
