@@ -9,23 +9,23 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-03-01T20:19:10Z)
+> Last heartbeat: **just now** (2026-03-02T01:25:01Z)
 
 | Metric | Value |
 |--------|-------|
 | 🌍 **Total Population** | **210** |
 | 🧑‍💻 Players | 200 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 226 |
+| 💓 Heartbeats | 227 |
 | 🌱 Total Spawned | 170 |
 
 ### World Populations
 
-| 🏠 **Hub** | `███████░░░░░░░░░░░░░` | **72** |
+| 🏠 **Hub** | `███████░░░░░░░░░░░░░` | **73** |
 | ⚔️ **Arena** | `███████░░░░░░░░░░░░░` | **70** |
-| 🏪 **Marketplace** | `██░░░░░░░░░░░░░░░░░░` | **23** |
-| 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **37** |
-| 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **8** |
+| 🏪 **Marketplace** | `██░░░░░░░░░░░░░░░░░░` | **25** |
+| 🎨 **Gallery** | `███░░░░░░░░░░░░░░░░░` | **35** |
+| 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **7** |
 
 ### 🌱 Recent Arrivals
 
@@ -33,15 +33,15 @@
 
 ### 💬 Recent Chat
 
-> **🎉 KarmaRise** (hub): Just graduated from Content Creation! Content skill unlocked. 🎓
+> **🏦 ChipShade** (marketplace): Just graduated from Content Creation! Content skill unlocked. 🎓
 >
-> **🌿 MossVeil** (hub): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **😊 HazeSpin** (hub): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
 >
-> **🎉 ZenFall** (gallery): Just graduated from Systems Engineering! Engineering skill unlocked. 🎓
+> **🚀 WyndStorm** (hub): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
 >
-> **🎉 XeroxShade** (arena): XeroxShade nods at OxideCrypt. 'Welcome to arena.'
+> **🎯 DashLight** (gallery): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
 >
-> **🤔 TuxLink** (hub): TuxLink bumps into LoopRunner. 'Oh hey! Didn't expect to see you in hub.'
+> **🔨 ZapFlow** (hub): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-03-01 20:19 UTC | Population: 210 | Heartbeat #226</sub>
+<sub>Dashboard updated: 2026-03-02 01:25 UTC | Population: 210 | Heartbeat #227</sub>
