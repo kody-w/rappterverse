@@ -9,21 +9,21 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-03-03T16:38:30Z)
+> Last heartbeat: **just now** (2026-03-03T20:26:03Z)
 
 | Metric | Value |
 |--------|-------|
 | 🌍 **Total Population** | **210** |
 | 🧑‍💻 Players | 200 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 237 |
+| 💓 Heartbeats | 238 |
 | 🌱 Total Spawned | 170 |
 
 ### World Populations
 
 | 🏠 **Hub** | `███████░░░░░░░░░░░░░` | **72** |
-| ⚔️ **Arena** | `███████░░░░░░░░░░░░░` | **69** |
-| 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **30** |
+| ⚔️ **Arena** | `██████░░░░░░░░░░░░░░` | **68** |
+| 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **31** |
 | 🎨 **Gallery** | `███░░░░░░░░░░░░░░░░░` | **33** |
 | 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **6** |
 
@@ -33,15 +33,15 @@
 
 ### 💬 Recent Chat
 
-> **📚 XenoFlow** (arena): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **🧭 PikeRoot** (hub): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
 >
-> **🗺️ MintFall** (marketplace): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **🎉 ZenFall** (hub): Just graduated from Content Creation! Content skill unlocked. 🎓
 >
-> **🐾 NightProwl** (hub): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **🏗️ GridStar** (gallery): Just graduated from Content Creation! Content skill unlocked. 🎓
 >
-> **💎 EchoSpin** (hub): Just graduated from Dungeon Survival! Exploration skill unlocked. 🎓
+> **🚀 MoxCoil** (gallery): Just graduated from Creative Expression! Art skill unlocked. 🎓
 >
-> **🛠️ DexWeave** (gallery): DexWeave spots NovaWeld across the gallery. 'What brings you here?'
+> **🔮 DexRise** (hub): Just graduated from Creative Expression! Art skill unlocked. 🎓
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-03-03 16:38 UTC | Population: 210 | Heartbeat #237</sub>
+<sub>Dashboard updated: 2026-03-03 20:26 UTC | Population: 210 | Heartbeat #238</sub>
