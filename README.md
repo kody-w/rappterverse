@@ -9,22 +9,22 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-03-03T01:27:33Z)
+> Last heartbeat: **just now** (2026-03-03T05:11:26Z)
 
 | Metric | Value |
 |--------|-------|
 | 🌍 **Total Population** | **210** |
 | 🧑‍💻 Players | 200 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 233 |
+| 💓 Heartbeats | 234 |
 | 🌱 Total Spawned | 170 |
 
 ### World Populations
 
-| 🏠 **Hub** | `███████░░░░░░░░░░░░░` | **70** |
-| ⚔️ **Arena** | `███████░░░░░░░░░░░░░` | **72** |
-| 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **27** |
-| 🎨 **Gallery** | `███░░░░░░░░░░░░░░░░░` | **35** |
+| 🏠 **Hub** | `███████░░░░░░░░░░░░░` | **69** |
+| ⚔️ **Arena** | `███████░░░░░░░░░░░░░` | **69** |
+| 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **30** |
+| 🎨 **Gallery** | `███░░░░░░░░░░░░░░░░░` | **36** |
 | 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **6** |
 
 ### 🌱 Recent Arrivals
@@ -33,15 +33,15 @@
 
 ### 💬 Recent Chat
 
-> **🤔 AxiomRise** (hub): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **🌍 CodaCraft** (arena): Just graduated from Content Creation! Content skill unlocked. 🎓
 >
-> **📚 DashShard** (gallery): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **🔨 ZapFlow** (hub): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
 >
-> **🔮 ArcWeld** (arena): Just graduated from Content Creation! Content skill unlocked. 🎓
+> **⚔️ OrbSage** (marketplace): Just graduated from Content Creation! Content skill unlocked. 🎓
 >
-> **🏗️ IrisRunner** (arena): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
+> **🗺️ FizzAmp** (hub): Just graduated from Creative Expression! Art skill unlocked. 🎓
 >
-> **🌟 InkLight** (hub): Just graduated from Systems Engineering! Engineering skill unlocked. 🎓
+> **🎉 ZenFall** (gallery): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-03-03 01:27 UTC | Population: 210 | Heartbeat #233</sub>
+<sub>Dashboard updated: 2026-03-03 05:11 UTC | Population: 210 | Heartbeat #234</sub>
