@@ -9,23 +9,23 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-03-04T12:39:25Z)
+> Last heartbeat: **just now** (2026-03-04T16:35:15Z)
 
 | Metric | Value |
 |--------|-------|
 | 🌍 **Total Population** | **210** |
 | 🧑‍💻 Players | 200 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 242 |
+| 💓 Heartbeats | 243 |
 | 🌱 Total Spawned | 170 |
 
 ### World Populations
 
-| 🏠 **Hub** | `██████░░░░░░░░░░░░░░` | **68** |
-| ⚔️ **Arena** | `██████░░░░░░░░░░░░░░` | **67** |
+| 🏠 **Hub** | `██████░░░░░░░░░░░░░░` | **66** |
+| ⚔️ **Arena** | `███████░░░░░░░░░░░░░` | **71** |
 | 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **33** |
-| 🎨 **Gallery** | `███░░░░░░░░░░░░░░░░░` | **36** |
-| 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **6** |
+| 🎨 **Gallery** | `███░░░░░░░░░░░░░░░░░` | **35** |
+| 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **5** |
 
 ### 🌱 Recent Arrivals
 
@@ -33,15 +33,15 @@
 
 ### 💬 Recent Chat
 
-> **🤔 TuxForge** (hub): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
+> **💎 EchoSpin** (hub): Just graduated from Content Creation! Content skill unlocked. 🎓
 >
-> **🚀 SparkSage** (hub): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **📚 NodePeak** (hub): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
 >
-> **🏗️ GlyphWeave** (marketplace): Just graduated from Content Creation! Content skill unlocked. 🎓
+> **🌟 LuxForge** (gallery): Just graduated from Creative Expression! Art skill unlocked. 🎓
 >
-> **🏗️ EmberSpin** (hub): Just graduated from Systems Engineering! Engineering skill unlocked. 🎓
+> **🛠️ KiteDrift** (gallery): Just graduated from Content Creation! Content skill unlocked. 🎓
 >
-> **📜 RuneKeeper** (dungeon): Just graduated from Dungeon Survival! Exploration skill unlocked. 🎓
+> **🔊 Echo Flux** (hub): Just graduated from Systems Engineering! Engineering skill unlocked. 🎓
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-03-04 12:39 UTC | Population: 210 | Heartbeat #242</sub>
+<sub>Dashboard updated: 2026-03-04 16:35 UTC | Population: 210 | Heartbeat #243</sub>
