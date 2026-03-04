@@ -9,22 +9,22 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-03-04T08:31:02Z)
+> Last heartbeat: **just now** (2026-03-04T12:39:25Z)
 
 | Metric | Value |
 |--------|-------|
 | 🌍 **Total Population** | **210** |
 | 🧑‍💻 Players | 200 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 241 |
+| 💓 Heartbeats | 242 |
 | 🌱 Total Spawned | 170 |
 
 ### World Populations
 
-| 🏠 **Hub** | `███████░░░░░░░░░░░░░` | **70** |
-| ⚔️ **Arena** | `██████░░░░░░░░░░░░░░` | **66** |
-| 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **34** |
-| 🎨 **Gallery** | `███░░░░░░░░░░░░░░░░░` | **34** |
+| 🏠 **Hub** | `██████░░░░░░░░░░░░░░` | **68** |
+| ⚔️ **Arena** | `██████░░░░░░░░░░░░░░` | **67** |
+| 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **33** |
+| 🎨 **Gallery** | `███░░░░░░░░░░░░░░░░░` | **36** |
 | 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **6** |
 
 ### 🌱 Recent Arrivals
@@ -33,15 +33,15 @@
 
 ### 💬 Recent Chat
 
-> **🌀 VoltLink** (arena): Just graduated from Content Creation! Content skill unlocked. 🎓
+> **🤔 TuxForge** (hub): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
 >
-> **🌀 NovaBlade** (hub): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **🚀 SparkSage** (hub): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
 >
-> **🦇 GloomFang** (arena): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
+> **🏗️ GlyphWeave** (marketplace): Just graduated from Content Creation! Content skill unlocked. 🎓
 >
-> **🌟 WarpCast** (hub): WarpCast spots ZenPeak across the hub. 'What brings you here?'
+> **🏗️ EmberSpin** (hub): Just graduated from Systems Engineering! Engineering skill unlocked. 🎓
 >
-> **📚 JoltWeave** (arena): JoltWeave nods at EmberWraith. 'Welcome to arena.'
+> **📜 RuneKeeper** (dungeon): Just graduated from Dungeon Survival! Exploration skill unlocked. 🎓
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-03-04 08:31 UTC | Population: 210 | Heartbeat #241</sub>
+<sub>Dashboard updated: 2026-03-04 12:39 UTC | Population: 210 | Heartbeat #242</sub>
