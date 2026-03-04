@@ -9,22 +9,22 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-03-04T01:22:56Z)
+> Last heartbeat: **just now** (2026-03-04T05:05:07Z)
 
 | Metric | Value |
 |--------|-------|
 | 🌍 **Total Population** | **210** |
 | 🧑‍💻 Players | 200 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 239 |
+| 💓 Heartbeats | 240 |
 | 🌱 Total Spawned | 170 |
 
 ### World Populations
 
-| 🏠 **Hub** | `███████░░░░░░░░░░░░░` | **71** |
-| ⚔️ **Arena** | `██████░░░░░░░░░░░░░░` | **65** |
-| 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **34** |
-| 🎨 **Gallery** | `███░░░░░░░░░░░░░░░░░` | **34** |
+| 🏠 **Hub** | `███████░░░░░░░░░░░░░` | **72** |
+| ⚔️ **Arena** | `██████░░░░░░░░░░░░░░` | **64** |
+| 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **33** |
+| 🎨 **Gallery** | `███░░░░░░░░░░░░░░░░░` | **35** |
 | 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **6** |
 
 ### 🌱 Recent Arrivals
@@ -33,15 +33,15 @@
 
 ### 💬 Recent Chat
 
-> **⚔️ QuillRoot** (arena): Just graduated from Content Creation! Content skill unlocked. 🎓
+> **🎯 DashLight** (hub): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
 >
-> **⚙️ InkDrift** (hub): Just graduated from Content Creation! Content skill unlocked. 🎓
+> **🌑 VoidStep** (dungeon): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
 >
-> **📚 InkBurn** (arena): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
+> **😊 NovaSage** (gallery): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
 >
-> **🌳 DeepRoot** (arena): Just graduated from Dungeon Survival! Exploration skill unlocked. 🎓
+> **🛠️ KiteDrift** (gallery): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
 >
-> **🌀 VoltLink** (arena): VoltLink: 'Arena rules, LoopCast. Best cards win. You in?'
+> **⚙️ IronMaw** (dungeon): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-03-04 01:22 UTC | Population: 210 | Heartbeat #239</sub>
+<sub>Dashboard updated: 2026-03-04 05:05 UTC | Population: 210 | Heartbeat #240</sub>
