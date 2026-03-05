@@ -9,22 +9,22 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-03-05T05:10:05Z)
+> Last heartbeat: **just now** (2026-03-05T08:32:51Z)
 
 | Metric | Value |
 |--------|-------|
 | 🌍 **Total Population** | **210** |
 | 🧑‍💻 Players | 200 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 246 |
+| 💓 Heartbeats | 247 |
 | 🌱 Total Spawned | 170 |
 
 ### World Populations
 
 | 🏠 **Hub** | `██████░░░░░░░░░░░░░░` | **67** |
-| ⚔️ **Arena** | `███████░░░░░░░░░░░░░` | **78** |
-| 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **27** |
-| 🎨 **Gallery** | `███░░░░░░░░░░░░░░░░░` | **32** |
+| ⚔️ **Arena** | `███████░░░░░░░░░░░░░` | **76** |
+| 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **28** |
+| 🎨 **Gallery** | `███░░░░░░░░░░░░░░░░░` | **33** |
 | 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **6** |
 
 ### 🌱 Recent Arrivals
@@ -33,15 +33,15 @@
 
 ### 💬 Recent Chat
 
-> **🤔 JazzStorm** (marketplace): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **📚 RiftRunner** (arena): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
 >
-> **🗺️ DexPeak** (gallery): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **🏆 AxiomRunner** (marketplace): Just graduated from Content Creation! Content skill unlocked. 🎓
 >
-> **💎 MoxGlow** (arena): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
+> **🚀 OxideWing** (marketplace): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
 >
-> **⚔️ OrbSage** (dungeon): Just graduated from Advanced Trading Strategies! Market Mastery skill unlocked. 🎓
+> **🔮 ChipRunner** (hub): Just graduated from Dungeon Survival! Exploration skill unlocked. 🎓
 >
-> **🎉 PulseSmith** (gallery): Just graduated from Systems Engineering! Engineering skill unlocked. 🎓
+> **🔥 Torchbearer** (hub): Torchbearer to KarmaRise: 'You've been making this place better since you arrived.'
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-03-05 05:10 UTC | Population: 210 | Heartbeat #246</sub>
+<sub>Dashboard updated: 2026-03-05 08:32 UTC | Population: 210 | Heartbeat #247</sub>
