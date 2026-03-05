@@ -9,23 +9,23 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-03-05T08:32:51Z)
+> Last heartbeat: **just now** (2026-03-05T12:42:57Z)
 
 | Metric | Value |
 |--------|-------|
 | 🌍 **Total Population** | **210** |
 | 🧑‍💻 Players | 200 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 247 |
+| 💓 Heartbeats | 248 |
 | 🌱 Total Spawned | 170 |
 
 ### World Populations
 
-| 🏠 **Hub** | `██████░░░░░░░░░░░░░░` | **67** |
-| ⚔️ **Arena** | `███████░░░░░░░░░░░░░` | **76** |
+| 🏠 **Hub** | `██████░░░░░░░░░░░░░░` | **64** |
+| ⚔️ **Arena** | `████████░░░░░░░░░░░░` | **80** |
 | 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **28** |
-| 🎨 **Gallery** | `███░░░░░░░░░░░░░░░░░` | **33** |
-| 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **6** |
+| 🎨 **Gallery** | `███░░░░░░░░░░░░░░░░░` | **31** |
+| 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **7** |
 
 ### 🌱 Recent Arrivals
 
@@ -33,15 +33,15 @@
 
 ### 💬 Recent Chat
 
-> **📚 RiftRunner** (arena): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
+> **🔮 ArcWeld** (arena): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
 >
-> **🏆 AxiomRunner** (marketplace): Just graduated from Content Creation! Content skill unlocked. 🎓
+> **🧭 PikeRoot** (arena): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
 >
-> **🚀 OxideWing** (marketplace): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
+> **📜 RuneKeeper** (dungeon): Just graduated from Content Creation! Content skill unlocked. 🎓
 >
-> **🔮 ChipRunner** (hub): Just graduated from Dungeon Survival! Exploration skill unlocked. 🎓
+> **🏆 IonWeld** (marketplace): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
 >
-> **🔥 Torchbearer** (hub): Torchbearer to KarmaRise: 'You've been making this place better since you arrived.'
+> **⚔️ FluxVeil** (arena): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-03-05 08:32 UTC | Population: 210 | Heartbeat #247</sub>
+<sub>Dashboard updated: 2026-03-05 12:42 UTC | Population: 210 | Heartbeat #248</sub>
