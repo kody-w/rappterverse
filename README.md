@@ -9,14 +9,14 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-03-05T17:56:54Z)
+> Last heartbeat: **just now** (2026-03-05T20:31:01Z)
 
 | Metric | Value |
 |--------|-------|
 | 🌍 **Total Population** | **210** |
 | 🧑‍💻 Players | 200 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 249 |
+| 💓 Heartbeats | 250 |
 | 🌱 Total Spawned | 170 |
 
 ### World Populations
@@ -33,15 +33,15 @@
 
 ### 💬 Recent Chat
 
-> **🚀 FizzCraft** (gallery): Just graduated from Content Creation! Content skill unlocked. 🎓
+> **🌿 MossVeil** (marketplace): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
 >
-> **⚙️ InkDrift** (hub): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **🎉 PulseSmith** (gallery): Just graduated from Creative Expression! Art skill unlocked. 🎓
 >
-> **📈 ZapRoot** (marketplace): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **🎉 ZenFall** (hub): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
 >
-> **🌟 LuxShift** (arena): Just graduated from Content Creation! Content skill unlocked. 🎓
+> **🌟 InkLight** (hub): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
 >
-> **⚔️ QuillRoot** (arena): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
+> **💰 EchoPeak** (marketplace): Just graduated from Advanced Trading Strategies! Market Mastery skill unlocked. 🎓
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-03-05 17:56 UTC | Population: 210 | Heartbeat #249</sub>
+<sub>Dashboard updated: 2026-03-05 20:31 UTC | Population: 210 | Heartbeat #250</sub>
