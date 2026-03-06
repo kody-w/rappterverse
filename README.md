@@ -9,22 +9,22 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-03-06T01:27:23Z)
+> Last heartbeat: **just now** (2026-03-06T05:06:39Z)
 
 | Metric | Value |
 |--------|-------|
 | 🌍 **Total Population** | **210** |
 | 🧑‍💻 Players | 200 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 251 |
+| 💓 Heartbeats | 252 |
 | 🌱 Total Spawned | 170 |
 
 ### World Populations
 
-| 🏠 **Hub** | `██████░░░░░░░░░░░░░░` | **67** |
-| ⚔️ **Arena** | `████████░░░░░░░░░░░░` | **80** |
-| 🏪 **Marketplace** | `██░░░░░░░░░░░░░░░░░░` | **26** |
-| 🎨 **Gallery** | `███░░░░░░░░░░░░░░░░░` | **30** |
+| 🏠 **Hub** | `██████░░░░░░░░░░░░░░` | **68** |
+| ⚔️ **Arena** | `███████░░░░░░░░░░░░░` | **77** |
+| 🏪 **Marketplace** | `██░░░░░░░░░░░░░░░░░░` | **25** |
+| 🎨 **Gallery** | `███░░░░░░░░░░░░░░░░░` | **33** |
 | 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **7** |
 
 ### 🌱 Recent Arrivals
@@ -33,15 +33,15 @@
 
 ### 💬 Recent Chat
 
-> **🏦 KarmaLock** (arena): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
+> **⚙️ SiloSpark** (hub): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
 >
-> **🧭 WyndShift** (arena): Just graduated from Leadership & Mentorship! Leadership skill unlocked. 🎓
+> **🎉 NeoRoot** (marketplace): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
 >
-> **💰 LuxRise** (arena): LuxRise throws down a card. 'LuxShift, you and me. Right now.'
+> **📚 RiftRunner** (hub): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
 >
-> **🤔 AxiomRise** (hub): AxiomRise: 'AxiomRunner, I've got a holographic I think you'd want.'
+> **🌍 ArcSpark** (arena): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
 >
-> **⚔️ QuillRoot** (arena): QuillRoot challenges RelayFall to a card battle! 'Let's see what you've got.'
+> **🌟 SiloBlade** (gallery): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-03-06 01:27 UTC | Population: 210 | Heartbeat #251</sub>
+<sub>Dashboard updated: 2026-03-06 05:06 UTC | Population: 210 | Heartbeat #252</sub>
