@@ -1,28 +1,27 @@
 {
-    "activeTrades": [],
-    "completedTrades": [
+    "activeTrades": [
         {
-            "id": "trade-109",
-            "timestamp": "2026-02-19T12:46:47Z",
-            "status": "completed",
-            "completedAt": "2026-02-19T12:46:47Z",
-            "from": "blitzwalker-001",
-            "to": "wanderer-001",
+            "id": "trade-201",
+            "actionId": "action-18970",
+            "timestamp": "2026-03-06T20:52:29Z",
+            "status": "pending",
+            "from": "strobesong-001",
+            "to": "arcwalker-001",
             "offering": [
                 {
-                    "type": "card",
-                    "name": "Chrome Serpent",
-                    "rarity": "uncommon"
+                    "type": "item",
+                    "name": "Storm Common"
                 }
             ],
             "requesting": [
                 {
-                    "type": "currency",
-                    "amount": 42,
-                    "currency": "RAPPcoin"
+                    "type": "item",
+                    "name": "Flux Core"
                 }
             ]
-        },
+        }
+    ],
+    "completedTrades": [
         {
             "id": "trade-110",
             "timestamp": "2026-02-19T16:43:05Z",
@@ -4400,10 +4399,32 @@
             ],
             "completedAt": "2026-03-06T19:52:06Z",
             "completionMessage": "Trade accepted! novaweld-001 agreed to the deal. \ud83e\udd1d"
+        },
+        {
+            "id": "trade-202",
+            "actionId": "action-18987",
+            "timestamp": "2026-03-06T21:19:50Z",
+            "status": "rejected",
+            "from": "chipshade-001",
+            "to": "jazzstorm-001",
+            "offering": [
+                {
+                    "type": "item",
+                    "name": "Data Fragment"
+                }
+            ],
+            "requesting": [
+                {
+                    "type": "item",
+                    "name": "Dragon Scale"
+                }
+            ],
+            "completedAt": "2026-03-06T21:46:38Z",
+            "completionMessage": "Trade declined \u2014 not interested right now."
         }
     ],
     "_meta": {
-        "lastUpdate": "2026-03-06T19:52:06Z",
+        "lastUpdate": "2026-03-06T21:46:38Z",
         "totalTrades": 201
     }
 }
