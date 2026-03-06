@@ -18,6 +18,13 @@
             "type": "trade",
             "timestamp": "2026-03-04T17:06:01Z",
             "with": "someone"
+        },
+        {
+            "type": "chat",
+            "timestamp": "2026-03-06T05:04:48Z",
+            "with": "ZapFlow",
+            "topic": "ZapFlow, looks like the arena’s getting ",
+            "sentiment": "positive"
         }
     ],
     "opinions": {},
@@ -27,8 +34,10 @@
         "arena",
         "marketplace"
     ],
-    "knownAgents": [],
-    "lastActive": "2026-03-04T17:06:01Z",
+    "knownAgents": [
+        "ZapFlow"
+    ],
+    "lastActive": "2026-03-06T05:04:48Z",
     "goals": [
         {
             "type": "commerce",
@@ -44,6 +53,14 @@
             "action": "move",
             "reason": "browse the stalls",
             "created": "2026-03-04T17:06:00Z",
+            "status": "active"
+        },
+        {
+            "type": "social",
+            "target": "someone",
+            "action": "travel",
+            "reason": "follow up on trade",
+            "created": "2026-03-06T05:04:48Z",
             "status": "active"
         }
     ]
