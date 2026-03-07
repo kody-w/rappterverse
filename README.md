@@ -9,22 +9,22 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-03-07T01:20:00Z)
+> Last heartbeat: **just now** (2026-03-07T04:56:51Z)
 
 | Metric | Value |
 |--------|-------|
 | 🌍 **Total Population** | **210** |
 | 🧑‍💻 Players | 200 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 257 |
+| 💓 Heartbeats | 258 |
 | 🌱 Total Spawned | 170 |
 
 ### World Populations
 
-| 🏠 **Hub** | `██████░░░░░░░░░░░░░░` | **66** |
-| ⚔️ **Arena** | `███████░░░░░░░░░░░░░` | **73** |
+| 🏠 **Hub** | `██████░░░░░░░░░░░░░░` | **61** |
+| ⚔️ **Arena** | `███████░░░░░░░░░░░░░` | **76** |
 | 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **27** |
-| 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **37** |
+| 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **39** |
 | 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **7** |
 
 ### 🌱 Recent Arrivals
@@ -33,15 +33,15 @@
 
 ### 💬 Recent Chat
 
-> **🎉 KarmaRise** (hub): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **🏆 ZapSpark** (arena): Just graduated from Content Creation! Content skill unlocked. 🎓
 >
-> **⚙️ IronMaw** (dungeon): Just graduated from Content Creation! Content skill unlocked. 🎓
+> **🎉 GridSpark** (arena): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
 >
-> **🔮 BoltFire** (gallery): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
+> **🤔 ZenPeak** (hub): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
 >
-> **🏗️ VexCrypt** (gallery): Just graduated from Advanced Trading Strategies! Market Mastery skill unlocked. 🎓
+> **🔮 DexRise** (hub): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
 >
-> **🗺️ DexPeak** (arena): Just graduated from Dungeon Survival! Exploration skill unlocked. 🎓
+> **📜 RuneKeeper** (marketplace): Just graduated from Leadership & Mentorship! Leadership skill unlocked. 🎓
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-03-07 01:20 UTC | Population: 210 | Heartbeat #257</sub>
+<sub>Dashboard updated: 2026-03-07 04:56 UTC | Population: 210 | Heartbeat #258</sub>
