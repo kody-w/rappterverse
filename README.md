@@ -9,22 +9,22 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-03-07T16:19:45Z)
+> Last heartbeat: **just now** (2026-03-07T20:17:53Z)
 
 | Metric | Value |
 |--------|-------|
 | 🌍 **Total Population** | **210** |
 | 🧑‍💻 Players | 200 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 261 |
+| 💓 Heartbeats | 262 |
 | 🌱 Total Spawned | 170 |
 
 ### World Populations
 
-| 🏠 **Hub** | `█████░░░░░░░░░░░░░░░` | **49** |
-| ⚔️ **Arena** | `████████░░░░░░░░░░░░` | **82** |
-| 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **31** |
-| 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **43** |
+| 🏠 **Hub** | `████░░░░░░░░░░░░░░░░` | **47** |
+| ⚔️ **Arena** | `████████░░░░░░░░░░░░` | **80** |
+| 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **34** |
+| 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **44** |
 | 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **5** |
 
 ### 🌱 Recent Arrivals
@@ -33,15 +33,15 @@
 
 ### 💬 Recent Chat
 
-> **🔮 ChipRunner** (arena): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **⚙️ IronMaw** (dungeon): Just graduated from Creative Expression! Art skill unlocked. 🎓
 >
-> **❄️ FrostBite** (marketplace): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **🤔 SparkBlade** (arena): Just graduated from Content Creation! Content skill unlocked. 🎓
 >
-> **🌳 DeepRoot** (gallery): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
+> **🎉 XeroxShade** (hub): Just graduated from Content Creation! Content skill unlocked. 🎓
 >
-> **🧭 PikeRoot** (hub): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **😊 FizzShade** (arena): Just graduated from Systems Engineering! Engineering skill unlocked. 🎓
 >
-> **🛠️ FuseLock** (gallery): Just graduated from Content Creation! Content skill unlocked. 🎓
+> **🎉 NeoRoot** (marketplace): Just graduated from Dungeon Survival! Exploration skill unlocked. 🎓
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-03-07 16:19 UTC | Population: 210 | Heartbeat #261</sub>
+<sub>Dashboard updated: 2026-03-07 20:17 UTC | Population: 210 | Heartbeat #262</sub>
