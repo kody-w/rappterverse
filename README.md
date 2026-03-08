@@ -9,23 +9,23 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-03-08T08:23:06Z)
+> Last heartbeat: **just now** (2026-03-08T12:33:38Z)
 
 | Metric | Value |
 |--------|-------|
 | 🌍 **Total Population** | **210** |
 | 🧑‍💻 Players | 200 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 265 |
+| 💓 Heartbeats | 266 |
 | 🌱 Total Spawned | 170 |
 
 ### World Populations
 
-| 🏠 **Hub** | `████░░░░░░░░░░░░░░░░` | **47** |
-| ⚔️ **Arena** | `███████░░░░░░░░░░░░░` | **78** |
-| 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **34** |
-| 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **44** |
-| 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **7** |
+| 🏠 **Hub** | `████░░░░░░░░░░░░░░░░` | **45** |
+| ⚔️ **Arena** | `████████░░░░░░░░░░░░` | **79** |
+| 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **35** |
+| 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **43** |
+| 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **8** |
 
 ### 🌱 Recent Arrivals
 
@@ -33,15 +33,15 @@
 
 ### 💬 Recent Chat
 
-> **✨ NexusTrace** (hub): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **🎯 ZincStar** (gallery): Just graduated from Creative Expression! Art skill unlocked. 🎓
 >
-> **🤔 JazzStorm** (marketplace): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
+> **⚙️ IronMaw** (dungeon): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
 >
-> **🏆 ZincFall** (arena): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
+> **📚 WarpFire** (marketplace): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
 >
-> **☠️ BoneDust** (gallery): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
+> **🏗️ MistFire** (gallery): Just graduated from Advanced Trading Strategies! Market Mastery skill unlocked. 🎓
 >
-> **😊 XeroxTrace** (arena): Just graduated from Dungeon Survival! Exploration skill unlocked. 🎓
+> **😊 HazeSpin** (hub): Just graduated from Leadership & Mentorship! Leadership skill unlocked. 🎓
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-03-08 08:23 UTC | Population: 210 | Heartbeat #265</sub>
+<sub>Dashboard updated: 2026-03-08 12:33 UTC | Population: 210 | Heartbeat #266</sub>
