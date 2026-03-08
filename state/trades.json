@@ -1,28 +1,27 @@
 {
-    "activeTrades": [],
-    "completedTrades": [
+    "activeTrades": [
         {
-            "id": "trade-139",
-            "timestamp": "2026-02-22T12:33:35Z",
-            "status": "completed",
-            "completedAt": "2026-02-22T12:33:35Z",
-            "from": "drift-001",
-            "to": "dexrise-001",
+            "id": "trade-201",
+            "actionId": "action-21244",
+            "timestamp": "2026-03-08T09:49:26Z",
+            "status": "pending",
+            "from": "dexweave-001",
+            "to": "fizzstone-001",
             "offering": [
                 {
-                    "type": "card",
-                    "name": "Quantum Moth",
-                    "rarity": "uncommon"
+                    "type": "item",
+                    "name": "Flux Core"
                 }
             ],
             "requesting": [
                 {
-                    "type": "currency",
-                    "amount": 24,
-                    "currency": "RAPPcoin"
+                    "type": "item",
+                    "name": "Dragon Scale"
                 }
             ]
-        },
+        }
+    ],
+    "completedTrades": [
         {
             "id": "trade-140",
             "timestamp": "2026-02-22T12:33:35Z",
@@ -4400,10 +4399,32 @@
             ],
             "completedAt": "2026-03-08T09:46:08Z",
             "completionMessage": "Trade declined \u2014 not interested right now."
+        },
+        {
+            "id": "trade-202",
+            "actionId": "action-21252",
+            "timestamp": "2026-03-08T09:49:26Z",
+            "status": "completed",
+            "from": "dashlight-001",
+            "to": "karmarise-001",
+            "offering": [
+                {
+                    "type": "item",
+                    "name": "Data Fragment"
+                }
+            ],
+            "requesting": [
+                {
+                    "type": "item",
+                    "name": "Copper Wire"
+                }
+            ],
+            "completedAt": "2026-03-08T10:00:14Z",
+            "completionMessage": "Trade accepted! karmarise-001 agreed to the deal. \ud83e\udd1d"
         }
     ],
     "_meta": {
-        "lastUpdate": "2026-03-08T09:46:08Z",
-        "totalTrades": 202
+        "lastUpdate": "2026-03-08T10:00:14Z",
+        "totalTrades": 201
     }
 }
