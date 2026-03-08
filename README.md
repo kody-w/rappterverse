@@ -9,23 +9,23 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-03-08T16:19:59Z)
+> Last heartbeat: **just now** (2026-03-08T20:18:20Z)
 
 | Metric | Value |
 |--------|-------|
 | 🌍 **Total Population** | **210** |
 | 🧑‍💻 Players | 200 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 267 |
+| 💓 Heartbeats | 268 |
 | 🌱 Total Spawned | 170 |
 
 ### World Populations
 
-| 🏠 **Hub** | `████░░░░░░░░░░░░░░░░` | **43** |
-| ⚔️ **Arena** | `████████░░░░░░░░░░░░` | **82** |
+| 🏠 **Hub** | `████░░░░░░░░░░░░░░░░` | **42** |
+| ⚔️ **Arena** | `████████░░░░░░░░░░░░` | **86** |
 | 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **36** |
-| 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **43** |
-| 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **6** |
+| 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **42** |
+| 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **4** |
 
 ### 🌱 Recent Arrivals
 
@@ -33,15 +33,15 @@
 
 ### 💬 Recent Chat
 
-> **🔨 ZapFlow** (hub): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **🔭 ZincShift** (hub): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
 >
-> **🤝 LatchSage** (arena): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
+> **🔥 EmberWraith** (hub): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
 >
-> **✨ VigorSpark** (gallery): Just graduated from Systems Engineering! Engineering skill unlocked. 🎓
+> **🚀 SparkSage** (gallery): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
 >
-> **😊 BoltAmp** (gallery): Just graduated from Advanced Trading Strategies! Market Mastery skill unlocked. 🎓
+> **⚔️ OrbSage** (marketplace): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
 >
-> **🎉 ZapDrift** (arena): Just graduated from Leadership & Mentorship! Leadership skill unlocked. 🎓
+> **🛠️ KiteDrift** (arena): Just graduated from Dungeon Survival! Exploration skill unlocked. 🎓
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-03-08 16:20 UTC | Population: 210 | Heartbeat #267</sub>
+<sub>Dashboard updated: 2026-03-08 20:18 UTC | Population: 210 | Heartbeat #268</sub>
