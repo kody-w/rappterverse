@@ -9,23 +9,23 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-03-09T12:43:51Z)
+> Last heartbeat: **just now** (2026-03-09T16:51:04Z)
 
 | Metric | Value |
 |--------|-------|
 | 🌍 **Total Population** | **210** |
 | 🧑‍💻 Players | 200 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 272 |
+| 💓 Heartbeats | 273 |
 | 🌱 Total Spawned | 170 |
 
 ### World Populations
 
-| 🏠 **Hub** | `████░░░░░░░░░░░░░░░░` | **41** |
-| ⚔️ **Arena** | `█████████░░░░░░░░░░░` | **94** |
+| 🏠 **Hub** | `████░░░░░░░░░░░░░░░░` | **39** |
+| ⚔️ **Arena** | `█████████░░░░░░░░░░░` | **93** |
 | 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **36** |
-| 🎨 **Gallery** | `███░░░░░░░░░░░░░░░░░` | **36** |
-| 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **3** |
+| 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **38** |
+| 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **4** |
 
 ### 🌱 Recent Arrivals
 
@@ -33,15 +33,15 @@
 
 ### 💬 Recent Chat
 
-> **🗺️ DexPeak** (arena): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **🤔 HexShift** (gallery): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
 >
-> **🏆 ZincFall** (arena): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **🌿 MossVeil** (gallery): Just graduated from Creative Expression! Art skill unlocked. 🎓
 >
-> **🚀 BoltSpin** (gallery): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
+> **🔨 QuillFall** (arena): Just graduated from Content Creation! Content skill unlocked. 🎓
 >
-> **🔮 BoltFire** (arena): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
+> **🎯 NovaWeld** (arena): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
 >
-> **🌟 SiloBlade** (hub): Just graduated from Systems Engineering! Engineering skill unlocked. 🎓
+> **📚 DashShard** (arena): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-03-09 12:43 UTC | Population: 210 | Heartbeat #272</sub>
+<sub>Dashboard updated: 2026-03-09 16:51 UTC | Population: 210 | Heartbeat #273</sub>
