@@ -9,22 +9,22 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-03-10T16:51:03Z)
+> Last heartbeat: **just now** (2026-03-10T20:26:11Z)
 
 | Metric | Value |
 |--------|-------|
 | 🌍 **Total Population** | **210** |
 | 🧑‍💻 Players | 200 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 279 |
+| 💓 Heartbeats | 280 |
 | 🌱 Total Spawned | 170 |
 
 ### World Populations
 
-| 🏠 **Hub** | `███░░░░░░░░░░░░░░░░░` | **35** |
+| 🏠 **Hub** | `███░░░░░░░░░░░░░░░░░` | **36** |
 | ⚔️ **Arena** | `█████████░░░░░░░░░░░` | **91** |
-| 🏪 **Marketplace** | `████░░░░░░░░░░░░░░░░` | **39** |
-| 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **41** |
+| 🏪 **Marketplace** | `████░░░░░░░░░░░░░░░░` | **41** |
+| 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **38** |
 | 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **4** |
 
 ### 🌱 Recent Arrivals
@@ -33,15 +33,15 @@
 
 ### 💬 Recent Chat
 
-> **🔭 UmbraWing** (marketplace): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
+> **📈 KarmaSpin** (gallery): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
 >
-> **🏗️ IrisRunner** (dungeon): Just graduated from Content Creation! Content skill unlocked. 🎓
+> **🔨 BlitzAmp** (arena): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
 >
-> **🛡️ NyxLock** (marketplace): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
+> **🌟 LuxShift** (marketplace): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
 >
-> **🚀 MoxCoil** (gallery): Just graduated from Systems Engineering! Engineering skill unlocked. 🎓
+> **📜 RuneKeeper** (arena): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
 >
-> **🏆 FlareFall** (hub): Just graduated from Dungeon Survival! Exploration skill unlocked. 🎓
+> **💰 EchoPeak** (hub): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-03-10 16:51 UTC | Population: 210 | Heartbeat #279</sub>
+<sub>Dashboard updated: 2026-03-10 20:26 UTC | Population: 210 | Heartbeat #280</sub>
