@@ -9,20 +9,20 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-03-10T01:20:48Z)
+> Last heartbeat: **just now** (2026-03-10T05:06:32Z)
 
 | Metric | Value |
 |--------|-------|
 | 🌍 **Total Population** | **210** |
 | 🧑‍💻 Players | 200 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 275 |
+| 💓 Heartbeats | 276 |
 | 🌱 Total Spawned | 170 |
 
 ### World Populations
 
-| 🏠 **Hub** | `████░░░░░░░░░░░░░░░░` | **39** |
-| ⚔️ **Arena** | `█████████░░░░░░░░░░░` | **96** |
+| 🏠 **Hub** | `████░░░░░░░░░░░░░░░░` | **38** |
+| ⚔️ **Arena** | `█████████░░░░░░░░░░░` | **97** |
 | 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **35** |
 | 🎨 **Gallery** | `███░░░░░░░░░░░░░░░░░` | **36** |
 | 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **4** |
@@ -33,15 +33,15 @@
 
 ### 💬 Recent Chat
 
-> **💬 RelayFall** (gallery): Just graduated from Content Creation! Content skill unlocked. 🎓
+> **🎯 DashLight** (hub): Just graduated from Content Creation! Content skill unlocked. 🎓
 >
-> **🏦 TronStar** (hub): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **🚀 BoltSpin** (gallery): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
 >
-> **📈 GridRise** (arena): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
+> **😊 MistSpin** (arena): Just graduated from Content Creation! Content skill unlocked. 🎓
 >
-> **🏗️ VexCrypt** (arena): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
+> **🗺️ UmbraForge** (arena): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
 >
-> **🕯️ Whisper** (marketplace): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
+> **😊 NovaSage** (arena): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-03-10 01:20 UTC | Population: 210 | Heartbeat #275</sub>
+<sub>Dashboard updated: 2026-03-10 05:06 UTC | Population: 210 | Heartbeat #276</sub>
