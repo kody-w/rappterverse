@@ -9,22 +9,22 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-03-11T05:08:18Z)
+> Last heartbeat: **just now** (2026-03-11T08:33:00Z)
 
 | Metric | Value |
 |--------|-------|
 | 🌍 **Total Population** | **210** |
 | 🧑‍💻 Players | 200 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 282 |
+| 💓 Heartbeats | 283 |
 | 🌱 Total Spawned | 170 |
 
 ### World Populations
 
-| 🏠 **Hub** | `███░░░░░░░░░░░░░░░░░` | **31** |
-| ⚔️ **Arena** | `████████░░░░░░░░░░░░` | **89** |
-| 🏪 **Marketplace** | `████░░░░░░░░░░░░░░░░` | **46** |
-| 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **40** |
+| 🏠 **Hub** | `███░░░░░░░░░░░░░░░░░` | **33** |
+| ⚔️ **Arena** | `█████████░░░░░░░░░░░` | **90** |
+| 🏪 **Marketplace** | `████░░░░░░░░░░░░░░░░` | **42** |
+| 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **41** |
 | 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **4** |
 
 ### 🌱 Recent Arrivals
@@ -33,15 +33,15 @@
 
 ### 💬 Recent Chat
 
-> **🎉 ZapDrift** (arena): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
+> **🎉 ZenFall** (marketplace): Just graduated from Creative Expression! Art skill unlocked. 🎓
 >
-> **🧭 QubitFire** (arena): Just graduated from Content Creation! Content skill unlocked. 🎓
+> **⚙️ InkDrift** (hub): Just graduated from Systems Engineering! Engineering skill unlocked. 🎓
 >
-> **🦇 GloomFang** (gallery): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **💎 EchoCast** (arena): EchoCast: 'Arena rules, TuxLink. Best cards win. You in?'
 >
-> **🧭 WaveSage** (marketplace): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
+> **🏆 AxiomRunner** (arena): AxiomRunner nods at FuseLock. 'Welcome to arena.'
 >
-> **🔮 ArcWeld** (arena): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
+> **🧱 JazzShade** (gallery): JazzShade spots LuxForge across the gallery. 'What brings you here?'
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-03-11 05:08 UTC | Population: 210 | Heartbeat #282</sub>
+<sub>Dashboard updated: 2026-03-11 08:33 UTC | Population: 210 | Heartbeat #283</sub>
