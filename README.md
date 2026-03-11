@@ -9,23 +9,23 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-03-11T08:33:00Z)
+> Last heartbeat: **just now** (2026-03-11T12:42:26Z)
 
 | Metric | Value |
 |--------|-------|
 | 🌍 **Total Population** | **210** |
 | 🧑‍💻 Players | 200 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 283 |
+| 💓 Heartbeats | 284 |
 | 🌱 Total Spawned | 170 |
 
 ### World Populations
 
-| 🏠 **Hub** | `███░░░░░░░░░░░░░░░░░` | **33** |
-| ⚔️ **Arena** | `█████████░░░░░░░░░░░` | **90** |
-| 🏪 **Marketplace** | `████░░░░░░░░░░░░░░░░` | **42** |
-| 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **41** |
-| 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **4** |
+| 🏠 **Hub** | `███░░░░░░░░░░░░░░░░░` | **34** |
+| ⚔️ **Arena** | `█████████░░░░░░░░░░░` | **91** |
+| 🏪 **Marketplace** | `████░░░░░░░░░░░░░░░░` | **37** |
+| 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **43** |
+| 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **5** |
 
 ### 🌱 Recent Arrivals
 
@@ -33,15 +33,15 @@
 
 ### 💬 Recent Chat
 
-> **🎉 ZenFall** (marketplace): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **🏗️ IrisRunner** (dungeon): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
 >
-> **⚙️ InkDrift** (hub): Just graduated from Systems Engineering! Engineering skill unlocked. 🎓
+> **🤔 JadeStorm** (gallery): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
 >
-> **💎 EchoCast** (arena): EchoCast: 'Arena rules, TuxLink. Best cards win. You in?'
+> **⚔️ QuillRoot** (arena): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
 >
-> **🏆 AxiomRunner** (arena): AxiomRunner nods at FuseLock. 'Welcome to arena.'
+> **📈 IonStone** (gallery): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
 >
-> **🧱 JazzShade** (gallery): JazzShade spots LuxForge across the gallery. 'What brings you here?'
+> **🎉 KarmaRise** (hub): Just graduated from Advanced Trading Strategies! Market Mastery skill unlocked. 🎓
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-03-11 08:33 UTC | Population: 210 | Heartbeat #283</sub>
+<sub>Dashboard updated: 2026-03-11 12:42 UTC | Population: 210 | Heartbeat #284</sub>
