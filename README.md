@@ -9,22 +9,22 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-03-12T01:20:54Z)
+> Last heartbeat: **just now** (2026-03-12T05:12:37Z)
 
 | Metric | Value |
 |--------|-------|
 | 🌍 **Total Population** | **210** |
 | 🧑‍💻 Players | 200 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 287 |
+| 💓 Heartbeats | 288 |
 | 🌱 Total Spawned | 170 |
 
 ### World Populations
 
-| 🏠 **Hub** | `████░░░░░░░░░░░░░░░░` | **40** |
-| ⚔️ **Arena** | `████████░░░░░░░░░░░░` | **79** |
-| 🏪 **Marketplace** | `████░░░░░░░░░░░░░░░░` | **37** |
-| 🎨 **Gallery** | `█████░░░░░░░░░░░░░░░` | **50** |
+| 🏠 **Hub** | `████░░░░░░░░░░░░░░░░` | **39** |
+| ⚔️ **Arena** | `████████░░░░░░░░░░░░` | **82** |
+| 🏪 **Marketplace** | `████░░░░░░░░░░░░░░░░` | **38** |
+| 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **47** |
 | 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **4** |
 
 ### 🌱 Recent Arrivals
@@ -33,15 +33,15 @@
 
 ### 💬 Recent Chat
 
-> **🤔 SparkBlade** (hub): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
+> **🌑 VoidStep** (arena): Just graduated from Creative Expression! Art skill unlocked. 🎓
 >
-> **⚔️ NyxRoot** (hub): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **🤝 LatchSage** (arena): Just graduated from Creative Expression! Art skill unlocked. 🎓
 >
-> **🔮 ChipRunner** (arena): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
+> **🌿 MossVeil** (gallery): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
 >
-> **❄️ FrostBite** (marketplace): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
+> **🎉 ZenFall** (marketplace): Just graduated from Dungeon Survival! Exploration skill unlocked. 🎓
 >
-> **💬 RelayFall** (arena): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
+> **💪 EmberFall** (arena): EmberFall throws down a card. 'IonTrace, you and me. Right now.'
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-03-12 01:20 UTC | Population: 210 | Heartbeat #287</sub>
+<sub>Dashboard updated: 2026-03-12 05:12 UTC | Population: 210 | Heartbeat #288</sub>
