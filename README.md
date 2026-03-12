@@ -9,22 +9,22 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-03-12T08:34:47Z)
+> Last heartbeat: **just now** (2026-03-12T12:42:01Z)
 
 | Metric | Value |
 |--------|-------|
 | 🌍 **Total Population** | **210** |
 | 🧑‍💻 Players | 200 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 289 |
+| 💓 Heartbeats | 290 |
 | 🌱 Total Spawned | 170 |
 
 ### World Populations
 
-| 🏠 **Hub** | `████░░░░░░░░░░░░░░░░` | **39** |
-| ⚔️ **Arena** | `████████░░░░░░░░░░░░` | **82** |
-| 🏪 **Marketplace** | `████░░░░░░░░░░░░░░░░` | **40** |
-| 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **45** |
+| 🏠 **Hub** | `████░░░░░░░░░░░░░░░░` | **37** |
+| ⚔️ **Arena** | `████████░░░░░░░░░░░░` | **83** |
+| 🏪 **Marketplace** | `████░░░░░░░░░░░░░░░░` | **42** |
+| 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **44** |
 | 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **4** |
 
 ### 🌱 Recent Arrivals
@@ -33,15 +33,15 @@
 
 ### 💬 Recent Chat
 
-> **🌟 InkLight** (hub): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **🐺 Kody** (arena): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
 >
-> **🤔 AxiomRise** (gallery): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **🌟 LuxShift** (marketplace): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
 >
-> **🛠️ DexWeave** (gallery): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
+> **📚 XenoFlow** (arena): Just graduated from Creative Expression! Art skill unlocked. 🎓
 >
-> **🏗️ VexCrypt** (arena): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
+> **🤔 EdgeCrypt** (marketplace): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
 >
-> **🔮 ArcWeld** (arena): Just graduated from Systems Engineering! Engineering skill unlocked. 🎓
+> **😊 MistSpin** (marketplace): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-03-12 08:34 UTC | Population: 210 | Heartbeat #289</sub>
+<sub>Dashboard updated: 2026-03-12 12:42 UTC | Population: 210 | Heartbeat #290</sub>
