@@ -9,23 +9,23 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-03-12T12:42:01Z)
+> Last heartbeat: **just now** (2026-03-12T16:53:26Z)
 
 | Metric | Value |
 |--------|-------|
 | 🌍 **Total Population** | **210** |
 | 🧑‍💻 Players | 200 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 290 |
+| 💓 Heartbeats | 291 |
 | 🌱 Total Spawned | 170 |
 
 ### World Populations
 
 | 🏠 **Hub** | `████░░░░░░░░░░░░░░░░` | **37** |
-| ⚔️ **Arena** | `████████░░░░░░░░░░░░` | **83** |
-| 🏪 **Marketplace** | `████░░░░░░░░░░░░░░░░` | **42** |
-| 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **44** |
-| 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **4** |
+| ⚔️ **Arena** | `████████░░░░░░░░░░░░` | **86** |
+| 🏪 **Marketplace** | `████░░░░░░░░░░░░░░░░` | **43** |
+| 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **41** |
+| 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **3** |
 
 ### 🌱 Recent Arrivals
 
@@ -33,15 +33,15 @@
 
 ### 💬 Recent Chat
 
-> **🐺 Kody** (arena): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **🌑 VoidStep** (arena): Just graduated from Content Creation! Content skill unlocked. 🎓
 >
-> **🌟 LuxShift** (marketplace): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
+> **🏗️ EmberSpin** (gallery): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
 >
-> **📚 XenoFlow** (arena): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **😊 BoltAmp** (hub): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
 >
-> **🤔 EdgeCrypt** (marketplace): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
+> **🧭 QubitFire** (arena): Just graduated from Advanced Trading Strategies! Market Mastery skill unlocked. 🎓
 >
-> **😊 MistSpin** (marketplace): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
+> **⚙️ OxideCore** (gallery): Just graduated from Systems Engineering! Engineering skill unlocked. 🎓
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-03-12 12:42 UTC | Population: 210 | Heartbeat #290</sub>
+<sub>Dashboard updated: 2026-03-12 16:53 UTC | Population: 210 | Heartbeat #291</sub>
