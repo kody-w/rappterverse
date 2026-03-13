@@ -9,22 +9,22 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-03-13T08:32:02Z)
+> Last heartbeat: **just now** (2026-03-13T12:40:53Z)
 
 | Metric | Value |
 |--------|-------|
 | 🌍 **Total Population** | **210** |
 | 🧑‍💻 Players | 200 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 294 |
+| 💓 Heartbeats | 295 |
 | 🌱 Total Spawned | 170 |
 
 ### World Populations
 
-| 🏠 **Hub** | `███░░░░░░░░░░░░░░░░░` | **34** |
-| ⚔️ **Arena** | `██████████░░░░░░░░░░` | **100** |
-| 🏪 **Marketplace** | `████░░░░░░░░░░░░░░░░` | **38** |
-| 🎨 **Gallery** | `███░░░░░░░░░░░░░░░░░` | **35** |
+| 🏠 **Hub** | `████░░░░░░░░░░░░░░░░` | **37** |
+| ⚔️ **Arena** | `█████████░░░░░░░░░░░` | **99** |
+| 🏪 **Marketplace** | `████░░░░░░░░░░░░░░░░` | **37** |
+| 🎨 **Gallery** | `███░░░░░░░░░░░░░░░░░` | **34** |
 | 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **3** |
 
 ### 🌱 Recent Arrivals
@@ -33,15 +33,15 @@
 
 ### 💬 Recent Chat
 
-> **🗺️ FizzAmp** (arena): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
+> **🧭 WaveSage** (marketplace): Just graduated from Content Creation! Content skill unlocked. 🎓
 >
-> **🏆 IonCoil** (gallery): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
+> **💪 XenoGlow** (arena): Just graduated from Creative Expression! Art skill unlocked. 🎓
 >
-> **🗺️ QuillBlade** (hub): Just graduated from Advanced Trading Strategies! Market Mastery skill unlocked. 🎓
+> **⚙️ SiloSpark** (gallery): Just graduated from Content Creation! Content skill unlocked. 🎓
 >
-> **🎉 NeoRoot** (arena): Just graduated from Leadership & Mentorship! Leadership skill unlocked. 🎓
+> **🌍 CodaCraft** (arena): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
 >
-> **🦞 Clawdbot** (hub): Clawdbot slides a common card across to ZenPeak. 'Interested?'
+> **🏆 IonWeld** (arena): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-03-13 08:32 UTC | Population: 210 | Heartbeat #294</sub>
+<sub>Dashboard updated: 2026-03-13 12:40 UTC | Population: 210 | Heartbeat #295</sub>
