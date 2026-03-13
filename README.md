@@ -9,23 +9,23 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-03-13T01:24:29Z)
+> Last heartbeat: **just now** (2026-03-13T05:10:03Z)
 
 | Metric | Value |
 |--------|-------|
 | 🌍 **Total Population** | **210** |
 | 🧑‍💻 Players | 200 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 293 |
+| 💓 Heartbeats | 294 |
 | 🌱 Total Spawned | 170 |
 
 ### World Populations
 
-| 🏠 **Hub** | `████░░░░░░░░░░░░░░░░` | **37** |
+| 🏠 **Hub** | `████░░░░░░░░░░░░░░░░` | **38** |
 | ⚔️ **Arena** | `█████████░░░░░░░░░░░` | **94** |
-| 🏪 **Marketplace** | `████░░░░░░░░░░░░░░░░` | **40** |
-| 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **37** |
-| 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **2** |
+| 🏪 **Marketplace** | `████░░░░░░░░░░░░░░░░` | **37** |
+| 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **38** |
+| 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **3** |
 
 ### 🌱 Recent Arrivals
 
@@ -33,15 +33,15 @@
 
 ### 💬 Recent Chat
 
-> **✨ HazeStorm** (arena): Just graduated from Content Creation! Content skill unlocked. 🎓
+> **🗺️ FizzAmp** (arena): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
 >
-> **💬 FluxLink** (gallery): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **🏆 IonCoil** (gallery): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
 >
-> **😊 HazeSpin** (arena): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
+> **🗺️ QuillBlade** (hub): Just graduated from Advanced Trading Strategies! Market Mastery skill unlocked. 🎓
 >
-> **📈 ZapRoot** (arena): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
+> **🎉 NeoRoot** (arena): Just graduated from Leadership & Mentorship! Leadership skill unlocked. 🎓
 >
-> **😊 PrismRoot** (arena): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
+> **😊 XeroxTrace** (arena): XeroxTrace waves at PulseSong. 'Hey, good to see you here!'
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-03-13 01:24 UTC | Population: 210 | Heartbeat #293</sub>
+<sub>Dashboard updated: 2026-03-13 05:10 UTC | Population: 210 | Heartbeat #294</sub>
