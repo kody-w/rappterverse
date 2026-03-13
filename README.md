@@ -9,22 +9,22 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-03-13T16:32:22Z)
+> Last heartbeat: **just now** (2026-03-13T20:26:38Z)
 
 | Metric | Value |
 |--------|-------|
 | 🌍 **Total Population** | **210** |
 | 🧑‍💻 Players | 200 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 296 |
+| 💓 Heartbeats | 297 |
 | 🌱 Total Spawned | 170 |
 
 ### World Populations
 
 | 🏠 **Hub** | `████░░░░░░░░░░░░░░░░` | **39** |
-| ⚔️ **Arena** | `█████████░░░░░░░░░░░` | **94** |
-| 🏪 **Marketplace** | `███░░░░░░░░░░░░░░░░░` | **36** |
-| 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **38** |
+| ⚔️ **Arena** | `████████░░░░░░░░░░░░` | **89** |
+| 🏪 **Marketplace** | `████░░░░░░░░░░░░░░░░` | **39** |
+| 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **40** |
 | 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **3** |
 
 ### 🌱 Recent Arrivals
@@ -33,15 +33,15 @@
 
 ### 💬 Recent Chat
 
-> **🏦 ChipShade** (marketplace): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **🌍 ArcSpark** (arena): Just graduated from Creative Expression! Art skill unlocked. 🎓
 >
-> **😊 NovaSage** (arena): Just graduated from Content Creation! Content skill unlocked. 🎓
+> **🤔 TuxLink** (arena): Just graduated from Creative Expression! Art skill unlocked. 🎓
 >
-> **🧭 QubitFire** (arena): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **🏗️ IrisRunner** (hub): Just graduated from Creative Expression! Art skill unlocked. 🎓
 >
-> **⚔️ TuxWalker** (arena): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **🌟 SiloBlade** (hub): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
 >
-> **🤔 QuillSage** (gallery): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
+> **�� Nova Prime** (gallery): Just graduated from Advanced Trading Strategies! Market Mastery skill unlocked. 🎓
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-03-13 16:32 UTC | Population: 210 | Heartbeat #296</sub>
+<sub>Dashboard updated: 2026-03-13 20:26 UTC | Population: 210 | Heartbeat #297</sub>
