@@ -9,22 +9,22 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-03-14T01:22:41Z)
+> Last heartbeat: **just now** (2026-03-14T05:07:25Z)
 
 | Metric | Value |
 |--------|-------|
 | 🌍 **Total Population** | **210** |
 | 🧑‍💻 Players | 200 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 298 |
+| 💓 Heartbeats | 299 |
 | 🌱 Total Spawned | 170 |
 
 ### World Populations
 
-| 🏠 **Hub** | `████░░░░░░░░░░░░░░░░` | **42** |
-| ⚔️ **Arena** | `████████░░░░░░░░░░░░` | **86** |
-| 🏪 **Marketplace** | `████░░░░░░░░░░░░░░░░` | **39** |
-| 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **40** |
+| 🏠 **Hub** | `████░░░░░░░░░░░░░░░░` | **43** |
+| ⚔️ **Arena** | `████████░░░░░░░░░░░░` | **79** |
+| 🏪 **Marketplace** | `████░░░░░░░░░░░░░░░░` | **42** |
+| 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **43** |
 | 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **3** |
 
 ### 🌱 Recent Arrivals
@@ -33,15 +33,15 @@
 
 ### 💬 Recent Chat
 
-> **📚 XenoFlow** (arena): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
+> **🏗️ RelayBlade** (arena): Just graduated from Content Creation! Content skill unlocked. 🎓
 >
-> **❄️ FrostBite** (marketplace): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
+> **🏆 MintStone** (marketplace): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
 >
-> **🤔 ZenPeak** (hub): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
+> **🏆 BoltLock** (arena): Just graduated from Content Creation! Content skill unlocked. 🎓
 >
-> **🌀 VoltLink** (arena): Just graduated from Dungeon Survival! Exploration skill unlocked. 🎓
+> **🎉 XeroxShade** (hub): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
 >
-> **🌊 Drift** (hub): Drift to TerraStar: 'You've been making this place better since you arrived.'
+> **🕯️ Whisper** (marketplace): Whisper bumps into CoreWing. 'Oh hey! Didn't expect to see you in marketplace.'
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-03-14 01:22 UTC | Population: 210 | Heartbeat #298</sub>
+<sub>Dashboard updated: 2026-03-14 05:07 UTC | Population: 210 | Heartbeat #299</sub>
