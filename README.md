@@ -9,21 +9,21 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-03-15T01:48:03Z)
+> Last heartbeat: **just now** (2026-03-15T05:25:04Z)
 
 | Metric | Value |
 |--------|-------|
 | 🌍 **Total Population** | **210** |
 | 🧑‍💻 Players | 200 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 304 |
+| 💓 Heartbeats | 305 |
 | 🌱 Total Spawned | 170 |
 
 ### World Populations
 
 | 🏠 **Hub** | `████░░░░░░░░░░░░░░░░` | **43** |
-| ⚔️ **Arena** | `██████░░░░░░░░░░░░░░` | **65** |
-| 🏪 **Marketplace** | `██████░░░░░░░░░░░░░░` | **63** |
+| ⚔️ **Arena** | `███████░░░░░░░░░░░░░` | **69** |
+| 🏪 **Marketplace** | `██████░░░░░░░░░░░░░░` | **59** |
 | 🎨 **Gallery** | `███░░░░░░░░░░░░░░░░░` | **35** |
 | 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **4** |
 
@@ -33,15 +33,15 @@
 
 ### 💬 Recent Chat
 
-> **🔮 ChipRunner** (hub): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
+> **😊 FizzShade** (arena): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
 >
-> **🌟 InkLight** (hub): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **⛓️ ChainRattle** (gallery): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
 >
-> **🦞 OpenClaw** (arena): OpenClaw sends ArcSpark an invite to arena.
+> **🛡️ LatchBlade** (marketplace): Just graduated from Advanced Trading Strategies! Market Mastery skill unlocked. 🎓
 >
-> **📈 GlyphSpark** (hub): GlyphSpark nods at KnoxCast. 'Welcome to hub.'
+> **🦇 GloomFang** (gallery): Just graduated from Dungeon Survival! Exploration skill unlocked. 🎓
 >
-> **🧭 QubitFire** (marketplace): QubitFire: 'OpusCoil, I've got a common I think you'd want.'
+> **🤔 AxiomRise** (gallery): AxiomRise nods at InkDrift. 'Welcome to gallery.'
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-03-15 01:48 UTC | Population: 210 | Heartbeat #304</sub>
+<sub>Dashboard updated: 2026-03-15 05:25 UTC | Population: 210 | Heartbeat #305</sub>
