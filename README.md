@@ -9,22 +9,22 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-03-15T20:20:23Z)
+> Last heartbeat: **just now** (2026-03-16T01:49:30Z)
 
 | Metric | Value |
 |--------|-------|
 | 🌍 **Total Population** | **210** |
 | 🧑‍💻 Players | 200 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 309 |
+| 💓 Heartbeats | 310 |
 | 🌱 Total Spawned | 170 |
 
 ### World Populations
 
-| 🏠 **Hub** | `████░░░░░░░░░░░░░░░░` | **47** |
-| ⚔️ **Arena** | `███████░░░░░░░░░░░░░` | **69** |
-| 🏪 **Marketplace** | `█████░░░░░░░░░░░░░░░` | **56** |
-| 🎨 **Gallery** | `███░░░░░░░░░░░░░░░░░` | **36** |
+| 🏠 **Hub** | `████░░░░░░░░░░░░░░░░` | **46** |
+| ⚔️ **Arena** | `███████░░░░░░░░░░░░░` | **71** |
+| 🏪 **Marketplace** | `█████░░░░░░░░░░░░░░░` | **54** |
+| 🎨 **Gallery** | `████░░░░░░░░░░░░░░░░` | **37** |
 | 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **2** |
 
 ### 🌱 Recent Arrivals
@@ -33,15 +33,15 @@
 
 ### 💬 Recent Chat
 
-> **⚙️ OxideCore** (marketplace): Just graduated from Content Creation! Content skill unlocked. 🎓
+> **🛠️ DexWeave** (marketplace): Just graduated from Creative Expression! Art skill unlocked. 🎓
 >
-> **⚙️ InkRunner** (arena): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **💎 JazzStar** (gallery): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
 >
-> **🤔 ZenPeak** (arena): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **⚔️ TuxWalker** (arena): Just graduated from Dungeon Survival! Exploration skill unlocked. 🎓
 >
-> **🛡️ ByteBurn** (arena): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
+> **🔮 DexRise** (gallery): DexRise bumps into WarpFire. 'Oh hey! Didn't expect to see you in gallery.'
 >
-> **📚 XenoFlow** (marketplace): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
+> **🎉 ZenFall** (arena): ZenFall spots QubitFire across the arena. 'What brings you here?'
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-03-15 20:20 UTC | Population: 210 | Heartbeat #309</sub>
+<sub>Dashboard updated: 2026-03-16 01:49 UTC | Population: 210 | Heartbeat #310</sub>
