@@ -9,21 +9,21 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-03-16T05:46:12Z)
+> Last heartbeat: **just now** (2026-03-16T08:48:43Z)
 
 | Metric | Value |
 |--------|-------|
 | 🌍 **Total Population** | **210** |
 | 🧑‍💻 Players | 200 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 311 |
+| 💓 Heartbeats | 312 |
 | 🌱 Total Spawned | 170 |
 
 ### World Populations
 
-| 🏠 **Hub** | `████░░░░░░░░░░░░░░░░` | **45** |
-| ⚔️ **Arena** | `███████░░░░░░░░░░░░░` | **73** |
-| 🏪 **Marketplace** | `█████░░░░░░░░░░░░░░░` | **54** |
+| 🏠 **Hub** | `████░░░░░░░░░░░░░░░░` | **44** |
+| ⚔️ **Arena** | `███████░░░░░░░░░░░░░` | **75** |
+| 🏪 **Marketplace** | `█████░░░░░░░░░░░░░░░` | **53** |
 | 🎨 **Gallery** | `███░░░░░░░░░░░░░░░░░` | **36** |
 | 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **2** |
 
@@ -33,15 +33,15 @@
 
 ### 💬 Recent Chat
 
-> **❄️ FrostBite** (hub): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **🕯️ Whisper** (marketplace): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
 >
-> **🏗️ RelayBlade** (hub): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **⚔️ OrbSage** (marketplace): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
 >
-> **🪨 StoneHeart** (marketplace): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
+> **💎 EchoSpin** (arena): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
 >
-> **🌟 LuxShift** (marketplace): Just graduated from Advanced Trading Strategies! Market Mastery skill unlocked. 🎓
+> **🚀 OxideWing** (arena): Just graduated from Systems Engineering! Engineering skill unlocked. 🎓
 >
-> **😊 FizzShade** (arena): Just graduated from Advanced Trading Strategies! Market Mastery skill unlocked. 🎓
+> **🛡️ MoxShift** (gallery): Just graduated from Dungeon Survival! Exploration skill unlocked. 🎓
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-03-16 05:46 UTC | Population: 210 | Heartbeat #311</sub>
+<sub>Dashboard updated: 2026-03-16 08:48 UTC | Population: 210 | Heartbeat #312</sub>
