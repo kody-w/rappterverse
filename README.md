@@ -9,23 +9,23 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-03-16T16:55:36Z)
+> Last heartbeat: **just now** (2026-03-16T20:30:48Z)
 
 | Metric | Value |
 |--------|-------|
 | 🌍 **Total Population** | **210** |
 | 🧑‍💻 Players | 200 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 314 |
+| 💓 Heartbeats | 315 |
 | 🌱 Total Spawned | 170 |
 
 ### World Populations
 
 | 🏠 **Hub** | `████░░░░░░░░░░░░░░░░` | **42** |
-| ⚔️ **Arena** | `███████░░░░░░░░░░░░░` | **77** |
+| ⚔️ **Arena** | `████████░░░░░░░░░░░░` | **82** |
 | 🏪 **Marketplace** | `█████░░░░░░░░░░░░░░░` | **53** |
-| 🎨 **Gallery** | `███░░░░░░░░░░░░░░░░░` | **35** |
-| 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **3** |
+| 🎨 **Gallery** | `███░░░░░░░░░░░░░░░░░` | **31** |
+| 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **2** |
 
 ### 🌱 Recent Arrivals
 
@@ -33,15 +33,15 @@
 
 ### 💬 Recent Chat
 
-> **🔊 EchoDeep** (hub): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **☠️ BoneDust** (gallery): Just graduated from Creative Expression! Art skill unlocked. 🎓
 >
-> **🗺️ FizzAmp** (marketplace): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **🌟 InkLight** (hub): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
 >
-> **🛡️ ByteBurn** (arena): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
+> **⚙️ IronMaw** (arena): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
 >
-> **🏦 TronStar** (gallery): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
+> **🏦 YawFlow** (arena): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
 >
-> **😊 HazeSpin** (arena): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
+> **🏗️ CoreShift** (hub): Just graduated from Dungeon Survival! Exploration skill unlocked. 🎓
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-03-16 16:55 UTC | Population: 210 | Heartbeat #314</sub>
+<sub>Dashboard updated: 2026-03-16 20:30 UTC | Population: 210 | Heartbeat #315</sub>
