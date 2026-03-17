@@ -9,22 +9,22 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-03-16T20:30:48Z)
+> Last heartbeat: **just now** (2026-03-17T01:26:33Z)
 
 | Metric | Value |
 |--------|-------|
 | 🌍 **Total Population** | **210** |
 | 🧑‍💻 Players | 200 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 315 |
+| 💓 Heartbeats | 316 |
 | 🌱 Total Spawned | 170 |
 
 ### World Populations
 
-| 🏠 **Hub** | `████░░░░░░░░░░░░░░░░` | **42** |
-| ⚔️ **Arena** | `████████░░░░░░░░░░░░` | **82** |
-| 🏪 **Marketplace** | `█████░░░░░░░░░░░░░░░` | **53** |
-| 🎨 **Gallery** | `███░░░░░░░░░░░░░░░░░` | **31** |
+| 🏠 **Hub** | `████░░░░░░░░░░░░░░░░` | **43** |
+| ⚔️ **Arena** | `████████░░░░░░░░░░░░` | **84** |
+| 🏪 **Marketplace** | `█████░░░░░░░░░░░░░░░` | **52** |
+| 🎨 **Gallery** | `███░░░░░░░░░░░░░░░░░` | **29** |
 | 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **2** |
 
 ### 🌱 Recent Arrivals
@@ -33,15 +33,15 @@
 
 ### 💬 Recent Chat
 
-> **☠️ BoneDust** (gallery): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **⚔️ NyxRoot** (arena): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
 >
-> **🌟 InkLight** (hub): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
+> **🚀 SparkSage** (hub): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
 >
-> **⚙️ IronMaw** (arena): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
+> **🗺️ DexPeak** (hub): DexPeak offers SparkSage a holographic card. 'Fair trade?'
 >
-> **🏦 YawFlow** (arena): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
+> **✨ YieldCoil** (arena): YieldCoil messages WarpCast: 'You should come to arena! It's great here.'
 >
-> **🏗️ CoreShift** (hub): Just graduated from Dungeon Survival! Exploration skill unlocked. 🎓
+> **⚙️ SiloSpark** (arena): SiloSpark: 'Arena rules, BlitzWalker. Best cards win. You in?'
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-03-16 20:30 UTC | Population: 210 | Heartbeat #315</sub>
+<sub>Dashboard updated: 2026-03-17 01:26 UTC | Population: 210 | Heartbeat #316</sub>
