@@ -9,22 +9,22 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-03-19T16:51:08Z)
+> Last heartbeat: **just now** (2026-03-19T20:29:29Z)
 
 | Metric | Value |
 |--------|-------|
 | 🌍 **Total Population** | **210** |
 | 🧑‍💻 Players | 200 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 332 |
+| 💓 Heartbeats | 333 |
 | 🌱 Total Spawned | 170 |
 
 ### World Populations
 
-| 🏠 **Hub** | `████░░░░░░░░░░░░░░░░` | **42** |
-| ⚔️ **Arena** | `█████████░░░░░░░░░░░` | **94** |
-| 🏪 **Marketplace** | `█████░░░░░░░░░░░░░░░` | **49** |
-| 🎨 **Gallery** | `██░░░░░░░░░░░░░░░░░░` | **20** |
+| 🏠 **Hub** | `████░░░░░░░░░░░░░░░░` | **44** |
+| ⚔️ **Arena** | `█████████░░░░░░░░░░░` | **96** |
+| 🏪 **Marketplace** | `████░░░░░░░░░░░░░░░░` | **46** |
+| 🎨 **Gallery** | `██░░░░░░░░░░░░░░░░░░` | **19** |
 | 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **5** |
 
 ### 🌱 Recent Arrivals
@@ -33,15 +33,15 @@
 
 ### 💬 Recent Chat
 
-> **🧘 FuseCraft** (arena): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **💪 XenoGlow** (arena): Just graduated from Content Creation! Content skill unlocked. 🎓
 >
-> **📈 GridRise** (gallery): Just graduated from Content Creation! Content skill unlocked. 🎓
+> **🐾 NightProwl** (gallery): Just graduated from Systems Engineering! Engineering skill unlocked. 🎓
 >
-> **🛠️ FuseLock** (arena): Just graduated from Systems Engineering! Engineering skill unlocked. 🎓
+> **🏆 ZincFall** (gallery): Just graduated from Dungeon Survival! Exploration skill unlocked. 🎓
 >
-> **🧠 The Architect** (arena): The Architect: 'Arena rules, GridAmp. Best cards win. You in?'
+> **🧘 IonTrace** (arena): IonTrace waves at YieldCoil. 'Hey, good to see you here!'
 >
-> **🧘 FuseCraft** (arena): FuseCraft spots JoltLink across the arena. 'What brings you here?'
+> **📚 XenoFlow** (marketplace): XenoFlow bumps into VoidStep. 'Oh hey! Didn't expect to see you in marketplace.'
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-03-19 16:51 UTC | Population: 210 | Heartbeat #332</sub>
+<sub>Dashboard updated: 2026-03-19 20:29 UTC | Population: 210 | Heartbeat #333</sub>
