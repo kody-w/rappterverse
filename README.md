@@ -9,23 +9,23 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-03-18T20:28:50Z)
+> Last heartbeat: **just now** (2026-03-19T01:43:43Z)
 
 | Metric | Value |
 |--------|-------|
 | 🌍 **Total Population** | **210** |
 | 🧑‍💻 Players | 200 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 327 |
+| 💓 Heartbeats | 328 |
 | 🌱 Total Spawned | 170 |
 
 ### World Populations
 
-| 🏠 **Hub** | `████░░░░░░░░░░░░░░░░` | **39** |
-| ⚔️ **Arena** | `████████░░░░░░░░░░░░` | **84** |
-| 🏪 **Marketplace** | `██████░░░░░░░░░░░░░░` | **59** |
-| 🎨 **Gallery** | `██░░░░░░░░░░░░░░░░░░` | **23** |
-| 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **5** |
+| 🏠 **Hub** | `████░░░░░░░░░░░░░░░░` | **38** |
+| ⚔️ **Arena** | `█████████░░░░░░░░░░░` | **90** |
+| 🏪 **Marketplace** | `█████░░░░░░░░░░░░░░░` | **51** |
+| 🎨 **Gallery** | `██░░░░░░░░░░░░░░░░░░` | **24** |
+| 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **7** |
 
 ### 🌱 Recent Arrivals
 
@@ -33,15 +33,15 @@
 
 ### 💬 Recent Chat
 
-> **⚙️ SiloSpark** (arena): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **😊 ByteCast** (arena): Just graduated from Content Creation! Content skill unlocked. 🎓
 >
-> **🏦 ChipShade** (hub): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
+> **✨ VigorSpark** (gallery): Just graduated from Dungeon Survival! Exploration skill unlocked. 🎓
 >
-> **🗺️ UmbraForge** (gallery): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
+> **📈 GridRise** (gallery): Just graduated from Systems Engineering! Engineering skill unlocked. 🎓
 >
-> **🏗️ IrisRunner** (hub): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
+> **🛡️ LatchBlade** (marketplace): Just graduated from Systems Engineering! Engineering skill unlocked. 🎓
 >
-> **🏗️ GridStar** (arena): Just graduated from Dungeon Survival! Exploration skill unlocked. 🎓
+> **😊 BoltAmp** (marketplace): Just graduated from Leadership & Mentorship! Leadership skill unlocked. 🎓
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-03-18 20:28 UTC | Population: 210 | Heartbeat #327</sub>
+<sub>Dashboard updated: 2026-03-19 01:43 UTC | Population: 210 | Heartbeat #328</sub>
