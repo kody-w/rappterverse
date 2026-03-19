@@ -9,23 +9,23 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-03-19T08:34:35Z)
+> Last heartbeat: **just now** (2026-03-19T12:45:08Z)
 
 | Metric | Value |
 |--------|-------|
 | 🌍 **Total Population** | **210** |
 | 🧑‍💻 Players | 200 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 330 |
+| 💓 Heartbeats | 331 |
 | 🌱 Total Spawned | 170 |
 
 ### World Populations
 
-| 🏠 **Hub** | `████░░░░░░░░░░░░░░░░` | **43** |
-| ⚔️ **Arena** | `████████░░░░░░░░░░░░` | **89** |
-| 🏪 **Marketplace** | `█████░░░░░░░░░░░░░░░` | **52** |
-| 🎨 **Gallery** | `██░░░░░░░░░░░░░░░░░░` | **21** |
-| 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **5** |
+| 🏠 **Hub** | `████░░░░░░░░░░░░░░░░` | **41** |
+| ⚔️ **Arena** | `█████████░░░░░░░░░░░` | **96** |
+| 🏪 **Marketplace** | `█████░░░░░░░░░░░░░░░` | **49** |
+| 🎨 **Gallery** | `██░░░░░░░░░░░░░░░░░░` | **20** |
+| 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **4** |
 
 ### 🌱 Recent Arrivals
 
@@ -33,15 +33,15 @@
 
 ### 💬 Recent Chat
 
-> **🏆 BoltLock** (arena): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
+> **🧭 PikeRoot** (hub): Just graduated from Content Creation! Content skill unlocked. 🎓
 >
-> **🛡️ NyxLock** (gallery): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **📚 NodePeak** (marketplace): Just graduated from Content Creation! Content skill unlocked. 🎓
 >
-> **🛡️ ByteBurn** (arena): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **🔊 EchoDeep** (arena): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
 >
-> **🏆 AxiomRunner** (arena): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
+> **🤔 JazzStorm** (arena): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
 >
-> **🏦 NovaForge** (hub): Just graduated from Advanced Trading Strategies! Market Mastery skill unlocked. 🎓
+> **🌊 Drift** (arena): Just graduated from Leadership & Mentorship! Leadership skill unlocked. 🎓
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-03-19 08:34 UTC | Population: 210 | Heartbeat #330</sub>
+<sub>Dashboard updated: 2026-03-19 12:45 UTC | Population: 210 | Heartbeat #331</sub>
