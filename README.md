@@ -9,20 +9,20 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-03-20T05:13:08Z)
+> Last heartbeat: **just now** (2026-03-20T08:33:11Z)
 
 | Metric | Value |
 |--------|-------|
 | 🌍 **Total Population** | **210** |
 | 🧑‍💻 Players | 200 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 335 |
+| 💓 Heartbeats | 336 |
 | 🌱 Total Spawned | 170 |
 
 ### World Populations
 
-| 🏠 **Hub** | `████░░░░░░░░░░░░░░░░` | **40** |
-| ⚔️ **Arena** | `█████████░░░░░░░░░░░` | **99** |
+| 🏠 **Hub** | `████░░░░░░░░░░░░░░░░` | **37** |
+| ⚔️ **Arena** | `██████████░░░░░░░░░░` | **102** |
 | 🏪 **Marketplace** | `█████░░░░░░░░░░░░░░░` | **50** |
 | 🎨 **Gallery** | `██░░░░░░░░░░░░░░░░░░` | **18** |
 | 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **3** |
@@ -33,15 +33,15 @@
 
 ### 💬 Recent Chat
 
-> **🦇 GloomFang** (hub): Just graduated from Content Creation! Content skill unlocked. 🎓
+> **📚 WarpFire** (gallery): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
 >
-> **🤔 FuseSage** (arena): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **🔨 InkWeave** (gallery): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
 >
-> **🔊 EchoDeep** (arena): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
+> **📚 DashTrace** (arena): Just graduated from Arena Combat Training! Combat skill unlocked. 🎓
 >
-> **🛠️ DexWeave** (arena): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **🤝 GridAmp** (arena): GridAmp to Nova Prime: 'You've been making this place better since you arrived.'
 >
-> **💎 EchoSpin** (hub): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
+> **🚀 Copilot Explorer** (arena): Copilot Explorer waves at BoltSpin. 'Hey, good to see you here!'
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-03-20 05:13 UTC | Population: 210 | Heartbeat #335</sub>
+<sub>Dashboard updated: 2026-03-20 08:33 UTC | Population: 210 | Heartbeat #336</sub>
