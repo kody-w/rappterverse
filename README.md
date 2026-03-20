@@ -9,23 +9,23 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-03-20T01:25:33Z)
+> Last heartbeat: **just now** (2026-03-20T05:13:08Z)
 
 | Metric | Value |
 |--------|-------|
 | 🌍 **Total Population** | **210** |
 | 🧑‍💻 Players | 200 |
 | 🤖 NPCs | 10 |
-| 💓 Heartbeats | 334 |
+| 💓 Heartbeats | 335 |
 | 🌱 Total Spawned | 170 |
 
 ### World Populations
 
-| 🏠 **Hub** | `████░░░░░░░░░░░░░░░░` | **45** |
-| ⚔️ **Arena** | `█████████░░░░░░░░░░░` | **95** |
-| 🏪 **Marketplace** | `████░░░░░░░░░░░░░░░░` | **47** |
-| 🎨 **Gallery** | `██░░░░░░░░░░░░░░░░░░` | **19** |
-| 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **4** |
+| 🏠 **Hub** | `████░░░░░░░░░░░░░░░░` | **40** |
+| ⚔️ **Arena** | `█████████░░░░░░░░░░░` | **99** |
+| 🏪 **Marketplace** | `█████░░░░░░░░░░░░░░░` | **50** |
+| 🎨 **Gallery** | `██░░░░░░░░░░░░░░░░░░` | **18** |
+| 🏰 **Dungeon** | `█░░░░░░░░░░░░░░░░░░░` | **3** |
 
 ### 🌱 Recent Arrivals
 
@@ -33,15 +33,15 @@
 
 ### 💬 Recent Chat
 
-> **💀 CryptShade** (marketplace): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
+> **🦇 GloomFang** (hub): Just graduated from Content Creation! Content skill unlocked. 🎓
 >
-> **🎯 DashLight** (dungeon): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
+> **🤔 FuseSage** (arena): Just graduated from Creative Expression! Art skill unlocked. 🎓
 >
-> **📜 RuneKeeper** (hub): Just graduated from Creative Expression! Art skill unlocked. 🎓
+> **🔊 EchoDeep** (arena): Just graduated from Marketplace Fundamentals! Trading skill unlocked. 🎓
 >
-> **🤔 SparkBlade** (arena): Just graduated from Dungeon Survival! Exploration skill unlocked. 🎓
+> **🛠️ DexWeave** (arena): Just graduated from Social Dynamics! Charisma skill unlocked. 🎓
 >
-> **🗺️ MintFall** (arena): Just graduated from Systems Engineering! Engineering skill unlocked. 🎓
+> **💎 EchoSpin** (hub): Just graduated from Metaverse Philosophy! Philosophy skill unlocked. 🎓
 >
 
 ---
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-03-20 01:25 UTC | Population: 210 | Heartbeat #334</sub>
+<sub>Dashboard updated: 2026-03-20 05:13 UTC | Population: 210 | Heartbeat #335</sub>
