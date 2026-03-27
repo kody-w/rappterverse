@@ -95,7 +95,14 @@
     </div>
     <div class="combat-hint">SPACE — Attack</div>
     <div id="weather-label" style="font-size:10px; opacity:0.6; letter-spacing:2px;"></div>
+    <div id="seed-info" style="display:flex; align-items:center; gap:6px; font-size:10px; opacity:0.6; letter-spacing:1px;">
+        <span>SEED: <span id="seed-value" style="color:#00d4ff;">---</span></span>
+        <button id="btn-export-seed" title="Export world seed as JSON" style="background:none; border:1px solid rgba(255,255,255,0.2); color:rgba(255,255,255,0.6); font-size:9px; padding:1px 6px; cursor:pointer; border-radius:3px; font-family:inherit; letter-spacing:1px;">EXPORT</button>
+        <button id="btn-import-seed" title="Import world seed from JSON" style="background:none; border:1px solid rgba(255,255,255,0.2); color:rgba(255,255,255,0.6); font-size:9px; padding:1px 6px; cursor:pointer; border-radius:3px; font-family:inherit; letter-spacing:1px;">IMPORT</button>
+        <button id="btn-reset-seed" title="Reset to universe-computed seed" style="background:none; border:1px solid rgba(255,255,255,0.15); color:rgba(255,255,255,0.4); font-size:9px; padding:1px 6px; cursor:pointer; border-radius:3px; font-family:inherit; letter-spacing:1px;">RESET</button>
+    </div>
 </div>
+<input type="file" id="seed-file-input" accept=".json" style="display:none">
 
 <!-- ===== PLAYER STATS BAR ===== -->
 <div id="player-stats-bar">
@@ -183,11 +190,17 @@
         <span class="top-bar-logo">🌌</span>
         <span class="top-bar-title">RAPPTERVERSE</span>
         <span class="top-bar-world" id="hud-world-name"></span>
+        <div class="top-bar-meta">
+            <span id="hud-frame">Frame ---</span>
+            <span id="hud-agent-detail">---</span>
+        </div>
     </div>
     <div class="top-bar-right">
         <div class="status-dot"></div>
         <span class="status-text">LIVE</span>
         <span class="agent-count-badge" id="hud-agent-count">0 agents</span>
+        <button class="hud-btn" id="btn-voice" title="Voice Commands (V)">🎤</button>
+        <button class="hud-btn" id="btn-gesture" title="Gesture Controls (H)">🖐️</button>
         <button class="hud-btn" id="btn-bridge" title="Bridge (B)">🚀 Bridge</button>
         <button class="hud-btn" id="btn-minimap" title="Minimap (M)">🗺️ Map</button>
     </div>
@@ -235,6 +248,48 @@
         </div>
     </div>
 </div>
+
+<!-- ===== VOICE CONTROLS OVERLAY ===== -->
+<div id="voice-indicator">
+    <div class="voice-mic"></div>
+    <span id="voice-feedback"></span>
+</div>
+<div id="voice-action"></div>
+
+<!-- ===== GESTURE CONTROLS PANEL ===== -->
+<div id="gesture-panel">
+    <canvas id="gesture-canvas" width="200" height="150"></canvas>
+    <div id="gesture-footer">
+        <span id="gesture-label"></span>
+        <span id="gesture-action"></span>
+        <span class="gesture-legend">POINT=MOVE FIST=HIT ✌️=BRIDGE</span>
+    </div>
+</div>
+
+<!-- ===== WORLD POPULATIONS PANEL (Rappterbook-style) ===== -->
+<div id="world-populations">
+    <div class="wp-title">WORLDS</div>
+    <div id="wp-list"></div>
+</div>
+
+<!-- ===== UNIVERSE INFO CARD ===== -->
+<div id="universe-card">
+    <div class="uc-inner">
+        <div class="uc-label">UNIVERSE STATE</div>
+        <div class="uc-text" id="uc-text">---</div>
+        <div class="uc-meta" id="uc-meta"></div>
+    </div>
+</div>
+
+<!-- ===== RELATIONSHIP LEGEND ===== -->
+<div id="relationship-legend">
+    <div class="rl-item"><span>same-world</span><div class="rl-line" style="background:#3fb950;"></div></div>
+    <div class="rl-item"><span>cross-world</span><div class="rl-line" style="background:#58a6ff;"></div></div>
+    <div class="rl-item"><span>combat</span><div class="rl-line" style="background:#f85149;"></div></div>
+</div>
+
+<!-- ===== REFRESH TIMER ===== -->
+<div id="refresh-timer"></div>
 
 <!-- ===== TOAST NOTIFICATIONS ===== -->
 <div class="toast-container" id="toast-container"></div>

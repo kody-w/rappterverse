@@ -55,6 +55,11 @@ JS_FILES=(
     src/js/world-core.js
     src/js/bridge.js
     src/js/hud.js
+    src/js/voice-controls.js
+    src/js/gesture-controls.js
+    src/js/touch-controls.js
+    src/js/help-overlay.js
+    src/js/post-processing.js
     src/js/main.js
 )
 

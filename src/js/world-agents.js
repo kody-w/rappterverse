@@ -6,6 +6,8 @@ const WorldAgents = {
     floatingTexts: [],
     interactTarget: null,
     pokeTarget: null,
+    _edgeLines: null,
+    _lastEdgeUpdate: 0,
 
     syncAgents(scene, worldId) {
         const agents = GameState.getWorldAgents(worldId);
@@ -262,6 +264,135 @@ const WorldAgents = {
         mesh.position.set(obj.position.x, obj.position.y || 1, obj.position.z);
         scene.add(mesh);
         this.objectMeshes.push(mesh);
+    },
+
+    // ── Agent Relationship Edges (Rappterbook constellation pattern) ──
+    updateEdges(scene, time) {
+        // Only update every 5 seconds
+        if (time - this._lastEdgeUpdate < 5) return;
+        this._lastEdgeUpdate = time;
+
+        // Remove old edges
+        if (this._edgeLines) {
+            this._edgeLines.forEach(function(l) { scene.remove(l); l.geometry.dispose(); l.material.dispose(); });
+            this._edgeLines = null;
+        }
+
+        const agents = GameState.data.agents || [];
+        if (agents.length < 2) return;
+
+        // Build position lookup for agents in this world
+        var posMap = {};
+        var worldId = GameState.currentWorld;
+        agents.forEach(function(a) {
+            if (a.world === worldId && a.position) {
+                posMap[a.id] = a.position;
+            }
+        });
+
+        var ids = Object.keys(posMap);
+        if (ids.length < 2) return;
+
+        // Build edges from recent actions (chat proximity, same-action, combat)
+        var chatEdges = [];
+        var actionEdges = [];
+        var combatEdges = [];
+
+        // Chat edges: agents who chatted recently in same world
+        var msgs = GameState.data.chat || [];
+        var worldMsgs = msgs.filter(function(m) { return m.world === worldId; });
+        var recentAuthors = [];
+        worldMsgs.slice(-30).forEach(function(m) {
+            var aid = m.author && m.author.id ? m.author.id : null;
+            if (aid && posMap[aid]) recentAuthors.push(aid);
+        });
+        // Create edges between consecutive chatters
+        for (var i = 1; i < recentAuthors.length && chatEdges.length < 80; i++) {
+            if (recentAuthors[i] !== recentAuthors[i-1]) {
+                chatEdges.push([recentAuthors[i-1], recentAuthors[i]]);
+            }
+        }
+
+        // Proximity edges: agents close to each other
+        for (var i = 0; i < ids.length && actionEdges.length < 100; i++) {
+            for (var j = i + 1; j < ids.length; j++) {
+                var a = posMap[ids[i]], b = posMap[ids[j]];
+                var dx = a.x - b.x, dz = a.z - b.z;
+                var dist = Math.sqrt(dx * dx + dz * dz);
+                if (dist < 8) actionEdges.push([ids[i], ids[j]]);
+            }
+        }
+
+        // Combat edges from game state
+        var gs = GameState.data.gameState || {};
+        var combatEvents = gs.combatEvents || [];
+        combatEvents.forEach(function(ce) {
+            var defenders = ce.defenders || [];
+            defenders.slice(0, 20).forEach(function(did) {
+                if (posMap[did] && ce.attackerId) {
+                    combatEdges.push([did, ce.attackerId || 'enemy']);
+                }
+            });
+        });
+
+        this._edgeLines = [];
+
+        // Render chat edges (green — social)
+        if (chatEdges.length > 0) {
+            var pos = [];
+            chatEdges.forEach(function(e) {
+                var a = posMap[e[0]], b = posMap[e[1]];
+                if (a && b) {
+                    pos.push(a.x, 1.5, a.z, b.x, 1.5, b.z);
+                }
+            });
+            if (pos.length > 0) {
+                var geo = new THREE.BufferGeometry();
+                geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+                var mat = new THREE.LineBasicMaterial({ color: 0x3fb950, transparent: true, opacity: 0.15 });
+                var lines = new THREE.LineSegments(geo, mat);
+                scene.add(lines);
+                this._edgeLines.push(lines);
+            }
+        }
+
+        // Render proximity edges (blue — co-located)
+        if (actionEdges.length > 0) {
+            var pos = [];
+            actionEdges.forEach(function(e) {
+                var a = posMap[e[0]], b = posMap[e[1]];
+                if (a && b) {
+                    pos.push(a.x, 1.2, a.z, b.x, 1.2, b.z);
+                }
+            });
+            if (pos.length > 0) {
+                var geo = new THREE.BufferGeometry();
+                geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+                var mat = new THREE.LineBasicMaterial({ color: 0x58a6ff, transparent: true, opacity: 0.08 });
+                var lines = new THREE.LineSegments(geo, mat);
+                scene.add(lines);
+                this._edgeLines.push(lines);
+            }
+        }
+
+        // Render combat edges (red)
+        if (combatEdges.length > 0) {
+            var pos = [];
+            combatEdges.forEach(function(e) {
+                var a = posMap[e[0]], b = posMap[e[1]];
+                if (a && b) {
+                    pos.push(a.x, 1.8, a.z, b.x, 1.8, b.z);
+                }
+            });
+            if (pos.length > 0) {
+                var geo = new THREE.BufferGeometry();
+                geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+                var mat = new THREE.LineBasicMaterial({ color: 0xf85149, transparent: true, opacity: 0.25 });
+                var lines = new THREE.LineSegments(geo, mat);
+                scene.add(lines);
+                this._edgeLines.push(lines);
+            }
+        }
     },
 
     // Defensive swarm state

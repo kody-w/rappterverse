@@ -1242,6 +1242,253 @@ body {
   50%      { opacity: 0.4; }
 }
 
+/* ── Top Bar Frame Meta (Rappterbook-style) ────────────── */
+.top-bar-meta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 11px;
+  color: #8b949e;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  letter-spacing: 0.3px;
+}
+
+/* ── World Populations Panel ───────────────────────────── */
+#world-populations {
+  position: fixed;
+  top: 60px;
+  right: 16px;
+  pointer-events: none;
+  z-index: var(--z-panel);
+  text-align: right;
+  display: none;
+}
+#world-populations.visible { display: block; }
+.wp-title {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #8b949e;
+  margin-bottom: 6px;
+}
+.wp-item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  margin-bottom: 4px;
+  font-size: 11px;
+  color: #8b949e;
+  pointer-events: auto;
+  cursor: pointer;
+  transition: color var(--transition-fast);
+  padding: 2px 0;
+}
+.wp-item:hover { color: #e6edf3; }
+.wp-item.wp-active { color: #e6edf3; font-weight: 600; }
+.wp-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  transition: box-shadow var(--transition-fast);
+}
+.wp-item:hover .wp-dot { box-shadow: 0 0 8px currentColor; }
+
+/* ── Universe Info Bottom Card (Active Seed style) ─────── */
+#universe-card {
+  position: fixed;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 620px;
+  width: 88%;
+  text-align: center;
+  pointer-events: none;
+  z-index: var(--z-ui);
+  display: none;
+}
+#universe-card.visible { display: block; }
+.uc-inner {
+  background: rgba(22, 27, 34, 0.85);
+  border: 1px solid rgba(48, 54, 61, 0.6);
+  border-radius: var(--radius-lg);
+  padding: 10px 20px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.uc-label {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--accent-gold);
+  margin-bottom: 3px;
+}
+.uc-text {
+  font-size: 12px;
+  color: #c9d1d9;
+  line-height: 1.5;
+}
+.uc-seed {
+  color: var(--accent-cyan);
+  font-weight: 600;
+}
+.uc-meta {
+  font-size: 10px;
+  color: #8b949e;
+  margin-top: 4px;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.uc-meta span {
+  white-space: nowrap;
+}
+
+/* ── Relationship Legend (edge types) ──────────────────── */
+#relationship-legend {
+  position: fixed;
+  bottom: 70px;
+  right: 16px;
+  pointer-events: none;
+  z-index: var(--z-ui);
+  display: none;
+}
+#relationship-legend.visible { display: block; }
+.rl-item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  margin-bottom: 3px;
+  font-size: 10px;
+  color: #484f58;
+}
+.rl-line {
+  width: 20px;
+  height: 2px;
+  flex-shrink: 0;
+  border-radius: 1px;
+}
+
+/* ── Refresh Timer ─────────────────────────────────────── */
+#refresh-timer {
+  position: fixed;
+  bottom: 6px;
+  right: 16px;
+  font-size: 10px;
+  color: rgba(255,255,255,0.18);
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  z-index: var(--z-ui);
+  pointer-events: none;
+  letter-spacing: 0.5px;
+  display: none;
+}
+#refresh-timer.visible { display: block; }
+
+/* ── Voice Controls ─────────────────────────────────────── */
+#voice-indicator {
+  position: fixed;
+  top: 56px;
+  left: 16px;
+  display: none;
+  align-items: center;
+  gap: 8px;
+  z-index: var(--z-panel);
+  pointer-events: none;
+}
+#voice-indicator.visible { display: flex; }
+.voice-mic {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: #f85149;
+  box-shadow: 0 0 8px #f85149;
+  animation: voice-pulse 1.2s infinite;
+}
+@keyframes voice-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.3); }
+}
+#voice-feedback {
+  font-size: 11px;
+  color: #8b949e;
+  font-family: 'SF Mono', monospace;
+  max-width: 280px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 0.15s;
+}
+#voice-action {
+  position: fixed;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: var(--accent-cyan);
+  text-shadow: 0 0 20px rgba(0,212,255,0.5);
+  z-index: var(--z-panel);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s, transform 0.15s;
+}
+
+/* ── Gesture Controls ──────────────────────────────────── */
+#gesture-panel {
+  position: fixed;
+  bottom: 80px;
+  right: 12px;
+  width: 200px;
+  height: 180px;
+  z-index: var(--z-panel);
+  display: none;
+  flex-direction: column;
+  border: 1px solid rgba(48, 54, 61, 0.6);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: rgba(22, 27, 34, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+#gesture-panel.visible { display: flex; }
+#gesture-canvas {
+  width: 200px;
+  height: 150px;
+  background: #0d1117;
+}
+#gesture-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 8px;
+  font-size: 10px;
+}
+#gesture-label {
+  color: var(--accent-cyan);
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+#gesture-action {
+  color: var(--accent-gold);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.gesture-legend {
+  font-size: 8px;
+  color: #484f58;
+  letter-spacing: 0.3px;
+}
+
+/* ── Active toggle button glow ─────────────────────────── */
+.hud-btn.active {
+  border-color: var(--accent-cyan);
+  color: var(--accent-cyan);
+  box-shadow: 0 0 8px rgba(0,212,255,0.3);
+}
+
 /* ── Responsive ─────────────────────────────────────────── */
 @media (max-width: 768px) {
   .top-bar-title {
@@ -1918,7 +2165,14 @@ body {
     </div>
     <div class="combat-hint">SPACE — Attack</div>
     <div id="weather-label" style="font-size:10px; opacity:0.6; letter-spacing:2px;"></div>
+    <div id="seed-info" style="display:flex; align-items:center; gap:6px; font-size:10px; opacity:0.6; letter-spacing:1px;">
+        <span>SEED: <span id="seed-value" style="color:#00d4ff;">---</span></span>
+        <button id="btn-export-seed" title="Export world seed as JSON" style="background:none; border:1px solid rgba(255,255,255,0.2); color:rgba(255,255,255,0.6); font-size:9px; padding:1px 6px; cursor:pointer; border-radius:3px; font-family:inherit; letter-spacing:1px;">EXPORT</button>
+        <button id="btn-import-seed" title="Import world seed from JSON" style="background:none; border:1px solid rgba(255,255,255,0.2); color:rgba(255,255,255,0.6); font-size:9px; padding:1px 6px; cursor:pointer; border-radius:3px; font-family:inherit; letter-spacing:1px;">IMPORT</button>
+        <button id="btn-reset-seed" title="Reset to universe-computed seed" style="background:none; border:1px solid rgba(255,255,255,0.15); color:rgba(255,255,255,0.4); font-size:9px; padding:1px 6px; cursor:pointer; border-radius:3px; font-family:inherit; letter-spacing:1px;">RESET</button>
+    </div>
 </div>
+<input type="file" id="seed-file-input" accept=".json" style="display:none">
 
 <!-- ===== PLAYER STATS BAR ===== -->
 <div id="player-stats-bar">
@@ -2006,11 +2260,17 @@ body {
         <span class="top-bar-logo">🌌</span>
         <span class="top-bar-title">RAPPTERVERSE</span>
         <span class="top-bar-world" id="hud-world-name"></span>
+        <div class="top-bar-meta">
+            <span id="hud-frame">Frame ---</span>
+            <span id="hud-agent-detail">---</span>
+        </div>
     </div>
     <div class="top-bar-right">
         <div class="status-dot"></div>
         <span class="status-text">LIVE</span>
         <span class="agent-count-badge" id="hud-agent-count">0 agents</span>
+        <button class="hud-btn" id="btn-voice" title="Voice Commands (V)">🎤</button>
+        <button class="hud-btn" id="btn-gesture" title="Gesture Controls (H)">🖐️</button>
         <button class="hud-btn" id="btn-bridge" title="Bridge (B)">🚀 Bridge</button>
         <button class="hud-btn" id="btn-minimap" title="Minimap (M)">🗺️ Map</button>
     </div>
@@ -2058,6 +2318,48 @@ body {
         </div>
     </div>
 </div>
+
+<!-- ===== VOICE CONTROLS OVERLAY ===== -->
+<div id="voice-indicator">
+    <div class="voice-mic"></div>
+    <span id="voice-feedback"></span>
+</div>
+<div id="voice-action"></div>
+
+<!-- ===== GESTURE CONTROLS PANEL ===== -->
+<div id="gesture-panel">
+    <canvas id="gesture-canvas" width="200" height="150"></canvas>
+    <div id="gesture-footer">
+        <span id="gesture-label"></span>
+        <span id="gesture-action"></span>
+        <span class="gesture-legend">POINT=MOVE FIST=HIT ✌️=BRIDGE</span>
+    </div>
+</div>
+
+<!-- ===== WORLD POPULATIONS PANEL (Rappterbook-style) ===== -->
+<div id="world-populations">
+    <div class="wp-title">WORLDS</div>
+    <div id="wp-list"></div>
+</div>
+
+<!-- ===== UNIVERSE INFO CARD ===== -->
+<div id="universe-card">
+    <div class="uc-inner">
+        <div class="uc-label">UNIVERSE STATE</div>
+        <div class="uc-text" id="uc-text">---</div>
+        <div class="uc-meta" id="uc-meta"></div>
+    </div>
+</div>
+
+<!-- ===== RELATIONSHIP LEGEND ===== -->
+<div id="relationship-legend">
+    <div class="rl-item"><span>same-world</span><div class="rl-line" style="background:#3fb950;"></div></div>
+    <div class="rl-item"><span>cross-world</span><div class="rl-line" style="background:#58a6ff;"></div></div>
+    <div class="rl-item"><span>combat</span><div class="rl-line" style="background:#f85149;"></div></div>
+</div>
+
+<!-- ===== REFRESH TIMER ===== -->
+<div id="refresh-timer"></div>
 
 <!-- ===== TOAST NOTIFICATIONS ===== -->
 <div class="toast-container" id="toast-container"></div>
@@ -2121,6 +2423,175 @@ function seededRandom(seed) {
     };
 }
 
+// ──── 2D Gradient Noise (Perlin-style) ────
+function createNoise2D(seed) {
+    const rng = seededRandom(String(seed));
+    const perm = new Uint8Array(512);
+    const gx = new Float32Array(256);
+    const gy = new Float32Array(256);
+    for (let i = 0; i < 256; i++) {
+        perm[i] = i;
+        const a = rng() * Math.PI * 2;
+        gx[i] = Math.cos(a); gy[i] = Math.sin(a);
+    }
+    for (let i = 255; i > 0; i--) {
+        const j = (rng() * (i + 1)) | 0;
+        const t = perm[i]; perm[i] = perm[j]; perm[j] = t;
+    }
+    for (let i = 0; i < 256; i++) perm[i + 256] = perm[i];
+    function fade(t) { return t * t * t * (t * (t * 6 - 15) + 10); }
+    function noise(x, y) {
+        const xi = Math.floor(x) & 255, yi = Math.floor(y) & 255;
+        const xf = x - Math.floor(x), yf = y - Math.floor(y);
+        const u = fade(xf), v = fade(yf);
+        const p00 = perm[perm[xi] + yi], p10 = perm[perm[xi + 1] + yi];
+        const p01 = perm[perm[xi] + yi + 1], p11 = perm[perm[xi + 1] + yi + 1];
+        const d00 = gx[p00] * xf + gy[p00] * yf;
+        const d10 = gx[p10] * (xf - 1) + gy[p10] * yf;
+        const d01 = gx[p01] * xf + gy[p01] * (yf - 1);
+        const d11 = gx[p11] * (xf - 1) + gy[p11] * (yf - 1);
+        return (d00 + u * (d10 - d00)) + v * ((d01 + u * (d11 - d01)) - (d00 + u * (d10 - d00)));
+    }
+    return {
+        noise: noise,
+        fbm: function(x, y, oct, lac, gain) {
+            oct = oct || 4; lac = lac || 2; gain = gain || 0.5;
+            var s = 0, a = 1, f = 1, m = 0;
+            for (var i = 0; i < oct; i++) { s += noise(x * f, y * f) * a; m += a; a *= gain; f *= lac; }
+            return s / m;
+        },
+        ridged: function(x, y, oct, lac, gain) {
+            oct = oct || 4; lac = lac || 2; gain = gain || 0.5;
+            var s = 0, a = 1, f = 1, m = 0;
+            for (var i = 0; i < oct; i++) { s += (1 - Math.abs(noise(x * f, y * f))) * a; m += a; a *= gain; f *= lac; }
+            return s / m;
+        }
+    };
+}
+
+// ──── Biome Terrain Profiles ────
+const BIOME_PROFILES = {
+    Terra: {
+        noiseScale: 8, octaves: 5, lacunarity: 2, gain: 0.45, heightScale: 5,
+        color: function(t, h) {
+            if (h < 0.3) return [0.12, 0.28, 0.15];
+            if (t < 0.35) return [0.15, 0.38, 0.12];
+            if (t < 0.55) return [0.22, 0.45, 0.16];
+            if (t < 0.75) return [0.42, 0.34, 0.18];
+            return [0.55, 0.52, 0.48];
+        }
+    },
+    Volcanic: {
+        noiseScale: 6, octaves: 4, lacunarity: 2.5, gain: 0.4, heightScale: 8,
+        color: function(t, h) {
+            if (h < 0.5) return [0.6, 0.12, 0.0];
+            if (t < 0.3) return [0.12, 0.06, 0.04];
+            if (t < 0.6) return [0.18, 0.1, 0.06];
+            return [0.28, 0.14, 0.08];
+        }
+    },
+    Desert: {
+        noiseScale: 5, octaves: 3, lacunarity: 2, gain: 0.55, heightScale: 6,
+        color: function(t, h) {
+            if (t < 0.3) return [0.72, 0.56, 0.32];
+            if (t < 0.5) return [0.82, 0.66, 0.4];
+            if (t < 0.7) return [0.88, 0.72, 0.46];
+            return [0.65, 0.5, 0.3];
+        }
+    },
+    Crystal: {
+        noiseScale: 7, octaves: 5, lacunarity: 2, gain: 0.5, heightScale: 4,
+        color: function(t, h) {
+            if (h < 0.3) return [0.45, 0.68, 0.78];
+            if (t < 0.4) return [0.55, 0.75, 0.85];
+            if (t < 0.7) return [0.72, 0.84, 0.92];
+            return [0.88, 0.92, 0.97];
+        }
+    },
+    Abyss: {
+        noiseScale: 6, octaves: 4, lacunarity: 2.2, gain: 0.45, heightScale: 6,
+        color: function(t, h) {
+            if (h < -1) return [0.15, 0.0, 0.22];
+            if (t < 0.3) return [0.06, 0.04, 0.1];
+            if (t < 0.6) return [0.1, 0.06, 0.15];
+            return [0.15, 0.08, 0.22];
+        }
+    }
+};
+
+// ──── World Seed System (data sloshing → terrain) ────
+const WorldSeed = {
+    _overrides: {},
+
+    init: function() {
+        try {
+            var s = localStorage.getItem('rappterverse-seeds');
+            if (s) this._overrides = JSON.parse(s);
+        } catch(e) {}
+    },
+
+    _hash: function(str) {
+        var h = 0;
+        for (var i = 0; i < str.length; i++) h = ((h << 5) - h + str.charCodeAt(i)) | 0;
+        return h;
+    },
+
+    getSeed: function(worldId) {
+        if (this._overrides[worldId] !== undefined) return this._overrides[worldId];
+        return this.compute(worldId);
+    },
+
+    compute: function(worldId) {
+        var gs = GameState.data.gameState || {};
+        var ws = gs.worlds && gs.worlds[worldId] ? gs.worlds[worldId] : {};
+        var fc = GameState.data.frameCounter || {};
+        var frame = fc.frame || 0;
+        var pop = ws.population || 0;
+        var trend = (gs.economy && gs.economy.market_trend) ? gs.economy.market_trend : 'stable';
+        // Universe-level: frame epoch shifts all worlds
+        var h = this._hash(worldId + '-terrain-v2');
+        h = (h ^ ((Math.floor(frame / 12) * 2654435761) | 0)) | 0;
+        // Planet-level: population shapes local terrain
+        h = (h ^ ((Math.floor(pop / 5) * 40503) | 0)) | 0;
+        // Economy-level: market trend shifts palette
+        h = (h ^ this._hash(trend)) | 0;
+        return Math.abs(h);
+    },
+
+    setSeed: function(worldId, seed) {
+        this._overrides[worldId] = seed;
+        try { localStorage.setItem('rappterverse-seeds', JSON.stringify(this._overrides)); } catch(e) {}
+    },
+
+    clearSeed: function(worldId) {
+        delete this._overrides[worldId];
+        try { localStorage.setItem('rappterverse-seeds', JSON.stringify(this._overrides)); } catch(e) {}
+    },
+
+    exportWorld: function(worldId) {
+        var w = WORLDS[worldId];
+        var gs = GameState.data.gameState || {};
+        var fc = GameState.data.frameCounter || {};
+        return {
+            version: 1, worldId: worldId, seed: this.getSeed(worldId),
+            name: w.name, biome: w.biome,
+            exportedAt: new Date().toISOString(),
+            state: {
+                frame: fc.frame || 0,
+                population: (gs.worlds && gs.worlds[worldId]) ? gs.worlds[worldId].population : 0,
+                economy: (gs.economy && gs.economy.market_trend) ? gs.economy.market_trend : 'stable',
+                weather: (gs.worlds && gs.worlds[worldId]) ? gs.worlds[worldId].weather : 'clear'
+            }
+        };
+    },
+
+    importWorld: function(json) {
+        if (!json || !json.worldId || json.seed === undefined) return null;
+        this.setSeed(json.worldId, json.seed);
+        return json.worldId;
+    }
+};
+
 // === js/state.js ===
 // Game State Machine
 const GameState = {
@@ -2142,6 +2613,7 @@ const GameState = {
         actions: [],
         npcs: [],
         gameState: {},
+        frameCounter: {},
         worldConfigs: {},
         worldObjects: {}
     },
@@ -2209,7 +2681,7 @@ const DataManager = {
     },
 
     async fetchAllState() {
-        const [agents, chat, actions, npcs, gameState,
+        const [agents, chat, actions, npcs, gameState, frameCounter,
                hubConf, arenaConf, marketConf, galleryConf,
                hubObj, arenaObj, marketObj, galleryObj] = await Promise.allSettled([
             this.fetchJSON('state/agents.json'),
@@ -2217,6 +2689,7 @@ const DataManager = {
             this.fetchJSON('state/actions.json'),
             this.fetchJSON('state/npcs.json'),
             this.fetchJSON('state/game_state.json'),
+            this.fetchJSON('state/frame_counter.json'),
             this.fetchJSON('worlds/hub/config.json'),
             this.fetchJSON('worlds/arena/config.json'),
             this.fetchJSON('worlds/marketplace/config.json'),
@@ -2246,6 +2719,7 @@ const DataManager = {
         }
         const n = val(npcs); if (n?.npcs) GameState.data.npcs = n.npcs;
         const gs = val(gameState); if (gs) GameState.data.gameState = gs;
+        const fc = val(frameCounter); if (fc) GameState.data.frameCounter = fc;
 
         GameState.data.worldConfigs = {
             hub: val(hubConf) || {}, arena: val(arenaConf) || {},
@@ -3121,6 +3595,7 @@ const Boot = {
             GameState.setMode('galaxy');
             Galaxy.init();
             HUD.show();
+            HUD.showPanels();
             DataManager.startPolling();
 
             // Deep link: skip galaxy, jump to agent's world
@@ -4562,49 +5037,98 @@ const Landing = {
 };
 
 // === js/world-terrain.js ===
-// World Terrain — Ground, Biome Objects, Particles, Lighting
+// World Terrain — Seed-Driven Procedural Ground, Biome Objects, Particles, Lighting
 const WorldTerrain = {
     particles: null,
-
     weatherType: null,
     weatherParticles: null,
+    _noise: null,
+    _biome: null,
+    _terrainSize: 0,
+    _profile: null,
 
     build(scene, w, worldId) {
-        this.buildGround(scene, w);
-        this.buildLighting(scene, w);
+        const seed = WorldSeed.getSeed(worldId);
+        this._noise = createNoise2D(seed);
+        this._biome = w.biome;
+        this._terrainSize = Math.max(w.bounds.x, w.bounds.z) * 2 + 40;
+        this._profile = BIOME_PROFILES[w.biome];
+
+        this.buildGround(scene, w, worldId);
+        this.buildLighting(scene, w, worldId);
         this.particles = this.spawnParticles(scene, w);
         this.spawnBiomeObjects(scene, w, worldId);
+        this.spawnBiomeFeatures(scene, w, worldId);
         this.initWeather(scene, w, worldId);
     },
 
-    buildGround(scene, w) {
-        // Terrain plane with displacement
-        const size = Math.max(w.bounds.x, w.bounds.z) * 2 + 40;
-        const geo = new THREE.PlaneGeometry(size, size, 128, 128);
-        const positions = geo.attributes.position.array;
-        const rng = seededRandom(w.name + '-ground');
-        for (let i = 0; i < positions.length; i += 3) {
-            const x = positions[i], z = positions[i + 1];
-            const dist = Math.sqrt(x * x + z * z);
-            const edge = Math.min(dist / (size * 0.3), 1);
-            positions[i + 2] = rng() * 4 * edge;
+    // ── Height sampling for player terrain following ──
+    getHeight(wx, wz) {
+        if (!this._noise || !this._profile) return 0;
+        const p = this._profile, s = this._terrainSize;
+        const nx = wx / s * p.noiseScale, nz = wz / s * p.noiseScale;
+        let h = this._rawHeight(nx, nz);
+        const d = Math.sqrt(wx * wx + wz * wz);
+        h *= Math.min(1, Math.max(0, (d - 12) / 20));
+        h *= Math.max(0, 1 - Math.max(Math.abs(wx), Math.abs(wz)) / (s * 0.48));
+        return h;
+    },
+
+    _rawHeight(nx, nz) {
+        const n = this._noise, p = this._profile, b = this._biome;
+        const base = n.fbm(nx, nz, p.octaves, p.lacunarity, p.gain);
+        if (b === 'Volcanic') return Math.abs(base) * p.heightScale;
+        if (b === 'Abyss') return (base - n.ridged(nx * 0.5, nz * 0.5, 3) * 0.5) * p.heightScale;
+        if (b === 'Desert') return (base * 0.5 + 0.5) * p.heightScale;
+        if (b === 'Crystal') return (base + n.ridged(nx * 1.5, nz * 1.5, 3) * 0.3) * p.heightScale;
+        return base * p.heightScale;
+    },
+
+    // ── Ground mesh with vertex-colored height map ──
+    buildGround(scene, w, worldId) {
+        const size = this._terrainSize;
+        const seg = 160;
+        const geo = new THREE.PlaneGeometry(size, size, seg, seg);
+        const pos = geo.attributes.position.array;
+        const vc = pos.length / 3;
+        const colors = new Float32Array(vc * 3);
+        const p = this._profile;
+
+        let maxH = 0.01;
+        for (let i = 0; i < vc; i++) {
+            const x = pos[i * 3], y = pos[i * 3 + 1];
+            const nx = x / size * p.noiseScale, ny = y / size * p.noiseScale;
+            let h = this._rawHeight(nx, ny);
+            const dist = Math.sqrt(x * x + y * y);
+            h *= Math.min(1, Math.max(0, (dist - 12) / 20));
+            h *= Math.max(0, 1 - Math.max(Math.abs(x), Math.abs(y)) / (size * 0.48));
+            pos[i * 3 + 2] = h;
+            if (Math.abs(h) > maxH) maxH = Math.abs(h);
         }
+
+        for (let i = 0; i < vc; i++) {
+            const h = pos[i * 3 + 2];
+            const t = (h / maxH + 1) * 0.5;
+            const c = p.color(t, h);
+            colors[i * 3] = c[0]; colors[i * 3 + 1] = c[1]; colors[i * 3 + 2] = c[2];
+        }
+
+        geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
         geo.computeVertexNormals();
 
         const mat = new THREE.MeshStandardMaterial({
-            color: w.floor, roughness: 0.9, metalness: 0.1,
-            transparent: true, opacity: 0.85, flatShading: true
+            vertexColors: true, roughness: 0.92, metalness: 0.08, flatShading: true
         });
         const ground = new THREE.Mesh(geo, mat);
         ground.rotation.x = -Math.PI / 2;
         ground.position.y = -0.05;
         scene.add(ground);
 
-        // Grid
+        // Subtle grid
         const gridSize = Math.max(w.bounds.x, w.bounds.z) * 2 + 2;
         const divisions = Math.min(gridSize, 200);
         const grid = new THREE.GridHelper(gridSize, divisions, w.grid, new THREE.Color(w.grid).multiplyScalar(0.3));
-        grid.material.opacity = 0.15;
+        grid.material.opacity = 0.08;
         grid.material.transparent = true;
         scene.add(grid);
 
@@ -4616,27 +5140,45 @@ const WorldTerrain = {
         scene.add(boundary);
     },
 
-    buildLighting(scene, w) {
+    // ── Lighting (biome-tuned) ──
+    buildLighting(scene, w, worldId) {
         const ambient = new THREE.AmbientLight(0x404060, 0.6);
         scene.add(ambient);
-
         const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
         dirLight.position.set(50, 80, 50);
         scene.add(dirLight);
-
         const pointLight = new THREE.PointLight(w.accent, 1.5, 300);
         pointLight.position.set(0, 30, 0);
         scene.add(pointLight);
 
-        // Day/night from game state
+        if (w.biome === 'Volcanic') {
+            const lava = new THREE.PointLight(0xff4400, 1.0, 200);
+            lava.position.set(0, 2, 0);
+            scene.add(lava);
+            dirLight.color.set(0xffaa88);
+        } else if (w.biome === 'Abyss') {
+            ambient.intensity = 0.3;
+            dirLight.intensity = 0.4;
+            dirLight.color.set(0x6644aa);
+        } else if (w.biome === 'Crystal') {
+            const glow = new THREE.PointLight(0x00ffaa, 0.8, 250);
+            glow.position.set(0, 15, 0);
+            scene.add(glow);
+        } else if (w.biome === 'Desert') {
+            dirLight.color.set(0xffeedd);
+            dirLight.intensity = 1.0;
+            ambient.color.set(0x605040);
+        }
+
         const worldState = GameState.data.gameState?.worlds?.[GameState.currentWorld];
         if (worldState?.time_of_day === 'night') {
-            ambient.intensity = 0.2;
-            dirLight.intensity = 0.3;
+            ambient.intensity *= 0.4;
+            dirLight.intensity *= 0.4;
             dirLight.color.set(0x6666aa);
         }
     },
 
+    // ── Ambient particles ──
     spawnParticles(scene, w) {
         const count = 800;
         const geo = new THREE.BufferGeometry();
@@ -4653,82 +5195,558 @@ const WorldTerrain = {
             transparent: true, opacity: 0.35,
             blending: THREE.AdditiveBlending, sizeAttenuation: true
         });
-        const particles = new THREE.Points(geo, mat);
-        scene.add(particles);
-        return particles;
+        const pts = new THREE.Points(geo, mat);
+        scene.add(pts);
+        return pts;
     },
 
+    // ──────────────────────────────────────────────────────
+    //  BIOME OBJECTS — unique per biome, seed-driven
+    // ──────────────────────────────────────────────────────
     spawnBiomeObjects(scene, w, worldId) {
-        const rng = seededRandom(worldId + '-biome');
-        const count = 200;
-        const laneExclusion = 8; // Don't place objects on lanes
+        const seed = WorldSeed.getSeed(worldId);
+        const rng = seededRandom(seed + '-objects');
+        const count = 250;
+        const laneExclusion = 8;
 
         for (let i = 0; i < count; i++) {
             const x = (rng() - 0.5) * w.bounds.x * 2;
             const z = (rng() - 0.5) * w.bounds.z * 2;
+            if (typeof WorldLanes !== 'undefined' && WorldLanes.isNearLane && WorldLanes.isNearLane(x, z, laneExclusion)) continue;
+            if (Math.sqrt(x * x + z * z) < 10) continue;
 
-            // Skip if too close to any lane path
-            if (typeof WorldLanes !== 'undefined' && WorldLanes.isNearLane(x, z, laneExclusion)) continue;
-
+            const y = this.getHeight(x, z);
             let obj;
-            if (w.biome === 'Terra' || w.biome === 'Crystal') {
-                if (rng() > 0.4) {
-                    // Trees
-                    obj = new THREE.Group();
-                    const trunkGeo = new THREE.CylinderGeometry(0.3, 0.5, 2 + rng() * 3, 6);
-                    const trunkMat = new THREE.MeshStandardMaterial({ color: 0x664422, roughness: 0.9 });
-                    const trunk = new THREE.Mesh(trunkGeo, trunkMat);
-                    trunk.position.y = 1 + rng();
-                    obj.add(trunk);
-                    const canopySize = 1.5 + rng() * 2;
-                    const canopyGeo = new THREE.SphereGeometry(canopySize, 6, 5);
-                    const canopyMat = new THREE.MeshStandardMaterial({
-                        color: w.biome === 'Crystal' ? 0x44ddcc : 0x228833,
-                        roughness: 0.8, flatShading: true
-                    });
-                    const canopy = new THREE.Mesh(canopyGeo, canopyMat);
-                    canopy.position.y = 2.5 + rng() * 2;
-                    obj.add(canopy);
-                } else {
-                    const size = 0.5 + rng() * 1.5;
-                    const rockGeo = new THREE.DodecahedronGeometry(size, 0);
-                    const rockMat = new THREE.MeshStandardMaterial({ color: 0x777777, roughness: 0.95, flatShading: true });
-                    obj = new THREE.Mesh(rockGeo, rockMat);
-                    obj.position.y = size * 0.3;
-                }
-            } else if (w.biome === 'Volcanic') {
-                // Lava rocks and spires
-                const size = 0.8 + rng() * 2;
-                const geo = rng() > 0.5
-                    ? new THREE.ConeGeometry(size * 0.5, size * 2, 5)
-                    : new THREE.DodecahedronGeometry(size, 0);
-                const mat = new THREE.MeshStandardMaterial({
-                    color: 0x332211, emissive: 0xff4400,
-                    emissiveIntensity: rng() * 0.3, roughness: 0.95, flatShading: true
-                });
-                obj = new THREE.Mesh(geo, mat);
-                obj.position.y = size * 0.4;
-            } else {
-                // Desert — sand dunes / cacti
-                const size = 0.6 + rng() * 1.5;
-                const geo = new THREE.CylinderGeometry(size * 0.3, size * 0.5, size * 2, 6);
-                const mat = new THREE.MeshStandardMaterial({ color: 0xaaaa66, roughness: 0.95, flatShading: true });
-                obj = new THREE.Mesh(geo, mat);
-                obj.position.y = size;
-            }
+            if (w.biome === 'Terra') obj = this._terraObj(rng);
+            else if (w.biome === 'Volcanic') obj = this._volcanicObj(rng);
+            else if (w.biome === 'Desert') obj = this._desertObj(rng);
+            else if (w.biome === 'Crystal') obj = this._crystalObj(rng);
+            else if (w.biome === 'Abyss') obj = this._abyssObj(rng);
+            if (!obj) continue;
 
             obj.position.x = x;
+            obj.position.y = y;
             obj.position.z = z;
             obj.rotation.y = rng() * Math.PI * 2;
             scene.add(obj);
         }
     },
 
+    // ── Terra: trees, rocks, bushes, flowers, grass ──
+    _terraObj(rng) {
+        const roll = rng();
+        if (roll < 0.35) {
+            const g = new THREE.Group();
+            const trunkH = 2 + rng() * 4;
+            const trunk = new THREE.Mesh(
+                new THREE.CylinderGeometry(0.15 + rng() * 0.15, 0.2 + rng() * 0.2, trunkH, 6),
+                new THREE.MeshStandardMaterial({ color: 0x5a3a1a, roughness: 0.95 })
+            );
+            trunk.position.y = trunkH / 2;
+            g.add(trunk);
+            const canopyR = 1.2 + rng() * 2.5;
+            const ct = rng();
+            const geo = ct < 0.4 ? new THREE.SphereGeometry(canopyR, 7, 5)
+                      : ct < 0.7 ? new THREE.ConeGeometry(canopyR, canopyR * 2, 6)
+                      : new THREE.DodecahedronGeometry(canopyR, 0);
+            const greens = [0x1a6630, 0x228833, 0x2a7744, 0x1a5528, 0x338844];
+            const canopy = new THREE.Mesh(geo,
+                new THREE.MeshStandardMaterial({ color: greens[(rng() * greens.length) | 0], roughness: 0.85, flatShading: true })
+            );
+            canopy.position.y = trunkH + canopyR * 0.3;
+            g.add(canopy);
+            return g;
+        }
+        if (roll < 0.52) {
+            const s = 0.4 + rng() * 1.8;
+            const grays = [0x667766, 0x778877, 0x556655, 0x889988];
+            const rock = new THREE.Mesh(
+                new THREE.DodecahedronGeometry(s, 0),
+                new THREE.MeshStandardMaterial({ color: grays[(rng() * 4) | 0], roughness: 0.95, flatShading: true })
+            );
+            rock.position.y = s * 0.3;
+            return rock;
+        }
+        if (roll < 0.68) {
+            const s = 0.6 + rng() * 1.2;
+            const bush = new THREE.Mesh(
+                new THREE.SphereGeometry(s, 5, 4),
+                new THREE.MeshStandardMaterial({ color: [0x2a6633, 0x338844, 0x227733][(rng() * 3) | 0], roughness: 0.9, flatShading: true })
+            );
+            bush.position.y = s * 0.4; bush.scale.y = 0.6;
+            return bush;
+        }
+        if (roll < 0.84) {
+            const g = new THREE.Group();
+            const n = 2 + (rng() * 4) | 0;
+            const fc = [0xff4488, 0xffcc00, 0xff8844, 0xaa44ff, 0xff6666, 0x44aaff];
+            for (let j = 0; j < n; j++) {
+                const sh = 0.3 + rng() * 0.5;
+                const stem = new THREE.Mesh(
+                    new THREE.CylinderGeometry(0.02, 0.02, sh, 3),
+                    new THREE.MeshStandardMaterial({ color: 0x336622 })
+                );
+                stem.position.set((rng() - 0.5) * 0.8, sh / 2, (rng() - 0.5) * 0.8);
+                g.add(stem);
+                const petal = new THREE.Mesh(
+                    new THREE.SphereGeometry(0.08 + rng() * 0.1, 4, 3),
+                    new THREE.MeshStandardMaterial({ color: fc[(rng() * fc.length) | 0], emissive: 0x220000, emissiveIntensity: 0.1 })
+                );
+                petal.position.copy(stem.position); petal.position.y += sh / 2 + 0.05;
+                g.add(petal);
+            }
+            return g;
+        }
+        // Grass tuft
+        const g = new THREE.Group();
+        const n = 3 + (rng() * 5) | 0;
+        for (let j = 0; j < n; j++) {
+            const blade = new THREE.Mesh(
+                new THREE.ConeGeometry(0.03, 0.3 + rng() * 0.4, 3),
+                new THREE.MeshStandardMaterial({ color: 0x44aa44, flatShading: true })
+            );
+            blade.position.set((rng() - 0.5) * 0.4, 0.15, (rng() - 0.5) * 0.4);
+            blade.rotation.z = (rng() - 0.5) * 0.3;
+            g.add(blade);
+        }
+        return g;
+    },
+
+    // ── Volcanic: obsidian spires, basalt columns, lava rocks, ember pools ──
+    _volcanicObj(rng) {
+        const roll = rng();
+        if (roll < 0.28) {
+            const h = 2 + rng() * 6;
+            const spire = new THREE.Mesh(
+                new THREE.ConeGeometry(0.3 + rng() * 0.8, h, 5),
+                new THREE.MeshStandardMaterial({
+                    color: 0x111118, emissive: 0xff4400,
+                    emissiveIntensity: rng() * 0.25, roughness: 0.3, metalness: 0.7, flatShading: true
+                })
+            );
+            spire.position.y = h / 2;
+            return spire;
+        }
+        if (roll < 0.48) {
+            const h = 1 + rng() * 3;
+            const col = new THREE.Mesh(
+                new THREE.CylinderGeometry(0.4 + rng() * 0.4, 0.5 + rng() * 0.4, h, 6),
+                new THREE.MeshStandardMaterial({ color: 0x1a1a1a, roughness: 0.95, flatShading: true })
+            );
+            col.position.y = h / 2;
+            return col;
+        }
+        if (roll < 0.68) {
+            const s = 0.5 + rng() * 1.5;
+            const rock = new THREE.Mesh(
+                new THREE.DodecahedronGeometry(s, 0),
+                new THREE.MeshStandardMaterial({
+                    color: 0x221100, emissive: 0xff3300,
+                    emissiveIntensity: rng() * 0.2, roughness: 0.9, flatShading: true
+                })
+            );
+            rock.position.y = s * 0.4;
+            return rock;
+        }
+        if (roll < 0.84) {
+            const r = 1 + rng() * 2;
+            const pool = new THREE.Mesh(
+                new THREE.CircleGeometry(r, 8),
+                new THREE.MeshBasicMaterial({ color: 0xff4400, transparent: true, opacity: 0.5 + rng() * 0.3, side: THREE.DoubleSide })
+            );
+            pool.rotation.x = -Math.PI / 2;
+            pool.position.y = 0.02;
+            return pool;
+        }
+        // Smoke vent
+        const vent = new THREE.Mesh(
+            new THREE.CylinderGeometry(0.3, 0.6, 0.8, 6),
+            new THREE.MeshStandardMaterial({ color: 0x222222, roughness: 0.95, flatShading: true })
+        );
+        vent.position.y = 0.4;
+        return vent;
+    },
+
+    // ── Desert: cacti, sandstone, dead trees, tumbleweeds, rocks ──
+    _desertObj(rng) {
+        const roll = rng();
+        if (roll < 0.25) {
+            const g = new THREE.Group();
+            const h = 1.5 + rng() * 3;
+            const trunk = new THREE.Mesh(
+                new THREE.CylinderGeometry(0.18, 0.22, h, 6),
+                new THREE.MeshStandardMaterial({ color: 0x3a7733, roughness: 0.9 })
+            );
+            trunk.position.y = h / 2;
+            g.add(trunk);
+            if (rng() > 0.4) {
+                const aH = 0.8 + rng() * 1.2;
+                const arm = new THREE.Mesh(
+                    new THREE.CylinderGeometry(0.1, 0.13, aH, 5),
+                    new THREE.MeshStandardMaterial({ color: 0x3a7733, roughness: 0.9 })
+                );
+                arm.position.set(0.28, h * 0.45, 0); arm.rotation.z = -0.8 - rng() * 0.5;
+                g.add(arm);
+            }
+            if (rng() > 0.5) {
+                const aH = 0.6 + rng();
+                const arm = new THREE.Mesh(
+                    new THREE.CylinderGeometry(0.08, 0.11, aH, 5),
+                    new THREE.MeshStandardMaterial({ color: 0x3a7733, roughness: 0.9 })
+                );
+                arm.position.set(-0.22, h * 0.35, 0); arm.rotation.z = 0.7 + rng() * 0.5;
+                g.add(arm);
+            }
+            return g;
+        }
+        if (roll < 0.45) {
+            const g = new THREE.Group();
+            const layers = 2 + (rng() * 3) | 0;
+            let y = 0;
+            const cols = [0xbb8844, 0xcc9955, 0xaa7733];
+            for (let j = 0; j < layers; j++) {
+                const bw = 0.8 + rng() * 2 - j * 0.2;
+                const bh = 0.5 + rng();
+                const block = new THREE.Mesh(
+                    new THREE.BoxGeometry(bw, bh, bw * (0.6 + rng() * 0.6)),
+                    new THREE.MeshStandardMaterial({ color: cols[(rng() * 3) | 0], roughness: 0.95, flatShading: true })
+                );
+                block.position.y = y + bh / 2; block.rotation.y = rng() * 0.3;
+                g.add(block); y += bh;
+            }
+            return g;
+        }
+        if (roll < 0.6) {
+            const g = new THREE.Group();
+            const h = 1.5 + rng() * 3;
+            const trunk = new THREE.Mesh(
+                new THREE.CylinderGeometry(0.08, 0.18, h, 5),
+                new THREE.MeshStandardMaterial({ color: 0x998877, roughness: 0.95 })
+            );
+            trunk.position.y = h / 2; g.add(trunk);
+            for (let j = 0; j < 2 + (rng() * 3 | 0); j++) {
+                const bLen = 0.5 + rng();
+                const branch = new THREE.Mesh(
+                    new THREE.CylinderGeometry(0.03, 0.06, bLen, 3),
+                    new THREE.MeshStandardMaterial({ color: 0x887766, roughness: 0.95 })
+                );
+                branch.position.y = h * (0.4 + rng() * 0.5);
+                branch.rotation.z = (rng() - 0.5) * 1.5; branch.rotation.x = (rng() - 0.5) * 0.5;
+                g.add(branch);
+            }
+            return g;
+        }
+        if (roll < 0.78) {
+            const s = 0.3 + rng() * 0.6;
+            const tw = new THREE.Mesh(
+                new THREE.IcosahedronGeometry(s, 0),
+                new THREE.MeshStandardMaterial({ color: 0x887744, roughness: 0.95, flatShading: true, transparent: true, opacity: 0.8 })
+            );
+            tw.position.y = s;
+            return tw;
+        }
+        // Desert rock
+        const s = 0.5 + rng() * 1.5;
+        const rock = new THREE.Mesh(
+            new THREE.DodecahedronGeometry(s, 0),
+            new THREE.MeshStandardMaterial({ color: [0xaa8855, 0xbb9966, 0x997744][(rng() * 3) | 0], roughness: 0.95, flatShading: true })
+        );
+        rock.position.y = s * 0.3;
+        return rock;
+    },
+
+    // ── Crystal: pillars, clusters, ice blocks, snow rocks, glowing orbs ──
+    _crystalObj(rng) {
+        const roll = rng();
+        if (roll < 0.28) {
+            const h = 2 + rng() * 5;
+            const r = 0.3 + rng() * 0.6;
+            const cols = [0x44ddff, 0xff44dd, 0xaaffcc, 0x88ccff, 0xddaaff];
+            const pillar = new THREE.Mesh(
+                new THREE.CylinderGeometry(r * 0.3, r, h, 6),
+                new THREE.MeshStandardMaterial({
+                    color: cols[(rng() * cols.length) | 0], emissive: 0x224466, emissiveIntensity: 0.2,
+                    roughness: 0.2, metalness: 0.6, flatShading: true, transparent: true, opacity: 0.85
+                })
+            );
+            pillar.position.y = h / 2;
+            return pillar;
+        }
+        if (roll < 0.48) {
+            const g = new THREE.Group();
+            const n = 3 + (rng() * 4) | 0;
+            const cols = [0x44eeff, 0xcc44ff, 0x88ffaa, 0xff88cc];
+            for (let j = 0; j < n; j++) {
+                const sh = 0.5 + rng() * 2;
+                const sr = 0.15 + rng() * 0.3;
+                const shard = new THREE.Mesh(
+                    new THREE.OctahedronGeometry(sr, 0),
+                    new THREE.MeshStandardMaterial({
+                        color: cols[(rng() * cols.length) | 0], emissive: 0x113355, emissiveIntensity: 0.15,
+                        roughness: 0.15, metalness: 0.7, flatShading: true, transparent: true, opacity: 0.8
+                    })
+                );
+                shard.scale.y = sh / sr;
+                shard.position.set((rng() - 0.5), sh * 0.4, (rng() - 0.5));
+                shard.rotation.set(rng() * 0.3, rng() * Math.PI, rng() * 0.3);
+                g.add(shard);
+            }
+            return g;
+        }
+        if (roll < 0.63) {
+            const s = 0.5 + rng() * 1.5;
+            const block = new THREE.Mesh(
+                new THREE.BoxGeometry(s, s * (0.5 + rng()), s * (0.5 + rng())),
+                new THREE.MeshStandardMaterial({ color: 0x88ccff, roughness: 0.1, metalness: 0.3, transparent: true, opacity: 0.5 + rng() * 0.3 })
+            );
+            block.position.y = s * 0.3; block.rotation.y = rng() * Math.PI;
+            return block;
+        }
+        if (roll < 0.8) {
+            const s = 0.4 + rng() * 1.3;
+            const rock = new THREE.Mesh(
+                new THREE.DodecahedronGeometry(s, 0),
+                new THREE.MeshStandardMaterial({ color: 0xccddee, roughness: 0.85, flatShading: true })
+            );
+            rock.position.y = s * 0.3;
+            return rock;
+        }
+        // Glowing orb
+        const s = 0.2 + rng() * 0.5;
+        const cols = [0x00ffaa, 0xff00ff, 0x44aaff, 0xffaa00];
+        const orb = new THREE.Mesh(
+            new THREE.SphereGeometry(s, 8, 6),
+            new THREE.MeshStandardMaterial({
+                color: cols[(rng() * cols.length) | 0],
+                emissive: cols[(rng() * cols.length) | 0], emissiveIntensity: 0.5, roughness: 0.1
+            })
+        );
+        orb.position.y = 0.5 + rng() * 2;
+        return orb;
+    },
+
+    // ── Abyss: void pillars, shadow stones, monoliths, wisps, broken pillars ──
+    _abyssObj(rng) {
+        const roll = rng();
+        if (roll < 0.25) {
+            const h = 3 + rng() * 6;
+            const r = 0.3 + rng() * 0.5;
+            const pillar = new THREE.Mesh(
+                new THREE.CylinderGeometry(r * 0.5, r, h, 5),
+                new THREE.MeshStandardMaterial({
+                    color: 0x110022, emissive: 0x6600aa,
+                    emissiveIntensity: 0.2 + rng() * 0.3, roughness: 0.5, metalness: 0.5, flatShading: true
+                })
+            );
+            pillar.position.y = h / 2;
+            return pillar;
+        }
+        if (roll < 0.45) {
+            const s = 0.5 + rng() * 1.5;
+            const stone = new THREE.Mesh(
+                new THREE.BoxGeometry(s, s * (1 + rng()), s * (0.5 + rng() * 0.5)),
+                new THREE.MeshStandardMaterial({
+                    color: 0x0d0d15, roughness: 0.95, flatShading: true, emissive: 0x220044, emissiveIntensity: 0.05
+                })
+            );
+            stone.position.y = s * 0.5; stone.rotation.y = rng() * Math.PI;
+            return stone;
+        }
+        if (roll < 0.6) {
+            const h = 2 + rng() * 4;
+            const slab = new THREE.Mesh(
+                new THREE.BoxGeometry(0.6 + rng() * 0.4, h, 0.15),
+                new THREE.MeshStandardMaterial({
+                    color: 0x1a1a22, emissive: 0x3300aa,
+                    emissiveIntensity: 0.3, roughness: 0.7, flatShading: true
+                })
+            );
+            slab.position.y = h / 2;
+            return slab;
+        }
+        if (roll < 0.8) {
+            const s = 0.1 + rng() * 0.3;
+            const cols = [0x9900ff, 0x00ff99, 0xff0066, 0x00ccff];
+            const wisp = new THREE.Mesh(
+                new THREE.SphereGeometry(s, 6, 5),
+                new THREE.MeshBasicMaterial({
+                    color: cols[(rng() * cols.length) | 0], transparent: true, opacity: 0.6 + rng() * 0.3
+                })
+            );
+            wisp.position.y = 1 + rng() * 4;
+            return wisp;
+        }
+        // Broken pillar
+        const h = 0.8 + rng() * 2;
+        const pillar = new THREE.Mesh(
+            new THREE.CylinderGeometry(0.4 + rng() * 0.3, 0.5 + rng() * 0.3, h, 5),
+            new THREE.MeshStandardMaterial({ color: 0x15151f, roughness: 0.9, flatShading: true })
+        );
+        pillar.position.y = h / 2;
+        return pillar;
+    },
+
+    // ──────────────────────────────────────────────────────
+    //  BIOME FEATURES — large-scale unique landmarks
+    // ──────────────────────────────────────────────────────
+    spawnBiomeFeatures(scene, w, worldId) {
+        const seed = WorldSeed.getSeed(worldId);
+        const rng = seededRandom(seed + '-features');
+        const n = this._noise;
+
+        if (w.biome === 'Volcanic') {
+            // Lava rivers following noise valleys
+            for (let i = 0; i < 6; i++) {
+                const pts = [];
+                let px = (rng() - 0.5) * w.bounds.x * 1.4;
+                let pz = (rng() - 0.5) * w.bounds.z * 1.4;
+                for (let j = 0; j < 15; j++) {
+                    pts.push(new THREE.Vector3(px, 0.08, pz));
+                    px += (n.noise(px * 0.02, pz * 0.02)) * 6;
+                    pz += (n.noise(px * 0.02 + 50, pz * 0.02)) * 6;
+                }
+                if (pts.length > 3) {
+                    const curve = new THREE.CatmullRomCurve3(pts);
+                    const tube = new THREE.Mesh(
+                        new THREE.TubeGeometry(curve, 24, 0.4 + rng() * 0.8, 6, false),
+                        new THREE.MeshBasicMaterial({ color: 0xff4400, transparent: true, opacity: 0.65 })
+                    );
+                    scene.add(tube);
+                }
+            }
+        }
+
+        if (w.biome === 'Crystal') {
+            // Frozen lake patches
+            for (let i = 0; i < 5; i++) {
+                const x = (rng() - 0.5) * w.bounds.x * 1.2;
+                const z = (rng() - 0.5) * w.bounds.z * 1.2;
+                if (Math.sqrt(x * x + z * z) < 18) continue;
+                const r = 3 + rng() * 6;
+                const lake = new THREE.Mesh(
+                    new THREE.CircleGeometry(r, 12),
+                    new THREE.MeshStandardMaterial({ color: 0x88ccff, roughness: 0.05, metalness: 0.8, transparent: true, opacity: 0.5 })
+                );
+                lake.rotation.x = -Math.PI / 2;
+                lake.position.set(x, 0.1, z);
+                scene.add(lake);
+            }
+        }
+
+        if (w.biome === 'Abyss') {
+            // Floating platforms
+            for (let i = 0; i < 10; i++) {
+                const x = (rng() - 0.5) * w.bounds.x * 1.4;
+                const z = (rng() - 0.5) * w.bounds.z * 1.4;
+                const y = 3 + rng() * 8;
+                const s = 2 + rng() * 4;
+                if (Math.sqrt(x * x + z * z) < 15) continue;
+                const plat = new THREE.Mesh(
+                    new THREE.BoxGeometry(s, 0.3, s * (0.5 + rng() * 0.8)),
+                    new THREE.MeshStandardMaterial({
+                        color: 0x1a1a25, emissive: 0x220044,
+                        emissiveIntensity: 0.15, roughness: 0.85, flatShading: true
+                    })
+                );
+                plat.position.set(x, y, z); plat.rotation.y = rng() * Math.PI;
+                scene.add(plat);
+            }
+            // Void energy beams
+            for (let i = 0; i < 5; i++) {
+                const x = (rng() - 0.5) * w.bounds.x * 1.2;
+                const z = (rng() - 0.5) * w.bounds.z * 1.2;
+                if (Math.sqrt(x * x + z * z) < 20) continue;
+                const beam = new THREE.Mesh(
+                    new THREE.CylinderGeometry(0.1, 0.1, 25, 6),
+                    new THREE.MeshBasicMaterial({ color: 0x6600aa, transparent: true, opacity: 0.25 })
+                );
+                beam.position.set(x, 12.5, z);
+                scene.add(beam);
+            }
+        }
+
+        if (w.biome === 'Desert') {
+            // Oasis patches with palm trees
+            for (let i = 0; i < 3; i++) {
+                const x = (rng() - 0.5) * w.bounds.x * 1.2;
+                const z = (rng() - 0.5) * w.bounds.z * 1.2;
+                if (Math.sqrt(x * x + z * z) < 20) continue;
+                const r = 2 + rng() * 3;
+                const water = new THREE.Mesh(
+                    new THREE.CircleGeometry(r, 10),
+                    new THREE.MeshStandardMaterial({ color: 0x2288aa, roughness: 0.1, metalness: 0.5, transparent: true, opacity: 0.6 })
+                );
+                water.rotation.x = -Math.PI / 2;
+                water.position.set(x, 0.08, z);
+                scene.add(water);
+                // Palm tree
+                const palm = new THREE.Group();
+                const trunk = new THREE.Mesh(
+                    new THREE.CylinderGeometry(0.12, 0.2, 3, 6),
+                    new THREE.MeshStandardMaterial({ color: 0x7a5a2a, roughness: 0.9 })
+                );
+                trunk.position.y = 1.5; trunk.rotation.z = 0.15;
+                palm.add(trunk);
+                for (let j = 0; j < 5; j++) {
+                    const frond = new THREE.Mesh(
+                        new THREE.ConeGeometry(0.7, 1.4, 4),
+                        new THREE.MeshStandardMaterial({ color: 0x338833, roughness: 0.85, flatShading: true })
+                    );
+                    frond.position.y = 3.1; frond.rotation.z = 0.8;
+                    frond.rotation.y = j * Math.PI * 2 / 5;
+                    palm.add(frond);
+                }
+                palm.position.set(x + r * 0.8, 0, z);
+                scene.add(palm);
+            }
+        }
+
+        if (w.biome === 'Terra') {
+            // Ponds
+            for (let i = 0; i < 4; i++) {
+                const x = (rng() - 0.5) * w.bounds.x * 1.2;
+                const z = (rng() - 0.5) * w.bounds.z * 1.2;
+                if (Math.sqrt(x * x + z * z) < 20) continue;
+                const r = 2 + rng() * 4;
+                const pond = new THREE.Mesh(
+                    new THREE.CircleGeometry(r, 10),
+                    new THREE.MeshStandardMaterial({ color: 0x2266aa, roughness: 0.15, metalness: 0.3, transparent: true, opacity: 0.55 })
+                );
+                pond.rotation.x = -Math.PI / 2;
+                pond.position.set(x, 0.06, z);
+                scene.add(pond);
+            }
+            // Large landmark trees (2-3 massive trees)
+            for (let i = 0; i < 2; i++) {
+                const x = (rng() - 0.5) * w.bounds.x * 0.8;
+                const z = (rng() - 0.5) * w.bounds.z * 0.8;
+                if (Math.sqrt(x * x + z * z) < 25) continue;
+                const g = new THREE.Group();
+                const h = 8 + rng() * 4;
+                const trunk = new THREE.Mesh(
+                    new THREE.CylinderGeometry(0.4, 0.8, h, 8),
+                    new THREE.MeshStandardMaterial({ color: 0x4a2a10, roughness: 0.95 })
+                );
+                trunk.position.y = h / 2; g.add(trunk);
+                const cr = 4 + rng() * 3;
+                const canopy = new THREE.Mesh(
+                    new THREE.SphereGeometry(cr, 8, 6),
+                    new THREE.MeshStandardMaterial({ color: 0x1a5528, roughness: 0.85, flatShading: true })
+                );
+                canopy.position.y = h + cr * 0.2; canopy.scale.y = 0.6;
+                g.add(canopy);
+                g.position.set(x, this.getHeight(x, z), z);
+                scene.add(g);
+            }
+        }
+    },
+
+    // ──────────────────────────────────────────────────────
+    //  WEATHER SYSTEM (preserved from original)
+    // ──────────────────────────────────────────────────────
     update(time, delta) {
         if (this.particles) this.particles.rotation.y = time * 0.015;
         if (delta) this.updateWeather(delta);
-
-        // Update weather label
         const weatherEl = document.getElementById('weather-label');
         if (weatherEl && this.weatherType) weatherEl.textContent = this.weatherType.toUpperCase();
     },
@@ -4737,7 +5755,6 @@ const WorldTerrain = {
         const rng = seededRandom(worldId + '-weather');
         const roll = rng();
         let type = 'clear';
-
         if (w.biome === 'Terra') {
             if (roll < 0.4) type = 'clear';
             else if (roll < 0.7) type = 'rain';
@@ -4760,25 +5777,22 @@ const WorldTerrain = {
             else if (roll < 0.7) type = 'clear';
             else type = 'void particles';
         }
-
         this.weatherType = type;
-        if (type !== 'clear') {
-            this.weatherParticles = this.createWeatherParticles(scene, w, type);
-        }
+        if (type !== 'clear') this.weatherParticles = this.createWeatherParticles(scene, w, type);
     },
 
     createWeatherParticles(scene, w, type) {
         const configs = {
-            rain:           { count: 1000, color: 0xaaccff, size: 0.15, opacity: 0.5 },
-            storm:          { count: 1000, color: 0x8899cc, size: 0.2,  opacity: 0.6 },
-            snow:           { count: 800,  color: 0xffffff, size: 0.25, opacity: 0.6 },
-            sandstorm:      { count: 900,  color: 0xccaa66, size: 0.3,  opacity: 0.45 },
-            ash:            { count: 600,  color: 0x555555, size: 0.2,  opacity: 0.4 },
-            ember:          { count: 500,  color: 0xff6600, size: 0.18, opacity: 0.5 },
-            fog:            { count: 500,  color: 0xffffff, size: 2.0,  opacity: 0.15 },
-            'heat shimmer': { count: 600,  color: 0xffddaa, size: 0.3,  opacity: 0.2 },
-            aurora:         { count: 700,  color: 0x44ffaa, size: 0.4,  opacity: 0.35 },
-            'void particles': { count: 600, color: 0x6600aa, size: 0.25, opacity: 0.4 }
+            rain:             { count: 1000, color: 0xaaccff, size: 0.15, opacity: 0.5 },
+            storm:            { count: 1000, color: 0x8899cc, size: 0.2,  opacity: 0.6 },
+            snow:             { count: 800,  color: 0xffffff, size: 0.25, opacity: 0.6 },
+            sandstorm:        { count: 900,  color: 0xccaa66, size: 0.3,  opacity: 0.45 },
+            ash:              { count: 600,  color: 0x555555, size: 0.2,  opacity: 0.4 },
+            ember:            { count: 500,  color: 0xff6600, size: 0.18, opacity: 0.5 },
+            fog:              { count: 500,  color: 0xffffff, size: 2.0,  opacity: 0.15 },
+            'heat shimmer':   { count: 600,  color: 0xffddaa, size: 0.3,  opacity: 0.2 },
+            aurora:           { count: 700,  color: 0x44ffaa, size: 0.4,  opacity: 0.35 },
+            'void particles': { count: 600,  color: 0x6600aa, size: 0.25, opacity: 0.4 }
         };
         const cfg = configs[type] || configs.rain;
         const count = cfg.count;
@@ -4787,23 +5801,20 @@ const WorldTerrain = {
         const rng = seededRandom(type + '-weather-particles');
         const bx = w.bounds.x, bz = w.bounds.z;
         const maxY = (type === 'fog') ? 5 : (type === 'sandstorm' || type === 'heat shimmer') ? 8 : 30;
-
         for (let i = 0; i < count; i++) {
             pos[i * 3]     = (rng() - 0.5) * bx * 2;
             pos[i * 3 + 1] = rng() * maxY;
             pos[i * 3 + 2] = (rng() - 0.5) * bz * 2;
         }
         geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-
         const mat = new THREE.PointsMaterial({
             color: cfg.color, size: cfg.size,
             transparent: true, opacity: cfg.opacity,
-            blending: THREE.AdditiveBlending, sizeAttenuation: true,
-            depthWrite: false
+            blending: THREE.AdditiveBlending, sizeAttenuation: true, depthWrite: false
         });
         const points = new THREE.Points(geo, mat);
         points.userData.weatherType = type;
-        points.userData.bounds = { x: bx, z: bz, maxY };
+        points.userData.bounds = { x: bx, z: bz, maxY: maxY };
         scene.add(points);
         return points;
     },
@@ -4816,12 +5827,10 @@ const WorldTerrain = {
         const type = pts.userData.weatherType;
         const b = pts.userData.bounds;
         const t = performance.now() * 0.001;
-
         for (let i = 0; i < count; i++) {
             const ix = i * 3, iy = i * 3 + 1, iz = i * 3 + 2;
             if (type === 'rain' || type === 'storm') {
-                const speed = type === 'storm' ? 25 : 18;
-                pos[iy] -= speed * delta;
+                pos[iy] -= (type === 'storm' ? 25 : 18) * delta;
                 if (type === 'storm') pos[ix] += 3 * delta;
                 if (pos[iy] < 0) { pos[iy] = b.maxY; pos[ix] = (Math.random() - 0.5) * b.x * 2; }
             } else if (type === 'snow') {
@@ -4853,7 +5862,6 @@ const WorldTerrain = {
                 if (pos[iy] < 0) pos[iy] = b.maxY;
                 if (pos[iy] > b.maxY) pos[iy] = 0;
             }
-            // Wrap horizontal bounds
             if (pos[ix] > b.x) pos[ix] = -b.x;
             if (pos[ix] < -b.x) pos[ix] = b.x;
             if (pos[iz] > b.z) pos[iz] = -b.z;
@@ -5782,6 +6790,8 @@ const WorldAgents = {
     floatingTexts: [],
     interactTarget: null,
     pokeTarget: null,
+    _edgeLines: null,
+    _lastEdgeUpdate: 0,
 
     syncAgents(scene, worldId) {
         const agents = GameState.getWorldAgents(worldId);
@@ -6038,6 +7048,135 @@ const WorldAgents = {
         mesh.position.set(obj.position.x, obj.position.y || 1, obj.position.z);
         scene.add(mesh);
         this.objectMeshes.push(mesh);
+    },
+
+    // ── Agent Relationship Edges (Rappterbook constellation pattern) ──
+    updateEdges(scene, time) {
+        // Only update every 5 seconds
+        if (time - this._lastEdgeUpdate < 5) return;
+        this._lastEdgeUpdate = time;
+
+        // Remove old edges
+        if (this._edgeLines) {
+            this._edgeLines.forEach(function(l) { scene.remove(l); l.geometry.dispose(); l.material.dispose(); });
+            this._edgeLines = null;
+        }
+
+        const agents = GameState.data.agents || [];
+        if (agents.length < 2) return;
+
+        // Build position lookup for agents in this world
+        var posMap = {};
+        var worldId = GameState.currentWorld;
+        agents.forEach(function(a) {
+            if (a.world === worldId && a.position) {
+                posMap[a.id] = a.position;
+            }
+        });
+
+        var ids = Object.keys(posMap);
+        if (ids.length < 2) return;
+
+        // Build edges from recent actions (chat proximity, same-action, combat)
+        var chatEdges = [];
+        var actionEdges = [];
+        var combatEdges = [];
+
+        // Chat edges: agents who chatted recently in same world
+        var msgs = GameState.data.chat || [];
+        var worldMsgs = msgs.filter(function(m) { return m.world === worldId; });
+        var recentAuthors = [];
+        worldMsgs.slice(-30).forEach(function(m) {
+            var aid = m.author && m.author.id ? m.author.id : null;
+            if (aid && posMap[aid]) recentAuthors.push(aid);
+        });
+        // Create edges between consecutive chatters
+        for (var i = 1; i < recentAuthors.length && chatEdges.length < 80; i++) {
+            if (recentAuthors[i] !== recentAuthors[i-1]) {
+                chatEdges.push([recentAuthors[i-1], recentAuthors[i]]);
+            }
+        }
+
+        // Proximity edges: agents close to each other
+        for (var i = 0; i < ids.length && actionEdges.length < 100; i++) {
+            for (var j = i + 1; j < ids.length; j++) {
+                var a = posMap[ids[i]], b = posMap[ids[j]];
+                var dx = a.x - b.x, dz = a.z - b.z;
+                var dist = Math.sqrt(dx * dx + dz * dz);
+                if (dist < 8) actionEdges.push([ids[i], ids[j]]);
+            }
+        }
+
+        // Combat edges from game state
+        var gs = GameState.data.gameState || {};
+        var combatEvents = gs.combatEvents || [];
+        combatEvents.forEach(function(ce) {
+            var defenders = ce.defenders || [];
+            defenders.slice(0, 20).forEach(function(did) {
+                if (posMap[did] && ce.attackerId) {
+                    combatEdges.push([did, ce.attackerId || 'enemy']);
+                }
+            });
+        });
+
+        this._edgeLines = [];
+
+        // Render chat edges (green — social)
+        if (chatEdges.length > 0) {
+            var pos = [];
+            chatEdges.forEach(function(e) {
+                var a = posMap[e[0]], b = posMap[e[1]];
+                if (a && b) {
+                    pos.push(a.x, 1.5, a.z, b.x, 1.5, b.z);
+                }
+            });
+            if (pos.length > 0) {
+                var geo = new THREE.BufferGeometry();
+                geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+                var mat = new THREE.LineBasicMaterial({ color: 0x3fb950, transparent: true, opacity: 0.15 });
+                var lines = new THREE.LineSegments(geo, mat);
+                scene.add(lines);
+                this._edgeLines.push(lines);
+            }
+        }
+
+        // Render proximity edges (blue — co-located)
+        if (actionEdges.length > 0) {
+            var pos = [];
+            actionEdges.forEach(function(e) {
+                var a = posMap[e[0]], b = posMap[e[1]];
+                if (a && b) {
+                    pos.push(a.x, 1.2, a.z, b.x, 1.2, b.z);
+                }
+            });
+            if (pos.length > 0) {
+                var geo = new THREE.BufferGeometry();
+                geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+                var mat = new THREE.LineBasicMaterial({ color: 0x58a6ff, transparent: true, opacity: 0.08 });
+                var lines = new THREE.LineSegments(geo, mat);
+                scene.add(lines);
+                this._edgeLines.push(lines);
+            }
+        }
+
+        // Render combat edges (red)
+        if (combatEdges.length > 0) {
+            var pos = [];
+            combatEdges.forEach(function(e) {
+                var a = posMap[e[0]], b = posMap[e[1]];
+                if (a && b) {
+                    pos.push(a.x, 1.8, a.z, b.x, 1.8, b.z);
+                }
+            });
+            if (pos.length > 0) {
+                var geo = new THREE.BufferGeometry();
+                geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+                var mat = new THREE.LineBasicMaterial({ color: 0xf85149, transparent: true, opacity: 0.25 });
+                var lines = new THREE.LineSegments(geo, mat);
+                scene.add(lines);
+                this._edgeLines.push(lines);
+            }
+        }
     },
 
     // Defensive swarm state
@@ -7501,6 +8640,7 @@ const WorldMode = {
         this.currentWorld = worldId;
         this.active = true;
         GameState.currentWorld = worldId;
+        if (typeof WorldSeed !== 'undefined') WorldSeed.init();
 
         const w = WORLDS[worldId];
 
@@ -7571,6 +8711,15 @@ const WorldMode = {
             if (HUD.initChatFeed) HUD.initChatFeed();
             GameState.currentWorld = worldId;
         }
+        // Show seed in HUD
+        if (typeof WorldSeed !== 'undefined') {
+            const seedEl = document.getElementById('seed-value');
+            if (seedEl) seedEl.textContent = WorldSeed.getSeed(worldId);
+        }
+        // Show Rappterbook-style world panels
+        if (typeof HUD !== 'undefined' && HUD.showWorldPanels) HUD.showWorldPanels();
+        // Show mobile touch controls
+        if (typeof TouchControls !== 'undefined') { TouchControls.init(); TouchControls.show(); }
     },
 
     createPlayer(w) {
@@ -7683,6 +8832,12 @@ const WorldMode = {
         this.player.mesh.position.x = Math.max(-w.bounds.x, Math.min(w.bounds.x, this.player.mesh.position.x));
         this.player.mesh.position.z = Math.max(-w.bounds.z, Math.min(w.bounds.z, this.player.mesh.position.z));
 
+        // Follow terrain height
+        if (typeof WorldTerrain !== 'undefined' && WorldTerrain.getHeight) {
+            const terrainY = WorldTerrain.getHeight(this.player.mesh.position.x, this.player.mesh.position.z);
+            this.player.mesh.position.y += (terrainY - this.player.mesh.position.y) * 0.15;
+        }
+
         // Camera follow
         const camTarget = this.player.mesh.position.clone().add(new THREE.Vector3(0, 8, 12));
         this.camera.position.lerp(camTarget, 0.05);
@@ -7693,12 +8848,16 @@ const WorldMode = {
             this.player.ring.material.opacity = 0.2 + Math.sin(time * 3) * 0.1;
         }
 
+        // Touch controls
+        if (typeof TouchControls !== 'undefined') TouchControls.update(delta);
+
         // Sub-system updates
         WorldTerrain.update(time, delta);
         WorldLanes.updateTowerVisuals(time);
         WorldCombat.update(delta, time, this.player.mesh.position);
         WorldAgents.updateAnimations(time);
         WorldAgents.checkInteractions(this.player.mesh.position);
+        if (WorldAgents.updateEdges) WorldAgents.updateEdges(this.scene, time);
 
         // Update in-world chat screens every 5 seconds
         if (!this._lastScreenUpdate || time - this._lastScreenUpdate > 5) {
@@ -7762,7 +8921,11 @@ const WorldMode = {
 
     render() {
         if (!this.active) return;
-        GameState.renderer.render(this.scene, this.camera);
+        if (typeof PostProcessing !== 'undefined' && PostProcessing.enabled) {
+            PostProcessing.render(GameState.renderer, this.scene, this.camera);
+        } else {
+            GameState.renderer.render(this.scene, this.camera);
+        }
     },
 
     cleanup() {
@@ -8635,6 +9798,1207 @@ const HUD = {
             if (diff < 86400) return Math.floor(diff / 3600) + 'h';
             return Math.floor(diff / 86400) + 'd';
         } catch(e) { return ''; }
+    },
+
+    // ── Rappterbook-style panels ──────────────────────────
+
+    showPanels() {
+        const wp = document.getElementById('world-populations');
+        if (wp) wp.classList.add('visible');
+        const rt = document.getElementById('refresh-timer');
+        if (rt) rt.classList.add('visible');
+    },
+
+    showWorldPanels() {
+        this.showPanels();
+        const uc = document.getElementById('universe-card');
+        if (uc) uc.classList.add('visible');
+        const rl = document.getElementById('relationship-legend');
+        if (rl) rl.classList.add('visible');
+    },
+
+    hideWorldPanels() {
+        const uc = document.getElementById('universe-card');
+        if (uc) uc.classList.remove('visible');
+        const rl = document.getElementById('relationship-legend');
+        if (rl) rl.classList.remove('visible');
+    },
+
+    updateFrameCounter() {
+        const el = document.getElementById('hud-frame');
+        if (!el) return;
+        const fc = GameState.data.frameCounter || {};
+        el.textContent = 'Frame ' + (fc.frame || '---');
+    },
+
+    updateAgentDetail() {
+        const el = document.getElementById('hud-agent-detail');
+        if (!el) return;
+        const worldId = GameState.currentWorld;
+        const gs = GameState.data.gameState || {};
+        const ws = gs.worlds && gs.worlds[worldId] ? gs.worlds[worldId] : {};
+        const localPop = ws.population || GameState.getWorldAgents(worldId).length;
+        const total = GameState.data.agents.length;
+        el.textContent = localPop + '/' + total + ' agents';
+    },
+
+    updateWorldPopulations() {
+        const el = document.getElementById('wp-list');
+        if (!el) return;
+        const gs = GameState.data.gameState || {};
+        const worlds = gs.worlds || {};
+        const biomeColors = {
+            hub: '#4488ff', arena: '#ff4422', marketplace: '#ffaa00',
+            gallery: '#00ddaa', dungeon: '#6a0dad'
+        };
+        el.innerHTML = WORLD_IDS.map(function(id) {
+            const w = WORLDS[id];
+            const pop = worlds[id] ? (worlds[id].population || 0) : 0;
+            const color = biomeColors[id];
+            const active = id === GameState.currentWorld ? ' wp-active' : '';
+            return '<div class="wp-item' + active + '" data-world="' + id + '">' +
+                '<span>' + w.name + ' (' + pop + ')</span>' +
+                '<div class="wp-dot" style="background:' + color + ';box-shadow:0 0 6px ' + color + ';"></div>' +
+                '</div>';
+        }).join('');
+    },
+
+    updateUniverseCard() {
+        const textEl = document.getElementById('uc-text');
+        const metaEl = document.getElementById('uc-meta');
+        if (!textEl || !metaEl) return;
+        const gs = GameState.data.gameState || {};
+        const fc = GameState.data.frameCounter || {};
+        const worldId = GameState.currentWorld;
+        const seed = typeof WorldSeed !== 'undefined' ? WorldSeed.getSeed(worldId) : '---';
+        const w = WORLDS[worldId];
+        const ws = gs.worlds && gs.worlds[worldId] ? gs.worlds[worldId] : {};
+        const pop = ws.population || 0;
+        const trend = (gs.economy && gs.economy.market_trend) ? gs.economy.market_trend : 'stable';
+        const weather = ws.weather || 'clear';
+        const totalAgents = GameState.data.agents.length;
+
+        textEl.innerHTML = 'Seed <span class="uc-seed">' + seed + '</span> · ' +
+            w.biome + ' biome · ' + pop + ' local / ' + totalAgents + ' total agents';
+
+        metaEl.innerHTML = '<span>Frame ' + (fc.frame || '---') + '</span>' +
+            '<span>Economy: ' + trend + '</span>' +
+            '<span>Weather: ' + weather + '</span>';
+    },
+
+    updateRefreshTimer() {
+        const el = document.getElementById('refresh-timer');
+        if (!el) return;
+        const since = Date.now() - (DataManager.lastFetch || 0);
+        const remaining = Math.max(0, Math.ceil((POLL_INTERVAL - since) / 1000));
+        el.textContent = 'Next refresh: ' + remaining + 's';
+    },
+
+    // Update all Rappterbook-style panels at once
+    updatePanels() {
+        this.updateFrameCounter();
+        this.updateAgentDetail();
+        this.updateWorldPopulations();
+        if (GameState.mode === 'world') {
+            this.updateUniverseCard();
+        }
+        this.updateRefreshTimer();
+    }
+};
+
+// === js/voice-controls.js ===
+// Voice Controls — Web Speech API command recognition
+const VoiceControls = {
+    active: false,
+    recognition: null,
+    lastCommand: '',
+    lastCommandTime: 0,
+    _supported: false,
+
+    init() {
+        const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SR) { this._supported = false; return; }
+        this._supported = true;
+
+        this.recognition = new SR();
+        this.recognition.continuous = true;
+        this.recognition.interimResults = true;
+        this.recognition.lang = 'en-US';
+        this.recognition.maxAlternatives = 1;
+
+        this.recognition.onresult = (e) => this._onResult(e);
+        this.recognition.onerror = (e) => this._onError(e);
+        this.recognition.onend = () => { if (this.active) this._restart(); };
+    },
+
+    toggle() {
+        if (!this._supported) {
+            if (typeof HUD !== 'undefined') HUD.showToast('Voice commands not supported in this browser');
+            return false;
+        }
+        this.active = !this.active;
+        if (this.active) {
+            this._start();
+            if (typeof HUD !== 'undefined') HUD.showToast('Voice commands ON — try "move forward", "attack", "bridge"');
+        } else {
+            this._stop();
+            if (typeof HUD !== 'undefined') HUD.showToast('Voice commands OFF');
+        }
+        this._updateUI();
+        return this.active;
+    },
+
+    _start() {
+        try { this.recognition.start(); } catch(e) {}
+        this._updateUI();
+    },
+
+    _stop() {
+        try { this.recognition.stop(); } catch(e) {}
+        this._updateUI();
+    },
+
+    _restart() {
+        // Restart after speech recognition ends (browser auto-stops after silence)
+        setTimeout(() => {
+            if (this.active) {
+                try { this.recognition.start(); } catch(e) {}
+            }
+        }, 300);
+    },
+
+    _onError(e) {
+        if (e.error === 'not-allowed') {
+            this.active = false;
+            if (typeof HUD !== 'undefined') HUD.showToast('Microphone access denied');
+            this._updateUI();
+        }
+        // 'no-speech' is normal, just means silence — ignore
+    },
+
+    _onResult(event) {
+        let final = '';
+        let interim = '';
+
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+            const transcript = event.results[i][0].transcript.trim().toLowerCase();
+            if (event.results[i].isFinal) {
+                final = transcript;
+            } else {
+                interim = transcript;
+            }
+        }
+
+        // Show interim text
+        const feedbackEl = document.getElementById('voice-feedback');
+        if (feedbackEl) {
+            feedbackEl.textContent = interim || final || '';
+            if (final) {
+                feedbackEl.style.color = 'var(--accent-cyan)';
+                setTimeout(() => { feedbackEl.style.color = ''; }, 500);
+            }
+        }
+
+        if (final) this._processCommand(final);
+    },
+
+    _processCommand(text) {
+        // Debounce — ignore if same command within 1s
+        const now = Date.now();
+        if (text === this.lastCommand && now - this.lastCommandTime < 1000) return;
+        this.lastCommand = text;
+        this.lastCommandTime = now;
+
+        console.log('[VOICE]', text);
+
+        // Only process commands in world mode for movement/combat
+        const inWorld = GameState.mode === 'world';
+
+        // ── Movement commands ──
+        if (inWorld && typeof WorldMode !== 'undefined') {
+            if (this._match(text, ['forward', 'move forward', 'go forward', 'up', 'go up'])) {
+                this._simulateKey('KeyW', 600); this._showAction('FORWARD'); return;
+            }
+            if (this._match(text, ['back', 'move back', 'go back', 'backward', 'reverse'])) {
+                this._simulateKey('KeyS', 600); this._showAction('BACK'); return;
+            }
+            if (this._match(text, ['left', 'move left', 'go left'])) {
+                this._simulateKey('KeyA', 600); this._showAction('LEFT'); return;
+            }
+            if (this._match(text, ['right', 'move right', 'go right'])) {
+                this._simulateKey('KeyD', 600); this._showAction('RIGHT'); return;
+            }
+            if (this._match(text, ['run forward', 'sprint', 'run'])) {
+                this._simulateKey('KeyW', 1200); this._showAction('SPRINT'); return;
+            }
+            if (this._match(text, ['stop', 'halt', 'wait'])) {
+                // Release all keys
+                WorldMode.keys = {};
+                this._showAction('STOP'); return;
+            }
+        }
+
+        // ── Combat commands ──
+        if (inWorld) {
+            if (this._match(text, ['attack', 'hit', 'strike', 'fight', 'slash'])) {
+                this._simulateKey('Space', 300); this._showAction('ATTACK'); return;
+            }
+            if (this._match(text, ['poke', 'interact', 'talk', 'hello'])) {
+                if (typeof WorldMode !== 'undefined') WorldMode.pokeAgent();
+                this._showAction('POKE'); return;
+            }
+        }
+
+        // ── Ability commands ──
+        if (inWorld && typeof Abilities !== 'undefined') {
+            if (this._match(text, ['ability one', 'ability 1', 'first ability', 'sword'])) {
+                Abilities.useAbility(0); this._showAction('ABILITY 1'); return;
+            }
+            if (this._match(text, ['ability two', 'ability 2', 'second ability', 'shield'])) {
+                Abilities.useAbility(1); this._showAction('ABILITY 2'); return;
+            }
+            if (this._match(text, ['ability three', 'ability 3', 'third ability'])) {
+                Abilities.useAbility(2); this._showAction('ABILITY 3'); return;
+            }
+            if (this._match(text, ['ultimate', 'ability five', 'ability 5', 'ult'])) {
+                Abilities.useAbility(4); this._showAction('ULTIMATE'); return;
+            }
+        }
+
+        // ── Navigation commands (work in any mode) ──
+        if (this._match(text, ['bridge', 'open bridge', 'command', 'ship'])) {
+            if (typeof Bridge !== 'undefined') Bridge.toggle();
+            this._showAction('BRIDGE'); return;
+        }
+        if (this._match(text, ['map', 'minimap', 'open map'])) {
+            if (typeof HUD !== 'undefined') HUD.toggleMinimap();
+            this._showAction('MAP'); return;
+        }
+        if (this._match(text, ['inventory', 'items', 'bag', 'open inventory'])) {
+            if (typeof Inventory !== 'undefined') Inventory.toggle();
+            this._showAction('INVENTORY'); return;
+        }
+        if (this._match(text, ['escape', 'back to galaxy', 'leave', 'exit'])) {
+            if (inWorld) {
+                WorldMode.cleanup();
+                if (typeof HUD !== 'undefined' && HUD.hideWorldPanels) HUD.hideWorldPanels();
+                GameState.setMode('galaxy');
+                if (typeof Galaxy !== 'undefined') Galaxy.show();
+            }
+            this._showAction('EXIT'); return;
+        }
+
+        // ── World travel ──
+        const travelMatch = text.match(/(?:travel to|go to|fly to|warp to|visit)\s+(.+)/);
+        if (travelMatch) {
+            const dest = travelMatch[1].trim();
+            const worldId = this._matchWorld(dest);
+            if (worldId) {
+                if (inWorld) WorldMode.cleanup();
+                if (GameState.mode === 'galaxy' && typeof Galaxy !== 'undefined') Galaxy.hide();
+                if (typeof Approach !== 'undefined') Approach.start(worldId);
+                this._showAction('TRAVEL: ' + WORLDS[worldId].name);
+                return;
+            }
+        }
+
+        // ── Seed commands ──
+        if (this._match(text, ['export seed', 'save seed', 'export world'])) {
+            document.getElementById('btn-export-seed').click();
+            this._showAction('EXPORT SEED'); return;
+        }
+    },
+
+    _match(text, phrases) {
+        return phrases.some(p => text.includes(p));
+    },
+
+    _matchWorld(name) {
+        const n = name.toLowerCase();
+        if (n.includes('hub') || n.includes('home')) return 'hub';
+        if (n.includes('arena') || n.includes('battle') || n.includes('fight')) return 'arena';
+        if (n.includes('market') || n.includes('shop') || n.includes('trade')) return 'marketplace';
+        if (n.includes('gallery') || n.includes('crystal') || n.includes('museum')) return 'gallery';
+        if (n.includes('dungeon') || n.includes('dark') || n.includes('abyss')) return 'dungeon';
+        return null;
+    },
+
+    _simulateKey(code, duration) {
+        if (typeof WorldMode === 'undefined' || !WorldMode.keys) return;
+        WorldMode.keys[code] = true;
+        setTimeout(() => { if (WorldMode.keys) WorldMode.keys[code] = false; }, duration);
+    },
+
+    _showAction(label) {
+        const el = document.getElementById('voice-action');
+        if (!el) return;
+        el.textContent = label;
+        el.style.opacity = '1';
+        el.style.transform = 'translateX(-50%) scale(1.1)';
+        setTimeout(() => {
+            el.style.opacity = '0.6';
+            el.style.transform = 'translateX(-50%) scale(1)';
+        }, 150);
+        clearTimeout(this._actionTimeout);
+        this._actionTimeout = setTimeout(() => {
+            el.textContent = '';
+            el.style.opacity = '0';
+        }, 1500);
+    },
+
+    _updateUI() {
+        const btn = document.getElementById('btn-voice');
+        if (btn) {
+            btn.classList.toggle('active', this.active);
+            btn.title = this.active ? 'Voice ON (V)' : 'Voice OFF (V)';
+        }
+        const indicator = document.getElementById('voice-indicator');
+        if (indicator) indicator.classList.toggle('visible', this.active);
+    }
+};
+
+// === js/gesture-controls.js ===
+// Gesture Controls — MediaPipe Hands for gesture-based interaction
+const GestureControls = {
+    active: false,
+    _hands: null,
+    _camera: null,
+    _video: null,
+    _canvas: null,
+    _ctx: null,
+    _lastGesture: '',
+    _lastGestureTime: 0,
+    _moveVector: { x: 0, z: 0 },
+    _scriptsLoaded: false,
+    _loading: false,
+
+    // Gesture state
+    gesture: 'none',       // none, point_left, point_right, point_up, point_down, fist, open, thumbs_up, peace
+    confidence: 0,
+    landmarks: null,
+
+    toggle() {
+        this.active = !this.active;
+        if (this.active) {
+            this._start();
+        } else {
+            this._stop();
+        }
+        this._updateUI();
+        return this.active;
+    },
+
+    async _start() {
+        if (typeof HUD !== 'undefined') HUD.showToast('Loading gesture controls...');
+
+        // Create video + canvas if not exists
+        if (!this._video) this._createElements();
+
+        // Load MediaPipe scripts if needed
+        if (!this._scriptsLoaded && !this._loading) {
+            this._loading = true;
+            try {
+                await this._loadScripts();
+                this._scriptsLoaded = true;
+            } catch(e) {
+                console.warn('[GESTURE] Failed to load MediaPipe:', e);
+                if (typeof HUD !== 'undefined') HUD.showToast('Failed to load gesture library');
+                this.active = false;
+                this._updateUI();
+                this._loading = false;
+                return;
+            }
+            this._loading = false;
+        }
+
+        // Init MediaPipe Hands
+        if (!this._hands && window.Hands) {
+            this._hands = new window.Hands({
+                locateFile: (file) => 'https://cdn.jsdelivr.net/npm/@mediapipe/hands/' + file
+            });
+            this._hands.setOptions({
+                maxNumHands: 1,
+                modelComplexity: 0, // Lite model for performance
+                minDetectionConfidence: 0.6,
+                minTrackingConfidence: 0.5
+            });
+            this._hands.onResults((r) => this._onResults(r));
+        }
+
+        // Start camera
+        if (!this._camera && window.Camera) {
+            this._camera = new window.Camera(this._video, {
+                onFrame: async () => {
+                    if (this.active && this._hands) {
+                        await this._hands.send({ image: this._video });
+                    }
+                },
+                width: 320,
+                height: 240
+            });
+        }
+
+        try {
+            await this._camera.start();
+            document.getElementById('gesture-panel').classList.add('visible');
+            if (typeof HUD !== 'undefined') HUD.showToast('Gesture controls ON — show hand to camera');
+        } catch(e) {
+            console.warn('[GESTURE] Camera access denied:', e);
+            if (typeof HUD !== 'undefined') HUD.showToast('Camera access denied');
+            this.active = false;
+            this._updateUI();
+        }
+    },
+
+    _stop() {
+        if (this._camera) {
+            try { this._camera.stop(); } catch(e) {}
+        }
+        document.getElementById('gesture-panel').classList.remove('visible');
+        this._moveVector = { x: 0, z: 0 };
+        this.gesture = 'none';
+        // Release keys
+        if (typeof WorldMode !== 'undefined' && WorldMode.keys) {
+            WorldMode.keys['KeyW'] = false;
+            WorldMode.keys['KeyS'] = false;
+            WorldMode.keys['KeyA'] = false;
+            WorldMode.keys['KeyD'] = false;
+        }
+        if (typeof HUD !== 'undefined') HUD.showToast('Gesture controls OFF');
+    },
+
+    _createElements() {
+        this._video = document.createElement('video');
+        this._video.setAttribute('playsinline', '');
+        this._video.style.display = 'none';
+        document.body.appendChild(this._video);
+
+        this._canvas = document.getElementById('gesture-canvas');
+        if (this._canvas) this._ctx = this._canvas.getContext('2d');
+    },
+
+    _loadScripts() {
+        return new Promise((resolve, reject) => {
+            const scripts = [
+                'https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js',
+                'https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js'
+            ];
+            let loaded = 0;
+            scripts.forEach(src => {
+                const s = document.createElement('script');
+                s.src = src;
+                s.onload = () => { loaded++; if (loaded === scripts.length) resolve(); };
+                s.onerror = () => reject(new Error('Failed to load ' + src));
+                document.head.appendChild(s);
+            });
+        });
+    },
+
+    _onResults(results) {
+        // Draw camera feed + landmarks
+        if (this._ctx && this._canvas) {
+            this._ctx.save();
+            this._ctx.clearRect(0, 0, 200, 150);
+            // Mirror the video
+            this._ctx.scale(-1, 1);
+            this._ctx.drawImage(results.image, -200, 0, 200, 150);
+            this._ctx.restore();
+
+            if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
+                this._drawLandmarks(results.multiHandLandmarks[0]);
+            }
+        }
+
+        if (!results.multiHandLandmarks || results.multiHandLandmarks.length === 0) {
+            this.gesture = 'none';
+            this.landmarks = null;
+            this._applyGesture();
+            return;
+        }
+
+        this.landmarks = results.multiHandLandmarks[0];
+        this._classifyGesture();
+        this._applyGesture();
+    },
+
+    _drawLandmarks(landmarks) {
+        if (!this._ctx) return;
+        const ctx = this._ctx;
+        // Draw connections
+        ctx.strokeStyle = 'rgba(0, 212, 255, 0.5)';
+        ctx.lineWidth = 1;
+        const connections = [
+            [0,1],[1,2],[2,3],[3,4], // thumb
+            [0,5],[5,6],[6,7],[7,8], // index
+            [0,9],[9,10],[10,11],[11,12], // middle
+            [0,13],[13,14],[14,15],[15,16], // ring
+            [0,17],[17,18],[18,19],[19,20], // pinky
+            [5,9],[9,13],[13,17] // palm
+        ];
+        connections.forEach(([a, b]) => {
+            ctx.beginPath();
+            ctx.moveTo((1 - landmarks[a].x) * 200, landmarks[a].y * 150);
+            ctx.lineTo((1 - landmarks[b].x) * 200, landmarks[b].y * 150);
+            ctx.stroke();
+        });
+        // Draw points
+        landmarks.forEach(lm => {
+            ctx.fillStyle = '#00d4ff';
+            ctx.beginPath();
+            ctx.arc((1 - lm.x) * 200, lm.y * 150, 2, 0, Math.PI * 2);
+            ctx.fill();
+        });
+    },
+
+    _classifyGesture() {
+        const lm = this.landmarks;
+        if (!lm) { this.gesture = 'none'; return; }
+
+        // Key landmarks (normalized 0-1)
+        const wrist = lm[0];
+        const thumbTip = lm[4];
+        const indexTip = lm[8];
+        const indexMcp = lm[5];
+        const middleTip = lm[12];
+        const middleMcp = lm[9];
+        const ringTip = lm[16];
+        const ringMcp = lm[13];
+        const pinkyTip = lm[20];
+        const pinkyMcp = lm[17];
+
+        // Finger extended checks (tip above MCP in y = extended, since y increases downward)
+        const indexUp = indexTip.y < indexMcp.y - 0.04;
+        const middleUp = middleTip.y < middleMcp.y - 0.04;
+        const ringUp = ringTip.y < ringMcp.y - 0.04;
+        const pinkyUp = pinkyTip.y < pinkyMcp.y - 0.04;
+        const thumbOut = Math.abs(thumbTip.x - wrist.x) > 0.08;
+
+        // Fist: all fingers curled
+        if (!indexUp && !middleUp && !ringUp && !pinkyUp) {
+            this.gesture = 'fist';
+            return;
+        }
+
+        // Thumbs up: thumb extended, others curled
+        if (thumbOut && thumbTip.y < wrist.y - 0.1 && !indexUp && !middleUp && !ringUp && !pinkyUp) {
+            this.gesture = 'thumbs_up';
+            return;
+        }
+
+        // Peace sign: index + middle up, others curled
+        if (indexUp && middleUp && !ringUp && !pinkyUp) {
+            this.gesture = 'peace';
+            return;
+        }
+
+        // Open palm: all fingers extended
+        if (indexUp && middleUp && ringUp && pinkyUp) {
+            this.gesture = 'open';
+            return;
+        }
+
+        // Point: only index extended — determine direction
+        if (indexUp && !middleUp && !ringUp && !pinkyUp) {
+            const dx = indexTip.x - wrist.x; // negative = pointing right (mirrored)
+            const dy = indexTip.y - wrist.y; // negative = pointing up
+
+            if (Math.abs(dy) > Math.abs(dx)) {
+                this.gesture = dy < -0.08 ? 'point_up' : 'point_down';
+            } else {
+                // Mirrored: negative dx = user's right
+                this.gesture = dx < -0.04 ? 'point_right' : 'point_left';
+            }
+            return;
+        }
+
+        this.gesture = 'none';
+    },
+
+    _applyGesture() {
+        if (GameState.mode !== 'world' || typeof WorldMode === 'undefined') return;
+        const keys = WorldMode.keys;
+        if (!keys) return;
+
+        // Update gesture label
+        const labelEl = document.getElementById('gesture-label');
+        if (labelEl) labelEl.textContent = this.gesture !== 'none' ? this.gesture.replace('_', ' ').toUpperCase() : '';
+
+        // Reset movement keys
+        keys['KeyW'] = false;
+        keys['KeyS'] = false;
+        keys['KeyA'] = false;
+        keys['KeyD'] = false;
+
+        const now = Date.now();
+
+        switch (this.gesture) {
+            case 'point_up':
+                keys['KeyW'] = true;
+                break;
+            case 'point_down':
+                keys['KeyS'] = true;
+                break;
+            case 'point_left':
+                keys['KeyA'] = true;
+                break;
+            case 'point_right':
+                keys['KeyD'] = true;
+                break;
+            case 'fist':
+                // Attack (throttled)
+                if (now - this._lastGestureTime > 500) {
+                    keys['Space'] = true;
+                    setTimeout(() => { keys['Space'] = false; }, 200);
+                    this._lastGestureTime = now;
+                    this._showGestureAction('ATTACK');
+                }
+                break;
+            case 'thumbs_up':
+                // Interact/poke (throttled)
+                if (now - this._lastGestureTime > 1000) {
+                    WorldMode.pokeAgent();
+                    this._lastGestureTime = now;
+                    this._showGestureAction('POKE');
+                }
+                break;
+            case 'peace':
+                // Toggle bridge (throttled)
+                if (now - this._lastGestureTime > 1500) {
+                    if (typeof Bridge !== 'undefined') Bridge.toggle();
+                    this._lastGestureTime = now;
+                    this._showGestureAction('BRIDGE');
+                }
+                break;
+            case 'open':
+                // Stop — all keys already released above
+                break;
+            case 'none':
+                // No hand — stop
+                break;
+        }
+    },
+
+    _showGestureAction(label) {
+        const el = document.getElementById('gesture-action');
+        if (!el) return;
+        el.textContent = label;
+        el.style.opacity = '1';
+        clearTimeout(this._actionTimeout);
+        this._actionTimeout = setTimeout(() => { el.style.opacity = '0'; }, 1200);
+    },
+
+    _updateUI() {
+        const btn = document.getElementById('btn-gesture');
+        if (btn) {
+            btn.classList.toggle('active', this.active);
+            btn.title = this.active ? 'Gestures ON (H)' : 'Gestures OFF (H)';
+        }
+    }
+};
+
+// === js/touch-controls.js ===
+// Touch Controls — Virtual joystick + tap actions for mobile
+const TouchControls = {
+    active: false,
+    _joystickOuter: null,
+    _joystickInner: null,
+    _joystickOrigin: null,
+    _moveVector: { x: 0, z: 0 },
+    _touchId: null,
+    _actionTouchId: null,
+    _isMobile: false,
+
+    init() {
+        this._isMobile = /iphone|ipad|android|mobile/i.test(navigator.userAgent) ||
+                          ('ontouchstart' in window && window.innerWidth < 1024);
+        if (this._isMobile) this.enable();
+    },
+
+    enable() {
+        if (this.active) return;
+        this.active = true;
+        this._createUI();
+        this._bindEvents();
+    },
+
+    disable() {
+        this.active = false;
+        const el = document.getElementById('touch-controls');
+        if (el) el.remove();
+    },
+
+    _createUI() {
+        if (document.getElementById('touch-controls')) return;
+
+        const container = document.createElement('div');
+        container.id = 'touch-controls';
+        container.innerHTML = `
+            <div id="joystick-zone">
+                <div id="joystick-outer">
+                    <div id="joystick-inner"></div>
+                </div>
+            </div>
+            <div id="touch-action-zone">
+                <button id="touch-attack" class="touch-btn touch-btn-attack">ATK</button>
+                <button id="touch-poke" class="touch-btn touch-btn-poke">POKE</button>
+                <button id="touch-jump" class="touch-btn touch-btn-jump">MAP</button>
+            </div>
+        `;
+
+        const style = document.createElement('style');
+        style.textContent = `
+            #touch-controls { position: fixed; inset: 0; pointer-events: none; z-index: 800; display: none; }
+            #joystick-zone {
+                position: absolute; bottom: 20px; left: 20px;
+                width: 140px; height: 140px; pointer-events: auto;
+            }
+            #joystick-outer {
+                width: 120px; height: 120px; border-radius: 50%;
+                background: rgba(255,255,255,0.06); border: 2px solid rgba(0,212,255,0.25);
+                position: relative; margin: 10px;
+            }
+            #joystick-inner {
+                width: 44px; height: 44px; border-radius: 50%;
+                background: rgba(0,212,255,0.35); border: 2px solid rgba(0,212,255,0.5);
+                position: absolute; top: 50%; left: 50%;
+                transform: translate(-50%, -50%);
+                transition: none;
+            }
+            #touch-action-zone {
+                position: absolute; bottom: 24px; right: 16px;
+                display: flex; flex-direction: column; gap: 10px;
+                pointer-events: auto;
+            }
+            .touch-btn {
+                width: 56px; height: 56px; border-radius: 50%;
+                border: 2px solid rgba(255,255,255,0.2);
+                background: rgba(15,20,30,0.7);
+                color: rgba(255,255,255,0.7);
+                font: 700 11px/1 inherit; letter-spacing: 1px;
+                backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+                cursor: pointer; -webkit-tap-highlight-color: transparent;
+            }
+            .touch-btn:active { background: rgba(0,212,255,0.3); border-color: rgba(0,212,255,0.5); }
+            .touch-btn-attack { border-color: rgba(255,68,68,0.4); color: rgba(255,100,100,0.8); }
+            .touch-btn-poke { border-color: rgba(0,255,136,0.3); color: rgba(0,255,136,0.7); }
+            .touch-btn-jump { border-color: rgba(255,187,0,0.3); color: rgba(255,187,0,0.7); }
+        `;
+        document.head.appendChild(style);
+        document.body.appendChild(container);
+
+        this._joystickOuter = document.getElementById('joystick-outer');
+        this._joystickInner = document.getElementById('joystick-inner');
+    },
+
+    _bindEvents() {
+        // Joystick touch
+        const zone = document.getElementById('joystick-zone');
+        if (!zone) return;
+
+        zone.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            const t = e.changedTouches[0];
+            this._touchId = t.identifier;
+            const rect = this._joystickOuter.getBoundingClientRect();
+            this._joystickOrigin = {
+                x: rect.left + rect.width / 2,
+                y: rect.top + rect.height / 2
+            };
+        }, { passive: false });
+
+        window.addEventListener('touchmove', (e) => {
+            for (let i = 0; i < e.changedTouches.length; i++) {
+                const t = e.changedTouches[i];
+                if (t.identifier === this._touchId && this._joystickOrigin) {
+                    e.preventDefault();
+                    const dx = t.clientX - this._joystickOrigin.x;
+                    const dy = t.clientY - this._joystickOrigin.y;
+                    const maxR = 40;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    const clamped = Math.min(dist, maxR);
+                    const angle = Math.atan2(dy, dx);
+                    const cx = Math.cos(angle) * clamped;
+                    const cy = Math.sin(angle) * clamped;
+
+                    this._joystickInner.style.transform = `translate(calc(-50% + ${cx}px), calc(-50% + ${cy}px))`;
+                    this._moveVector.x = cx / maxR;
+                    this._moveVector.z = cy / maxR;
+                }
+            }
+        }, { passive: false });
+
+        window.addEventListener('touchend', (e) => {
+            for (let i = 0; i < e.changedTouches.length; i++) {
+                if (e.changedTouches[i].identifier === this._touchId) {
+                    this._touchId = null;
+                    this._joystickInner.style.transform = 'translate(-50%, -50%)';
+                    this._moveVector.x = 0;
+                    this._moveVector.z = 0;
+                }
+            }
+        });
+
+        // Action buttons
+        document.getElementById('touch-attack').addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            if (typeof WorldMode !== 'undefined' && WorldMode.keys) {
+                WorldMode.keys['Space'] = true;
+                setTimeout(() => { WorldMode.keys['Space'] = false; }, 200);
+            }
+        }, { passive: false });
+
+        document.getElementById('touch-poke').addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            if (typeof WorldMode !== 'undefined') WorldMode.pokeAgent();
+        }, { passive: false });
+
+        document.getElementById('touch-jump').addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            if (typeof HUD !== 'undefined') HUD.toggleMinimap();
+        }, { passive: false });
+    },
+
+    show() {
+        const el = document.getElementById('touch-controls');
+        if (el && this.active) el.style.display = 'block';
+    },
+
+    hide() {
+        const el = document.getElementById('touch-controls');
+        if (el) el.style.display = 'none';
+    },
+
+    update(delta) {
+        if (!this.active || typeof WorldMode === 'undefined' || !WorldMode.keys) return;
+        const dead = 0.15;
+        const mx = this._moveVector.x;
+        const mz = this._moveVector.z;
+
+        WorldMode.keys['KeyD'] = mx > dead;
+        WorldMode.keys['KeyA'] = mx < -dead;
+        WorldMode.keys['KeyS'] = mz > dead;
+        WorldMode.keys['KeyW'] = mz < -dead;
+    }
+};
+
+// === js/help-overlay.js ===
+// Help Overlay — Controls reference and settings
+const HelpOverlay = {
+    open: false,
+
+    toggle() {
+        this.open = !this.open;
+        let el = document.getElementById('help-overlay');
+        if (!el) { this._create(); el = document.getElementById('help-overlay'); }
+        el.classList.toggle('visible', this.open);
+    },
+
+    close() {
+        this.open = false;
+        const el = document.getElementById('help-overlay');
+        if (el) el.classList.remove('visible');
+    },
+
+    _create() {
+        const overlay = document.createElement('div');
+        overlay.id = 'help-overlay';
+        overlay.innerHTML = `
+            <div class="help-card">
+                <div class="help-header">
+                    <span>CONTROLS & SETTINGS</span>
+                    <button id="help-close">&times;</button>
+                </div>
+                <div class="help-body">
+                    <div class="help-section">
+                        <div class="help-section-title">MOVEMENT</div>
+                        <div class="help-row"><span class="help-key">W A S D</span><span>Move</span></div>
+                        <div class="help-row"><span class="help-key">SPACE</span><span>Attack</span></div>
+                        <div class="help-row"><span class="help-key">E</span><span>Interact / Enter Portal</span></div>
+                        <div class="help-row"><span class="help-key">F</span><span>Poke Agent</span></div>
+                        <div class="help-row"><span class="help-key">ESC</span><span>Return to Galaxy</span></div>
+                    </div>
+                    <div class="help-section">
+                        <div class="help-section-title">ABILITIES</div>
+                        <div class="help-row"><span class="help-key">1-5</span><span>Use Ability Slot</span></div>
+                        <div class="help-row"><span class="help-key">I</span><span>Inventory</span></div>
+                        <div class="help-row"><span class="help-key">G</span><span>Equipment</span></div>
+                    </div>
+                    <div class="help-section">
+                        <div class="help-section-title">INTERFACE</div>
+                        <div class="help-row"><span class="help-key">B</span><span>Bridge (Command Panel)</span></div>
+                        <div class="help-row"><span class="help-key">M</span><span>Minimap</span></div>
+                        <div class="help-row"><span class="help-key">C</span><span>Cinematic Mode</span></div>
+                        <div class="help-row"><span class="help-key">?</span><span>This Help Screen</span></div>
+                        <div class="help-row"><span class="help-key">Ctrl+Shift+D</span><span>Debug Overlay</span></div>
+                    </div>
+                    <div class="help-section">
+                        <div class="help-section-title">ALTERNATIVE CONTROLS</div>
+                        <div class="help-row"><span class="help-key">V</span><span>Toggle Voice Commands</span></div>
+                        <div class="help-row"><span class="help-key">H</span><span>Toggle Hand Gestures</span></div>
+                    </div>
+                    <div class="help-section">
+                        <div class="help-section-title">VOICE COMMANDS</div>
+                        <div class="help-row"><span class="help-voice">"move forward"</span><span>Walk forward</span></div>
+                        <div class="help-row"><span class="help-voice">"attack"</span><span>Attack</span></div>
+                        <div class="help-row"><span class="help-voice">"poke"</span><span>Poke nearest agent</span></div>
+                        <div class="help-row"><span class="help-voice">"travel to arena"</span><span>Warp to world</span></div>
+                        <div class="help-row"><span class="help-voice">"bridge"</span><span>Open bridge</span></div>
+                        <div class="help-row"><span class="help-voice">"stop"</span><span>Halt movement</span></div>
+                        <div class="help-row"><span class="help-voice">"export seed"</span><span>Save world seed</span></div>
+                    </div>
+                    <div class="help-section">
+                        <div class="help-section-title">HAND GESTURES</div>
+                        <div class="help-row"><span class="help-gesture">Point</span><span>Move in direction</span></div>
+                        <div class="help-row"><span class="help-gesture">Fist</span><span>Attack</span></div>
+                        <div class="help-row"><span class="help-gesture">Thumbs Up</span><span>Poke agent</span></div>
+                        <div class="help-row"><span class="help-gesture">Peace Sign</span><span>Toggle bridge</span></div>
+                        <div class="help-row"><span class="help-gesture">Open Palm</span><span>Stop</span></div>
+                    </div>
+                    <div class="help-section">
+                        <div class="help-section-title">MOBILE</div>
+                        <div class="help-row"><span class="help-gesture">Left Stick</span><span>Move</span></div>
+                        <div class="help-row"><span class="help-gesture">ATK Button</span><span>Attack</span></div>
+                        <div class="help-row"><span class="help-gesture">POKE Button</span><span>Poke agent</span></div>
+                    </div>
+                </div>
+                <div class="help-footer">
+                    RAPPTERVERSE — Autonomous AI Metaverse on GitHub
+                </div>
+            </div>
+        `;
+
+        const style = document.createElement('style');
+        style.textContent = `
+            #help-overlay {
+                position: fixed; inset: 0;
+                background: rgba(5, 5, 16, 0.85);
+                z-index: 9500;
+                display: none; justify-content: center; align-items: center;
+                backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            }
+            #help-overlay.visible { display: flex; }
+            .help-card {
+                background: rgba(22, 27, 34, 0.95);
+                border: 1px solid rgba(48, 54, 61, 0.8);
+                border-radius: 12px;
+                max-width: 520px; width: 90%;
+                max-height: 85vh;
+                overflow: hidden;
+                display: flex; flex-direction: column;
+            }
+            .help-header {
+                display: flex; justify-content: space-between; align-items: center;
+                padding: 14px 20px;
+                border-bottom: 1px solid rgba(48, 54, 61, 0.5);
+                font-size: 12px; font-weight: 700;
+                letter-spacing: 2px; color: #e6edf3;
+            }
+            .help-header button {
+                background: none; border: none; color: #8b949e;
+                font-size: 20px; cursor: pointer; padding: 0 4px;
+            }
+            .help-header button:hover { color: #e6edf3; }
+            .help-body {
+                padding: 12px 20px;
+                overflow-y: auto;
+                scrollbar-width: thin;
+            }
+            .help-section { margin-bottom: 14px; }
+            .help-section-title {
+                font-size: 9px; font-weight: 700; letter-spacing: 1.5px;
+                color: #00d4ff; margin-bottom: 6px;
+                padding-bottom: 3px;
+                border-bottom: 1px solid rgba(0,212,255,0.15);
+            }
+            .help-row {
+                display: flex; justify-content: space-between; align-items: center;
+                padding: 3px 0; font-size: 11px; color: #8b949e;
+            }
+            .help-key {
+                display: inline-block;
+                background: rgba(255,255,255,0.06);
+                border: 1px solid rgba(255,255,255,0.1);
+                border-radius: 4px;
+                padding: 1px 8px;
+                font-size: 10px; font-weight: 600;
+                color: #c9d1d9;
+                font-family: 'SF Mono', 'Fira Code', monospace;
+                min-width: 50px; text-align: center;
+            }
+            .help-voice {
+                color: #3fb950; font-style: italic; font-size: 11px;
+            }
+            .help-gesture {
+                color: #d29922; font-weight: 600; font-size: 11px;
+            }
+            .help-footer {
+                padding: 10px 20px; text-align: center;
+                font-size: 9px; color: #484f58;
+                letter-spacing: 1px;
+                border-top: 1px solid rgba(48, 54, 61, 0.5);
+            }
+        `;
+        document.head.appendChild(style);
+        document.body.appendChild(overlay);
+
+        document.getElementById('help-close').addEventListener('click', () => this.close());
+        overlay.addEventListener('click', (e) => { if (e.target === overlay) this.close(); });
+    }
+};
+
+// === js/post-processing.js ===
+// Post-Processing — WebGL bloom + vignette for visual polish
+const PostProcessing = {
+    enabled: false,
+    _rt1: null,
+    _rt2: null,
+    _bloomScene: null,
+    _bloomCamera: null,
+    _bloomMesh: null,
+    _compositeMesh: null,
+    _compositeScene: null,
+
+    init(renderer) {
+        // Only enable on desktop with decent GPU
+        const isMobile = /iphone|ipad|android/i.test(navigator.userAgent);
+        if (isMobile) return;
+
+        const w = window.innerWidth;
+        const h = window.innerHeight;
+        const scale = 0.5; // Half-res bloom for performance
+
+        try {
+            this._rt1 = new THREE.WebGLRenderTarget(w * scale, h * scale, {
+                minFilter: THREE.LinearFilter,
+                magFilter: THREE.LinearFilter,
+                format: THREE.RGBAFormat
+            });
+            this._rt2 = new THREE.WebGLRenderTarget(w, h, {
+                minFilter: THREE.LinearFilter,
+                magFilter: THREE.LinearFilter,
+                format: THREE.RGBAFormat
+            });
+
+            // Bloom extract + blur (simplified single-pass glow)
+            this._bloomScene = new THREE.Scene();
+            this._bloomCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+
+            const bloomMat = new THREE.ShaderMaterial({
+                uniforms: {
+                    tDiffuse: { value: null },
+                    resolution: { value: new THREE.Vector2(w * scale, h * scale) },
+                    bloomStrength: { value: 0.4 }
+                },
+                vertexShader: `
+                    varying vec2 vUv;
+                    void main() { vUv = uv; gl_Position = vec4(position, 1.0); }
+                `,
+                fragmentShader: `
+                    uniform sampler2D tDiffuse;
+                    uniform vec2 resolution;
+                    uniform float bloomStrength;
+                    varying vec2 vUv;
+                    void main() {
+                        vec2 texel = 1.0 / resolution;
+                        vec4 sum = vec4(0.0);
+                        // 9-tap gaussian blur
+                        sum += texture2D(tDiffuse, vUv + vec2(-4.0, 0.0) * texel) * 0.028;
+                        sum += texture2D(tDiffuse, vUv + vec2(-3.0, 0.0) * texel) * 0.054;
+                        sum += texture2D(tDiffuse, vUv + vec2(-2.0, 0.0) * texel) * 0.098;
+                        sum += texture2D(tDiffuse, vUv + vec2(-1.0, 0.0) * texel) * 0.14;
+                        sum += texture2D(tDiffuse, vUv) * 0.16;
+                        sum += texture2D(tDiffuse, vUv + vec2(1.0, 0.0) * texel) * 0.14;
+                        sum += texture2D(tDiffuse, vUv + vec2(2.0, 0.0) * texel) * 0.098;
+                        sum += texture2D(tDiffuse, vUv + vec2(3.0, 0.0) * texel) * 0.054;
+                        sum += texture2D(tDiffuse, vUv + vec2(4.0, 0.0) * texel) * 0.028;
+                        // Extract bright areas only
+                        float brightness = dot(sum.rgb, vec3(0.299, 0.587, 0.114));
+                        vec4 bloom = sum * smoothstep(0.4, 0.8, brightness) * bloomStrength;
+                        gl_FragColor = bloom;
+                    }
+                `
+            });
+
+            const quadGeo = new THREE.PlaneGeometry(2, 2);
+            this._bloomMesh = new THREE.Mesh(quadGeo, bloomMat);
+            this._bloomScene.add(this._bloomMesh);
+
+            // Composite: original + bloom + vignette
+            this._compositeScene = new THREE.Scene();
+            const compositeMat = new THREE.ShaderMaterial({
+                uniforms: {
+                    tScene: { value: null },
+                    tBloom: { value: null },
+                    resolution: { value: new THREE.Vector2(w, h) },
+                    vignetteStrength: { value: 0.35 }
+                },
+                vertexShader: `
+                    varying vec2 vUv;
+                    void main() { vUv = uv; gl_Position = vec4(position, 1.0); }
+                `,
+                fragmentShader: `
+                    uniform sampler2D tScene;
+                    uniform sampler2D tBloom;
+                    uniform vec2 resolution;
+                    uniform float vignetteStrength;
+                    varying vec2 vUv;
+                    void main() {
+                        vec4 scene = texture2D(tScene, vUv);
+                        vec4 bloom = texture2D(tBloom, vUv);
+                        // Additive bloom
+                        vec3 color = scene.rgb + bloom.rgb;
+                        // Vignette
+                        vec2 uv = vUv * 2.0 - 1.0;
+                        float vignette = 1.0 - dot(uv * 0.5, uv * 0.5);
+                        vignette = smoothstep(0.0, 1.0, vignette);
+                        color *= mix(1.0 - vignetteStrength, 1.0, vignette);
+                        // Subtle film grain
+                        float grain = (fract(sin(dot(vUv * resolution, vec2(12.9898, 78.233))) * 43758.5453) - 0.5) * 0.02;
+                        color += grain;
+                        gl_FragColor = vec4(color, 1.0);
+                    }
+                `
+            });
+            this._compositeMesh = new THREE.Mesh(quadGeo.clone(), compositeMat);
+            this._compositeScene.add(this._compositeMesh);
+
+            this.enabled = true;
+        } catch(e) {
+            console.warn('[POST] Failed to init post-processing:', e);
+            this.enabled = false;
+        }
+    },
+
+    render(renderer, scene, camera) {
+        if (!this.enabled) {
+            renderer.render(scene, camera);
+            return;
+        }
+
+        // 1. Render scene to RT2 (full res)
+        renderer.setRenderTarget(this._rt2);
+        renderer.render(scene, camera);
+
+        // 2. Bloom pass: render RT2 through bloom shader to RT1
+        this._bloomMesh.material.uniforms.tDiffuse.value = this._rt2.texture;
+        renderer.setRenderTarget(this._rt1);
+        renderer.render(this._bloomScene, this._bloomCamera);
+
+        // 3. Composite: combine RT2 (scene) + RT1 (bloom) to screen
+        this._compositeMesh.material.uniforms.tScene.value = this._rt2.texture;
+        this._compositeMesh.material.uniforms.tBloom.value = this._rt1.texture;
+        renderer.setRenderTarget(null);
+        renderer.render(this._compositeScene, this._bloomCamera);
+    },
+
+    onResize() {
+        if (!this.enabled) return;
+        const w = window.innerWidth, h = window.innerHeight;
+        const scale = 0.5;
+        this._rt1.setSize(w * scale, h * scale);
+        this._rt2.setSize(w, h);
+        this._bloomMesh.material.uniforms.resolution.value.set(w * scale, h * scale);
+        this._compositeMesh.material.uniforms.resolution.value.set(w, h);
     }
 };
 
@@ -8663,6 +11027,12 @@ const HUD = {
         HUD.updateAgentCount();
         if (GameState.mode === 'world' && HUD.minimapVisible) {
             HUD.renderMinimap();
+        }
+
+        // Update Rappterbook-style panels (~every second, not every frame)
+        if (!HUD._lastPanelUpdate || time - HUD._lastPanelUpdate > 1) {
+            HUD._lastPanelUpdate = time;
+            HUD.updatePanels();
         }
 
         // Re-render bridge if open
@@ -8722,12 +11092,14 @@ const HUD = {
 
         // Escape
         if (e.code === 'Escape') {
+            if (typeof HelpOverlay !== 'undefined' && HelpOverlay.open) { HelpOverlay.close(); return; }
             if (Bridge.open) { Bridge.close(); return; }
             if (GameState.mode === 'approach') { Approach.abort(); return; }
             if (GameState.mode === 'landing') { Landing.abort(); return; }
             if (GameState.mode === 'world') {
                 // Return to galaxy
                 WorldMode.cleanup();
+                if (typeof HUD !== 'undefined' && HUD.hideWorldPanels) HUD.hideWorldPanels();
                 GameState.setMode('galaxy');
                 Galaxy.show();
                 return;
@@ -8754,6 +11126,25 @@ const HUD = {
         // Inventory toggle
         if (e.code === 'KeyI' && GameState.mode === 'world') {
             if (typeof Inventory !== 'undefined') Inventory.toggle();
+            return;
+        }
+
+        // Voice controls toggle
+        if (e.code === 'KeyV' && GameState.mode !== 'boot') {
+            if (typeof VoiceControls !== 'undefined') VoiceControls.toggle();
+            return;
+        }
+
+        // Help overlay toggle
+        if ((e.code === 'Slash' && e.shiftKey) || e.code === 'F1') {
+            e.preventDefault();
+            if (typeof HelpOverlay !== 'undefined') HelpOverlay.toggle();
+            return;
+        }
+
+        // Gesture controls toggle
+        if (e.code === 'KeyH' && GameState.mode !== 'boot') {
+            if (typeof GestureControls !== 'undefined') GestureControls.toggle();
             return;
         }
 
@@ -8784,6 +11175,7 @@ const HUD = {
         }
         Galaxy.onResize();
         WorldMode.onResize();
+        if (typeof PostProcessing !== 'undefined') PostProcessing.onResize();
     });
 
     // Bridge close button
@@ -8794,6 +11186,80 @@ const HUD = {
 
     // Minimap button
     document.getElementById('btn-minimap').addEventListener('click', () => HUD.toggleMinimap());
+
+    // ── Voice / Gesture buttons ──
+    document.getElementById('btn-voice').addEventListener('click', () => {
+        if (typeof VoiceControls !== 'undefined') VoiceControls.toggle();
+    });
+    document.getElementById('btn-gesture').addEventListener('click', () => {
+        if (typeof GestureControls !== 'undefined') GestureControls.toggle();
+    });
+
+    // ── Seed Export/Import ──
+    document.getElementById('btn-export-seed').addEventListener('click', () => {
+        if (GameState.mode !== 'world' || typeof WorldSeed === 'undefined') return;
+        const worldId = GameState.currentWorld;
+        const data = WorldSeed.exportWorld(worldId);
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'rappterverse-' + worldId + '-seed.json';
+        a.click();
+        URL.revokeObjectURL(url);
+        if (typeof HUD !== 'undefined') HUD.showToast('Exported ' + worldId + ' seed: ' + data.seed);
+    });
+
+    document.getElementById('btn-import-seed').addEventListener('click', () => {
+        document.getElementById('seed-file-input').click();
+    });
+
+    document.getElementById('seed-file-input').addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+            try {
+                const json = JSON.parse(ev.target.result);
+                const worldId = WorldSeed.importWorld(json);
+                if (worldId) {
+                    if (typeof HUD !== 'undefined') HUD.showToast('Imported seed ' + json.seed + ' for ' + worldId);
+                    // Reload world if currently on it
+                    if (worldId === GameState.currentWorld && GameState.mode === 'world') {
+                        WorldMode.cleanup();
+                        WorldMode.init(worldId);
+                    }
+                } else {
+                    if (typeof HUD !== 'undefined') HUD.showToast('Invalid seed file');
+                }
+            } catch(err) {
+                if (typeof HUD !== 'undefined') HUD.showToast('Failed to parse seed file');
+            }
+        };
+        reader.readAsText(file);
+        e.target.value = '';
+    });
+
+    // ── World Population quick-travel clicks ──
+    document.getElementById('wp-list').addEventListener('click', (e) => {
+        const item = e.target.closest('.wp-item');
+        if (!item) return;
+        const worldId = item.dataset.world;
+        if (!worldId || worldId === GameState.currentWorld) return;
+        if (GameState.mode === 'world') WorldMode.cleanup();
+        if (GameState.mode === 'galaxy') Galaxy.hide();
+        if (typeof HUD !== 'undefined' && HUD.hideWorldPanels) HUD.hideWorldPanels();
+        Approach.start(worldId);
+    });
+
+    document.getElementById('btn-reset-seed').addEventListener('click', () => {
+        if (GameState.mode !== 'world' || typeof WorldSeed === 'undefined') return;
+        const worldId = GameState.currentWorld;
+        WorldSeed.clearSeed(worldId);
+        if (typeof HUD !== 'undefined') HUD.showToast('Reset seed for ' + worldId + ' — reloading terrain');
+        WorldMode.cleanup();
+        WorldMode.init(worldId);
+    });
 
     // Boot skip button handler is in Boot.run()
 
@@ -8818,6 +11284,10 @@ const HUD = {
         GameState.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         GameState.renderer.toneMapping = THREE.ACESFilmicToneMapping;
         GameState.renderer.toneMappingExposure = 1.1;
+
+        // Init optional systems
+        if (typeof VoiceControls !== 'undefined') VoiceControls.init();
+        if (typeof PostProcessing !== 'undefined') PostProcessing.init(GameState.renderer);
 
         // Run boot then start animation
         Boot.run();

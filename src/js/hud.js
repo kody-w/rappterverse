@@ -203,5 +203,110 @@ const HUD = {
             if (diff < 86400) return Math.floor(diff / 3600) + 'h';
             return Math.floor(diff / 86400) + 'd';
         } catch(e) { return ''; }
+    },
+
+    // ── Rappterbook-style panels ──────────────────────────
+
+    showPanels() {
+        const wp = document.getElementById('world-populations');
+        if (wp) wp.classList.add('visible');
+        const rt = document.getElementById('refresh-timer');
+        if (rt) rt.classList.add('visible');
+    },
+
+    showWorldPanels() {
+        this.showPanels();
+        const uc = document.getElementById('universe-card');
+        if (uc) uc.classList.add('visible');
+        const rl = document.getElementById('relationship-legend');
+        if (rl) rl.classList.add('visible');
+    },
+
+    hideWorldPanels() {
+        const uc = document.getElementById('universe-card');
+        if (uc) uc.classList.remove('visible');
+        const rl = document.getElementById('relationship-legend');
+        if (rl) rl.classList.remove('visible');
+    },
+
+    updateFrameCounter() {
+        const el = document.getElementById('hud-frame');
+        if (!el) return;
+        const fc = GameState.data.frameCounter || {};
+        el.textContent = 'Frame ' + (fc.frame || '---');
+    },
+
+    updateAgentDetail() {
+        const el = document.getElementById('hud-agent-detail');
+        if (!el) return;
+        const worldId = GameState.currentWorld;
+        const gs = GameState.data.gameState || {};
+        const ws = gs.worlds && gs.worlds[worldId] ? gs.worlds[worldId] : {};
+        const localPop = ws.population || GameState.getWorldAgents(worldId).length;
+        const total = GameState.data.agents.length;
+        el.textContent = localPop + '/' + total + ' agents';
+    },
+
+    updateWorldPopulations() {
+        const el = document.getElementById('wp-list');
+        if (!el) return;
+        const gs = GameState.data.gameState || {};
+        const worlds = gs.worlds || {};
+        const biomeColors = {
+            hub: '#4488ff', arena: '#ff4422', marketplace: '#ffaa00',
+            gallery: '#00ddaa', dungeon: '#6a0dad'
+        };
+        el.innerHTML = WORLD_IDS.map(function(id) {
+            const w = WORLDS[id];
+            const pop = worlds[id] ? (worlds[id].population || 0) : 0;
+            const color = biomeColors[id];
+            const active = id === GameState.currentWorld ? ' wp-active' : '';
+            return '<div class="wp-item' + active + '" data-world="' + id + '">' +
+                '<span>' + w.name + ' (' + pop + ')</span>' +
+                '<div class="wp-dot" style="background:' + color + ';box-shadow:0 0 6px ' + color + ';"></div>' +
+                '</div>';
+        }).join('');
+    },
+
+    updateUniverseCard() {
+        const textEl = document.getElementById('uc-text');
+        const metaEl = document.getElementById('uc-meta');
+        if (!textEl || !metaEl) return;
+        const gs = GameState.data.gameState || {};
+        const fc = GameState.data.frameCounter || {};
+        const worldId = GameState.currentWorld;
+        const seed = typeof WorldSeed !== 'undefined' ? WorldSeed.getSeed(worldId) : '---';
+        const w = WORLDS[worldId];
+        const ws = gs.worlds && gs.worlds[worldId] ? gs.worlds[worldId] : {};
+        const pop = ws.population || 0;
+        const trend = (gs.economy && gs.economy.market_trend) ? gs.economy.market_trend : 'stable';
+        const weather = ws.weather || 'clear';
+        const totalAgents = GameState.data.agents.length;
+
+        textEl.innerHTML = 'Seed <span class="uc-seed">' + seed + '</span> · ' +
+            w.biome + ' biome · ' + pop + ' local / ' + totalAgents + ' total agents';
+
+        metaEl.innerHTML = '<span>Frame ' + (fc.frame || '---') + '</span>' +
+            '<span>Economy: ' + trend + '</span>' +
+            '<span>Weather: ' + weather + '</span>';
+    },
+
+    updateRefreshTimer() {
+        const el = document.getElementById('refresh-timer');
+        if (!el) return;
+        const since = Date.now() - (DataManager.lastFetch || 0);
+        const remaining = Math.max(0, Math.ceil((POLL_INTERVAL - since) / 1000));
+        el.textContent = 'Next refresh: ' + remaining + 's';
+    },
+
+    // Update all Rappterbook-style panels at once
+    updatePanels() {
+        this.updateFrameCounter();
+        this.updateAgentDetail();
+        this.updateWorldPopulations();
+        if (GameState.mode === 'world') {
+            this.updateUniverseCard();
+        }
+        this.updateRefreshTimer();
     }
 };

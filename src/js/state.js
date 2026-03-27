@@ -18,6 +18,7 @@ const GameState = {
         actions: [],
         npcs: [],
         gameState: {},
+        frameCounter: {},
         worldConfigs: {},
         worldObjects: {}
     },

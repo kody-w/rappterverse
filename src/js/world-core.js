@@ -12,6 +12,7 @@ const WorldMode = {
         this.currentWorld = worldId;
         this.active = true;
         GameState.currentWorld = worldId;
+        if (typeof WorldSeed !== 'undefined') WorldSeed.init();
 
         const w = WORLDS[worldId];
 
@@ -82,6 +83,15 @@ const WorldMode = {
             if (HUD.initChatFeed) HUD.initChatFeed();
             GameState.currentWorld = worldId;
         }
+        // Show seed in HUD
+        if (typeof WorldSeed !== 'undefined') {
+            const seedEl = document.getElementById('seed-value');
+            if (seedEl) seedEl.textContent = WorldSeed.getSeed(worldId);
+        }
+        // Show Rappterbook-style world panels
+        if (typeof HUD !== 'undefined' && HUD.showWorldPanels) HUD.showWorldPanels();
+        // Show mobile touch controls
+        if (typeof TouchControls !== 'undefined') { TouchControls.init(); TouchControls.show(); }
     },
 
     createPlayer(w) {
@@ -194,6 +204,12 @@ const WorldMode = {
         this.player.mesh.position.x = Math.max(-w.bounds.x, Math.min(w.bounds.x, this.player.mesh.position.x));
         this.player.mesh.position.z = Math.max(-w.bounds.z, Math.min(w.bounds.z, this.player.mesh.position.z));
 
+        // Follow terrain height
+        if (typeof WorldTerrain !== 'undefined' && WorldTerrain.getHeight) {
+            const terrainY = WorldTerrain.getHeight(this.player.mesh.position.x, this.player.mesh.position.z);
+            this.player.mesh.position.y += (terrainY - this.player.mesh.position.y) * 0.15;
+        }
+
         // Camera follow
         const camTarget = this.player.mesh.position.clone().add(new THREE.Vector3(0, 8, 12));
         this.camera.position.lerp(camTarget, 0.05);
@@ -204,12 +220,16 @@ const WorldMode = {
             this.player.ring.material.opacity = 0.2 + Math.sin(time * 3) * 0.1;
         }
 
+        // Touch controls
+        if (typeof TouchControls !== 'undefined') TouchControls.update(delta);
+
         // Sub-system updates
         WorldTerrain.update(time, delta);
         WorldLanes.updateTowerVisuals(time);
         WorldCombat.update(delta, time, this.player.mesh.position);
         WorldAgents.updateAnimations(time);
         WorldAgents.checkInteractions(this.player.mesh.position);
+        if (WorldAgents.updateEdges) WorldAgents.updateEdges(this.scene, time);
 
         // Update in-world chat screens every 5 seconds
         if (!this._lastScreenUpdate || time - this._lastScreenUpdate > 5) {
@@ -273,7 +293,11 @@ const WorldMode = {
 
     render() {
         if (!this.active) return;
-        GameState.renderer.render(this.scene, this.camera);
+        if (typeof PostProcessing !== 'undefined' && PostProcessing.enabled) {
+            PostProcessing.render(GameState.renderer, this.scene, this.camera);
+        } else {
+            GameState.renderer.render(this.scene, this.camera);
+        }
     },
 
     cleanup() {

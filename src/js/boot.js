@@ -75,6 +75,7 @@ const Boot = {
             GameState.setMode('galaxy');
             Galaxy.init();
             HUD.show();
+            HUD.showPanels();
             DataManager.startPolling();
 
             // Deep link: skip galaxy, jump to agent's world

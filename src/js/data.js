@@ -15,7 +15,7 @@ const DataManager = {
     },
 
     async fetchAllState() {
-        const [agents, chat, actions, npcs, gameState,
+        const [agents, chat, actions, npcs, gameState, frameCounter,
                hubConf, arenaConf, marketConf, galleryConf,
                hubObj, arenaObj, marketObj, galleryObj] = await Promise.allSettled([
             this.fetchJSON('state/agents.json'),
@@ -23,6 +23,7 @@ const DataManager = {
             this.fetchJSON('state/actions.json'),
             this.fetchJSON('state/npcs.json'),
             this.fetchJSON('state/game_state.json'),
+            this.fetchJSON('state/frame_counter.json'),
             this.fetchJSON('worlds/hub/config.json'),
             this.fetchJSON('worlds/arena/config.json'),
             this.fetchJSON('worlds/marketplace/config.json'),
@@ -52,6 +53,7 @@ const DataManager = {
         }
         const n = val(npcs); if (n?.npcs) GameState.data.npcs = n.npcs;
         const gs = val(gameState); if (gs) GameState.data.gameState = gs;
+        const fc = val(frameCounter); if (fc) GameState.data.frameCounter = fc;
 
         GameState.data.worldConfigs = {
             hub: val(hubConf) || {}, arena: val(arenaConf) || {},

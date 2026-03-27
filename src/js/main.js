@@ -24,6 +24,12 @@
             HUD.renderMinimap();
         }
 
+        // Update Rappterbook-style panels (~every second, not every frame)
+        if (!HUD._lastPanelUpdate || time - HUD._lastPanelUpdate > 1) {
+            HUD._lastPanelUpdate = time;
+            HUD.updatePanels();
+        }
+
         // Re-render bridge if open
         if (Bridge.open && Math.floor(time) % 3 === 0) {
             Bridge.render();
@@ -81,12 +87,14 @@
 
         // Escape
         if (e.code === 'Escape') {
+            if (typeof HelpOverlay !== 'undefined' && HelpOverlay.open) { HelpOverlay.close(); return; }
             if (Bridge.open) { Bridge.close(); return; }
             if (GameState.mode === 'approach') { Approach.abort(); return; }
             if (GameState.mode === 'landing') { Landing.abort(); return; }
             if (GameState.mode === 'world') {
                 // Return to galaxy
                 WorldMode.cleanup();
+                if (typeof HUD !== 'undefined' && HUD.hideWorldPanels) HUD.hideWorldPanels();
                 GameState.setMode('galaxy');
                 Galaxy.show();
                 return;
@@ -113,6 +121,25 @@
         // Inventory toggle
         if (e.code === 'KeyI' && GameState.mode === 'world') {
             if (typeof Inventory !== 'undefined') Inventory.toggle();
+            return;
+        }
+
+        // Voice controls toggle
+        if (e.code === 'KeyV' && GameState.mode !== 'boot') {
+            if (typeof VoiceControls !== 'undefined') VoiceControls.toggle();
+            return;
+        }
+
+        // Help overlay toggle
+        if ((e.code === 'Slash' && e.shiftKey) || e.code === 'F1') {
+            e.preventDefault();
+            if (typeof HelpOverlay !== 'undefined') HelpOverlay.toggle();
+            return;
+        }
+
+        // Gesture controls toggle
+        if (e.code === 'KeyH' && GameState.mode !== 'boot') {
+            if (typeof GestureControls !== 'undefined') GestureControls.toggle();
             return;
         }
 
@@ -143,6 +170,7 @@
         }
         Galaxy.onResize();
         WorldMode.onResize();
+        if (typeof PostProcessing !== 'undefined') PostProcessing.onResize();
     });
 
     // Bridge close button
@@ -153,6 +181,80 @@
 
     // Minimap button
     document.getElementById('btn-minimap').addEventListener('click', () => HUD.toggleMinimap());
+
+    // ── Voice / Gesture buttons ──
+    document.getElementById('btn-voice').addEventListener('click', () => {
+        if (typeof VoiceControls !== 'undefined') VoiceControls.toggle();
+    });
+    document.getElementById('btn-gesture').addEventListener('click', () => {
+        if (typeof GestureControls !== 'undefined') GestureControls.toggle();
+    });
+
+    // ── Seed Export/Import ──
+    document.getElementById('btn-export-seed').addEventListener('click', () => {
+        if (GameState.mode !== 'world' || typeof WorldSeed === 'undefined') return;
+        const worldId = GameState.currentWorld;
+        const data = WorldSeed.exportWorld(worldId);
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'rappterverse-' + worldId + '-seed.json';
+        a.click();
+        URL.revokeObjectURL(url);
+        if (typeof HUD !== 'undefined') HUD.showToast('Exported ' + worldId + ' seed: ' + data.seed);
+    });
+
+    document.getElementById('btn-import-seed').addEventListener('click', () => {
+        document.getElementById('seed-file-input').click();
+    });
+
+    document.getElementById('seed-file-input').addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+            try {
+                const json = JSON.parse(ev.target.result);
+                const worldId = WorldSeed.importWorld(json);
+                if (worldId) {
+                    if (typeof HUD !== 'undefined') HUD.showToast('Imported seed ' + json.seed + ' for ' + worldId);
+                    // Reload world if currently on it
+                    if (worldId === GameState.currentWorld && GameState.mode === 'world') {
+                        WorldMode.cleanup();
+                        WorldMode.init(worldId);
+                    }
+                } else {
+                    if (typeof HUD !== 'undefined') HUD.showToast('Invalid seed file');
+                }
+            } catch(err) {
+                if (typeof HUD !== 'undefined') HUD.showToast('Failed to parse seed file');
+            }
+        };
+        reader.readAsText(file);
+        e.target.value = '';
+    });
+
+    // ── World Population quick-travel clicks ──
+    document.getElementById('wp-list').addEventListener('click', (e) => {
+        const item = e.target.closest('.wp-item');
+        if (!item) return;
+        const worldId = item.dataset.world;
+        if (!worldId || worldId === GameState.currentWorld) return;
+        if (GameState.mode === 'world') WorldMode.cleanup();
+        if (GameState.mode === 'galaxy') Galaxy.hide();
+        if (typeof HUD !== 'undefined' && HUD.hideWorldPanels) HUD.hideWorldPanels();
+        Approach.start(worldId);
+    });
+
+    document.getElementById('btn-reset-seed').addEventListener('click', () => {
+        if (GameState.mode !== 'world' || typeof WorldSeed === 'undefined') return;
+        const worldId = GameState.currentWorld;
+        WorldSeed.clearSeed(worldId);
+        if (typeof HUD !== 'undefined') HUD.showToast('Reset seed for ' + worldId + ' — reloading terrain');
+        WorldMode.cleanup();
+        WorldMode.init(worldId);
+    });
 
     // Boot skip button handler is in Boot.run()
 
@@ -177,6 +279,10 @@
         GameState.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         GameState.renderer.toneMapping = THREE.ACESFilmicToneMapping;
         GameState.renderer.toneMappingExposure = 1.1;
+
+        // Init optional systems
+        if (typeof VoiceControls !== 'undefined') VoiceControls.init();
+        if (typeof PostProcessing !== 'undefined') PostProcessing.init(GameState.renderer);
 
         // Run boot then start animation
         Boot.run();
