@@ -23,8 +23,13 @@ BASE_DIR = Path(__file__).parent.parent
 STATE_DIR = BASE_DIR / "state"
 MEMORY_DIR = STATE_DIR / "memory"
 
-MODEL = "gpt-4o"
-API_URL = "https://models.inference.ai.azure.com/chat/completions"
+# LLM backend — uses github_llm.py with 3-tier fallback:
+# Azure OpenAI → GitHub Models (Claude/GPT) → Copilot CLI (unlimited)
+try:
+    from github_llm import generate as _llm_generate
+    HAS_LLM_MODULE = True
+except ImportError:
+    HAS_LLM_MODULE = False
 
 # ─── Memory ───────────────────────────────────────────────────────────
 
@@ -280,12 +285,31 @@ def memory_summary(memory: dict) -> str:
 
 def _call_llm(token: str, system_prompt: str, user_prompt: str,
               max_tokens: int = 120, temperature: float = 0.9) -> str:
-    """Call GitHub Models API. Returns response text or empty string."""
+    """Call LLM with 3-tier fallback. Returns response text or empty string.
+
+    Uses github_llm.py: Azure OpenAI → GitHub Models → Copilot CLI (unlimited).
+    The token param is kept for backward compat but github_llm reads env vars.
+    """
+    if HAS_LLM_MODULE:
+        try:
+            content = _llm_generate(
+                system=system_prompt,
+                user=user_prompt,
+                max_tokens=max_tokens,
+                temperature=temperature,
+            )
+            if content.startswith('"') and content.endswith('"'):
+                content = content[1:-1]
+            return content
+        except Exception as exc:
+            print(f"  ⚠ LLM call failed: {exc}")
+            return ""
+
+    # Legacy fallback: direct curl to GitHub Models (if github_llm not available)
     if not token:
         return ""
-
     payload = {
-        "model": MODEL,
+        "model": "gpt-4o",
         "messages": [
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_prompt},
@@ -293,24 +317,21 @@ def _call_llm(token: str, system_prompt: str, user_prompt: str,
         "max_tokens": max_tokens,
         "temperature": temperature,
     }
-
-    result = subprocess.run(
-        ["curl", "-s", "-X", "POST", API_URL,
-         "-H", f"Authorization: Bearer {token}",
-         "-H", "Content-Type: application/json",
-         "-d", json.dumps(payload)],
-        capture_output=True, text=True, timeout=15,
-    )
-
     try:
+        result = subprocess.run(
+            ["curl", "-s", "-X", "POST",
+             "https://models.inference.ai.azure.com/chat/completions",
+             "-H", f"Authorization: Bearer {token}",
+             "-H", "Content-Type: application/json",
+             "-d", json.dumps(payload)],
+            capture_output=True, text=True, timeout=15,
+        )
         data = json.loads(result.stdout)
         content = data["choices"][0]["message"]["content"].strip()
         if content.startswith('"') and content.endswith('"'):
             content = content[1:-1]
         return content
-    except (json.JSONDecodeError, KeyError, IndexError):
-        return ""
-    except subprocess.TimeoutExpired:
+    except Exception:
         return ""
 
 

@@ -34,6 +34,13 @@ MEMORY_DIR = STATE_DIR / "memory"
 EVOLUTION_FILE = STATE_DIR / "evolution.json"
 
 AGENT_ID = "evolve-001"
+
+# LLM backend — uses github_llm.py with 3-tier fallback
+try:
+    from github_llm import generate as _llm_generate
+    HAS_LLM_MODULE = True
+except ImportError:
+    HAS_LLM_MODULE = False
 MODEL = "gpt-4o"
 API_URL = "https://models.inference.ai.azure.com/chat/completions"
 
@@ -68,7 +75,18 @@ def get_token():
 
 
 def call_llm(token, system, user, max_tokens=600):
-    """Call GitHub Models API."""
+    """Call LLM with Copilot-first fallback chain."""
+    if HAS_LLM_MODULE:
+        try:
+            return _llm_generate(
+                system=system, user=user,
+                max_tokens=max_tokens, temperature=0.7,
+            )
+        except Exception as e:
+            print("  ⚠ LLM call failed: %s" % e)
+            return ""
+
+    # Legacy fallback
     payload = json.dumps({
         "messages": [
             {"role": "system", "content": system},
@@ -78,7 +96,6 @@ def call_llm(token, system, user, max_tokens=600):
         "temperature": 0.7,
         "max_tokens": max_tokens,
     }).encode()
-
     req = urllib.request.Request(API_URL, data=payload, headers={
         "Content-Type": "application/json",
         "Authorization": "Bearer " + token,
