@@ -34,10 +34,30 @@ CYCLE=0
 
 mkdir -p "$LOG_DIR"
 
+# ── Token Setup ───────────────────────────────────────────────────────────────
+# Agent dispatch and self-improve need MODELS_TOKEN for LLM calls.
+# Fall back to gh CLI auth token if not explicitly set.
+
+if [ -z "${MODELS_TOKEN:-}" ]; then
+  MODELS_TOKEN=$(gh auth token 2>/dev/null || echo "")
+  export MODELS_TOKEN
+fi
+if [ -z "${GH_TOKEN:-}" ]; then
+  GH_TOKEN=$(gh auth token 2>/dev/null || echo "")
+  export GH_TOKEN
+fi
+
+# ── iMessage Alerts ───────────────────────────────────────────────────────────
+
+send_alert() {
+  local msg="$1"
+  osascript -e "display notification \"$msg\" with title \"RAPPterverse\"" 2>/dev/null || true
+}
+
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
 log() { echo "[$(date '+%H:%M:%S')] $*"; }
-err() { echo "[$(date '+%H:%M:%S')] ERROR: $*" >&2; }
+err() { echo "[$(date '+%H:%M:%S')] ERROR: $*" >&2; send_alert "$*"; }
 
 run_job() {
   local job="$1"
