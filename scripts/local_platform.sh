@@ -123,10 +123,10 @@ job_game_tick() {
 }
 
 job_agent_dispatch() {
-  # Ambient agent activity — up to 10 random agents
-  # Original: agent-autonomy.yml every 30 min
+  # Ambient agent activity — ALL agents, Copilot is unlimited
+  # Original: agent-autonomy.yml every 30 min (was capped at 10)
   python3 scripts/build_agent_registry.py 2>&1
-  python3 scripts/agent_dispatch.py --all --max-agents 10 --no-push 2>&1
+  python3 scripts/agent_dispatch.py --all --max-agents 50 --no-push 2>&1
 }
 
 job_world_growth() {
@@ -233,7 +233,6 @@ job_git_sync() {
   local changed
   changed=$(git diff --name-only -- state/ feed/ docs/dashboard.html 2>/dev/null | head -20)
   if [ -z "$changed" ]; then
-    # Also check untracked files in state/
     changed=$(git ls-files --others --exclude-standard -- state/ feed/ 2>/dev/null | head -5)
   fi
   if [ -z "$changed" ]; then
@@ -248,8 +247,12 @@ job_git_sync() {
   git add feed/*.json 2>/dev/null || true
   git add docs/dashboard.html 2>/dev/null || true
 
+  # Get current frame for commit message
+  local frame
+  frame=$(python3 -c "import json; print(json.load(open('state/frame_counter.json')).get('frame', '?'))" 2>/dev/null || echo "?")
+
   # Commit with [skip ci] to prevent Actions cascade
-  local msg="[local] platform sync cycle $CYCLE [skip ci]"
+  local msg="[frame $frame] world tick [skip ci]"
   git commit -m "$msg" 2>&1 | tail -1 || {
     echo "  Nothing to commit"
     return 0
@@ -260,59 +263,168 @@ job_git_sync() {
     err "  Push failed — will retry next cycle"
     return 1
   }
-  echo "  Pushed state changes"
+  echo "  Pushed frame $frame"
 }
 
-# ── Single Cycle ──────────────────────────────────────────────────────────────
+# ── Frame Counter ─────────────────────────────────────────────────────────────
+
+advance_frame() {
+  # Increment frame counter — each cycle = one frame of simulation
+  python3 -c "
+import json
+from datetime import datetime, timezone
+path = 'state/frame_counter.json'
+try:
+    data = json.load(open(path))
+except:
+    data = {'frame': 0}
+data['frame'] = data.get('frame', 0) + 1
+data['last_frame_at'] = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
+data['_meta'] = {
+    'lastUpdate': datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
+    'version': data.get('_meta', {}).get('version', 1)
+}
+with open(path, 'w') as f:
+    json.dump(data, f, indent=4)
+    f.write('\n')
+print(f'Frame {data[\"frame\"]}')
+" 2>/dev/null
+}
+
+# ── Data Sloshing ─────────────────────────────────────────────────────────────
+
+slosh_data() {
+  # Data sloshing: cross-pollinate state between subsystems each frame.
+  # Agents observe world → actions feed chat → chat feeds relationships →
+  # relationships feed moods → moods feed next decisions.
+  python3 -c "
+import json
+from datetime import datetime, timezone
+
+now = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
+
+# Load state files
+try:
+    agents = json.load(open('state/agents.json'))
+    actions = json.load(open('state/actions.json'))
+    chat = json.load(open('state/chat.json'))
+    game = json.load(open('state/game_state.json'))
+    frame = json.load(open('state/frame_counter.json'))
+except Exception as e:
+    print(f'  Slosh skipped: {e}')
+    exit(0)
+
+frame_num = frame.get('frame', 0)
+changed = False
+
+# 1. Update world populations from agent positions
+world_pop = {}
+for a in agents.get('agents', []):
+    w = a.get('world', 'hub')
+    world_pop[w] = world_pop.get(w, 0) + 1
+for wid, wpop in world_pop.items():
+    if wid in game.get('worlds', {}):
+        old = game['worlds'][wid].get('population', 0)
+        if old != wpop:
+            game['worlds'][wid]['population'] = wpop
+            changed = True
+
+# 2. Count recent activity per world for time_of_day cycling
+recent_actions = actions.get('actions', [])[-20:]
+active_worlds = set()
+for a in recent_actions:
+    w = a.get('world', '')
+    if w:
+        active_worlds.add(w)
+
+# 3. Cycle time_of_day every 6 frames
+times = ['dawn', 'day', 'dusk', 'night']
+for wid, wdata in game.get('worlds', {}).items():
+    old_time = wdata.get('time_of_day', 'day')
+    if frame_num % 6 == 0:
+        idx = times.index(old_time) if old_time in times else 0
+        new_time = times[(idx + 1) % len(times)]
+        if new_time != old_time:
+            wdata['time_of_day'] = new_time
+            changed = True
+
+# 4. Update meta timestamps
+if changed:
+    game['_meta'] = game.get('_meta', {})
+    game['_meta']['lastUpdate'] = now
+    game['_meta']['frame'] = frame_num
+    with open('state/game_state.json', 'w') as f:
+        json.dump(game, f, indent=4)
+        f.write('\n')
+    print(f'  Sloshed: populations synced, time_of_day cycled (frame {frame_num})')
+else:
+    print(f'  Slosh: no changes needed (frame {frame_num})')
+" 2>&1
+}
+
+# ── Single Frame ──────────────────────────────────────────────────────────────
 
 run_cycle() {
   CYCLE=$((CYCLE + 1))
-  log "=== Cycle $CYCLE ==="
 
-  # Every cycle (5 min): game tick
+  # Advance frame counter
+  FRAME=$(advance_frame)
+  log "=== $FRAME ==="
+
+  # ── Phase 1: PULL (sync from remote) ──
+  git pull --rebase --autostash origin main 2>&1 | tail -1 || true
+
+  # ── Phase 2: TICK (game mechanics) ──
   run_job job_game_tick
 
-  # Every 30 min: agent dispatch
+  # ── Phase 3: SLOSH (cross-pollinate state) ──
+  slosh_data
+
+  # ── Phase 4: AGENTS (LLM-driven activity — every 30 min) ──
   if should_run "job_agent_dispatch" 28; then
     run_job job_agent_dispatch
   fi
 
-  # Every 4 hours: world heartbeat
+  # ── Phase 5: HEARTBEAT (world growth — every 4 hours) ──
   if should_run "job_world_growth" 235; then
     run_job job_world_growth
   fi
 
-  # Every 6 hours: self-improvement
+  # ── Phase 6: EVOLVE (self-improvement — every 6 hours) ──
   if should_run "job_self_improve" 355; then
     run_job job_self_improve
   fi
 
-  # Every 6 hours: emergence detection
+  # ── Phase 7: EMERGENCE (pattern detection — every 6 hours) ──
   if should_run "job_emergence" 355; then
     run_job job_emergence
   fi
 
-  # Every 12 hours: state audit
+  # ── Phase 8: AUDIT (consistency check — every 12 hours) ──
   if should_run "job_state_audit" 715; then
     run_job job_state_audit
   fi
 
-  # Always last: git sync
+  # ── Phase 9: PUSH (commit + push frame) ──
   run_job job_git_sync
 
   # Status line
   python3 -c "
 import json
 try:
+    f = json.load(open('state/frame_counter.json'))
     a = json.load(open('state/agents.json'))
     g = json.load(open('state/game_state.json'))
     count = a.get('_meta', {}).get('count', len(a.get('agents', [])))
-    print(f'  Status: {count} agents | game_state version {g.get(\"_meta\",{}).get(\"version\",\"?\")}')
+    worlds = ', '.join(f'{k}({v.get(\"population\",0)})' for k,v in g.get('worlds',{}).items())
+    u = json.load(open('state/llm_usage.json')) if __import__('os').path.exists('state/llm_usage.json') else {}
+    llm_calls = u.get('calls', 0)
+    print(f'  Frame {f[\"frame\"]} | {count} agents | {worlds} | LLM calls today: {llm_calls}')
 except Exception as e:
-    print(f'  Status: (could not read state: {e})')
+    print(f'  Status: {e}')
 " 2>/dev/null || true
 
-  log "=== Cycle $CYCLE complete ==="
+  log "=== $FRAME complete ==="
 }
 
 # ── Entrypoints ───────────────────────────────────────────────────────────────
