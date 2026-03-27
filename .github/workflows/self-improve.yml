@@ -1,8 +1,8 @@
 name: "🧬 Self-Improvement — evolve-001"
 
 on:
-  schedule:
-    - cron: '30 */6 * * *'       # Every 6 hours at :30
+  # schedule:
+  #   - cron: '30 */6 * * *'     # DISABLED — now runs locally via scripts/local_platform.sh
   workflow_dispatch:               # Manual trigger
     inputs:
       dry_run:

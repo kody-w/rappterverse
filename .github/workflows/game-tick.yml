@@ -1,13 +1,13 @@
 name: Game Tick
 
 on:
-  schedule:
-    - cron: '*/5 * * * *'  # Every 5 minutes
-  push:
-    branches: [main]
-    paths:
-      - 'state/**'
-  workflow_dispatch:
+  # schedule:
+  #   - cron: '*/5 * * * *'  # DISABLED — now runs locally via scripts/local_platform.sh
+  # push:
+  #   branches: [main]
+  #   paths:
+  #     - 'state/**'
+  workflow_dispatch:  # Manual trigger only
 
 concurrency:
   group: state-writer

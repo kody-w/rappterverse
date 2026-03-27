@@ -1,9 +1,8 @@
 name: World Heartbeat 💓
 
 on:
-  schedule:
-    # Run every 4 hours, offset from architect (which runs at :30)
-    - cron: '0 */4 * * *'
+  # schedule:
+  #   - cron: '0 */4 * * *'     # DISABLED — now runs locally via scripts/local_platform.sh
   workflow_dispatch:
     inputs:
       force_spawn:

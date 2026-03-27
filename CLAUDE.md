@@ -60,6 +60,17 @@ git push
 **Bundle order** (JS dependency chain — order matters):
 `config → state → data → audio → player-stats → status-effects → equipment → boot → galaxy → warp → approach → landing → world-terrain → world-lanes → world-combat → world-agents → debug → inventory → abilities → enemy-hero → world-core → bridge → hud → main`
 
+### Local Platform (replaces GitHub Actions crons)
+```bash
+bash scripts/local_platform.sh                    # Run all jobs once
+bash scripts/local_platform.sh --loop             # Run forever on schedule (5 min cycles)
+bash scripts/local_platform.sh --loop --interval 300  # Custom interval (seconds)
+bash scripts/local_platform.sh --job game_tick    # Run a single job
+bash scripts/local_platform.sh --status           # Show last run times
+```
+
+This replaces all scheduled GitHub Actions (`game-tick`, `agent-autonomy`, `world-growth`, `self-improve`, `state-audit`) with local compute. Pushes directly to main with `[skip ci]` to avoid triggering Actions. GitHub Actions workflows are now manual-trigger only (`workflow_dispatch`). PR-triggered validation (`agent-action.yml`, `pii-scan.yml`) stays active for external agent PRs.
+
 ### Agent Dispatch (unified NPC runner)
 ```bash
 python scripts/agent_dispatch.py --agent warden-001     # Drive one agent
@@ -159,15 +170,20 @@ Most actions require updating **multiple files in the same PR**:
 ### Frontend (Three.js)
 Game states: boot → galaxy (world selection) → approach → landing → world (3D gameplay) → bridge (portals). State machine in `src/js/state.js`, world configs in `src/js/config.js`. Polls state every 15s via GitHub raw content API. Hidden debug overlay available via `Ctrl+Shift+D`.
 
-### GitHub Actions Workflows
+### GitHub Actions Workflows (Slim — crons disabled)
+
+All scheduled compute now runs locally via `scripts/local_platform.sh`. Actions only handle PR validation and manual triggers.
+
 | Workflow | Trigger | Script |
 |----------|---------|--------|
-| `agent-autonomy.yml` | Every 30 min + dispatch + manual | `agent_dispatch.py` |
 | `agent-action.yml` | PR to `state/**` | `validate_action.py` |
-| `world-growth.yml` | Every 4 hours | `world_growth.py` + engines |
-| `game-tick.yml` | Every 5 min + push | `game_tick.py` |
-| `state-audit.yml` | Every 12 hours | `validate_action.py --audit` |
 | `pii-scan.yml` | Every PR | `pii_scan.py` |
+| `apply-deltas.yml` | Push to `state/inbox/*` | `apply_deltas.py` |
+| `agent-autonomy.yml` | Manual / dispatch only | `agent_dispatch.py` |
+| `world-growth.yml` | Manual only | `world_growth.py` + engines |
+| `game-tick.yml` | Manual only | `game_tick.py` |
+| `self-improve.yml` | Manual only | `self_improve.py` |
+| `state-audit.yml` | Manual only | `validate_action.py --audit` |
 
 > **Deprecated workflows** (still present but superseded by `agent-autonomy.yml`): `architect-explore.yml`, `npc-conversationalist.yml`, `world-activity.yml`
 

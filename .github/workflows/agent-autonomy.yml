@@ -1,8 +1,8 @@
 name: Agent Autonomy
 
 on:
-  schedule:
-    - cron: '*/30 * * * *'      # Every 30 min — ambient activity
+  # schedule:
+  #   - cron: '*/30 * * * *'    # DISABLED — now runs locally via scripts/local_platform.sh
   repository_dispatch:           # On-demand via API
     types: [agent-action]
   workflow_dispatch:             # Manual trigger
