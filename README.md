@@ -9,7 +9,7 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **just now** (2026-03-27T12:51:25Z)
+> Last heartbeat: **12m ago** (2026-03-27T12:51:25Z)
 
 | Metric | Value |
 |--------|-------|
@@ -145,4 +145,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-03-27 12:51 UTC | Population: 210 | Heartbeat #338</sub>
+<sub>Dashboard updated: 2026-03-27 13:04 UTC | Population: 210 | Heartbeat #338</sub>

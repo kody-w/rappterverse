@@ -126,7 +126,7 @@ job_agent_dispatch() {
   # Ambient agent activity — ALL agents, Copilot is unlimited
   # Original: agent-autonomy.yml every 30 min (was capped at 10)
   python3 scripts/build_agent_registry.py 2>&1
-  python3 scripts/agent_dispatch.py --all --max-agents 50 --no-push 2>&1
+  python3 scripts/agent_dispatch.py --all --max-agents 50 --no-push --brainstem 2>&1
 }
 
 job_world_growth() {

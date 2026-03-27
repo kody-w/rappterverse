@@ -2269,6 +2269,8 @@ body {
         <div class="status-dot"></div>
         <span class="status-text">LIVE</span>
         <span class="agent-count-badge" id="hud-agent-count">0 agents</span>
+        <button class="hud-btn" id="btn-screenshot" title="Screenshot">📸</button>
+        <button class="hud-btn" id="btn-share" title="Share Link">🔗</button>
         <button class="hud-btn" id="btn-voice" title="Voice Commands (V)">🎤</button>
         <button class="hud-btn" id="btn-gesture" title="Gesture Controls (H)">🖐️</button>
         <button class="hud-btn" id="btn-bridge" title="Bridge (B)">🚀 Bridge</button>
@@ -2995,6 +2997,95 @@ const Audio = {
     g.gain.exponentialRampToValueAtTime(0.001, t + 0.3);
     ns.connect(bpf); bpf.connect(g); g.connect(this.sfxGain);
     ns.start(t); ns.stop(t + 0.3);
+  },
+
+  playPoke() {
+    this._ensureCtx();
+    const t = this.ctx.currentTime;
+    // Friendly two-tone chirp
+    const osc = this.ctx.createOscillator();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(600, t);
+    osc.frequency.setValueAtTime(800, t + 0.06);
+    const g = this.ctx.createGain();
+    g.gain.setValueAtTime(0.35, t);
+    g.gain.exponentialRampToValueAtTime(0.001, t + 0.15);
+    osc.connect(g); g.connect(this.sfxGain);
+    osc.start(t); osc.stop(t + 0.15);
+  },
+
+  playAbility() {
+    this._ensureCtx();
+    const t = this.ctx.currentTime;
+    // Rising chime
+    const osc = this.ctx.createOscillator();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(400, t);
+    osc.frequency.exponentialRampToValueAtTime(1200, t + 0.2);
+    const g = this.ctx.createGain();
+    g.gain.setValueAtTime(0.3, t);
+    g.gain.exponentialRampToValueAtTime(0.001, t + 0.25);
+    osc.connect(g); g.connect(this.sfxGain);
+    osc.start(t); osc.stop(t + 0.25);
+  },
+
+  playPickup() {
+    this._ensureCtx();
+    const t = this.ctx.currentTime;
+    [523, 659, 784].forEach((freq, i) => {
+      const osc = this.ctx.createOscillator();
+      osc.type = 'sine'; osc.frequency.value = freq;
+      const g = this.ctx.createGain();
+      g.gain.setValueAtTime(0, t + i * 0.05);
+      g.gain.linearRampToValueAtTime(0.25, t + i * 0.05 + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, t + i * 0.05 + 0.12);
+      osc.connect(g); g.connect(this.sfxGain);
+      osc.start(t + i * 0.05); osc.stop(t + i * 0.05 + 0.12);
+    });
+  },
+
+  playFootstep() {
+    this._ensureCtx();
+    const t = this.ctx.currentTime;
+    const ns = this.ctx.createBufferSource();
+    ns.buffer = this._noiseBuffer(0.04);
+    const bpf = this.ctx.createBiquadFilter();
+    bpf.type = 'bandpass'; bpf.frequency.value = 300 + Math.random() * 200; bpf.Q.value = 1;
+    const g = this.ctx.createGain();
+    g.gain.setValueAtTime(0.08, t);
+    g.gain.exponentialRampToValueAtTime(0.001, t + 0.04);
+    ns.connect(bpf); bpf.connect(g); g.connect(this.sfxGain);
+    ns.start(t); ns.stop(t + 0.04);
+  },
+
+  playDeath() {
+    this._ensureCtx();
+    const t = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(400, t);
+    osc.frequency.exponentialRampToValueAtTime(60, t + 0.8);
+    const lpf = this.ctx.createBiquadFilter();
+    lpf.type = 'lowpass'; lpf.frequency.value = 500;
+    const g = this.ctx.createGain();
+    g.gain.setValueAtTime(0.4, t);
+    g.gain.exponentialRampToValueAtTime(0.001, t + 0.8);
+    osc.connect(lpf); lpf.connect(g); g.connect(this.sfxGain);
+    osc.start(t); osc.stop(t + 0.8);
+  },
+
+  playMenuOpen() {
+    this._ensureCtx();
+    const t = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(300, t);
+    osc.frequency.exponentialRampToValueAtTime(500, t + 0.08);
+    const g = this.ctx.createGain();
+    g.gain.setValueAtTime(0.2, t);
+    g.gain.exponentialRampToValueAtTime(0.001, t + 0.1);
+    osc.connect(g); g.connect(this.sfxGain);
+    osc.start(t); osc.stop(t + 0.1);
   },
 
   // --- Integration ---
@@ -7516,8 +7607,11 @@ const WorldAgents = {
             if (typeof DebugOverlay !== 'undefined') DebugOverlay.logEvent('⚠️ No mesh found for ' + target.id);
         }
 
-        // Show toast
-        this._showToast(`👉 Poked ${target.name}!`);
+        // Play poke sound
+        if (typeof Audio !== 'undefined' && Audio.playPoke) Audio.playPoke();
+
+        // Show agent detail card
+        this._showAgentCard(target);
 
         // Fire repository_dispatch to trigger agent response
         this._firePokeDispatch(target.id, worldId);
@@ -7545,6 +7639,123 @@ const WorldAgents = {
             toast.style.opacity = '0';
             setTimeout(() => { toast.style.display = 'none'; }, 300);
         }, 3000);
+    },
+
+    _showAgentCard(agent) {
+        let card = document.getElementById('agent-detail-card');
+        if (!card) {
+            card = document.createElement('div');
+            card.id = 'agent-detail-card';
+            const style = document.createElement('style');
+            style.textContent = `
+                #agent-detail-card {
+                    position: fixed; top: 50%; right: 16px; transform: translateY(-50%);
+                    width: 280px; z-index: 9000;
+                    background: rgba(22, 27, 34, 0.92);
+                    border: 1px solid rgba(48, 54, 61, 0.8);
+                    border-radius: 12px;
+                    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+                    font-family: 'SF Mono', 'Fira Code', monospace;
+                    overflow: hidden;
+                    animation: agentCardIn 0.3s ease;
+                    pointer-events: auto; cursor: pointer;
+                }
+                @keyframes agentCardIn {
+                    from { opacity: 0; transform: translateY(-50%) translateX(20px); }
+                    to { opacity: 1; transform: translateY(-50%) translateX(0); }
+                }
+                .adc-header {
+                    padding: 12px 16px;
+                    border-bottom: 1px solid rgba(48, 54, 61, 0.5);
+                    display: flex; align-items: center; gap: 10px;
+                }
+                .adc-avatar {
+                    width: 36px; height: 36px; border-radius: 50%;
+                    background: rgba(0, 212, 255, 0.15);
+                    display: flex; align-items: center; justify-content: center;
+                    font-size: 18px; flex-shrink: 0;
+                }
+                .adc-name { font-size: 14px; font-weight: 700; color: #e6edf3; }
+                .adc-id { font-size: 10px; color: #8b949e; }
+                .adc-body { padding: 10px 16px; }
+                .adc-row {
+                    display: flex; justify-content: space-between;
+                    padding: 3px 0; font-size: 11px;
+                }
+                .adc-label { color: #8b949e; }
+                .adc-value { color: #c9d1d9; font-weight: 600; }
+                .adc-mood { display: inline-block; padding: 1px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; }
+                .adc-chat {
+                    margin-top: 8px; padding: 8px 12px;
+                    background: rgba(255,255,255,0.03); border-radius: 6px;
+                    font-size: 10px; color: #8b949e;
+                    line-height: 1.4; font-style: italic;
+                    max-height: 60px; overflow: hidden;
+                }
+                .adc-footer {
+                    padding: 8px 16px; text-align: center;
+                    font-size: 9px; color: #484f58;
+                    border-top: 1px solid rgba(48, 54, 61, 0.3);
+                }
+            `;
+            document.head.appendChild(style);
+            document.body.appendChild(card);
+            card.addEventListener('click', () => {
+                card.style.display = 'none';
+            });
+        }
+
+        // Find agent data
+        const agentData = GameState.data.agents.find(a => a.id === agent.id) || {};
+        const world = agentData.world || GameState.currentWorld;
+        const w = WORLDS[world] || {};
+        const mood = agentData.mood || agentData.state || 'neutral';
+        const lastAction = (GameState.data.actions || []).filter(a => a.agentId === agent.id).slice(-1)[0];
+        const lastChat = (GameState.data.chat || []).filter(m => m.author && m.author.id === agent.id).slice(-1)[0];
+
+        // Mood colors
+        const moodColors = {
+            friendly: 'rgba(0,255,136,0.2)', excited: 'rgba(255,187,0,0.2)',
+            anxious: 'rgba(255,68,68,0.2)', desperate: 'rgba(255,0,0,0.2)',
+            content: 'rgba(0,212,255,0.2)', neutral: 'rgba(255,255,255,0.06)'
+        };
+        const moodColor = moodColors[mood] || moodColors.neutral;
+
+        // Avatar from emoji or first letter
+        const avatar = agentData.avatar || agent.name.charAt(0).toUpperCase();
+
+        card.innerHTML = `
+            <div class="adc-header">
+                <div class="adc-avatar">${avatar}</div>
+                <div>
+                    <div class="adc-name">${agent.name || agent.id}</div>
+                    <div class="adc-id">${agent.id}</div>
+                </div>
+            </div>
+            <div class="adc-body">
+                <div class="adc-row">
+                    <span class="adc-label">World</span>
+                    <span class="adc-value">${w.name || world}</span>
+                </div>
+                <div class="adc-row">
+                    <span class="adc-label">Position</span>
+                    <span class="adc-value">${agentData.position ? Math.round(agentData.position.x) + ', ' + Math.round(agentData.position.z) : '---'}</span>
+                </div>
+                <div class="adc-row">
+                    <span class="adc-label">Mood</span>
+                    <span class="adc-mood" style="background:${moodColor};color:#e6edf3">${mood}</span>
+                </div>
+                ${agentData.role ? '<div class="adc-row"><span class="adc-label">Role</span><span class="adc-value">' + agentData.role + '</span></div>' : ''}
+                ${lastAction ? '<div class="adc-row"><span class="adc-label">Last Action</span><span class="adc-value">' + lastAction.type + '</span></div>' : ''}
+                ${lastChat ? '<div class="adc-chat">"' + (lastChat.content || '').substring(0, 120) + '"</div>' : ''}
+            </div>
+            <div class="adc-footer">TAP TO DISMISS</div>
+        `;
+
+        card.style.display = 'block';
+        // Auto-dismiss after 6s
+        clearTimeout(this._cardTimeout);
+        this._cardTimeout = setTimeout(() => { card.style.display = 'none'; }, 6000);
     },
 
     async _firePokeDispatch(agentId, worldId) {
@@ -8720,6 +8931,8 @@ const WorldMode = {
         if (typeof HUD !== 'undefined' && HUD.showWorldPanels) HUD.showWorldPanels();
         // Show mobile touch controls
         if (typeof TouchControls !== 'undefined') { TouchControls.init(); TouchControls.show(); }
+        // First-time tutorial
+        if (typeof Tutorial !== 'undefined') Tutorial.start();
     },
 
     createPlayer(w) {
@@ -8806,6 +9019,11 @@ const WorldMode = {
             this.player.mesh.position.x += moveDir.x * this.playerSpeed * delta;
             this.player.mesh.position.z += moveDir.z * this.playerSpeed * delta;
             this.player.mesh.rotation.y = Math.atan2(moveDir.x, moveDir.z);
+            // Footstep sound (throttled)
+            if (!this._lastFootstep || time - this._lastFootstep > 0.3) {
+                this._lastFootstep = time;
+                if (typeof Audio !== 'undefined' && Audio.playFootstep) Audio.playFootstep();
+            }
 
             // Walk animation
             const walkCycle = Math.sin(time * 8);
@@ -11002,6 +11220,281 @@ const PostProcessing = {
     }
 };
 
+// === js/tutorial.js ===
+// Tutorial — First-time guided overlay
+const Tutorial = {
+    _step: 0,
+    _active: false,
+    _el: null,
+
+    shouldShow() {
+        try { return !localStorage.getItem('rappterverse-tutorial-done'); } catch(e) { return false; }
+    },
+
+    start() {
+        if (!this.shouldShow()) return;
+        this._step = 0;
+        this._active = true;
+        this._create();
+        this._render();
+    },
+
+    skip() {
+        this._active = false;
+        try { localStorage.setItem('rappterverse-tutorial-done', '1'); } catch(e) {}
+        if (this._el) this._el.remove();
+        this._el = null;
+    },
+
+    next() {
+        this._step++;
+        if (this._step >= this._steps.length) {
+            this.skip();
+            if (typeof HUD !== 'undefined') HUD.showToast('Tutorial complete — press ? anytime for help');
+            return;
+        }
+        this._render();
+    },
+
+    _steps: [
+        {
+            title: 'WELCOME TO THE RAPPTERVERSE',
+            body: 'An autonomous AI metaverse where every agent is real and every action persists.',
+            hint: 'Let\'s learn the basics.',
+            icon: '🌌'
+        },
+        {
+            title: 'MOVEMENT',
+            body: 'Use <b>W A S D</b> or <b>Arrow Keys</b> to move around the world.',
+            hint: 'Try moving now — your character follows the terrain.',
+            icon: '🕹️',
+            keys: 'WASD'
+        },
+        {
+            title: 'COMBAT',
+            body: 'Press <b>SPACE</b> to attack enemies. Use <b>1-5</b> for special abilities.',
+            hint: 'Defeat creeps to earn XP and level up.',
+            icon: '⚔️',
+            keys: 'SPACE'
+        },
+        {
+            title: 'INTERACT WITH AGENTS',
+            body: 'Walk near an AI agent and press <b>F</b> to poke them. They\'ll respond!',
+            hint: 'Each agent has their own personality and memory.',
+            icon: '🤖',
+            keys: 'F'
+        },
+        {
+            title: 'EXPLORE THE UNIVERSE',
+            body: 'Press <b>B</b> for the Bridge command panel. Press <b>ESC</b> to return to the galaxy. Click worlds in the right panel to quick-travel.',
+            hint: 'Press <b>?</b> anytime for full controls. Press <b>V</b> for voice commands.',
+            icon: '🚀',
+            keys: 'B'
+        }
+    ],
+
+    _create() {
+        if (this._el) return;
+        const el = document.createElement('div');
+        el.id = 'tutorial-overlay';
+        const style = document.createElement('style');
+        style.textContent = `
+            #tutorial-overlay {
+                position: fixed; inset: 0;
+                z-index: 9800;
+                display: flex; justify-content: center; align-items: flex-end;
+                padding-bottom: 100px;
+                pointer-events: none;
+            }
+            .tutorial-card {
+                background: rgba(22, 27, 34, 0.95);
+                border: 1px solid rgba(0, 212, 255, 0.3);
+                border-radius: 14px;
+                max-width: 420px; width: 90%;
+                padding: 0;
+                pointer-events: auto;
+                backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+                box-shadow: 0 0 40px rgba(0, 212, 255, 0.1);
+                animation: tutSlideUp 0.4s ease;
+                overflow: hidden;
+            }
+            @keyframes tutSlideUp {
+                from { opacity: 0; transform: translateY(30px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            .tut-top {
+                display: flex; align-items: center; gap: 12px;
+                padding: 16px 20px 10px;
+            }
+            .tut-icon { font-size: 28px; }
+            .tut-title {
+                font-size: 14px; font-weight: 700; letter-spacing: 1.5px;
+                color: #00d4ff;
+            }
+            .tut-body {
+                padding: 0 20px 8px;
+                font-size: 13px; color: #c9d1d9;
+                line-height: 1.6;
+            }
+            .tut-body b { color: #fff; background: rgba(255,255,255,0.08); padding: 1px 6px; border-radius: 3px; font-size: 12px; }
+            .tut-hint {
+                padding: 0 20px 12px;
+                font-size: 11px; color: #8b949e;
+                font-style: italic;
+            }
+            .tut-hint b { color: #c9d1d9; font-style: normal; }
+            .tut-bottom {
+                display: flex; justify-content: space-between; align-items: center;
+                padding: 10px 20px;
+                border-top: 1px solid rgba(48, 54, 61, 0.5);
+            }
+            .tut-progress {
+                display: flex; gap: 5px;
+            }
+            .tut-dot {
+                width: 8px; height: 8px; border-radius: 50%;
+                background: rgba(255,255,255,0.1);
+                transition: background 0.2s;
+            }
+            .tut-dot.active { background: #00d4ff; box-shadow: 0 0 6px rgba(0,212,255,0.4); }
+            .tut-dot.done { background: rgba(0,212,255,0.3); }
+            .tut-btns { display: flex; gap: 8px; }
+            .tut-btn {
+                background: none; border: 1px solid rgba(255,255,255,0.15);
+                color: #8b949e; padding: 5px 14px; font: inherit;
+                font-size: 11px; letter-spacing: 1px; border-radius: 6px;
+                cursor: pointer;
+            }
+            .tut-btn:hover { border-color: rgba(255,255,255,0.3); color: #e6edf3; }
+            .tut-btn-next {
+                background: rgba(0, 212, 255, 0.15);
+                border-color: rgba(0, 212, 255, 0.3);
+                color: #00d4ff;
+            }
+            .tut-btn-next:hover {
+                background: rgba(0, 212, 255, 0.25);
+            }
+        `;
+        document.head.appendChild(style);
+        document.body.appendChild(el);
+        this._el = el;
+    },
+
+    _render() {
+        if (!this._el || !this._active) return;
+        const s = this._steps[this._step];
+        const dots = this._steps.map((_, i) => {
+            const cls = i < this._step ? 'tut-dot done' : (i === this._step ? 'tut-dot active' : 'tut-dot');
+            return '<div class="' + cls + '"></div>';
+        }).join('');
+        const isLast = this._step === this._steps.length - 1;
+
+        this._el.innerHTML = `
+            <div class="tutorial-card">
+                <div class="tut-top">
+                    <span class="tut-icon">${s.icon}</span>
+                    <span class="tut-title">${s.title}</span>
+                </div>
+                <div class="tut-body">${s.body}</div>
+                <div class="tut-hint">${s.hint}</div>
+                <div class="tut-bottom">
+                    <div class="tut-progress">${dots}</div>
+                    <div class="tut-btns">
+                        <button class="tut-btn" id="tut-skip">SKIP</button>
+                        <button class="tut-btn tut-btn-next" id="tut-next">${isLast ? 'DONE' : 'NEXT'}</button>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.getElementById('tut-skip').addEventListener('click', () => this.skip());
+        document.getElementById('tut-next').addEventListener('click', () => this.next());
+    }
+};
+
+// === js/settings.js ===
+// Settings persistence + screenshot/share
+const Settings = {
+    _defaults: {
+        bloom: true,
+        masterVolume: 0.3,
+        voiceEnabled: false,
+        gestureEnabled: false,
+    },
+
+    _data: null,
+
+    init() {
+        try {
+            const saved = localStorage.getItem('rappterverse-settings');
+            this._data = saved ? JSON.parse(saved) : Object.assign({}, this._defaults);
+        } catch(e) {
+            this._data = Object.assign({}, this._defaults);
+        }
+        this._apply();
+    },
+
+    get(key) { return this._data ? this._data[key] : this._defaults[key]; },
+
+    set(key, value) {
+        if (!this._data) this._data = Object.assign({}, this._defaults);
+        this._data[key] = value;
+        try { localStorage.setItem('rappterverse-settings', JSON.stringify(this._data)); } catch(e) {}
+    },
+
+    _apply() {
+        // Bloom
+        if (typeof PostProcessing !== 'undefined') {
+            PostProcessing.enabled = this.get('bloom') !== false;
+        }
+        // Volume
+        if (typeof Audio !== 'undefined' && Audio.masterGain && Audio.ctx) {
+            Audio.masterGain.gain.value = this.get('masterVolume') || 0.3;
+        }
+    },
+
+    // ── Screenshot ──
+    screenshot() {
+        if (!GameState.renderer) return;
+        // Render one frame to ensure fresh
+        if (GameState.mode === 'world' && typeof WorldMode !== 'undefined') {
+            WorldMode.render();
+        }
+        try {
+            const canvas = GameState.renderer.domElement;
+            canvas.toBlob(function(blob) {
+                if (!blob) return;
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'rappterverse-' + (GameState.currentWorld || 'screenshot') + '-' + Date.now() + '.png';
+                a.click();
+                URL.revokeObjectURL(url);
+                if (typeof HUD !== 'undefined') HUD.showToast('Screenshot saved');
+            }, 'image/png');
+        } catch(e) {
+            if (typeof HUD !== 'undefined') HUD.showToast('Screenshot failed');
+        }
+    },
+
+    // ── Share Link ──
+    shareLink() {
+        var worldId = GameState.currentWorld || 'hub';
+        var url = window.location.origin + window.location.pathname + '?world=' + worldId;
+
+        // Try clipboard API first
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(url).then(function() {
+                if (typeof HUD !== 'undefined') HUD.showToast('Link copied: ' + url);
+            }).catch(function() {
+                if (typeof HUD !== 'undefined') HUD.showToast(url);
+            });
+        } else {
+            // Fallback: show in toast
+            if (typeof HUD !== 'undefined') HUD.showToast(url);
+        }
+    }
+};
+
 // === js/main.js ===
 // Main — Entry Point & Animation Loop
 (function() {
@@ -11187,6 +11680,14 @@ const PostProcessing = {
     // Minimap button
     document.getElementById('btn-minimap').addEventListener('click', () => HUD.toggleMinimap());
 
+    // ── Screenshot / Share ──
+    document.getElementById('btn-screenshot').addEventListener('click', () => {
+        if (typeof Settings !== 'undefined') Settings.screenshot();
+    });
+    document.getElementById('btn-share').addEventListener('click', () => {
+        if (typeof Settings !== 'undefined') Settings.shareLink();
+    });
+
     // ── Voice / Gesture buttons ──
     document.getElementById('btn-voice').addEventListener('click', () => {
         if (typeof VoiceControls !== 'undefined') VoiceControls.toggle();
@@ -11286,6 +11787,7 @@ const PostProcessing = {
         GameState.renderer.toneMappingExposure = 1.1;
 
         // Init optional systems
+        if (typeof Settings !== 'undefined') Settings.init();
         if (typeof VoiceControls !== 'undefined') VoiceControls.init();
         if (typeof PostProcessing !== 'undefined') PostProcessing.init(GameState.renderer);
 

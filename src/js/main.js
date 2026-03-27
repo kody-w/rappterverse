@@ -182,6 +182,14 @@
     // Minimap button
     document.getElementById('btn-minimap').addEventListener('click', () => HUD.toggleMinimap());
 
+    // ── Screenshot / Share ──
+    document.getElementById('btn-screenshot').addEventListener('click', () => {
+        if (typeof Settings !== 'undefined') Settings.screenshot();
+    });
+    document.getElementById('btn-share').addEventListener('click', () => {
+        if (typeof Settings !== 'undefined') Settings.shareLink();
+    });
+
     // ── Voice / Gesture buttons ──
     document.getElementById('btn-voice').addEventListener('click', () => {
         if (typeof VoiceControls !== 'undefined') VoiceControls.toggle();
@@ -281,6 +289,7 @@
         GameState.renderer.toneMappingExposure = 1.1;
 
         // Init optional systems
+        if (typeof Settings !== 'undefined') Settings.init();
         if (typeof VoiceControls !== 'undefined') VoiceControls.init();
         if (typeof PostProcessing !== 'undefined') PostProcessing.init(GameState.renderer);
 

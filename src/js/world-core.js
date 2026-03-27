@@ -92,6 +92,8 @@ const WorldMode = {
         if (typeof HUD !== 'undefined' && HUD.showWorldPanels) HUD.showWorldPanels();
         // Show mobile touch controls
         if (typeof TouchControls !== 'undefined') { TouchControls.init(); TouchControls.show(); }
+        // First-time tutorial
+        if (typeof Tutorial !== 'undefined') Tutorial.start();
     },
 
     createPlayer(w) {
@@ -178,6 +180,11 @@ const WorldMode = {
             this.player.mesh.position.x += moveDir.x * this.playerSpeed * delta;
             this.player.mesh.position.z += moveDir.z * this.playerSpeed * delta;
             this.player.mesh.rotation.y = Math.atan2(moveDir.x, moveDir.z);
+            // Footstep sound (throttled)
+            if (!this._lastFootstep || time - this._lastFootstep > 0.3) {
+                this._lastFootstep = time;
+                if (typeof Audio !== 'undefined' && Audio.playFootstep) Audio.playFootstep();
+            }
 
             // Walk animation
             const walkCycle = Math.sin(time * 8);

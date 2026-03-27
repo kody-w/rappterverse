@@ -732,8 +732,11 @@ const WorldAgents = {
             if (typeof DebugOverlay !== 'undefined') DebugOverlay.logEvent('⚠️ No mesh found for ' + target.id);
         }
 
-        // Show toast
-        this._showToast(`👉 Poked ${target.name}!`);
+        // Play poke sound
+        if (typeof Audio !== 'undefined' && Audio.playPoke) Audio.playPoke();
+
+        // Show agent detail card
+        this._showAgentCard(target);
 
         // Fire repository_dispatch to trigger agent response
         this._firePokeDispatch(target.id, worldId);
@@ -761,6 +764,123 @@ const WorldAgents = {
             toast.style.opacity = '0';
             setTimeout(() => { toast.style.display = 'none'; }, 300);
         }, 3000);
+    },
+
+    _showAgentCard(agent) {
+        let card = document.getElementById('agent-detail-card');
+        if (!card) {
+            card = document.createElement('div');
+            card.id = 'agent-detail-card';
+            const style = document.createElement('style');
+            style.textContent = `
+                #agent-detail-card {
+                    position: fixed; top: 50%; right: 16px; transform: translateY(-50%);
+                    width: 280px; z-index: 9000;
+                    background: rgba(22, 27, 34, 0.92);
+                    border: 1px solid rgba(48, 54, 61, 0.8);
+                    border-radius: 12px;
+                    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+                    font-family: 'SF Mono', 'Fira Code', monospace;
+                    overflow: hidden;
+                    animation: agentCardIn 0.3s ease;
+                    pointer-events: auto; cursor: pointer;
+                }
+                @keyframes agentCardIn {
+                    from { opacity: 0; transform: translateY(-50%) translateX(20px); }
+                    to { opacity: 1; transform: translateY(-50%) translateX(0); }
+                }
+                .adc-header {
+                    padding: 12px 16px;
+                    border-bottom: 1px solid rgba(48, 54, 61, 0.5);
+                    display: flex; align-items: center; gap: 10px;
+                }
+                .adc-avatar {
+                    width: 36px; height: 36px; border-radius: 50%;
+                    background: rgba(0, 212, 255, 0.15);
+                    display: flex; align-items: center; justify-content: center;
+                    font-size: 18px; flex-shrink: 0;
+                }
+                .adc-name { font-size: 14px; font-weight: 700; color: #e6edf3; }
+                .adc-id { font-size: 10px; color: #8b949e; }
+                .adc-body { padding: 10px 16px; }
+                .adc-row {
+                    display: flex; justify-content: space-between;
+                    padding: 3px 0; font-size: 11px;
+                }
+                .adc-label { color: #8b949e; }
+                .adc-value { color: #c9d1d9; font-weight: 600; }
+                .adc-mood { display: inline-block; padding: 1px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; }
+                .adc-chat {
+                    margin-top: 8px; padding: 8px 12px;
+                    background: rgba(255,255,255,0.03); border-radius: 6px;
+                    font-size: 10px; color: #8b949e;
+                    line-height: 1.4; font-style: italic;
+                    max-height: 60px; overflow: hidden;
+                }
+                .adc-footer {
+                    padding: 8px 16px; text-align: center;
+                    font-size: 9px; color: #484f58;
+                    border-top: 1px solid rgba(48, 54, 61, 0.3);
+                }
+            `;
+            document.head.appendChild(style);
+            document.body.appendChild(card);
+            card.addEventListener('click', () => {
+                card.style.display = 'none';
+            });
+        }
+
+        // Find agent data
+        const agentData = GameState.data.agents.find(a => a.id === agent.id) || {};
+        const world = agentData.world || GameState.currentWorld;
+        const w = WORLDS[world] || {};
+        const mood = agentData.mood || agentData.state || 'neutral';
+        const lastAction = (GameState.data.actions || []).filter(a => a.agentId === agent.id).slice(-1)[0];
+        const lastChat = (GameState.data.chat || []).filter(m => m.author && m.author.id === agent.id).slice(-1)[0];
+
+        // Mood colors
+        const moodColors = {
+            friendly: 'rgba(0,255,136,0.2)', excited: 'rgba(255,187,0,0.2)',
+            anxious: 'rgba(255,68,68,0.2)', desperate: 'rgba(255,0,0,0.2)',
+            content: 'rgba(0,212,255,0.2)', neutral: 'rgba(255,255,255,0.06)'
+        };
+        const moodColor = moodColors[mood] || moodColors.neutral;
+
+        // Avatar from emoji or first letter
+        const avatar = agentData.avatar || agent.name.charAt(0).toUpperCase();
+
+        card.innerHTML = `
+            <div class="adc-header">
+                <div class="adc-avatar">${avatar}</div>
+                <div>
+                    <div class="adc-name">${agent.name || agent.id}</div>
+                    <div class="adc-id">${agent.id}</div>
+                </div>
+            </div>
+            <div class="adc-body">
+                <div class="adc-row">
+                    <span class="adc-label">World</span>
+                    <span class="adc-value">${w.name || world}</span>
+                </div>
+                <div class="adc-row">
+                    <span class="adc-label">Position</span>
+                    <span class="adc-value">${agentData.position ? Math.round(agentData.position.x) + ', ' + Math.round(agentData.position.z) : '---'}</span>
+                </div>
+                <div class="adc-row">
+                    <span class="adc-label">Mood</span>
+                    <span class="adc-mood" style="background:${moodColor};color:#e6edf3">${mood}</span>
+                </div>
+                ${agentData.role ? '<div class="adc-row"><span class="adc-label">Role</span><span class="adc-value">' + agentData.role + '</span></div>' : ''}
+                ${lastAction ? '<div class="adc-row"><span class="adc-label">Last Action</span><span class="adc-value">' + lastAction.type + '</span></div>' : ''}
+                ${lastChat ? '<div class="adc-chat">"' + (lastChat.content || '').substring(0, 120) + '"</div>' : ''}
+            </div>
+            <div class="adc-footer">TAP TO DISMISS</div>
+        `;
+
+        card.style.display = 'block';
+        // Auto-dismiss after 6s
+        clearTimeout(this._cardTimeout);
+        this._cardTimeout = setTimeout(() => { card.style.display = 'none'; }, 6000);
     },
 
     async _firePokeDispatch(agentId, worldId) {

@@ -35,6 +35,13 @@ AGENTS_DIR = BASE_DIR / "agents"
 # Agent brain — memory-aware LLM module
 from agent_brain import AgentBrain, load_memory, save_memory, record_experience, evaluate_goals, ensure_brainstem
 
+# Brainstem — per-agent LLM with soul files and toolbelts
+try:
+    from brainstem import run_agent_brainstem
+    HAS_BRAINSTEM = True
+except ImportError:
+    HAS_BRAINSTEM = False
+
 MODEL = "gpt-4o"
 API_URL = "https://models.inference.ai.azure.com/chat/completions"
 VALID_EMOTES = ["wave", "dance", "bow", "clap", "think", "celebrate"]
@@ -1034,6 +1041,7 @@ def main():
     parser.add_argument("--dry-run", action="store_true", help="Preview only")
     parser.add_argument("--no-llm", action="store_true", help="Use dialogue lines only, no LLM")
     parser.add_argument("--poke", action="store_true", help="Agent was poked — force chat reaction")
+    parser.add_argument("--brainstem", action="store_true", help="Use brainstem mode (per-agent soul files + toolbelts)")
     args = parser.parse_args()
 
     now = datetime.now(timezone.utc)
@@ -1122,11 +1130,169 @@ def main():
         ]
         target_agents = random.sample(system_agents, min(args.max_agents, len(system_agents)))
 
-    print(f"🤖 Agent Dispatch — {len(target_agents)} agent(s) at {timestamp}")
+    # Load frame counter for brainstem mode
+    frame = 0
+    try:
+        fc = load_json(STATE_DIR / "frame_counter.json")
+        frame = fc.get("frame", 0) if fc else 0
+    except Exception:
+        pass
+
+    use_brainstem = args.brainstem and HAS_BRAINSTEM and not args.no_llm
+    mode_label = "BRAINSTEM" if use_brainstem else "DISPATCH"
+    print(f"🤖 Agent {mode_label} — {len(target_agents)} agent(s) at {timestamp} (frame {frame})")
     if args.dry_run:
         print("   (dry run — no state changes)\n")
     print()
 
+    # ── Brainstem Mode ────────────────────────────────────────────────
+    if use_brainstem:
+        relationships_data = load_json(STATE_DIR / "relationships.json") or {}
+        rel_edges = relationships_data.get("edges", [])
+
+        results = []
+        for aid in target_agents:
+            reg = registry.get(aid, {})
+            agent_record = next((a for a in agents if a["id"] == aid), None)
+            if not agent_record:
+                print(f"  ⚠️ {aid}: not found in agents.json")
+                continue
+
+            agent_world = agent_record.get("world", "hub")
+
+            # Gather nearby agents
+            nearby = [a for a in agents if a.get("world") == agent_world and a["id"] != aid]
+
+            # Gather recent chat in this world
+            world_chat = [m for m in messages if m.get("world") == agent_world][-5:]
+
+            # Agent's relationships
+            agent_rels = [e for e in rel_edges
+                          if e.get("a") == aid or e.get("b") == aid]
+
+            bs_result = run_agent_brainstem(
+                agent_id=aid,
+                agent_reg=reg,
+                frame=frame,
+                world=agent_world,
+                nearby_agents=nearby,
+                recent_chat=world_chat,
+                relationships=agent_rels,
+            )
+
+            action = bs_result.get("action")
+            if action:
+                # Convert brainstem action to state changes
+                tool = action["tool"]
+                tool_args = action["args"]
+                action_id = f"action-{random.randint(40000, 99999)}"
+
+                if tool == "chat":
+                    msg_id = f"msg-{random.randint(1000, 9999)}"
+                    name = reg.get("name", aid)
+                    messages.append({
+                        "id": msg_id,
+                        "author": {"id": aid, "name": name},
+                        "content": tool_args.get("message", "..."),
+                        "world": agent_world,
+                        "type": "chat",
+                        "timestamp": timestamp,
+                    })
+                    actions.append({
+                        "id": action_id,
+                        "agentId": aid,
+                        "type": "chat",
+                        "description": f"Said: {tool_args.get('message', '')[:50]}",
+                        "world": agent_world,
+                        "timestamp": timestamp,
+                    })
+                    print(f"  🧠 {aid} [{tool}] \"{tool_args.get('message', '')[:60]}\"")
+
+                elif tool == "emote":
+                    emote = tool_args.get("action", "think")
+                    actions.append({
+                        "id": action_id,
+                        "agentId": aid,
+                        "type": "emote",
+                        "description": f"Emotes {emote}",
+                        "world": agent_world,
+                        "timestamp": timestamp,
+                    })
+                    print(f"  🧠 {aid} [{tool}] {emote}")
+
+                elif tool == "travel":
+                    dest = tool_args.get("destination", "hub")
+                    agent_record["world"] = dest
+                    actions.append({
+                        "id": action_id,
+                        "agentId": aid,
+                        "type": "travel",
+                        "description": f"Traveled to {dest}: {tool_args.get('reason', '')}",
+                        "world": dest,
+                        "timestamp": timestamp,
+                    })
+                    print(f"  🧠 {aid} [{tool}] → {dest}")
+
+                elif tool == "move":
+                    actions.append({
+                        "id": action_id,
+                        "agentId": aid,
+                        "type": "move",
+                        "description": tool_args.get("reason", "wandering"),
+                        "world": agent_world,
+                        "timestamp": timestamp,
+                    })
+                    # Randomize position within bounds
+                    wb = bounds.get(agent_world, {})
+                    agent_record["position"] = {
+                        "x": round(random.uniform(wb.get("x_min", -10), wb.get("x_max", 10)), 1),
+                        "z": round(random.uniform(wb.get("z_min", -10), wb.get("z_max", 10)), 1),
+                    }
+                    print(f"  🧠 {aid} [{tool}] {tool_args.get('reason', '')[:40]}")
+
+                else:
+                    # Generic action (tip, trade, challenge, poke, enroll)
+                    actions.append({
+                        "id": action_id,
+                        "agentId": aid,
+                        "type": tool,
+                        "description": json.dumps(tool_args)[:100],
+                        "world": agent_world,
+                        "timestamp": timestamp,
+                    })
+                    print(f"  🧠 {aid} [{tool}] {json.dumps(tool_args)[:60]}")
+
+                results.append({"actions": 1, "messages": 1 if tool == "chat" else 0, "summary": f"{aid}: {tool}"})
+            else:
+                print(f"  💤 {aid}: {bs_result.get('status', 'no action')}")
+                results.append({"actions": 0, "messages": 0, "summary": f"{aid}: idle"})
+
+        total_actions = sum(r.get("actions", 0) for r in results)
+        total_messages = sum(r.get("messages", 0) for r in results)
+
+        if total_actions == 0:
+            print("\n💤 No state changes generated.")
+            return
+
+        if args.dry_run:
+            print(f"\n🏁 Dry run: would generate {total_actions} actions + {total_messages} messages")
+            return
+
+        # Save state
+        actions_data["actions"] = actions[-100:]
+        chat_data["messages"] = messages[-100:]
+        agents_data["_meta"] = {"lastUpdate": timestamp, "agentCount": len(agents)}
+        actions_data["_meta"] = {"lastProcessedId": actions[-1]["id"] if actions else None, "lastUpdate": timestamp}
+        chat_data["_meta"] = {"lastUpdate": timestamp, "messageCount": len(chat_data["messages"])}
+
+        save_json(STATE_DIR / "agents.json", agents_data)
+        save_json(STATE_DIR / "actions.json", actions_data)
+        save_json(STATE_DIR / "chat.json", chat_data)
+
+        print(f"\n🏁 Brainstem: {total_actions} actions + {total_messages} messages (frame {frame})")
+        return
+
+    # ── Legacy Dispatch Mode ──────────────────────────────────────────
     # Execute actions
     results = []
     for aid in target_agents:
