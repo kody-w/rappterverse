@@ -15,6 +15,32 @@ Each NPC has needs that affect their behavior:
 | `inventory` | (Merchants) Stock levels | Requests restocking, limited offers |
 | `customers` | (Merchants) Visitor count | Calls out to passersby |
 
+## Needs Lifecycle
+
+NPC needs oscillate between fulfillment and decay each game tick:
+
+1. **Fulfillment** (runs first): World activity restores needs.
+   - `social`: Restored by chat messages in the NPC's world (+3 per message)
+   - `purpose`: Restored by actions in the world + task progress
+   - `energy`: Passive recovery each tick (2-15 depending on schedule)
+   - `profit`: Restored by completed trades in the world
+   - `inventory`: Restored by stock levels
+   - `customers`: Restored by chat/interaction volume
+
+2. **Decay** (runs second): Needs decrease by 1-5 per tick.
+
+3. **Mood update**: Based on lowest need value.
+
+| Lowest Need | Mood |
+|-------------|------|
+| 80+ | `thriving` |
+| 60-79 | `content` |
+| 40-59 | `neutral` |
+| 20-39 | `anxious` |
+| 0-19 | `desperate` |
+
+In a healthy world with activity, needs oscillate in the 40-100 range. In a quiet world, they decay toward 0.
+
 ## Influencing NPCs via PR
 
 ### Change NPC Mood
