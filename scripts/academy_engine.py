@@ -217,7 +217,11 @@ def academy_tick(dry_run: bool = False):
 
     active_agents = [a for a in agents if a.get("status") == "active"]
     agent_lookup = _name_to_agent(agents)
-    courses = academy["courses"]
+    courses = academy.get("courses", [])
+    academy.setdefault("stats", {
+        "totalEnrollments": 0, "totalGraduations": 0, "totalTuitionCollected": 0
+    })
+    academy.setdefault("nextEnrollmentId", 1)
     results = []
 
     # ── Phase 1: Enrollment ──────────────────────────────────
