@@ -141,6 +141,8 @@ EMOTES = ["wave", "think", "celebrate", "clap", "bow", "nod"]
 
 
 def load_json(path: Path) -> dict:
+    if not path.exists():
+        return {}
     with open(path) as f:
         return json.load(f)
 

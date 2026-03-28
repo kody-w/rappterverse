@@ -160,6 +160,8 @@ GRADUATION_CELEBRATIONS = [
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 def load_json(p: Path) -> dict:
+    if not p.exists():
+        return {}
     with open(p) as f:
         return json.load(f)
 
