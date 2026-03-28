@@ -324,7 +324,8 @@ def minutes_between(ts1: str, ts2: str) -> float:
 def load_relationships() -> dict:
     path = STATE_DIR / "relationships.json"
     if path.exists():
-        return json.load(open(path))
+        with open(path) as f:
+            return json.load(f)
     return {"edges": [], "interactions": [], "_meta": {"lastUpdate": now_iso()}}
 
 
