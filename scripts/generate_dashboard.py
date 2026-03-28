@@ -55,6 +55,8 @@ def generate_readme():
     growth = load_json(STATE_DIR / "growth.json")
     game_state = load_json(STATE_DIR / "game_state.json")
     feed = load_json(BASE_DIR / "feed" / "activity.json")
+    emergence = load_json(STATE_DIR / "emergence.json")
+    relationships = load_json(STATE_DIR / "relationships.json")
 
     agents = agents_data.get("agents", [])
     actions = actions_data.get("actions", [])
@@ -141,6 +143,30 @@ def generate_readme():
     if recent_arrivals:
         arrivals_str = ", ".join(f"**{n}**" for n in reversed(recent_arrivals))
         readme += f"### 🌱 Recent Arrivals\n\n{arrivals_str}\n\n"
+
+    # Emergence & Trait Evolution
+    active_agents = [a for a in agents if a.get("status") == "active"]
+    agents_with_traits = sum(1 for a in active_agents if a.get("traits"))
+    evolved = sum(1 for a in active_agents if a.get("traits") and max(a["traits"].values()) < 0.55)
+    edges = relationships.get("edges", [])
+    strong_bonds = sum(1 for e in edges if e.get("score", 0) >= 10)
+    latest_emergence = emergence.get("latest", {})
+    em_score = latest_emergence.get("overall", 0)
+    em_dims = latest_emergence.get("dimensions", {})
+
+    if agents_with_traits or em_score:
+        readme += "### 🧬 Simulation Health\n\n"
+        readme += "| Metric | Value |\n|--------|-------|\n"
+        if em_score:
+            grade = "THRIVING" if em_score >= 60 else "GROWING" if em_score >= 30 else "DORMANT"
+            readme += f"| 🧬 **Emergence** | **{em_score:.0f}/100** ({grade}) |\n"
+        readme += f"| 🧠 Trait Evolution | {agents_with_traits}/{len(active_agents)} agents ({evolved} drifted) |\n"
+        readme += f"| 🤝 Relationships | {len(edges)} bonds ({strong_bonds} strong) |\n"
+        if em_dims:
+            for dim, score in em_dims.items():
+                emoji = "🟢" if score >= 60 else "🟡" if score >= 30 else "🔴"
+                readme += f"| {emoji} {dim} | {score:.0f}/100 |\n"
+        readme += "\n"
 
     # Recent chat
     if recent_chat:
