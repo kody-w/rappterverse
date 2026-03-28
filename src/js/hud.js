@@ -314,6 +314,7 @@ const HUD = {
         this.updateWorldPopulations();
         if (GameState.mode === 'world') {
             this.updateUniverseCard();
+            if (typeof QuestTracker !== 'undefined') QuestTracker.update();
         }
         this.updateRefreshTimer();
     }

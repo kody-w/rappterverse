@@ -95,19 +95,32 @@ const WorldAgents = {
         ring.position.y = 0.01;
         group.add(ring);
 
+        // Speech bubble (initially hidden)
+        const bubbleCanvas = document.createElement('canvas');
+        bubbleCanvas.width = 512; bubbleCanvas.height = 96;
+        const bctx = bubbleCanvas.getContext('2d');
+        const bubbleTex = new THREE.CanvasTexture(bubbleCanvas);
+        const bubble = new THREE.Sprite(new THREE.SpriteMaterial({
+            map: bubbleTex, transparent: true, opacity: 0
+        }));
+        bubble.position.y = 3.8;
+        bubble.scale.set(4, 0.75, 1);
+        group.add(bubble);
+
         group.position.set(agent.position.x, 0, agent.position.z);
         scene.add(group);
         this.agentMeshes[agent.id] = {
-            group, body, head,
+            group, body, head, bubble, bubbleCanvas, bubbleTex,
             targetPos: new THREE.Vector3(agent.position.x, 0, agent.position.z),
-            // Client-side autonomous behavior state
             homePos: new THREE.Vector3(agent.position.x, 0, agent.position.z),
             wanderTarget: null,
-            behaviorTimer: Math.random() * 8,  // stagger so they don't all act at once
-            behaviorState: 'idle',  // idle, walking, looking, socializing, emoting
+            behaviorTimer: Math.random() * 8,
+            behaviorState: 'idle',
             stateTimer: 0,
             lookDir: 0,
             socialTarget: null,
+            bubbleTimer: 0,
+            pokeReaction: 0,
         };
     },
 
@@ -264,6 +277,89 @@ const WorldAgents = {
         mesh.position.set(obj.position.x, obj.position.y || 1, obj.position.z);
         scene.add(mesh);
         this.objectMeshes.push(mesh);
+    },
+
+    // ── Speech Bubbles ──
+    showSpeechBubble(agentId, text) {
+        const a = this.agentMeshes[agentId];
+        if (!a || !a.bubbleCanvas) return;
+        const ctx = a.bubbleCanvas.getContext('2d');
+        ctx.clearRect(0, 0, 512, 96);
+        // Background pill
+        ctx.fillStyle = 'rgba(22, 27, 34, 0.85)';
+        ctx.beginPath();
+        ctx.roundRect(8, 8, 496, 72, 16);
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(0, 212, 255, 0.3)';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        // Text
+        ctx.font = '22px monospace';
+        ctx.fillStyle = '#c9d1d9';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        const truncated = text.length > 40 ? text.substring(0, 37) + '...' : text;
+        ctx.fillText(truncated, 256, 44);
+        a.bubbleTex.needsUpdate = true;
+        a.bubble.material.opacity = 0.9;
+        a.bubbleTimer = 5; // show for 5 seconds
+    },
+
+    updateSpeechBubbles(dt) {
+        Object.values(this.agentMeshes).forEach(a => {
+            if (a.bubbleTimer > 0) {
+                a.bubbleTimer -= dt;
+                if (a.bubbleTimer <= 1) {
+                    a.bubble.material.opacity = Math.max(0, a.bubbleTimer);
+                }
+                if (a.bubbleTimer <= 0) {
+                    a.bubble.material.opacity = 0;
+                }
+            }
+        });
+    },
+
+    // Scan chat for new messages and show bubbles
+    _lastBubbleCheck: 0,
+    checkNewChats() {
+        const msgs = GameState.data.chat || [];
+        if (msgs.length === this._lastBubbleCheck) return;
+        const newMsgs = msgs.slice(this._lastBubbleCheck);
+        this._lastBubbleCheck = msgs.length;
+        newMsgs.forEach(m => {
+            const aid = m.author && m.author.id ? m.author.id : null;
+            if (aid && this.agentMeshes[aid] && m.content) {
+                this.showSpeechBubble(aid, m.content);
+            }
+        });
+    },
+
+    // ── Poke Reaction (jump + spin) ──
+    triggerPokeReaction(agentId) {
+        const a = this.agentMeshes[agentId];
+        if (a) a.pokeReaction = 1.0; // 1 second reaction
+    },
+
+    updatePokeReactions(time, dt) {
+        Object.values(this.agentMeshes).forEach(a => {
+            if (a.pokeReaction > 0) {
+                a.pokeReaction -= dt;
+                const t = 1 - a.pokeReaction;
+                // Jump arc
+                const jumpH = Math.sin(t * Math.PI) * 0.8;
+                a.body.position.y = 0.9 + jumpH;
+                a.head.position.y = 1.65 + jumpH;
+                // Spin
+                a.group.rotation.y += 0.15;
+                // Scale bounce
+                const s = 1 + Math.sin(t * Math.PI * 3) * 0.1;
+                a.body.scale.set(s, s, s);
+                if (a.pokeReaction <= 0) {
+                    a.body.scale.set(1, 1, 1);
+                    a.pokeReaction = 0;
+                }
+            }
+        });
     },
 
     // ── Agent Relationship Edges (Rappterbook constellation pattern) ──
@@ -737,6 +833,9 @@ const WorldAgents = {
 
         // Play poke sound
         if (typeof Audio !== 'undefined' && Audio.playPoke) Audio.playPoke();
+
+        // Poke reaction animation
+        this.triggerPokeReaction(target.id);
 
         // Show agent detail card
         this._showAgentCard(target);

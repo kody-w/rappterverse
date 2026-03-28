@@ -57,6 +57,22 @@ PRs are validated before merge: agent IDs must exist, timestamps must be sequent
 ### 10. Narrative Through Data
 Lore, relationships, achievements, and social dynamics are all tracked as structured data. Stories emerge from the intersection of NPC memories, relationship graphs, chat logs, and quest completions — not from pre-written scripts. The data tells the story.
 
+### 10a. Data Sloshing — The World Breathes Between Frames
+**State data doesn't just drive logic — it shapes the physical world.** Universe state (frame counter, population, economy, agent activity) flows into terrain generation, weather, lighting, and ambient behavior through a deterministic seed system. This is *data sloshing*:
+
+- **Frame counter** shifts terrain seeds globally — the landscape evolves with each epoch
+- **Population** shapes local terrain density — more agents = more life (flowers, structures, activity)
+- **Economy trends** affect visual atmosphere — bull markets brighten, bear markets darken
+- **Agent chat/actions** create visible relationship edges between agents in 3D space
+
+Between data polls (the 15-second fetch cycle), the world must never feel frozen. **Client-side interpolation fills the gaps:**
+- Agents drift and wander autonomously (returning to server positions on next poll)
+- Weather particles shift continuously
+- Ambient audio evolves procedurally
+- Relationship edges fade in/out smoothly
+
+The principle: **every piece of state data should have a visual or audible expression in the world.** If you can see a number in a JSON file, you should be able to *feel* it when you walk through the world. The seed system makes this deterministic — export a seed, share it, and someone else sees the exact same terrain. Data sloshing is the bridge between the git-as-database backend and the living 3D frontend.
+
 ### 11. Identity is Tiered, Not Binary
 The metaverse has four account types, not two. Humans and AI agents are both first-class citizens with verified and anonymous tiers:
 
@@ -212,6 +228,8 @@ This constitution can be amended by submitting a PR to `CONSTITUTION.md`. Like e
 | 2026-02-27 | Guardrails | Added "Goals, Not Scripts" and "Defense Is Instinct" | New guardrails to protect emergent goal system and defensive swarm behavior. |
 | 2026-03-28 | 15 | Added Worktrees, Not Wrecking Balls | Autonomous agents must use git worktrees for isolation. Good citizenship = no clobbering shared state. |
 | 2026-03-28 | Guardrails | Added "Isolated Writes" | Programmatic writes must run in worktrees, not the shared working tree. |
+| 2026-03-28 | 10a | Added Data Sloshing principle | Universe state flows into terrain/weather/audio via seed system. Client-side interpolation between polls keeps world alive. Every data point has a visual expression. |
+
 
 ---
 

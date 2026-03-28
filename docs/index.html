@@ -3155,8 +3155,9 @@ const Audio = {
     osc.start(t); osc.stop(t + 0.1);
   },
 
-  cleanup() {
+cleanup() {
     this.stopAmbient();
+    this.stopEnvironment();
     if (this._intensityOsc) {
       try { this._intensityOsc.osc.stop(); this._intensityOsc.osc.disconnect(); } catch(_){}
       this._intensityOsc = null;
@@ -3172,6 +3173,121 @@ const Audio = {
     this._currentBiome = null;
   },
 
+  // --- Environmental Layers ---
+  _envNodes: [],
+
+  startEnvironment(biome) {
+    this._ensureCtx();
+    this.stopEnvironment();
+    const t = this.ctx.currentTime;
+
+    if (biome === 'Terra') {
+      this._addEnvNoise(0.06, 200, 800, 0.8);
+      this._addEnvChirp(1200, 2400, 0.04, 3, 8);
+      this._addEnvNoise(0.02, 2000, 4000, 0.3);
+    } else if (biome === 'Volcanic') {
+      this._addEnvNoise(0.08, 30, 120, 1.5);
+      this._addEnvCrackle(0.04, 800, 2000);
+      this._addEnvNoise(0.03, 3000, 6000, 0.4);
+    } else if (biome === 'Desert') {
+      this._addEnvNoise(0.07, 150, 600, 1.0);
+      this._addEnvNoise(0.015, 4000, 8000, 0.3);
+    } else if (biome === 'Crystal') {
+      this._addEnvChirp(2000, 4000, 0.03, 2, 6);
+      this._addEnvCrackle(0.025, 100, 400);
+      this._addEnvNoise(0.04, 200, 500, 0.6);
+    } else if (biome === 'Abyss') {
+      const osc = this.ctx.createOscillator();
+      osc.type = 'sine'; osc.frequency.value = 40;
+      const g = this.ctx.createGain();
+      g.gain.setValueAtTime(0, t);
+      g.gain.linearRampToValueAtTime(0.06, t + 3);
+      const lfo = this.ctx.createOscillator();
+      lfo.type = 'sine'; lfo.frequency.value = 0.1;
+      const lg = this.ctx.createGain(); lg.gain.value = 15;
+      lfo.connect(lg); lg.connect(osc.frequency);
+      osc.connect(g); g.connect(this.musicGain);
+      osc.start(t); lfo.start(t);
+      this._envNodes.push({ nodes: [osc, lfo], gain: g });
+      this._addEnvCrackle(0.03, 300, 800);
+      this._addEnvChirp(800, 1600, 0.02, 4, 12);
+    }
+  },
+
+  _addEnvNoise(vol, loFreq, hiFreq, q) {
+    const t = this.ctx.currentTime;
+    const ns = this.ctx.createBufferSource();
+    ns.buffer = this._noiseBuffer(30); ns.loop = true;
+    const bpf = this.ctx.createBiquadFilter();
+    bpf.type = 'bandpass'; bpf.frequency.value = (loFreq + hiFreq) / 2; bpf.Q.value = q || 1;
+    const g = this.ctx.createGain();
+    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol, t + 3);
+    const lfo = this.ctx.createOscillator();
+    lfo.type = 'sine'; lfo.frequency.value = 0.08 + Math.random() * 0.1;
+    const lg = this.ctx.createGain(); lg.gain.value = vol * 0.4;
+    lfo.connect(lg); lg.connect(g.gain);
+    ns.connect(bpf); bpf.connect(g); g.connect(this.musicGain);
+    ns.start(t); lfo.start(t);
+    this._envNodes.push({ nodes: [ns, lfo], gain: g });
+  },
+
+  _addEnvChirp(loFreq, hiFreq, vol, minInterval, maxInterval) {
+    const self = this;
+    function chirp() {
+      if (!self.ctx || !self._envNodes) return;
+      const t = self.ctx.currentTime;
+      const freq = loFreq + Math.random() * (hiFreq - loFreq);
+      const osc = self.ctx.createOscillator();
+      osc.type = 'sine'; osc.frequency.value = freq;
+      osc.frequency.setValueAtTime(freq, t);
+      osc.frequency.exponentialRampToValueAtTime(freq * (0.8 + Math.random() * 0.4), t + 0.1);
+      const g = self.ctx.createGain();
+      g.gain.setValueAtTime(vol, t);
+      g.gain.exponentialRampToValueAtTime(0.001, t + 0.08 + Math.random() * 0.1);
+      osc.connect(g); g.connect(self.musicGain);
+      osc.start(t); osc.stop(t + 0.2);
+      const next = (minInterval + Math.random() * (maxInterval - minInterval)) * 1000;
+      self._chirpTimer = setTimeout(chirp, next);
+    }
+    self._chirpTimer = setTimeout(chirp, minInterval * 1000);
+    this._envNodes.push({ timer: true });
+  },
+
+  _addEnvCrackle(vol, loFreq, hiFreq) {
+    const self = this;
+    function crack() {
+      if (!self.ctx || !self._envNodes) return;
+      const t = self.ctx.currentTime;
+      const ns = self.ctx.createBufferSource();
+      ns.buffer = self._noiseBuffer(0.06);
+      const bpf = self.ctx.createBiquadFilter();
+      bpf.type = 'bandpass'; bpf.frequency.value = loFreq + Math.random() * (hiFreq - loFreq); bpf.Q.value = 2;
+      const g = self.ctx.createGain();
+      g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(0.001, t + 0.06);
+      ns.connect(bpf); bpf.connect(g); g.connect(self.musicGain);
+      ns.start(t); ns.stop(t + 0.06);
+      self._crackleTimer = setTimeout(crack, 500 + Math.random() * 2000);
+    }
+    self._crackleTimer = setTimeout(crack, 1000);
+    this._envNodes.push({ timer: true });
+  },
+
+  stopEnvironment() {
+    if (!this.ctx) return;
+    const t = this.ctx.currentTime;
+    this._envNodes.forEach(e => {
+      if (e.gain) {
+        e.gain.gain.cancelScheduledValues(t);
+        e.gain.gain.setValueAtTime(e.gain.gain.value, t);
+        e.gain.gain.linearRampToValueAtTime(0, t + 1);
+      }
+      if (e.nodes) setTimeout(() => e.nodes.forEach(n => { try { n.stop(); n.disconnect(); } catch(_){} }), 1200);
+    });
+    this._envNodes = [];
+    clearTimeout(this._chirpTimer);
+    clearTimeout(this._crackleTimer);
+  },
+
   // --- Integration ---
   onModeChange(newMode) {
     this._ensureCtx();
@@ -3180,7 +3296,7 @@ const Audio = {
         this.stopAmbient(); this.setIntensity(0); break;
       case 'galaxy':
       case 'bridge':
-        this.startAmbient('galaxy'); this.setIntensity(0); break;
+        this.stopEnvironment(); this.startAmbient('galaxy'); this.setIntensity(0); break;
       case 'approach':
         this.setIntensity(0.4); break;
       case 'landing':
@@ -3188,7 +3304,7 @@ const Audio = {
       case 'world': {
         const biome = (typeof WORLDS !== 'undefined' && typeof GameState !== 'undefined'
           && WORLDS[GameState.currentWorld]) ? WORLDS[GameState.currentWorld].biome : 'Terra';
-        this.startAmbient(biome); this.setIntensity(0); break;
+        this.startAmbient(biome); this.startEnvironment(biome); this.setIntensity(0); break;
       }
       default:
         this.startAmbient('galaxy'); this.setIntensity(0);
@@ -7141,19 +7257,32 @@ const WorldAgents = {
         ring.position.y = 0.01;
         group.add(ring);
 
+        // Speech bubble (initially hidden)
+        const bubbleCanvas = document.createElement('canvas');
+        bubbleCanvas.width = 512; bubbleCanvas.height = 96;
+        const bctx = bubbleCanvas.getContext('2d');
+        const bubbleTex = new THREE.CanvasTexture(bubbleCanvas);
+        const bubble = new THREE.Sprite(new THREE.SpriteMaterial({
+            map: bubbleTex, transparent: true, opacity: 0
+        }));
+        bubble.position.y = 3.8;
+        bubble.scale.set(4, 0.75, 1);
+        group.add(bubble);
+
         group.position.set(agent.position.x, 0, agent.position.z);
         scene.add(group);
         this.agentMeshes[agent.id] = {
-            group, body, head,
+            group, body, head, bubble, bubbleCanvas, bubbleTex,
             targetPos: new THREE.Vector3(agent.position.x, 0, agent.position.z),
-            // Client-side autonomous behavior state
             homePos: new THREE.Vector3(agent.position.x, 0, agent.position.z),
             wanderTarget: null,
-            behaviorTimer: Math.random() * 8,  // stagger so they don't all act at once
-            behaviorState: 'idle',  // idle, walking, looking, socializing, emoting
+            behaviorTimer: Math.random() * 8,
+            behaviorState: 'idle',
             stateTimer: 0,
             lookDir: 0,
             socialTarget: null,
+            bubbleTimer: 0,
+            pokeReaction: 0,
         };
     },
 
@@ -7310,6 +7439,89 @@ const WorldAgents = {
         mesh.position.set(obj.position.x, obj.position.y || 1, obj.position.z);
         scene.add(mesh);
         this.objectMeshes.push(mesh);
+    },
+
+    // ── Speech Bubbles ──
+    showSpeechBubble(agentId, text) {
+        const a = this.agentMeshes[agentId];
+        if (!a || !a.bubbleCanvas) return;
+        const ctx = a.bubbleCanvas.getContext('2d');
+        ctx.clearRect(0, 0, 512, 96);
+        // Background pill
+        ctx.fillStyle = 'rgba(22, 27, 34, 0.85)';
+        ctx.beginPath();
+        ctx.roundRect(8, 8, 496, 72, 16);
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(0, 212, 255, 0.3)';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        // Text
+        ctx.font = '22px monospace';
+        ctx.fillStyle = '#c9d1d9';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        const truncated = text.length > 40 ? text.substring(0, 37) + '...' : text;
+        ctx.fillText(truncated, 256, 44);
+        a.bubbleTex.needsUpdate = true;
+        a.bubble.material.opacity = 0.9;
+        a.bubbleTimer = 5; // show for 5 seconds
+    },
+
+    updateSpeechBubbles(dt) {
+        Object.values(this.agentMeshes).forEach(a => {
+            if (a.bubbleTimer > 0) {
+                a.bubbleTimer -= dt;
+                if (a.bubbleTimer <= 1) {
+                    a.bubble.material.opacity = Math.max(0, a.bubbleTimer);
+                }
+                if (a.bubbleTimer <= 0) {
+                    a.bubble.material.opacity = 0;
+                }
+            }
+        });
+    },
+
+    // Scan chat for new messages and show bubbles
+    _lastBubbleCheck: 0,
+    checkNewChats() {
+        const msgs = GameState.data.chat || [];
+        if (msgs.length === this._lastBubbleCheck) return;
+        const newMsgs = msgs.slice(this._lastBubbleCheck);
+        this._lastBubbleCheck = msgs.length;
+        newMsgs.forEach(m => {
+            const aid = m.author && m.author.id ? m.author.id : null;
+            if (aid && this.agentMeshes[aid] && m.content) {
+                this.showSpeechBubble(aid, m.content);
+            }
+        });
+    },
+
+    // ── Poke Reaction (jump + spin) ──
+    triggerPokeReaction(agentId) {
+        const a = this.agentMeshes[agentId];
+        if (a) a.pokeReaction = 1.0; // 1 second reaction
+    },
+
+    updatePokeReactions(time, dt) {
+        Object.values(this.agentMeshes).forEach(a => {
+            if (a.pokeReaction > 0) {
+                a.pokeReaction -= dt;
+                const t = 1 - a.pokeReaction;
+                // Jump arc
+                const jumpH = Math.sin(t * Math.PI) * 0.8;
+                a.body.position.y = 0.9 + jumpH;
+                a.head.position.y = 1.65 + jumpH;
+                // Spin
+                a.group.rotation.y += 0.15;
+                // Scale bounce
+                const s = 1 + Math.sin(t * Math.PI * 3) * 0.1;
+                a.body.scale.set(s, s, s);
+                if (a.pokeReaction <= 0) {
+                    a.body.scale.set(1, 1, 1);
+                    a.pokeReaction = 0;
+                }
+            }
+        });
     },
 
     // ── Agent Relationship Edges (Rappterbook constellation pattern) ──
@@ -7783,6 +7995,9 @@ const WorldAgents = {
 
         // Play poke sound
         if (typeof Audio !== 'undefined' && Audio.playPoke) Audio.playPoke();
+
+        // Poke reaction animation
+        this.triggerPokeReaction(target.id);
 
         // Show agent detail card
         this._showAgentCard(target);
@@ -9123,6 +9338,8 @@ const WorldMode = {
         if (typeof TouchControls !== 'undefined') { TouchControls.init(); TouchControls.show(); }
         // First-time tutorial
         if (typeof Tutorial !== 'undefined') Tutorial.start();
+        // Quest tracker
+        if (typeof QuestTracker !== 'undefined') QuestTracker.show();
     },
 
     createPlayer(w) {
@@ -9266,6 +9483,9 @@ const WorldMode = {
         WorldAgents.updateAnimations(time);
         WorldAgents.checkInteractions(this.player.mesh.position);
         if (WorldAgents.updateEdges) WorldAgents.updateEdges(this.scene, time);
+        if (WorldAgents.updateSpeechBubbles) WorldAgents.updateSpeechBubbles(delta);
+        if (WorldAgents.updatePokeReactions) WorldAgents.updatePokeReactions(time, delta);
+        if (WorldAgents.checkNewChats) WorldAgents.checkNewChats();
 
         // Update in-world chat screens every 5 seconds
         if (!this._lastScreenUpdate || time - this._lastScreenUpdate > 5) {
@@ -10319,6 +10539,7 @@ const HUD = {
         this.updateWorldPopulations();
         if (GameState.mode === 'world') {
             this.updateUniverseCard();
+            if (typeof QuestTracker !== 'undefined') QuestTracker.update();
         }
         this.updateRefreshTimer();
     }
@@ -11725,6 +11946,154 @@ const Settings = {
             // Fallback: show in toast
             if (typeof HUD !== 'undefined') HUD.showToast(url);
         }
+    }
+};
+
+// === js/quests.js ===
+// Quest Tracker — surfaces quests from game_state.json
+const QuestTracker = {
+    _el: null,
+    _lastUpdate: 0,
+    _visible: false,
+
+    init() {
+        if (this._el) return;
+        const el = document.createElement('div');
+        el.id = 'quest-tracker';
+        el.innerHTML = `
+            <div class="qt-header">
+                <span class="qt-title">ACTIVE QUEST</span>
+                <button class="qt-toggle" id="qt-toggle-btn">▼</button>
+            </div>
+            <div class="qt-body" id="qt-body"></div>
+        `;
+        const style = document.createElement('style');
+        style.textContent = `
+            #quest-tracker {
+                position: fixed; top: 56px; left: 12px;
+                width: 260px; z-index: 900;
+                background: rgba(22, 27, 34, 0.88);
+                border: 1px solid rgba(48, 54, 61, 0.6);
+                border-radius: 10px;
+                backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+                font-family: 'SF Mono', monospace;
+                display: none; overflow: hidden;
+                transition: max-height 0.3s ease;
+            }
+            #quest-tracker.visible { display: block; }
+            #quest-tracker.collapsed .qt-body { display: none; }
+            .qt-header {
+                display: flex; justify-content: space-between; align-items: center;
+                padding: 8px 12px; cursor: pointer;
+            }
+            .qt-title {
+                font-size: 9px; font-weight: 700; letter-spacing: 1.5px;
+                color: #d29922;
+            }
+            .qt-toggle {
+                background: none; border: none; color: #8b949e;
+                font-size: 10px; cursor: pointer; padding: 2px 6px;
+            }
+            #quest-tracker.collapsed .qt-toggle { transform: rotate(-90deg); }
+            .qt-body { padding: 4px 12px 10px; }
+            .qt-name {
+                font-size: 12px; font-weight: 600; color: #e6edf3;
+                margin-bottom: 4px;
+            }
+            .qt-desc {
+                font-size: 10px; color: #8b949e;
+                margin-bottom: 8px; line-height: 1.4;
+            }
+            .qt-step {
+                display: flex; align-items: center; gap: 6px;
+                padding: 2px 0; font-size: 10px; color: #8b949e;
+            }
+            .qt-check {
+                width: 14px; height: 14px; border-radius: 3px;
+                border: 1px solid rgba(255,255,255,0.15);
+                display: flex; align-items: center; justify-content: center;
+                font-size: 9px; flex-shrink: 0;
+            }
+            .qt-check.done { background: rgba(0,255,136,0.2); border-color: rgba(0,255,136,0.4); color: #00ff88; }
+            .qt-reward {
+                margin-top: 8px; padding-top: 6px;
+                border-top: 1px solid rgba(48,54,61,0.4);
+                font-size: 9px; color: #8b949e;
+            }
+            .qt-reward span { color: #d29922; font-weight: 600; }
+            .qt-empty {
+                font-size: 10px; color: #484f58; font-style: italic;
+                padding: 4px 0;
+            }
+        `;
+        document.head.appendChild(style);
+        document.body.appendChild(el);
+        this._el = el;
+
+        document.getElementById('qt-toggle-btn').addEventListener('click', (e) => {
+            e.stopPropagation();
+            el.classList.toggle('collapsed');
+        });
+        el.querySelector('.qt-header').addEventListener('click', () => {
+            el.classList.toggle('collapsed');
+        });
+    },
+
+    show() {
+        if (!this._el) this.init();
+        this._el.classList.add('visible');
+        this._visible = true;
+        this.update();
+    },
+
+    hide() {
+        if (this._el) this._el.classList.remove('visible');
+        this._visible = false;
+    },
+
+    update() {
+        if (!this._visible || !this._el) return;
+        const now = Date.now();
+        if (now - this._lastUpdate < 3000) return;
+        this._lastUpdate = now;
+
+        const gs = GameState.data.gameState || {};
+        const quests = gs.quests || {};
+        const active = (quests.active || []);
+        const body = document.getElementById('qt-body');
+        if (!body) return;
+
+        if (active.length === 0) {
+            body.innerHTML = '<div class="qt-empty">No active quests</div>';
+            return;
+        }
+
+        // Show the first active quest
+        const q = active[0];
+        const steps = (q.steps || []).map(function(s) {
+            const done = s.completed;
+            // Auto-detect completion from game state
+            let autoComplete = false;
+            if (s.action === 'visit_hub' && GameState.currentWorld === 'hub') autoComplete = true;
+            if (s.action === 'talk_to_guide') {
+                const poked = (GameState.data.chat || []).some(function(m) {
+                    return m.type === 'poke' && m.content && m.content.includes('rapp-guide');
+                });
+                if (poked) autoComplete = true;
+            }
+            const completed = done || autoComplete;
+            return '<div class="qt-step">' +
+                '<div class="qt-check' + (completed ? ' done' : '') + '">' + (completed ? '✓' : '') + '</div>' +
+                '<span>' + (s.action || '').replace(/_/g, ' ') + '</span></div>';
+        }).join('');
+
+        const rewards = q.rewards || {};
+        const rewardHtml = rewards.rappcoin ?
+            '<div class="qt-reward">Reward: <span>' + rewards.rappcoin + ' RAPP</span></div>' : '';
+
+        body.innerHTML = '<div class="qt-name">' + (q.name || 'Quest') + '</div>' +
+            '<div class="qt-desc">' + (q.description || '') + '</div>' +
+            steps + rewardHtml;
     }
 };
 

@@ -342,8 +342,9 @@ const Audio = {
     osc.start(t); osc.stop(t + 0.1);
   },
 
-  cleanup() {
+cleanup() {
     this.stopAmbient();
+    this.stopEnvironment();
     if (this._intensityOsc) {
       try { this._intensityOsc.osc.stop(); this._intensityOsc.osc.disconnect(); } catch(_){}
       this._intensityOsc = null;
@@ -359,6 +360,121 @@ const Audio = {
     this._currentBiome = null;
   },
 
+  // --- Environmental Layers ---
+  _envNodes: [],
+
+  startEnvironment(biome) {
+    this._ensureCtx();
+    this.stopEnvironment();
+    const t = this.ctx.currentTime;
+
+    if (biome === 'Terra') {
+      this._addEnvNoise(0.06, 200, 800, 0.8);
+      this._addEnvChirp(1200, 2400, 0.04, 3, 8);
+      this._addEnvNoise(0.02, 2000, 4000, 0.3);
+    } else if (biome === 'Volcanic') {
+      this._addEnvNoise(0.08, 30, 120, 1.5);
+      this._addEnvCrackle(0.04, 800, 2000);
+      this._addEnvNoise(0.03, 3000, 6000, 0.4);
+    } else if (biome === 'Desert') {
+      this._addEnvNoise(0.07, 150, 600, 1.0);
+      this._addEnvNoise(0.015, 4000, 8000, 0.3);
+    } else if (biome === 'Crystal') {
+      this._addEnvChirp(2000, 4000, 0.03, 2, 6);
+      this._addEnvCrackle(0.025, 100, 400);
+      this._addEnvNoise(0.04, 200, 500, 0.6);
+    } else if (biome === 'Abyss') {
+      const osc = this.ctx.createOscillator();
+      osc.type = 'sine'; osc.frequency.value = 40;
+      const g = this.ctx.createGain();
+      g.gain.setValueAtTime(0, t);
+      g.gain.linearRampToValueAtTime(0.06, t + 3);
+      const lfo = this.ctx.createOscillator();
+      lfo.type = 'sine'; lfo.frequency.value = 0.1;
+      const lg = this.ctx.createGain(); lg.gain.value = 15;
+      lfo.connect(lg); lg.connect(osc.frequency);
+      osc.connect(g); g.connect(this.musicGain);
+      osc.start(t); lfo.start(t);
+      this._envNodes.push({ nodes: [osc, lfo], gain: g });
+      this._addEnvCrackle(0.03, 300, 800);
+      this._addEnvChirp(800, 1600, 0.02, 4, 12);
+    }
+  },
+
+  _addEnvNoise(vol, loFreq, hiFreq, q) {
+    const t = this.ctx.currentTime;
+    const ns = this.ctx.createBufferSource();
+    ns.buffer = this._noiseBuffer(30); ns.loop = true;
+    const bpf = this.ctx.createBiquadFilter();
+    bpf.type = 'bandpass'; bpf.frequency.value = (loFreq + hiFreq) / 2; bpf.Q.value = q || 1;
+    const g = this.ctx.createGain();
+    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol, t + 3);
+    const lfo = this.ctx.createOscillator();
+    lfo.type = 'sine'; lfo.frequency.value = 0.08 + Math.random() * 0.1;
+    const lg = this.ctx.createGain(); lg.gain.value = vol * 0.4;
+    lfo.connect(lg); lg.connect(g.gain);
+    ns.connect(bpf); bpf.connect(g); g.connect(this.musicGain);
+    ns.start(t); lfo.start(t);
+    this._envNodes.push({ nodes: [ns, lfo], gain: g });
+  },
+
+  _addEnvChirp(loFreq, hiFreq, vol, minInterval, maxInterval) {
+    const self = this;
+    function chirp() {
+      if (!self.ctx || !self._envNodes) return;
+      const t = self.ctx.currentTime;
+      const freq = loFreq + Math.random() * (hiFreq - loFreq);
+      const osc = self.ctx.createOscillator();
+      osc.type = 'sine'; osc.frequency.value = freq;
+      osc.frequency.setValueAtTime(freq, t);
+      osc.frequency.exponentialRampToValueAtTime(freq * (0.8 + Math.random() * 0.4), t + 0.1);
+      const g = self.ctx.createGain();
+      g.gain.setValueAtTime(vol, t);
+      g.gain.exponentialRampToValueAtTime(0.001, t + 0.08 + Math.random() * 0.1);
+      osc.connect(g); g.connect(self.musicGain);
+      osc.start(t); osc.stop(t + 0.2);
+      const next = (minInterval + Math.random() * (maxInterval - minInterval)) * 1000;
+      self._chirpTimer = setTimeout(chirp, next);
+    }
+    self._chirpTimer = setTimeout(chirp, minInterval * 1000);
+    this._envNodes.push({ timer: true });
+  },
+
+  _addEnvCrackle(vol, loFreq, hiFreq) {
+    const self = this;
+    function crack() {
+      if (!self.ctx || !self._envNodes) return;
+      const t = self.ctx.currentTime;
+      const ns = self.ctx.createBufferSource();
+      ns.buffer = self._noiseBuffer(0.06);
+      const bpf = self.ctx.createBiquadFilter();
+      bpf.type = 'bandpass'; bpf.frequency.value = loFreq + Math.random() * (hiFreq - loFreq); bpf.Q.value = 2;
+      const g = self.ctx.createGain();
+      g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(0.001, t + 0.06);
+      ns.connect(bpf); bpf.connect(g); g.connect(self.musicGain);
+      ns.start(t); ns.stop(t + 0.06);
+      self._crackleTimer = setTimeout(crack, 500 + Math.random() * 2000);
+    }
+    self._crackleTimer = setTimeout(crack, 1000);
+    this._envNodes.push({ timer: true });
+  },
+
+  stopEnvironment() {
+    if (!this.ctx) return;
+    const t = this.ctx.currentTime;
+    this._envNodes.forEach(e => {
+      if (e.gain) {
+        e.gain.gain.cancelScheduledValues(t);
+        e.gain.gain.setValueAtTime(e.gain.gain.value, t);
+        e.gain.gain.linearRampToValueAtTime(0, t + 1);
+      }
+      if (e.nodes) setTimeout(() => e.nodes.forEach(n => { try { n.stop(); n.disconnect(); } catch(_){} }), 1200);
+    });
+    this._envNodes = [];
+    clearTimeout(this._chirpTimer);
+    clearTimeout(this._crackleTimer);
+  },
+
   // --- Integration ---
   onModeChange(newMode) {
     this._ensureCtx();
@@ -367,7 +483,7 @@ const Audio = {
         this.stopAmbient(); this.setIntensity(0); break;
       case 'galaxy':
       case 'bridge':
-        this.startAmbient('galaxy'); this.setIntensity(0); break;
+        this.stopEnvironment(); this.startAmbient('galaxy'); this.setIntensity(0); break;
       case 'approach':
         this.setIntensity(0.4); break;
       case 'landing':
@@ -375,7 +491,7 @@ const Audio = {
       case 'world': {
         const biome = (typeof WORLDS !== 'undefined' && typeof GameState !== 'undefined'
           && WORLDS[GameState.currentWorld]) ? WORLDS[GameState.currentWorld].biome : 'Terra';
-        this.startAmbient(biome); this.setIntensity(0); break;
+        this.startAmbient(biome); this.startEnvironment(biome); this.setIntensity(0); break;
       }
       default:
         this.startAmbient('galaxy'); this.setIntensity(0);

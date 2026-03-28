@@ -94,6 +94,8 @@ const WorldMode = {
         if (typeof TouchControls !== 'undefined') { TouchControls.init(); TouchControls.show(); }
         // First-time tutorial
         if (typeof Tutorial !== 'undefined') Tutorial.start();
+        // Quest tracker
+        if (typeof QuestTracker !== 'undefined') QuestTracker.show();
     },
 
     createPlayer(w) {
@@ -237,6 +239,9 @@ const WorldMode = {
         WorldAgents.updateAnimations(time);
         WorldAgents.checkInteractions(this.player.mesh.position);
         if (WorldAgents.updateEdges) WorldAgents.updateEdges(this.scene, time);
+        if (WorldAgents.updateSpeechBubbles) WorldAgents.updateSpeechBubbles(delta);
+        if (WorldAgents.updatePokeReactions) WorldAgents.updatePokeReactions(time, delta);
+        if (WorldAgents.checkNewChats) WorldAgents.checkNewChats();
 
         // Update in-world chat screens every 5 seconds
         if (!this._lastScreenUpdate || time - this._lastScreenUpdate > 5) {

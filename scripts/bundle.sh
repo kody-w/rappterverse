@@ -62,6 +62,7 @@ JS_FILES=(
     src/js/post-processing.js
     src/js/tutorial.js
     src/js/settings.js
+    src/js/quests.js
     src/js/main.js
 )
 
