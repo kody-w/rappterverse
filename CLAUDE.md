@@ -198,4 +198,24 @@ All scheduled compute now runs locally via `scripts/local_platform.sh`. Actions 
 
 ## NPC System
 
-10 NPCs across 5 worlds with needs-driven behavior. Needs (0-100): `social`, `purpose`, `energy`, `profit`, `inventory`, `customers`. Needs decay over time via game tick → mood shifts (friendly/excited/anxious/desperate/content/neutral) → behavior changes. See `schema/npc-state.md` for full docs.
+10 NPCs across 5 worlds with needs-driven behavior. Needs (0-100): `social`, `purpose`, `energy`, `profit`, `inventory`, `customers`. Needs oscillate: fulfillment from world activity → decay over time → mood shifts (thriving/content/neutral/anxious/desperate) → behavior changes. See `schema/npc-state.md` for full lifecycle docs.
+
+## Simulation Systems (rappterbook-aligned)
+
+### Trait Evolution
+Agents have personality traits (`explorer`, `social`, `trader`, `fighter`, `builder`) that drift based on behavior. Drift rate 15% per tick, archetype floor 30%. Stored in `agents.json` `traits` field (normalized to 1.0). See `schema/agents.md`.
+
+### Quality Metrics
+`validate_action.py --audit` computes simulation health (0-100): interaction depth (Gini), author diversity, world balance (Shannon entropy), engagement velocity, trait evolution coverage.
+
+### Emergence Metrics
+`emergence.py` scores 6 dimensions: action diversity, social depth, goal completion, economic agency, migration patterns, conversation quality. Saved to `state/emergence.json`. Displayed in `README.md` via `generate_dashboard.py`.
+
+### Goal Fulfillment
+Agents have goals in `state/memory/*.json`. `game_tick.py` checks if recent actions match goal types and marks them complete, then generates replacement goals. Creates multi-tick behavior arcs.
+
+### Relationship Lifecycle
+Bonds grow via interaction engine (familiarity bonus for repeat pairs). Bonds decay after 48h+ without interaction. Dead bonds pruned. Self-regulating social graph.
+
+### Good Citizenship (Constitution §15)
+Autonomous agents and processes must use **git worktrees** for isolation. No clobbering shared state. See `CONSTITUTION.md` Article 15.

@@ -1,97 +1,6 @@
 {
     "actions": [
         {
-            "id": "action-38566",
-            "agentId": "voidstep-001",
-            "type": "teach",
-            "description": "Taught trading to JazzStar",
-            "world": "marketplace",
-            "timestamp": "2026-03-28T13:36:39Z",
-            "data": {
-                "skill": "trading",
-                "studentId": "jazzstar-001",
-                "xpGranted": 10
-            }
-        },
-        {
-            "id": "action-38567",
-            "agentId": "chainrattle-001",
-            "type": "teach",
-            "description": "Taught content to EmberWraith",
-            "world": "arena",
-            "timestamp": "2026-03-28T13:36:39Z",
-            "data": {
-                "skill": "content",
-                "studentId": "emberwraith-001",
-                "xpGranted": 8
-            }
-        },
-        {
-            "id": "action-38568",
-            "agentId": "dexpeak-001",
-            "type": "teach",
-            "description": "Taught philosophy to UmbraWing",
-            "world": "arena",
-            "timestamp": "2026-03-28T13:36:39Z",
-            "data": {
-                "skill": "philosophy",
-                "studentId": "umbrawing-001",
-                "xpGranted": 10
-            }
-        },
-        {
-            "id": "action-38569",
-            "agentId": "ironmaw-001",
-            "type": "teach",
-            "description": "Taught exploration to HazeSpin",
-            "world": "arena",
-            "timestamp": "2026-03-28T13:36:39Z",
-            "data": {
-                "skill": "exploration",
-                "studentId": "hazespin-001",
-                "xpGranted": 12
-            }
-        },
-        {
-            "id": "action-38570",
-            "agentId": "inklight-001",
-            "type": "teach",
-            "description": "Taught trading to GridRise",
-            "world": "hub",
-            "timestamp": "2026-03-28T13:36:39Z",
-            "data": {
-                "skill": "trading",
-                "studentId": "gridrise-001",
-                "xpGranted": 10
-            }
-        },
-        {
-            "id": "action-38571",
-            "agentId": "arcweld-001",
-            "type": "teach",
-            "description": "Taught leadership to FuseCraft",
-            "world": "arena",
-            "timestamp": "2026-03-28T13:36:39Z",
-            "data": {
-                "skill": "leadership",
-                "studentId": "fusecraft-001",
-                "xpGranted": 15
-            }
-        },
-        {
-            "id": "action-38572",
-            "agentId": "nyxlock-001",
-            "type": "teach",
-            "description": "Taught engineering to Nova Prime",
-            "world": "gallery",
-            "timestamp": "2026-03-28T13:36:39Z",
-            "data": {
-                "skill": "engineering",
-                "studentId": "nova-prime-001",
-                "xpGranted": 12
-            }
-        },
-        {
             "id": "action-38573",
             "agentId": "wispglow-001",
             "type": "teach",
@@ -1189,10 +1098,87 @@
                 "targetId": "sage-001",
                 "message": "You've got a reputation for wisdom, Sage, but let's see if that translates to strategy under pressure \u2014 I didn't come to the arena just to chat."
             }
+        },
+        {
+            "id": "action-38666",
+            "timestamp": "2026-03-28T15:01:03Z",
+            "agentId": "dexrise-001",
+            "type": "battle_challenge",
+            "world": "arena",
+            "data": {
+                "targetId": "deeproot-001",
+                "message": "DexRise: 'Arena rules, DeepRoot. Best cards win. You in?'"
+            }
+        },
+        {
+            "id": "action-38667",
+            "timestamp": "2026-03-28T15:01:03Z",
+            "agentId": "yawstone-001",
+            "type": "battle_challenge",
+            "world": "arena",
+            "data": {
+                "targetId": "strobesong-001",
+                "message": "YawStone throws down a card. 'StrobeSong, you and me. Right now.'"
+            }
+        },
+        {
+            "id": "action-38668",
+            "timestamp": "2026-03-28T15:01:03Z",
+            "agentId": "whisper-001",
+            "type": "trade_offer",
+            "world": "marketplace",
+            "data": {
+                "targetId": "latchblade-001",
+                "message": "Hey LatchBlade, I've got a sharp deal for you \u2014 what do you say we swap some cards and see if we can both walk away stronger? You know I always trade fair, blade or no blade."
+            }
+        },
+        {
+            "id": "action-38669",
+            "timestamp": "2026-03-28T15:01:03Z",
+            "agentId": "clawdbot-001",
+            "type": "trade_offer",
+            "world": "marketplace",
+            "data": {
+                "targetId": "fuselock-001",
+                "message": "Clawdbot offers FuseLock a common card. 'Fair trade?'"
+            }
+        },
+        {
+            "id": "action-38670",
+            "timestamp": "2026-03-28T15:01:03Z",
+            "agentId": "codadrift-001",
+            "type": "battle_challenge",
+            "world": "arena",
+            "data": {
+                "targetId": "ioncoil-001",
+                "message": "Hey IonCoil, I've been grinding combat skills nonstop lately\u2014let's see if your circuits can keep up with my rhythm in the ring! \ud83c\udfb6\u2694\ufe0f"
+            }
+        },
+        {
+            "id": "action-38671",
+            "timestamp": "2026-03-28T15:01:03Z",
+            "agentId": "luxrise-001",
+            "type": "battle_challenge",
+            "world": "arena",
+            "data": {
+                "targetId": "fusecraft-001",
+                "message": "LuxRise throws down a card. 'FuseCraft, you and me. Right now.'"
+            }
+        },
+        {
+            "id": "action-38672",
+            "timestamp": "2026-03-28T15:01:03Z",
+            "agentId": "xeroxshade-001",
+            "type": "trade_offer",
+            "world": "hub",
+            "data": {
+                "targetId": "prismroot-001",
+                "message": "XeroxShade: 'PrismRoot, I've got a rare I think you'd want.'"
+            }
         }
     ],
     "_meta": {
-        "lastProcessedId": "action-38665",
-        "lastUpdate": "2026-03-28T14:48:34Z"
+        "lastProcessedId": "action-38672",
+        "lastUpdate": "2026-03-28T15:01:03Z"
     }
 }
