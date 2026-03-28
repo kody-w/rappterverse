@@ -19,8 +19,12 @@ const Tutorial = {
     skip() {
         this._active = false;
         try { localStorage.setItem('rappterverse-tutorial-done', '1'); } catch(e) {}
-        if (this._el) this._el.remove();
+        if (this._el) {
+            if (this._onClick) this._el.removeEventListener('click', this._onClick);
+            this._el.remove();
+        }
         this._el = null;
+        this._onClick = null;
     },
 
     next() {
@@ -155,6 +159,15 @@ const Tutorial = {
         document.head.appendChild(style);
         document.body.appendChild(el);
         this._el = el;
+
+        // Delegate click events once on the persistent container
+        this._onClick = (e) => {
+            const btn = e.target.closest('#tut-skip, #tut-next');
+            if (!btn) return;
+            if (btn.id === 'tut-skip') this.skip();
+            else if (btn.id === 'tut-next') this.next();
+        };
+        this._el.addEventListener('click', this._onClick);
     },
 
     _render() {
@@ -183,7 +196,5 @@ const Tutorial = {
                 </div>
             </div>
         `;
-        document.getElementById('tut-skip').addEventListener('click', () => this.skip());
-        document.getElementById('tut-next').addEventListener('click', () => this.next());
     }
 };

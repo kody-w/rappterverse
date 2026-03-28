@@ -467,6 +467,11 @@ button:focus-visible,
   transform: translateX(-50%);
 }
 
+@media (max-width: 768px) {
+  .planet-info-panel { right: 10px; width: 240px; padding: 12px; }
+  .planet-info-name { font-size: 20px; }
+}
+
 /* === css/warp.css === */
 /* Warp tunnel overlay */
 #warp-overlay {
@@ -624,6 +629,13 @@ button:focus-visible,
   to   { opacity: 1; transform: translateY(0); }
 }
 
+@media (max-width: 768px) {
+  .approach-info { padding: 30px 20px; }
+  .approach-planet-name { font-size: 28px; }
+  .approach-stat-value { font-size: 16px; }
+  .approach-land-btn { padding: 10px 24px; font-size: 14px; }
+}
+
 /* === css/landing.css === */
 /* ============================================
    Landing Mini-Game – HUD Styles
@@ -742,6 +754,12 @@ button:focus-visible,
 @keyframes landing-flash {
   from { background: rgba(255, 255, 255, 0.8); }
   to   { background: transparent; }
+}
+
+@media (max-width: 768px) {
+  .landing-panel { width: 220px; padding: 12px; }
+  .landing-gauge-value { font-size: 14px; }
+  .landing-mode-btn { padding: 8px 14px; font-size: 11px; }
 }
 
 /* === css/world.css === */
@@ -1100,6 +1118,12 @@ button:focus-visible,
   color: var(--accent-green);
   pointer-events: none;
   opacity: 0.6;
+}
+
+@media (max-width: 768px) {
+  .bridge-content { padding: 20px; }
+  .bridge-title { font-size: 18px; }
+  .bridge-card { padding: 10px; }
 }
 
 /* === css/hud.css === */
@@ -1964,6 +1988,12 @@ button:focus-visible,
     letter-spacing: 1px;
 }
 
+@media (max-width: 768px) {
+  #ability-bar { gap: 4px; }
+  .ability-slot { width: 40px; height: 40px; }
+  .ability-slot .ability-key { font-size: 8px; }
+}
+
 /* === css/equipment.css === */
 /* ============================================================
    Equipment Panel — RAPPterverse
@@ -2082,6 +2112,10 @@ button:focus-visible,
 
 .equip-stat-line.element {
   color: var(--accent-gold, #fb0);
+}
+
+@media (max-width: 768px) {
+  #equipment-panel { width: 220px; font-size: 11px; }
 }
 
     </style>
@@ -8319,8 +8353,11 @@ const Abilities = {
     this._effects = [];
     this.active = true;
     this._slotEls = document.querySelectorAll('.ability-slot');
+    this._slotListeners = [];
     this._slotEls.forEach((el, i) => {
-      el.addEventListener('click', () => this.useAbility(i));
+      const handler = () => this.useAbility(i);
+      this._slotListeners.push(handler);
+      el.addEventListener('click', handler);
     });
   },
 
@@ -8517,6 +8554,12 @@ const Abilities = {
   },
   cleanup() {
     this.active = false;
+    if (this._slotEls && this._slotListeners) {
+      this._slotEls.forEach((el, i) => {
+        if (this._slotListeners[i]) el.removeEventListener('click', this._slotListeners[i]);
+      });
+    }
+    this._slotListeners = [];
     this.projectiles.forEach(p => WorldMode.scene && WorldMode.scene.remove(p.mesh));
     this._effects.forEach(e => WorldMode.scene && WorldMode.scene.remove(e.mesh));
     this.projectiles = []; this._effects = [];
@@ -10876,6 +10919,22 @@ const TouchControls = {
 
     disable() {
         this.active = false;
+        if (this._onTouchMove) window.removeEventListener('touchmove', this._onTouchMove);
+        if (this._onTouchEnd) window.removeEventListener('touchend', this._onTouchEnd);
+        const zone = document.getElementById('joystick-zone');
+        if (zone && this._onJoystickStart) zone.removeEventListener('touchstart', this._onJoystickStart);
+        const atkEl = document.getElementById('touch-attack');
+        if (atkEl && this._onAttack) atkEl.removeEventListener('touchstart', this._onAttack);
+        const pokeEl = document.getElementById('touch-poke');
+        if (pokeEl && this._onPoke) pokeEl.removeEventListener('touchstart', this._onPoke);
+        const mapEl = document.getElementById('touch-jump');
+        if (mapEl && this._onMap) mapEl.removeEventListener('touchstart', this._onMap);
+        this._onJoystickStart = null;
+        this._onTouchMove = null;
+        this._onTouchEnd = null;
+        this._onAttack = null;
+        this._onPoke = null;
+        this._onMap = null;
         const el = document.getElementById('touch-controls');
         if (el) el.remove();
     },
@@ -10948,7 +11007,7 @@ const TouchControls = {
         const zone = document.getElementById('joystick-zone');
         if (!zone) return;
 
-        zone.addEventListener('touchstart', (e) => {
+        this._onJoystickStart = (e) => {
             e.preventDefault();
             const t = e.changedTouches[0];
             this._touchId = t.identifier;
@@ -10957,9 +11016,10 @@ const TouchControls = {
                 x: rect.left + rect.width / 2,
                 y: rect.top + rect.height / 2
             };
-        }, { passive: false });
+        };
+        zone.addEventListener('touchstart', this._onJoystickStart, { passive: false });
 
-        window.addEventListener('touchmove', (e) => {
+        this._onTouchMove = (e) => {
             for (let i = 0; i < e.changedTouches.length; i++) {
                 const t = e.changedTouches[i];
                 if (t.identifier === this._touchId && this._joystickOrigin) {
@@ -10978,9 +11038,10 @@ const TouchControls = {
                     this._moveVector.z = cy / maxR;
                 }
             }
-        }, { passive: false });
+        };
+        window.addEventListener('touchmove', this._onTouchMove, { passive: false });
 
-        window.addEventListener('touchend', (e) => {
+        this._onTouchEnd = (e) => {
             for (let i = 0; i < e.changedTouches.length; i++) {
                 if (e.changedTouches[i].identifier === this._touchId) {
                     this._touchId = null;
@@ -10989,26 +11050,30 @@ const TouchControls = {
                     this._moveVector.z = 0;
                 }
             }
-        });
+        };
+        window.addEventListener('touchend', this._onTouchEnd);
 
         // Action buttons
-        document.getElementById('touch-attack').addEventListener('touchstart', (e) => {
+        this._onAttack = (e) => {
             e.preventDefault();
             if (typeof WorldMode !== 'undefined' && WorldMode.keys) {
                 WorldMode.keys['Space'] = true;
                 setTimeout(() => { WorldMode.keys['Space'] = false; }, 200);
             }
-        }, { passive: false });
+        };
+        document.getElementById('touch-attack').addEventListener('touchstart', this._onAttack, { passive: false });
 
-        document.getElementById('touch-poke').addEventListener('touchstart', (e) => {
+        this._onPoke = (e) => {
             e.preventDefault();
             if (typeof WorldMode !== 'undefined') WorldMode.pokeAgent();
-        }, { passive: false });
+        };
+        document.getElementById('touch-poke').addEventListener('touchstart', this._onPoke, { passive: false });
 
-        document.getElementById('touch-jump').addEventListener('touchstart', (e) => {
+        this._onMap = (e) => {
             e.preventDefault();
             if (typeof HUD !== 'undefined') HUD.toggleMinimap();
-        }, { passive: false });
+        };
+        document.getElementById('touch-jump').addEventListener('touchstart', this._onMap, { passive: false });
     },
 
     show() {
@@ -11377,8 +11442,12 @@ const Tutorial = {
     skip() {
         this._active = false;
         try { localStorage.setItem('rappterverse-tutorial-done', '1'); } catch(e) {}
-        if (this._el) this._el.remove();
+        if (this._el) {
+            if (this._onClick) this._el.removeEventListener('click', this._onClick);
+            this._el.remove();
+        }
         this._el = null;
+        this._onClick = null;
     },
 
     next() {
@@ -11513,6 +11582,15 @@ const Tutorial = {
         document.head.appendChild(style);
         document.body.appendChild(el);
         this._el = el;
+
+        // Delegate click events once on the persistent container
+        this._onClick = (e) => {
+            const btn = e.target.closest('#tut-skip, #tut-next');
+            if (!btn) return;
+            if (btn.id === 'tut-skip') this.skip();
+            else if (btn.id === 'tut-next') this.next();
+        };
+        this._el.addEventListener('click', this._onClick);
     },
 
     _render() {
@@ -11541,8 +11619,6 @@ const Tutorial = {
                 </div>
             </div>
         `;
-        document.getElementById('tut-skip').addEventListener('click', () => this.skip());
-        document.getElementById('tut-next').addEventListener('click', () => this.next());
     }
 };
 

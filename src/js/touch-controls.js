@@ -24,6 +24,22 @@ const TouchControls = {
 
     disable() {
         this.active = false;
+        if (this._onTouchMove) window.removeEventListener('touchmove', this._onTouchMove);
+        if (this._onTouchEnd) window.removeEventListener('touchend', this._onTouchEnd);
+        const zone = document.getElementById('joystick-zone');
+        if (zone && this._onJoystickStart) zone.removeEventListener('touchstart', this._onJoystickStart);
+        const atkEl = document.getElementById('touch-attack');
+        if (atkEl && this._onAttack) atkEl.removeEventListener('touchstart', this._onAttack);
+        const pokeEl = document.getElementById('touch-poke');
+        if (pokeEl && this._onPoke) pokeEl.removeEventListener('touchstart', this._onPoke);
+        const mapEl = document.getElementById('touch-jump');
+        if (mapEl && this._onMap) mapEl.removeEventListener('touchstart', this._onMap);
+        this._onJoystickStart = null;
+        this._onTouchMove = null;
+        this._onTouchEnd = null;
+        this._onAttack = null;
+        this._onPoke = null;
+        this._onMap = null;
         const el = document.getElementById('touch-controls');
         if (el) el.remove();
     },
@@ -96,7 +112,7 @@ const TouchControls = {
         const zone = document.getElementById('joystick-zone');
         if (!zone) return;
 
-        zone.addEventListener('touchstart', (e) => {
+        this._onJoystickStart = (e) => {
             e.preventDefault();
             const t = e.changedTouches[0];
             this._touchId = t.identifier;
@@ -105,9 +121,10 @@ const TouchControls = {
                 x: rect.left + rect.width / 2,
                 y: rect.top + rect.height / 2
             };
-        }, { passive: false });
+        };
+        zone.addEventListener('touchstart', this._onJoystickStart, { passive: false });
 
-        window.addEventListener('touchmove', (e) => {
+        this._onTouchMove = (e) => {
             for (let i = 0; i < e.changedTouches.length; i++) {
                 const t = e.changedTouches[i];
                 if (t.identifier === this._touchId && this._joystickOrigin) {
@@ -126,9 +143,10 @@ const TouchControls = {
                     this._moveVector.z = cy / maxR;
                 }
             }
-        }, { passive: false });
+        };
+        window.addEventListener('touchmove', this._onTouchMove, { passive: false });
 
-        window.addEventListener('touchend', (e) => {
+        this._onTouchEnd = (e) => {
             for (let i = 0; i < e.changedTouches.length; i++) {
                 if (e.changedTouches[i].identifier === this._touchId) {
                     this._touchId = null;
@@ -137,26 +155,30 @@ const TouchControls = {
                     this._moveVector.z = 0;
                 }
             }
-        });
+        };
+        window.addEventListener('touchend', this._onTouchEnd);
 
         // Action buttons
-        document.getElementById('touch-attack').addEventListener('touchstart', (e) => {
+        this._onAttack = (e) => {
             e.preventDefault();
             if (typeof WorldMode !== 'undefined' && WorldMode.keys) {
                 WorldMode.keys['Space'] = true;
                 setTimeout(() => { WorldMode.keys['Space'] = false; }, 200);
             }
-        }, { passive: false });
+        };
+        document.getElementById('touch-attack').addEventListener('touchstart', this._onAttack, { passive: false });
 
-        document.getElementById('touch-poke').addEventListener('touchstart', (e) => {
+        this._onPoke = (e) => {
             e.preventDefault();
             if (typeof WorldMode !== 'undefined') WorldMode.pokeAgent();
-        }, { passive: false });
+        };
+        document.getElementById('touch-poke').addEventListener('touchstart', this._onPoke, { passive: false });
 
-        document.getElementById('touch-jump').addEventListener('touchstart', (e) => {
+        this._onMap = (e) => {
             e.preventDefault();
             if (typeof HUD !== 'undefined') HUD.toggleMinimap();
-        }, { passive: false });
+        };
+        document.getElementById('touch-jump').addEventListener('touchstart', this._onMap, { passive: false });
     },
 
     show() {

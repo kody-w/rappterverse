@@ -27,8 +27,11 @@ const Abilities = {
     this._effects = [];
     this.active = true;
     this._slotEls = document.querySelectorAll('.ability-slot');
+    this._slotListeners = [];
     this._slotEls.forEach((el, i) => {
-      el.addEventListener('click', () => this.useAbility(i));
+      const handler = () => this.useAbility(i);
+      this._slotListeners.push(handler);
+      el.addEventListener('click', handler);
     });
   },
 
@@ -225,6 +228,12 @@ const Abilities = {
   },
   cleanup() {
     this.active = false;
+    if (this._slotEls && this._slotListeners) {
+      this._slotEls.forEach((el, i) => {
+        if (this._slotListeners[i]) el.removeEventListener('click', this._slotListeners[i]);
+      });
+    }
+    this._slotListeners = [];
     this.projectiles.forEach(p => WorldMode.scene && WorldMode.scene.remove(p.mesh));
     this._effects.forEach(e => WorldMode.scene && WorldMode.scene.remove(e.mesh));
     this.projectiles = []; this._effects = [];
