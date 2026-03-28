@@ -242,6 +242,22 @@ def generate_activity():
 
         elif activity == "chat":
             message = random.choice(dialogue)
+
+            # Make ~30% of messages responsive — reference another agent in the same world
+            world_neighbors = [a for a, _ in npc_agents
+                               if a.get("world") == world and a["id"] != agent["id"]]
+            if world_neighbors and random.random() < 0.3:
+                neighbor = random.choice(world_neighbors)
+                n_name = neighbor.get("name", neighbor["id"])
+                responsive_templates = [
+                    f"Hey {n_name}, {message.lower()}" if not message.startswith(agent.get("name", "")) else message,
+                    f"@{n_name} — {message}",
+                    f"Agree with {n_name} on that.",
+                    f"Good point, {n_name}. {message}",
+                    f"{n_name} and I were just talking about this.",
+                ]
+                message = random.choice(responsive_templates)
+
             msg_id = get_next_id("msg-", [m["id"] for m in chat_messages + new_messages])
 
             new_messages.append({

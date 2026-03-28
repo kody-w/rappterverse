@@ -6,12 +6,14 @@ Runs every 5 minutes via GitHub Actions or on state changes.
 """
 
 import json
+import os
 import random
 from datetime import datetime, timezone
 from pathlib import Path
 
 BASE_DIR = Path(__file__).parent.parent
 STATE_DIR = BASE_DIR / "state"
+MEMORY_DIR = STATE_DIR / "memory"
 
 
 def load_json(path: Path) -> dict:
@@ -335,6 +337,106 @@ def evolve_agent_traits(agents_data: dict, actions_data: dict, chat_data: dict) 
     return changes
 
 
+def fulfill_agent_goals(actions_data: dict, chat_data: dict, timestamp: str) -> list[str]:
+    """Check if agents' recent actions match their goals and mark them done.
+
+    Goals have: type, target, action, status. If an agent performed the
+    action type recently, mark the goal as completed and generate a new one.
+    """
+    changes = []
+    actions = actions_data.get("actions", [])[-100:]
+    messages = chat_data.get("messages", [])[-100:]
+
+    MEMORY_DIR.mkdir(parents=True, exist_ok=True)
+    if not MEMORY_DIR.exists():
+        return changes
+
+    # Build lookup: agent_id -> set of action types performed
+    agent_actions: dict[str, set] = {}
+    for a in actions:
+        aid = a.get("agentId", "")
+        if aid:
+            agent_actions.setdefault(aid, set()).add(a.get("type", ""))
+
+    # Chat counts as social action
+    for m in messages:
+        author = m.get("author", {})
+        aid = author.get("id", "") if isinstance(author, dict) else ""
+        if aid:
+            agent_actions.setdefault(aid, set()).add("chat")
+
+    # Goal action mapping
+    ACTION_MAP = {
+        "explore": {"move", "travel"},
+        "commerce": {"trade_offer", "trade_accept"},
+        "social": {"chat", "emote"},
+        "generosity": {"tip", "chat"},
+        "grow": {"enroll"},
+        "learn": {"enroll"},
+        "compete": {"challenge", "battle_challenge"},
+        "fight": {"attack", "battle_challenge"},
+    }
+
+    NEW_GOAL_TEMPLATES = [
+        {"type": "explore", "target": "a new area", "action": "move", "reason": "see what's out there"},
+        {"type": "social", "target": "a neighbor", "action": "chat", "reason": "stay connected"},
+        {"type": "commerce", "target": "a good deal", "action": "trade", "reason": "build wealth"},
+        {"type": "grow", "target": "new skills", "action": "enroll", "reason": "keep improving"},
+        {"type": "compete", "target": "a worthy opponent", "action": "challenge", "reason": "test strength"},
+    ]
+
+    completed_total = 0
+    for fname in os.listdir(MEMORY_DIR):
+        if not fname.endswith('.json'):
+            continue
+        agent_id = fname.replace('.json', '')
+        performed = agent_actions.get(agent_id, set())
+        if not performed:
+            continue
+
+        mem_path = MEMORY_DIR / fname
+        try:
+            with open(mem_path) as f:
+                mem = json.load(f)
+        except (json.JSONDecodeError, OSError):
+            continue
+
+        goals = mem.get("goals", [])
+        changed = False
+
+        for goal in goals:
+            if goal.get("status") != "active":
+                continue
+
+            goal_type = goal.get("type", "")
+            matching_actions = ACTION_MAP.get(goal_type, {goal.get("action", "")})
+
+            if performed & matching_actions:
+                goal["status"] = "done"
+                goal["completedAt"] = timestamp
+                changed = True
+                completed_total += 1
+
+        # Generate replacement goals for completed ones
+        completed_count = sum(1 for g in goals if g.get("status") == "done" and g.get("completedAt") == timestamp)
+        for _ in range(min(completed_count, 2)):
+            import random as _r
+            new_goal = dict(_r.choice(NEW_GOAL_TEMPLATES))
+            new_goal["created"] = timestamp
+            new_goal["status"] = "active"
+            goals.append(new_goal)
+
+        if changed:
+            mem["goals"] = goals[-10:]  # Keep last 10 goals
+            with open(mem_path, 'w') as f:
+                json.dump(mem, f, indent=4, ensure_ascii=False)
+
+    if completed_total:
+        changes.append(f"Goal fulfillment: {completed_total} goals completed across agents")
+
+    return changes
+
+
 def decay_stale_relationships(rel_data: dict, timestamp: str) -> list[str]:
     """Slowly decay relationships that haven't had recent interaction.
 
@@ -625,6 +727,10 @@ def main():
     # Evolve agent traits based on behavior (rappterbook-style drift)
     trait_events = evolve_agent_traits(agents_data, actions_data, chat_data)
     events.extend(trait_events)
+
+    # Fulfill agent goals based on recent actions
+    goal_events = fulfill_agent_goals(actions_data, chat_data, timestamp)
+    events.extend(goal_events)
 
     # Resolve combat — defensive swarm
     combat_events = resolve_combat(game_state, agents_data, actions_data, chat_data, timestamp)

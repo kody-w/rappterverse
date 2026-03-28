@@ -144,7 +144,8 @@ def goal_completion_score() -> tuple[float, list[str]]:
         if not f.endswith('.json'):
             continue
         agents_total += 1
-        mem = json.load(open(MEMORY_DIR / f))
+        with open(MEMORY_DIR / f) as mf:
+            mem = json.load(mf)
         goals = mem.get("goals", [])
         if goals:
             agents_with_goals += 1

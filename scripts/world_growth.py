@@ -933,18 +933,25 @@ def pick_attractive_world(current_world: str, agents: list, chat_msgs: list) -> 
     worlds = list(WORLD_BOUNDS.keys())
     others = [w for w in worlds if w != current_world]
 
+    total_pop = len([a for a in agents if a.get("status") == "active"])
+    ideal_pop = total_pop / max(1, len(WORLD_BOUNDS))  # Even distribution target
+
     scores = {}
     for w in others:
         pop = sum(1 for a in agents if a.get("world") == w)
         recent_chat = sum(1 for m in chat_msgs[-30:] if m.get("world") == w)
-        # Base score: population + chat activity + minimum exploration pull
+        # Base score: activity pull
         scores[w] = max(1, pop * 2 + recent_chat * 3)
 
-    # Boost underdog worlds so they don't stay dead forever
+    # Rebalancing: boost underpopulated, penalize overcrowded
     for w in others:
         pop = sum(1 for a in agents if a.get("world") == w)
         if pop == 0:
-            scores[w] = max(scores[w], 4)  # Empty worlds have mystery appeal
+            scores[w] = max(scores[w], 6)  # Empty worlds have mystery appeal
+        elif pop < ideal_pop * 0.5:
+            scores[w] = int(scores[w] * 1.5)  # Underpopulated gets 50% boost
+        elif pop > ideal_pop * 2:
+            scores[w] = max(1, scores[w] // 3)  # Overcrowded gets penalized
 
     worlds_list = list(scores.keys())
     weights = [scores[w] for w in worlds_list]
