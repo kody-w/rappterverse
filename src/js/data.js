@@ -76,6 +76,18 @@ const DataManager = {
         if (typeof RappterVM !== 'undefined' && RappterVM._running) {
             RappterVM.onFrameArrival(GameState.data);
         }
+
+        // Echo Engine: capture frame snapshot + apply echoes
+        if (typeof EchoEngine !== 'undefined') {
+            EchoEngine.captureFrame();
+            if (EchoEngine.isLive()) EchoEngine.applyEchoToWorld();
+            // Update timeline slider
+            var slider = document.getElementById('timeline-slider');
+            if (slider) {
+                slider.max = Math.max(0, EchoEngine.getFrameCount() - 1);
+                if (EchoEngine.isLive()) slider.value = slider.max;
+            }
+        }
     },
 
     startPolling() {

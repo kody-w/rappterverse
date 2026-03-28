@@ -99,6 +99,15 @@ const WorldMode = {
         if (typeof Tutorial !== 'undefined') Tutorial.start();
         // Quest tracker
         if (typeof QuestTracker !== 'undefined') QuestTracker.show();
+        // Init Echo Engine
+        if (typeof EchoEngine !== 'undefined') {
+            EchoEngine.init();
+            EchoEngine.captureFrame();
+            EchoEngine.applyEchoToWorld();
+            // Show timeline
+            var tl = document.getElementById('frame-timeline');
+            if (tl) tl.classList.add('visible');
+        }
         // Init Lispy VM
         if (typeof RappterVM !== 'undefined') {
             RappterVM.init();

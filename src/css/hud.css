@@ -342,6 +342,79 @@
 }
 #refresh-timer.visible { display: block; }
 
+/* ── Frame Timeline Scrubber ────────────────────────────── */
+#frame-timeline {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: 36px;
+  background: rgba(13, 17, 23, 0.9);
+  border-top: 1px solid rgba(48, 54, 61, 0.5);
+  z-index: var(--z-ui);
+  display: none;
+  align-items: center;
+  padding: 0 16px;
+  gap: 10px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+#frame-timeline.visible { display: flex; }
+#timeline-slider {
+  flex: 1;
+  height: 4px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: rgba(255,255,255,0.08);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+#timeline-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: #00d4ff;
+  box-shadow: 0 0 6px rgba(0,212,255,0.4);
+  cursor: pointer;
+}
+#timeline-label {
+  font-size: 10px; color: #8b949e;
+  font-family: 'SF Mono', monospace;
+  min-width: 100px;
+  white-space: nowrap;
+}
+#timeline-echo {
+  font-size: 9px; color: #d29922;
+  letter-spacing: 0.5px;
+  min-width: 50px;
+}
+#timeline-live-btn {
+  background: none; border: 1px solid rgba(0,255,136,0.3);
+  color: #00ff88; font: inherit; font-size: 9px;
+  padding: 2px 10px; border-radius: 4px;
+  cursor: pointer; letter-spacing: 1px;
+}
+#timeline-live-btn:hover { background: rgba(0,255,136,0.1); }
+#timeline-live-btn.active {
+  background: rgba(0,255,136,0.15);
+  box-shadow: 0 0 6px rgba(0,255,136,0.2);
+}
+#timeline-narrative {
+  position: fixed;
+  bottom: 40px; left: 50%; transform: translateX(-50%);
+  max-width: 500px; width: 80%;
+  background: rgba(22, 27, 34, 0.9);
+  border: 1px solid rgba(48, 54, 61, 0.5);
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 11px; color: #c9d1d9;
+  line-height: 1.5;
+  z-index: var(--z-ui);
+  display: none;
+  text-align: center;
+  backdrop-filter: blur(8px);
+}
+#timeline-narrative.visible { display: block; }
+
 /* ── Voice Controls ─────────────────────────────────────── */
 #voice-indicator {
   position: fixed;

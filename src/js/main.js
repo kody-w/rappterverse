@@ -193,6 +193,44 @@
     // Minimap button
     _on('btn-minimap', 'click', () => HUD.toggleMinimap());
 
+    // ── Frame Timeline ──
+    _on('timeline-slider', 'input', (e) => {
+        if (typeof EchoEngine === 'undefined') return;
+        var idx = parseInt(e.target.value);
+        EchoEngine.scrubTo(idx);
+        var f = EchoEngine.getCurrentFrame();
+        var label = document.getElementById('timeline-label');
+        var echoLabel = document.getElementById('timeline-echo');
+        var narr = document.getElementById('timeline-narrative');
+        var liveBtn = document.getElementById('timeline-live-btn');
+        if (f && label) label.textContent = 'Frame ' + f.frame + ' · ' + (f.snapshot ? f.snapshot.world : '');
+        if (f && echoLabel) {
+            var L6 = f.echoes && f.echoes.L6;
+            echoLabel.textContent = L6 ? 'L' + Math.round(L6.enrichableDetail.narrativeDepth) + ' ECHO' : 'L1';
+        }
+        if (f && f.echoes && f.echoes.L2 && narr) {
+            narr.textContent = f.echoes.L2.narrative;
+            narr.classList.add('visible');
+        }
+        if (liveBtn) liveBtn.classList.remove('active');
+    });
+
+    _on('timeline-live-btn', 'click', () => {
+        if (typeof EchoEngine === 'undefined') return;
+        EchoEngine.scrubToLive();
+        var slider = document.getElementById('timeline-slider');
+        if (slider) slider.value = slider.max;
+        var echoLabel = document.getElementById('timeline-echo');
+        if (echoLabel) echoLabel.textContent = 'LIVE';
+        var narr = document.getElementById('timeline-narrative');
+        if (narr) narr.classList.remove('visible');
+        var liveBtn = document.getElementById('timeline-live-btn');
+        if (liveBtn) liveBtn.classList.add('active');
+        var label = document.getElementById('timeline-label');
+        var f = EchoEngine.getCurrentFrame();
+        if (f && label) label.textContent = 'Frame ' + f.frame + ' · LIVE';
+    });
+
     // ── Fullmap close ──
     _on('fullmap-close', 'click', () => { if (typeof HUD !== 'undefined') HUD.toggleFullmap(); });
 
