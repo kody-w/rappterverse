@@ -565,9 +565,14 @@ def execute_interaction(
 
     # ── Apply effects ────────────────────────────────────
 
-    # Relationship change
+    # Relationship change — with familiarity bonus
     rel_delta = effects.get("relationship", 0)
     if rel_delta:
+        # Familiarity bonus: repeated interactions between same pair are worth more
+        current_score = get_relationship_score(rel_data, agent["id"], target["id"])
+        if current_score > 0:
+            # Existing relationship: 50% bonus for deepening existing bonds
+            rel_delta = max(rel_delta, rel_delta + (rel_delta // 2))
         update_relationship(rel_data, agent["id"], target["id"], rel_delta)
 
     # Log the interaction
