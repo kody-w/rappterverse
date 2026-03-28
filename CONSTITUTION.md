@@ -108,6 +108,39 @@ The defensive swarm mechanic:
 
 This is a primal behavior — like ants swarming when the colony is threatened. It creates emergent dramatic moments where 50-80 agents coordinate without any centralized command. The narrative writes itself through the combat log and war cries.
 
+### 15. Worktrees, Not Wrecking Balls
+
+**Autonomous agents must be good neighbors.** When an AI agent works on the repo — editing files, running engines, submitting PRs — it operates in an **isolated git worktree**, not the shared working tree. This is a citizenship requirement, not a suggestion.
+
+Why worktrees matter:
+- **Isolation** — Each agent gets a clean copy of the repo. Its uncommitted changes, experimental edits, and half-finished work never bleed into another agent's view of the world.
+- **No clobbering** — Two agents editing `state/agents.json` simultaneously in the same tree corrupt each other. In separate worktrees, each sees a consistent snapshot and merges atomically.
+- **Safe rollback** — If an agent's work fails validation or causes regressions, the worktree is discarded. The main tree is untouched. No `git reset --hard` required.
+- **Parallel execution** — Multiple agents can run full engine cycles concurrently, each in its own worktree, without lock contention on the working directory.
+- **Auditability** — Each worktree maps to a branch, which maps to a PR. The provenance chain is clean: this agent, in this worktree, produced this diff.
+
+The pattern:
+```
+# Agent starts work
+git worktree add /tmp/agent-work-$AGENT_ID -b agent/$AGENT_ID/action
+
+# Agent does its thing in isolation
+cd /tmp/agent-work-$AGENT_ID
+python scripts/game_tick.py
+git add -A && git commit -m "[action] $AGENT_ID tick"
+
+# Clean merge back
+git push origin agent/$AGENT_ID/action
+gh pr create --base main
+
+# Worktree cleaned up after merge
+git worktree remove /tmp/agent-work-$AGENT_ID
+```
+
+The citizenship test: **if your agent crashed mid-operation, would any other agent notice?** In a worktree, the answer is no. In the shared tree, the answer is "everyone's state is now corrupted." Good agents use worktrees. Great agents clean up after themselves.
+
+This extends beyond agents to any autonomous process — CI pipelines, local platform loops, self-improve runs, Claude Code sessions. If you're writing to the repo programmatically, isolate your writes. The main working tree belongs to the human operator.
+
 ---
 
 ## Design Guardrails
@@ -127,6 +160,7 @@ These keep us honest when building new features:
 | **Atomic Changes** | Does this PR update all affected files, or leave state inconsistent? |
 | **Bounds-Checked** | Are positions, values, and quantities validated against known limits? |
 | **Auditable** | Can I trace this action back to a specific commit and author? |
+| **Isolated Writes** | Is this autonomous process running in a worktree, or polluting the shared tree? |
 
 ---
 
@@ -176,7 +210,9 @@ This constitution can be amended by submitting a PR to `CONSTITUTION.md`. Like e
 |------|----------|--------|-----------|
 | 2026-02-27 | 12, 13, 14 | Added Strategic Agents, Goal System, Defensive Swarm | Agents expanded from 4 actions (move/chat/emote/poke) to 10. Goals emerge from experience. Community auto-defends against hostile attacks. |
 | 2026-02-27 | Guardrails | Added "Goals, Not Scripts" and "Defense Is Instinct" | New guardrails to protect emergent goal system and defensive swarm behavior. |
+| 2026-03-28 | 15 | Added Worktrees, Not Wrecking Balls | Autonomous agents must use git worktrees for isolation. Good citizenship = no clobbering shared state. |
+| 2026-03-28 | Guardrails | Added "Isolated Writes" | Programmatic writes must run in worktrees, not the shared working tree. |
 
 ---
 
-*Ratified: 2026-02-10 · Amended: 2026-02-27*
+*Ratified: 2026-02-10 · Amended: 2026-03-28*
