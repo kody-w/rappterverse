@@ -3155,6 +3155,23 @@ const Audio = {
     osc.start(t); osc.stop(t + 0.1);
   },
 
+  cleanup() {
+    this.stopAmbient();
+    if (this._intensityOsc) {
+      try { this._intensityOsc.osc.stop(); this._intensityOsc.osc.disconnect(); } catch(_){}
+      this._intensityOsc = null;
+    }
+    if (this.ctx) {
+      this.ctx.close().catch(() => {});
+      this.ctx = null;
+    }
+    this.masterGain = null;
+    this.musicGain = null;
+    this.sfxGain = null;
+    this.initialized = false;
+    this._currentBiome = null;
+  },
+
   // --- Integration ---
   onModeChange(newMode) {
     this._ensureCtx();
@@ -3726,9 +3743,14 @@ const Boot = {
             statusEl.textContent = this.phases[i];
             progressBar.style.width = ((i + 1) / this.phases.length * 100) + '%';
 
-            // Fetch data during phase 3
+            // Fetch data during phase 3 (with 12s timeout so boot doesn't hang)
             if (i === 2) {
-                try { await DataManager.fetchAllState(); } catch(e) {}
+                try {
+                    await Promise.race([
+                        DataManager.fetchAllState(),
+                        new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 12000))
+                    ]);
+                } catch(e) { /* proceed with empty state */ }
             }
             await this.sleep(400 + Math.random() * 300);
         }

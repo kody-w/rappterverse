@@ -342,6 +342,23 @@ const Audio = {
     osc.start(t); osc.stop(t + 0.1);
   },
 
+  cleanup() {
+    this.stopAmbient();
+    if (this._intensityOsc) {
+      try { this._intensityOsc.osc.stop(); this._intensityOsc.osc.disconnect(); } catch(_){}
+      this._intensityOsc = null;
+    }
+    if (this.ctx) {
+      this.ctx.close().catch(() => {});
+      this.ctx = null;
+    }
+    this.masterGain = null;
+    this.musicGain = null;
+    this.sfxGain = null;
+    this.initialized = false;
+    this._currentBiome = null;
+  },
+
   // --- Integration ---
   onModeChange(newMode) {
     this._ensureCtx();

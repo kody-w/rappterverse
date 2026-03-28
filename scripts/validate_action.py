@@ -203,6 +203,21 @@ def validate_agents(data: dict):
         if pos:
             validate_position(pos, world, f"Agent `{aid}`")
 
+        # Validate traits if present
+        traits = agent.get("traits")
+        if traits is not None:
+            if not isinstance(traits, dict):
+                error(f"`agents.json`: Agent `{aid}` traits must be a dict, got {type(traits).__name__}")
+            else:
+                for t_name, t_val in traits.items():
+                    if not isinstance(t_val, (int, float)):
+                        error(f"`agents.json`: Agent `{aid}` trait `{t_name}` must be numeric")
+                    elif not (0 <= t_val <= 1):
+                        error(f"`agents.json`: Agent `{aid}` trait `{t_name}` = {t_val} out of range [0, 1]")
+                trait_sum = sum(traits.values())
+                if traits and abs(trait_sum - 1.0) > 0.05:
+                    error(f"`agents.json`: Agent `{aid}` traits sum to {trait_sum:.3f}, expected ~1.0")
+
     if "_meta" not in data:
         error("`agents.json`: Missing `_meta`")
     elif data["_meta"].get("agentCount") != len(data["agents"]):

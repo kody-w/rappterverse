@@ -80,7 +80,7 @@ import json, os
 from datetime import datetime, timezone
 path = '$STATUS_FILE'
 try:
-    data = json.load(open(path))
+    with open(path) as f: data = json.load(f)
 except:
     data = {}
 data['$job'] = {
@@ -101,7 +101,7 @@ should_run() {
 import json, sys
 from datetime import datetime, timezone, timedelta
 try:
-    data = json.load(open('$STATUS_FILE'))
+    with open('$STATUS_FILE') as f: data = json.load(f)
     last = data.get('$job', {}).get('last_run', '')
     if not last:
         sys.exit(0)
@@ -275,7 +275,7 @@ import json
 from datetime import datetime, timezone
 path = 'state/frame_counter.json'
 try:
-    data = json.load(open(path))
+    with open(path) as f: data = json.load(f)
 except:
     data = {'frame': 0}
 data['frame'] = data.get('frame', 0) + 1

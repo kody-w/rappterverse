@@ -48,9 +48,14 @@ const Boot = {
             statusEl.textContent = this.phases[i];
             progressBar.style.width = ((i + 1) / this.phases.length * 100) + '%';
 
-            // Fetch data during phase 3
+            // Fetch data during phase 3 (with 12s timeout so boot doesn't hang)
             if (i === 2) {
-                try { await DataManager.fetchAllState(); } catch(e) {}
+                try {
+                    await Promise.race([
+                        DataManager.fetchAllState(),
+                        new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 12000))
+                    ]);
+                } catch(e) { /* proceed with empty state */ }
             }
             await this.sleep(400 + Math.random() * 300);
         }
