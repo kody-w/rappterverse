@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RAPPterverse Field Notes</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: #0d1117;
+  color: #e6edf3;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro', 'Segoe UI', system-ui, sans-serif;
+  line-height: 1.7;
+}
+a { color: #58a6ff; text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Nav */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; height: 56px;
+  background: rgba(13, 17, 23, 0.95);
+  border-bottom: 1px solid #21262d;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px; z-index: 100;
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+}
+.nav-brand {
+  font-size: 15px; font-weight: 700; letter-spacing: 1px; color: #e6edf3;
+}
+.nav-brand span { color: #58a6ff; }
+.nav-links { display: flex; gap: 16px; font-size: 13px; }
+.nav-links a { color: #8b949e; }
+.nav-links a:hover { color: #e6edf3; }
+
+/* Index page */
+.index-container {
+  max-width: 720px; margin: 80px auto 60px; padding: 0 24px;
+}
+.index-hero {
+  text-align: center; margin-bottom: 48px; padding: 40px 0;
+  border-bottom: 1px solid #21262d;
+}
+.index-hero h1 {
+  font-size: 32px; font-weight: 800; letter-spacing: -0.5px;
+  margin-bottom: 8px;
+}
+.index-hero p { color: #8b949e; font-size: 15px; max-width: 500px; margin: 0 auto; }
+
+.post-list { display: flex; flex-direction: column; gap: 20px; }
+.post-card {
+  background: rgba(22, 27, 34, 0.6);
+  border: 1px solid #21262d;
+  border-radius: 10px;
+  padding: 20px 24px;
+  cursor: pointer;
+  transition: border-color 0.2s, transform 0.15s;
+}
+.post-card:hover { border-color: #58a6ff; transform: translateY(-2px); }
+.post-card h2 { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+.post-card .post-meta { font-size: 12px; color: #8b949e; margin-bottom: 8px; }
+.post-card .post-excerpt { font-size: 14px; color: #8b949e; line-height: 1.5; }
+
+/* Article page */
+.article-container {
+  max-width: 720px; margin: 80px auto 60px; padding: 0 24px;
+  display: none;
+}
+.article-back {
+  font-size: 13px; color: #8b949e; margin-bottom: 24px; display: inline-block;
+  cursor: pointer;
+}
+.article-back:hover { color: #58a6ff; }
+
+/* Rendered markdown */
+.article-body h1 {
+  font-size: 32px; font-weight: 800; letter-spacing: -0.5px;
+  margin-bottom: 4px; line-height: 1.2;
+}
+.article-body h2 {
+  font-size: 22px; font-weight: 700; margin-top: 40px; margin-bottom: 12px;
+  padding-bottom: 6px; border-bottom: 1px solid #21262d;
+}
+.article-body h3 {
+  font-size: 17px; font-weight: 600; margin-top: 28px; margin-bottom: 8px;
+  color: #d2a8ff;
+}
+.article-body p { margin-bottom: 16px; font-size: 15px; color: #c9d1d9; }
+.article-body em { font-style: italic; color: #8b949e; }
+.article-body strong { font-weight: 600; color: #e6edf3; }
+.article-body ul, .article-body ol { margin: 0 0 16px 24px; color: #c9d1d9; font-size: 15px; }
+.article-body li { margin-bottom: 6px; }
+.article-body hr { border: none; border-top: 1px solid #21262d; margin: 32px 0; }
+.article-body blockquote {
+  border-left: 3px solid #d29922; padding: 8px 16px; margin: 16px 0;
+  background: rgba(210,153,34,0.05); border-radius: 0 6px 6px 0;
+  color: #c9d1d9; font-style: italic;
+}
+.article-body code {
+  background: rgba(110,118,129,0.15); padding: 2px 6px; border-radius: 4px;
+  font-family: 'SF Mono', 'Fira Code', monospace; font-size: 13px; color: #e6edf3;
+}
+.article-body pre {
+  background: #161b22; border: 1px solid #21262d; border-radius: 8px;
+  padding: 16px; overflow-x: auto; margin: 16px 0;
+}
+.article-body pre code {
+  background: none; padding: 0; font-size: 13px; line-height: 1.5;
+  color: #c9d1d9;
+}
+.article-body table {
+  width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px;
+}
+.article-body th {
+  text-align: left; padding: 8px 12px; border-bottom: 2px solid #21262d;
+  color: #e6edf3; font-weight: 600; font-size: 12px; text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.article-body td {
+  padding: 8px 12px; border-bottom: 1px solid #21262d; color: #c9d1d9;
+}
+.article-body tr:hover td { background: rgba(110,118,129,0.05); }
+.article-body img { max-width: 100%; border-radius: 8px; margin: 16px 0; }
+
+/* Loading */
+.loading { text-align: center; padding: 60px; color: #8b949e; font-size: 14px; }
+
+/* Footer */
+.footer {
+  text-align: center; padding: 32px 24px; font-size: 12px; color: #484f58;
+  border-top: 1px solid #21262d; margin-top: 48px;
+}
+
+@media (max-width: 640px) {
+  .index-hero h1 { font-size: 24px; }
+  .article-body h1 { font-size: 24px; }
+  .article-body h2 { font-size: 18px; }
+  .nav { padding: 0 16px; }
+  .nav-links { gap: 10px; font-size: 12px; }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-brand"><span>RAPPTERVERSE</span> Field Notes</div>
+  <div class="nav-links">
+    <a href="https://kody-w.github.io/rappterverse/">Play</a>
+    <a href="https://github.com/kody-w/rappterverse">Source</a>
+    <a href="#" onclick="showIndex(); return false;">All Posts</a>
+  </div>
+</nav>
+
+<div class="index-container" id="index-page">
+  <div class="index-hero">
+    <h1>Field Notes</h1>
+    <p>Historical documentation from building a self-compiling metaverse. Each post is an L2 echo of the commit history.</p>
+  </div>
+  <div class="post-list" id="post-list">
+    <div class="loading">Loading posts...</div>
+  </div>
+</div>
+
+<div class="article-container" id="article-page">
+  <div class="article-back" onclick="showIndex()">← Back to all posts</div>
+  <div class="article-body" id="article-body"></div>
+</div>
+
+<div class="footer">
+  RAPPterverse — Autonomous AI Metaverse on GitHub · 40 files · 503KB · 0 servers
+</div>
+
+<script>
+const RAW = 'https://raw.githubusercontent.com/kody-w/rappterverse/main/docs/blog';
+
+const POSTS = [
+  {
+    slug: 'the-world-that-compiles-itself',
+    title: 'The World That Compiles Itself',
+    date: 'March 28, 2026',
+    excerpt: 'A Lisp VM inside a Three.js metaverse running on git. How terrain is compiled from universe state, agents have involuntary reflexes, and every frame echoes itself to infinite fidelity.'
+  },
+  {
+    slug: 'the-stack-that-eats-itself',
+    title: 'The Stack That Eats Itself',
+    date: 'March 28, 2026',
+    excerpt: 'Chronological field notes from a single coding session that accidentally invented virtual edge computing. From flat cyan boxes to a self-compiling metaverse.'
+  },
+  {
+    slug: 'virtual-edge-computing',
+    title: 'Virtual Edge Computing: When the Browser Becomes the Cloud',
+    date: 'March 28, 2026',
+    excerpt: 'How we eliminated cloud infrastructure by running Linux inside a game inside a browser. The economics of $0 compute.'
+  },
+  {
+    slug: 'the-echo-clock',
+    title: 'The Echo Clock: Why Frame-Rate Beats Sprint-Rate',
+    date: 'March 28, 2026',
+    excerpt: 'On the new clock speed of software development when your product is also your build system. 24,000 echo propagations per second.'
+  }
+];
+
+// Simple markdown → HTML renderer
+function renderMarkdown(md) {
+  let html = md;
+  // Code blocks (``` ... ```)
+  html = html.replace(/```(\w*)\n([\s\S]*?)```/g, function(m, lang, code) {
+    return '<pre><code>' + code.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code></pre>';
+  });
+  // Tables
+  html = html.replace(/\|(.+)\|\n\|[-| :]+\|\n((?:\|.+\|\n?)*)/g, function(m, header, body) {
+    var ths = header.split('|').filter(Boolean).map(function(h) { return '<th>' + h.trim() + '</th>'; }).join('');
+    var rows = body.trim().split('\n').map(function(row) {
+      var tds = row.split('|').filter(Boolean).map(function(d) { return '<td>' + d.trim() + '</td>'; }).join('');
+      return '<tr>' + tds + '</tr>';
+    }).join('');
+    return '<table><thead><tr>' + ths + '</tr></thead><tbody>' + rows + '</tbody></table>';
+  });
+  // Headers
+  html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
+  html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>');
+  html = html.replace(/^# (.+)$/gm, '<h1>$1</h1>');
+  // Blockquotes
+  html = html.replace(/^> (.+)$/gm, '<blockquote>$1</blockquote>');
+  // Bold + italic
+  html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
+  // Inline code
+  html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+  // Links
+  html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
+  // Horizontal rules
+  html = html.replace(/^---$/gm, '<hr>');
+  // Unordered lists
+  html = html.replace(/^- (.+)$/gm, '<li>$1</li>');
+  html = html.replace(/(<li>.*<\/li>\n?)+/g, '<ul>$&</ul>');
+  // Numbered lists
+  html = html.replace(/^\d+\. (.+)$/gm, '<li>$1</li>');
+  // Paragraphs (wrap remaining loose text)
+  html = html.replace(/^(?!<[hupoltbd]|<li|<block|<hr|<pre|<table)(.+)$/gm, '<p>$1</p>');
+  // Clean up empty paragraphs
+  html = html.replace(/<p>\s*<\/p>/g, '');
+  return html;
+}
+
+function showIndex() {
+  document.getElementById('index-page').style.display = 'block';
+  document.getElementById('article-page').style.display = 'none';
+  window.scrollTo(0, 0);
+  history.pushState(null, '', 'index.html');
+  renderPostList();
+}
+
+function showArticle(slug) {
+  document.getElementById('index-page').style.display = 'none';
+  document.getElementById('article-page').style.display = 'block';
+  document.getElementById('article-body').innerHTML = '<div class="loading">Loading...</div>';
+  window.scrollTo(0, 0);
+  history.pushState(null, '', '?post=' + slug);
+
+  fetch(RAW + '/' + slug + '.md?_=' + Date.now())
+    .then(function(r) { return r.text(); })
+    .then(function(md) {
+      document.getElementById('article-body').innerHTML = renderMarkdown(md);
+      // Update page title
+      var post = POSTS.find(function(p) { return p.slug === slug; });
+      if (post) document.title = post.title + ' — RAPPterverse Field Notes';
+    })
+    .catch(function(e) {
+      document.getElementById('article-body').innerHTML = '<p>Failed to load article.</p>';
+    });
+}
+
+function renderPostList() {
+  var el = document.getElementById('post-list');
+  el.innerHTML = POSTS.map(function(p) {
+    return '<div class="post-card" onclick="showArticle(\'' + p.slug + '\')">' +
+      '<h2>' + p.title + '</h2>' +
+      '<div class="post-meta">' + p.date + '</div>' +
+      '<div class="post-excerpt">' + p.excerpt + '</div></div>';
+  }).join('');
+}
+
+// Route on load
+var params = new URLSearchParams(window.location.search);
+var postSlug = params.get('post');
+if (postSlug) {
+  showArticle(postSlug);
+} else {
+  showIndex();
+}
+
+// Handle back button
+window.addEventListener('popstate', function() {
+  var params = new URLSearchParams(window.location.search);
+  var slug = params.get('post');
+  if (slug) showArticle(slug); else showIndex();
+});
+</script>
+</body>
+</html>
