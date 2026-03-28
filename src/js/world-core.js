@@ -99,6 +99,19 @@ const WorldMode = {
         if (typeof Tutorial !== 'undefined') Tutorial.start();
         // Quest tracker
         if (typeof QuestTracker !== 'undefined') QuestTracker.show();
+        // Init Lispy VM
+        if (typeof RappterVM !== 'undefined') {
+            RappterVM.init();
+            RappterVM.onFrameArrival(GameState.data);
+            // Register echo shapers
+            RappterVM.registerShaper('terrain', 4, function(d) { return typeof WorldSeed !== 'undefined' ? WorldSeed.getSeed(GameState.currentWorld) : 0; });
+            RappterVM.registerShaper('weather', 4, function(d) { return typeof WorldTerrain !== 'undefined' ? WorldTerrain.weatherType : 'clear'; });
+            RappterVM.registerShaper('mood-lighting', 4, function(d) {
+                var gs = d.gameState || {};
+                var trend = gs.economy ? gs.economy.market_trend : 'stable';
+                return trend === 'bull' ? 1.2 : trend === 'bear' ? 0.7 : 1.0;
+            });
+        }
     },
 
     createPlayer(w) {
@@ -234,6 +247,9 @@ const WorldMode = {
 
         // Touch controls
         if (typeof TouchControls !== 'undefined') TouchControls.update(delta);
+
+        // RappterVM tick — Lispy behaviors between frames
+        if (typeof RappterVM !== 'undefined' && RappterVM._running) RappterVM.tick();
 
         // Sub-system updates
         WorldTerrain.update(time, delta);

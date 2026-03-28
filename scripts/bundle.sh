@@ -60,6 +60,7 @@ JS_FILES=(
     src/js/touch-controls.js
     src/js/help-overlay.js
     src/js/post-processing.js
+    src/js/rappter-vm.js
     src/js/tutorial.js
     src/js/settings.js
     src/js/quests.js

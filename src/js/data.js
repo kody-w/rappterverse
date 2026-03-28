@@ -71,6 +71,11 @@ const DataManager = {
 
         this.lastFetch = Date.now();
         if (GameState.debug) console.log(`[DATA] Fetched: ${GameState.data.agents.length} agents, ${GameState.data.chat.length} msgs`);
+
+        // Notify VM of new frame arrival — resets behaviors with server truth
+        if (typeof RappterVM !== 'undefined' && RappterVM._running) {
+            RappterVM.onFrameArrival(GameState.data);
+        }
     },
 
     startPolling() {
