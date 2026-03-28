@@ -1,5 +1,6 @@
 // World Combat — Creep Waves, Tower Attacks, Momentum, Player Combat
 const COMBAT_CONFIG = {
+    warmupTime: 120000,  // 2 minutes before first wave
     waveInterval: 25000,
     creepsPerWave: 3,
     creepSpeed: 10,
@@ -35,7 +36,9 @@ const WorldCombat = {
         this.projectiles = [];
         this.momentum = 50;
         this.waveNumber = 0;
-        this.lastWaveTime = performance.now();
+        this._gameStartTime = performance.now();
+        this.lastWaveTime = performance.now() + COMBAT_CONFIG.warmupTime; // Delay first wave by warmup
+        this._warmupActive = true;
         this.playerAttackTimer = 0;
         this.active = true;
         this.bossActive = false;
@@ -46,6 +49,27 @@ const WorldCombat = {
         if (!this.active) return;
 
         const now = performance.now();
+
+        // Warmup countdown — no combat for 2 minutes
+        if (this._warmupActive) {
+            var remaining = Math.max(0, (this._gameStartTime + COMBAT_CONFIG.warmupTime) - now);
+            var warmupEl = document.getElementById('warmup-timer');
+            if (remaining > 0) {
+                var mins = Math.floor(remaining / 60000);
+                var secs = Math.floor((remaining % 60000) / 1000);
+                if (warmupEl) {
+                    warmupEl.textContent = 'MATCH STARTS IN ' + mins + ':' + (secs < 10 ? '0' : '') + secs;
+                    warmupEl.style.display = 'block';
+                }
+                return; // Skip all combat during warmup
+            } else {
+                this._warmupActive = false;
+                this.lastWaveTime = now - COMBAT_CONFIG.waveInterval; // Trigger first wave immediately
+                if (warmupEl) warmupEl.style.display = 'none';
+                if (typeof HUD !== 'undefined') HUD.showToast('MATCH STARTED — First wave incoming!');
+                if (typeof Audio !== 'undefined' && Audio.playWaveHorn) Audio.playWaveHorn();
+            }
+        }
 
         // Spawn waves
         if (now - this.lastWaveTime >= COMBAT_CONFIG.waveInterval) {
