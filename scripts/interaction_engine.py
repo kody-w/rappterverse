@@ -659,6 +659,30 @@ def execute_interaction(
     if effects.get("transfer_item"):
         _transfer_random_item(agent["id"], target["id"], inventory, item_rarity)
 
+    # World invite — target actually migrates to agent's world
+    if effects.get("invite_world") and agent.get("world") != target.get("world"):
+        old_world = target.get("world", "hub")
+        new_world = agent.get("world", "hub")
+        target["world"] = new_world
+        target["position"] = rand_pos(new_world)
+        # Record the travel action
+        travel_id = next_id("action-", [a["id"] for a in actions])
+        actions.append({
+            "id": travel_id,
+            "timestamp": ts,
+            "agentId": target["id"],
+            "type": "move",
+            "world": new_world,
+            "data": {
+                "from_world": old_world,
+                "to_world": new_world,
+                "to": target["position"],
+                "reason": f"Invited by {agent.get('name', agent['id'])}",
+                "worldTransition": True,
+                "duration": random.randint(3000, 5000),
+            },
+        })
+
     # ── Interest contagion — ideas spread through interaction ──
     if HAS_BRAIN and random.random() < 0.15:
         a_mem = load_memory(agent["id"])
