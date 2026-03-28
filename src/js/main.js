@@ -151,6 +151,12 @@
             return;
         }
 
+        // Crafting (K)
+        if (e.code === 'KeyK' && GameState.mode === 'world') {
+            if (typeof Crafting !== 'undefined') Crafting.toggle();
+            return;
+        }
+
         // Cinematic mode
         if (e.code === 'KeyC' && GameState.mode === 'world') {
             document.body.classList.toggle('cinematic-active');

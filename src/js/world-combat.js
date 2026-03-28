@@ -570,6 +570,8 @@ const WorldCombat = {
 
         // Visual flash
         this.createAttackFlash(playerPos, nearest.mesh.position);
+        // Also hit jungle camps
+        if (typeof JungleCamps !== "undefined") JungleCamps.tryAttack(playerPos, dmg * comboMult);
         return true;
     },
 

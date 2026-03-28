@@ -34,10 +34,11 @@ const HelpOverlay = {
                         <div class="help-row"><span class="help-key">ESC</span><span>Return to Galaxy</span></div>
                     </div>
                     <div class="help-section">
-                        <div class="help-section-title">ABILITIES</div>
+                        <div class="help-section-title">ABILITIES & CRAFTING</div>
                         <div class="help-row"><span class="help-key">1-5</span><span>Use Ability Slot</span></div>
                         <div class="help-row"><span class="help-key">I</span><span>Inventory</span></div>
                         <div class="help-row"><span class="help-key">G</span><span>Equipment</span></div>
+                        <div class="help-row"><span class="help-key">K</span><span>Crafting</span></div>
                     </div>
                     <div class="help-section">
                         <div class="help-section-title">INTERFACE</div>
@@ -69,6 +70,15 @@ const HelpOverlay = {
                         <div class="help-row"><span class="help-gesture">Thumbs Up</span><span>Poke agent</span></div>
                         <div class="help-row"><span class="help-gesture">Peace Sign</span><span>Toggle bridge</span></div>
                         <div class="help-row"><span class="help-gesture">Open Palm</span><span>Stop</span></div>
+                    </div>
+                    <div class="help-section">
+                        <div class="help-section-title">GAMEPAD</div>
+                        <div class="help-row"><span class="help-gesture">Left Stick</span><span>Move</span></div>
+                        <div class="help-row"><span class="help-gesture">A</span><span>Attack</span></div>
+                        <div class="help-row"><span class="help-gesture">B</span><span>Poke</span></div>
+                        <div class="help-row"><span class="help-gesture">X/Y</span><span>Abilities</span></div>
+                        <div class="help-row"><span class="help-gesture">Start</span><span>Bridge</span></div>
+                        <div class="help-row"><span class="help-gesture">Select</span><span>Map</span></div>
                     </div>
                     <div class="help-section">
                         <div class="help-section-title">MOBILE</div>

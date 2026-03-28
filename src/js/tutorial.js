@@ -67,7 +67,7 @@ const Tutorial = {
         },
         {
             title: 'EXPLORE THE UNIVERSE',
-            body: 'Press <b>B</b> for the Bridge command panel. Press <b>ESC</b> to return to the galaxy. Click worlds in the right panel to quick-travel.',
+            body: 'Press <b>B</b> for the Bridge. Press <b>K</b> to craft gear from materials. Press <b>ESC</b> to return to the galaxy. Click worlds in the right panel to quick-travel.',
             hint: 'Press <b>?</b> anytime for full controls. Press <b>V</b> for voice commands.',
             icon: '🚀',
             keys: 'B'

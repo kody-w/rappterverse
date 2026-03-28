@@ -7534,6 +7534,8 @@ const WorldCombat = {
 
         // Visual flash
         this.createAttackFlash(playerPos, nearest.mesh.position);
+        // Also hit jungle camps
+        if (typeof JungleCamps !== "undefined") JungleCamps.tryAttack(playerPos, dmg * comboMult);
         return true;
     },
 
@@ -9801,6 +9803,7 @@ const WorldMode = {
         WorldTerrain.build(this.scene, w, worldId);
         WorldLanes.init(this.scene, w);
         WorldCombat.init(this.scene);
+        if (typeof JungleCamps !== "undefined") JungleCamps.init(this.scene, w);
         WorldAgents.loadObjects(this.scene, worldId);
         WorldAgents.syncAgents(this.scene, worldId);
 
@@ -10022,6 +10025,7 @@ const WorldMode = {
         WorldTerrain.update(time, delta);
         WorldLanes.updateTowerVisuals(time);
         WorldCombat.update(delta, time, this.player.mesh.position);
+        if (typeof JungleCamps !== "undefined") JungleCamps.update(delta, this.player.mesh.position);
         WorldAgents.updateAnimations(time);
         WorldAgents.checkInteractions(this.player.mesh.position);
         if (WorldAgents.updateEdges) WorldAgents.updateEdges(this.scene, time);
@@ -10105,6 +10109,7 @@ const WorldMode = {
         this.keys = {};
 
         WorldCombat.cleanup();
+        if (typeof JungleCamps !== "undefined") JungleCamps.cleanup();
         WorldLanes.cleanup();
         if (typeof Abilities !== 'undefined') Abilities.cleanup();
         if (typeof Inventory !== 'undefined') Inventory.cleanup();
@@ -12295,10 +12300,11 @@ const HelpOverlay = {
                         <div class="help-row"><span class="help-key">ESC</span><span>Return to Galaxy</span></div>
                     </div>
                     <div class="help-section">
-                        <div class="help-section-title">ABILITIES</div>
+                        <div class="help-section-title">ABILITIES & CRAFTING</div>
                         <div class="help-row"><span class="help-key">1-5</span><span>Use Ability Slot</span></div>
                         <div class="help-row"><span class="help-key">I</span><span>Inventory</span></div>
                         <div class="help-row"><span class="help-key">G</span><span>Equipment</span></div>
+                        <div class="help-row"><span class="help-key">K</span><span>Crafting</span></div>
                     </div>
                     <div class="help-section">
                         <div class="help-section-title">INTERFACE</div>
@@ -12330,6 +12336,15 @@ const HelpOverlay = {
                         <div class="help-row"><span class="help-gesture">Thumbs Up</span><span>Poke agent</span></div>
                         <div class="help-row"><span class="help-gesture">Peace Sign</span><span>Toggle bridge</span></div>
                         <div class="help-row"><span class="help-gesture">Open Palm</span><span>Stop</span></div>
+                    </div>
+                    <div class="help-section">
+                        <div class="help-section-title">GAMEPAD</div>
+                        <div class="help-row"><span class="help-gesture">Left Stick</span><span>Move</span></div>
+                        <div class="help-row"><span class="help-gesture">A</span><span>Attack</span></div>
+                        <div class="help-row"><span class="help-gesture">B</span><span>Poke</span></div>
+                        <div class="help-row"><span class="help-gesture">X/Y</span><span>Abilities</span></div>
+                        <div class="help-row"><span class="help-gesture">Start</span><span>Bridge</span></div>
+                        <div class="help-row"><span class="help-gesture">Select</span><span>Map</span></div>
                     </div>
                     <div class="help-section">
                         <div class="help-section-title">MOBILE</div>
@@ -12868,6 +12883,312 @@ const EchoEngine = {
     },
     getFrameCount() { return this._frames.length; },
     isLive() { return !this._scrubbing; }
+};
+
+// === js/gamepad-controls.js ===
+// Gamepad Controls — Standard Gamepad API for controller input
+const GamepadControls = {
+    active: false,
+    _padIndex: null,
+    _deadzone: 0.15,
+    _lastButtons: {},
+
+    init() {
+        window.addEventListener('gamepadconnected', (e) => {
+            this._padIndex = e.gamepad.index;
+            this.active = true;
+            if (typeof HUD !== 'undefined') HUD.showToast('Gamepad connected: ' + e.gamepad.id.substring(0, 30));
+        });
+        window.addEventListener('gamepaddisconnected', (e) => {
+            if (e.gamepad.index === this._padIndex) {
+                this._padIndex = null;
+                this.active = false;
+                if (typeof HUD !== 'undefined') HUD.showToast('Gamepad disconnected');
+            }
+        });
+    },
+
+    update() {
+        if (!this.active || this._padIndex === null) return;
+        var pads = navigator.getGamepads ? navigator.getGamepads() : [];
+        var pad = pads[this._padIndex];
+        if (!pad) return;
+        if (typeof WorldMode === 'undefined' || !WorldMode.keys) return;
+
+        // Left stick → movement
+        var lx = pad.axes[0] || 0, ly = pad.axes[1] || 0;
+        WorldMode.keys['KeyD'] = lx > this._deadzone;
+        WorldMode.keys['KeyA'] = lx < -this._deadzone;
+        WorldMode.keys['KeyS'] = ly > this._deadzone;
+        WorldMode.keys['KeyW'] = ly < -this._deadzone;
+
+        // Buttons (standard mapping)
+        var btn = function(i) { return pad.buttons[i] && pad.buttons[i].pressed; };
+        var wasBtn = function(i) { return GamepadControls._lastButtons[i]; };
+
+        // A (0) = Attack
+        WorldMode.keys['Space'] = btn(0);
+        // B (1) = Poke
+        if (btn(1) && !wasBtn(1) && typeof WorldMode !== 'undefined') WorldMode.pokeAgent();
+        // X (2) = Ability 1
+        if (btn(2) && !wasBtn(2) && typeof Abilities !== 'undefined') Abilities.useAbility(0);
+        // Y (3) = Ability 5 (ultimate)
+        if (btn(3) && !wasBtn(3) && typeof Abilities !== 'undefined') Abilities.useAbility(4);
+        // LB (4) = Ability 2
+        if (btn(4) && !wasBtn(4) && typeof Abilities !== 'undefined') Abilities.useAbility(1);
+        // RB (5) = Ability 3
+        if (btn(5) && !wasBtn(5) && typeof Abilities !== 'undefined') Abilities.useAbility(2);
+        // Start (9) = Bridge
+        if (btn(9) && !wasBtn(9) && typeof Bridge !== 'undefined') Bridge.toggle();
+        // Select (8) = Map
+        if (btn(8) && !wasBtn(8) && typeof HUD !== 'undefined') HUD.toggleFullmap();
+        // DPad Up (12) = Inventory
+        if (btn(12) && !wasBtn(12) && typeof Inventory !== 'undefined') Inventory.toggle();
+        // DPad Down (13) = Equipment
+        if (btn(13) && !wasBtn(13) && typeof Equipment !== 'undefined') Equipment.toggle();
+
+        // Save button state for edge detection
+        for (var i = 0; i < 17; i++) this._lastButtons[i] = btn(i);
+    }
+};
+
+// === js/crafting.js ===
+// Crafting System — combine materials into equipment
+const Crafting = {
+    _open: false,
+    _recipes: [
+        { name: 'Iron Blade', materials: { 'Scrap Metal': 3 }, result: { type: 'weapon', name: 'Iron Blade', damage: 8, rarity: 'common' }, gold: 20 },
+        { name: 'Steel Shield', materials: { 'Scrap Metal': 2, 'Power Cell': 1 }, result: { type: 'armor', name: 'Steel Shield', defense: 5, rarity: 'common' }, gold: 30 },
+        { name: 'Plasma Edge', materials: { 'Power Cell': 3 }, result: { type: 'weapon', name: 'Plasma Edge', damage: 15, element: 'fire', rarity: 'rare' }, gold: 80 },
+        { name: 'Nano Vest', materials: { 'Scrap Metal': 2, 'Power Cell': 2 }, result: { type: 'armor', name: 'Nano Vest', defense: 10, rarity: 'rare' }, gold: 100 },
+        { name: 'Void Reaper', materials: { 'Power Cell': 5, 'Scrap Metal': 3 }, result: { type: 'weapon', name: 'Void Reaper', damage: 25, element: 'void', rarity: 'epic' }, gold: 200 },
+    ],
+
+    toggle() {
+        this._open = !this._open;
+        if (this._open) this._show();
+        else this._hide();
+    },
+
+    _show() {
+        var el = document.getElementById('crafting-panel');
+        if (!el) this._create();
+        el = document.getElementById('crafting-panel');
+        if (el) el.style.display = 'block';
+        this._render();
+        if (typeof Audio !== 'undefined' && Audio.playMenuOpen) Audio.playMenuOpen();
+    },
+
+    _hide() {
+        var el = document.getElementById('crafting-panel');
+        if (el) el.style.display = 'none';
+    },
+
+    _create() {
+        var el = document.createElement('div');
+        el.id = 'crafting-panel';
+        el.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:360px;max-height:80vh;background:rgba(22,27,34,0.95);border:1px solid rgba(48,54,61,0.8);border-radius:12px;z-index:9100;overflow:hidden;display:none;font-family:"SF Mono",monospace;backdrop-filter:blur(12px);';
+        el.innerHTML = '<div style="padding:12px 16px;border-bottom:1px solid rgba(48,54,61,0.5);display:flex;justify-content:space-between;align-items:center;"><span style="font-size:12px;font-weight:700;letter-spacing:2px;color:#d29922;">CRAFTING</span><button id="crafting-close" style="background:none;border:none;color:#8b949e;font-size:18px;cursor:pointer;">&times;</button></div><div id="crafting-recipes" style="padding:10px 16px;overflow-y:auto;max-height:60vh;"></div>';
+        document.body.appendChild(el);
+        document.getElementById('crafting-close').addEventListener('click', function() { Crafting.toggle(); });
+
+        var style = document.createElement('style');
+        style.textContent = '.craft-recipe{padding:10px;margin-bottom:8px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:8px;}.craft-recipe:hover{border-color:rgba(210,153,34,0.3);}.craft-name{font-size:12px;font-weight:600;color:#e6edf3;margin-bottom:4px;}.craft-mats{font-size:10px;color:#8b949e;margin-bottom:4px;}.craft-result{font-size:10px;color:#d29922;}.craft-btn{background:rgba(210,153,34,0.15);border:1px solid rgba(210,153,34,0.3);color:#d29922;padding:4px 12px;font:inherit;font-size:10px;border-radius:4px;cursor:pointer;letter-spacing:1px;margin-top:4px;}.craft-btn:hover{background:rgba(210,153,34,0.25);}.craft-btn:disabled{opacity:0.3;cursor:default;}';
+        document.head.appendChild(style);
+    },
+
+    _render() {
+        var el = document.getElementById('crafting-recipes');
+        if (!el) return;
+        var inv = typeof Inventory !== 'undefined' ? Inventory : null;
+        var gold = typeof PlayerStats !== 'undefined' ? PlayerStats.gold : 0;
+
+        el.innerHTML = this._recipes.map(function(r, i) {
+            var canCraft = true;
+            var matList = Object.entries(r.materials).map(function(entry) {
+                var name = entry[0], need = entry[1];
+                var have = inv ? (inv.items || []).filter(function(item) { return item && item.name === name; }).length : 0;
+                if (have < need) canCraft = false;
+                return '<span style="color:' + (have >= need ? '#3fb950' : '#f85149') + '">' + name + ' ' + have + '/' + need + '</span>';
+            }).join(' · ');
+            if (gold < r.gold) canCraft = false;
+
+            var rarityColor = r.result.rarity === 'epic' ? '#a78bfa' : r.result.rarity === 'rare' ? '#58a6ff' : '#8b949e';
+            return '<div class="craft-recipe">' +
+                '<div class="craft-name" style="color:' + rarityColor + '">' + r.name + '</div>' +
+                '<div class="craft-mats">' + matList + ' · <span style="color:' + (gold >= r.gold ? '#fbbf24' : '#f85149') + '">' + r.gold + 'G</span></div>' +
+                '<div class="craft-result">+' + (r.result.damage ? r.result.damage + ' DMG' : r.result.defense + ' DEF') + (r.result.element ? ' [' + r.result.element + ']' : '') + '</div>' +
+                '<button class="craft-btn" ' + (canCraft ? 'onclick="Crafting.craft(' + i + ')"' : 'disabled') + '>CRAFT</button></div>';
+        }).join('');
+    },
+
+    craft(index) {
+        var r = this._recipes[index];
+        if (!r) return;
+        var inv = typeof Inventory !== 'undefined' ? Inventory : null;
+        if (!inv) return;
+        // Check gold
+        if (typeof PlayerStats !== 'undefined' && PlayerStats.gold < r.gold) return;
+        // Check materials
+        for (var name in r.materials) {
+            var need = r.materials[name];
+            var have = (inv.items || []).filter(function(item) { return item && item.name === name; }).length;
+            if (have < need) return;
+        }
+        // Consume materials
+        for (var name in r.materials) {
+            var need = r.materials[name];
+            for (var i = 0; i < need; i++) {
+                var idx = (inv.items || []).findIndex(function(item) { return item && item.name === name; });
+                if (idx >= 0) inv.items.splice(idx, 1);
+            }
+        }
+        // Consume gold
+        if (typeof PlayerStats !== 'undefined') PlayerStats.gold -= r.gold;
+        // Add crafted item
+        if (inv.items) inv.items.push(Object.assign({}, r.result, { id: 'crafted-' + Date.now() }));
+        if (typeof HUD !== 'undefined') HUD.showToast('Crafted ' + r.name + '!');
+        if (typeof Audio !== 'undefined' && Audio.playPickup) Audio.playPickup();
+        this._render();
+    }
+};
+
+// === js/jungle-camps.js ===
+// Jungle Camps — neutral creep camps between lanes that respawn
+const JungleCamps = {
+    camps: [],
+    _scene: null,
+
+    init(scene, w) {
+        this._scene = scene;
+        this.camps = [];
+        var sx = w.bounds.x * 0.9, sz = w.bounds.z * 0.9;
+
+        // 6 camps: 3 per side, positioned between lanes
+        var campDefs = [
+            // Explorer jungle (bottom-left quadrant)
+            { x: -0.5, z: -0.4, size: 'small', gold: 15, xp: 15 },
+            { x: -0.7, z: 0.1, size: 'medium', gold: 25, xp: 25 },
+            { x: -0.3, z: -0.7, size: 'small', gold: 15, xp: 15 },
+            // Horde jungle (top-right quadrant)
+            { x: 0.5, z: 0.4, size: 'small', gold: 15, xp: 15 },
+            { x: 0.7, z: -0.1, size: 'medium', gold: 25, xp: 25 },
+            { x: 0.3, z: 0.7, size: 'small', gold: 15, xp: 15 },
+        ];
+
+        var self = this;
+        campDefs.forEach(function(def) {
+            var camp = {
+                x: def.x * sx, z: def.z * sz,
+                size: def.size, gold: def.gold, xp: def.xp,
+                alive: true, respawnTimer: 0, respawnTime: 45,
+                hp: def.size === 'medium' ? 60 : 30,
+                maxHp: def.size === 'medium' ? 60 : 30,
+                mesh: null, hpBar: null
+            };
+            self._createCampMesh(scene, camp);
+            self.camps.push(camp);
+        });
+    },
+
+    _createCampMesh(scene, camp) {
+        var g = new THREE.Group();
+        var s = camp.size === 'medium' ? 1.2 : 0.8;
+        // Neutral creep body
+        var body = new THREE.Mesh(
+            new THREE.DodecahedronGeometry(s, 0),
+            new THREE.MeshStandardMaterial({
+                color: 0x886644, emissive: 0x443322, emissiveIntensity: 0.2,
+                roughness: 0.8, flatShading: true
+            })
+        );
+        body.position.y = s;
+        g.add(body);
+        // Eyes
+        var eyeMat = new THREE.MeshBasicMaterial({ color: 0xffaa00 });
+        var eyeL = new THREE.Mesh(new THREE.SphereGeometry(0.12, 4, 4), eyeMat);
+        eyeL.position.set(-0.3, s + 0.2, s * 0.8);
+        g.add(eyeL);
+        var eyeR = new THREE.Mesh(new THREE.SphereGeometry(0.12, 4, 4), eyeMat);
+        eyeR.position.set(0.3, s + 0.2, s * 0.8);
+        g.add(eyeR);
+        // Ground circle
+        var circle = new THREE.Mesh(
+            new THREE.CircleGeometry(s * 2, 12),
+            new THREE.MeshBasicMaterial({ color: 0x443322, transparent: true, opacity: 0.15, side: THREE.DoubleSide })
+        );
+        circle.rotation.x = -Math.PI / 2;
+        circle.position.y = 0.01;
+        g.add(circle);
+        // HP bar
+        var hpGeo = new THREE.PlaneGeometry(2, 0.2);
+        var hpBar = new THREE.Mesh(hpGeo, new THREE.MeshBasicMaterial({ color: 0xffaa00 }));
+        hpBar.position.y = s * 2 + 0.5;
+        g.add(hpBar);
+
+        g.position.set(camp.x, 0, camp.z);
+        scene.add(g);
+        camp.mesh = g;
+        camp.hpBar = hpBar;
+        camp.body = body;
+    },
+
+    update(delta, playerPos) {
+        var self = this;
+        this.camps.forEach(function(camp) {
+            if (!camp.alive) {
+                camp.respawnTimer -= delta;
+                if (camp.respawnTimer <= 0) {
+                    camp.alive = true;
+                    camp.hp = camp.maxHp;
+                    if (camp.mesh) camp.mesh.visible = true;
+                }
+                return;
+            }
+            if (!camp.mesh) return;
+            // Idle bob
+            if (camp.body) camp.body.position.y = (camp.size === 'medium' ? 1.2 : 0.8) + Math.sin(Date.now() * 0.002 + camp.x) * 0.1;
+            // HP bar
+            if (camp.hpBar) {
+                var ratio = camp.hp / camp.maxHp;
+                camp.hpBar.scale.x = ratio;
+                camp.hpBar.material.color.setHex(ratio > 0.5 ? 0xffaa00 : 0xff4400);
+            }
+        });
+    },
+
+    // Called by combat system when player attacks
+    tryAttack(playerPos, damage) {
+        for (var i = 0; i < this.camps.length; i++) {
+            var camp = this.camps[i];
+            if (!camp.alive) continue;
+            var dx = playerPos.x - camp.x, dz = playerPos.z - camp.z;
+            var dist = Math.sqrt(dx * dx + dz * dz);
+            if (dist < 4) {
+                camp.hp -= damage;
+                if (camp.hp <= 0) {
+                    camp.alive = false;
+                    camp.respawnTimer = camp.respawnTime;
+                    if (camp.mesh) camp.mesh.visible = false;
+                    if (typeof PlayerStats !== 'undefined') {
+                        PlayerStats.awardXp(camp.xp);
+                        PlayerStats.kills++;
+                        PlayerStats.awardGold(camp.gold, 'jungle');
+                    }
+                    if (typeof Audio !== 'undefined' && Audio.playHit) Audio.playHit();
+                }
+                return true;
+            }
+        }
+        return false;
+    },
+
+    cleanup() {
+        this.camps.forEach(function(c) {
+            if (c.mesh && c.mesh.parent) c.mesh.parent.remove(c.mesh);
+        });
+        this.camps = [];
+    }
 };
 
 // === js/rappter-vm.js ===
@@ -13474,7 +13795,7 @@ const Tutorial = {
         },
         {
             title: 'EXPLORE THE UNIVERSE',
-            body: 'Press <b>B</b> for the Bridge command panel. Press <b>ESC</b> to return to the galaxy. Click worlds in the right panel to quick-travel.',
+            body: 'Press <b>B</b> for the Bridge. Press <b>K</b> to craft gear from materials. Press <b>ESC</b> to return to the galaxy. Click worlds in the right panel to quick-travel.',
             hint: 'Press <b>?</b> anytime for full controls. Press <b>V</b> for voice commands.',
             icon: '🚀',
             keys: 'B'
@@ -13989,6 +14310,12 @@ const QuestTracker = {
         if (e.code === 'Tab' && GameState.mode === 'world') {
             e.preventDefault();
             if (typeof HUD !== 'undefined') HUD.toggleFullmap();
+            return;
+        }
+
+        // Crafting (K)
+        if (e.code === 'KeyK' && GameState.mode === 'world') {
+            if (typeof Crafting !== 'undefined') Crafting.toggle();
             return;
         }
 

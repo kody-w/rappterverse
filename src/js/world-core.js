@@ -45,6 +45,7 @@ const WorldMode = {
         WorldTerrain.build(this.scene, w, worldId);
         WorldLanes.init(this.scene, w);
         WorldCombat.init(this.scene);
+        if (typeof JungleCamps !== "undefined") JungleCamps.init(this.scene, w);
         WorldAgents.loadObjects(this.scene, worldId);
         WorldAgents.syncAgents(this.scene, worldId);
 
@@ -266,6 +267,7 @@ const WorldMode = {
         WorldTerrain.update(time, delta);
         WorldLanes.updateTowerVisuals(time);
         WorldCombat.update(delta, time, this.player.mesh.position);
+        if (typeof JungleCamps !== "undefined") JungleCamps.update(delta, this.player.mesh.position);
         WorldAgents.updateAnimations(time);
         WorldAgents.checkInteractions(this.player.mesh.position);
         if (WorldAgents.updateEdges) WorldAgents.updateEdges(this.scene, time);
@@ -349,6 +351,7 @@ const WorldMode = {
         this.keys = {};
 
         WorldCombat.cleanup();
+        if (typeof JungleCamps !== "undefined") JungleCamps.cleanup();
         WorldLanes.cleanup();
         if (typeof Abilities !== 'undefined') Abilities.cleanup();
         if (typeof Inventory !== 'undefined') Inventory.cleanup();

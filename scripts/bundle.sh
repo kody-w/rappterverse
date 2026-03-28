@@ -61,6 +61,9 @@ JS_FILES=(
     src/js/help-overlay.js
     src/js/post-processing.js
     src/js/echo-engine.js
+    src/js/gamepad-controls.js
+    src/js/crafting.js
+    src/js/jungle-camps.js
     src/js/rappter-vm.js
     src/js/tutorial.js
     src/js/settings.js
