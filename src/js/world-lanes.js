@@ -1,4 +1,4 @@
-// World Lanes — DOTA-Style Lane Definitions, Towers, Thrones
+// World Lanes — DOTA-Style Map: Lanes, River, Roads, Brush, Towers, Thrones
 const LANE_DEFS = {
     top: {
         name: 'Boreal Reach', color: 0x4488ff,
@@ -30,65 +30,302 @@ const LANE_DEFS = {
 };
 
 const WorldLanes = {
-    towers: [],       // { mesh, hp, maxHp, lane, faction, index, attackTimer, target }
-    thrones: {},      // { explorer: {mesh,hp,maxHp}, horde: {mesh,hp,maxHp} }
-    lanePaths: [],    // visual lane path meshes
-    scaledWaypoints: {}, // waypoints scaled to world bounds
+    towers: [],
+    thrones: {},
+    lanePaths: [],
+    lanes: [],
+    scaledWaypoints: {},
 
     init(scene, w) {
         this.towers = [];
         this.thrones = {};
         this.lanePaths = [];
+        this.lanes = [];
         this.scaledWaypoints = {};
 
-        // Scale waypoints from ±1 to world bounds
         const sx = w.bounds.x * 0.9;
         const sz = w.bounds.z * 0.9;
 
+        // Scale waypoints
         for (const [laneKey, lane] of Object.entries(LANE_DEFS)) {
-            this.scaledWaypoints[laneKey] = lane.waypoints.map(wp => ({
-                x: wp.x * sx, z: wp.z * sz
-            }));
-
-            this.renderLanePath(scene, laneKey, lane);
-            this.createTowersForLane(scene, laneKey, lane, sx, sz);
+            const scaled = lane.waypoints.map(wp => ({ x: wp.x * sx, z: wp.z * sz }));
+            this.scaledWaypoints[laneKey] = scaled;
+            this.lanes.push({ name: lane.name, color: lane.color, key: laneKey, waypoints: scaled });
         }
 
+        // Build map features in order
+        this.buildRiver(scene, sx, sz, w);
+        this.buildRoads(scene, w);
+        this.buildBrush(scene, sx, sz, w);
+
+        // Towers + Thrones
+        for (const [laneKey, lane] of Object.entries(LANE_DEFS)) {
+            this.createTowersForLane(scene, laneKey, lane, sx, sz);
+        }
         this.createThrones(scene, sx, sz);
     },
 
-    renderLanePath(scene, laneKey, lane) {
-        const wps = this.scaledWaypoints[laneKey];
-        const points = wps.map(wp => new THREE.Vector3(wp.x, 0.05, wp.z));
-        const geo = new THREE.BufferGeometry().setFromPoints(points);
-        const mat = new THREE.LineBasicMaterial({
-            color: lane.color, transparent: true, opacity: 0.25
-        });
-        const line = new THREE.Line(geo, mat);
-        scene.add(line);
-        this.lanePaths.push(line);
+    // ── RIVER (diagonal water strip from top-left to bottom-right) ──
+    buildRiver(scene, sx, sz, w) {
+        // River runs perpendicular to mid lane: from (-sx, sz) to (sx, -sz)
+        const riverWidth = Math.max(sx, sz) * 0.08;
+        const segments = 20;
+        const points = [];
+        for (let i = 0; i <= segments; i++) {
+            const t = i / segments;
+            const x = -sx + t * sx * 2;
+            const z = sz - t * sz * 2;
+            // Add some waviness
+            const wave = Math.sin(t * Math.PI * 3) * riverWidth * 0.3;
+            points.push({ x: x + wave, z: z + wave * 0.5 });
+        }
 
-        // Choke point marker
-        const choke = wps[lane.chokeIndex];
-        if (choke) {
-            const ringGeo = new THREE.RingGeometry(1.5, 2, 16);
-            const ringMat = new THREE.MeshBasicMaterial({
-                color: lane.color, side: THREE.DoubleSide,
-                transparent: true, opacity: 0.2
+        // Build river as a series of quads
+        for (let i = 0; i < points.length - 1; i++) {
+            const a = points[i], b = points[i + 1];
+            const dx = b.x - a.x, dz = b.z - a.z;
+            const len = Math.sqrt(dx * dx + dz * dz);
+            const nx = -dz / len * riverWidth, nz = dx / len * riverWidth;
+
+            const geo = new THREE.BufferGeometry();
+            const verts = new Float32Array([
+                a.x - nx, 0.02, a.z - nz,
+                a.x + nx, 0.02, a.z + nz,
+                b.x + nx, 0.02, b.z + nz,
+                a.x - nx, 0.02, a.z - nz,
+                b.x + nx, 0.02, b.z + nz,
+                b.x - nx, 0.02, b.z - nz,
+            ]);
+            geo.setAttribute('position', new THREE.BufferAttribute(verts, 3));
+            geo.computeVertexNormals();
+            const mat = new THREE.MeshStandardMaterial({
+                color: 0x2266aa, roughness: 0.15, metalness: 0.4,
+                transparent: true, opacity: 0.55
             });
-            const ring = new THREE.Mesh(ringGeo, ringMat);
-            ring.rotation.x = -Math.PI / 2;
-            ring.position.set(choke.x, 0.06, choke.z);
-            scene.add(ring);
-            this.lanePaths.push(ring);
+            const mesh = new THREE.Mesh(geo, mat);
+            scene.add(mesh);
+            this.lanePaths.push(mesh);
+        }
+
+        // River shimmer particles
+        const count = 200;
+        const pGeo = new THREE.BufferGeometry();
+        const pos = new Float32Array(count * 3);
+        for (let i = 0; i < count; i++) {
+            const t = Math.random();
+            const p = points[Math.floor(t * (points.length - 1))];
+            const next = points[Math.min(Math.floor(t * (points.length - 1)) + 1, points.length - 1)];
+            const lerp = t * (points.length - 1) - Math.floor(t * (points.length - 1));
+            pos[i * 3] = p.x + (next.x - p.x) * lerp + (Math.random() - 0.5) * riverWidth * 1.5;
+            pos[i * 3 + 1] = 0.05 + Math.random() * 0.3;
+            pos[i * 3 + 2] = p.z + (next.z - p.z) * lerp + (Math.random() - 0.5) * riverWidth * 1.5;
+        }
+        pGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+        const pMat = new THREE.PointsMaterial({
+            color: 0x88ccff, size: 0.15, transparent: true, opacity: 0.3,
+            blending: THREE.AdditiveBlending, sizeAttenuation: true
+        });
+        const shimmer = new THREE.Points(pGeo, pMat);
+        scene.add(shimmer);
+        this.lanePaths.push(shimmer);
+    },
+
+    // ── ROADS (wide paths along lane waypoints) ──
+    buildRoads(scene, w) {
+        const roadWidth = 3;
+        const roadColor = 0x3a3a2a;
+
+        for (const [laneKey, lane] of Object.entries(LANE_DEFS)) {
+            const wps = this.scaledWaypoints[laneKey];
+            if (!wps || wps.length < 2) continue;
+
+            for (let i = 0; i < wps.length - 1; i++) {
+                const a = wps[i], b = wps[i + 1];
+                const dx = b.x - a.x, dz = b.z - a.z;
+                const len = Math.sqrt(dx * dx + dz * dz);
+                if (len < 0.1) continue;
+                const nx = -dz / len * roadWidth, nz = dx / len * roadWidth;
+
+                const geo = new THREE.BufferGeometry();
+                const verts = new Float32Array([
+                    a.x - nx, 0.04, a.z - nz,
+                    a.x + nx, 0.04, a.z + nz,
+                    b.x + nx, 0.04, b.z + nz,
+                    a.x - nx, 0.04, a.z - nz,
+                    b.x + nx, 0.04, b.z + nz,
+                    b.x - nx, 0.04, b.z - nz,
+                ]);
+                geo.setAttribute('position', new THREE.BufferAttribute(verts, 3));
+                geo.computeVertexNormals();
+                const mat = new THREE.MeshStandardMaterial({
+                    color: roadColor, roughness: 0.95, metalness: 0.05,
+                    transparent: true, opacity: 0.7
+                });
+                const mesh = new THREE.Mesh(geo, mat);
+                scene.add(mesh);
+                this.lanePaths.push(mesh);
+            }
+
+            // Lane color edge lines
+            const points = wps.map(wp => new THREE.Vector3(wp.x, 0.08, wp.z));
+            const lineGeo = new THREE.BufferGeometry().setFromPoints(points);
+            const lineMat = new THREE.LineBasicMaterial({
+                color: lane.color, transparent: true, opacity: 0.35
+            });
+            const line = new THREE.Line(lineGeo, lineMat);
+            scene.add(line);
+            this.lanePaths.push(line);
+
+            // Choke point
+            const choke = wps[lane.chokeIndex];
+            if (choke) {
+                const ringGeo = new THREE.RingGeometry(2, 2.5, 16);
+                const ringMat = new THREE.MeshBasicMaterial({
+                    color: lane.color, side: THREE.DoubleSide, transparent: true, opacity: 0.2
+                });
+                const ring = new THREE.Mesh(ringGeo, ringMat);
+                ring.rotation.x = -Math.PI / 2;
+                ring.position.set(choke.x, 0.06, choke.z);
+                scene.add(ring);
+                this.lanePaths.push(ring);
+            }
         }
     },
 
+    // ── BRUSH / FOREST WALLS (boundary + jungle areas) ──
+    buildBrush(scene, sx, sz, w) {
+        const rng = typeof seededRandom !== 'undefined' ? seededRandom('brush-' + (GameState.currentWorld || 'hub')) : Math.random;
+        const biome = w.biome || 'Terra';
+
+        // Boundary forest (dense ring of trees/bushes at world edge)
+        const edgeCount = 300;
+        for (let i = 0; i < edgeCount; i++) {
+            const angle = (i / edgeCount) * Math.PI * 2;
+            const edgeR = Math.max(sx, sz) * (0.95 + rng() * 0.15);
+            const x = Math.cos(angle) * edgeR * (0.8 + rng() * 0.4);
+            const z = Math.sin(angle) * edgeR * (0.8 + rng() * 0.4);
+
+            // Skip if too close to lanes
+            if (this.isNearLane(x, z, 6)) continue;
+
+            const h = 2 + rng() * 4;
+            const r = 1 + rng() * 2;
+            const g = new THREE.Group();
+
+            if (biome === 'Terra' || biome === 'Crystal') {
+                // Dense trees
+                const trunk = new THREE.Mesh(
+                    new THREE.CylinderGeometry(0.2, 0.3, h, 5),
+                    new THREE.MeshStandardMaterial({ color: 0x3a2a10, roughness: 0.95 })
+                );
+                trunk.position.y = h / 2;
+                g.add(trunk);
+                const canopy = new THREE.Mesh(
+                    new THREE.SphereGeometry(r, 5, 4),
+                    new THREE.MeshStandardMaterial({
+                        color: biome === 'Crystal' ? 0x225544 : 0x1a4420,
+                        roughness: 0.9, flatShading: true
+                    })
+                );
+                canopy.position.y = h + r * 0.3;
+                g.add(canopy);
+            } else if (biome === 'Volcanic') {
+                // Lava rock walls
+                const rock = new THREE.Mesh(
+                    new THREE.DodecahedronGeometry(r, 0),
+                    new THREE.MeshStandardMaterial({
+                        color: 0x1a1010, roughness: 0.95, flatShading: true,
+                        emissive: 0xff2200, emissiveIntensity: 0.05
+                    })
+                );
+                rock.position.y = r * 0.5;
+                g.add(rock);
+            } else if (biome === 'Desert') {
+                // Sand dune walls
+                const dune = new THREE.Mesh(
+                    new THREE.SphereGeometry(r * 1.5, 6, 4),
+                    new THREE.MeshStandardMaterial({ color: 0xaa8844, roughness: 0.95, flatShading: true })
+                );
+                dune.position.y = r * 0.3;
+                dune.scale.y = 0.4;
+                g.add(dune);
+            } else {
+                // Abyss — void walls
+                const pillar = new THREE.Mesh(
+                    new THREE.CylinderGeometry(0.3, 0.5, h * 1.5, 5),
+                    new THREE.MeshStandardMaterial({
+                        color: 0x0a0a12, roughness: 0.8,
+                        emissive: 0x330066, emissiveIntensity: 0.1, flatShading: true
+                    })
+                );
+                pillar.position.y = h * 0.75;
+                g.add(pillar);
+            }
+
+            g.position.set(x, 0, z);
+            g.rotation.y = rng() * Math.PI * 2;
+            scene.add(g);
+            this.lanePaths.push(g);
+        }
+
+        // Jungle brush patches (between lanes — hide spots)
+        const brushPatches = [
+            // Between top and mid (explorer jungle)
+            { cx: -0.6, cz: 0.3, r: 0.15 },
+            { cx: -0.4, cz: 0.6, r: 0.12 },
+            // Between mid and bot (explorer jungle)
+            { cx: -0.3, cz: -0.6, r: 0.12 },
+            { cx: -0.6, cz: -0.3, r: 0.15 },
+            // Between top and mid (horde jungle)
+            { cx: 0.6, cz: -0.3, r: 0.15 },
+            { cx: 0.4, cz: -0.6, r: 0.12 },
+            // Between mid and bot (horde jungle)
+            { cx: 0.3, cz: 0.6, r: 0.12 },
+            { cx: 0.6, cz: 0.3, r: 0.15 },
+        ];
+
+        brushPatches.forEach(function(patch) {
+            const bx = patch.cx * sx, bz = patch.cz * sz;
+            const br = patch.r * Math.max(sx, sz);
+            // Green bush circle on ground
+            const bushGeo = new THREE.CircleGeometry(br, 10);
+            const bushMat = new THREE.MeshStandardMaterial({
+                color: biome === 'Volcanic' ? 0x2a1a1a : biome === 'Desert' ? 0x667744 : biome === 'Abyss' ? 0x110022 : 0x1a3a1a,
+                roughness: 0.95, transparent: true, opacity: 0.6
+            });
+            const bush = new THREE.Mesh(bushGeo, bushMat);
+            bush.rotation.x = -Math.PI / 2;
+            bush.position.set(bx, 0.03, bz);
+            scene.add(bush);
+            this.lanePaths.push(bush);
+
+            // Brush objects inside
+            for (var j = 0; j < 8; j++) {
+                var angle = rng() * Math.PI * 2;
+                var dist = rng() * br * 0.8;
+                var ox = bx + Math.cos(angle) * dist;
+                var oz = bz + Math.sin(angle) * dist;
+                var s = 0.5 + rng() * 1;
+                var bushObj = new THREE.Mesh(
+                    new THREE.SphereGeometry(s, 4, 3),
+                    new THREE.MeshStandardMaterial({
+                        color: biome === 'Volcanic' ? 0x332211 : biome === 'Abyss' ? 0x110022 : 0x225522,
+                        roughness: 0.9, flatShading: true, transparent: true, opacity: 0.7
+                    })
+                );
+                bushObj.position.set(ox, s * 0.4, oz);
+                bushObj.scale.y = 0.5;
+                scene.add(bushObj);
+                this.lanePaths.push(bushObj);
+            }
+        }.bind(this));
+    },
+
+    // ── TOWERS ──
     createTowersForLane(scene, laneKey, lane, sx, sz) {
         const wps = this.scaledWaypoints[laneKey];
         const total = wps.length;
 
-        // 3 towers per side: explorer side (indices 1,2,3), horde side (last 3)
         const explorerIndices = [1, 2, Math.floor(total * 0.35)];
         const hordeIndices = [total - 2, total - 3, Math.ceil(total * 0.65)];
 
@@ -96,7 +333,6 @@ const WorldLanes = {
             const wp = wps[Math.min(idx, total - 1)];
             this.createTower(scene, wp.x, wp.z, 'explorer', lane.color, laneKey, i);
         });
-
         hordeIndices.forEach((idx, i) => {
             const wp = wps[Math.min(idx, total - 1)];
             this.createTower(scene, wp.x, wp.z, 'horde', 0xff4488, laneKey, i + 3);
@@ -107,13 +343,11 @@ const WorldLanes = {
         const group = new THREE.Group();
         const teamColor = faction === 'explorer' ? 0x00ccff : 0xff4444;
 
-        // Base
         const baseGeo = new THREE.CylinderGeometry(1.5, 2, 1.5, 8);
         const baseMat = new THREE.MeshStandardMaterial({ color: 0x333344, roughness: 0.6, metalness: 0.4 });
         group.add(new THREE.Mesh(baseGeo, baseMat));
         group.children[0].position.y = 0.75;
 
-        // Column
         const colGeo = new THREE.CylinderGeometry(0.6, 0.8, 5, 8);
         const colMat = new THREE.MeshStandardMaterial({
             color: teamColor, emissive: teamColor, emissiveIntensity: 0.15,
@@ -123,7 +357,6 @@ const WorldLanes = {
         col.position.y = 4;
         group.add(col);
 
-        // Top orb
         const orbGeo = new THREE.SphereGeometry(0.8, 12, 12);
         const orbMat = new THREE.MeshStandardMaterial({
             color: teamColor, emissive: teamColor, emissiveIntensity: 0.5,
@@ -133,7 +366,6 @@ const WorldLanes = {
         orb.position.y = 7;
         group.add(orb);
 
-        // Attack range ring
         const rangeGeo = new THREE.RingGeometry(14.5, 15, 24);
         const rangeMat = new THREE.MeshBasicMaterial({
             color: teamColor, side: THREE.DoubleSide, transparent: true, opacity: 0.06
@@ -143,15 +375,15 @@ const WorldLanes = {
         rangeRing.position.y = 0.02;
         group.add(rangeRing);
 
-        // HP bar
         const hpGeo = new THREE.PlaneGeometry(3, 0.3);
         const hpMat = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
         const hpBar = new THREE.Mesh(hpGeo, hpMat);
         hpBar.position.y = 8.5;
-        hpBar.rotation.x = 0;
         group.add(hpBar);
 
-        group.position.set(x + (faction === 'explorer' ? -2 : 2), 0, z);
+        // Offset towers to their side of the road
+        const offset = faction === 'explorer' ? -3 : 3;
+        group.position.set(x + offset, 0, z);
         scene.add(group);
 
         this.towers.push({
@@ -163,65 +395,47 @@ const WorldLanes = {
         });
     },
 
+    // ── THRONES ──
     createThrones(scene, sx, sz) {
-        // Explorer throne at team A spawn (-1,-1 scaled)
         this.thrones.explorer = this._buildThrone(scene, -sx, -sz, 'explorer', 0x00ccff);
-        // Horde throne at team B spawn (1,1 scaled)
         this.thrones.horde = this._buildThrone(scene, sx, sz, 'horde', 0xff4444);
     },
 
     _buildThrone(scene, x, z, faction, color) {
         const group = new THREE.Group();
-
-        // Base platform
         const baseGeo = new THREE.CylinderGeometry(4, 5, 1.5, 16);
         const baseMat = new THREE.MeshStandardMaterial({ color: 0x333344, roughness: 0.6, metalness: 0.4 });
         group.add(new THREE.Mesh(baseGeo, baseMat));
         group.children[0].position.y = 0.75;
 
-        // Ring
         const ringGeo = new THREE.TorusGeometry(3, 0.3, 8, 24);
-        const ringMat = new THREE.MeshStandardMaterial({
-            color, emissive: color, emissiveIntensity: 0.3,
-            roughness: 0.3, metalness: 0.7
-        });
+        const ringMat = new THREE.MeshStandardMaterial({ color, emissive: color, emissiveIntensity: 0.3, roughness: 0.3, metalness: 0.7 });
         const ring = new THREE.Mesh(ringGeo, ringMat);
-        ring.rotation.x = Math.PI / 2;
-        ring.position.y = 1.8;
+        ring.rotation.x = Math.PI / 2; ring.position.y = 1.8;
         group.add(ring);
 
-        // Crystal core
         const crystalGeo = new THREE.OctahedronGeometry(2, 0);
-        const crystalMat = new THREE.MeshStandardMaterial({
-            color, emissive: color, emissiveIntensity: 0.5,
-            roughness: 0.1, metalness: 0.9, transparent: true, opacity: 0.9
-        });
+        const crystalMat = new THREE.MeshStandardMaterial({ color, emissive: color, emissiveIntensity: 0.5, roughness: 0.1, metalness: 0.9, transparent: true, opacity: 0.9 });
         const crystal = new THREE.Mesh(crystalGeo, crystalMat);
         crystal.position.y = 5;
         group.add(crystal);
 
-        // 4 pillar supports
         for (let i = 0; i < 4; i++) {
             const a = (i / 4) * Math.PI * 2;
-            const pillarGeo = new THREE.CylinderGeometry(0.5, 0.7, 6, 8);
-            const pillarMat = new THREE.MeshStandardMaterial({ color: 0x222233, roughness: 0.5, metalness: 0.5 });
-            const pillar = new THREE.Mesh(pillarGeo, pillarMat);
+            const pillar = new THREE.Mesh(
+                new THREE.CylinderGeometry(0.5, 0.7, 6, 8),
+                new THREE.MeshStandardMaterial({ color: 0x222233, roughness: 0.5, metalness: 0.5 })
+            );
             pillar.position.set(Math.cos(a) * 3, 3, Math.sin(a) * 3);
             group.add(pillar);
         }
 
-        // Crown
         const crownGeo = new THREE.TorusGeometry(1.5, 0.2, 8, 16);
-        const crownMat = new THREE.MeshStandardMaterial({
-            color: 0xffd700, emissive: 0xffa500, emissiveIntensity: 0.3,
-            roughness: 0.2, metalness: 0.8
-        });
+        const crownMat = new THREE.MeshStandardMaterial({ color: 0xffd700, emissive: 0xffa500, emissiveIntensity: 0.3, roughness: 0.2, metalness: 0.8 });
         const crown = new THREE.Mesh(crownGeo, crownMat);
-        crown.rotation.x = Math.PI / 2;
-        crown.position.y = 8;
+        crown.rotation.x = Math.PI / 2; crown.position.y = 8;
         group.add(crown);
 
-        // HP bar
         const hpGeo = new THREE.PlaneGeometry(5, 0.4);
         const hpMat = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
         const hpBar = new THREE.Mesh(hpGeo, hpMat);
@@ -230,11 +444,10 @@ const WorldLanes = {
 
         group.position.set(x, 0, z);
         scene.add(group);
-
         return { mesh: group, crystal, crown, hpBar, hp: 200, maxHp: 200 };
     },
 
-    // Check if position is near any lane path (for terrain object exclusion)
+    // ── UTILITIES ──
     isNearLane(x, z, radius) {
         for (const wps of Object.values(this.scaledWaypoints)) {
             for (const wp of wps) {
@@ -245,30 +458,22 @@ const WorldLanes = {
         return false;
     },
 
-    // Check if all towers in a lane for a faction are destroyed
     areTowersDown(lane, faction) {
         return this.towers.filter(t => t.lane === lane && t.faction === faction).every(t => t.hp <= 0);
     },
 
-    // Update tower HP bars
     updateTowerVisuals(time) {
         this.towers.forEach(t => {
             if (t.hp <= 0) {
-                if (t.mesh.visible) {
-                    t.mesh.visible = false;
-                    // Show destruction particles
-                }
+                if (t.mesh.visible) t.mesh.visible = false;
                 return;
             }
-            // HP bar scale
             const ratio = t.hp / t.maxHp;
             t.hpBar.scale.x = ratio;
             t.hpBar.material.color.setHex(ratio > 0.5 ? 0x00ff00 : ratio > 0.25 ? 0xffaa00 : 0xff0000);
-            // Orb pulse
             if (t.orb) t.orb.material.emissiveIntensity = 0.3 + Math.sin(time * 3) * 0.2;
         });
 
-        // Throne visuals
         for (const [faction, throne] of Object.entries(this.thrones)) {
             if (throne.hp <= 0) {
                 if (throne.mesh.visible) throne.mesh.visible = false;
@@ -281,9 +486,7 @@ const WorldLanes = {
                 throne.crystal.rotation.y = time * 0.5;
                 throne.crystal.position.y = 5 + Math.sin(time * 0.8) * 0.3;
             }
-            if (throne.crown) {
-                throne.crown.rotation.z = time * 0.3;
-            }
+            if (throne.crown) throne.crown.rotation.z = time * 0.3;
         }
     },
 
@@ -295,23 +498,17 @@ const WorldLanes = {
                 else mesh.material.dispose();
             }
         };
-        const disposeGroup = (group) => {
-            group.traverse(child => { disposeMesh(child); });
-        };
+        const disposeGroup = (group) => { group.traverse(child => { disposeMesh(child); }); };
 
-        // Dispose lane path meshes (lines + choke rings)
         for (const mesh of this.lanePaths) {
             if (mesh.parent) mesh.parent.remove(mesh);
-            disposeGroup(mesh);
+            if (mesh.traverse) disposeGroup(mesh);
+            else disposeMesh(mesh);
         }
-
-        // Dispose tower groups
         for (const t of this.towers) {
             if (t.mesh.parent) t.mesh.parent.remove(t.mesh);
             disposeGroup(t.mesh);
         }
-
-        // Dispose throne groups
         for (const throne of Object.values(this.thrones)) {
             if (throne.mesh.parent) throne.mesh.parent.remove(throne.mesh);
             disposeGroup(throne.mesh);
@@ -320,6 +517,7 @@ const WorldLanes = {
         this.towers = [];
         this.thrones = {};
         this.lanePaths = [];
+        this.lanes = [];
         this.scaledWaypoints = {};
     }
 };
