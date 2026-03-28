@@ -39,6 +39,7 @@ const HelpOverlay = {
                         <div class="help-row"><span class="help-key">I</span><span>Inventory</span></div>
                         <div class="help-row"><span class="help-key">G</span><span>Equipment</span></div>
                         <div class="help-row"><span class="help-key">K</span><span>Crafting</span></div>
+                        <div class="help-row"><span class="help-key">P</span><span>Shop</span></div>
                     </div>
                     <div class="help-section">
                         <div class="help-section-title">INTERFACE</div>

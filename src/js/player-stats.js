@@ -115,6 +115,7 @@ const PlayerStats = {
     this.mp = this.maxMp;
     if (typeof HUD !== 'undefined' && HUD.showToast) HUD.showToast(`LEVEL UP! Level ${this.level}`);
     if (typeof Audio !== 'undefined' && Audio.playWaveHorn) Audio.playWaveHorn();
+    if (typeof Abilities !== 'undefined' && Abilities.awardSkillPoint) Abilities.awardSkillPoint();
     this.save();
   },
 

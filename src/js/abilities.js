@@ -13,6 +13,8 @@ const Abilities = {
       range: 15, damage: 50, type: 'aoe_burst' },
   ],
   cooldowns: [0, 0, 0, 0, 0],
+  levels: [1, 1, 1, 1, 1],     // Ability levels (1-5)
+  skillPoints: 0,
   shieldActive: false,
   shieldTimer: 0,
   projectiles: [],
@@ -21,6 +23,8 @@ const Abilities = {
 
   init() {
     this.cooldowns = [0, 0, 0, 0, 0];
+    this.levels = [1, 1, 1, 1, 1];
+    this.skillPoints = 0;
     this.projectiles = [];
     this.shieldActive = false;
     this.shieldTimer = 0;
@@ -29,9 +33,69 @@ const Abilities = {
     this._slotEls = document.querySelectorAll('.ability-slot');
     this._slotListeners = [];
     this._slotEls.forEach((el, i) => {
-      const handler = () => this.useAbility(i);
+      const handler = (e) => {
+        if (e.shiftKey && this.skillPoints > 0) {
+          this.levelUpAbility(i);
+        } else {
+          this.useAbility(i);
+        }
+      };
       this._slotListeners.push(handler);
       el.addEventListener('click', handler);
+    });
+  },
+
+  // Level up an ability (Shift+Click or called by UI)
+  levelUpAbility(idx) {
+    if (this.skillPoints <= 0 || this.levels[idx] >= 5) return;
+    this.skillPoints--;
+    this.levels[idx]++;
+    var def = this.defs[idx];
+    if (typeof HUD !== 'undefined') HUD.showToast(def.name + ' → Level ' + this.levels[idx]);
+    if (typeof Audio !== 'undefined' && Audio.playAbility) Audio.playAbility();
+    this._updateSlotUI();
+  },
+
+  // Called by PlayerStats on level up
+  awardSkillPoint() {
+    this.skillPoints++;
+    if (typeof HUD !== 'undefined') HUD.showToast('+1 Skill Point (Shift+Click ability to level up)');
+    this._updateSlotUI();
+  },
+
+  // Get scaled stats for an ability based on its level
+  getScaled(idx) {
+    var def = this.defs[idx];
+    var lvl = this.levels[idx];
+    return {
+      damage: def.damage ? Math.round(def.damage * (1 + (lvl - 1) * 0.3)) : 0,
+      cooldown: def.cooldown ? Math.max(0.3, def.cooldown * (1 - (lvl - 1) * 0.08)) : 0,
+      range: def.range ? def.range + (lvl - 1) * 1 : 0,
+      duration: def.duration ? def.duration + (lvl - 1) * 0.5 : 0,
+      distance: def.distance ? def.distance + (lvl - 1) * 2 : 0,
+      cost: def.cost ? Math.max(0, def.cost - (lvl - 1) * 1) : 0
+    };
+  },
+
+  _updateSlotUI() {
+    this._slotEls.forEach((el, i) => {
+      var lvlBadge = el.querySelector('.ability-level');
+      if (!lvlBadge) {
+        lvlBadge = document.createElement('span');
+        lvlBadge.className = 'ability-level';
+        lvlBadge.style.cssText = 'position:absolute;bottom:0;right:0;font-size:8px;color:#d29922;font-weight:700;background:rgba(0,0,0,0.5);padding:0 3px;border-radius:2px;';
+        el.style.position = 'relative';
+        el.appendChild(lvlBadge);
+      }
+      lvlBadge.textContent = this.levels[i] > 1 ? 'L' + this.levels[i] : '';
+      // Skill point indicator
+      if (this.skillPoints > 0 && this.levels[i] < 5) {
+        el.style.borderColor = 'rgba(210,153,34,0.6)';
+        el.style.boxShadow = '0 0 6px rgba(210,153,34,0.3)';
+      } else {
+        el.style.borderColor = '';
+        el.style.boxShadow = '';
+      }
     });
   },
 

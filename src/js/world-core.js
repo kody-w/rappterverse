@@ -46,6 +46,7 @@ const WorldMode = {
         WorldLanes.init(this.scene, w);
         WorldCombat.init(this.scene);
         if (typeof JungleCamps !== "undefined") JungleCamps.init(this.scene, w);
+        if (typeof FogOfWar !== 'undefined') FogOfWar.init(this.scene, w);
         WorldAgents.loadObjects(this.scene, worldId);
         WorldAgents.syncAgents(this.scene, worldId);
 
@@ -271,6 +272,7 @@ const WorldMode = {
         WorldAgents.updateAnimations(time);
         WorldAgents.checkInteractions(this.player.mesh.position);
         if (WorldAgents.updateEdges) WorldAgents.updateEdges(this.scene, time);
+        if (typeof FogOfWar !== 'undefined') FogOfWar.update(this.player.mesh.position);
         if (WorldAgents.updateSpeechBubbles) WorldAgents.updateSpeechBubbles(delta);
         if (WorldAgents.updatePokeReactions) WorldAgents.updatePokeReactions(time, delta);
         if (WorldAgents.checkNewChats) WorldAgents.checkNewChats();

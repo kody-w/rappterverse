@@ -64,6 +64,8 @@ JS_FILES=(
     src/js/gamepad-controls.js
     src/js/crafting.js
     src/js/jungle-camps.js
+    src/js/shop.js
+    src/js/fog-of-war.js
     src/js/rappter-vm.js
     src/js/tutorial.js
     src/js/settings.js

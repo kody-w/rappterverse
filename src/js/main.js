@@ -151,6 +151,12 @@
             return;
         }
 
+        // Shop (P)
+        if (e.code === 'KeyP' && GameState.mode === 'world') {
+            if (typeof Shop !== 'undefined') Shop.toggle();
+            return;
+        }
+
         // Crafting (K)
         if (e.code === 'KeyK' && GameState.mode === 'world') {
             if (typeof Crafting !== 'undefined') Crafting.toggle();

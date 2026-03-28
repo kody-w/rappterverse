@@ -122,23 +122,31 @@ const WorldCombat = {
 
     spawnWave() {
         const scaleFactor = 1 + (this.waveNumber * 0.08);
+        const isSiegeWave = this.waveNumber % 5 === 0;
 
         for (const [laneKey, lane] of Object.entries(LANE_DEFS)) {
             const wps = WorldLanes.scaledWaypoints[laneKey];
             if (!wps || wps.length < 2) continue;
 
-            // Explorer creeps (start from index 0)
-            for (let i = 0; i < COMBAT_CONFIG.creepsPerWave; i++) {
-                this.createCreep('explorer', laneKey, 0, scaleFactor, i);
+            // Mix: 2 melee + 1 ranged per wave, +1 siege every 5th wave
+            for (let i = 0; i < 2; i++) {
+                this.createCreep('explorer', laneKey, 0, scaleFactor, i, 'melee');
+                this.createCreep('horde', laneKey, wps.length - 1, scaleFactor, i, 'melee');
             }
-
-            // Horde creeps (start from last index, go backward)
-            for (let i = 0; i < COMBAT_CONFIG.creepsPerWave; i++) {
-                this.createCreep('horde', laneKey, wps.length - 1, scaleFactor, i);
+            this.createCreep('explorer', laneKey, 0, scaleFactor, 2, 'ranged');
+            this.createCreep('horde', laneKey, wps.length - 1, scaleFactor, 2, 'ranged');
+            if (isSiegeWave) {
+                this.createCreep('explorer', laneKey, 0, scaleFactor, 3, 'siege');
+                this.createCreep('horde', laneKey, wps.length - 1, scaleFactor, 3, 'siege');
             }
         }
 
-        if (typeof HUD !== 'undefined') HUD.showToast(`Wave ${this.waveNumber} incoming!`);
+        var echoMsg = 'Wave ' + this.waveNumber + (isSiegeWave ? ' [SIEGE WAVE]' : '');
+        if (typeof EchoEngine !== 'undefined') {
+            var ef = EchoEngine.getCurrentFrame();
+            if (ef && ef.echoes && ef.echoes.L3 && ef.echoes.L3.tension > 0.3) echoMsg += ' [HIGH TENSION]';
+        }
+        if (typeof HUD !== 'undefined') HUD.showToast(echoMsg);
 
         // Boss every 5 waves
         if (this.waveNumber % 5 === 0 && !this.bossActive) {
@@ -146,29 +154,38 @@ const WorldCombat = {
         }
     },
 
-    createCreep(faction, lane, startIdx, scale, offset) {
+    createCreep(faction, lane, startIdx, scale, offset, creepType) {
+        creepType = creepType || 'melee';
         const isExplorer = faction === 'explorer';
-        const color = isExplorer ? 0x00ff88 : 0xff4488;
-        const hp = Math.floor(COMBAT_CONFIG.creepBaseHp * scale);
+        const baseColor = isExplorer ? 0x00ff88 : 0xff4488;
+        // Type-specific stats
+        var hpMult = 1, dmgMult = 1, speedMult = 1, size = 0.4, color = baseColor;
+        if (creepType === 'melee') { hpMult = 1.2; size = 0.45; }
+        else if (creepType === 'ranged') { hpMult = 0.6; dmgMult = 1.3; speedMult = 0.9; size = 0.3; color = isExplorer ? 0x44ffaa : 0xff88aa; }
+        else if (creepType === 'siege') { hpMult = 2; dmgMult = 2.5; speedMult = 0.6; size = 0.6; color = isExplorer ? 0x00cc66 : 0xcc3366; }
+        const hp = Math.floor(COMBAT_CONFIG.creepBaseHp * scale * hpMult);
 
         const group = new THREE.Group();
 
-        // Body sphere
-        const bodyGeo = new THREE.SphereGeometry(0.4, 8, 8);
+        // Body — shape varies by type
+        var bodyGeo;
+        if (creepType === 'melee') bodyGeo = new THREE.SphereGeometry(size, 8, 8);
+        else if (creepType === 'ranged') bodyGeo = new THREE.OctahedronGeometry(size, 0);
+        else bodyGeo = new THREE.BoxGeometry(size * 1.5, size * 1.2, size * 1.5);
         const bodyMat = new THREE.MeshStandardMaterial({
-            color, emissive: color, emissiveIntensity: 0.3, roughness: 0.4
+            color, emissive: color, emissiveIntensity: creepType === 'siege' ? 0.4 : 0.3, roughness: 0.4
         });
         group.add(new THREE.Mesh(bodyGeo, bodyMat));
-        group.children[0].position.y = 0.5;
+        group.children[0].position.y = size + 0.1;
 
         // Eyes
         const eyeGeo = new THREE.SphereGeometry(0.08, 6, 6);
         const eyeMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
         const eyeL = new THREE.Mesh(eyeGeo, eyeMat);
-        eyeL.position.set(-0.15, 0.6, 0.3);
+        eyeL.position.set(-0.15, size + 0.2, size * 0.8);
         group.add(eyeL);
         const eyeR = new THREE.Mesh(eyeGeo, eyeMat);
-        eyeR.position.set(0.15, 0.6, 0.3);
+        eyeR.position.set(0.15, size + 0.2, size * 0.8);
         group.add(eyeR);
 
         // HP bar
@@ -192,10 +209,11 @@ const WorldCombat = {
         this.creeps.push({
             mesh: group, hpBar,
             hp, maxHp: hp,
-            faction, lane,
+            faction, lane, creepType: creepType,
             waypointIdx: startIdx,
             direction: isExplorer ? 1 : -1,
-            speed: COMBAT_CONFIG.creepSpeed + rng() * 0.5,
+            speed: (COMBAT_CONFIG.creepSpeed + rng() * 0.5) * speedMult,
+            dmgMult: dmgMult,
             attackTimer: 0,
             alive: true
         });
