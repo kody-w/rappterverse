@@ -267,7 +267,7 @@ def _get_token() -> str:
     try:
         r = subprocess.run(["gh", "auth", "token"], capture_output=True, text=True, timeout=5)
         return r.stdout.strip() if r.returncode == 0 else ""
-    except Exception:
+    except (OSError, subprocess.TimeoutExpired, FileNotFoundError):
         return ""
 
 
@@ -696,7 +696,7 @@ Say ONE thing — a thought, reaction, greeting, or observation. Be genuine and 
                 content = _call_llm(token,
                     f"You are {name}, a resident of the RAPPverse. Stay in character. No hashtags, no corporate speak.",
                     prompt, max_tokens=80, temperature=0.9)
-            except Exception:
+            except (json.JSONDecodeError, KeyError, OSError, ValueError):
                 content = ""
 
         # Fallback to template if LLM failed
@@ -884,7 +884,7 @@ React naturally. You can agree, disagree, ask a question, share a related experi
                 reply = _call_llm(token,
                     f"You are {resp_name}, a resident of the RAPPverse. Stay in character. Be authentic.",
                     prompt, max_tokens=80, temperature=0.9)
-            except Exception:
+            except (json.JSONDecodeError, KeyError, OSError, ValueError):
                 reply = ""
 
         # Template fallback

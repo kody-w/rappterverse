@@ -288,6 +288,35 @@ const WorldLanes = {
     },
 
     cleanup() {
+        const disposeMesh = (mesh) => {
+            if (mesh.geometry) mesh.geometry.dispose();
+            if (mesh.material) {
+                if (Array.isArray(mesh.material)) mesh.material.forEach(m => m.dispose());
+                else mesh.material.dispose();
+            }
+        };
+        const disposeGroup = (group) => {
+            group.traverse(child => { disposeMesh(child); });
+        };
+
+        // Dispose lane path meshes (lines + choke rings)
+        for (const mesh of this.lanePaths) {
+            if (mesh.parent) mesh.parent.remove(mesh);
+            disposeGroup(mesh);
+        }
+
+        // Dispose tower groups
+        for (const t of this.towers) {
+            if (t.mesh.parent) t.mesh.parent.remove(t.mesh);
+            disposeGroup(t.mesh);
+        }
+
+        // Dispose throne groups
+        for (const throne of Object.values(this.thrones)) {
+            if (throne.mesh.parent) throne.mesh.parent.remove(throne.mesh);
+            disposeGroup(throne.mesh);
+        }
+
         this.towers = [];
         this.thrones = {};
         this.lanePaths = [];

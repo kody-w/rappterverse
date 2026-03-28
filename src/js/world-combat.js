@@ -601,10 +601,44 @@ const WorldCombat = {
     },
 
     cleanup() {
-        this.creeps.forEach(c => { if (c.mesh.parent) c.mesh.parent.remove(c.mesh); });
-        this.projectiles.forEach(p => { if (p.mesh.parent) p.mesh.parent.remove(p.mesh); });
+        const disposeMesh = (mesh) => {
+            if (mesh.geometry) mesh.geometry.dispose();
+            if (mesh.material) {
+                if (Array.isArray(mesh.material)) mesh.material.forEach(m => m.dispose());
+                else mesh.material.dispose();
+            }
+        };
+        const disposeGroup = (group) => {
+            group.traverse(child => { disposeMesh(child); });
+        };
+
+        // Dispose creep groups (body, eyes, HP bar geometries/materials)
+        this.creeps.forEach(c => {
+            if (c.mesh.parent) c.mesh.parent.remove(c.mesh);
+            disposeGroup(c.mesh);
+        });
+
+        // Dispose projectile meshes
+        this.projectiles.forEach(p => {
+            if (p.mesh.parent) p.mesh.parent.remove(p.mesh);
+            disposeMesh(p.mesh);
+        });
+
+        // Dispose boss if active
+        if (this.boss && this.boss.mesh) {
+            if (this.boss.mesh.parent) this.boss.mesh.parent.remove(this.boss.mesh);
+            disposeGroup(this.boss.mesh);
+        }
+
+        // Remove any lingering boss overlay elements
+        document.querySelectorAll('div[style*="z-index:9999"]').forEach(el => {
+            if (el.parentNode) el.parentNode.removeChild(el);
+        });
+
         this.creeps = [];
         this.projectiles = [];
         this.active = false;
+        this.bossActive = false;
+        this.boss = null;
     }
 };

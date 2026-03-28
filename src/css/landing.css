@@ -50,7 +50,7 @@
 
 .landing-gauge-value {
   font-size: 18px;
-  color: #0ff;
+  color: var(--accent-cyan, #0ff);
   font-weight: bold;
 }
 
@@ -69,7 +69,7 @@
 
 .landing-fuel-fill {
   height: 100%;
-  background: linear-gradient(90deg, #00cc66, #0ff);
+  background: linear-gradient(90deg, #00cc66, var(--accent-cyan, #0ff));
   transition: width 0.3s;
 }
 
@@ -91,8 +91,8 @@
 }
 
 .landing-mode-btn:hover {
-  border-color: #0ff;
-  color: #0ff;
+  border-color: var(--accent-cyan, #0ff);
+  color: var(--accent-cyan, #0ff);
 }
 
 /* --- Status text --- */

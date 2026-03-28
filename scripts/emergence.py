@@ -140,12 +140,18 @@ def goal_completion_score() -> tuple[float, list[str]]:
     agents_with_goals = 0
     agents_total = 0
     
+    if not MEMORY_DIR.exists():
+        return 0, ["Memory directory not found"]
+
     for f in os.listdir(MEMORY_DIR):
         if not f.endswith('.json'):
             continue
         agents_total += 1
-        with open(MEMORY_DIR / f) as mf:
-            mem = json.load(mf)
+        try:
+            with open(MEMORY_DIR / f) as mf:
+                mem = json.load(mf)
+        except (json.JSONDecodeError, OSError):
+            continue
         goals = mem.get("goals", [])
         if goals:
             agents_with_goals += 1

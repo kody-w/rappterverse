@@ -298,7 +298,8 @@ def _call_llm(token: str, system_prompt: str, user_prompt: str,
                 max_tokens=max_tokens,
                 temperature=temperature,
             )
-            if content.startswith('"') and content.endswith('"'):
+            # Strip wrapping quotes from LLM output safely
+            if content.startswith('"') and content.endswith('"') and content.count('"') == 2:
                 content = content[1:-1]
             return content
         except Exception as exc:

@@ -679,7 +679,10 @@ const WorldAgents = {
         });
 
         const prompt = document.getElementById('interaction-prompt');
-        if (nearest) {
+        if (!prompt) {
+            this.interactTarget = null;
+            this.pokeTarget = null;
+        } else if (nearest) {
             prompt.textContent = `Press E → ${nearest.name}`;
             prompt.classList.add('visible');
             this.interactTarget = nearest;

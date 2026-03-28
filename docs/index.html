@@ -238,6 +238,25 @@ body {
   }
 }
 
+/* ── Keyboard Accessibility ────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--accent-cyan);
+  outline-offset: 2px;
+}
+
+button:focus-visible,
+.hud-btn:focus-visible,
+.ability-slot:focus-visible {
+  outline: 2px solid var(--accent-cyan);
+  outline-offset: 2px;
+  box-shadow: 0 0 8px rgba(0, 212, 255, 0.4);
+}
+
+/* Remove outline for mouse users */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
 /* === css/boot.css === */
 /* ============================================
    BIOPHONE BOOT SEQUENCE
@@ -555,7 +574,7 @@ body {
 
 .approach-stat-value {
   font-size: 20px;
-  color: #0ff;
+  color: var(--accent-cyan, #0ff);
   font-weight: bold;
 }
 
@@ -570,8 +589,8 @@ body {
 .approach-land-btn {
   margin-top: 32px;
   padding: 14px 40px;
-  background: linear-gradient(135deg, #0ff, #0066ff);
-  border: 2px solid #0ff;
+  background: linear-gradient(135deg, var(--accent-cyan, #0ff), #0066ff);
+  border: 2px solid var(--accent-cyan, #0ff);
   color: #fff;
   font-size: 16px;
   font-weight: bold;
@@ -658,7 +677,7 @@ body {
 
 .landing-gauge-value {
   font-size: 18px;
-  color: #0ff;
+  color: var(--accent-cyan, #0ff);
   font-weight: bold;
 }
 
@@ -677,7 +696,7 @@ body {
 
 .landing-fuel-fill {
   height: 100%;
-  background: linear-gradient(90deg, #00cc66, #0ff);
+  background: linear-gradient(90deg, #00cc66, var(--accent-cyan, #0ff));
   transition: width 0.3s;
 }
 
@@ -699,8 +718,8 @@ body {
 }
 
 .landing-mode-btn:hover {
-  border-color: #0ff;
-  color: #0ff;
+  border-color: var(--accent-cyan, #0ff);
+  color: var(--accent-cyan, #0ff);
 }
 
 /* --- Status text --- */
@@ -2069,7 +2088,7 @@ body {
 </head>
 <body>
 <!-- SCANLINES OVERLAY -->
-<div class="scanlines"></div>
+<div class="scanlines" aria-hidden="true"></div>
 
 <!-- ===== BOOT SCREEN ===== -->
 <div id="boot-screen">
@@ -2269,12 +2288,12 @@ body {
         <div class="status-dot"></div>
         <span class="status-text">LIVE</span>
         <span class="agent-count-badge" id="hud-agent-count">0 agents</span>
-        <button class="hud-btn" id="btn-screenshot" title="Screenshot">📸</button>
-        <button class="hud-btn" id="btn-share" title="Share Link">🔗</button>
-        <button class="hud-btn" id="btn-voice" title="Voice Commands (V)">🎤</button>
-        <button class="hud-btn" id="btn-gesture" title="Gesture Controls (H)">🖐️</button>
-        <button class="hud-btn" id="btn-bridge" title="Bridge (B)">🚀 Bridge</button>
-        <button class="hud-btn" id="btn-minimap" title="Minimap (M)">🗺️ Map</button>
+        <button class="hud-btn" id="btn-screenshot" title="Screenshot" aria-label="Screenshot">📸</button>
+        <button class="hud-btn" id="btn-share" title="Share Link" aria-label="Share">🔗</button>
+        <button class="hud-btn" id="btn-voice" title="Voice Commands (V)" aria-label="Voice controls">🎤</button>
+        <button class="hud-btn" id="btn-gesture" title="Gesture Controls (H)" aria-label="Gesture controls">🖐️</button>
+        <button class="hud-btn" id="btn-bridge" title="Bridge (B)" aria-label="Open bridge">🚀 Bridge</button>
+        <button class="hud-btn" id="btn-minimap" title="Minimap (M)" aria-label="Toggle minimap">🗺️ Map</button>
     </div>
 </div>
 
@@ -6286,6 +6305,35 @@ const WorldLanes = {
     },
 
     cleanup() {
+        const disposeMesh = (mesh) => {
+            if (mesh.geometry) mesh.geometry.dispose();
+            if (mesh.material) {
+                if (Array.isArray(mesh.material)) mesh.material.forEach(m => m.dispose());
+                else mesh.material.dispose();
+            }
+        };
+        const disposeGroup = (group) => {
+            group.traverse(child => { disposeMesh(child); });
+        };
+
+        // Dispose lane path meshes (lines + choke rings)
+        for (const mesh of this.lanePaths) {
+            if (mesh.parent) mesh.parent.remove(mesh);
+            disposeGroup(mesh);
+        }
+
+        // Dispose tower groups
+        for (const t of this.towers) {
+            if (t.mesh.parent) t.mesh.parent.remove(t.mesh);
+            disposeGroup(t.mesh);
+        }
+
+        // Dispose throne groups
+        for (const throne of Object.values(this.thrones)) {
+            if (throne.mesh.parent) throne.mesh.parent.remove(throne.mesh);
+            disposeGroup(throne.mesh);
+        }
+
         this.towers = [];
         this.thrones = {};
         this.lanePaths = [];
@@ -6897,11 +6945,45 @@ const WorldCombat = {
     },
 
     cleanup() {
-        this.creeps.forEach(c => { if (c.mesh.parent) c.mesh.parent.remove(c.mesh); });
-        this.projectiles.forEach(p => { if (p.mesh.parent) p.mesh.parent.remove(p.mesh); });
+        const disposeMesh = (mesh) => {
+            if (mesh.geometry) mesh.geometry.dispose();
+            if (mesh.material) {
+                if (Array.isArray(mesh.material)) mesh.material.forEach(m => m.dispose());
+                else mesh.material.dispose();
+            }
+        };
+        const disposeGroup = (group) => {
+            group.traverse(child => { disposeMesh(child); });
+        };
+
+        // Dispose creep groups (body, eyes, HP bar geometries/materials)
+        this.creeps.forEach(c => {
+            if (c.mesh.parent) c.mesh.parent.remove(c.mesh);
+            disposeGroup(c.mesh);
+        });
+
+        // Dispose projectile meshes
+        this.projectiles.forEach(p => {
+            if (p.mesh.parent) p.mesh.parent.remove(p.mesh);
+            disposeMesh(p.mesh);
+        });
+
+        // Dispose boss if active
+        if (this.boss && this.boss.mesh) {
+            if (this.boss.mesh.parent) this.boss.mesh.parent.remove(this.boss.mesh);
+            disposeGroup(this.boss.mesh);
+        }
+
+        // Remove any lingering boss overlay elements
+        document.querySelectorAll('div[style*="z-index:9999"]').forEach(el => {
+            if (el.parentNode) el.parentNode.removeChild(el);
+        });
+
         this.creeps = [];
         this.projectiles = [];
         this.active = false;
+        this.bossActive = false;
+        this.boss = null;
     }
 };
 
@@ -7587,7 +7669,10 @@ const WorldAgents = {
         });
 
         const prompt = document.getElementById('interaction-prompt');
-        if (nearest) {
+        if (!prompt) {
+            this.interactTarget = null;
+            this.pokeTarget = null;
+        } else if (nearest) {
             prompt.textContent = `Press E → ${nearest.name}`;
             prompt.classList.add('visible');
             this.interactTarget = nearest;
@@ -8190,6 +8275,11 @@ const Inventory = {
     cleanup() {
         for (const d of this.droppedItems) {
             if (d.mesh.parent) d.mesh.parent.remove(d.mesh);
+            if (d.mesh.geometry) d.mesh.geometry.dispose();
+            if (d.mesh.material) {
+                if (Array.isArray(d.mesh.material)) d.mesh.material.forEach(m => m.dispose());
+                else d.mesh.material.dispose();
+            }
         }
         this.droppedItems = [];
         this.slots = [];
@@ -8228,7 +8318,8 @@ const Abilities = {
     this.shieldTimer = 0;
     this._effects = [];
     this.active = true;
-    document.querySelectorAll('.ability-slot').forEach((el, i) => {
+    this._slotEls = document.querySelectorAll('.ability-slot');
+    this._slotEls.forEach((el, i) => {
       el.addEventListener('click', () => this.useAbility(i));
     });
   },
@@ -8397,7 +8488,7 @@ const Abilities = {
       }
     }
     // HUD
-    document.querySelectorAll('.ability-slot').forEach((el, i) => {
+    (this._slotEls || []).forEach((el, i) => {
       const cd = this.cooldowns[i];
       let overlay = el.querySelector('.cd-overlay');
       if (cd > 0) {

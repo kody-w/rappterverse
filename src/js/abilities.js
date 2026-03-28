@@ -26,7 +26,8 @@ const Abilities = {
     this.shieldTimer = 0;
     this._effects = [];
     this.active = true;
-    document.querySelectorAll('.ability-slot').forEach((el, i) => {
+    this._slotEls = document.querySelectorAll('.ability-slot');
+    this._slotEls.forEach((el, i) => {
       el.addEventListener('click', () => this.useAbility(i));
     });
   },
@@ -195,7 +196,7 @@ const Abilities = {
       }
     }
     // HUD
-    document.querySelectorAll('.ability-slot').forEach((el, i) => {
+    (this._slotEls || []).forEach((el, i) => {
       const cd = this.cooldowns[i];
       let overlay = el.querySelector('.cd-overlay');
       if (cd > 0) {

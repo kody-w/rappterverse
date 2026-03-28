@@ -246,6 +246,11 @@ const Inventory = {
     cleanup() {
         for (const d of this.droppedItems) {
             if (d.mesh.parent) d.mesh.parent.remove(d.mesh);
+            if (d.mesh.geometry) d.mesh.geometry.dispose();
+            if (d.mesh.material) {
+                if (Array.isArray(d.mesh.material)) d.mesh.material.forEach(m => m.dispose());
+                else d.mesh.material.dispose();
+            }
         }
         this.droppedItems = [];
         this.slots = [];
