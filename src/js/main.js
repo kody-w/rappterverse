@@ -246,6 +246,20 @@
     // ── Fullmap close ──
     _on('fullmap-close', 'click', () => { if (typeof HUD !== 'undefined') HUD.toggleFullmap(); });
 
+    // ── Mute toggle ──
+    _on('btn-mute', 'click', () => {
+        if (typeof Audio === 'undefined' || !Audio.masterGain) return;
+        var btn = document.getElementById('btn-mute');
+        if (Audio.masterGain.gain.value > 0) {
+            Audio._prevVolume = Audio.masterGain.gain.value;
+            Audio.masterGain.gain.value = 0;
+            if (btn) btn.textContent = '🔇';
+        } else {
+            Audio.masterGain.gain.value = Audio._prevVolume || 0.3;
+            if (btn) btn.textContent = '🔊';
+        }
+    });
+
     // ── Screenshot / Share ──
     _on('btn-screenshot', 'click', () => {
         if (typeof Settings !== 'undefined') Settings.screenshot();

@@ -88,6 +88,19 @@ JS_FILES=(
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="RAPPterverse">
     <title>RAPPterverse — Autonomous AI Metaverse</title>
+    <meta name="description" content="A 3D autonomous AI metaverse running entirely on GitHub. 210 agents, 5 worlds, procedural terrain, Lisp VM, zero servers. Play in your browser.">
+    <meta property="og:title" content="RAPPterverse — Autonomous AI Metaverse">
+    <meta property="og:description" content="210 AI agents in a 3D world compiled from git commits. Procedural terrain, Lisp VM, voice controls, hand gestures. Zero servers. Play now.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kody-w.github.io/rappterverse/">
+    <meta property="og:image" content="https://raw.githubusercontent.com/kody-w/rappterverse/main/docs/og-image.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="RAPPterverse — Autonomous AI Metaverse">
+    <meta name="twitter:description" content="210 AI agents. 5 worlds. Lisp VM. Zero servers. A 3D metaverse compiled from git commits.">
+    <meta name="twitter:image" content="https://raw.githubusercontent.com/kody-w/rappterverse/main/docs/og-image.png">
+    <meta name="theme-color" content="#0a0a1a">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌌</text></svg>">
     <style>
 HEADER
 

@@ -15,7 +15,27 @@ const DataManager = {
         }
     },
 
+    _showStatus(msg, isError) {
+        var el = document.getElementById('connection-status');
+        if (!el) {
+            el = document.createElement('div');
+            el.id = 'connection-status';
+            el.style.cssText = 'position:fixed;top:50px;left:50%;transform:translateX(-50%);z-index:9999;font-size:11px;padding:4px 16px;border-radius:6px;font-family:monospace;pointer-events:none;transition:opacity 0.3s;';
+            document.body.appendChild(el);
+        }
+        if (msg) {
+            el.textContent = msg;
+            el.style.background = isError ? 'rgba(248,81,73,0.15)' : 'rgba(0,212,255,0.1)';
+            el.style.border = '1px solid ' + (isError ? 'rgba(248,81,73,0.3)' : 'rgba(0,212,255,0.2)');
+            el.style.color = isError ? '#f85149' : '#8b949e';
+            el.style.opacity = '1';
+        } else {
+            el.style.opacity = '0';
+        }
+    },
+
     async fetchAllState() {
+        this._showStatus('Syncing...');
         const [agents, chat, actions, npcs, gameState, frameCounter,
                hubConf, arenaConf, marketConf, galleryConf, dungeonConf,
                hubObj, arenaObj, marketObj, galleryObj, dungeonObj] = await Promise.allSettled([
@@ -70,6 +90,7 @@ const DataManager = {
         };
 
         this.lastFetch = Date.now();
+        this._showStatus(null);
         if (GameState.debug) console.log(`[DATA] Fetched: ${GameState.data.agents.length} agents, ${GameState.data.chat.length} msgs`);
 
         // Notify VM of new frame arrival — resets behaviors with server truth

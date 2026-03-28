@@ -546,3 +546,89 @@
     border-radius: 0;
   }
 }
+
+/* ── Shop Panel ────────────────────────────────────────── */
+#shop-panel {
+  position: fixed;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 420px;
+  max-height: 85vh;
+  background: rgba(22, 27, 34, 0.95);
+  border: 1px solid rgba(210, 153, 34, 0.3);
+  border-radius: 12px;
+  z-index: 9100;
+  overflow: hidden;
+  display: none;
+  font-family: 'SF Mono', monospace;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* ── Crafting Panel ────────────────────────────────────── */
+#crafting-panel {
+  position: fixed;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 360px;
+  max-height: 80vh;
+  background: rgba(22, 27, 34, 0.95);
+  border: 1px solid rgba(48, 54, 61, 0.8);
+  border-radius: 12px;
+  z-index: 9100;
+  overflow: hidden;
+  display: none;
+  font-family: 'SF Mono', monospace;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* ── Gold/KDA Bar ──────────────────────────────────────── */
+#gold-kda-bar {
+  position: fixed;
+  bottom: 72px; left: 12px;
+  display: none;
+  gap: 12px;
+  font-size: 11px;
+  z-index: 900;
+  font-family: 'SF Mono', monospace;
+}
+
+/* ── Connection Status ─────────────────────────────────── */
+#connection-status {
+  position: fixed;
+  top: 50px; left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  font-size: 11px;
+  padding: 4px 16px;
+  border-radius: 6px;
+  font-family: monospace;
+  pointer-events: none;
+  transition: opacity 0.3s;
+  opacity: 0;
+}
+
+/* ── Responsive Polish ─────────────────────────────────── */
+@media (max-width: 1024px) {
+  #world-populations { display: none !important; }
+  #relationship-legend { display: none !important; }
+  #universe-card { max-width: 90%; font-size: 10px; }
+  .minimap { width: 160px; height: 160px; }
+}
+
+@media (max-width: 768px) {
+  #quest-tracker { width: 200px; font-size: 9px; }
+  #universe-card { bottom: 42px; }
+  #frame-timeline { height: 28px; }
+  .top-bar-meta { display: none; }
+  #seed-info { display: none !important; }
+  #gesture-panel { width: 150px; height: 140px; }
+}
+
+@media (max-width: 480px) {
+  #quest-tracker { display: none !important; }
+  #universe-card { display: none !important; }
+  .minimap { width: 120px; height: 120px; bottom: 8px; right: 8px; }
+  .hud-btn { padding: 4px 8px; font-size: 10px; }
+}
