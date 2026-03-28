@@ -80,7 +80,7 @@ const GestureControls = {
 
         try {
             await this._camera.start();
-            document.getElementById('gesture-panel').classList.add('visible');
+            var gp = document.getElementById('gesture-panel'); if (gp) gp.classList.add('visible');
             if (typeof HUD !== 'undefined') HUD.showToast('Gesture controls ON — show hand to camera');
         } catch(e) {
             if (GameState.debug) console.warn('[GESTURE] Camera access denied:', e);
@@ -94,7 +94,7 @@ const GestureControls = {
         if (this._camera) {
             try { this._camera.stop(); } catch(e) {}
         }
-        document.getElementById('gesture-panel').classList.remove('visible');
+        var gp = document.getElementById('gesture-panel'); if (gp) gp.classList.remove('visible');
         this._moveVector = { x: 0, z: 0 };
         this.gesture = 'none';
         // Release keys

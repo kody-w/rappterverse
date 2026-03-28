@@ -72,7 +72,11 @@ const WorldCombat = {
                     if (creep && creep.alive) {
                         creep.alive = false;
                         if (typeof ComboSystem !== 'undefined') ComboSystem.registerKill();
-                        if (typeof PlayerStats !== 'undefined') PlayerStats.awardXp(creep.isBoss ? 50 : 10);
+                        if (typeof PlayerStats !== 'undefined') {
+                            PlayerStats.awardXp(creep.isBoss ? 50 : 10);
+                            PlayerStats.kills++;
+                            PlayerStats.awardGold(creep.isBoss ? 50 : 8, 'creep');
+                        }
                         if (typeof Inventory !== 'undefined') Inventory.spawnDrop(creep.mesh.position.clone(), GameState.currentWorld, this.waveNumber, 0);
                         if (creep.isBoss) {
                             this.bossActive = false; this.boss = null;
@@ -340,7 +344,7 @@ const WorldCombat = {
                             throne.hp -= COMBAT_CONFIG.creepDamage;
                             if (throne.hp <= 0) {
                                 const winner = creep.faction === 'explorer' ? 'Explorers' : 'Horde';
-                                if (typeof HUD !== 'undefined') HUD.showToast(`${winner} destroyed the throne!`);
+                                this._triggerVictory(winner === 'Explorers' ? 'VICTORY' : 'DEFEAT', winner);
                             }
                         }
                     }
@@ -546,7 +550,11 @@ const WorldCombat = {
         if (nearest.hp <= 0) {
             nearest.alive = false;
             if (typeof ComboSystem !== 'undefined') ComboSystem.registerKill();
-            if (typeof PlayerStats !== 'undefined') PlayerStats.awardXp(nearest.isBoss ? 50 : 10);
+            if (typeof PlayerStats !== 'undefined') {
+                PlayerStats.awardXp(nearest.isBoss ? 50 : 10);
+                PlayerStats.kills++;
+                PlayerStats.awardGold(nearest.isBoss ? 50 : (8 + Math.floor(Math.random() * 5)), nearest.isBoss ? 'boss' : 'creep');
+            }
             if (typeof Inventory !== 'undefined' && nearest.mesh) {
                 Inventory.spawnDrop(nearest.mesh.position.clone(), GameState.currentWorld, this.waveNumber, this.creeps.indexOf(nearest));
             }
@@ -554,7 +562,7 @@ const WorldCombat = {
                 this.bossActive = false;
                 this.boss = null;
                 this.momentum = Math.min(100, this.momentum + 20);
-                if (typeof HUD !== 'undefined') HUD.showToast('BOSS DEFEATED!');
+                if (typeof HUD !== 'undefined') HUD.showToast('BOSS DEFEATED! +50 gold');
             } else {
                 this.momentum = Math.min(100, this.momentum + COMBAT_CONFIG.momentumPerKill * 2);
             }
@@ -598,6 +606,34 @@ const WorldCombat = {
             else if (this.momentum < 35) momEl.style.background = '#ff4488';
             else momEl.style.background = '#ffaa00';
         }
+    },
+
+    _triggerVictory(result, winner) {
+        const overlay = document.getElementById('victory-overlay');
+        const title = document.getElementById('victory-title');
+        const stats = document.getElementById('victory-stats');
+        const btn = document.getElementById('victory-btn');
+        if (!overlay) return;
+        if (title) {
+            title.textContent = result;
+            title.style.color = result === 'VICTORY' ? '#00ff88' : '#ff4444';
+        }
+        if (stats && typeof PlayerStats !== 'undefined') {
+            stats.textContent = 'KDA: ' + PlayerStats.kills + '/' + PlayerStats.deaths + '/' + PlayerStats.assists +
+                ' | Gold: ' + PlayerStats.gold + ' | GPM: ' + PlayerStats.getGPM() +
+                ' | Level: ' + PlayerStats.level + ' | Wave: ' + this.waveNumber;
+        }
+        overlay.style.display = 'flex';
+        if (btn) {
+            btn.onclick = function() {
+                overlay.style.display = 'none';
+                if (typeof WorldMode !== 'undefined') WorldMode.cleanup();
+                if (typeof HUD !== 'undefined' && HUD.hideWorldPanels) HUD.hideWorldPanels();
+                GameState.setMode('galaxy');
+                if (typeof Galaxy !== 'undefined') Galaxy.show();
+            };
+        }
+        if (typeof Audio !== 'undefined' && Audio.playWaveHorn) Audio.playWaveHorn();
     },
 
     cleanup() {

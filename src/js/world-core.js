@@ -34,6 +34,8 @@ const WorldMode = {
         document.getElementById('combat-hud').style.display = 'flex';
         const statsBar = document.getElementById('player-stats-bar');
         if (statsBar) statsBar.style.display = 'flex';
+        const goldBar = document.getElementById('gold-kda-bar');
+        if (goldBar) goldBar.style.display = 'flex';
         const levelBadge = document.getElementById('level-badge');
         if (levelBadge) levelBadge.style.display = 'block';
         const abilityBar = document.getElementById('ability-bar');
@@ -366,6 +368,18 @@ const WorldMode = {
         if (abilityBar) abilityBar.style.display = 'none';
         const comboEl = document.getElementById('combo-display');
         if (comboEl) comboEl.style.display = 'none';
+        const goldBar = document.getElementById('gold-kda-bar');
+        if (goldBar) goldBar.style.display = 'none';
+        const timeline = document.getElementById('frame-timeline');
+        if (timeline) timeline.classList.remove('visible');
+        const narr = document.getElementById('timeline-narrative');
+        if (narr) narr.classList.remove('visible');
+        // Stop VM
+        if (typeof RappterVM !== 'undefined') RappterVM._running = false;
+        // Hide quest tracker
+        if (typeof QuestTracker !== 'undefined') QuestTracker.hide();
+        // Hide touch controls
+        if (typeof TouchControls !== 'undefined') TouchControls.hide();
     },
 
     onResize() {

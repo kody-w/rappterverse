@@ -6990,7 +6990,11 @@ const WorldCombat = {
                     if (creep && creep.alive) {
                         creep.alive = false;
                         if (typeof ComboSystem !== 'undefined') ComboSystem.registerKill();
-                        if (typeof PlayerStats !== 'undefined') PlayerStats.awardXp(creep.isBoss ? 50 : 10);
+                        if (typeof PlayerStats !== 'undefined') {
+                            PlayerStats.awardXp(creep.isBoss ? 50 : 10);
+                            PlayerStats.kills++;
+                            PlayerStats.awardGold(creep.isBoss ? 50 : 8, 'creep');
+                        }
                         if (typeof Inventory !== 'undefined') Inventory.spawnDrop(creep.mesh.position.clone(), GameState.currentWorld, this.waveNumber, 0);
                         if (creep.isBoss) {
                             this.bossActive = false; this.boss = null;
@@ -7258,7 +7262,7 @@ const WorldCombat = {
                             throne.hp -= COMBAT_CONFIG.creepDamage;
                             if (throne.hp <= 0) {
                                 const winner = creep.faction === 'explorer' ? 'Explorers' : 'Horde';
-                                if (typeof HUD !== 'undefined') HUD.showToast(`${winner} destroyed the throne!`);
+                                this._triggerVictory(winner === 'Explorers' ? 'VICTORY' : 'DEFEAT', winner);
                             }
                         }
                     }
@@ -7464,7 +7468,11 @@ const WorldCombat = {
         if (nearest.hp <= 0) {
             nearest.alive = false;
             if (typeof ComboSystem !== 'undefined') ComboSystem.registerKill();
-            if (typeof PlayerStats !== 'undefined') PlayerStats.awardXp(nearest.isBoss ? 50 : 10);
+            if (typeof PlayerStats !== 'undefined') {
+                PlayerStats.awardXp(nearest.isBoss ? 50 : 10);
+                PlayerStats.kills++;
+                PlayerStats.awardGold(nearest.isBoss ? 50 : (8 + Math.floor(Math.random() * 5)), nearest.isBoss ? 'boss' : 'creep');
+            }
             if (typeof Inventory !== 'undefined' && nearest.mesh) {
                 Inventory.spawnDrop(nearest.mesh.position.clone(), GameState.currentWorld, this.waveNumber, this.creeps.indexOf(nearest));
             }
@@ -7472,7 +7480,7 @@ const WorldCombat = {
                 this.bossActive = false;
                 this.boss = null;
                 this.momentum = Math.min(100, this.momentum + 20);
-                if (typeof HUD !== 'undefined') HUD.showToast('BOSS DEFEATED!');
+                if (typeof HUD !== 'undefined') HUD.showToast('BOSS DEFEATED! +50 gold');
             } else {
                 this.momentum = Math.min(100, this.momentum + COMBAT_CONFIG.momentumPerKill * 2);
             }
@@ -7516,6 +7524,34 @@ const WorldCombat = {
             else if (this.momentum < 35) momEl.style.background = '#ff4488';
             else momEl.style.background = '#ffaa00';
         }
+    },
+
+    _triggerVictory(result, winner) {
+        const overlay = document.getElementById('victory-overlay');
+        const title = document.getElementById('victory-title');
+        const stats = document.getElementById('victory-stats');
+        const btn = document.getElementById('victory-btn');
+        if (!overlay) return;
+        if (title) {
+            title.textContent = result;
+            title.style.color = result === 'VICTORY' ? '#00ff88' : '#ff4444';
+        }
+        if (stats && typeof PlayerStats !== 'undefined') {
+            stats.textContent = 'KDA: ' + PlayerStats.kills + '/' + PlayerStats.deaths + '/' + PlayerStats.assists +
+                ' | Gold: ' + PlayerStats.gold + ' | GPM: ' + PlayerStats.getGPM() +
+                ' | Level: ' + PlayerStats.level + ' | Wave: ' + this.waveNumber;
+        }
+        overlay.style.display = 'flex';
+        if (btn) {
+            btn.onclick = function() {
+                overlay.style.display = 'none';
+                if (typeof WorldMode !== 'undefined') WorldMode.cleanup();
+                if (typeof HUD !== 'undefined' && HUD.hideWorldPanels) HUD.hideWorldPanels();
+                GameState.setMode('galaxy');
+                if (typeof Galaxy !== 'undefined') Galaxy.show();
+            };
+        }
+        if (typeof Audio !== 'undefined' && Audio.playWaveHorn) Audio.playWaveHorn();
     },
 
     cleanup() {
@@ -9057,10 +9093,14 @@ const Abilities = {
     return true;
   },
 
+  _scaledDmg(base) {
+    return typeof PlayerStats !== 'undefined' && PlayerStats.getAbilityDamage ? PlayerStats.getAbilityDamage(base) : base;
+  },
   _doSlash(pos, def) {
     const element = (typeof Equipment !== 'undefined') ? Equipment.getEquippedElement() : null;
+    const dmg = this._scaledDmg(def.damage);
     this._creepsInRange(pos, def.range).forEach(c => {
-      this._damageCreep(c, def.damage);
+      this._damageCreep(c, dmg);
       if (element && typeof StatusEffects !== 'undefined') StatusEffects.applyEffect(c.mesh, element);
     });
     const geo = new THREE.RingGeometry(0.5, def.range, 24);
@@ -9074,7 +9114,7 @@ const Abilities = {
     const mesh = new THREE.Mesh(new THREE.SphereGeometry(0.3, 8, 8), new THREE.MeshBasicMaterial({ color: 0x00ffff }));
     mesh.position.copy(pos); mesh.position.y = 1;
     WorldMode.scene.add(mesh);
-    this.projectiles.push({ mesh, direction: dir.clone(), speed: def.speed, damage: def.damage, life: 0 });
+    this.projectiles.push({ mesh, direction: dir.clone(), speed: def.speed, damage: this._scaledDmg(def.damage), life: 0 });
     if (typeof Audio !== 'undefined' && Audio.playTowerShot) Audio.playTowerShot();
   },
   _doShield(def) {
@@ -9103,8 +9143,9 @@ const Abilities = {
   },
   _doNova(pos, def) {
     const element = (typeof Equipment !== 'undefined') ? Equipment.getEquippedElement() : null;
+    const dmg = this._scaledDmg(def.damage);
     this._creepsInRange(pos, def.range).forEach(c => {
-      this._damageCreep(c, def.damage);
+      this._damageCreep(c, dmg);
       if (element && typeof StatusEffects !== 'undefined') StatusEffects.applyEffect(c.mesh, element);
     });
     const mat = new THREE.MeshBasicMaterial({ color: 0xff4400, wireframe: true, transparent: true, opacity: 0.7 });
@@ -9680,6 +9721,8 @@ const WorldMode = {
         document.getElementById('combat-hud').style.display = 'flex';
         const statsBar = document.getElementById('player-stats-bar');
         if (statsBar) statsBar.style.display = 'flex';
+        const goldBar = document.getElementById('gold-kda-bar');
+        if (goldBar) goldBar.style.display = 'flex';
         const levelBadge = document.getElementById('level-badge');
         if (levelBadge) levelBadge.style.display = 'block';
         const abilityBar = document.getElementById('ability-bar');
@@ -10012,6 +10055,18 @@ const WorldMode = {
         if (abilityBar) abilityBar.style.display = 'none';
         const comboEl = document.getElementById('combo-display');
         if (comboEl) comboEl.style.display = 'none';
+        const goldBar = document.getElementById('gold-kda-bar');
+        if (goldBar) goldBar.style.display = 'none';
+        const timeline = document.getElementById('frame-timeline');
+        if (timeline) timeline.classList.remove('visible');
+        const narr = document.getElementById('timeline-narrative');
+        if (narr) narr.classList.remove('visible');
+        // Stop VM
+        if (typeof RappterVM !== 'undefined') RappterVM._running = false;
+        // Hide quest tracker
+        if (typeof QuestTracker !== 'undefined') QuestTracker.hide();
+        // Hide touch controls
+        if (typeof TouchControls !== 'undefined') TouchControls.hide();
     },
 
     onResize() {
@@ -11600,7 +11655,7 @@ const GestureControls = {
 
         try {
             await this._camera.start();
-            document.getElementById('gesture-panel').classList.add('visible');
+            var gp = document.getElementById('gesture-panel'); if (gp) gp.classList.add('visible');
             if (typeof HUD !== 'undefined') HUD.showToast('Gesture controls ON — show hand to camera');
         } catch(e) {
             if (GameState.debug) console.warn('[GESTURE] Camera access denied:', e);
@@ -11614,7 +11669,7 @@ const GestureControls = {
         if (this._camera) {
             try { this._camera.stop(); } catch(e) {}
         }
-        document.getElementById('gesture-panel').classList.remove('visible');
+        var gp = document.getElementById('gesture-panel'); if (gp) gp.classList.remove('visible');
         this._moveVector = { x: 0, z: 0 };
         this.gesture = 'none';
         // Release keys

@@ -92,10 +92,14 @@ const Abilities = {
     return true;
   },
 
+  _scaledDmg(base) {
+    return typeof PlayerStats !== 'undefined' && PlayerStats.getAbilityDamage ? PlayerStats.getAbilityDamage(base) : base;
+  },
   _doSlash(pos, def) {
     const element = (typeof Equipment !== 'undefined') ? Equipment.getEquippedElement() : null;
+    const dmg = this._scaledDmg(def.damage);
     this._creepsInRange(pos, def.range).forEach(c => {
-      this._damageCreep(c, def.damage);
+      this._damageCreep(c, dmg);
       if (element && typeof StatusEffects !== 'undefined') StatusEffects.applyEffect(c.mesh, element);
     });
     const geo = new THREE.RingGeometry(0.5, def.range, 24);
@@ -109,7 +113,7 @@ const Abilities = {
     const mesh = new THREE.Mesh(new THREE.SphereGeometry(0.3, 8, 8), new THREE.MeshBasicMaterial({ color: 0x00ffff }));
     mesh.position.copy(pos); mesh.position.y = 1;
     WorldMode.scene.add(mesh);
-    this.projectiles.push({ mesh, direction: dir.clone(), speed: def.speed, damage: def.damage, life: 0 });
+    this.projectiles.push({ mesh, direction: dir.clone(), speed: def.speed, damage: this._scaledDmg(def.damage), life: 0 });
     if (typeof Audio !== 'undefined' && Audio.playTowerShot) Audio.playTowerShot();
   },
   _doShield(def) {
@@ -138,8 +142,9 @@ const Abilities = {
   },
   _doNova(pos, def) {
     const element = (typeof Equipment !== 'undefined') ? Equipment.getEquippedElement() : null;
+    const dmg = this._scaledDmg(def.damage);
     this._creepsInRange(pos, def.range).forEach(c => {
-      this._damageCreep(c, def.damage);
+      this._damageCreep(c, dmg);
       if (element && typeof StatusEffects !== 'undefined') StatusEffects.applyEffect(c.mesh, element);
     });
     const mat = new THREE.MeshBasicMaterial({ color: 0xff4400, wireframe: true, transparent: true, opacity: 0.7 });
