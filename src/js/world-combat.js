@@ -553,7 +553,9 @@ const WorldCombat = {
             if (typeof PlayerStats !== 'undefined') {
                 PlayerStats.awardXp(nearest.isBoss ? 50 : 10);
                 PlayerStats.kills++;
-                PlayerStats.awardGold(nearest.isBoss ? 50 : (8 + Math.floor(Math.random() * 5)), nearest.isBoss ? 'boss' : 'creep');
+                var _goldAmt = nearest.isBoss ? 50 : (8 + Math.floor(Math.random() * 5));
+                PlayerStats.awardGold(_goldAmt, nearest.isBoss ? 'boss' : 'creep');
+                if (typeof HUD !== 'undefined' && HUD.showKill) HUD.showKill('Player', nearest.isBoss ? 'BOSS' : 'Creep', _goldAmt);
             }
             if (typeof Inventory !== 'undefined' && nearest.mesh) {
                 Inventory.spawnDrop(nearest.mesh.position.clone(), GameState.currentWorld, this.waveNumber, this.creeps.indexOf(nearest));
