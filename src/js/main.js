@@ -87,6 +87,7 @@
 
         // Escape
         if (e.code === 'Escape') {
+            if (typeof HUD !== 'undefined' && HUD.fullmapVisible) { HUD.toggleFullmap(); return; }
             if (typeof HelpOverlay !== 'undefined' && HelpOverlay.open) { HelpOverlay.close(); return; }
             if (Bridge.open) { Bridge.close(); return; }
             if (GameState.mode === 'approach') { Approach.abort(); return; }
@@ -143,6 +144,13 @@
             return;
         }
 
+        // Fullscreen map toggle (Tab)
+        if (e.code === 'Tab' && GameState.mode === 'world') {
+            e.preventDefault();
+            if (typeof HUD !== 'undefined') HUD.toggleFullmap();
+            return;
+        }
+
         // Cinematic mode
         if (e.code === 'KeyC' && GameState.mode === 'world') {
             document.body.classList.toggle('cinematic-active');
@@ -184,6 +192,9 @@
 
     // Minimap button
     _on('btn-minimap', 'click', () => HUD.toggleMinimap());
+
+    // ── Fullmap close ──
+    _on('fullmap-close', 'click', () => { if (typeof HUD !== 'undefined') HUD.toggleFullmap(); });
 
     // ── Screenshot / Share ──
     _on('btn-screenshot', 'click', () => {

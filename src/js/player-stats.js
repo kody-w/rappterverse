@@ -1,4 +1,4 @@
-// Player RPG Stats — HP, MP, Energy, XP, Leveling, Regen
+// Player RPG Stats — HP, MP, Energy, XP, Gold, Leveling, Regen
 const PlayerStats = {
   hp: 100, maxHp: 100,
   mp: 50, maxMp: 50,
@@ -6,12 +6,15 @@ const PlayerStats = {
   xp: 0, xpToLevel: 100,
   level: 1,
   baseDamage: 20,
+  gold: 0,
+  totalGold: 0,
+  kills: 0, deaths: 0, assists: 0,
   hpRegen: 1,
   mpRegen: 2,
   energyRegen: 5,
   dead: false,
+  shielded: false,
   respawnTimer: 0,
-  respawnDuration: 3,
   damageFlashTimer: 0,
 
   init() {
@@ -20,9 +23,11 @@ const PlayerStats = {
     this.energy = this.maxEnergy = 100;
     this.xp = 0; this.xpToLevel = 100;
     this.level = 1; this.baseDamage = 20;
+    this.gold = 0; this.totalGold = 0;
+    this.kills = 0; this.deaths = 0; this.assists = 0;
     this.hpRegen = 1; this.mpRegen = 2; this.energyRegen = 5;
-    this.dead = false; this.respawnTimer = 0;
-    this.damageFlashTimer = 0;
+    this.dead = false; this.shielded = false;
+    this.respawnTimer = 0; this.damageFlashTimer = 0;
   },
 
   takeDamage(amount) {
@@ -44,10 +49,20 @@ const PlayerStats = {
 
   die() {
     this.dead = true;
-    this.respawnTimer = this.respawnDuration;
+    this.deaths++;
+    // Respawn timer scales with level (5s base + 2s per level)
+    this.respawnTimer = 5 + this.level * 2;
     const overlay = document.getElementById('death-overlay');
     if (overlay) overlay.style.display = 'flex';
-    if (typeof Audio !== 'undefined' && Audio.playExplosion) Audio.playExplosion();
+    const timerEl = document.getElementById('death-timer');
+    if (timerEl) timerEl.textContent = 'Respawning in ' + Math.ceil(this.respawnTimer) + '...';
+    if (typeof Audio !== 'undefined' && Audio.playDeath) Audio.playDeath();
+  },
+
+  awardGold(amount, source) {
+    this.gold += amount;
+    this.totalGold += amount;
+    if (typeof HUD !== 'undefined' && HUD.showToast) HUD.showToast('+' + amount + ' gold' + (source ? ' (' + source + ')' : ''));
   },
 
   respawn() {
@@ -104,12 +119,9 @@ const PlayerStats = {
   update(delta) {
     if (this.dead) {
       this.respawnTimer -= delta;
-      if (this.respawnTimer <= 0) {
-        this.respawn();
-      } else {
-        const countdown = document.querySelector('#death-overlay .countdown');
-        if (countdown) countdown.textContent = Math.ceil(this.respawnTimer);
-      }
+      const timerEl = document.getElementById('death-timer');
+      if (timerEl) timerEl.textContent = 'Respawning in ' + Math.ceil(this.respawnTimer) + '...';
+      if (this.respawnTimer <= 0) this.respawn();
     } else {
       this.hp = Math.min(this.maxHp, this.hp + this.hpRegen * delta);
       this.mp = Math.min(this.maxMp, this.mp + this.mpRegen * delta);
@@ -137,6 +149,16 @@ const PlayerStats = {
     if (mpText) mpText.textContent = `${Math.ceil(this.mp)}/${this.maxMp}`;
     if (levelBadge) levelBadge.textContent = this.level;
     if (energyFill) energyFill.style.width = `${(this.energy / this.maxEnergy) * 100}%`;
+    const energyText = document.getElementById('energy-text');
+    if (energyText) energyText.textContent = `${Math.ceil(this.energy)}/${this.maxEnergy}`;
+    const xpText = document.getElementById('xp-text');
+    if (xpText) xpText.textContent = `${this.xp}/${this.xpToLevel}`;
+    // Gold display
+    const goldEl = document.getElementById('gold-display');
+    if (goldEl) goldEl.textContent = this.gold + ' G';
+    // KDA
+    const kdaEl = document.getElementById('kda-display');
+    if (kdaEl) kdaEl.textContent = this.kills + '/' + this.deaths + '/' + this.assists;
 
     if (statsBar) {
       if (this.hp < this.maxHp * 0.25) statsBar.classList.add('low-hp');
@@ -152,5 +174,17 @@ const PlayerStats = {
       dmg += stats.damage || 0;
     }
     return dmg;
+  },
+
+  // Ability damage scales with level (base + 15% per level)
+  getAbilityDamage(baseDmg) {
+    return Math.round(baseDmg * (1 + (this.level - 1) * 0.15));
+  },
+
+  // GPM calculation
+  getGPM() {
+    if (!this._gameStartTime) this._gameStartTime = Date.now();
+    const minutes = (Date.now() - this._gameStartTime) / 60000;
+    return minutes > 0 ? Math.round(this.totalGold / minutes) : 0;
   }
 };

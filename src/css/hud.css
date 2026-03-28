@@ -102,14 +102,15 @@
   position: fixed;
   right: 12px;
   bottom: 12px;
-  width: 160px;
-  height: 160px;
+  width: 220px;
+  height: 220px;
   z-index: var(--z-panel);
-  border: 1px solid var(--border-dim);
+  border: 1px solid rgba(48, 54, 61, 0.6);
   border-radius: var(--radius-lg);
   background: rgba(5, 5, 16, 0.9);
   overflow: hidden;
   display: none;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
 }
 
 .minimap.visible {
@@ -120,6 +121,46 @@
   width: 100%;
   height: 100%;
   border-radius: var(--radius-lg);
+}
+
+/* ── Fullscreen Map Overlay ────────────────────────────── */
+#fullmap-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 5, 16, 0.92);
+  z-index: 9400;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+#fullmap-overlay.visible { display: flex; }
+#fullmap-canvas {
+  border: 1px solid rgba(48, 54, 61, 0.6);
+  border-radius: 12px;
+}
+#fullmap-header {
+  position: absolute;
+  top: 16px; left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px; font-weight: 700;
+  letter-spacing: 2px; color: #e6edf3;
+}
+#fullmap-legend {
+  position: absolute;
+  bottom: 16px; left: 50%;
+  transform: translateX(-50%);
+  display: flex; gap: 16px;
+  font-size: 10px; color: #8b949e;
+}
+.fml-item { display: flex; align-items: center; gap: 4px; }
+.fml-dot { width: 8px; height: 8px; border-radius: 50%; }
+.fml-line { width: 16px; height: 2px; border-radius: 1px; }
+#fullmap-close {
+  position: absolute; top: 12px; right: 16px;
+  background: none; border: none; color: #8b949e;
+  font-size: 24px; cursor: pointer;
 }
 
 /* ── Toast Notifications ────────────────────────────────── */

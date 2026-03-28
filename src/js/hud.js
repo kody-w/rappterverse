@@ -30,60 +30,163 @@ const HUD = {
         if (this.minimapVisible) this.renderMinimap();
     },
 
+    _minimapTerrain: null,
+
     renderMinimap() {
         if (!this.minimapVisible || GameState.mode !== 'world') return;
         const canvas = document.getElementById('minimap-canvas');
         if (!canvas) return;
         const ctx = canvas.getContext('2d');
-        const w = WORLDS[GameState.currentWorld];
+        const worldId = GameState.currentWorld;
+        const w = WORLDS[worldId];
         if (!w) return;
 
-        ctx.fillStyle = '#050510';
-        ctx.fillRect(0, 0, 160, 160);
+        const S = 220; // minimap pixel size
+        canvas.width = S; canvas.height = S;
+        const cx = S / 2, cz = S / 2;
+        const maxB = Math.max(w.bounds.x, w.bounds.z) + 2;
+        const scale = (S * 0.42) / maxB;
 
-        // Grid
-        ctx.strokeStyle = 'rgba(255,255,255,0.04)';
-        for (let i = 0; i <= 8; i++) {
-            ctx.beginPath();
-            ctx.moveTo(i * 20, 0); ctx.lineTo(i * 20, 160);
-            ctx.moveTo(0, i * 20); ctx.lineTo(160, i * 20);
-            ctx.stroke();
+        // ── Terrain background (cached) ──
+        if (!this._minimapTerrain || this._minimapTerrain.worldId !== worldId) {
+            this._minimapTerrain = { worldId: worldId, img: null };
+            var tCanvas = document.createElement('canvas');
+            tCanvas.width = S; tCanvas.height = S;
+            var tCtx = tCanvas.getContext('2d');
+            var profile = typeof BIOME_PROFILES !== 'undefined' ? BIOME_PROFILES[w.biome] : null;
+            var noise = typeof WorldTerrain !== 'undefined' && WorldTerrain._noise ? WorldTerrain._noise : null;
+            if (profile && noise) {
+                var terrainSize = typeof WorldTerrain !== 'undefined' ? WorldTerrain._terrainSize : maxB * 2;
+                for (var py = 0; py < S; py += 2) {
+                    for (var px = 0; px < S; px += 2) {
+                        var wx = (px - cx) / scale;
+                        var wz = (py - cz) / scale;
+                        var nx = wx / terrainSize * profile.noiseScale;
+                        var nz = wz / terrainSize * profile.noiseScale;
+                        var h = noise.fbm(nx, nz, profile.octaves, profile.lacunarity, profile.gain) * profile.heightScale;
+                        var maxH = profile.heightScale || 5;
+                        var t = (h / maxH + 1) * 0.5;
+                        var c = profile.color(t, h);
+                        tCtx.fillStyle = 'rgb(' + Math.round(c[0]*255) + ',' + Math.round(c[1]*255) + ',' + Math.round(c[2]*255) + ')';
+                        tCtx.fillRect(px, py, 2, 2);
+                    }
+                }
+            } else {
+                tCtx.fillStyle = '#' + w.floor.toString(16).padStart(6, '0');
+                tCtx.fillRect(0, 0, S, S);
+            }
+            this._minimapTerrain.img = tCanvas;
+        }
+        ctx.drawImage(this._minimapTerrain.img, 0, 0);
+
+        // ── Boundary ──
+        var bx = w.bounds.x * scale, bz = w.bounds.z * scale;
+        ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(cx - bx, cz - bz, bx * 2, bz * 2);
+
+        // ── Lanes ──
+        if (typeof WorldLanes !== 'undefined' && WorldLanes.lanes) {
+            var laneColors = ['#58a6ff', '#f97316', '#3fb950'];
+            WorldLanes.lanes.forEach(function(lane, li) {
+                if (!lane.waypoints) return;
+                ctx.strokeStyle = laneColors[li] || '#888';
+                ctx.lineWidth = 1.5;
+                ctx.globalAlpha = 0.4;
+                ctx.beginPath();
+                lane.waypoints.forEach(function(wp, i) {
+                    var mx = cx + wp.x * scale, mz = cz + wp.z * scale;
+                    if (i === 0) ctx.moveTo(mx, mz); else ctx.lineTo(mx, mz);
+                });
+                ctx.stroke();
+                ctx.globalAlpha = 1;
+            });
         }
 
-        // Boundary
-        const cx = 80, cz = 80;
-        const maxB = Math.max(w.bounds.x, w.bounds.z) + 2;
-        const sx = w.bounds.x / maxB * 70;
-        const sz = w.bounds.z / maxB * 70;
-        const accentHex = '#' + w.accent.toString(16).padStart(6, '0');
-        ctx.strokeStyle = accentHex;
-        ctx.globalAlpha = 0.25;
-        ctx.strokeRect(cx - sx, cz - sz, sx * 2, sz * 2);
-        ctx.globalAlpha = 1;
+        // ── Towers ──
+        if (typeof WorldLanes !== 'undefined' && WorldLanes.towers) {
+            WorldLanes.towers.forEach(function(t) {
+                if (!t.mesh || !t.mesh.position) return;
+                var mx = cx + t.mesh.position.x * scale;
+                var mz = cz + t.mesh.position.z * scale;
+                ctx.fillStyle = t.faction === 'explorer' ? '#58a6ff' : '#f85149';
+                ctx.fillRect(mx - 2, mz - 2, 4, 4);
+            });
+        }
 
-        // Agents
-        const agents = GameState.getWorldAgents();
-        agents.forEach(a => {
-            const mx = cx + (a.position.x / maxB) * 70;
-            const mz = cz + (a.position.z / maxB) * 70;
-            ctx.fillStyle = '#ffffff';
+        // ── Portals ──
+        if (typeof WorldAgents !== 'undefined' && WorldAgents.portalMeshes) {
+            WorldAgents.portalMeshes.forEach(function(p) {
+                if (!p.position) return;
+                var mx = cx + p.position.x * scale;
+                var mz = cz + p.position.z * scale;
+                ctx.fillStyle = '#d29922';
+                ctx.beginPath();
+                ctx.arc(mx, mz, 3, 0, Math.PI * 2);
+                ctx.fill();
+            });
+        }
+
+        // ── Agents ──
+        var agents = GameState.getWorldAgents();
+        agents.forEach(function(a) {
+            if (!a.position) return;
+            var mx = cx + a.position.x * scale;
+            var mz = cz + a.position.z * scale;
+            ctx.fillStyle = 'rgba(255,255,255,0.6)';
             ctx.beginPath();
-            ctx.arc(mx, mz, 2, 0, Math.PI * 2);
+            ctx.arc(mx, mz, 1.5, 0, Math.PI * 2);
             ctx.fill();
         });
 
-        // Player
-        if (WorldMode.player && WorldMode.player.mesh) {
-            const p = WorldMode.player.mesh.position;
-            const px = cx + (p.x / maxB) * 70;
-            const pz = cz + (p.z / maxB) * 70;
+        // ── Enemy Hero ──
+        if (typeof EnemyHero !== 'undefined' && EnemyHero.mesh && EnemyHero.state && EnemyHero.state.alive) {
+            var hx = cx + EnemyHero.mesh.position.x * scale;
+            var hz = cz + EnemyHero.mesh.position.z * scale;
+            ctx.fillStyle = '#f85149';
+            ctx.beginPath();
+            ctx.arc(hx, hz, 3.5, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.strokeStyle = '#ff0000';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+        }
+
+        // ── Player (arrow showing direction) ──
+        if (typeof WorldMode !== 'undefined' && WorldMode.player && WorldMode.player.mesh) {
+            var p = WorldMode.player.mesh.position;
+            var px = cx + p.x * scale;
+            var pz = cz + p.z * scale;
+            var rot = WorldMode.player.mesh.rotation.y;
+
+            ctx.save();
+            ctx.translate(px, pz);
+            ctx.rotate(-rot);
             ctx.fillStyle = '#00ffff';
             ctx.beginPath();
-            ctx.arc(px, pz, 4, 0, Math.PI * 2);
+            ctx.moveTo(0, -5);
+            ctx.lineTo(-3.5, 4);
+            ctx.lineTo(0, 2);
+            ctx.lineTo(3.5, 4);
+            ctx.closePath();
             ctx.fill();
             ctx.strokeStyle = '#00ffff';
             ctx.lineWidth = 1;
             ctx.stroke();
+            ctx.restore();
+
+            // Camera view cone
+            ctx.save();
+            ctx.translate(px, pz);
+            ctx.rotate(-rot);
+            ctx.fillStyle = 'rgba(0,212,255,0.06)';
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(-25, -50);
+            ctx.lineTo(25, -50);
+            ctx.closePath();
+            ctx.fill();
+            ctx.restore();
         }
     },
 
@@ -211,6 +314,194 @@ const HUD = {
             if (diff < 86400) return Math.floor(diff / 3600) + 'h';
             return Math.floor(diff / 86400) + 'd';
         } catch(e) { return ''; }
+    },
+
+    // ── Fullscreen Map ──────────────────────────────────────
+    fullmapVisible: false,
+
+    toggleFullmap() {
+        this.fullmapVisible = !this.fullmapVisible;
+        var el = document.getElementById('fullmap-overlay');
+        if (el) el.classList.toggle('visible', this.fullmapVisible);
+        if (this.fullmapVisible) this.renderFullmap();
+    },
+
+    renderFullmap() {
+        var canvas = document.getElementById('fullmap-canvas');
+        if (!canvas) return;
+        var ctx = canvas.getContext('2d');
+        var worldId = GameState.currentWorld;
+        var w = WORLDS[worldId];
+        if (!w) return;
+
+        var S = 700;
+        var cx = S / 2, cz = S / 2;
+        var maxB = Math.max(w.bounds.x, w.bounds.z) + 2;
+        var scale = (S * 0.42) / maxB;
+
+        // Terrain
+        var profile = typeof BIOME_PROFILES !== 'undefined' ? BIOME_PROFILES[w.biome] : null;
+        var noise = typeof WorldTerrain !== 'undefined' && WorldTerrain._noise ? WorldTerrain._noise : null;
+        if (profile && noise) {
+            var terrainSize = typeof WorldTerrain !== 'undefined' ? WorldTerrain._terrainSize : maxB * 2;
+            for (var py = 0; py < S; py += 3) {
+                for (var px = 0; px < S; px += 3) {
+                    var wx = (px - cx) / scale;
+                    var wz = (py - cz) / scale;
+                    var nx = wx / terrainSize * profile.noiseScale;
+                    var nz = wz / terrainSize * profile.noiseScale;
+                    var h = noise.fbm(nx, nz, profile.octaves, profile.lacunarity, profile.gain) * profile.heightScale;
+                    var maxH = profile.heightScale || 5;
+                    var t = (h / maxH + 1) * 0.5;
+                    var c = profile.color(t, h);
+                    ctx.fillStyle = 'rgb(' + Math.round(c[0]*255) + ',' + Math.round(c[1]*255) + ',' + Math.round(c[2]*255) + ')';
+                    ctx.fillRect(px, py, 3, 3);
+                }
+            }
+        } else {
+            ctx.fillStyle = '#050510';
+            ctx.fillRect(0, 0, S, S);
+        }
+
+        // Boundary
+        var bx = w.bounds.x * scale, bz = w.bounds.z * scale;
+        ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(cx - bx, cz - bz, bx * 2, bz * 2);
+
+        // Lanes
+        if (typeof WorldLanes !== 'undefined' && WorldLanes.lanes) {
+            var laneColors = ['#58a6ff', '#f97316', '#3fb950'];
+            WorldLanes.lanes.forEach(function(lane, li) {
+                if (!lane.waypoints) return;
+                ctx.strokeStyle = laneColors[li] || '#888';
+                ctx.lineWidth = 3;
+                ctx.globalAlpha = 0.5;
+                ctx.beginPath();
+                lane.waypoints.forEach(function(wp, i) {
+                    var mx = cx + wp.x * scale, mz = cz + wp.z * scale;
+                    if (i === 0) ctx.moveTo(mx, mz); else ctx.lineTo(mx, mz);
+                });
+                ctx.stroke();
+                ctx.globalAlpha = 1;
+                // Lane name
+                if (lane.waypoints.length > 2) {
+                    var mid = lane.waypoints[Math.floor(lane.waypoints.length / 2)];
+                    var lx = cx + mid.x * scale, lz = cz + mid.z * scale;
+                    ctx.font = '10px monospace';
+                    ctx.fillStyle = laneColors[li];
+                    ctx.globalAlpha = 0.5;
+                    ctx.textAlign = 'center';
+                    ctx.fillText(lane.name || ('Lane ' + (li+1)), lx, lz - 8);
+                    ctx.globalAlpha = 1;
+                }
+            });
+        }
+
+        // Towers
+        if (typeof WorldLanes !== 'undefined' && WorldLanes.towers) {
+            WorldLanes.towers.forEach(function(t) {
+                if (!t.mesh || !t.mesh.position) return;
+                var mx = cx + t.mesh.position.x * scale;
+                var mz = cz + t.mesh.position.z * scale;
+                ctx.fillStyle = t.faction === 'explorer' ? '#58a6ff' : '#f85149';
+                ctx.fillRect(mx - 4, mz - 4, 8, 8);
+                ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+                ctx.lineWidth = 1;
+                ctx.strokeRect(mx - 4, mz - 4, 8, 8);
+            });
+        }
+
+        // Portals
+        if (typeof WorldAgents !== 'undefined' && WorldAgents.portalMeshes) {
+            WorldAgents.portalMeshes.forEach(function(p) {
+                if (!p.position) return;
+                var mx = cx + p.position.x * scale;
+                var mz = cz + p.position.z * scale;
+                ctx.fillStyle = '#d29922';
+                ctx.beginPath();
+                ctx.arc(mx, mz, 6, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.strokeStyle = 'rgba(210,153,34,0.5)';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+            });
+        }
+
+        // Agents with names
+        var agents = GameState.getWorldAgents();
+        ctx.font = '9px monospace';
+        ctx.textAlign = 'center';
+        agents.forEach(function(a) {
+            if (!a.position) return;
+            var mx = cx + a.position.x * scale;
+            var mz = cz + a.position.z * scale;
+            ctx.fillStyle = 'rgba(255,255,255,0.5)';
+            ctx.beginPath();
+            ctx.arc(mx, mz, 3, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = 'rgba(255,255,255,0.35)';
+            ctx.fillText(a.name || a.id, mx, mz - 6);
+        });
+
+        // Enemy Hero
+        if (typeof EnemyHero !== 'undefined' && EnemyHero.mesh && EnemyHero.state && EnemyHero.state.alive) {
+            var hx = cx + EnemyHero.mesh.position.x * scale;
+            var hz = cz + EnemyHero.mesh.position.z * scale;
+            ctx.fillStyle = '#f85149';
+            ctx.beginPath();
+            ctx.arc(hx, hz, 7, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.strokeStyle = '#ff0000';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            ctx.fillStyle = '#fff';
+            ctx.font = '10px monospace';
+            ctx.fillText('RAVAGER', hx, hz - 10);
+        }
+
+        // Player
+        if (typeof WorldMode !== 'undefined' && WorldMode.player && WorldMode.player.mesh) {
+            var p = WorldMode.player.mesh.position;
+            var px = cx + p.x * scale;
+            var pz = cz + p.z * scale;
+            var rot = WorldMode.player.mesh.rotation.y;
+
+            // View cone
+            ctx.save();
+            ctx.translate(px, pz);
+            ctx.rotate(-rot);
+            ctx.fillStyle = 'rgba(0,212,255,0.05)';
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(-60, -120);
+            ctx.lineTo(60, -120);
+            ctx.closePath();
+            ctx.fill();
+            ctx.restore();
+
+            // Arrow
+            ctx.save();
+            ctx.translate(px, pz);
+            ctx.rotate(-rot);
+            ctx.fillStyle = '#00ffff';
+            ctx.beginPath();
+            ctx.moveTo(0, -8);
+            ctx.lineTo(-5, 6);
+            ctx.lineTo(0, 3);
+            ctx.lineTo(5, 6);
+            ctx.closePath();
+            ctx.fill();
+            ctx.restore();
+
+            ctx.fillStyle = '#00ffff';
+            ctx.font = 'bold 11px monospace';
+            ctx.fillText('YOU', px, pz + 16);
+        }
+
+        // Header
+        var headerEl = document.getElementById('fullmap-header');
+        if (headerEl) headerEl.textContent = w.name.toUpperCase() + ' — WORLD MAP';
     },
 
     // ── Rappterbook-style panels ──────────────────────────

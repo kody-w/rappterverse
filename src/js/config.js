@@ -103,7 +103,7 @@ function createNoise2D(seed) {
 // ──── Biome Terrain Profiles ────
 const BIOME_PROFILES = {
     Terra: {
-        noiseScale: 8, octaves: 5, lacunarity: 2, gain: 0.45, heightScale: 5,
+        noiseScale: 8, octaves: 5, lacunarity: 2, gain: 0.45, heightScale: 7,
         color: function(t, h) {
             if (h < 0.3) return [0.12, 0.28, 0.15];
             if (t < 0.35) return [0.15, 0.38, 0.12];
@@ -113,7 +113,7 @@ const BIOME_PROFILES = {
         }
     },
     Volcanic: {
-        noiseScale: 6, octaves: 4, lacunarity: 2.5, gain: 0.4, heightScale: 8,
+        noiseScale: 6, octaves: 4, lacunarity: 2.5, gain: 0.4, heightScale: 10,
         color: function(t, h) {
             if (h < 0.5) return [0.6, 0.12, 0.0];
             if (t < 0.3) return [0.12, 0.06, 0.04];
@@ -122,7 +122,7 @@ const BIOME_PROFILES = {
         }
     },
     Desert: {
-        noiseScale: 5, octaves: 3, lacunarity: 2, gain: 0.55, heightScale: 6,
+        noiseScale: 5, octaves: 3, lacunarity: 2, gain: 0.55, heightScale: 8,
         color: function(t, h) {
             if (t < 0.3) return [0.72, 0.56, 0.32];
             if (t < 0.5) return [0.82, 0.66, 0.4];
@@ -131,7 +131,7 @@ const BIOME_PROFILES = {
         }
     },
     Crystal: {
-        noiseScale: 7, octaves: 5, lacunarity: 2, gain: 0.5, heightScale: 4,
+        noiseScale: 7, octaves: 5, lacunarity: 2, gain: 0.5, heightScale: 6,
         color: function(t, h) {
             if (h < 0.3) return [0.45, 0.68, 0.78];
             if (t < 0.4) return [0.55, 0.75, 0.85];
@@ -140,7 +140,7 @@ const BIOME_PROFILES = {
         }
     },
     Abyss: {
-        noiseScale: 6, octaves: 4, lacunarity: 2.2, gain: 0.45, heightScale: 6,
+        noiseScale: 6, octaves: 4, lacunarity: 2.2, gain: 0.45, heightScale: 9,
         color: function(t, h) {
             if (h < -1) return [0.15, 0.0, 0.22];
             if (t < 0.3) return [0.06, 0.04, 0.1];

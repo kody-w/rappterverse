@@ -111,9 +111,21 @@
     <div class="stat-row"><span class="stat-label">EN</span><div class="stat-bar-container"><div class="stat-bar-fill" id="energy-fill"></div></div><span class="stat-text" id="energy-text">100/100</span></div>
     <div class="stat-row"><span class="stat-label">XP</span><div class="stat-bar-container"><div class="stat-bar-fill" id="xp-fill"></div></div><span class="stat-text" id="xp-text">0/100</span></div>
 </div>
-<div id="level-badge">LVL 1</div>
+<div id="level-badge">1</div>
+<div id="gold-kda-bar" style="position:fixed; bottom:72px; left:12px; display:none; gap:12px; font-size:11px; z-index:900; font-family:'SF Mono',monospace;">
+    <span id="gold-display" style="color:#fbbf24; font-weight:700;">0 G</span>
+    <span style="color:rgba(255,255,255,0.2);">|</span>
+    <span id="kda-display" style="color:#8b949e;">0/0/0</span>
+    <span style="color:rgba(255,255,255,0.2);">|</span>
+    <span id="gpm-display" style="color:#8b949e; font-size:9px;">0 GPM</span>
+</div>
 <div id="damage-vignette"></div>
-<div id="death-overlay"><div class="death-title">DESTROYED</div><div class="death-timer" id="death-timer">Respawning in 3...</div></div>
+<div id="death-overlay"><div class="death-title">DESTROYED</div><div class="death-timer" id="death-timer">Respawning in 5...</div></div>
+<div id="victory-overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:9999; justify-content:center; align-items:center; flex-direction:column;">
+    <div style="font-size:48px; font-weight:900; letter-spacing:6px; margin-bottom:12px;" id="victory-title">VICTORY</div>
+    <div style="font-size:14px; color:#8b949e; margin-bottom:24px;" id="victory-stats"></div>
+    <button id="victory-btn" style="background:rgba(0,212,255,0.2); border:1px solid rgba(0,212,255,0.4); color:#00d4ff; padding:10px 30px; font:inherit; font-size:14px; letter-spacing:2px; border-radius:8px; cursor:pointer;">RETURN TO GALAXY</button>
+</div>
 
 <!-- ===== STATUS EFFECTS STRIP ===== -->
 <div id="status-effects-strip"></div>
@@ -210,7 +222,25 @@
 
 <!-- ===== MINIMAP ===== -->
 <div class="minimap" id="minimap">
-    <canvas id="minimap-canvas" width="160" height="160"></canvas>
+    <canvas id="minimap-canvas" width="220" height="220"></canvas>
+</div>
+
+<!-- ===== FULLSCREEN MAP ===== -->
+<div id="fullmap-overlay">
+    <div id="fullmap-header">WORLD MAP</div>
+    <canvas id="fullmap-canvas" width="700" height="700"></canvas>
+    <div id="fullmap-legend">
+        <div class="fml-item"><div class="fml-dot" style="background:#00ffff;"></div>You</div>
+        <div class="fml-item"><div class="fml-dot" style="background:rgba(255,255,255,0.6);"></div>Agents</div>
+        <div class="fml-item"><div class="fml-dot" style="background:#f85149;"></div>Enemy Hero</div>
+        <div class="fml-item"><div class="fml-dot" style="background:#d29922;"></div>Portals</div>
+        <div class="fml-item"><div class="fml-line" style="background:#58a6ff;"></div>Top Lane</div>
+        <div class="fml-item"><div class="fml-line" style="background:#f97316;"></div>Mid Lane</div>
+        <div class="fml-item"><div class="fml-line" style="background:#3fb950;"></div>Bot Lane</div>
+        <div class="fml-item"><div class="fml-dot" style="background:#58a6ff;width:6px;height:6px;border-radius:1px;"></div>Explorer Towers</div>
+        <div class="fml-item"><div class="fml-dot" style="background:#f85149;width:6px;height:6px;border-radius:1px;"></div>Horde Towers</div>
+    </div>
+    <button id="fullmap-close">&times;</button>
 </div>
 
 <!-- ===== BRIDGE OVERLAY ===== -->

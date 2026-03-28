@@ -88,8 +88,11 @@ const WorldMode = {
             const seedEl = document.getElementById('seed-value');
             if (seedEl) seedEl.textContent = WorldSeed.getSeed(worldId);
         }
-        // Show Rappterbook-style world panels
-        if (typeof HUD !== 'undefined' && HUD.showWorldPanels) HUD.showWorldPanels();
+        // Show Rappterbook-style world panels + minimap
+        if (typeof HUD !== 'undefined') {
+            if (HUD.showWorldPanels) HUD.showWorldPanels();
+            if (!HUD.minimapVisible) HUD.toggleMinimap();
+        }
         // Show mobile touch controls
         if (typeof TouchControls !== 'undefined') { TouchControls.init(); TouchControls.show(); }
         // First-time tutorial
