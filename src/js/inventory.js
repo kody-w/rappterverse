@@ -195,6 +195,14 @@ const Inventory = {
         }
     },
 
+    _echoDropBoost() {
+        // Echo L3: tension affects drop quality
+        if (typeof EchoEngine === "undefined") return 1;
+        var f = EchoEngine.getCurrentFrame();
+        if (!f || !f.echoes || !f.echoes.L3) return 1;
+        return 1 + f.echoes.L3.tension * 0.5; // up to 50% better drops during high tension
+    },
+
     spawnDrop(position, worldId, waveNumber, creepIndex) {
         const rng = seededRandom(worldId * 10000 + waveNumber * 100 + creepIndex);
         if (rng() < 0.3) return; // 30% chance no drop

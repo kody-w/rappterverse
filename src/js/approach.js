@@ -56,6 +56,16 @@ const Approach = {
         const w = WORLDS[worldId];
         const approachNameEl = document.getElementById('approach-name');
         if (approachNameEl) approachNameEl.textContent = w.name;
+        // Echo L1: Live world data in approach
+        var gs = GameState.data.gameState || {};
+        var ws = gs.worlds && gs.worlds[worldId] ? gs.worlds[worldId] : {};
+        var apStatLine = document.getElementById('approach-stats');
+        if (apStatLine && ws.population) {
+            var echoDiv = document.createElement('div');
+            echoDiv.className = 'approach-stat';
+            echoDiv.innerHTML = '<div class="approach-stat-value">' + ws.population + '</div><div class="approach-stat-label">AGENTS</div>';
+            apStatLine.appendChild(echoDiv);
+        }
         const biomeEl = document.getElementById('approach-biome');
         biomeEl.textContent = w.biome;
         biomeEl.style.background = `rgba(${Galaxy.hexToRgb(w.planetColor)}, 0.2)`;

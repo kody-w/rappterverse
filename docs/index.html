@@ -3546,6 +3546,7 @@ const PlayerStats = {
 
   awardGold(amount, source) {
     this.gold += amount;
+    if (this.gold % 50 === 0) this.save(); // auto-save every 50 gold
     this.totalGold += amount;
     if (typeof HUD !== 'undefined' && HUD.showToast) HUD.showToast('+' + amount + ' gold' + (source ? ' (' + source + ')' : ''));
   },
@@ -3599,6 +3600,7 @@ const PlayerStats = {
     this.mp = this.maxMp;
     if (typeof HUD !== 'undefined' && HUD.showToast) HUD.showToast(`LEVEL UP! Level ${this.level}`);
     if (typeof Audio !== 'undefined' && Audio.playWaveHorn) Audio.playWaveHorn();
+    this.save();
   },
 
   update(delta) {
@@ -3650,6 +3652,40 @@ const PlayerStats = {
       else statsBar.classList.remove('low-hp');
     }
     if (vignette) vignette.style.opacity = this.damageFlashTimer;
+  },
+
+  save() {
+    try {
+      localStorage.setItem('rappterverse-player', JSON.stringify({
+        level: this.level, xp: this.xp, xpToLevel: this.xpToLevel,
+        gold: this.gold, totalGold: this.totalGold,
+        kills: this.kills, deaths: this.deaths, assists: this.assists,
+        baseDamage: this.baseDamage, maxHp: this.maxHp, maxMp: this.maxMp,
+        savedAt: new Date().toISOString()
+      }));
+    } catch(e) {}
+  },
+
+  load() {
+    try {
+      var s = localStorage.getItem('rappterverse-player');
+      if (!s) return;
+      var d = JSON.parse(s);
+      this.level = d.level || 1;
+      this.xp = d.xp || 0;
+      this.xpToLevel = d.xpToLevel || 100;
+      this.gold = d.gold || 0;
+      this.totalGold = d.totalGold || 0;
+      this.kills = d.kills || 0;
+      this.deaths = d.deaths || 0;
+      this.assists = d.assists || 0;
+      this.baseDamage = d.baseDamage || 20;
+      this.maxHp = d.maxHp || 100;
+      this.maxMp = d.maxMp || 50;
+      this.hp = this.maxHp;
+      this.mp = this.maxMp;
+      if (typeof HUD !== "undefined") HUD.showToast("Progress loaded — Level " + this.level);
+    } catch(e) {}
   },
 
   getDamage() {
@@ -4850,6 +4886,16 @@ const Approach = {
         const w = WORLDS[worldId];
         const approachNameEl = document.getElementById('approach-name');
         if (approachNameEl) approachNameEl.textContent = w.name;
+        // Echo L1: Live world data in approach
+        var gs = GameState.data.gameState || {};
+        var ws = gs.worlds && gs.worlds[worldId] ? gs.worlds[worldId] : {};
+        var apStatLine = document.getElementById('approach-stats');
+        if (apStatLine && ws.population) {
+            var echoDiv = document.createElement('div');
+            echoDiv.className = 'approach-stat';
+            echoDiv.innerHTML = '<div class="approach-stat-value">' + ws.population + '</div><div class="approach-stat-label">AGENTS</div>';
+            apStatLine.appendChild(echoDiv);
+        }
         const biomeEl = document.getElementById('approach-biome');
         biomeEl.textContent = w.biome;
         biomeEl.style.background = `rgba(${Galaxy.hexToRgb(w.planetColor)}, 0.2)`;
@@ -5034,7 +5080,7 @@ const Landing = {
         const overlay = document.getElementById('landing-overlay');
         overlay.classList.add('active');
         const landingStatusEl = document.getElementById('landing-status');
-        if (landingStatusEl) landingStatusEl.textContent = 'AUTOPILOT ENGAGED';
+        if (landingStatusEl) landingStatusEl.textContent = typeof WorldSeed !== 'undefined' ? 'SEED ' + WorldSeed.getSeed(this.worldId || GameState.currentWorld) + ' — AUTOPILOT ENGAGED' : 'AUTOPILOT ENGAGED';
 
         // Scene
         this.scene = new THREE.Scene();
@@ -5300,7 +5346,7 @@ const Landing = {
             status.textContent = 'MANUAL CONTROL';
         } else {
             btn.textContent = 'TAKE CONTROL';
-            status.textContent = 'AUTOPILOT ENGAGED';
+            status.textContent = typeof WorldSeed !== 'undefined' ? 'SEED ' + WorldSeed.getSeed(this.worldId || GameState.currentWorld) + ' — AUTOPILOT ENGAGED' : 'AUTOPILOT ENGAGED';
         }
         // Thrust light color: green = autopilot, orange = manual
         if (this.thrustLight) {
@@ -8679,6 +8725,21 @@ const DebugOverlay = {
 
     // Call every frame from WorldMode.update when active
     update(playerPos) {
+            // Echo VM stats
+            var vmEl = document.getElementById('debug-vm');
+            if (!vmEl) {
+                vmEl = document.createElement('div');
+                vmEl.id = 'debug-vm';
+                vmEl.style.cssText = 'margin-top:4px;font-size:9px;color:#d29922;';
+                var panel = document.getElementById('debug-overlay');
+                if (panel) panel.appendChild(vmEl);
+            }
+            if (vmEl && typeof RappterVM !== 'undefined') {
+                vmEl.textContent = 'VM ticks: ' + RappterVM._tickCount + ' | Programs: ' + Object.keys(RappterVM._programs).length + ' | Reflexes: ' + RappterVM._reflexes.length;
+                if (typeof EchoEngine !== 'undefined') {
+                    vmEl.textContent += ' | Frames: ' + EchoEngine.getFrameCount() + ' | ' + (EchoEngine.isLive() ? 'LIVE' : 'SCRUBBING');
+                }
+            }
         if (!this.active || !this.el) return;
 
         const meshCount = Object.keys(WorldAgents.agentMeshes || {}).length;
@@ -8931,6 +8992,14 @@ const Inventory = {
             }
             grid.appendChild(div);
         }
+    },
+
+    _echoDropBoost() {
+        // Echo L3: tension affects drop quality
+        if (typeof EchoEngine === "undefined") return 1;
+        var f = EchoEngine.getCurrentFrame();
+        if (!f || !f.echoes || !f.echoes.L3) return 1;
+        return 1 + f.echoes.L3.tension * 0.5; // up to 50% better drops during high tension
     },
 
     spawnDrop(position, worldId, waveNumber, creepIndex) {
@@ -9736,7 +9805,7 @@ const WorldMode = {
         WorldAgents.syncAgents(this.scene, worldId);
 
         // Init RPG systems
-        if (typeof PlayerStats !== 'undefined') PlayerStats.init();
+        if (typeof PlayerStats !== 'undefined') { PlayerStats.init(); PlayerStats.load(); }
         if (typeof Abilities !== 'undefined') Abilities.init();
         if (typeof ComboSystem !== 'undefined') ComboSystem.reset();
         if (typeof Inventory !== 'undefined') Inventory.init();
@@ -10681,6 +10750,65 @@ const Bridge = {
     },
 
     // Called by main.js every ~3s — trigger data screen refresh
+    renderEchoSummary() {
+        // L2 echo of the bridge data — narrative rendering
+        var el = document.getElementById('bridge-echo');
+        if (!el) {
+            el = document.createElement('div');
+            el.id = 'bridge-echo';
+            el.style.cssText = 'grid-column: 1/-1; padding: 12px 16px; background: rgba(210,153,34,0.05); border: 1px solid rgba(210,153,34,0.15); border-radius: 8px; font-size: 11px; color: #c9d1d9; line-height: 1.6;';
+            var grid = document.querySelector('.bridge-grid');
+            if (grid) grid.appendChild(el);
+        }
+        // Build narrative from current state
+        var agents = GameState.data.agents || [];
+        var chat = GameState.data.chat || [];
+        var gs = GameState.data.gameState || {};
+        var fc = GameState.data.frameCounter || {};
+        var worldId = GameState.currentWorld;
+        var ws = gs.worlds && gs.worlds[worldId] ? gs.worlds[worldId] : {};
+
+        var n = '<div style="font-size:9px;color:#d29922;letter-spacing:1px;margin-bottom:6px;">ECHO NARRATIVE (L2)</div>';
+        n += 'The RAPPterverse pulses at Frame ' + (fc.frame || '?') + '. ';
+        n += agents.length + ' agents inhabit ' + Object.keys(gs.worlds || {}).length + ' worlds. ';
+        var pop = ws.population || 0;
+        if (pop > 50) n += 'This world is bustling with ' + pop + ' souls. ';
+        else if (pop > 20) n += pop + ' agents move through this space. ';
+        else n += 'Only ' + pop + ' agents linger here — it feels quiet. ';
+
+        var trend = gs.economy ? gs.economy.market_trend : 'stable';
+        if (trend === 'bull') n += 'The economy surges — traders are optimistic. ';
+        else if (trend === 'bear') n += 'Markets contract — merchants grow anxious. ';
+        else n += 'The economy hums along steadily. ';
+
+        var lastChat = chat.length > 0 ? chat[chat.length - 1] : null;
+        if (lastChat && lastChat.author) {
+            n += 'The last voice heard was ' + (lastChat.author.name || lastChat.author.id) + ': ';
+            n += '<i>"' + (lastChat.content || '').substring(0, 80) + '"</i>';
+        }
+
+        // Echo engine enrichment
+        if (typeof EchoEngine !== "undefined") {
+            var ef = EchoEngine.getCurrentFrame();
+            if (ef && ef.echoes && ef.echoes.L3) {
+                var L3 = ef.echoes.L3;
+                n += '<div style="margin-top:6px;font-size:10px;color:#8b949e;">';
+                n += 'Tension: ' + (L3.tension * 100).toFixed(0) + '% · ';
+                n += 'Vitality: ' + (L3.vitality * 100).toFixed(0) + '% · ';
+                n += 'Social: ' + (L3.socialEnergy * 100).toFixed(0) + '%';
+                n += '</div>';
+            }
+            if (ef && ef.echoes && ef.echoes.L6) {
+                var L6 = ef.echoes.L6;
+                n += '<div style="font-size:9px;color:#484f58;margin-top:4px;">';
+                n += 'Pop trend: ' + L6.populationTrend + ' · Economy: ' + L6.economicArc + ' · Echo depth: L' + Math.round(L6.enrichableDetail.narrativeDepth);
+                n += '</div>';
+            }
+        }
+
+        el.innerHTML = n;
+    },
+
     render() {
         if (!this.open || !this.dataScreens.length) return;
         this.updateDataScreens();
@@ -11295,7 +11423,19 @@ const HUD = {
         textEl.innerHTML = 'Seed <span class="uc-seed">' + seed + '</span> · ' +
             w.biome + ' biome · ' + pop + ' local / ' + totalAgents + ' total agents';
 
-        metaEl.innerHTML = '<span>Frame ' + (fc.frame || '---') + '</span>' +
+        // Echo enrichment layer
+        var echoInfo = '';
+        if (typeof EchoEngine !== 'undefined') {
+            var ef = EchoEngine.getCurrentFrame();
+            if (ef && ef.echoes) {
+                var L3 = ef.echoes.L3 || {};
+                var L6 = ef.echoes.L6 || {};
+                echoInfo = '<span style="color:#d29922">Echo L' + Math.round((L6.enrichableDetail || {}).narrativeDepth || 1) + '</span>';
+                echoInfo += '<span>T:' + ((L3.tension || 0) * 100).toFixed(0) + '%</span>';
+                echoInfo += '<span>V:' + ((L3.vitality || 0) * 100).toFixed(0) + '%</span>';
+            }
+        }
+        metaEl.innerHTML = echoInfo + '<span>Frame ' + (fc.frame || '---') + '</span>' +
             '<span>Economy: ' + trend + '</span>' +
             '<span>Weather: ' + weather + '</span>';
     },

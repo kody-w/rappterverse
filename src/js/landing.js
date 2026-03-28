@@ -53,7 +53,7 @@ const Landing = {
         const overlay = document.getElementById('landing-overlay');
         overlay.classList.add('active');
         const landingStatusEl = document.getElementById('landing-status');
-        if (landingStatusEl) landingStatusEl.textContent = 'AUTOPILOT ENGAGED';
+        if (landingStatusEl) landingStatusEl.textContent = typeof WorldSeed !== 'undefined' ? 'SEED ' + WorldSeed.getSeed(this.worldId || GameState.currentWorld) + ' — AUTOPILOT ENGAGED' : 'AUTOPILOT ENGAGED';
 
         // Scene
         this.scene = new THREE.Scene();
@@ -319,7 +319,7 @@ const Landing = {
             status.textContent = 'MANUAL CONTROL';
         } else {
             btn.textContent = 'TAKE CONTROL';
-            status.textContent = 'AUTOPILOT ENGAGED';
+            status.textContent = typeof WorldSeed !== 'undefined' ? 'SEED ' + WorldSeed.getSeed(this.worldId || GameState.currentWorld) + ' — AUTOPILOT ENGAGED' : 'AUTOPILOT ENGAGED';
         }
         // Thrust light color: green = autopilot, orange = manual
         if (this.thrustLight) {

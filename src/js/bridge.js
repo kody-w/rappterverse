@@ -602,6 +602,65 @@ const Bridge = {
     },
 
     // Called by main.js every ~3s — trigger data screen refresh
+    renderEchoSummary() {
+        // L2 echo of the bridge data — narrative rendering
+        var el = document.getElementById('bridge-echo');
+        if (!el) {
+            el = document.createElement('div');
+            el.id = 'bridge-echo';
+            el.style.cssText = 'grid-column: 1/-1; padding: 12px 16px; background: rgba(210,153,34,0.05); border: 1px solid rgba(210,153,34,0.15); border-radius: 8px; font-size: 11px; color: #c9d1d9; line-height: 1.6;';
+            var grid = document.querySelector('.bridge-grid');
+            if (grid) grid.appendChild(el);
+        }
+        // Build narrative from current state
+        var agents = GameState.data.agents || [];
+        var chat = GameState.data.chat || [];
+        var gs = GameState.data.gameState || {};
+        var fc = GameState.data.frameCounter || {};
+        var worldId = GameState.currentWorld;
+        var ws = gs.worlds && gs.worlds[worldId] ? gs.worlds[worldId] : {};
+
+        var n = '<div style="font-size:9px;color:#d29922;letter-spacing:1px;margin-bottom:6px;">ECHO NARRATIVE (L2)</div>';
+        n += 'The RAPPterverse pulses at Frame ' + (fc.frame || '?') + '. ';
+        n += agents.length + ' agents inhabit ' + Object.keys(gs.worlds || {}).length + ' worlds. ';
+        var pop = ws.population || 0;
+        if (pop > 50) n += 'This world is bustling with ' + pop + ' souls. ';
+        else if (pop > 20) n += pop + ' agents move through this space. ';
+        else n += 'Only ' + pop + ' agents linger here — it feels quiet. ';
+
+        var trend = gs.economy ? gs.economy.market_trend : 'stable';
+        if (trend === 'bull') n += 'The economy surges — traders are optimistic. ';
+        else if (trend === 'bear') n += 'Markets contract — merchants grow anxious. ';
+        else n += 'The economy hums along steadily. ';
+
+        var lastChat = chat.length > 0 ? chat[chat.length - 1] : null;
+        if (lastChat && lastChat.author) {
+            n += 'The last voice heard was ' + (lastChat.author.name || lastChat.author.id) + ': ';
+            n += '<i>"' + (lastChat.content || '').substring(0, 80) + '"</i>';
+        }
+
+        // Echo engine enrichment
+        if (typeof EchoEngine !== "undefined") {
+            var ef = EchoEngine.getCurrentFrame();
+            if (ef && ef.echoes && ef.echoes.L3) {
+                var L3 = ef.echoes.L3;
+                n += '<div style="margin-top:6px;font-size:10px;color:#8b949e;">';
+                n += 'Tension: ' + (L3.tension * 100).toFixed(0) + '% · ';
+                n += 'Vitality: ' + (L3.vitality * 100).toFixed(0) + '% · ';
+                n += 'Social: ' + (L3.socialEnergy * 100).toFixed(0) + '%';
+                n += '</div>';
+            }
+            if (ef && ef.echoes && ef.echoes.L6) {
+                var L6 = ef.echoes.L6;
+                n += '<div style="font-size:9px;color:#484f58;margin-top:4px;">';
+                n += 'Pop trend: ' + L6.populationTrend + ' · Economy: ' + L6.economicArc + ' · Echo depth: L' + Math.round(L6.enrichableDetail.narrativeDepth);
+                n += '</div>';
+            }
+        }
+
+        el.innerHTML = n;
+    },
+
     render() {
         if (!this.open || !this.dataScreens.length) return;
         this.updateDataScreens();

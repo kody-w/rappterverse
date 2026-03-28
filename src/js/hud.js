@@ -585,7 +585,19 @@ const HUD = {
         textEl.innerHTML = 'Seed <span class="uc-seed">' + seed + '</span> · ' +
             w.biome + ' biome · ' + pop + ' local / ' + totalAgents + ' total agents';
 
-        metaEl.innerHTML = '<span>Frame ' + (fc.frame || '---') + '</span>' +
+        // Echo enrichment layer
+        var echoInfo = '';
+        if (typeof EchoEngine !== 'undefined') {
+            var ef = EchoEngine.getCurrentFrame();
+            if (ef && ef.echoes) {
+                var L3 = ef.echoes.L3 || {};
+                var L6 = ef.echoes.L6 || {};
+                echoInfo = '<span style="color:#d29922">Echo L' + Math.round((L6.enrichableDetail || {}).narrativeDepth || 1) + '</span>';
+                echoInfo += '<span>T:' + ((L3.tension || 0) * 100).toFixed(0) + '%</span>';
+                echoInfo += '<span>V:' + ((L3.vitality || 0) * 100).toFixed(0) + '%</span>';
+            }
+        }
+        metaEl.innerHTML = echoInfo + '<span>Frame ' + (fc.frame || '---') + '</span>' +
             '<span>Economy: ' + trend + '</span>' +
             '<span>Weather: ' + weather + '</span>';
     },

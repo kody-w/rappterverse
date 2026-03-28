@@ -49,7 +49,7 @@ const WorldMode = {
         WorldAgents.syncAgents(this.scene, worldId);
 
         // Init RPG systems
-        if (typeof PlayerStats !== 'undefined') PlayerStats.init();
+        if (typeof PlayerStats !== 'undefined') { PlayerStats.init(); PlayerStats.load(); }
         if (typeof Abilities !== 'undefined') Abilities.init();
         if (typeof ComboSystem !== 'undefined') ComboSystem.reset();
         if (typeof Inventory !== 'undefined') Inventory.init();

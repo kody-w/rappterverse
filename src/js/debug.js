@@ -36,6 +36,21 @@ const DebugOverlay = {
 
     // Call every frame from WorldMode.update when active
     update(playerPos) {
+            // Echo VM stats
+            var vmEl = document.getElementById('debug-vm');
+            if (!vmEl) {
+                vmEl = document.createElement('div');
+                vmEl.id = 'debug-vm';
+                vmEl.style.cssText = 'margin-top:4px;font-size:9px;color:#d29922;';
+                var panel = document.getElementById('debug-overlay');
+                if (panel) panel.appendChild(vmEl);
+            }
+            if (vmEl && typeof RappterVM !== 'undefined') {
+                vmEl.textContent = 'VM ticks: ' + RappterVM._tickCount + ' | Programs: ' + Object.keys(RappterVM._programs).length + ' | Reflexes: ' + RappterVM._reflexes.length;
+                if (typeof EchoEngine !== 'undefined') {
+                    vmEl.textContent += ' | Frames: ' + EchoEngine.getFrameCount() + ' | ' + (EchoEngine.isLive() ? 'LIVE' : 'SCRUBBING');
+                }
+            }
         if (!this.active || !this.el) return;
 
         const meshCount = Object.keys(WorldAgents.agentMeshes || {}).length;

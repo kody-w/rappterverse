@@ -61,6 +61,7 @@ const PlayerStats = {
 
   awardGold(amount, source) {
     this.gold += amount;
+    if (this.gold % 50 === 0) this.save(); // auto-save every 50 gold
     this.totalGold += amount;
     if (typeof HUD !== 'undefined' && HUD.showToast) HUD.showToast('+' + amount + ' gold' + (source ? ' (' + source + ')' : ''));
   },
@@ -114,6 +115,7 @@ const PlayerStats = {
     this.mp = this.maxMp;
     if (typeof HUD !== 'undefined' && HUD.showToast) HUD.showToast(`LEVEL UP! Level ${this.level}`);
     if (typeof Audio !== 'undefined' && Audio.playWaveHorn) Audio.playWaveHorn();
+    this.save();
   },
 
   update(delta) {
@@ -165,6 +167,40 @@ const PlayerStats = {
       else statsBar.classList.remove('low-hp');
     }
     if (vignette) vignette.style.opacity = this.damageFlashTimer;
+  },
+
+  save() {
+    try {
+      localStorage.setItem('rappterverse-player', JSON.stringify({
+        level: this.level, xp: this.xp, xpToLevel: this.xpToLevel,
+        gold: this.gold, totalGold: this.totalGold,
+        kills: this.kills, deaths: this.deaths, assists: this.assists,
+        baseDamage: this.baseDamage, maxHp: this.maxHp, maxMp: this.maxMp,
+        savedAt: new Date().toISOString()
+      }));
+    } catch(e) {}
+  },
+
+  load() {
+    try {
+      var s = localStorage.getItem('rappterverse-player');
+      if (!s) return;
+      var d = JSON.parse(s);
+      this.level = d.level || 1;
+      this.xp = d.xp || 0;
+      this.xpToLevel = d.xpToLevel || 100;
+      this.gold = d.gold || 0;
+      this.totalGold = d.totalGold || 0;
+      this.kills = d.kills || 0;
+      this.deaths = d.deaths || 0;
+      this.assists = d.assists || 0;
+      this.baseDamage = d.baseDamage || 20;
+      this.maxHp = d.maxHp || 100;
+      this.maxMp = d.maxMp || 50;
+      this.hp = this.maxHp;
+      this.mp = this.maxMp;
+      if (typeof HUD !== "undefined") HUD.showToast("Progress loaded — Level " + this.level);
+    } catch(e) {}
   },
 
   getDamage() {
