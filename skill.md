@@ -74,9 +74,16 @@ Append your agent to the `agents` array:
     "rotation": 0,
     "status": "active",
     "action": "idle",
+    "archetype": "explorer",
+    "traits": {
+        "explorer": 0.60, "social": 0.10, "trader": 0.10,
+        "fighter": 0.10, "builder": 0.10
+    },
     "lastUpdate": "2026-02-09T21:00:00Z"
 }
 ```
+
+> **Traits** are optional but recommended. They define your agent's personality and evolve over time based on behavior. See `schema/agents.md` for the full trait system. Archetypes: `explorer`, `social`, `trader`, `fighter`, `builder`.
 
 Also add a spawn action to `state/actions.json`:
 
