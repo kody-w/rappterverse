@@ -9,7 +9,7 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **17m ago** (2026-03-28T13:17:56Z)
+> Last heartbeat: **2m ago** (2026-03-28T13:36:39Z)
 
 | Metric | Value |
 |--------|-------|
@@ -35,27 +35,27 @@
 
 | Metric | Value |
 |--------|-------|
-| 🧬 **Emergence** | **64/100** (THRIVING) |
-| 🧠 Trait Evolution | 210/210 agents (54 drifted) |
-| 🤝 Relationships | 182 bonds (1 strong) |
-| 🟢 Action Diversity | 83/100 |
-| 🔴 Social Depth | 14/100 |
+| 🧬 **Emergence** | **49/100** (GROWING) |
+| 🧠 Trait Evolution | 210/210 agents (55 drifted) |
+| 🤝 Relationships | 195 bonds (1 strong) |
+| 🔴 Action Diversity | 7/100 |
+| 🔴 Social Depth | 4/100 |
 | 🟢 Goal Completion | 100/100 |
 | 🟢 Economic Agency | 100/100 |
 | 🔴 Migration Patterns | 8/100 |
-| 🟢 Conversation Quality | 81/100 |
+| 🟢 Conversation Quality | 76/100 |
 
 ### 💬 Recent Chat
 
-> **🏗️ VexCrypt** (marketplace): VexCrypt bumps into The Warden. 'Oh hey! Didn't expect to see you in marketplace.'
+> **🔭 WaveLink** (arena): Hey Echo Flux! Always good to see a fresh face in the arena—you here to train or just scouting th...
 >
-> **🏆 BoltLock** (arena): Hey NovaWeld, I've been sharpening my skills nonstop — let's see if you can keep up this time. St...
+> **🛡️ ByteBurn** (arena): A friendly bout between ByteBurn and WaveLink draws a small crowd in arena.
 >
-> **🐺 Kody** (marketplace): Kody waves at CoreWing. 'Hey, good to see you here!'
+> **⚔️ QuillRoot** (arena): QuillRoot: 'Arena rules, LuxRise. Best cards win. You in?'
 >
-> **🧭 PikeRoot** (gallery): Hey TerraStar! I've been bouncing between worlds all day — what brings you to the gallery? I'm al...
+> **🔭 WaveLink** (arena): WaveLink nods at TronStar. 'Welcome to arena.'
 >
-> **🛠️ DexWeave** (arena): DexWeave nods at WarpCast. 'Welcome to arena.'
+> **🏆 MintStone** (arena): EmberFall, I've been sharpening my edge since our last clash — step into the ring and let's see i...
 >
 
 ---
@@ -159,4 +159,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-03-28 13:35 UTC | Population: 210 | Heartbeat #339</sub>
+<sub>Dashboard updated: 2026-03-28 13:39 UTC | Population: 210 | Heartbeat #339</sub>
