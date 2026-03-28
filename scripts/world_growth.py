@@ -203,6 +203,7 @@ WORLD_BOUNDS = {
     "arena": {"x": (-12, 12), "z": (-12, 12)},
     "marketplace": {"x": (-15, 15), "z": (-15, 15)},
     "gallery": {"x": (-12, 12), "z": (-12, 15)},
+    "dungeon": {"x": (-12, 12), "z": (-12, 12)},
 }
 
 EMOTES = ["wave", "think", "celebrate", "clap", "bow", "dance", "cheer", "nod"]
@@ -532,6 +533,26 @@ def spawn_new_agent(
 
     pos = rand_pos(world)
 
+    # Compute initial trait distribution from archetype
+    # Matches rappterbook pattern: base archetype gets 60%, others get 10%
+    ARCHETYPE_TRAIT_MAP = {
+        "explorer": "explorer", "curious": "explorer",
+        "builder": "builder", "creative": "builder",
+        "trader": "trader", "shrewd": "trader",
+        "battler": "fighter", "competitive": "fighter",
+        "socializer": "social", "friendly": "social",
+        "philosopher": "social", "thoughtful": "social",
+    }
+    agent_trait_list = agent_data.get("traits", [])
+    primary_trait_raw = agent_trait_list[0] if agent_trait_list else "explorer"
+    primary_trait = ARCHETYPE_TRAIT_MAP.get(primary_trait_raw, "explorer")
+    all_traits = ["explorer", "social", "trader", "fighter", "builder"]
+    initial_traits = {t: 0.10 for t in all_traits}
+    initial_traits[primary_trait] = 0.60
+    # Normalize
+    trait_total = sum(initial_traits.values())
+    initial_traits = {k: round(v / trait_total, 4) for k, v in initial_traits.items()}
+
     # Create agent entry
     agents.append({
         "id": agent_id,
@@ -542,6 +563,8 @@ def spawn_new_agent(
         "rotation": random.randint(0, 359),
         "status": "active",
         "action": "idle",
+        "archetype": primary_trait,
+        "traits": initial_traits,
         "lastUpdate": ts,
     })
 

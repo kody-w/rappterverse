@@ -99,7 +99,8 @@ const Bridge = {
         this._keys = {};
 
         // Hide overlay
-        document.getElementById('bridge-overlay').classList.remove('active');
+        const bridgeOvl = document.getElementById('bridge-overlay');
+        if (bridgeOvl) bridgeOvl.classList.remove('active');
 
         // Hide interaction prompt
         const prompt = document.getElementById('interaction-prompt');

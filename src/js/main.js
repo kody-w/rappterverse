@@ -173,33 +173,36 @@
         if (typeof PostProcessing !== 'undefined') PostProcessing.onResize();
     });
 
+    // Safe DOM event binding — prevents null crashes if elements are missing
+    const _on = (id, evt, fn) => { const el = document.getElementById(id); if (el) el.addEventListener(evt, fn); };
+
     // Bridge close button
-    document.getElementById('bridge-close').addEventListener('click', () => Bridge.close());
+    _on('bridge-close', 'click', () => Bridge.close());
 
     // Bridge button
-    document.getElementById('btn-bridge').addEventListener('click', () => Bridge.toggle());
+    _on('btn-bridge', 'click', () => Bridge.toggle());
 
     // Minimap button
-    document.getElementById('btn-minimap').addEventListener('click', () => HUD.toggleMinimap());
+    _on('btn-minimap', 'click', () => HUD.toggleMinimap());
 
     // ── Screenshot / Share ──
-    document.getElementById('btn-screenshot').addEventListener('click', () => {
+    _on('btn-screenshot', 'click', () => {
         if (typeof Settings !== 'undefined') Settings.screenshot();
     });
-    document.getElementById('btn-share').addEventListener('click', () => {
+    _on('btn-share', 'click', () => {
         if (typeof Settings !== 'undefined') Settings.shareLink();
     });
 
     // ── Voice / Gesture buttons ──
-    document.getElementById('btn-voice').addEventListener('click', () => {
+    _on('btn-voice', 'click', () => {
         if (typeof VoiceControls !== 'undefined') VoiceControls.toggle();
     });
-    document.getElementById('btn-gesture').addEventListener('click', () => {
+    _on('btn-gesture', 'click', () => {
         if (typeof GestureControls !== 'undefined') GestureControls.toggle();
     });
 
     // ── Seed Export/Import ──
-    document.getElementById('btn-export-seed').addEventListener('click', () => {
+    _on('btn-export-seed', 'click', () => {
         if (GameState.mode !== 'world' || typeof WorldSeed === 'undefined') return;
         const worldId = GameState.currentWorld;
         const data = WorldSeed.exportWorld(worldId);
@@ -213,11 +216,12 @@
         if (typeof HUD !== 'undefined') HUD.showToast('Exported ' + worldId + ' seed: ' + data.seed);
     });
 
-    document.getElementById('btn-import-seed').addEventListener('click', () => {
-        document.getElementById('seed-file-input').click();
+    _on('btn-import-seed', 'click', () => {
+        const inp = document.getElementById('seed-file-input');
+        if (inp) inp.click();
     });
 
-    document.getElementById('seed-file-input').addEventListener('change', (e) => {
+    _on('seed-file-input', 'change', (e) => {
         const file = e.target.files[0];
         if (!file) return;
         const reader = new FileReader();
@@ -244,7 +248,7 @@
     });
 
     // ── World Population quick-travel clicks ──
-    document.getElementById('wp-list').addEventListener('click', (e) => {
+    _on('wp-list', 'click', (e) => {
         const item = e.target.closest('.wp-item');
         if (!item) return;
         const worldId = item.dataset.world;
@@ -255,7 +259,7 @@
         Approach.start(worldId);
     });
 
-    document.getElementById('btn-reset-seed').addEventListener('click', () => {
+    _on('btn-reset-seed', 'click', () => {
         if (GameState.mode !== 'world' || typeof WorldSeed === 'undefined') return;
         const worldId = GameState.currentWorld;
         WorldSeed.clearSeed(worldId);

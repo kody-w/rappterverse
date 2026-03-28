@@ -1,6 +1,7 @@
 // Data Fetching — GitHub Raw Content
 const DataManager = {
     polling: false,
+    _pollId: null,
     lastFetch: 0,
 
     async fetchJSON(path) {
@@ -9,15 +10,15 @@ const DataManager = {
             if (!res.ok) return null;
             return await res.json();
         } catch(e) {
-            console.warn(`Fetch failed: ${path}`, e.message);
+            if (GameState.debug) console.warn(`[DATA] Fetch failed: ${path}`, e.message);
             return null;
         }
     },
 
     async fetchAllState() {
         const [agents, chat, actions, npcs, gameState, frameCounter,
-               hubConf, arenaConf, marketConf, galleryConf,
-               hubObj, arenaObj, marketObj, galleryObj] = await Promise.allSettled([
+               hubConf, arenaConf, marketConf, galleryConf, dungeonConf,
+               hubObj, arenaObj, marketObj, galleryObj, dungeonObj] = await Promise.allSettled([
             this.fetchJSON('state/agents.json'),
             this.fetchJSON('state/chat.json'),
             this.fetchJSON('state/actions.json'),
@@ -28,10 +29,12 @@ const DataManager = {
             this.fetchJSON('worlds/arena/config.json'),
             this.fetchJSON('worlds/marketplace/config.json'),
             this.fetchJSON('worlds/gallery/config.json'),
+            this.fetchJSON('worlds/dungeon/config.json'),
             this.fetchJSON('worlds/hub/objects.json'),
             this.fetchJSON('worlds/arena/objects.json'),
             this.fetchJSON('worlds/marketplace/objects.json'),
             this.fetchJSON('worlds/gallery/objects.json'),
+            this.fetchJSON('worlds/dungeon/objects.json'),
         ]);
 
         const val = (r) => r.status === 'fulfilled' ? r.value : null;
@@ -57,20 +60,30 @@ const DataManager = {
 
         GameState.data.worldConfigs = {
             hub: val(hubConf) || {}, arena: val(arenaConf) || {},
-            marketplace: val(marketConf) || {}, gallery: val(galleryConf) || {}
+            marketplace: val(marketConf) || {}, gallery: val(galleryConf) || {},
+            dungeon: val(dungeonConf) || {}
         };
         GameState.data.worldObjects = {
             hub: (val(hubObj))?.objects || [], arena: (val(arenaObj))?.objects || [],
-            marketplace: (val(marketObj))?.objects || [], gallery: (val(galleryObj))?.objects || []
+            marketplace: (val(marketObj))?.objects || [], gallery: (val(galleryObj))?.objects || [],
+            dungeon: (val(dungeonObj))?.objects || []
         };
 
         this.lastFetch = Date.now();
-        console.log(`[DATA] Fetched: ${GameState.data.agents.length} agents, ${GameState.data.chat.length} msgs`);
+        if (GameState.debug) console.log(`[DATA] Fetched: ${GameState.data.agents.length} agents, ${GameState.data.chat.length} msgs`);
     },
 
     startPolling() {
         if (this.polling) return;
         this.polling = true;
-        setInterval(() => this.fetchAllState(), POLL_INTERVAL);
+        this._pollId = setInterval(() => this.fetchAllState(), POLL_INTERVAL);
+    },
+
+    stopPolling() {
+        if (this._pollId) {
+            clearInterval(this._pollId);
+            this._pollId = null;
+        }
+        this.polling = false;
     }
 };

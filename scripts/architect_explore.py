@@ -33,6 +33,7 @@ WORLD_BOUNDS = {
     "arena": {"x": (-12, 12), "z": (-12, 12)},
     "marketplace": {"x": (-15, 15), "z": (-15, 15)},
     "gallery": {"x": (-12, 12), "z": (-12, 15)},
+    "dungeon": {"x": (-12, 12), "z": (-12, 12)},
 }
 
 # --- The Architect's personality ---

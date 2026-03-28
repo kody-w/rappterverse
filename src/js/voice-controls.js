@@ -100,7 +100,7 @@ const VoiceControls = {
         this.lastCommand = text;
         this.lastCommandTime = now;
 
-        console.log('[VOICE]', text);
+        if (GameState.debug) console.log('[VOICE]', text);
 
         // Only process commands in world mode for movement/combat
         const inWorld = GameState.mode === 'world';

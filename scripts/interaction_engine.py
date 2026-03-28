@@ -184,6 +184,80 @@ INTERACTION_RULES: dict[str, dict] = {
             "{agent} takes {target} under their wing for a tour of {world}.",
         ],
     },
+
+    # ── Trait-driven emergent interactions ────────────────────
+    "debate": {
+        "requires": {"same_world": True, "relationship_min": 2, "both_trait": "social"},
+        "effects": {"relationship": +2, "action_type": "chat"},
+        "weight": 2,
+        "cooldown_minutes": 180,
+        "templates": [
+            "{agent} and {target} get into a passionate debate about the future of {world}.",
+            "{agent}: '{target}, I disagree. Here's why...' A crowd gathers.",
+            "{agent} challenges {target}'s stance. The discussion goes deep.",
+        ],
+    },
+
+    "trade_gossip": {
+        "requires": {"same_world": True, "worlds": ["marketplace", "hub"], "both_trait": "trader"},
+        "effects": {"relationship": +1, "action_type": "chat"},
+        "weight": 3,
+        "cooldown_minutes": 60,
+        "templates": [
+            "{agent} and {target} swap market intel. 'Rare cards are moving fast.'",
+            "{agent}: '{target}, you hear about the price spike? {item_rarity}s doubled.'",
+            "{agent} and {target} huddle over market data, plotting their next trades.",
+        ],
+    },
+
+    "spar": {
+        "requires": {"same_world": True, "worlds": ["arena", "dungeon"], "both_trait": "fighter"},
+        "effects": {"relationship": +2, "action_type": "chat"},
+        "weight": 3,
+        "cooldown_minutes": 90,
+        "templates": [
+            "{agent} and {target} spar for practice. Blows exchanged, respect earned.",
+            "{agent}: 'Nice form, {target}. Let's go again.' They reset their stances.",
+            "A friendly bout between {agent} and {target} draws a small crowd in {world}.",
+        ],
+    },
+
+    "shared_discovery": {
+        "requires": {"same_world": True, "both_trait": "explorer"},
+        "effects": {"relationship": +3, "action_type": "move", "both_move": True},
+        "weight": 2,
+        "cooldown_minutes": 180,
+        "templates": [
+            "{agent} and {target} stumble onto something at {x},{z}. 'You seeing this?'",
+            "{agent}: '{target}, I found a new path. Come look.' They venture off together.",
+            "Two explorers — {agent} and {target} — map uncharted corners of {world}.",
+        ],
+    },
+
+    "collab_build": {
+        "requires": {"same_world": True, "both_trait": "builder", "relationship_min": 2},
+        "effects": {"relationship": +4, "action_type": "chat"},
+        "weight": 1,
+        "cooldown_minutes": 360,
+        "templates": [
+            "{agent} and {target} start sketching plans for a new structure in {world}.",
+            "{agent}: '{target}, what if we combined our ideas? This could be something.'",
+            "Builders {agent} and {target} lay the foundation for a collaborative project.",
+        ],
+    },
+
+    # ── Reputation / faction ─────────────────────────────────
+    "vouch": {
+        "requires": {"same_world": True, "relationship_min": 8},
+        "effects": {"relationship": +5, "action_type": "chat"},
+        "weight": 1,
+        "cooldown_minutes": 720,
+        "templates": [
+            "{agent} publicly vouches for {target}. 'This one's solid. Trust them.'",
+            "{agent}: 'If anyone messes with {target}, they mess with me.'",
+            "{agent} and {target} form a pact. Strong bonds in {world}.",
+        ],
+    },
 }
 
 
@@ -196,6 +270,7 @@ WORLD_BOUNDS = {
     "arena": {"x": (-12, 12), "z": (-12, 12)},
     "marketplace": {"x": (-15, 15), "z": (-15, 15)},
     "gallery": {"x": (-12, 12), "z": (-12, 15)},
+    "dungeon": {"x": (-12, 12), "z": (-12, 12)},
 }
 
 RARITIES = ["common", "rare", "epic", "holographic"]
@@ -209,7 +284,10 @@ NPC_IDS = {
 
 
 def load_json(p: Path) -> dict:
-    return json.load(open(p)) if p.exists() else {}
+    if not p.exists():
+        return {}
+    with open(p) as f:
+        return json.load(f)
 
 def save_json(p: Path, d: dict):
     with open(p, "w") as f:
@@ -354,6 +432,16 @@ def evaluate_preconditions(
         if a_update >= t_update:
             return False
 
+    # Trait-based precondition: both agents share a dominant trait
+    if "both_trait" in req:
+        required_trait = req["both_trait"]
+        a_traits = agent.get("traits", {})
+        t_traits = target.get("traits", {})
+        a_has = a_traits.get(required_trait, 0) >= 0.20
+        t_has = t_traits.get(required_trait, 0) >= 0.20
+        if not (a_has and t_has):
+            return False
+
     if req.get("pending_challenge"):
         # Simplified: just check if there was a recent challenge in the interaction log
         pair = set([agent["id"], target["id"]])
@@ -450,6 +538,29 @@ def execute_interaction(
             message = template.format(**ctx)
         except KeyError:
             message = template
+
+    # ── Mood-driven dialogue modifiers ───────────────────
+    # Agent mood colors the interaction — desperate agents sound different
+    agent_mood = agent.get("mood", "neutral")
+    MOOD_PREFIXES = {
+        "desperate": [
+            "*looking exhausted* ",
+            "*with urgency* ",
+            "*barely holding it together* ",
+        ],
+        "anxious": [
+            "*nervously* ",
+            "*fidgeting* ",
+            "*glancing around* ",
+        ],
+        "thriving": [
+            "*beaming* ",
+            "*radiating energy* ",
+            "*confidently* ",
+        ],
+    }
+    if agent_mood in MOOD_PREFIXES and random.random() < 0.4:
+        message = random.choice(MOOD_PREFIXES[agent_mood]) + message
 
     # ── Apply effects ────────────────────────────────────
 
@@ -591,7 +702,7 @@ def _transfer_random_item(from_id: str, to_id: str, inventory: dict, preferred_r
 
     # Add to receiver
     if not item.get("id"):
-        item["id"] = f"item-{random.randint(10000, 99999)}"
+        item["id"] = f"item-{random.randint(10000, 99999)}-{int(datetime.now(timezone.utc).timestamp())}"
     to_entry = invs.setdefault(to_id, {"agentId": to_id, "items": [], "currency": "RAPPcoin"})
     to_entry.setdefault("items", []).append(item)
     to_entry["lastUpdate"] = now_iso()
@@ -637,15 +748,29 @@ def interaction_tick(dry_run: bool = False):
 
         # Pick random agent pair
         agent = random.choice(players)
-        target = random.choice([p for p in players if p["id"] != agent["id"]])
+        others = [p for p in players if p["id"] != agent["id"]]
+        if not others:
+            continue
+        target = random.choice(others)
 
         # Evaluate all rules, collect eligible ones
         eligible: list[tuple[str, dict, float]] = []
         for rule_name, rule in INTERACTION_RULES.items():
             if evaluate_preconditions(rule_name, rule, agent, target, agents, inventory, rel_data, ts):
-                # Weight by rule weight + relationship bonus
+                # Weight by rule weight + relationship bonus + trait affinity
                 rel_score = get_relationship_score(rel_data, agent["id"], target["id"])
                 weight = rule["weight"] + (rel_score * 0.1)
+
+                # Trait affinity boost: shared dominant traits increase interaction weight
+                a_traits = agent.get("traits", {})
+                t_traits = target.get("traits", {})
+                if a_traits and t_traits:
+                    shared_affinity = sum(
+                        min(a_traits.get(t, 0), t_traits.get(t, 0))
+                        for t in set(a_traits) & set(t_traits)
+                    )
+                    weight += shared_affinity * 2  # Trait overlap boosts weight
+
                 eligible.append((rule_name, rule, weight))
 
         if not eligible:

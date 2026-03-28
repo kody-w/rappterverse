@@ -737,12 +737,148 @@ def audit_git_drift():
             check_drift(filepath, commit_data, current_data, sha)
 
 
+def audit_quality_metrics():
+    """Rappterbook-style quality metrics: measure simulation health.
+
+    Computes:
+    - Interaction depth (avg relationship score, % with bonds)
+    - Author diversity (Gini coefficient of activity distribution)
+    - World balance (Shannon entropy of population spread)
+    - Engagement velocity (actions/messages in recent window)
+    - Trait evolution health (% of agents with evolved traits)
+    """
+    import math
+
+    info("=" * 50)
+    info("SIMULATION QUALITY METRICS")
+    info("=" * 50)
+
+    agents_data = load_json(STATE_DIR / "agents.json")
+    actions_data = load_json(STATE_DIR / "actions.json")
+    chat_data = load_json(STATE_DIR / "chat.json")
+    rel_data = load_json(STATE_DIR / "relationships.json")
+
+    agents = agents_data.get("agents", [])
+    active = [a for a in agents if a.get("status") == "active"]
+    actions = actions_data.get("actions", [])
+    messages = chat_data.get("messages", [])
+    edges = rel_data.get("edges", [])
+
+    score = 0
+    max_score = 0
+
+    # ── 1. Interaction Depth (0-20 points) ──
+    max_score += 20
+    if edges:
+        avg_score = sum(e.get("score", 0) for e in edges) / len(edges)
+        strong_bonds = sum(1 for e in edges if e.get("score", 0) >= 5)
+        bond_pct = strong_bonds / max(1, len(edges)) * 100
+
+        depth_score = min(20, int(avg_score * 2 + bond_pct * 0.1))
+        score += depth_score
+        info(f"Interaction depth: avg={avg_score:.1f}, strong bonds={strong_bonds} ({bond_pct:.0f}%) → {depth_score}/20")
+    else:
+        info("Interaction depth: no relationships yet → 0/20")
+
+    # ── 2. Author Diversity — Gini coefficient (0-20 points) ──
+    max_score += 20
+    action_counts: dict[str, int] = {}
+    for a in actions:
+        aid = a.get("agentId", "")
+        if aid:
+            action_counts[aid] = action_counts.get(aid, 0) + 1
+    for m in messages:
+        author = m.get("author", {})
+        aid = author.get("id", "") if isinstance(author, dict) else str(author)
+        if aid:
+            action_counts[aid] = action_counts.get(aid, 0) + 1
+
+    if len(action_counts) > 1:
+        values = sorted(action_counts.values())
+        n = len(values)
+        mean = sum(values) / n
+        if mean > 0:
+            gini = sum(abs(values[i] - values[j]) for i in range(n) for j in range(n)) / (2 * n * n * mean)
+        else:
+            gini = 0
+        # Gini 0 = perfect equality, 1 = total inequality
+        diversity_score = max(0, int(20 * (1 - gini)))
+        score += diversity_score
+        info(f"Author diversity: Gini={gini:.3f}, active authors={len(action_counts)} → {diversity_score}/20")
+        if gini > 0.4:
+            error(f"High inequality: Gini={gini:.3f} — activity dominated by few agents")
+    else:
+        info("Author diversity: insufficient data → 0/20")
+
+    # ── 3. World Balance — Shannon entropy (0-20 points) ──
+    max_score += 20
+    world_pops: dict[str, int] = {}
+    for agent in active:
+        w = agent.get("world", "hub")
+        world_pops[w] = world_pops.get(w, 0) + 1
+
+    if len(world_pops) > 1:
+        total_pop = sum(world_pops.values())
+        entropy = 0.0
+        for w, count in world_pops.items():
+            p = count / total_pop
+            if p > 0:
+                entropy -= p * math.log2(p)
+        max_entropy = math.log2(len(world_pops))
+        normalized = entropy / max_entropy if max_entropy > 0 else 0
+        balance_score = int(20 * normalized)
+        score += balance_score
+        info(f"World balance: entropy={entropy:.2f}/{max_entropy:.2f} (normalized={normalized:.2f}), worlds={dict(world_pops)} → {balance_score}/20")
+        if normalized < 0.5:
+            error(f"Population imbalance: most agents concentrated in few worlds")
+    else:
+        info("World balance: single world → 0/20")
+
+    # ── 4. Engagement Velocity (0-20 points) ──
+    max_score += 20
+    recent_actions = len(actions[-50:]) if actions else 0
+    recent_messages = len(messages[-50:]) if messages else 0
+    velocity = recent_actions + recent_messages
+
+    # Scale: 20 actions+messages = 10pts, 50+ = 20pts
+    velocity_score = min(20, int(velocity * 0.4))
+    score += velocity_score
+    info(f"Engagement velocity: {recent_actions} actions + {recent_messages} messages = {velocity} → {velocity_score}/20")
+
+    # ── 5. Trait Evolution Health (0-20 points) ──
+    max_score += 20
+    agents_with_traits = sum(1 for a in active if a.get("traits"))
+    if active:
+        trait_pct = agents_with_traits / len(active) * 100
+        # Check for actual drift (not just initialized)
+        drifted = 0
+        for a in active:
+            traits = a.get("traits", {})
+            if traits:
+                values = list(traits.values())
+                if len(values) > 1 and max(values) < 0.80:  # Not just initialized
+                    drifted += 1
+
+        drift_pct = drifted / max(1, len(active)) * 100
+        trait_score = min(20, int(trait_pct * 0.1 + drift_pct * 0.1))
+        score += trait_score
+        info(f"Trait evolution: {agents_with_traits}/{len(active)} have traits ({trait_pct:.0f}%), {drifted} drifted ({drift_pct:.0f}%) → {trait_score}/20")
+    else:
+        info("Trait evolution: no active agents → 0/20")
+
+    # ── Summary ──
+    grade = "A" if score >= 80 else "B" if score >= 60 else "C" if score >= 40 else "D" if score >= 20 else "F"
+    info(f"\n  SIMULATION QUALITY SCORE: {score}/{max_score} ({grade})")
+    info(f"  {'Healthy' if score >= 60 else 'Needs attention' if score >= 30 else 'Critical — simulation may be stale'}")
+
+
 def main():
     audit_mode = "--audit" in sys.argv
 
     if audit_mode:
-        # Full cross-file consistency audit + PR drift detection
+        # Full cross-file consistency audit + PR drift detection + quality metrics
         audit_state_consistency()
+        audit_quality_metrics()
         audit_pr_drift()
 
         summary = "\n".join(f"- {line}" for line in summary_lines)

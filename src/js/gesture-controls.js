@@ -41,7 +41,7 @@ const GestureControls = {
                 await this._loadScripts();
                 this._scriptsLoaded = true;
             } catch(e) {
-                console.warn('[GESTURE] Failed to load MediaPipe:', e);
+                if (GameState.debug) console.warn('[GESTURE] Failed to load MediaPipe:', e);
                 if (typeof HUD !== 'undefined') HUD.showToast('Failed to load gesture library');
                 this.active = false;
                 this._updateUI();
@@ -83,7 +83,7 @@ const GestureControls = {
             document.getElementById('gesture-panel').classList.add('visible');
             if (typeof HUD !== 'undefined') HUD.showToast('Gesture controls ON — show hand to camera');
         } catch(e) {
-            console.warn('[GESTURE] Camera access denied:', e);
+            if (GameState.debug) console.warn('[GESTURE] Camera access denied:', e);
             if (typeof HUD !== 'undefined') HUD.showToast('Camera access denied');
             this.active = false;
             this._updateUI();

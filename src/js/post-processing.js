@@ -115,7 +115,7 @@ const PostProcessing = {
 
             this.enabled = true;
         } catch(e) {
-            console.warn('[POST] Failed to init post-processing:', e);
+            if (GameState.debug) console.warn('[POST] Failed to init post-processing:', e);
             this.enabled = false;
         }
     },

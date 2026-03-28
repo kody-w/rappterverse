@@ -199,6 +199,8 @@ ITEM_NAMES: dict[str, list] = {
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 def load_json(p: Path) -> dict:
+    if not p.exists():
+        return {}
     with open(p) as f:
         return json.load(f)
 
@@ -230,13 +232,15 @@ def debit(economy: dict, agent_name: str, amount: int) -> bool:
 
 def mint(economy: dict, amount: int):
     """Mint new RAPP from treasury."""
-    economy["treasury"]["balance"] -= amount
-    economy["treasury"]["minted"] += amount
+    treasury = economy.setdefault("treasury", {"balance": 1000000, "minted": 0, "burned": 0})
+    treasury["balance"] = treasury.get("balance", 1000000) - amount
+    treasury["minted"] = treasury.get("minted", 0) + amount
 
 
 def burn(economy: dict, amount: int):
     """Burn RAPP — deflationary."""
-    economy["treasury"]["burned"] += amount
+    treasury = economy.setdefault("treasury", {"balance": 1000000, "minted": 0, "burned": 0})
+    treasury["burned"] = treasury.get("burned", 0) + amount
 
 
 def record_tx(economy: dict, tx_type: str, description: str, amount: int,
@@ -250,8 +254,9 @@ def record_tx(economy: dict, tx_type: str, description: str, amount: int,
         "timestamp": ts or now_iso(),
     }
     economy.setdefault("ledger", []).append(tx)
-    economy["stats"]["totalTransactions"] += 1
-    economy["stats"]["totalVolume"] += amount
+    stats = economy.setdefault("stats", {"totalTransactions": 0, "totalVolume": 0})
+    stats["totalTransactions"] = stats.get("totalTransactions", 0) + 1
+    stats["totalVolume"] = stats.get("totalVolume", 0) + amount
 
 
 def get_agent_post_count(agent_name: str, zoo: dict) -> int:
@@ -568,14 +573,16 @@ def economy_tick(dry_run: bool = False):
 
     # Update price index based on recent sales
     recent_sales = market.get("salesHistory", [])[-50:]
+    price_index = economy.setdefault("market", {}).setdefault("priceIndex", {})
     for rarity in ["common", "rare", "epic", "holographic"]:
         sales = [s for s in recent_sales if rarity in s.get("item", "").lower()]
         if sales:
             avg = sum(s["price"] for s in sales) // len(sales)
-            economy["market"]["priceIndex"][rarity] = avg
+            price_index[rarity] = avg
 
     # Compute stats
     balances = economy.get("balances", {})
+    economy.setdefault("stats", {"totalTransactions": 0, "totalVolume": 0})
     if balances:
         richest = max(balances, key=balances.get)
         economy["stats"]["richestAgent"] = {"name": richest, "balance": balances[richest]}
@@ -597,8 +604,8 @@ def economy_tick(dry_run: bool = False):
                 }
 
     # ── Print Report ─────────────────────────────────────────
-    total_supply = sum(balances.values())
-    treasury = economy["treasury"]
+    total_supply = sum(balances.values()) if balances else 0
+    treasury = economy.setdefault("treasury", {"balance": 1000000, "minted": 0, "burned": 0})
     num_with_balance = sum(1 for b in balances.values() if b > 0)
 
     print(f"  💰 RAPPterCoin Economy:")
@@ -622,9 +629,9 @@ def economy_tick(dry_run: bool = False):
         return
 
     # Save
-    economy["_meta"]["lastUpdate"] = ts
+    economy.setdefault("_meta", {})["lastUpdate"] = ts
     save_json(STATE_DIR / "economy.json", economy)
-    inventory["_meta"]["lastUpdate"] = ts
+    inventory.setdefault("_meta", {})["lastUpdate"] = ts
     save_json(STATE_DIR / "inventory.json", inventory)
     print(f"\n  ✅ Economy state saved")
 

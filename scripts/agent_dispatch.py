@@ -203,7 +203,8 @@ def random_position(world: str, bounds: dict) -> dict:
 # ─── LLM ──────────────────────────────────────────────────────────────
 
 def generate_llm_response(token: str, agent_reg: dict, npc_def: dict,
-                          recent_messages: list, trigger_msg: dict = None) -> str:
+                          recent_messages: list, trigger_msg: dict = None,
+                          world_context: dict = None) -> str:
     """Generate an in-character response using GitHub Models API."""
     if not token:
         return ""
@@ -224,6 +225,24 @@ def generate_llm_response(token: str, agent_reg: dict, npc_def: dict,
         for m in context_msgs[-8:]
     )
 
+    # Build social/economic context lines from world_context
+    wc = world_context or {}
+    social_lines = []
+    evolved_traits = wc.get("evolved_traits", [])
+    if evolved_traits:
+        social_lines.append(f"- Evolved traits: {', '.join(evolved_traits[:5])}")
+    bonds = wc.get("bonds", [])
+    if bonds:
+        bond_str = ", ".join(f"{b[0]} (bond:{b[1]})" for b in bonds[:4])
+        social_lines.append(f"- Close bonds: {bond_str}")
+    rapp_bal = wc.get("rapp_balance")
+    if rapp_bal is not None:
+        social_lines.append(f"- RAPP balance: {rapp_bal}")
+    world_pop = wc.get("world_population")
+    if world_pop is not None:
+        social_lines.append(f"- World population: {world_pop} active agents")
+    social_block = "\n".join(social_lines)
+
     system_prompt = f"""You are {name}, an NPC in a virtual metaverse called RAPPverse.
 
 CHARACTER:
@@ -231,6 +250,7 @@ CHARACTER:
 - Current mood: {mood}
 - Interests: {interests}
 - World: {world}
+{social_block}
 
 EXAMPLE DIALOGUE (match this voice exactly):
 {dialogue_examples}
@@ -327,6 +347,36 @@ def execute_agent_action(agent_id: str, registry: dict, npc_lookup: dict,
     active_combat = [ce for ce in game_state.get("combatEvents", [])
                      if ce.get("status") == "active" and ce.get("world") == world]
 
+    # ── Build enriched world context (used by brain decisions + chat) ──
+    nearby = [a.get("name", a["id"]) for a in agents
+              if a.get("world") == world and a["id"] != agent_id]
+    recent_world_chat = [m for m in messages[-20:] if m.get("world") == world]
+    economy = _load_economy()
+    relationships = _load_relationships()
+    edges = relationships.get("edges", [])
+    bonds = []
+    for edge in edges:
+        partner = None
+        if edge.get("a") == agent_id:
+            partner = edge.get("b")
+        elif edge.get("b") == agent_id:
+            partner = edge.get("a")
+        if partner and edge.get("score", 0) >= 5:
+            bonds.append((partner, edge.get("score", 0)))
+    bonds.sort(key=lambda x: x[1], reverse=True)
+    world_pop = sum(1 for a in agents if a.get("world") == world
+                    and a.get("status") == "active")
+    evolved_traits = memory.get("personality", {}).get("traits", [])
+    world_ctx = {
+        "world": world,
+        "nearby_agents": nearby,
+        "recent_chat": recent_world_chat,
+        "rapp_balance": _agent_balance(economy, agent_id),
+        "bonds": bonds[:6],
+        "world_population": world_pop,
+        "evolved_traits": evolved_traits,
+    }
+
     # Decide action: combat override → brain-driven → weighted random
     if active_combat:
         activity = "defend"
@@ -335,15 +385,6 @@ def execute_agent_action(agent_id: str, registry: dict, npc_lookup: dict,
     elif poked:
         activity = "chat_poke"
     elif brain and token:
-        # Let the LLM decide based on personality + memory + world context
-        nearby = [a.get("name", a["id"]) for a in agents
-                  if a.get("world") == world and a["id"] != agent_id]
-        recent_world_chat = [m for m in messages[-20:] if m.get("world") == world]
-        world_ctx = {
-            "world": world,
-            "nearby_agents": nearby,
-            "recent_chat": recent_world_chat,
-        }
         activity = brain.decide_action(reg, npc_def, memory, world_ctx)
     else:
         weights = dict(reg.get("behavior", {}).get("decisionWeights",
@@ -405,6 +446,7 @@ def execute_agent_action(agent_id: str, registry: dict, npc_lookup: dict,
             content = brain.generate_chat(
                 reg, npc_def, memory, messages, world,
                 trigger_msg=respond_to_msg or poke_msg,
+                world_context=world_ctx,
             )
         elif token and (respond_to_msg or poked or random.random() < 0.4):
             poke_msg = None
@@ -416,6 +458,7 @@ def execute_agent_action(agent_id: str, registry: dict, npc_lookup: dict,
             content = generate_llm_response(
                 token, reg, npc_def, messages,
                 trigger_msg=respond_to_msg or poke_msg,
+                world_context=world_ctx,
             )
         else:
             content = ""

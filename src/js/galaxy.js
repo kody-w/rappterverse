@@ -62,7 +62,8 @@ const Galaxy = {
         GameState.renderer.domElement.addEventListener('click', (e) => this.onClick(e));
 
         // Planet info panel button
-        document.getElementById('planet-approach-btn').addEventListener('click', () => {
+        const approachBtn = document.getElementById('planet-approach-btn');
+        if (approachBtn) approachBtn.addEventListener('click', () => {
             if (this.selectedPlanetId) {
                 Approach.start(this.selectedPlanetId);
             }
@@ -390,12 +391,17 @@ const Galaxy = {
         const objects = GameState.getWorldObjects(worldId);
 
         // Update info panel
-        document.getElementById('planet-name').textContent = w.name;
-        document.getElementById('planet-biome').textContent = w.biome;
-        document.getElementById('planet-biome').style.background = `rgba(${this.hexToRgb(w.planetColor)}, 0.2)`;
-        document.getElementById('planet-biome').style.color = `#${w.planetColor.toString(16).padStart(6, '0')}`;
+        const planetNameEl = document.getElementById('planet-name');
+        if (planetNameEl) planetNameEl.textContent = w.name;
+        const planetBiomeEl = document.getElementById('planet-biome');
+        if (planetBiomeEl) {
+            planetBiomeEl.textContent = w.biome;
+            planetBiomeEl.style.background = `rgba(${this.hexToRgb(w.planetColor)}, 0.2)`;
+            planetBiomeEl.style.color = `#${w.planetColor.toString(16).padStart(6, '0')}`;
+        }
 
-        document.getElementById('planet-stats').innerHTML = `
+        const planetStatsEl = document.getElementById('planet-stats');
+        if (planetStatsEl) planetStatsEl.innerHTML = `
             <div class="planet-info-stat"><span>Agents</span><span class="planet-info-value">${agentCount}</span></div>
             <div class="planet-info-stat"><span>Biome</span><span class="planet-info-value">${w.biome}</span></div>
             <div class="planet-info-stat"><span>Bounds</span><span class="planet-info-value">±${w.bounds.x} × ±${w.bounds.z}</span></div>
@@ -404,7 +410,8 @@ const Galaxy = {
             <div class="planet-info-stat"><span>Trading</span><span class="planet-info-value">${config.features?.trading ? '✅' : '❌'}</span></div>
         `;
 
-        document.getElementById('planet-info').classList.add('visible');
+        const planetInfoEl = document.getElementById('planet-info');
+        if (planetInfoEl) planetInfoEl.classList.add('visible');
 
         // Highlight planet (increase emissive)
         this.planetMeshes.forEach(p => {
@@ -417,7 +424,8 @@ const Galaxy = {
     deselectPlanet() {
         this.selectedPlanetId = null;
         GameState.selectedPlanet = null;
-        document.getElementById('planet-info').classList.remove('visible');
+        const planetInfoEl = document.getElementById('planet-info');
+        if (planetInfoEl) planetInfoEl.classList.remove('visible');
         this.planetMeshes.forEach(p => {
             p.children[0].material.emissiveIntensity = 0.15;
             p.children[1].material.opacity = 0.1;

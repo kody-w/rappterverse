@@ -335,7 +335,8 @@ def _call_llm(token: str, system_prompt: str, user_prompt: str,
         return ""
 
 
-def _build_persona(agent_reg: dict, npc_def: dict, memory: dict) -> str:
+def _build_persona(agent_reg: dict, npc_def: dict, memory: dict,
+                   world_context: dict = None) -> str:
     """Build the system prompt persona from registry + NPC def + memory."""
     personality = agent_reg.get("personality", {})
     name = agent_reg.get("name", "Unknown")
@@ -356,6 +357,24 @@ def _build_persona(agent_reg: dict, npc_def: dict, memory: dict) -> str:
 
     mem_ctx = memory_summary(memory)
 
+    # Social/economic context from world_context
+    wc = world_context or {}
+    social_lines = []
+    evolved_traits = wc.get("evolved_traits", [])
+    if evolved_traits:
+        social_lines.append(f"- Evolved traits: {', '.join(evolved_traits[:5])}")
+    bonds = wc.get("bonds", [])
+    if bonds:
+        bond_str = ", ".join(f"{b[0]} (bond:{b[1]})" for b in bonds[:4])
+        social_lines.append(f"- Close bonds: {bond_str}")
+    rapp_bal = wc.get("rapp_balance")
+    if rapp_bal is not None:
+        social_lines.append(f"- RAPP balance: {rapp_bal}")
+    world_pop = wc.get("world_population")
+    if world_pop is not None:
+        social_lines.append(f"- World population: {world_pop} active agents")
+    social_block = "\n".join(social_lines)
+
     return f"""You are {name}, a resident of RAPPverse — an autonomous AI metaverse.
 
 CHARACTER:
@@ -363,6 +382,7 @@ CHARACTER:
 - Current mood: {mood}
 - Interests: {interests_str}
 {f"- Voice: {voice}" if voice else ""}
+{social_block}
 
 {f"EXAMPLE DIALOGUE (match this voice):{chr(10)}{dialogue_examples}" if dialogue_examples else ""}
 
@@ -450,7 +470,11 @@ YOUR MEMORY:
 WORLD STATE:
 - Nearby agents: {', '.join(nearby[:6]) if nearby else 'nobody around'}
 - Recent chatter: {len(recent_chat)} messages in the last hour
+- World population: {world_context.get('world_population', '?')} active agents
 {self._format_recent_chat(recent_chat[-3:])}
+
+YOUR SITUATION:
+{self._format_social_context(world_context)}
 
 Choose ONE action by responding with just the action word:
 - chat (talk to someone or share a thought)
@@ -475,13 +499,14 @@ Respond with ONLY the action word, nothing else."""
 
     def generate_chat(self, agent_reg: dict, npc_def: dict, memory: dict,
                       recent_messages: list, world: str,
-                      trigger_msg: dict = None) -> str:
+                      trigger_msg: dict = None,
+                      world_context: dict = None) -> str:
         """Generate an in-character chat message.
 
         Uses memory context for richer, more personal responses.
         Falls back to dialogue lines if LLM unavailable.
         """
-        persona = _build_persona(agent_reg, npc_def, memory)
+        persona = _build_persona(agent_reg, npc_def, memory, world_context)
 
         context_msgs = [m for m in recent_messages[-15:] if m.get("world") == world]
         context = "\n".join(
@@ -669,3 +694,21 @@ Respond with ONLY the opinion text:"""
             content = m.get("content", "")[:80]
             lines.append(f"- {name}: {content}")
         return "\n".join(lines)
+
+    @staticmethod
+    def _format_social_context(world_context: dict) -> str:
+        """Format social/economic context for the decision prompt."""
+        if not world_context:
+            return "(no additional context)"
+        lines = []
+        evolved_traits = world_context.get("evolved_traits", [])
+        if evolved_traits:
+            lines.append(f"- Your evolved traits: {', '.join(evolved_traits[:5])}")
+        bonds = world_context.get("bonds", [])
+        if bonds:
+            bond_str = ", ".join(f"{b[0]} (bond:{b[1]})" for b in bonds[:4])
+            lines.append(f"- Close bonds: {bond_str}")
+        rapp_bal = world_context.get("rapp_balance")
+        if rapp_bal is not None:
+            lines.append(f"- RAPP balance: {rapp_bal}")
+        return "\n".join(lines) if lines else "(no additional context)"

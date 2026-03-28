@@ -323,7 +323,8 @@ const WorldMode = {
 
         document.getElementById('world-container').style.display = 'none';
         document.getElementById('combat-hud').style.display = 'none';
-        document.getElementById('interaction-prompt').classList.remove('visible');
+        const interactionPrompt = document.getElementById('interaction-prompt');
+        if (interactionPrompt) interactionPrompt.classList.remove('visible');
         const statsBar = document.getElementById('player-stats-bar');
         if (statsBar) statsBar.style.display = 'none';
         const levelBadge = document.getElementById('level-badge');

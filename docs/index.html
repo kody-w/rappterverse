@@ -2603,6 +2603,7 @@ const GameState = {
     selectedPlanet: null,
     bridgeOpen: false,
     minimapVisible: true,
+    debug: false,
 
     // Shared Three.js refs (assigned by each mode)
     renderer: null,
@@ -2623,7 +2624,7 @@ const GameState = {
     setMode(newMode) {
         const valid = ['boot', 'galaxy', 'approach', 'landing', 'world'];
         if (!valid.includes(newMode)) return false;
-        console.log(`[STATE] ${this.mode} → ${newMode}`);
+        if (this.debug) console.log(`[STATE] ${this.mode} → ${newMode}`);
         this.previousMode = this.mode;
         this.mode = newMode;
         // Notify audio system of mode change
@@ -2669,6 +2670,7 @@ const GameState = {
 // Data Fetching — GitHub Raw Content
 const DataManager = {
     polling: false,
+    _pollId: null,
     lastFetch: 0,
 
     async fetchJSON(path) {
@@ -2677,15 +2679,15 @@ const DataManager = {
             if (!res.ok) return null;
             return await res.json();
         } catch(e) {
-            console.warn(`Fetch failed: ${path}`, e.message);
+            if (GameState.debug) console.warn(`[DATA] Fetch failed: ${path}`, e.message);
             return null;
         }
     },
 
     async fetchAllState() {
         const [agents, chat, actions, npcs, gameState, frameCounter,
-               hubConf, arenaConf, marketConf, galleryConf,
-               hubObj, arenaObj, marketObj, galleryObj] = await Promise.allSettled([
+               hubConf, arenaConf, marketConf, galleryConf, dungeonConf,
+               hubObj, arenaObj, marketObj, galleryObj, dungeonObj] = await Promise.allSettled([
             this.fetchJSON('state/agents.json'),
             this.fetchJSON('state/chat.json'),
             this.fetchJSON('state/actions.json'),
@@ -2696,10 +2698,12 @@ const DataManager = {
             this.fetchJSON('worlds/arena/config.json'),
             this.fetchJSON('worlds/marketplace/config.json'),
             this.fetchJSON('worlds/gallery/config.json'),
+            this.fetchJSON('worlds/dungeon/config.json'),
             this.fetchJSON('worlds/hub/objects.json'),
             this.fetchJSON('worlds/arena/objects.json'),
             this.fetchJSON('worlds/marketplace/objects.json'),
             this.fetchJSON('worlds/gallery/objects.json'),
+            this.fetchJSON('worlds/dungeon/objects.json'),
         ]);
 
         const val = (r) => r.status === 'fulfilled' ? r.value : null;
@@ -2725,21 +2729,31 @@ const DataManager = {
 
         GameState.data.worldConfigs = {
             hub: val(hubConf) || {}, arena: val(arenaConf) || {},
-            marketplace: val(marketConf) || {}, gallery: val(galleryConf) || {}
+            marketplace: val(marketConf) || {}, gallery: val(galleryConf) || {},
+            dungeon: val(dungeonConf) || {}
         };
         GameState.data.worldObjects = {
             hub: (val(hubObj))?.objects || [], arena: (val(arenaObj))?.objects || [],
-            marketplace: (val(marketObj))?.objects || [], gallery: (val(galleryObj))?.objects || []
+            marketplace: (val(marketObj))?.objects || [], gallery: (val(galleryObj))?.objects || [],
+            dungeon: (val(dungeonObj))?.objects || []
         };
 
         this.lastFetch = Date.now();
-        console.log(`[DATA] Fetched: ${GameState.data.agents.length} agents, ${GameState.data.chat.length} msgs`);
+        if (GameState.debug) console.log(`[DATA] Fetched: ${GameState.data.agents.length} agents, ${GameState.data.chat.length} msgs`);
     },
 
     startPolling() {
         if (this.polling) return;
         this.polling = true;
-        setInterval(() => this.fetchAllState(), POLL_INTERVAL);
+        this._pollId = setInterval(() => this.fetchAllState(), POLL_INTERVAL);
+    },
+
+    stopPolling() {
+        if (this._pollId) {
+            clearInterval(this._pollId);
+            this._pollId = null;
+        }
+        this.polling = false;
     }
 };
 
@@ -3772,7 +3786,8 @@ const Galaxy = {
         GameState.renderer.domElement.addEventListener('click', (e) => this.onClick(e));
 
         // Planet info panel button
-        document.getElementById('planet-approach-btn').addEventListener('click', () => {
+        const approachBtn = document.getElementById('planet-approach-btn');
+        if (approachBtn) approachBtn.addEventListener('click', () => {
             if (this.selectedPlanetId) {
                 Approach.start(this.selectedPlanetId);
             }
@@ -4100,12 +4115,17 @@ const Galaxy = {
         const objects = GameState.getWorldObjects(worldId);
 
         // Update info panel
-        document.getElementById('planet-name').textContent = w.name;
-        document.getElementById('planet-biome').textContent = w.biome;
-        document.getElementById('planet-biome').style.background = `rgba(${this.hexToRgb(w.planetColor)}, 0.2)`;
-        document.getElementById('planet-biome').style.color = `#${w.planetColor.toString(16).padStart(6, '0')}`;
+        const planetNameEl = document.getElementById('planet-name');
+        if (planetNameEl) planetNameEl.textContent = w.name;
+        const planetBiomeEl = document.getElementById('planet-biome');
+        if (planetBiomeEl) {
+            planetBiomeEl.textContent = w.biome;
+            planetBiomeEl.style.background = `rgba(${this.hexToRgb(w.planetColor)}, 0.2)`;
+            planetBiomeEl.style.color = `#${w.planetColor.toString(16).padStart(6, '0')}`;
+        }
 
-        document.getElementById('planet-stats').innerHTML = `
+        const planetStatsEl = document.getElementById('planet-stats');
+        if (planetStatsEl) planetStatsEl.innerHTML = `
             <div class="planet-info-stat"><span>Agents</span><span class="planet-info-value">${agentCount}</span></div>
             <div class="planet-info-stat"><span>Biome</span><span class="planet-info-value">${w.biome}</span></div>
             <div class="planet-info-stat"><span>Bounds</span><span class="planet-info-value">±${w.bounds.x} × ±${w.bounds.z}</span></div>
@@ -4114,7 +4134,8 @@ const Galaxy = {
             <div class="planet-info-stat"><span>Trading</span><span class="planet-info-value">${config.features?.trading ? '✅' : '❌'}</span></div>
         `;
 
-        document.getElementById('planet-info').classList.add('visible');
+        const planetInfoEl = document.getElementById('planet-info');
+        if (planetInfoEl) planetInfoEl.classList.add('visible');
 
         // Highlight planet (increase emissive)
         this.planetMeshes.forEach(p => {
@@ -4127,7 +4148,8 @@ const Galaxy = {
     deselectPlanet() {
         this.selectedPlanetId = null;
         GameState.selectedPlanet = null;
-        document.getElementById('planet-info').classList.remove('visible');
+        const planetInfoEl = document.getElementById('planet-info');
+        if (planetInfoEl) planetInfoEl.classList.remove('visible');
         this.planetMeshes.forEach(p => {
             p.children[0].material.emissiveIntensity = 0.15;
             p.children[1].material.opacity = 0.1;
@@ -4241,6 +4263,7 @@ const Warp = {
     /* ── Initialise 400 stars and begin the tunnel ── */
     start(callback) {
         this.canvas = document.getElementById('warp-canvas');
+        if (!this.canvas) return;
         this.ctx = this.canvas.getContext('2d');
         this.canvas.width = window.innerWidth;
         this.canvas.height = window.innerHeight;
@@ -4430,14 +4453,16 @@ const Approach = {
 
         // Populate overlay with planet info
         const w = WORLDS[worldId];
-        document.getElementById('approach-name').textContent = w.name;
+        const approachNameEl = document.getElementById('approach-name');
+        if (approachNameEl) approachNameEl.textContent = w.name;
         const biomeEl = document.getElementById('approach-biome');
         biomeEl.textContent = w.biome;
         biomeEl.style.background = `rgba(${Galaxy.hexToRgb(w.planetColor)}, 0.2)`;
         biomeEl.style.color = `#${w.planetColor.toString(16).padStart(6, '0')}`;
 
         // Show overlay and letterbox
-        document.getElementById('approach-overlay').classList.add('active');
+        const approachOverlay = document.getElementById('approach-overlay');
+        if (approachOverlay) approachOverlay.classList.add('active');
         setTimeout(() => {
             document.getElementById('letterbox-top').classList.add('active');
             document.getElementById('letterbox-bottom').classList.add('active');
@@ -4519,9 +4544,12 @@ const Approach = {
         const distance = Math.max(0, (1 - approachFactor) * 1200).toFixed(0);
         const velocity = (8 + approachFactor * 12).toFixed(1);
         const eta = Math.max(0, (1 - approachFactor) * 4.5).toFixed(1);
-        document.getElementById('approach-distance').textContent = distance + ' km';
-        document.getElementById('approach-velocity').textContent = velocity + ' km/s';
-        document.getElementById('approach-eta').textContent = eta + 's';
+        const distEl = document.getElementById('approach-distance');
+        if (distEl) distEl.textContent = distance + ' km';
+        const velEl = document.getElementById('approach-velocity');
+        if (velEl) velEl.textContent = velocity + ' km/s';
+        const etaEl = document.getElementById('approach-eta');
+        if (etaEl) etaEl.textContent = eta + 's';
 
         // --- Render ---
         GameState.renderer.render(Galaxy.scene, Galaxy.camera);
@@ -4546,9 +4574,12 @@ const Approach = {
         if (this.animFrame) cancelAnimationFrame(this.animFrame);
         this.animFrame = null;
         this.phase = null;
-        document.getElementById('approach-overlay').classList.remove('active');
-        document.getElementById('letterbox-top').classList.remove('active');
-        document.getElementById('letterbox-bottom').classList.remove('active');
+        const approachOvl = document.getElementById('approach-overlay');
+        if (approachOvl) approachOvl.classList.remove('active');
+        const lbTop = document.getElementById('letterbox-top');
+        if (lbTop) lbTop.classList.remove('active');
+        const lbBottom = document.getElementById('letterbox-bottom');
+        if (lbBottom) lbBottom.classList.remove('active');
     }
 };
 
@@ -4607,7 +4638,8 @@ const Landing = {
         const w = WORLDS[worldId];
         const overlay = document.getElementById('landing-overlay');
         overlay.classList.add('active');
-        document.getElementById('landing-status').textContent = 'AUTOPILOT ENGAGED';
+        const landingStatusEl = document.getElementById('landing-status');
+        if (landingStatusEl) landingStatusEl.textContent = 'AUTOPILOT ENGAGED';
 
         // Scene
         this.scene = new THREE.Scene();
@@ -5090,7 +5122,8 @@ const Landing = {
         window.removeEventListener('resize', this.resizeHandler);
         this.keys = {};
 
-        document.getElementById('landing-overlay').classList.remove('active');
+        const landingOvl = document.getElementById('landing-overlay');
+        if (landingOvl) landingOvl.classList.remove('active');
 
         // Dispose scene resources
         if (this.scene) {
@@ -7825,10 +7858,11 @@ const DebugOverlay = {
 
     toggle() {
         this.active = !this.active;
+        GameState.debug = this.active;
         if (this.active) {
             this._create();
             this.el.style.display = 'block';
-            console.log('[DEBUG] Overlay ON');
+            console.log('[DEBUG] Overlay ON — verbose logging enabled');
         } else if (this.el) {
             this.el.style.display = 'none';
             console.log('[DEBUG] Overlay OFF');
@@ -9162,7 +9196,8 @@ const WorldMode = {
 
         document.getElementById('world-container').style.display = 'none';
         document.getElementById('combat-hud').style.display = 'none';
-        document.getElementById('interaction-prompt').classList.remove('visible');
+        const interactionPrompt = document.getElementById('interaction-prompt');
+        if (interactionPrompt) interactionPrompt.classList.remove('visible');
         const statsBar = document.getElementById('player-stats-bar');
         if (statsBar) statsBar.style.display = 'none';
         const levelBadge = document.getElementById('level-badge');
@@ -9282,7 +9317,8 @@ const Bridge = {
         this._keys = {};
 
         // Hide overlay
-        document.getElementById('bridge-overlay').classList.remove('active');
+        const bridgeOvl = document.getElementById('bridge-overlay');
+        if (bridgeOvl) bridgeOvl.classList.remove('active');
 
         // Hide interaction prompt
         const prompt = document.getElementById('interaction-prompt');
@@ -9816,31 +9852,37 @@ const HUD = {
     minimapVisible: false,
 
     show() {
-        document.getElementById('top-bar').classList.add('visible');
+        const el = document.getElementById('top-bar');
+        if (el) el.classList.add('visible');
     },
 
     hide() {
-        document.getElementById('top-bar').classList.remove('visible');
+        const el = document.getElementById('top-bar');
+        if (el) el.classList.remove('visible');
     },
 
     setWorld(worldId) {
         const w = WORLDS[worldId];
-        document.getElementById('hud-world-name').textContent = w ? w.name : '';
+        const el = document.getElementById('hud-world-name');
+        if (el) el.textContent = w ? w.name : '';
     },
 
     updateAgentCount() {
-        document.getElementById('hud-agent-count').textContent = GameState.data.agents.length + ' agents';
+        const el = document.getElementById('hud-agent-count');
+        if (el) el.textContent = GameState.data.agents.length + ' agents';
     },
 
     toggleMinimap() {
         this.minimapVisible = !this.minimapVisible;
-        document.getElementById('minimap').classList.toggle('visible', this.minimapVisible);
+        const el = document.getElementById('minimap');
+        if (el) el.classList.toggle('visible', this.minimapVisible);
         if (this.minimapVisible) this.renderMinimap();
     },
 
     renderMinimap() {
         if (!this.minimapVisible || GameState.mode !== 'world') return;
         const canvas = document.getElementById('minimap-canvas');
+        if (!canvas) return;
         const ctx = canvas.getContext('2d');
         const w = WORLDS[GameState.currentWorld];
         if (!w) return;
@@ -9880,7 +9922,7 @@ const HUD = {
         });
 
         // Player
-        if (WorldMode.player) {
+        if (WorldMode.player && WorldMode.player.mesh) {
             const p = WorldMode.player.mesh.position;
             const px = cx + (p.x / maxB) * 70;
             const pz = cz + (p.z / maxB) * 70;
@@ -9973,8 +10015,10 @@ const HUD = {
         `;
         document.head.appendChild(style);
 
-        document.getElementById('chat-feed-header').addEventListener('click', () => {
-            document.getElementById('chat-feed').classList.toggle('collapsed');
+        const chatHeader = document.getElementById('chat-feed-header');
+        if (chatHeader) chatHeader.addEventListener('click', () => {
+            const feed = document.getElementById('chat-feed');
+            if (feed) feed.classList.toggle('collapsed');
         });
     },
 
@@ -10227,7 +10271,7 @@ const VoiceControls = {
         this.lastCommand = text;
         this.lastCommandTime = now;
 
-        console.log('[VOICE]', text);
+        if (GameState.debug) console.log('[VOICE]', text);
 
         // Only process commands in world mode for movement/combat
         const inWorld = GameState.mode === 'world';
@@ -10419,7 +10463,7 @@ const GestureControls = {
                 await this._loadScripts();
                 this._scriptsLoaded = true;
             } catch(e) {
-                console.warn('[GESTURE] Failed to load MediaPipe:', e);
+                if (GameState.debug) console.warn('[GESTURE] Failed to load MediaPipe:', e);
                 if (typeof HUD !== 'undefined') HUD.showToast('Failed to load gesture library');
                 this.active = false;
                 this._updateUI();
@@ -10461,7 +10505,7 @@ const GestureControls = {
             document.getElementById('gesture-panel').classList.add('visible');
             if (typeof HUD !== 'undefined') HUD.showToast('Gesture controls ON — show hand to camera');
         } catch(e) {
-            console.warn('[GESTURE] Camera access denied:', e);
+            if (GameState.debug) console.warn('[GESTURE] Camera access denied:', e);
             if (typeof HUD !== 'undefined') HUD.showToast('Camera access denied');
             this.active = false;
             this._updateUI();
@@ -11182,7 +11226,7 @@ const PostProcessing = {
 
             this.enabled = true;
         } catch(e) {
-            console.warn('[POST] Failed to init post-processing:', e);
+            if (GameState.debug) console.warn('[POST] Failed to init post-processing:', e);
             this.enabled = false;
         }
     },
@@ -11671,33 +11715,36 @@ const Settings = {
         if (typeof PostProcessing !== 'undefined') PostProcessing.onResize();
     });
 
+    // Safe DOM event binding — prevents null crashes if elements are missing
+    const _on = (id, evt, fn) => { const el = document.getElementById(id); if (el) el.addEventListener(evt, fn); };
+
     // Bridge close button
-    document.getElementById('bridge-close').addEventListener('click', () => Bridge.close());
+    _on('bridge-close', 'click', () => Bridge.close());
 
     // Bridge button
-    document.getElementById('btn-bridge').addEventListener('click', () => Bridge.toggle());
+    _on('btn-bridge', 'click', () => Bridge.toggle());
 
     // Minimap button
-    document.getElementById('btn-minimap').addEventListener('click', () => HUD.toggleMinimap());
+    _on('btn-minimap', 'click', () => HUD.toggleMinimap());
 
     // ── Screenshot / Share ──
-    document.getElementById('btn-screenshot').addEventListener('click', () => {
+    _on('btn-screenshot', 'click', () => {
         if (typeof Settings !== 'undefined') Settings.screenshot();
     });
-    document.getElementById('btn-share').addEventListener('click', () => {
+    _on('btn-share', 'click', () => {
         if (typeof Settings !== 'undefined') Settings.shareLink();
     });
 
     // ── Voice / Gesture buttons ──
-    document.getElementById('btn-voice').addEventListener('click', () => {
+    _on('btn-voice', 'click', () => {
         if (typeof VoiceControls !== 'undefined') VoiceControls.toggle();
     });
-    document.getElementById('btn-gesture').addEventListener('click', () => {
+    _on('btn-gesture', 'click', () => {
         if (typeof GestureControls !== 'undefined') GestureControls.toggle();
     });
 
     // ── Seed Export/Import ──
-    document.getElementById('btn-export-seed').addEventListener('click', () => {
+    _on('btn-export-seed', 'click', () => {
         if (GameState.mode !== 'world' || typeof WorldSeed === 'undefined') return;
         const worldId = GameState.currentWorld;
         const data = WorldSeed.exportWorld(worldId);
@@ -11711,11 +11758,12 @@ const Settings = {
         if (typeof HUD !== 'undefined') HUD.showToast('Exported ' + worldId + ' seed: ' + data.seed);
     });
 
-    document.getElementById('btn-import-seed').addEventListener('click', () => {
-        document.getElementById('seed-file-input').click();
+    _on('btn-import-seed', 'click', () => {
+        const inp = document.getElementById('seed-file-input');
+        if (inp) inp.click();
     });
 
-    document.getElementById('seed-file-input').addEventListener('change', (e) => {
+    _on('seed-file-input', 'change', (e) => {
         const file = e.target.files[0];
         if (!file) return;
         const reader = new FileReader();
@@ -11742,7 +11790,7 @@ const Settings = {
     });
 
     // ── World Population quick-travel clicks ──
-    document.getElementById('wp-list').addEventListener('click', (e) => {
+    _on('wp-list', 'click', (e) => {
         const item = e.target.closest('.wp-item');
         if (!item) return;
         const worldId = item.dataset.world;
@@ -11753,7 +11801,7 @@ const Settings = {
         Approach.start(worldId);
     });
 
-    document.getElementById('btn-reset-seed').addEventListener('click', () => {
+    _on('btn-reset-seed', 'click', () => {
         if (GameState.mode !== 'world' || typeof WorldSeed === 'undefined') return;
         const worldId = GameState.currentWorld;
         WorldSeed.clearSeed(worldId);

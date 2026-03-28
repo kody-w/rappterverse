@@ -3,31 +3,37 @@ const HUD = {
     minimapVisible: false,
 
     show() {
-        document.getElementById('top-bar').classList.add('visible');
+        const el = document.getElementById('top-bar');
+        if (el) el.classList.add('visible');
     },
 
     hide() {
-        document.getElementById('top-bar').classList.remove('visible');
+        const el = document.getElementById('top-bar');
+        if (el) el.classList.remove('visible');
     },
 
     setWorld(worldId) {
         const w = WORLDS[worldId];
-        document.getElementById('hud-world-name').textContent = w ? w.name : '';
+        const el = document.getElementById('hud-world-name');
+        if (el) el.textContent = w ? w.name : '';
     },
 
     updateAgentCount() {
-        document.getElementById('hud-agent-count').textContent = GameState.data.agents.length + ' agents';
+        const el = document.getElementById('hud-agent-count');
+        if (el) el.textContent = GameState.data.agents.length + ' agents';
     },
 
     toggleMinimap() {
         this.minimapVisible = !this.minimapVisible;
-        document.getElementById('minimap').classList.toggle('visible', this.minimapVisible);
+        const el = document.getElementById('minimap');
+        if (el) el.classList.toggle('visible', this.minimapVisible);
         if (this.minimapVisible) this.renderMinimap();
     },
 
     renderMinimap() {
         if (!this.minimapVisible || GameState.mode !== 'world') return;
         const canvas = document.getElementById('minimap-canvas');
+        if (!canvas) return;
         const ctx = canvas.getContext('2d');
         const w = WORLDS[GameState.currentWorld];
         if (!w) return;
@@ -67,7 +73,7 @@ const HUD = {
         });
 
         // Player
-        if (WorldMode.player) {
+        if (WorldMode.player && WorldMode.player.mesh) {
             const p = WorldMode.player.mesh.position;
             const px = cx + (p.x / maxB) * 70;
             const pz = cz + (p.z / maxB) * 70;
@@ -160,8 +166,10 @@ const HUD = {
         `;
         document.head.appendChild(style);
 
-        document.getElementById('chat-feed-header').addEventListener('click', () => {
-            document.getElementById('chat-feed').classList.toggle('collapsed');
+        const chatHeader = document.getElementById('chat-feed-header');
+        if (chatHeader) chatHeader.addEventListener('click', () => {
+            const feed = document.getElementById('chat-feed');
+            if (feed) feed.classList.toggle('collapsed');
         });
     },
 

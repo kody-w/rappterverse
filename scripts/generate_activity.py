@@ -193,9 +193,26 @@ def generate_activity():
         world = agent.get("world", npc_def.get("_world", "hub"))
         dialogue = npc_def.get("dialogue", [])
 
+        # Bias activity weights based on agent traits (if present)
+        traits = agent.get("traits", {})
+        w_move = 0.4
+        w_chat = 0.4
+        w_emote = 0.2
+        if traits:
+            explorer = traits.get("explorer", 0)
+            social = traits.get("social", 0)
+            fighter = traits.get("fighter", 0)
+            trader = traits.get("trader", 0)
+            # Each trait point (0-1 scale) shifts weight by up to +0.3
+            w_move += explorer * 0.3
+            w_chat += (social + trader) * 0.15
+            w_emote += fighter * 0.3
+            # Trader trait biases toward marketplace world
+            if trader > 0.5 and world != "marketplace":
+                world = "marketplace"
         activity = random.choices(
             ["move", "chat", "emote"],
-            weights=[0.4, 0.4, 0.2]
+            weights=[w_move, w_chat, w_emote]
         )[0]
 
         # Fall back to move if NPC has no dialogue

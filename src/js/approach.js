@@ -54,14 +54,16 @@ const Approach = {
 
         // Populate overlay with planet info
         const w = WORLDS[worldId];
-        document.getElementById('approach-name').textContent = w.name;
+        const approachNameEl = document.getElementById('approach-name');
+        if (approachNameEl) approachNameEl.textContent = w.name;
         const biomeEl = document.getElementById('approach-biome');
         biomeEl.textContent = w.biome;
         biomeEl.style.background = `rgba(${Galaxy.hexToRgb(w.planetColor)}, 0.2)`;
         biomeEl.style.color = `#${w.planetColor.toString(16).padStart(6, '0')}`;
 
         // Show overlay and letterbox
-        document.getElementById('approach-overlay').classList.add('active');
+        const approachOverlay = document.getElementById('approach-overlay');
+        if (approachOverlay) approachOverlay.classList.add('active');
         setTimeout(() => {
             document.getElementById('letterbox-top').classList.add('active');
             document.getElementById('letterbox-bottom').classList.add('active');
@@ -143,9 +145,12 @@ const Approach = {
         const distance = Math.max(0, (1 - approachFactor) * 1200).toFixed(0);
         const velocity = (8 + approachFactor * 12).toFixed(1);
         const eta = Math.max(0, (1 - approachFactor) * 4.5).toFixed(1);
-        document.getElementById('approach-distance').textContent = distance + ' km';
-        document.getElementById('approach-velocity').textContent = velocity + ' km/s';
-        document.getElementById('approach-eta').textContent = eta + 's';
+        const distEl = document.getElementById('approach-distance');
+        if (distEl) distEl.textContent = distance + ' km';
+        const velEl = document.getElementById('approach-velocity');
+        if (velEl) velEl.textContent = velocity + ' km/s';
+        const etaEl = document.getElementById('approach-eta');
+        if (etaEl) etaEl.textContent = eta + 's';
 
         // --- Render ---
         GameState.renderer.render(Galaxy.scene, Galaxy.camera);
@@ -170,8 +175,11 @@ const Approach = {
         if (this.animFrame) cancelAnimationFrame(this.animFrame);
         this.animFrame = null;
         this.phase = null;
-        document.getElementById('approach-overlay').classList.remove('active');
-        document.getElementById('letterbox-top').classList.remove('active');
-        document.getElementById('letterbox-bottom').classList.remove('active');
+        const approachOvl = document.getElementById('approach-overlay');
+        if (approachOvl) approachOvl.classList.remove('active');
+        const lbTop = document.getElementById('letterbox-top');
+        if (lbTop) lbTop.classList.remove('active');
+        const lbBottom = document.getElementById('letterbox-bottom');
+        if (lbBottom) lbBottom.classList.remove('active');
     }
 };

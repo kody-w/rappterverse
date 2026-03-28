@@ -6,6 +6,7 @@ const GameState = {
     selectedPlanet: null,
     bridgeOpen: false,
     minimapVisible: true,
+    debug: false,
 
     // Shared Three.js refs (assigned by each mode)
     renderer: null,
@@ -26,7 +27,7 @@ const GameState = {
     setMode(newMode) {
         const valid = ['boot', 'galaxy', 'approach', 'landing', 'world'];
         if (!valid.includes(newMode)) return false;
-        console.log(`[STATE] ${this.mode} → ${newMode}`);
+        if (this.debug) console.log(`[STATE] ${this.mode} → ${newMode}`);
         this.previousMode = this.mode;
         this.mode = newMode;
         // Notify audio system of mode change

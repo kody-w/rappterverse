@@ -9,10 +9,11 @@ const DebugOverlay = {
 
     toggle() {
         this.active = !this.active;
+        GameState.debug = this.active;
         if (this.active) {
             this._create();
             this.el.style.display = 'block';
-            console.log('[DEBUG] Overlay ON');
+            console.log('[DEBUG] Overlay ON — verbose logging enabled');
         } else if (this.el) {
             this.el.style.display = 'none';
             console.log('[DEBUG] Overlay OFF');

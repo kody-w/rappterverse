@@ -52,7 +52,8 @@ const Landing = {
         const w = WORLDS[worldId];
         const overlay = document.getElementById('landing-overlay');
         overlay.classList.add('active');
-        document.getElementById('landing-status').textContent = 'AUTOPILOT ENGAGED';
+        const landingStatusEl = document.getElementById('landing-status');
+        if (landingStatusEl) landingStatusEl.textContent = 'AUTOPILOT ENGAGED';
 
         // Scene
         this.scene = new THREE.Scene();
@@ -535,7 +536,8 @@ const Landing = {
         window.removeEventListener('resize', this.resizeHandler);
         this.keys = {};
 
-        document.getElementById('landing-overlay').classList.remove('active');
+        const landingOvl = document.getElementById('landing-overlay');
+        if (landingOvl) landingOvl.classList.remove('active');
 
         // Dispose scene resources
         if (this.scene) {
