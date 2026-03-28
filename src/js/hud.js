@@ -332,6 +332,29 @@ const HUD = {
         } catch(e) { return ''; }
     },
 
+    // ── Kill Feed ──────────────────────────────────────────
+    _killFeed: [],
+
+    showKill(victim, gold) {
+        if (!document.getElementById('kill-feed')) {
+            var el = document.createElement('div');
+            el.id = 'kill-feed';
+            el.style.cssText = 'position:fixed;top:56px;left:50%;transform:translateX(-50%);z-index:900;display:flex;flex-direction:column;align-items:center;gap:4px;pointer-events:none;';
+            document.body.appendChild(el);
+        }
+        this._killFeed.push({ victim: victim, gold: gold, time: Date.now() });
+        if (this._killFeed.length > 5) this._killFeed.shift();
+        var now = Date.now();
+        this._killFeed = this._killFeed.filter(function(k) { return now - k.time < 4000; });
+        var feedEl = document.getElementById('kill-feed');
+        feedEl.innerHTML = this._killFeed.map(function(k) {
+            var op = Math.max(0.3, 1 - (now - k.time) / 4000);
+            return '<div style="background:rgba(22,27,34,0.8);border:1px solid rgba(248,81,73,0.3);border-radius:6px;padding:3px 12px;font-size:10px;color:#c9d1d9;opacity:' + op + ';backdrop-filter:blur(4px);white-space:nowrap;">' +
+                '<span style="color:#00d4ff;font-weight:600;">YOU</span> killed <span style="color:#f85149;">' + k.victim + '</span>' +
+                (k.gold ? ' <span style="color:#fbbf24;">+' + k.gold + 'G</span>' : '') + '</div>';
+        }).join('');
+    },
+
     // ── Fullscreen Map ──────────────────────────────────────
     fullmapVisible: false,
 

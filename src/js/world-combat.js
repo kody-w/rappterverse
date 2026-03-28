@@ -540,6 +540,7 @@ const WorldCombat = {
         }
 
         nearest.hp -= dmg * comboMult;
+        this.showDamageNumber(nearest.mesh.position, dmg * comboMult, '#ff4444');
 
         // Apply status effect from equipped weapon
         if (typeof StatusEffects !== 'undefined' && typeof Equipment !== 'undefined') {
@@ -555,6 +556,7 @@ const WorldCombat = {
                 PlayerStats.kills++;
                 var _goldAmt = nearest.isBoss ? 50 : (8 + Math.floor(Math.random() * 5));
                 PlayerStats.awardGold(_goldAmt, nearest.isBoss ? 'boss' : 'creep');
+                if (typeof HUD !== 'undefined' && HUD.showKill) HUD.showKill(nearest.isBoss ? 'BOSS' : 'Creep', _goldAmt);
                 if (typeof HUD !== 'undefined' && HUD.showKill) HUD.showKill('Player', nearest.isBoss ? 'BOSS' : 'Creep', _goldAmt);
             }
             if (typeof Inventory !== 'undefined' && nearest.mesh) {
@@ -575,6 +577,35 @@ const WorldCombat = {
         // Also hit jungle camps
         if (typeof JungleCamps !== "undefined") JungleCamps.tryAttack(playerPos, dmg * comboMult);
         return true;
+    },
+
+    showDamageNumber(pos, dmg, color) {
+        if (!WorldMode.scene) return;
+        var canvas = document.createElement('canvas');
+        canvas.width = 128; canvas.height = 48;
+        var ctx = canvas.getContext('2d');
+        ctx.font = 'bold 32px monospace';
+        ctx.textAlign = 'center';
+        ctx.fillStyle = color || '#ff4444';
+        ctx.fillText(Math.round(dmg), 64, 36);
+        var sprite = new THREE.Sprite(new THREE.SpriteMaterial({
+            map: new THREE.CanvasTexture(canvas), transparent: true
+        }));
+        sprite.position.copy(pos);
+        sprite.position.y += 2;
+        sprite.scale.set(1.5, 0.6, 1);
+        WorldMode.scene.add(sprite);
+        var age = 0;
+        var interval = setInterval(function() {
+            age += 16;
+            sprite.position.y += 0.03;
+            sprite.material.opacity = Math.max(0, 1 - age / 800);
+            if (age > 800) {
+                clearInterval(interval);
+                if (sprite.parent) sprite.parent.remove(sprite);
+                sprite.material.dispose();
+            }
+        }, 16);
     },
 
     createAttackFlash(from, to) {
