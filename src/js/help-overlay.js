@@ -55,6 +55,11 @@ const HelpOverlay = {
                         <div class="help-row"><span class="help-key">H</span><span>Toggle Hand Gestures</span></div>
                     </div>
                     <div class="help-section">
+                        <div class="help-section-title">RAPPTER OS</div>
+                        <div class="help-row"><span class="help-voice">"boot linux"</span><span>Boot Alpine Linux VM in browser</span></div>
+                        <div class="help-row"><span class="help-key">Agents use (os-exec cmd)</span><span>Run shell commands between frames</span></div>
+                    </div>
+                    <div class="help-section">
                         <div class="help-section-title">VOICE COMMANDS</div>
                         <div class="help-row"><span class="help-voice">"move forward"</span><span>Walk forward</span></div>
                         <div class="help-row"><span class="help-voice">"attack"</span><span>Attack</span></div>

@@ -194,6 +194,10 @@ const VoiceControls = {
         }
 
         // ── Seed commands ──
+        if (this._match(text, ['boot linux', 'start os', 'boot os', 'start linux'])) {
+            if (typeof RappterOS !== 'undefined') RappterOS.init();
+            this._showAction('BOOT OS'); return;
+        }
         if (this._match(text, ['export seed', 'save seed', 'export world'])) {
             document.getElementById('btn-export-seed').click();
             this._showAction('EXPORT SEED'); return;

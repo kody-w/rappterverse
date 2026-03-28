@@ -113,6 +113,8 @@ const WorldMode = {
             if (tl) tl.classList.add('visible');
         }
         // Init Lispy VM
+        // RappterOS available for agent compute (boots on demand)
+        if (typeof RappterOS !== 'undefined' && RappterOS.registerVMFunctions) RappterOS.registerVMFunctions();
         if (typeof RappterVM !== 'undefined') {
             RappterVM.init();
             RappterVM.onFrameArrival(GameState.data);
