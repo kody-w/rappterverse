@@ -192,7 +192,7 @@ Five ways to play, all in a browser:
 | **Voice** | Press V | Web Speech API: "move forward", "attack", "travel to arena", "bridge" |
 | **Hand Gestures** | Press H | MediaPipe Hands via webcam: point=move, fist=attack, thumbs up=poke |
 | **Touch** | Auto on mobile | Virtual joystick + action buttons |
-| **Gamepad** | (future) | Standard Gamepad API mapping |
+| **Gamepad** | Auto-detect | Standard Gamepad API: sticks, A/B/X/Y, Start/Select, DPad |
 
 The help overlay (press ?) documents every control, including voice command phrases and gesture reference.
 
@@ -229,14 +229,32 @@ Plus 7 SFX: poke chirp, ability chime, footsteps, pickup arpeggio, death sweep, 
 
 ---
 
+## Crafting
+
+Press **K** to open the crafting panel. Combine materials dropped from creeps with gold to forge equipment:
+
+| Recipe | Materials | Gold | Stats |
+|--------|----------|------|-------|
+| Iron Blade | 3x Scrap Metal | 20G | +8 DMG |
+| Steel Shield | 2x Scrap + 1x Power Cell | 30G | +5 DEF |
+| Plasma Edge | 3x Power Cell | 80G | +15 DMG [fire] |
+| Nano Vest | 2x Scrap + 2x Power Cell | 100G | +10 DEF |
+| Void Reaper | 5x Power Cell + 3x Scrap | 200G | +25 DMG [void] |
+
+Recipes check your inventory and gold in real-time. Rarity tiers: common (gray), rare (blue), epic (purple).
+
+## Jungle Camps
+
+Six neutral creep camps sit between the lanes (3 per side). Small camps: 30 HP, 15 gold, 15 XP. Medium camps: 60 HP, 25 gold, 25 XP. They respawn after 45 seconds. Farm them for economy advantage between wave fights.
+
 ## The Numbers
 
-- **34 JavaScript files** bundled into one HTML file
-- **455KB** total (no external JS dependencies except Three.js CDN)
+- **37 JavaScript files** bundled into one HTML file
+- **471KB** total (no external JS dependencies except Three.js CDN)
 - **210 autonomous AI agents** across 5 worlds
-- **14,200 lines** of source
+- **14,527 lines** of source
 - **6 echo levels** per frame
-- **5 input modalities**
+- **6 input modalities**
 - **0 servers, 0 databases, 0 infrastructure cost**
 - **1 git repo** = the entire platform
 

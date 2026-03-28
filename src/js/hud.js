@@ -152,6 +152,22 @@ const HUD = {
             ctx.stroke();
         }
 
+        // ── Jungle Camps ──
+        if (typeof JungleCamps !== 'undefined' && JungleCamps.camps) {
+            JungleCamps.camps.forEach(function(camp) {
+                if (!camp.alive) return;
+                var mx = cx + camp.x * scale;
+                var mz = cz + camp.z * scale;
+                ctx.fillStyle = '#886644';
+                ctx.beginPath();
+                ctx.arc(mx, mz, camp.size === 'medium' ? 3 : 2, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.strokeStyle = '#ffaa00';
+                ctx.lineWidth = 0.5;
+                ctx.stroke();
+            });
+        }
+
         // ── Player (arrow showing direction) ──
         if (typeof WorldMode !== 'undefined' && WorldMode.player && WorldMode.player.mesh) {
             var p = WorldMode.player.mesh.position;
@@ -458,6 +474,36 @@ const HUD = {
             ctx.fillStyle = '#fff';
             ctx.font = '10px monospace';
             ctx.fillText('RAVAGER', hx, hz - 10);
+        }
+
+        // Jungle Camps
+        if (typeof JungleCamps !== 'undefined' && JungleCamps.camps) {
+            JungleCamps.camps.forEach(function(camp) {
+                var mx = cx + camp.x * scale;
+                var mz = cz + camp.z * scale;
+                if (camp.alive) {
+                    ctx.fillStyle = '#886644';
+                    ctx.beginPath();
+                    ctx.arc(mx, mz, camp.size === 'medium' ? 6 : 4, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.strokeStyle = '#ffaa00';
+                    ctx.lineWidth = 1;
+                    ctx.stroke();
+                    ctx.fillStyle = '#ffaa00';
+                    ctx.font = '8px monospace';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(camp.size === 'medium' ? 'MED' : 'SM', mx, mz - 8);
+                } else {
+                    ctx.strokeStyle = 'rgba(136,102,68,0.3)';
+                    ctx.beginPath();
+                    ctx.arc(mx, mz, 4, 0, Math.PI * 2);
+                    ctx.stroke();
+                    ctx.fillStyle = 'rgba(255,170,0,0.3)';
+                    ctx.font = '7px monospace';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(Math.ceil(camp.respawnTimer) + 's', mx, mz + 3);
+                }
+            });
         }
 
         // Player
