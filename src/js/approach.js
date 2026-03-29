@@ -71,6 +71,26 @@ const Approach = {
         biomeEl.style.background = `rgba(${Galaxy.hexToRgb(w.planetColor)}, 0.2)`;
         biomeEl.style.color = `#${w.planetColor.toString(16).padStart(6, '0')}`;
 
+        // Echo narrative on approach screen
+        if (typeof EchoEngine !== 'undefined') {
+            var ef = EchoEngine.getCurrentFrame();
+            if (ef && ef.echoes) {
+                var echoApproach = document.getElementById('approach-echo');
+                if (!echoApproach) {
+                    echoApproach = document.createElement('div');
+                    echoApproach.id = 'approach-echo';
+                    echoApproach.style.cssText = 'font-size:11px;color:rgba(255,255,255,0.4);font-family:monospace;text-align:center;margin-top:8px;max-width:350px;line-height:1.4;';
+                    var approachOverlayEl = document.getElementById('approach-overlay');
+                    if (approachOverlayEl) approachOverlayEl.appendChild(echoApproach);
+                }
+                var eText = '';
+                if (ef.echoes.L2) eText = ef.echoes.L2.narrative;
+                if (ef.echoes.L3 && ef.echoes.L3.tension > 0.5) eText += ' Proceed with caution.';
+                else if (ef.echoes.L3 && ef.echoes.L3.vitality > 0.6) eText += ' The world awaits.';
+                if (echoApproach) echoApproach.textContent = eText;
+            }
+        }
+
         // Show overlay and letterbox
         const approachOverlay = document.getElementById('approach-overlay');
         if (approachOverlay) approachOverlay.classList.add('active');

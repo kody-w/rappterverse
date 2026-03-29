@@ -9,6 +9,13 @@ const Crafting = {
         { name: 'Void Reaper', materials: { 'Power Cell': 5, 'Scrap Metal': 3 }, result: { type: 'weapon', name: 'Void Reaper', damage: 25, element: 'void', rarity: 'epic' }, gold: 200 },
     ],
 
+    // Echo-only recipes — only available during specific echo conditions
+    _echoRecipes: [
+        { name: 'Echo Blade', materials: { 'Power Cell': 2 }, result: { type: 'weapon', name: 'Echo Blade', damage: 20, element: 'cosmic', rarity: 'epic' }, gold: 100, condition: function(L3) { return L3.tension > 0.5; }, conditionLabel: 'Tension > 50%' },
+        { name: 'Harmony Shield', materials: { 'Scrap Metal': 2 }, result: { type: 'armor', name: 'Harmony Shield', defense: 15, rarity: 'epic' }, gold: 80, condition: function(L3) { return L3.socialEnergy > 0.5; }, conditionLabel: 'Social > 50%' },
+        { name: 'Vitality Core', materials: { 'Power Cell': 1, 'Scrap Metal': 1 }, result: { type: 'accessory', name: 'Vitality Core', rarity: 'epic' }, gold: 60, condition: function(L3) { return L3.vitality > 0.6; }, conditionLabel: 'Vitality > 60%' },
+    ],
+
     toggle() {
         this._open = !this._open;
         if (this._open) this._show();
@@ -48,7 +55,24 @@ const Crafting = {
         var inv = typeof Inventory !== 'undefined' ? Inventory : null;
         var gold = typeof PlayerStats !== 'undefined' ? PlayerStats.gold : 0;
 
-        el.innerHTML = this._recipes.map(function(r, i) {
+        // Get echo state for conditional recipes
+        var echoL3 = null;
+        if (typeof EchoEngine !== 'undefined') {
+            var ef = EchoEngine.getCurrentFrame();
+            if (ef && ef.echoes && ef.echoes.L3) echoL3 = ef.echoes.L3;
+        }
+
+        // Combine base + available echo recipes
+        var allRecipes = this._recipes.slice();
+        if (echoL3) {
+            this._echoRecipes.forEach(function(er) {
+                if (er.condition(echoL3)) {
+                    allRecipes.push(Object.assign({}, er, { _echo: true }));
+                }
+            });
+        }
+
+        el.innerHTML = allRecipes.map(function(r, i) {
             var canCraft = true;
             var matList = Object.entries(r.materials).map(function(entry) {
                 var name = entry[0], need = entry[1];
@@ -59,8 +83,9 @@ const Crafting = {
             if (gold < r.gold) canCraft = false;
 
             var rarityColor = r.result.rarity === 'epic' ? '#a78bfa' : r.result.rarity === 'rare' ? '#58a6ff' : '#8b949e';
-            return '<div class="craft-recipe">' +
-                '<div class="craft-name" style="color:' + rarityColor + '">' + r.name + '</div>' +
+            var echoBadge = r._echo ? '<span style="color:#d29922;font-size:9px;margin-left:6px;letter-spacing:1px;">ECHO</span>' : '';
+            return '<div class="craft-recipe"' + (r._echo ? ' style="border-color:rgba(210,153,34,0.3);background:rgba(210,153,34,0.05);"' : '') + '>' +
+                '<div class="craft-name" style="color:' + rarityColor + '">' + r.name + echoBadge + '</div>' +
                 '<div class="craft-mats">' + matList + ' · <span style="color:' + (gold >= r.gold ? '#fbbf24' : '#f85149') + '">' + r.gold + 'G</span></div>' +
                 '<div class="craft-result">+' + (r.result.damage ? r.result.damage + ' DMG' : r.result.defense + ' DEF') + (r.result.element ? ' [' + r.result.element + ']' : '') + '</div>' +
                 '<button class="craft-btn" ' + (canCraft ? 'onclick="Crafting.craft(' + i + ')"' : 'disabled') + '>CRAFT</button></div>';
@@ -68,7 +93,18 @@ const Crafting = {
     },
 
     craft(index) {
-        var r = this._recipes[index];
+        // Check both base and echo recipes
+        var allRecipes = this._recipes.slice();
+        if (typeof EchoEngine !== 'undefined') {
+            var ef = EchoEngine.getCurrentFrame();
+            if (ef && ef.echoes && ef.echoes.L3) {
+                var L3 = ef.echoes.L3;
+                this._echoRecipes.forEach(function(er) {
+                    if (er.condition(L3)) allRecipes.push(er);
+                });
+            }
+        }
+        var r = allRecipes[index];
         if (!r) return;
         var inv = typeof Inventory !== 'undefined' ? Inventory : null;
         if (!inv) return;
@@ -94,6 +130,11 @@ const Crafting = {
         if (inv.items) inv.items.push(Object.assign({}, r.result, { id: 'crafted-' + Date.now() }));
         if (typeof HUD !== 'undefined') HUD.showToast('Crafted ' + r.name + '!');
         if (typeof Audio !== 'undefined' && Audio.playPickup) Audio.playPickup();
+        // Crafting VFX
+        if (typeof VFX !== 'undefined' && typeof WorldMode !== 'undefined' && WorldMode.player) {
+            VFX.burst(WorldMode.player.mesh.position, 'goldPickup', { count: 12 });
+            if (r.result.rarity === 'epic') VFX.burst(WorldMode.player.mesh.position, 'levelUp', { count: 8 });
+        }
         this._render();
     }
 };

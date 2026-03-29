@@ -90,7 +90,13 @@ const JungleCamps = {
                 return;
             }
             if (!camp.mesh) return;
-            // Idle bob
+            // Idle bob + echo-reactive glow
+            var echoGlow = 0.2;
+            if (typeof EchoEngine !== 'undefined') {
+                var ef = EchoEngine.getCurrentFrame();
+                if (ef && ef.echoes && ef.echoes.L3) echoGlow = 0.2 + ef.echoes.L3.tension * 0.3;
+            }
+            if (camp.body && camp.body.material) camp.body.material.emissiveIntensity = echoGlow;
             if (camp.body) camp.body.position.y = (camp.size === 'medium' ? 1.2 : 0.8) + Math.sin(Date.now() * 0.002 + camp.x) * 0.1;
             // HP bar
             if (camp.hpBar) {
@@ -110,15 +116,27 @@ const JungleCamps = {
             var dist = Math.sqrt(dx * dx + dz * dz);
             if (dist < 4) {
                 camp.hp -= damage;
+                // VFX hit spark
+                if (typeof VFX !== 'undefined' && camp.mesh) VFX.burst(camp.mesh.position, 'hitSpark');
                 if (camp.hp <= 0) {
                     camp.alive = false;
                     camp.respawnTimer = camp.respawnTime;
                     if (camp.mesh) camp.mesh.visible = false;
-                    if (typeof PlayerStats !== 'undefined') {
-                        PlayerStats.awardXp(camp.xp);
-                        PlayerStats.kills++;
-                        PlayerStats.awardGold(camp.gold, 'jungle');
+                    // Echo-scaled rewards: tension boosts gold/xp
+                    var rewardMult = 1;
+                    if (typeof EchoEngine !== 'undefined') {
+                        var ef = EchoEngine.getCurrentFrame();
+                        if (ef && ef.echoes && ef.echoes.L3) {
+                            rewardMult = 1 + ef.echoes.L3.tension * 0.3; // Up to +30%
+                        }
                     }
+                    if (typeof PlayerStats !== 'undefined') {
+                        PlayerStats.awardXp(Math.round(camp.xp * rewardMult));
+                        PlayerStats.kills++;
+                        PlayerStats.awardGold(Math.round(camp.gold * rewardMult), 'jungle');
+                    }
+                    // Death VFX
+                    if (typeof VFX !== 'undefined' && camp.mesh) VFX.burst(camp.mesh.position, 'kill', { count: 10 });
                     if (typeof Audio !== 'undefined' && Audio.playHit) Audio.playHit();
                 }
                 return true;
