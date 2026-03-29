@@ -778,9 +778,77 @@ const HUD = {
                 echoInfo += '<span>V:' + ((L3.vitality || 0) * 100).toFixed(0) + '%</span>';
             }
         }
-        metaEl.innerHTML = echoInfo + '<span>Frame ' + (fc.frame || '---') + '</span>' +
+        // Active echo event
+        var eventInfo = '';
+        if (typeof EchoEvents !== 'undefined' && EchoEvents._activeEvent) {
+            eventInfo = '<span style="color:#fbbf24;font-weight:700;">' + EchoEvents._activeEvent.name + ' ' + Math.ceil(EchoEvents._eventTimer) + 's</span>';
+        }
+
+        metaEl.innerHTML = echoInfo + eventInfo + '<span>Frame ' + (fc.frame || '---') + '</span>' +
             '<span>Economy: ' + trend + '</span>' +
             '<span>Weather: ' + weather + '</span>';
+
+        // Echo tension sparkline — tiny graph of tension history
+        this._updateTensionSparkline();
+    },
+
+    _tensionHistory: [],
+    _updateTensionSparkline() {
+        if (typeof EchoEngine === 'undefined') return;
+        var ef = EchoEngine.getCurrentFrame();
+        if (!ef || !ef.echoes || !ef.echoes.L3) return;
+
+        this._tensionHistory.push(ef.echoes.L3.tension);
+        if (this._tensionHistory.length > 60) this._tensionHistory.shift();
+        if (this._tensionHistory.length < 3) return;
+
+        var sparkEl = document.getElementById('echo-sparkline');
+        if (!sparkEl) {
+            sparkEl = document.createElement('canvas');
+            sparkEl.id = 'echo-sparkline';
+            sparkEl.width = 120;
+            sparkEl.height = 24;
+            sparkEl.style.cssText = 'display:block;margin:4px auto 0;border-radius:3px;background:rgba(0,0,0,0.3);';
+            var uc = document.getElementById('universe-card');
+            if (uc) uc.appendChild(sparkEl);
+        }
+
+        var ctx = sparkEl.getContext('2d');
+        var W = sparkEl.width, H = sparkEl.height;
+        ctx.clearRect(0, 0, W, H);
+
+        var history = this._tensionHistory;
+        var step = W / (history.length - 1);
+
+        // Fill under the line
+        ctx.beginPath();
+        ctx.moveTo(0, H);
+        for (var i = 0; i < history.length; i++) {
+            ctx.lineTo(i * step, H - history[i] * H);
+        }
+        ctx.lineTo(W, H);
+        ctx.closePath();
+        var lastT = history[history.length - 1];
+        var fillColor = lastT > 0.6 ? 'rgba(255,68,68,0.2)' : lastT > 0.3 ? 'rgba(255,170,0,0.15)' : 'rgba(0,255,136,0.1)';
+        ctx.fillStyle = fillColor;
+        ctx.fill();
+
+        // Line
+        ctx.beginPath();
+        for (var j = 0; j < history.length; j++) {
+            var x = j * step;
+            var y = H - history[j] * H;
+            if (j === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        }
+        ctx.strokeStyle = lastT > 0.6 ? '#ff4444' : lastT > 0.3 ? '#ffaa00' : '#00ff88';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        // Current value dot
+        ctx.fillStyle = ctx.strokeStyle;
+        ctx.beginPath();
+        ctx.arc(W, H - lastT * H, 2, 0, Math.PI * 2);
+        ctx.fill();
     },
 
     updateRefreshTimer() {

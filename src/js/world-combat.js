@@ -194,6 +194,11 @@ const WorldCombat = {
         }
         if (typeof HUD !== 'undefined') HUD.showToast(echoMsg);
 
+        // Wave announcement cinematic for milestone waves
+        if (this.waveNumber % 5 === 0 || this.waveNumber === 1) {
+            this._showWaveCinematic(this.waveNumber, isSiegeWave);
+        }
+
         // Boss every 5 waves
         if (this.waveNumber % 5 === 0 && !this.bossActive) {
             this.spawnBoss();
@@ -252,6 +257,9 @@ const WorldCombat = {
         );
 
         this.scene.add(group);
+        // Spawn VFX
+        if (typeof VFX !== 'undefined') VFX.burst(group.position, 'spawnPoof', { count: 3 });
+
         this.creeps.push({
             mesh: group, hpBar,
             hp, maxHp: hp,
@@ -745,6 +753,34 @@ const WorldCombat = {
             geo.dispose();
             mat.dispose();
         }, 150);
+    },
+
+    _showWaveCinematic(wave, siege) {
+        var overlay = document.createElement('div');
+        var color = siege ? '#ff4400' : '#00d4ff';
+        var text = siege ? 'SIEGE WAVE ' + wave : 'WAVE ' + wave;
+        var sub = '';
+        if (typeof EchoEngine !== 'undefined') {
+            var ef = EchoEngine.getCurrentFrame();
+            if (ef && ef.echoes && ef.echoes.L3) {
+                var t = ef.echoes.L3.tension;
+                if (t > 0.6) sub = 'The battlefield burns';
+                else if (t > 0.3) sub = 'Tension rises';
+                else sub = 'Steady advance';
+            }
+        }
+        overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0));z-index:8500;opacity:0;transition:opacity 0.4s;pointer-events:none;';
+        overlay.innerHTML = '<div style="font-family:monospace;font-size:36px;font-weight:bold;color:' + color + ';letter-spacing:6px;text-shadow:0 0 20px ' + color + ';">' + text + '</div>' +
+            (sub ? '<div style="font-family:monospace;font-size:14px;color:rgba(255,255,255,0.5);margin-top:8px;letter-spacing:2px;">' + sub + '</div>' : '');
+        document.body.appendChild(overlay);
+        requestAnimationFrame(function() { overlay.style.opacity = '1'; });
+        setTimeout(function() { overlay.style.opacity = '0'; }, 1800);
+        setTimeout(function() { if (overlay.parentNode) overlay.parentNode.removeChild(overlay); }, 2300);
+
+        // VFX burst
+        if (typeof VFX !== 'undefined' && typeof WorldMode !== 'undefined' && WorldMode.player) {
+            VFX.burst(WorldMode.player.mesh.position, siege ? 'fire' : 'ice', { count: 10 });
+        }
     },
 
     updateCombatHUD() {

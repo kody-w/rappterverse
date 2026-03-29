@@ -157,7 +157,19 @@ const Abilities = {
   },
 
   _scaledDmg(base) {
-    return typeof PlayerStats !== 'undefined' && PlayerStats.getAbilityDamage ? PlayerStats.getAbilityDamage(base) : base;
+    var dmg = typeof PlayerStats !== 'undefined' && PlayerStats.getAbilityDamage ? PlayerStats.getAbilityDamage(base) : base;
+    // Echo amplification: abilities deal up to 20% more during high tension
+    if (typeof EchoEngine !== 'undefined') {
+      var ef = EchoEngine.getCurrentFrame();
+      if (ef && ef.echoes && ef.echoes.L3) {
+        dmg *= (1 + ef.echoes.L3.tension * 0.2);
+      }
+    }
+    // Echo Storm doubles ability damage
+    if (typeof EchoEvents !== 'undefined' && EchoEvents._amplified) {
+      dmg *= 1.5;
+    }
+    return Math.round(dmg);
   },
   _doSlash(pos, def) {
     const element = (typeof Equipment !== 'undefined') ? Equipment.getEquippedElement() : null;

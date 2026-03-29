@@ -83,23 +83,53 @@ const Shop = {
         if (!itemsEl) return;
         var filtered = this._category === 'all' ? this._items : this._items.filter(function(i) { return i.category === Shop._category; });
 
+        // Echo-reactive price modifier: tension inflates, social energy discounts
+        var priceMod = 1.0;
+        var priceTag = '';
+        if (typeof EchoEngine !== 'undefined') {
+            var ef = EchoEngine.getCurrentFrame();
+            if (ef && ef.echoes && ef.echoes.L3) {
+                var t = ef.echoes.L3.tension;
+                var s = ef.echoes.L3.socialEnergy;
+                priceMod = 1 + t * 0.25 - s * 0.15; // +25% at max tension, -15% at max social
+                priceMod = Math.max(0.8, Math.min(1.3, priceMod));
+                if (priceMod > 1.05) priceTag = ' <span style="color:#f85149;font-size:9px;">↑WAR TAX</span>';
+                else if (priceMod < 0.95) priceTag = ' <span style="color:#00ff88;font-size:9px;">↓SOCIAL DISCOUNT</span>';
+            }
+        }
+
         itemsEl.innerHTML = filtered.map(function(item, i) {
             var idx = Shop._items.indexOf(item);
-            var canBuy = gold >= item.cost;
+            var adjustedCost = Math.round(item.cost * priceMod);
+            var canBuy = gold >= adjustedCost;
+            var costColor = priceMod > 1.05 ? '#f85149' : priceMod < 0.95 ? '#00ff88' : '#fbbf24';
             return '<div class="shop-item">' +
                 '<span class="shop-icon">' + item.icon + '</span>' +
                 '<div class="shop-info"><div class="shop-name">' + item.name + '</div><div class="shop-desc">' + item.desc + '</div></div>' +
-                '<span class="shop-cost">' + item.cost + 'G</span>' +
+                '<span class="shop-cost" style="color:' + costColor + '">' + adjustedCost + 'G' + priceTag + '</span>' +
                 '<button class="shop-buy" ' + (canBuy ? 'onclick="Shop.buy(' + idx + ')"' : 'disabled') + '>BUY</button></div>';
         }).join('');
+    },
+
+    _getPriceMod() {
+        var mod = 1.0;
+        if (typeof EchoEngine !== 'undefined') {
+            var ef = EchoEngine.getCurrentFrame();
+            if (ef && ef.echoes && ef.echoes.L3) {
+                mod = 1 + ef.echoes.L3.tension * 0.25 - ef.echoes.L3.socialEnergy * 0.15;
+                mod = Math.max(0.8, Math.min(1.3, mod));
+            }
+        }
+        return mod;
     },
 
     buy(index) {
         var item = this._items[index];
         if (!item) return;
-        if (typeof PlayerStats === 'undefined' || PlayerStats.gold < item.cost) return;
+        var cost = Math.round(item.cost * this._getPriceMod());
+        if (typeof PlayerStats === 'undefined' || PlayerStats.gold < cost) return;
 
-        PlayerStats.gold -= item.cost;
+        PlayerStats.gold -= cost;
 
         if (item.effect === 'heal') {
             PlayerStats.heal(item.value);
