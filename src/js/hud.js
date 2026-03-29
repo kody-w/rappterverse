@@ -85,14 +85,34 @@ const HUD = {
         ctx.lineWidth = 1;
         ctx.strokeRect(cx - bx, cz - bz, bx * 2, bz * 2);
 
-        // ── Lanes ──
+        // ── River ──
+        ctx.strokeStyle = '#2266aa';
+        ctx.lineWidth = 4;
+        ctx.globalAlpha = 0.6;
+        ctx.beginPath();
+        ctx.moveTo(cx - bx, cz + bz);
+        ctx.lineTo(cx + bx, cz - bz);
+        ctx.stroke();
+        ctx.globalAlpha = 1;
+
+        // ── Lane Roads (dark background paths) ──
         if (typeof WorldLanes !== 'undefined' && WorldLanes.lanes) {
             var laneColors = ['#58a6ff', '#f97316', '#3fb950'];
             WorldLanes.lanes.forEach(function(lane, li) {
                 if (!lane.waypoints) return;
+                // Road background (wide dark line)
+                ctx.strokeStyle = 'rgba(40,35,25,0.8)';
+                ctx.lineWidth = 6;
+                ctx.beginPath();
+                lane.waypoints.forEach(function(wp, i) {
+                    var mx = cx + wp.x * scale, mz = cz + wp.z * scale;
+                    if (i === 0) ctx.moveTo(mx, mz); else ctx.lineTo(mx, mz);
+                });
+                ctx.stroke();
+                // Lane color line on top
                 ctx.strokeStyle = laneColors[li] || '#888';
-                ctx.lineWidth = 1.5;
-                ctx.globalAlpha = 0.4;
+                ctx.lineWidth = 2;
+                ctx.globalAlpha = 0.8;
                 ctx.beginPath();
                 lane.waypoints.forEach(function(wp, i) {
                     var mx = cx + wp.x * scale, mz = cz + wp.z * scale;
@@ -107,11 +127,35 @@ const HUD = {
         if (typeof WorldLanes !== 'undefined' && WorldLanes.towers) {
             WorldLanes.towers.forEach(function(t) {
                 if (!t.mesh || !t.mesh.position) return;
+                if (t.hp <= 0) return;
                 var mx = cx + t.mesh.position.x * scale;
                 var mz = cz + t.mesh.position.z * scale;
-                ctx.fillStyle = t.faction === 'explorer' ? '#58a6ff' : '#f85149';
-                ctx.fillRect(mx - 2, mz - 2, 4, 4);
+                var col = t.faction === 'explorer' ? '#58a6ff' : '#f85149';
+                // Tower square with border
+                ctx.fillStyle = col;
+                ctx.fillRect(mx - 3, mz - 3, 6, 6);
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 1;
+                ctx.strokeRect(mx - 3, mz - 3, 6, 6);
             });
+        }
+
+        // ── Thrones ──
+        if (typeof WorldLanes !== 'undefined' && WorldLanes.thrones) {
+            for (var faction in WorldLanes.thrones) {
+                var throne = WorldLanes.thrones[faction];
+                if (!throne || !throne.mesh || throne.hp <= 0) continue;
+                var tx = cx + throne.mesh.position.x * scale;
+                var tz = cz + throne.mesh.position.z * scale;
+                var tcol = faction === 'explorer' ? '#58a6ff' : '#f85149';
+                ctx.fillStyle = tcol;
+                ctx.beginPath();
+                ctx.arc(tx, tz, 5, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.strokeStyle = '#ffd700';
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+            }
         }
 
         // ── Portals ──
