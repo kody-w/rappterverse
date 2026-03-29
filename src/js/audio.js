@@ -19,8 +19,8 @@ const Audio = {
     this.sfxGain.gain.value = 0.5;
     this.sfxGain.connect(this.masterGain);
     const resume = () => { if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume(); };
-    document.addEventListener('click', resume);
-    document.addEventListener('keydown', resume);
+    document.addEventListener('click', resume, { once: true });
+    document.addEventListener('keydown', resume, { once: true });
     this.initialized = true;
   },
 

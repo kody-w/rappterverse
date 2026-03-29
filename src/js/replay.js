@@ -337,10 +337,12 @@ const ReplaySystem = {
                 this._ghostCreeps.push(ghost);
             }
 
-            // Smooth lerp to target position
-            ghost.position.x += (cd.pos.x - ghost.position.x) * 0.15;
-            ghost.position.y += (cd.pos.y - ghost.position.y) * 0.15;
-            ghost.position.z += (cd.pos.z - ghost.position.z) * 0.15;
+            // Smooth lerp to target position (skip when paused)
+            if (!this.paused) {
+                ghost.position.x += (cd.pos.x - ghost.position.x) * 0.15;
+                ghost.position.y += (cd.pos.y - ghost.position.y) * 0.15;
+                ghost.position.z += (cd.pos.z - ghost.position.z) * 0.15;
+            }
             ghost.rotation.y = cd.rotY;
 
             // Update color based on faction/boss — echo-reactive glow

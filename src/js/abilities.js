@@ -20,6 +20,7 @@ const Abilities = {
   projectiles: [],
   active: false,
   _effects: [],
+  _novaShakeTimer: null,
 
   init() {
     this.cooldowns = [0, 0, 0, 0, 0];
@@ -249,10 +250,12 @@ const Abilities = {
     if (typeof VFX !== 'undefined') { VFX.burst(pos, 'novaBlast'); VFX.screenFlash('#ff4400', 0.2); }
     const cam = WorldMode.camera;
     if (cam) {
+      if (this._novaShakeTimer) clearInterval(this._novaShakeTimer);
       const ox = cam.position.x, oy = cam.position.y; let shakeT = 0;
-      const id = setInterval(() => {
+      var self = this;
+      this._novaShakeTimer = setInterval(() => {
         shakeT += 16;
-        if (shakeT > 200) { cam.position.x = ox; cam.position.y = oy; clearInterval(id); return; }
+        if (shakeT > 200) { cam.position.x = ox; cam.position.y = oy; clearInterval(self._novaShakeTimer); self._novaShakeTimer = null; return; }
         cam.position.x = ox + (Math.random() - 0.5) * 0.4;
         cam.position.y = oy + (Math.random() - 0.5) * 0.3;
       }, 16);

@@ -16,6 +16,7 @@ const EchoEngine = {
     _currentEchoFrame: null,  // If scrubbing, which frame are we viewing?
     _scrubbing: false,
     _lastCaptureFrame: -1,
+    _lastSaveTime: 0,
 
     init() {
         // Load history from localStorage
@@ -82,10 +83,14 @@ const EchoEngine = {
         // Retroactively enrich older frames (they have more room for detail)
         this._retroEnrich();
 
-        // Save to localStorage
-        try {
-            localStorage.setItem('rappterverse-frame-history', JSON.stringify(this._frames));
-        } catch(e) {}
+        // Save to localStorage (throttled to every 10 seconds)
+        var now = Date.now();
+        if (now - this._lastSaveTime >= 10000) {
+            this._lastSaveTime = now;
+            try {
+                localStorage.setItem('rappterverse-frame-history', JSON.stringify(this._frames));
+            } catch(e) {}
+        }
 
         return snapshot;
     },
@@ -220,34 +225,32 @@ const EchoEngine = {
     _retroEnrich() {
         if (this._frames.length < 2) return;
 
-        // Compute L6 for each frame: temporal context from surrounding frames
+        // Single-pass: accumulate rolling mood/econ windows as we iterate forward
+        var moodWindow = [];  // rolling window of up to 5 moods
+        var econWindow = [];  // rolling window of up to 5 economy trends
+
         for (var i = 0; i < this._frames.length; i++) {
             var f = this._frames[i];
-            var prevFrames = this._frames.slice(0, i);
-            var nextFrames = this._frames.slice(i + 1);
 
             // How much room for enrichment? Older = more room
             var age = this._frames.length - i;
             var enrichmentBudget = Math.min(1, age / this._frames.length);
 
-            // Trend analysis across frames
+            // Trend analysis: compare with previous frame
             var popTrend = 'stable';
-            if (prevFrames.length > 0) {
-                var prevPop = prevFrames[prevFrames.length - 1].snapshot.worldPopulation;
+            if (i > 0) {
+                var prevPop = this._frames[i - 1].snapshot.worldPopulation;
                 var curPop = f.snapshot.worldPopulation;
                 if (curPop > prevPop + 5) popTrend = 'growing';
                 else if (curPop < prevPop - 5) popTrend = 'declining';
             }
 
-            // Mood drift
-            var moodHistory = prevFrames.slice(-5).map(function(pf) {
-                return pf.echoes.L2 ? pf.echoes.L2.dominantMood : 'neutral';
-            });
+            // Mood drift from rolling window
+            var moodHistory = moodWindow.slice();
             var moodStability = moodHistory.length > 0 && moodHistory.every(function(m) { return m === moodHistory[0]; });
 
-            // Economic arc
-            var econHistory = prevFrames.slice(-5).map(function(pf) { return pf.snapshot.economyTrend; });
-            var econShifted = econHistory.length > 1 && econHistory[0] !== econHistory[econHistory.length - 1];
+            // Economic arc from rolling window
+            var econShifted = econWindow.length > 1 && econWindow[0] !== econWindow[econWindow.length - 1];
 
             f.echoes.L6 = {
                 enrichmentBudget: enrichmentBudget,
@@ -269,6 +272,12 @@ const EchoEngine = {
                     atmosphereResolution: Math.min(3, 1 + enrichmentBudget * 2)
                 }
             };
+
+            // Update rolling windows for next iteration
+            moodWindow.push(f.echoes.L2 ? f.echoes.L2.dominantMood : 'neutral');
+            if (moodWindow.length > 5) moodWindow.shift();
+            econWindow.push(f.snapshot.economyTrend);
+            if (econWindow.length > 5) econWindow.shift();
         }
     },
 

@@ -3467,8 +3467,8 @@ const Audio = {
     this.sfxGain.gain.value = 0.5;
     this.sfxGain.connect(this.masterGain);
     const resume = () => { if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume(); };
-    document.addEventListener('click', resume);
-    document.addEventListener('keydown', resume);
+    document.addEventListener('click', resume, { once: true });
+    document.addEventListener('keydown', resume, { once: true });
     this.initialized = true;
   },
 
@@ -7957,12 +7957,18 @@ const VFX = {
     },
 
     // ── Get echo intensity multiplier (1.0 = normal, up to ~1.6 at max tension) ──
+    _echoIntensityCache: 1.0,
+    _echoIntensityCacheTime: 0,
     _getEchoIntensity() {
-        if (typeof EchoEngine === 'undefined') return 1.0;
+        var now = performance.now();
+        if (now - this._echoIntensityCacheTime < 500) return this._echoIntensityCache;
+        this._echoIntensityCacheTime = now;
+        if (typeof EchoEngine === 'undefined') { this._echoIntensityCache = 1.0; return 1.0; }
         var ef = EchoEngine.getCurrentFrame();
-        if (!ef || !ef.echoes || !ef.echoes.L3) return 1.0;
+        if (!ef || !ef.echoes || !ef.echoes.L3) { this._echoIntensityCache = 1.0; return 1.0; }
         // Tension + vitality boost particle intensity
-        return 1.0 + ef.echoes.L3.tension * 0.4 + ef.echoes.L3.vitality * 0.2;
+        this._echoIntensityCache = 1.0 + ef.echoes.L3.tension * 0.4 + ef.echoes.L3.vitality * 0.2;
+        return this._echoIntensityCache;
     },
 
     // ── One-shot burst at position ──
@@ -8380,8 +8386,9 @@ const WorldCombat = {
         // Player attack cooldown
         if (this.playerAttackTimer > 0) this.playerAttackTimer -= delta;
 
-        // Cleanup dead creeps
-        this.creeps = this.creeps.filter(c => {
+        // Cleanup dead creeps (reverse splice to avoid new array allocation)
+        for (var ci = this.creeps.length - 1; ci >= 0; ci--) {
+            var c = this.creeps[ci];
             if (!c.alive) {
                 // Type-specific death VFX
                 if (typeof VFX !== 'undefined' && c.mesh.position) {
@@ -8396,19 +8403,18 @@ const WorldCombat = {
                 // Stop boss aura emitter
                 if (c._auraEmitter && typeof VFX !== 'undefined') VFX.stopEmitter(c._auraEmitter);
                 if (c.mesh.parent) c.mesh.parent.remove(c.mesh);
-                return false;
+                this.creeps.splice(ci, 1);
             }
-            return true;
-        });
+        }
 
-        // Cleanup finished projectiles
-        this.projectiles = this.projectiles.filter(p => {
+        // Cleanup finished projectiles (reverse splice to avoid new array allocation)
+        for (var pi = this.projectiles.length - 1; pi >= 0; pi--) {
+            var p = this.projectiles[pi];
             if (!p.alive) {
                 if (p.mesh.parent) p.mesh.parent.remove(p.mesh);
-                return false;
+                this.projectiles.splice(pi, 1);
             }
-            return true;
-        });
+        }
 
         // Update HUD
         this.updateCombatHUD();
@@ -9540,10 +9546,12 @@ const ReplaySystem = {
                 this._ghostCreeps.push(ghost);
             }
 
-            // Smooth lerp to target position
-            ghost.position.x += (cd.pos.x - ghost.position.x) * 0.15;
-            ghost.position.y += (cd.pos.y - ghost.position.y) * 0.15;
-            ghost.position.z += (cd.pos.z - ghost.position.z) * 0.15;
+            // Smooth lerp to target position (skip when paused)
+            if (!this.paused) {
+                ghost.position.x += (cd.pos.x - ghost.position.x) * 0.15;
+                ghost.position.y += (cd.pos.y - ghost.position.y) * 0.15;
+                ghost.position.z += (cd.pos.z - ghost.position.z) * 0.15;
+            }
             ghost.rotation.y = cd.rotY;
 
             // Update color based on faction/boss — echo-reactive glow
@@ -11896,6 +11904,7 @@ const Abilities = {
   projectiles: [],
   active: false,
   _effects: [],
+  _novaShakeTimer: null,
 
   init() {
     this.cooldowns = [0, 0, 0, 0, 0];
@@ -12125,10 +12134,12 @@ const Abilities = {
     if (typeof VFX !== 'undefined') { VFX.burst(pos, 'novaBlast'); VFX.screenFlash('#ff4400', 0.2); }
     const cam = WorldMode.camera;
     if (cam) {
+      if (this._novaShakeTimer) clearInterval(this._novaShakeTimer);
       const ox = cam.position.x, oy = cam.position.y; let shakeT = 0;
-      const id = setInterval(() => {
+      var self = this;
+      this._novaShakeTimer = setInterval(() => {
         shakeT += 16;
-        if (shakeT > 200) { cam.position.x = ox; cam.position.y = oy; clearInterval(id); return; }
+        if (shakeT > 200) { cam.position.x = ox; cam.position.y = oy; clearInterval(self._novaShakeTimer); self._novaShakeTimer = null; return; }
         cam.position.x = ox + (Math.random() - 0.5) * 0.4;
         cam.position.y = oy + (Math.random() - 0.5) * 0.3;
       }, 16);
@@ -16270,6 +16281,7 @@ const EchoEngine = {
     _currentEchoFrame: null,  // If scrubbing, which frame are we viewing?
     _scrubbing: false,
     _lastCaptureFrame: -1,
+    _lastSaveTime: 0,
 
     init() {
         // Load history from localStorage
@@ -16336,10 +16348,14 @@ const EchoEngine = {
         // Retroactively enrich older frames (they have more room for detail)
         this._retroEnrich();
 
-        // Save to localStorage
-        try {
-            localStorage.setItem('rappterverse-frame-history', JSON.stringify(this._frames));
-        } catch(e) {}
+        // Save to localStorage (throttled to every 10 seconds)
+        var now = Date.now();
+        if (now - this._lastSaveTime >= 10000) {
+            this._lastSaveTime = now;
+            try {
+                localStorage.setItem('rappterverse-frame-history', JSON.stringify(this._frames));
+            } catch(e) {}
+        }
 
         return snapshot;
     },
@@ -16474,34 +16490,32 @@ const EchoEngine = {
     _retroEnrich() {
         if (this._frames.length < 2) return;
 
-        // Compute L6 for each frame: temporal context from surrounding frames
+        // Single-pass: accumulate rolling mood/econ windows as we iterate forward
+        var moodWindow = [];  // rolling window of up to 5 moods
+        var econWindow = [];  // rolling window of up to 5 economy trends
+
         for (var i = 0; i < this._frames.length; i++) {
             var f = this._frames[i];
-            var prevFrames = this._frames.slice(0, i);
-            var nextFrames = this._frames.slice(i + 1);
 
             // How much room for enrichment? Older = more room
             var age = this._frames.length - i;
             var enrichmentBudget = Math.min(1, age / this._frames.length);
 
-            // Trend analysis across frames
+            // Trend analysis: compare with previous frame
             var popTrend = 'stable';
-            if (prevFrames.length > 0) {
-                var prevPop = prevFrames[prevFrames.length - 1].snapshot.worldPopulation;
+            if (i > 0) {
+                var prevPop = this._frames[i - 1].snapshot.worldPopulation;
                 var curPop = f.snapshot.worldPopulation;
                 if (curPop > prevPop + 5) popTrend = 'growing';
                 else if (curPop < prevPop - 5) popTrend = 'declining';
             }
 
-            // Mood drift
-            var moodHistory = prevFrames.slice(-5).map(function(pf) {
-                return pf.echoes.L2 ? pf.echoes.L2.dominantMood : 'neutral';
-            });
+            // Mood drift from rolling window
+            var moodHistory = moodWindow.slice();
             var moodStability = moodHistory.length > 0 && moodHistory.every(function(m) { return m === moodHistory[0]; });
 
-            // Economic arc
-            var econHistory = prevFrames.slice(-5).map(function(pf) { return pf.snapshot.economyTrend; });
-            var econShifted = econHistory.length > 1 && econHistory[0] !== econHistory[econHistory.length - 1];
+            // Economic arc from rolling window
+            var econShifted = econWindow.length > 1 && econWindow[0] !== econWindow[econWindow.length - 1];
 
             f.echoes.L6 = {
                 enrichmentBudget: enrichmentBudget,
@@ -16523,6 +16537,12 @@ const EchoEngine = {
                     atmosphereResolution: Math.min(3, 1 + enrichmentBudget * 2)
                 }
             };
+
+            // Update rolling windows for next iteration
+            moodWindow.push(f.echoes.L2 ? f.echoes.L2.dominantMood : 'neutral');
+            if (moodWindow.length > 5) moodWindow.shift();
+            econWindow.push(f.snapshot.economyTrend);
+            if (econWindow.length > 5) econWindow.shift();
         }
     },
 

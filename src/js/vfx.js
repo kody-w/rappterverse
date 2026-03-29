@@ -170,12 +170,18 @@ const VFX = {
     },
 
     // ── Get echo intensity multiplier (1.0 = normal, up to ~1.6 at max tension) ──
+    _echoIntensityCache: 1.0,
+    _echoIntensityCacheTime: 0,
     _getEchoIntensity() {
-        if (typeof EchoEngine === 'undefined') return 1.0;
+        var now = performance.now();
+        if (now - this._echoIntensityCacheTime < 500) return this._echoIntensityCache;
+        this._echoIntensityCacheTime = now;
+        if (typeof EchoEngine === 'undefined') { this._echoIntensityCache = 1.0; return 1.0; }
         var ef = EchoEngine.getCurrentFrame();
-        if (!ef || !ef.echoes || !ef.echoes.L3) return 1.0;
+        if (!ef || !ef.echoes || !ef.echoes.L3) { this._echoIntensityCache = 1.0; return 1.0; }
         // Tension + vitality boost particle intensity
-        return 1.0 + ef.echoes.L3.tension * 0.4 + ef.echoes.L3.vitality * 0.2;
+        this._echoIntensityCache = 1.0 + ef.echoes.L3.tension * 0.4 + ef.echoes.L3.vitality * 0.2;
+        return this._echoIntensityCache;
     },
 
     // ── One-shot burst at position ──

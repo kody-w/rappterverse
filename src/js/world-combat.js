@@ -122,8 +122,9 @@ const WorldCombat = {
         // Player attack cooldown
         if (this.playerAttackTimer > 0) this.playerAttackTimer -= delta;
 
-        // Cleanup dead creeps
-        this.creeps = this.creeps.filter(c => {
+        // Cleanup dead creeps (reverse splice to avoid new array allocation)
+        for (var ci = this.creeps.length - 1; ci >= 0; ci--) {
+            var c = this.creeps[ci];
             if (!c.alive) {
                 // Type-specific death VFX
                 if (typeof VFX !== 'undefined' && c.mesh.position) {
@@ -138,19 +139,18 @@ const WorldCombat = {
                 // Stop boss aura emitter
                 if (c._auraEmitter && typeof VFX !== 'undefined') VFX.stopEmitter(c._auraEmitter);
                 if (c.mesh.parent) c.mesh.parent.remove(c.mesh);
-                return false;
+                this.creeps.splice(ci, 1);
             }
-            return true;
-        });
+        }
 
-        // Cleanup finished projectiles
-        this.projectiles = this.projectiles.filter(p => {
+        // Cleanup finished projectiles (reverse splice to avoid new array allocation)
+        for (var pi = this.projectiles.length - 1; pi >= 0; pi--) {
+            var p = this.projectiles[pi];
             if (!p.alive) {
                 if (p.mesh.parent) p.mesh.parent.remove(p.mesh);
-                return false;
+                this.projectiles.splice(pi, 1);
             }
-            return true;
-        });
+        }
 
         // Update HUD
         this.updateCombatHUD();
