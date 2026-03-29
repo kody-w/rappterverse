@@ -217,10 +217,19 @@ const WorldMode = {
             this.player.mesh.position.x += moveDir.x * this.playerSpeed * delta;
             this.player.mesh.position.z += moveDir.z * this.playerSpeed * delta;
             this.player.mesh.rotation.y = Math.atan2(moveDir.x, moveDir.z);
-            // Footstep sound (throttled)
+            // Footstep sound + trail particles (throttled)
             if (!this._lastFootstep || time - this._lastFootstep > 0.3) {
                 this._lastFootstep = time;
                 if (typeof Audio !== 'undefined' && Audio.playFootstep) Audio.playFootstep();
+                // Echo-reactive movement trail
+                if (typeof VFX !== 'undefined') {
+                    var trailPreset = 'dashTrail';
+                    if (typeof EchoEngine !== 'undefined') {
+                        var ef = EchoEngine.getCurrentFrame();
+                        if (ef && ef.echoes && ef.echoes.L3 && ef.echoes.L3.tension > 0.5) trailPreset = 'echoTension';
+                    }
+                    VFX.burst(this.player.mesh.position, trailPreset, { count: 1 });
+                }
             }
 
             // Walk animation
@@ -279,6 +288,7 @@ const WorldMode = {
         if (typeof VFX !== 'undefined') VFX.update(delta);
         if (typeof ReplaySystem !== 'undefined') ReplaySystem.update(delta, time);
         if (typeof Audio !== 'undefined' && Audio.updateEchoAudio) Audio.updateEchoAudio(delta);
+        if (typeof EchoEvents !== 'undefined') EchoEvents.update(delta);
         if (typeof JungleCamps !== "undefined") JungleCamps.update(delta, this.player.mesh.position);
         WorldAgents.updateAnimations(time);
         WorldAgents.checkInteractions(this.player.mesh.position);
@@ -373,6 +383,7 @@ const WorldMode = {
 
         if (typeof ReplaySystem !== 'undefined') ReplaySystem.cleanup();
         if (typeof VFX !== 'undefined') VFX.cleanup();
+        if (typeof EchoEvents !== 'undefined') EchoEvents.cleanup();
         WorldCombat.cleanup();
         if (typeof JungleCamps !== "undefined") JungleCamps.cleanup();
         WorldLanes.cleanup();

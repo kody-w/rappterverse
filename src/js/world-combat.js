@@ -498,15 +498,32 @@ const WorldCombat = {
     },
 
     fireProjectile(from, target, damage, color) {
-        const geo = new THREE.SphereGeometry(0.2, 6, 6);
-        const mat = new THREE.MeshBasicMaterial({ color });
+        // Echo-reactive projectile: tension tints projectiles, amplified size during echo storm
+        var projSize = 0.2;
+        var projColor = color;
+        if (typeof EchoEngine !== 'undefined') {
+            var ef = EchoEngine.getCurrentFrame();
+            if (ef && ef.echoes && ef.echoes.L3 && ef.echoes.L3.tension > 0.5) {
+                // Tint projectiles more vibrant during high tension
+                projSize = 0.25 + ef.echoes.L3.tension * 0.1;
+            }
+        }
+        if (typeof EchoEvents !== 'undefined' && EchoEvents._amplified) {
+            projSize *= 1.5; // Echo storm amplifies projectiles
+        }
+        const geo = new THREE.SphereGeometry(projSize, 6, 6);
+        const mat = new THREE.MeshBasicMaterial({ color: projColor });
         const mesh = new THREE.Mesh(geo, mat);
         mesh.position.copy(from);
         this.scene.add(mesh);
 
+        // Trail VFX for projectiles
+        var trail = null;
+        if (typeof VFX !== 'undefined') trail = VFX.trail(mesh, 'pulseTrail');
+
         this.projectiles.push({
-            mesh, target, damage, color,
-            speed: 25, alive: true
+            mesh, target, damage, color: projColor,
+            speed: 25, alive: true, _trail: trail
         });
     },
 
@@ -516,6 +533,7 @@ const WorldCombat = {
 
             if (!proj.target || !proj.target.alive) {
                 proj.alive = false;
+                if (proj._trail && typeof VFX !== 'undefined') VFX.stopTrail(proj._trail);
                 continue;
             }
 
@@ -543,6 +561,7 @@ const WorldCombat = {
                     }
                 }
                 proj.alive = false;
+                if (proj._trail && typeof VFX !== 'undefined') VFX.stopTrail(proj._trail);
             } else {
                 const mx = (dx / dist) * proj.speed * delta;
                 const my = (dy / dist) * proj.speed * delta;
@@ -744,9 +763,49 @@ const WorldCombat = {
             title.style.color = result === 'VICTORY' ? '#00ff88' : '#ff4444';
         }
         if (stats && typeof PlayerStats !== 'undefined') {
-            stats.textContent = 'KDA: ' + PlayerStats.kills + '/' + PlayerStats.deaths + '/' + PlayerStats.assists +
+            var statText = 'KDA: ' + PlayerStats.kills + '/' + PlayerStats.deaths + '/' + PlayerStats.assists +
                 ' | Gold: ' + PlayerStats.gold + ' | GPM: ' + PlayerStats.getGPM() +
                 ' | Level: ' + PlayerStats.level + ' | Wave: ' + this.waveNumber;
+            stats.textContent = statText;
+        }
+        // Echo summary on victory
+        var echoSummary = document.getElementById('victory-echo');
+        if (!echoSummary) {
+            echoSummary = document.createElement('div');
+            echoSummary.id = 'victory-echo';
+            echoSummary.style.cssText = 'font-size:12px;color:rgba(255,255,255,0.5);font-family:monospace;margin-top:12px;max-width:500px;text-align:center;line-height:1.5;';
+            if (overlay) overlay.appendChild(echoSummary);
+        }
+        if (typeof EchoEngine !== 'undefined') {
+            var frames = EchoEngine.getFrames();
+            var ef = EchoEngine.getCurrentFrame();
+            var echoText = '';
+            if (ef && ef.echoes) {
+                var L3 = ef.echoes.L3 || {};
+                var L6 = ef.echoes.L6 || {};
+                echoText += 'Echo Analysis: ';
+                echoText += 'Tension ' + Math.round((L3.tension || 0) * 100) + '% | ';
+                echoText += 'Vitality ' + Math.round((L3.vitality || 0) * 100) + '% | ';
+                echoText += 'Social ' + Math.round((L3.socialEnergy || 0) * 100) + '%\n';
+                if (L6.populationTrend) echoText += 'Population: ' + L6.populationTrend + ' | ';
+                if (L6.economicArc) echoText += 'Economy: ' + L6.economicArc;
+                echoText += '\n' + frames.length + ' echo frames captured across this session.';
+                if (ef.echoes.L2) echoText += '\n' + ef.echoes.L2.narrative;
+            }
+            echoSummary.textContent = echoText;
+        }
+        // VFX victory burst
+        if (typeof VFX !== 'undefined') {
+            if (result === 'VICTORY') {
+                VFX.screenFlash('#00ff88', 0.5);
+                for (var vi = 0; vi < 5; vi++) {
+                    setTimeout(function() {
+                        VFX.burst({ x: (Math.random() - 0.5) * 30, y: 3, z: (Math.random() - 0.5) * 30 }, 'levelUp');
+                    }, vi * 300);
+                }
+            } else {
+                VFX.screenFlash('#ff0000', 0.6);
+            }
         }
         overlay.style.display = 'flex';
         if (btn) {

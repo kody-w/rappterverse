@@ -14,6 +14,19 @@ const ComboSystem = {
         if (this.killStreak > this.bestStreak) this.bestStreak = this.killStreak;
         this.updateDisplay();
         if (typeof Audio !== 'undefined') Audio.playClick();
+        // Escalating VFX for combo chains
+        if (typeof VFX !== 'undefined' && typeof WorldMode !== 'undefined' && WorldMode.player) {
+            var pos = WorldMode.player.mesh.position;
+            if (this.count >= 10) {
+                VFX.burst(pos, 'novaBlast', { count: 20 });
+                VFX.screenFlash('#ffd700', 0.3);
+            } else if (this.count >= 5) {
+                VFX.burst(pos, 'levelUp', { count: 12 });
+                VFX.screenFlash('#00ffff', 0.2);
+            } else if (this.count >= 3) {
+                VFX.burst(pos, 'goldPickup', { count: 6 });
+            }
+        }
     },
 
     getMultiplier() {

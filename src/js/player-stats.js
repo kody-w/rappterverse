@@ -124,9 +124,12 @@ const PlayerStats = {
     return true;
   },
 
+  _echoXpBonus: 1,
   awardXp(amount) {
-    this.xp += amount;
-    if (typeof HUD !== 'undefined' && HUD.showToast) HUD.showToast(`+${amount} XP`);
+    var xp = Math.round(amount * this._echoXpBonus);
+    this.xp += xp;
+    var bonusStr = this._echoXpBonus > 1 ? ' (echo bonus!)' : '';
+    if (typeof HUD !== 'undefined' && HUD.showToast) HUD.showToast('+' + xp + ' XP' + bonusStr);
     if (this.xp >= this.xpToLevel) this.levelUp();
   },
 

@@ -50,6 +50,7 @@ JS_FILES=(
     src/js/vfx.js
     src/js/world-combat.js
     src/js/replay.js
+    src/js/echo-events.js
     src/js/world-agents.js
     src/js/debug.js
     src/js/inventory.js

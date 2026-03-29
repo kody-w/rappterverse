@@ -3978,9 +3978,12 @@ const PlayerStats = {
     return true;
   },
 
+  _echoXpBonus: 1,
   awardXp(amount) {
-    this.xp += amount;
-    if (typeof HUD !== 'undefined' && HUD.showToast) HUD.showToast(`+${amount} XP`);
+    var xp = Math.round(amount * this._echoXpBonus);
+    this.xp += xp;
+    var bonusStr = this._echoXpBonus > 1 ? ' (echo bonus!)' : '';
+    if (typeof HUD !== 'undefined' && HUD.showToast) HUD.showToast('+' + xp + ' XP' + bonusStr);
     if (this.xp >= this.xpToLevel) this.levelUp();
   },
 
@@ -8562,15 +8565,32 @@ const WorldCombat = {
     },
 
     fireProjectile(from, target, damage, color) {
-        const geo = new THREE.SphereGeometry(0.2, 6, 6);
-        const mat = new THREE.MeshBasicMaterial({ color });
+        // Echo-reactive projectile: tension tints projectiles, amplified size during echo storm
+        var projSize = 0.2;
+        var projColor = color;
+        if (typeof EchoEngine !== 'undefined') {
+            var ef = EchoEngine.getCurrentFrame();
+            if (ef && ef.echoes && ef.echoes.L3 && ef.echoes.L3.tension > 0.5) {
+                // Tint projectiles more vibrant during high tension
+                projSize = 0.25 + ef.echoes.L3.tension * 0.1;
+            }
+        }
+        if (typeof EchoEvents !== 'undefined' && EchoEvents._amplified) {
+            projSize *= 1.5; // Echo storm amplifies projectiles
+        }
+        const geo = new THREE.SphereGeometry(projSize, 6, 6);
+        const mat = new THREE.MeshBasicMaterial({ color: projColor });
         const mesh = new THREE.Mesh(geo, mat);
         mesh.position.copy(from);
         this.scene.add(mesh);
 
+        // Trail VFX for projectiles
+        var trail = null;
+        if (typeof VFX !== 'undefined') trail = VFX.trail(mesh, 'pulseTrail');
+
         this.projectiles.push({
-            mesh, target, damage, color,
-            speed: 25, alive: true
+            mesh, target, damage, color: projColor,
+            speed: 25, alive: true, _trail: trail
         });
     },
 
@@ -8580,6 +8600,7 @@ const WorldCombat = {
 
             if (!proj.target || !proj.target.alive) {
                 proj.alive = false;
+                if (proj._trail && typeof VFX !== 'undefined') VFX.stopTrail(proj._trail);
                 continue;
             }
 
@@ -8607,6 +8628,7 @@ const WorldCombat = {
                     }
                 }
                 proj.alive = false;
+                if (proj._trail && typeof VFX !== 'undefined') VFX.stopTrail(proj._trail);
             } else {
                 const mx = (dx / dist) * proj.speed * delta;
                 const my = (dy / dist) * proj.speed * delta;
@@ -8808,9 +8830,49 @@ const WorldCombat = {
             title.style.color = result === 'VICTORY' ? '#00ff88' : '#ff4444';
         }
         if (stats && typeof PlayerStats !== 'undefined') {
-            stats.textContent = 'KDA: ' + PlayerStats.kills + '/' + PlayerStats.deaths + '/' + PlayerStats.assists +
+            var statText = 'KDA: ' + PlayerStats.kills + '/' + PlayerStats.deaths + '/' + PlayerStats.assists +
                 ' | Gold: ' + PlayerStats.gold + ' | GPM: ' + PlayerStats.getGPM() +
                 ' | Level: ' + PlayerStats.level + ' | Wave: ' + this.waveNumber;
+            stats.textContent = statText;
+        }
+        // Echo summary on victory
+        var echoSummary = document.getElementById('victory-echo');
+        if (!echoSummary) {
+            echoSummary = document.createElement('div');
+            echoSummary.id = 'victory-echo';
+            echoSummary.style.cssText = 'font-size:12px;color:rgba(255,255,255,0.5);font-family:monospace;margin-top:12px;max-width:500px;text-align:center;line-height:1.5;';
+            if (overlay) overlay.appendChild(echoSummary);
+        }
+        if (typeof EchoEngine !== 'undefined') {
+            var frames = EchoEngine.getFrames();
+            var ef = EchoEngine.getCurrentFrame();
+            var echoText = '';
+            if (ef && ef.echoes) {
+                var L3 = ef.echoes.L3 || {};
+                var L6 = ef.echoes.L6 || {};
+                echoText += 'Echo Analysis: ';
+                echoText += 'Tension ' + Math.round((L3.tension || 0) * 100) + '% | ';
+                echoText += 'Vitality ' + Math.round((L3.vitality || 0) * 100) + '% | ';
+                echoText += 'Social ' + Math.round((L3.socialEnergy || 0) * 100) + '%\n';
+                if (L6.populationTrend) echoText += 'Population: ' + L6.populationTrend + ' | ';
+                if (L6.economicArc) echoText += 'Economy: ' + L6.economicArc;
+                echoText += '\n' + frames.length + ' echo frames captured across this session.';
+                if (ef.echoes.L2) echoText += '\n' + ef.echoes.L2.narrative;
+            }
+            echoSummary.textContent = echoText;
+        }
+        // VFX victory burst
+        if (typeof VFX !== 'undefined') {
+            if (result === 'VICTORY') {
+                VFX.screenFlash('#00ff88', 0.5);
+                for (var vi = 0; vi < 5; vi++) {
+                    setTimeout(function() {
+                        VFX.burst({ x: (Math.random() - 0.5) * 30, y: 3, z: (Math.random() - 0.5) * 30 }, 'levelUp');
+                    }, vi * 300);
+                }
+            } else {
+                VFX.screenFlash('#ff0000', 0.6);
+            }
         }
         overlay.style.display = 'flex';
         if (btn) {
@@ -9659,6 +9721,190 @@ const ReplaySystem = {
         for (var i = 0; i < this.eventLog.length; i++) {
             delete this.eventLog[i]._played;
         }
+    }
+};
+
+// === js/echo-events.js ===
+// Echo Events — Procedural world events triggered by echo thresholds
+// Events emerge organically from the simulation's emotional state
+
+const EchoEvents = {
+    _timer: 0,
+    _cooldown: 30,  // Min seconds between events
+    _lastEvent: null,
+    _activeEvent: null,
+    _eventTimer: 0,
+
+    // Event definitions — each triggers at specific echo conditions
+    events: [
+        {
+            id: 'tension_spike',
+            name: 'BATTLE FURY',
+            condition: function(L3) { return L3.tension > 0.7; },
+            duration: 15,
+            onStart: function() {
+                if (typeof HUD !== 'undefined') HUD.showToast('BATTLE FURY — All damage +30% for 15s!');
+                if (typeof VFX !== 'undefined') VFX.screenFlash('#ff2222', 0.4);
+                // Boost all damage
+                if (typeof COMBAT_CONFIG !== 'undefined') {
+                    COMBAT_CONFIG._origPlayerDmg = COMBAT_CONFIG.playerDamage;
+                    COMBAT_CONFIG.playerDamage = Math.round(COMBAT_CONFIG.playerDamage * 1.3);
+                }
+            },
+            onEnd: function() {
+                if (typeof COMBAT_CONFIG !== 'undefined' && COMBAT_CONFIG._origPlayerDmg) {
+                    COMBAT_CONFIG.playerDamage = COMBAT_CONFIG._origPlayerDmg;
+                    delete COMBAT_CONFIG._origPlayerDmg;
+                }
+                if (typeof HUD !== 'undefined') HUD.showToast('Battle Fury faded.');
+            }
+        },
+        {
+            id: 'social_bloom',
+            name: 'SOCIAL BLOOM',
+            condition: function(L3) { return L3.socialEnergy > 0.7 && L3.tension < 0.3; },
+            duration: 20,
+            onStart: function() {
+                if (typeof HUD !== 'undefined') HUD.showToast('SOCIAL BLOOM — XP gain +50% for 20s!');
+                if (typeof VFX !== 'undefined') VFX.screenFlash('#ffd700', 0.3);
+                if (typeof PlayerStats !== 'undefined') {
+                    PlayerStats._echoXpBonus = 1.5;
+                }
+            },
+            onEnd: function() {
+                if (typeof PlayerStats !== 'undefined') {
+                    PlayerStats._echoXpBonus = 1;
+                }
+                if (typeof HUD !== 'undefined') HUD.showToast('Social Bloom faded.');
+            }
+        },
+        {
+            id: 'vitality_surge',
+            name: 'VITALITY SURGE',
+            condition: function(L3) { return L3.vitality > 0.7; },
+            duration: 12,
+            onStart: function() {
+                if (typeof HUD !== 'undefined') HUD.showToast('VITALITY SURGE — HP regen 3x for 12s!');
+                if (typeof VFX !== 'undefined') {
+                    VFX.screenFlash('#00ff88', 0.3);
+                    // Scatter healing particles
+                    if (typeof WorldMode !== 'undefined' && WorldMode.player) {
+                        VFX.burst(WorldMode.player.mesh.position, 'echoVitality', { count: 20 });
+                    }
+                }
+                if (typeof PlayerStats !== 'undefined') {
+                    PlayerStats._origHpRegen = PlayerStats.hpRegen;
+                    PlayerStats.hpRegen *= 3;
+                }
+            },
+            onEnd: function() {
+                if (typeof PlayerStats !== 'undefined' && PlayerStats._origHpRegen) {
+                    PlayerStats.hpRegen = PlayerStats._origHpRegen;
+                    delete PlayerStats._origHpRegen;
+                }
+                if (typeof HUD !== 'undefined') HUD.showToast('Vitality Surge faded.');
+            }
+        },
+        {
+            id: 'echo_storm',
+            name: 'ECHO STORM',
+            condition: function(L3) { return L3.tension > 0.5 && L3.vitality > 0.5 && L3.socialEnergy > 0.3; },
+            duration: 10,
+            onStart: function() {
+                if (typeof HUD !== 'undefined') HUD.showToast('ECHO STORM — All echoes amplified!');
+                if (typeof VFX !== 'undefined') {
+                    VFX.screenFlash('#aa44ff', 0.5);
+                    // Massive particle burst
+                    for (var i = 0; i < 5; i++) {
+                        var rx = (Math.random() - 0.5) * 40;
+                        var rz = (Math.random() - 0.5) * 40;
+                        VFX.burst({ x: rx, y: 2, z: rz }, 'cosmic', { count: 8 });
+                    }
+                }
+                // Amplify all echo effects
+                EchoEvents._amplified = true;
+            },
+            onEnd: function() {
+                EchoEvents._amplified = false;
+                if (typeof HUD !== 'undefined') HUD.showToast('Echo Storm subsided.');
+            }
+        },
+        {
+            id: 'calm_before_storm',
+            name: 'CALM BEFORE THE STORM',
+            condition: function(L3) { return L3.tension < 0.1 && L3.vitality < 0.3; },
+            duration: 8,
+            onStart: function() {
+                if (typeof HUD !== 'undefined') HUD.showToast('An eerie calm settles...');
+                // Fog thickens
+                if (typeof WorldMode !== 'undefined' && WorldMode.scene && WorldMode.scene.fog) {
+                    EchoEvents._origFog = WorldMode.scene.fog.density;
+                    WorldMode.scene.fog.density = 0.006;
+                }
+            },
+            onEnd: function() {
+                if (typeof WorldMode !== 'undefined' && WorldMode.scene && WorldMode.scene.fog && EchoEvents._origFog) {
+                    WorldMode.scene.fog.density = EchoEvents._origFog;
+                    delete EchoEvents._origFog;
+                }
+                if (typeof HUD !== 'undefined') HUD.showToast('The calm has passed.');
+            }
+        }
+    ],
+
+    _amplified: false,
+
+    update(delta) {
+        // Manage active event
+        if (this._activeEvent) {
+            this._eventTimer -= delta;
+            // Ongoing VFX for active events
+            if (this._activeEvent.id === 'echo_storm' && typeof VFX !== 'undefined') {
+                if (Math.random() < 0.1) {
+                    var rx = (Math.random() - 0.5) * 50;
+                    var rz = (Math.random() - 0.5) * 50;
+                    VFX.burst({ x: rx, y: 3 + Math.random() * 5, z: rz }, 'cosmic', { count: 2 });
+                }
+            }
+            if (this._eventTimer <= 0) {
+                this._activeEvent.onEnd();
+                this._activeEvent = null;
+            }
+            return;
+        }
+
+        // Cooldown between events
+        this._timer -= delta;
+        if (this._timer > 0) return;
+        this._timer = 5; // Check every 5 seconds
+
+        // Check conditions
+        if (typeof EchoEngine === 'undefined') return;
+        var ef = EchoEngine.getCurrentFrame();
+        if (!ef || !ef.echoes || !ef.echoes.L3) return;
+        var L3 = ef.echoes.L3;
+
+        for (var i = 0; i < this.events.length; i++) {
+            var evt = this.events[i];
+            if (evt.id === this._lastEvent) continue; // Don't repeat last event
+            if (evt.condition(L3)) {
+                this._activeEvent = evt;
+                this._eventTimer = evt.duration;
+                this._lastEvent = evt.id;
+                this._cooldown = 30 + Math.random() * 30; // 30-60s cooldown
+                this._timer = this._cooldown;
+                evt.onStart();
+                break;
+            }
+        }
+    },
+
+    cleanup() {
+        if (this._activeEvent) {
+            this._activeEvent.onEnd();
+            this._activeEvent = null;
+        }
+        this._amplified = false;
     }
 };
 
@@ -10897,6 +11143,19 @@ const ComboSystem = {
         if (this.killStreak > this.bestStreak) this.bestStreak = this.killStreak;
         this.updateDisplay();
         if (typeof Audio !== 'undefined') Audio.playClick();
+        // Escalating VFX for combo chains
+        if (typeof VFX !== 'undefined' && typeof WorldMode !== 'undefined' && WorldMode.player) {
+            var pos = WorldMode.player.mesh.position;
+            if (this.count >= 10) {
+                VFX.burst(pos, 'novaBlast', { count: 20 });
+                VFX.screenFlash('#ffd700', 0.3);
+            } else if (this.count >= 5) {
+                VFX.burst(pos, 'levelUp', { count: 12 });
+                VFX.screenFlash('#00ffff', 0.2);
+            } else if (this.count >= 3) {
+                VFX.burst(pos, 'goldPickup', { count: 6 });
+            }
+        }
     },
 
     getMultiplier() {
@@ -12155,10 +12414,19 @@ const WorldMode = {
             this.player.mesh.position.x += moveDir.x * this.playerSpeed * delta;
             this.player.mesh.position.z += moveDir.z * this.playerSpeed * delta;
             this.player.mesh.rotation.y = Math.atan2(moveDir.x, moveDir.z);
-            // Footstep sound (throttled)
+            // Footstep sound + trail particles (throttled)
             if (!this._lastFootstep || time - this._lastFootstep > 0.3) {
                 this._lastFootstep = time;
                 if (typeof Audio !== 'undefined' && Audio.playFootstep) Audio.playFootstep();
+                // Echo-reactive movement trail
+                if (typeof VFX !== 'undefined') {
+                    var trailPreset = 'dashTrail';
+                    if (typeof EchoEngine !== 'undefined') {
+                        var ef = EchoEngine.getCurrentFrame();
+                        if (ef && ef.echoes && ef.echoes.L3 && ef.echoes.L3.tension > 0.5) trailPreset = 'echoTension';
+                    }
+                    VFX.burst(this.player.mesh.position, trailPreset, { count: 1 });
+                }
             }
 
             // Walk animation
@@ -12217,6 +12485,7 @@ const WorldMode = {
         if (typeof VFX !== 'undefined') VFX.update(delta);
         if (typeof ReplaySystem !== 'undefined') ReplaySystem.update(delta, time);
         if (typeof Audio !== 'undefined' && Audio.updateEchoAudio) Audio.updateEchoAudio(delta);
+        if (typeof EchoEvents !== 'undefined') EchoEvents.update(delta);
         if (typeof JungleCamps !== "undefined") JungleCamps.update(delta, this.player.mesh.position);
         WorldAgents.updateAnimations(time);
         WorldAgents.checkInteractions(this.player.mesh.position);
@@ -12311,6 +12580,7 @@ const WorldMode = {
 
         if (typeof ReplaySystem !== 'undefined') ReplaySystem.cleanup();
         if (typeof VFX !== 'undefined') VFX.cleanup();
+        if (typeof EchoEvents !== 'undefined') EchoEvents.cleanup();
         WorldCombat.cleanup();
         if (typeof JungleCamps !== "undefined") JungleCamps.cleanup();
         WorldLanes.cleanup();
