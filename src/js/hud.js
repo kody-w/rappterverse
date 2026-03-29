@@ -85,6 +85,27 @@ const HUD = {
         ctx.lineWidth = 1;
         ctx.strokeRect(cx - bx, cz - bz, bx * 2, bz * 2);
 
+        // ── Darken forest areas (everything not lane/river) ──
+        ctx.fillStyle = 'rgba(0, 15, 0, 0.35)';
+        ctx.fillRect(0, 0, S, S);
+
+        // ── Clear lane paths as lighter areas ──
+        if (typeof WorldLanes !== 'undefined' && WorldLanes.lanes) {
+            ctx.globalCompositeOperation = 'destination-out';
+            WorldLanes.lanes.forEach(function(lane) {
+                if (!lane.waypoints) return;
+                ctx.strokeStyle = 'rgba(0,0,0,0.25)';
+                ctx.lineWidth = 10;
+                ctx.beginPath();
+                lane.waypoints.forEach(function(wp, i) {
+                    var mx = cx + wp.x * scale, mz = cz + wp.z * scale;
+                    if (i === 0) ctx.moveTo(mx, mz); else ctx.lineTo(mx, mz);
+                });
+                ctx.stroke();
+            });
+            ctx.globalCompositeOperation = 'source-over';
+        }
+
         // ── River ──
         ctx.strokeStyle = '#2266aa';
         ctx.lineWidth = 4;

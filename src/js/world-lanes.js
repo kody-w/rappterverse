@@ -192,21 +192,31 @@ const WorldLanes = {
         }
     },
 
-    // ── BRUSH / FOREST WALLS (boundary + jungle areas) ──
+    // ── DENSE FOREST (fill everything, carve out lanes + river) ──
     buildBrush(scene, sx, sz, w) {
         const rng = typeof seededRandom !== 'undefined' ? seededRandom('brush-' + (GameState.currentWorld || 'hub')) : Math.random;
         const biome = w.biome || 'Terra';
+        const laneCarveRadius = 8;  // Clear space around lanes
+        const riverCarveRadius = 12; // Clear space around river
+        const baseCarveRadius = 20;  // Clear space around team bases
 
-        // Boundary forest (dense ring of trees/bushes at world edge)
-        const edgeCount = 300;
-        for (let i = 0; i < edgeCount; i++) {
-            const angle = (i / edgeCount) * Math.PI * 2;
-            const edgeR = Math.max(sx, sz) * (0.95 + rng() * 0.15);
-            const x = Math.cos(angle) * edgeR * (0.8 + rng() * 0.4);
-            const z = Math.sin(angle) * edgeR * (0.8 + rng() * 0.4);
+        // Fill the ENTIRE map with forest — 600 objects on a grid
+        const gridStep = Math.max(sx, sz) * 2 / 15; // ~15x15 grid
+        for (let gx = -sx; gx <= sx; gx += gridStep) {
+            for (let gz = -sz; gz <= sz; gz += gridStep) {
+                const x = gx + (rng() - 0.5) * gridStep * 0.8;
+                const z = gz + (rng() - 0.5) * gridStep * 0.8;
 
-            // Skip if too close to lanes
-            if (this.isNearLane(x, z, 6)) continue;
+                // CARVE: skip if near any lane
+                if (this.isNearLane(x, z, laneCarveRadius)) continue;
+
+                // CARVE: skip if near river (diagonal from -sx,sz to sx,-sz)
+                const riverDist = Math.abs(x + z) / Math.sqrt(2);
+                if (riverDist < riverCarveRadius) continue;
+
+                // CARVE: skip if near team bases
+                if (Math.sqrt((x+sx)*(x+sx)+(z+sz)*(z+sz)) < baseCarveRadius) continue;
+                if (Math.sqrt((x-sx)*(x-sx)+(z-sz)*(z-sz)) < baseCarveRadius) continue;
 
             const h = 2 + rng() * 4;
             const r = 1 + rng() * 2;
@@ -266,6 +276,7 @@ const WorldLanes = {
             g.rotation.y = rng() * Math.PI * 2;
             scene.add(g);
             this.lanePaths.push(g);
+            }
         }
 
         // Jungle brush patches (between lanes — hide spots)
