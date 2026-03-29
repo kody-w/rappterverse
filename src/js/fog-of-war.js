@@ -124,6 +124,9 @@ const FogOfWar = {
     placeWard() {
         if (typeof WorldMode === 'undefined' || !WorldMode.player) return;
         var p = WorldMode.player.mesh.position;
+        // Ward placement VFX
+        if (typeof VFX !== 'undefined') VFX.burst(p, 'echoSocial', { count: 10 });
+        if (typeof Audio !== 'undefined' && Audio.playClick) Audio.playClick();
         var ward = {
             x: p.x, z: p.z,
             placed: Date.now(),

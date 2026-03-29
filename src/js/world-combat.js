@@ -692,9 +692,15 @@ const WorldCombat = {
             if (typeof PlayerStats !== 'undefined') {
                 PlayerStats.awardXp(nearest.isBoss ? 50 : 10);
                 PlayerStats.kills++;
-                var _goldAmt = nearest.isBoss ? 50 : (8 + Math.floor(Math.random() * 5));
-                PlayerStats.awardGold(_goldAmt, nearest.isBoss ? 'boss' : 'creep');
-                if (typeof HUD !== 'undefined' && HUD.showKill) HUD.showKill(nearest.isBoss ? 'BOSS' : 'Creep', _goldAmt);
+                // Last-hit bonus — player dealing the killing blow gets extra gold
+                var baseGold = nearest.isBoss ? 50 : (8 + Math.floor(Math.random() * 5));
+                var lastHitBonus = nearest.isBoss ? 25 : (3 + Math.floor(Math.random() * 4));
+                var _goldAmt = baseGold + lastHitBonus;
+                if (!PlayerStats.lastHits) PlayerStats.lastHits = 0;
+                PlayerStats.lastHits++;
+                PlayerStats.awardGold(_goldAmt, 'last hit');
+                // Show last hit indicator
+                if (nearest.mesh) this.showDamageNumber(nearest.mesh.position, '+' + lastHitBonus + ' LH', '#ffd700');
                 if (typeof HUD !== 'undefined' && HUD.showKill) HUD.showKill('Player', nearest.isBoss ? 'BOSS' : 'Creep', _goldAmt);
             }
             if (typeof Inventory !== 'undefined' && nearest.mesh) {

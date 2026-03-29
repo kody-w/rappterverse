@@ -27,7 +27,10 @@ const HUD = {
         this.minimapVisible = !this.minimapVisible;
         const el = document.getElementById('minimap');
         if (el) el.classList.toggle('visible', this.minimapVisible);
-        if (this.minimapVisible) this.renderMinimap();
+        if (this.minimapVisible) {
+            this.renderMinimap();
+            this.initPingSystem();
+        }
     },
 
     _minimapTerrain: null,
@@ -288,6 +291,9 @@ const HUD = {
             ctx.stroke();
             ctx.restore();
 
+            // Minimap pings
+            this.renderMinimapPings(ctx, S);
+
             // Camera view cone
             ctx.save();
             ctx.translate(px, pz);
@@ -316,6 +322,103 @@ const HUD = {
                 }
             }
         }
+    },
+
+    // Ping system — click minimap to place a ping
+    _pings: [],
+    _pingInitialized: false,
+
+    initPingSystem() {
+        if (this._pingInitialized) return;
+        this._pingInitialized = true;
+        var self = this;
+        var canvas = document.getElementById('minimap-canvas');
+        if (!canvas) return;
+        canvas.addEventListener('click', function(e) {
+            if (GameState.mode !== 'world') return;
+            var rect = canvas.getBoundingClientRect();
+            var clickX = e.clientX - rect.left;
+            var clickZ = e.clientY - rect.top;
+            var S = 220;
+            var w = WORLDS[GameState.currentWorld];
+            if (!w) return;
+            var maxB = Math.max(w.bounds.x, w.bounds.z) + 2;
+            var scale = (S * 0.42) / maxB;
+            // Convert minimap coords to world coords
+            var worldX = (clickX - S / 2) / scale;
+            var worldZ = (clickZ - S / 2) / scale;
+            self._pings.push({ x: clickX, z: clickZ, wx: worldX, wz: worldZ, time: Date.now(), duration: 4000 });
+            if (typeof Audio !== 'undefined' && Audio.playClick) Audio.playClick();
+            // Show 3D ping in world
+            self._show3DPing(worldX, worldZ);
+        });
+    },
+
+    _show3DPing(wx, wz) {
+        if (!WorldMode.scene) return;
+        var pingGroup = new THREE.Group();
+        // Vertical beam
+        var beamGeo = new THREE.CylinderGeometry(0.1, 0.1, 15, 6);
+        var beamMat = new THREE.MeshBasicMaterial({ color: 0xffd700, transparent: true, opacity: 0.6 });
+        var beam = new THREE.Mesh(beamGeo, beamMat);
+        beam.position.y = 7.5;
+        pingGroup.add(beam);
+        // Ground ring
+        var ringGeo = new THREE.RingGeometry(1.5, 2, 16);
+        var ringMat = new THREE.MeshBasicMaterial({ color: 0xffd700, transparent: true, opacity: 0.4, side: THREE.DoubleSide });
+        var ring = new THREE.Mesh(ringGeo, ringMat);
+        ring.rotation.x = -Math.PI / 2;
+        ring.position.y = 0.1;
+        pingGroup.add(ring);
+        pingGroup.position.set(wx, 0, wz);
+        WorldMode.scene.add(pingGroup);
+        // VFX burst at ping location
+        if (typeof VFX !== 'undefined') VFX.burst({ x: wx, y: 1, z: wz }, 'goldPickup', { count: 8 });
+        // Animate and remove after 4 seconds
+        var startTime = Date.now();
+        var interval = setInterval(function() {
+            var elapsed = (Date.now() - startTime) / 1000;
+            if (elapsed > 4) {
+                clearInterval(interval);
+                if (pingGroup.parent) pingGroup.parent.remove(pingGroup);
+                pingGroup.traverse(function(c) { if (c.geometry) c.geometry.dispose(); if (c.material) c.material.dispose(); });
+                return;
+            }
+            // Pulse ring
+            var pulse = 1 + Math.sin(elapsed * 6) * 0.3;
+            ring.scale.set(pulse, pulse, 1);
+            // Fade beam
+            if (elapsed > 3) {
+                var fade = 1 - (elapsed - 3);
+                beamMat.opacity = 0.6 * fade;
+                ringMat.opacity = 0.4 * fade;
+            }
+        }, 16);
+    },
+
+    renderMinimapPings(ctx, S) {
+        var now = Date.now();
+        this._pings = this._pings.filter(function(p) {
+            var elapsed = now - p.time;
+            if (elapsed > p.duration) return false;
+            var alpha = elapsed < p.duration - 1000 ? 0.8 : (p.duration - elapsed) / 1000 * 0.8;
+            var pulse = 4 + Math.sin(elapsed * 0.008) * 2;
+            ctx.strokeStyle = 'rgba(255,215,0,' + alpha + ')';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(p.x, p.z, pulse, 0, Math.PI * 2);
+            ctx.stroke();
+            // Diamond marker
+            ctx.fillStyle = 'rgba(255,215,0,' + alpha + ')';
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.z - 4);
+            ctx.lineTo(p.x + 3, p.z);
+            ctx.lineTo(p.x, p.z + 4);
+            ctx.lineTo(p.x - 3, p.z);
+            ctx.closePath();
+            ctx.fill();
+            return true;
+        });
     },
 
     showToast(msg) {
