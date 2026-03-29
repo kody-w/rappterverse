@@ -3910,6 +3910,32 @@ const PlayerStats = {
     if (overlay) overlay.style.display = 'flex';
     const timerEl = document.getElementById('death-timer');
     if (timerEl) timerEl.textContent = 'Respawning in ' + Math.ceil(this.respawnTimer) + '...';
+    // Echo narrative on death screen
+    var deathNarr = document.getElementById('death-narrative');
+    if (!deathNarr) {
+      deathNarr = document.createElement('div');
+      deathNarr.id = 'death-narrative';
+      deathNarr.style.cssText = 'font-size:12px;color:rgba(255,255,255,0.5);font-family:monospace;margin-top:8px;max-width:400px;text-align:center;line-height:1.4;';
+      if (overlay) overlay.appendChild(deathNarr);
+    }
+    if (typeof EchoEngine !== 'undefined') {
+      var ef = EchoEngine.getCurrentFrame();
+      if (ef && ef.echoes) {
+        var narr = ef.echoes.L2 ? ef.echoes.L2.narrative : '';
+        var tension = ef.echoes.L3 ? ef.echoes.L3.tension : 0;
+        var mood = ef.echoes.L2 ? ef.echoes.L2.dominantMood : 'neutral';
+        var deathText = narr;
+        if (tension > 0.5) deathText += ' The world trembles with conflict.';
+        else if (tension < 0.2) deathText += ' A quiet moment broken.';
+        if (mood === 'desperate') deathText += ' Desperation hangs in the air.';
+        else if (mood === 'thriving') deathText += ' Life persists around you.';
+        deathNarr.textContent = deathText;
+      }
+    }
+    if (typeof VFX !== 'undefined' && typeof WorldMode !== 'undefined' && WorldMode.player) {
+      VFX.burst(WorldMode.player.mesh.position, 'kill');
+      VFX.screenFlash('#ff0000', 0.5);
+    }
     if (typeof Audio !== 'undefined' && Audio.playDeath) Audio.playDeath();
   },
 
@@ -6720,6 +6746,30 @@ const WorldTerrain = {
         if (weatherEl && this.weatherType) weatherEl.textContent = this.weatherType.toUpperCase();
     },
 
+    // Dynamic weather shift — echo tension can trigger weather transitions
+    _weatherShiftTimer: 0,
+    _lastWeatherTension: 0,
+    _checkWeatherShift(tension) {
+        if (!this.weatherParticles || !WorldMode.scene) return;
+        this._weatherShiftTimer -= 0.3;
+        if (this._weatherShiftTimer > 0) return;
+        this._weatherShiftTimer = 10; // Check every 10 seconds
+
+        // Tension spike detection — if tension jumps significantly, shift weather
+        var delta = tension - this._lastWeatherTension;
+        this._lastWeatherTension = tension;
+
+        if (delta > 0.2 && tension > 0.5 && this.weatherType !== 'storm') {
+            // High tension spike — intensify weather
+            this.weatherParticles.material.size *= 1.2;
+            this.weatherParticles.material.opacity = Math.min(0.8, this.weatherParticles.material.opacity + 0.1);
+        } else if (tension < 0.2 && this._lastWeatherTension > 0.4) {
+            // Tension dropped — calm weather
+            this.weatherParticles.material.size *= 0.9;
+            this.weatherParticles.material.opacity = Math.max(0.2, this.weatherParticles.material.opacity - 0.1);
+        }
+    },
+
     // Echo-reactive atmosphere: weather intensity, sky color, particle speed
     _echoAtmoTimer: 0,
     _updateEchoAtmosphere(delta, time) {
@@ -6755,11 +6805,57 @@ const WorldTerrain = {
             this.weatherParticles.material.opacity = Math.min(0.8, this.weatherParticles.material.opacity * 0.95 + baseTension * 0.05);
         }
 
+        // Check for weather shift on tension spikes
+        this._checkWeatherShift(L3.tension);
+
         // Ambient particle rotation speed reacts to social energy
         if (this.particles) {
-            // Already rotating in update(), but we can modulate the scale
             var pulseScale = 1 + Math.sin(time * (1 + L3.socialEnergy * 2)) * L3.socialEnergy * 0.02;
             this.particles.scale.setScalar(pulseScale);
+        }
+
+        // Day/night cycle — driven by elapsed game time + echo frame depth
+        this._updateDayNight(time, L3);
+    },
+
+    // Day/night cycle: smooth transitions based on play time
+    _dayNightPhase: 0,
+    _updateDayNight(time, L3) {
+        if (!WorldMode.scene) return;
+        // One full day/night cycle every 8 minutes of play
+        this._dayNightPhase = (time % 480) / 480; // 0-1 over 8 min
+        var phase = this._dayNightPhase;
+
+        // Sinusoidal brightness: 0=midnight, 0.25=dawn, 0.5=noon, 0.75=dusk
+        var sunHeight = Math.sin(phase * Math.PI * 2 - Math.PI / 2) * 0.5 + 0.5; // 0=night, 1=noon
+        // Tension darkens the day
+        sunHeight *= (1 - L3.tension * 0.3);
+
+        // Adjust directional light
+        for (var i = 0; i < WorldMode.scene.children.length; i++) {
+            var child = WorldMode.scene.children[i];
+            if (child.isDirectionalLight) {
+                var targetIntensity = 0.3 + sunHeight * 0.6;
+                child.intensity += (targetIntensity - child.intensity) * 0.02;
+                // Warm sunrise/sunset tint when sun is low
+                if (sunHeight < 0.3 && sunHeight > 0.05) {
+                    child.color.lerp(new THREE.Color(0xffaa44), 0.01);
+                } else if (sunHeight > 0.3) {
+                    child.color.lerp(new THREE.Color(0xffffff), 0.01);
+                } else {
+                    child.color.lerp(new THREE.Color(0x4466aa), 0.01);
+                }
+            }
+            if (child.isAmbientLight) {
+                var ambTarget = 0.25 + sunHeight * 0.4;
+                child.intensity += (ambTarget - child.intensity) * 0.02;
+            }
+        }
+
+        // Fog darkens at night
+        if (WorldMode.scene.fog) {
+            var fogTarget = 0.002 + (1 - sunHeight) * 0.001 + L3.tension * 0.002;
+            WorldMode.scene.fog.density += (fogTarget - WorldMode.scene.fog.density) * 0.02;
         }
     },
 
@@ -9880,6 +9976,50 @@ const WorldAgents = {
                 }
             }
         });
+        // Echo-driven ambient chatter
+        this._echoChatter(dt);
+    },
+
+    // Echo-driven ambient chatter — agents comment on the world state
+    _echoChatterTimer: 0,
+    _echoChatter(dt) {
+        this._echoChatterTimer -= dt;
+        if (this._echoChatterTimer > 0) return;
+        this._echoChatterTimer = 12 + Math.random() * 20; // Every 12-32 seconds
+
+        if (typeof EchoEngine === 'undefined') return;
+        var ef = EchoEngine.getCurrentFrame();
+        if (!ef || !ef.echoes || !ef.echoes.L3) return;
+        var L3 = ef.echoes.L3;
+        var mood = ef.echoes.L2 ? ef.echoes.L2.dominantMood : 'neutral';
+
+        // Pick a random visible agent
+        var ids = Object.keys(this.agentMeshes);
+        if (ids.length === 0) return;
+        var id = ids[Math.floor(Math.random() * ids.length)];
+        var a = this.agentMeshes[id];
+        if (a.bubbleTimer > 0) return; // Don't interrupt existing speech
+
+        // Generate contextual line based on echo state
+        var lines;
+        if (L3.tension > 0.6) {
+            lines = ['Something feels off...', 'Stay alert.', 'The air is heavy.', 'I sense danger.', 'Be careful out there.', 'Tension is rising...'];
+        } else if (L3.tension > 0.3) {
+            lines = ['Hmm, interesting times.', 'Things are shifting.', 'Keep your eyes open.', 'The world is restless.'];
+        } else if (L3.socialEnergy > 0.6) {
+            lines = ['Great conversations today!', 'Love the energy here.', 'So many friends around!', 'This place is buzzing!'];
+        } else if (L3.vitality > 0.6) {
+            lines = ['What a beautiful world.', 'Life is good here.', 'The world feels alive.', 'Everything is thriving!'];
+        } else if (mood === 'desperate') {
+            lines = ['We need help...', 'Things look grim.', 'Is anyone there?', 'Dark times...'];
+        } else if (mood === 'thriving') {
+            lines = ['Best day ever!', 'Everything is perfect!', 'I could stay here forever.'];
+        } else {
+            lines = ['...', 'Nice weather.', 'Hmm.', 'Just vibing.', 'Another day.'];
+        }
+
+        var line = lines[Math.floor(Math.random() * lines.length)];
+        this.showSpeechBubble(id, line);
     },
 
     // Scan chat for new messages and show bubbles
@@ -12988,6 +13128,29 @@ const HUD = {
         ctx.fillStyle = 'rgba(0, 15, 0, 0.35)';
         ctx.fillRect(0, 0, S, S);
 
+        // ── Echo heat map overlay — tension/combat hotspots ──
+        if (typeof EchoEngine !== 'undefined') {
+            var ef = EchoEngine.getCurrentFrame();
+            if (ef && ef.echoes && ef.echoes.L3 && ef.echoes.L3.tension > 0.1) {
+                var tension = ef.echoes.L3.tension;
+                // Draw heat around active creeps (combat zones)
+                if (typeof WorldCombat !== 'undefined' && WorldCombat.creeps) {
+                    ctx.globalAlpha = tension * 0.25;
+                    WorldCombat.creeps.forEach(function(c) {
+                        if (!c.alive) return;
+                        var hmx = cx + c.mesh.position.x * scale;
+                        var hmz = cz + c.mesh.position.z * scale;
+                        var grad = ctx.createRadialGradient(hmx, hmz, 0, hmx, hmz, 8 + tension * 6);
+                        grad.addColorStop(0, c.faction === 'horde' ? 'rgba(255,68,68,0.6)' : 'rgba(0,255,136,0.4)');
+                        grad.addColorStop(1, 'rgba(0,0,0,0)');
+                        ctx.fillStyle = grad;
+                        ctx.fillRect(hmx - 20, hmz - 20, 40, 40);
+                    });
+                    ctx.globalAlpha = 1;
+                }
+            }
+        }
+
         // ── Dirt lane paths (worn brown trails through green forest) ──
         if (typeof WorldLanes !== 'undefined' && WorldLanes.lanes) {
             // First pass: wide brown dirt paths
@@ -13099,13 +13262,14 @@ const HUD = {
             });
         }
 
-        // ── Agents ──
+        // ── Agents (echo-reactive: color by mood) ──
         var agents = GameState.getWorldAgents();
+        var moodColors = { thriving: '#00ff88', content: '#88ccff', neutral: 'rgba(255,255,255,0.6)', anxious: '#ffaa00', desperate: '#ff4444' };
         agents.forEach(function(a) {
             if (!a.position) return;
             var mx = cx + a.position.x * scale;
             var mz = cz + a.position.z * scale;
-            ctx.fillStyle = 'rgba(255,255,255,0.6)';
+            ctx.fillStyle = moodColors[a.mood] || moodColors.neutral;
             ctx.beginPath();
             ctx.arc(mx, mz, 1.5, 0, Math.PI * 2);
             ctx.fill();

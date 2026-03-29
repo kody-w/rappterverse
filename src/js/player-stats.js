@@ -56,6 +56,32 @@ const PlayerStats = {
     if (overlay) overlay.style.display = 'flex';
     const timerEl = document.getElementById('death-timer');
     if (timerEl) timerEl.textContent = 'Respawning in ' + Math.ceil(this.respawnTimer) + '...';
+    // Echo narrative on death screen
+    var deathNarr = document.getElementById('death-narrative');
+    if (!deathNarr) {
+      deathNarr = document.createElement('div');
+      deathNarr.id = 'death-narrative';
+      deathNarr.style.cssText = 'font-size:12px;color:rgba(255,255,255,0.5);font-family:monospace;margin-top:8px;max-width:400px;text-align:center;line-height:1.4;';
+      if (overlay) overlay.appendChild(deathNarr);
+    }
+    if (typeof EchoEngine !== 'undefined') {
+      var ef = EchoEngine.getCurrentFrame();
+      if (ef && ef.echoes) {
+        var narr = ef.echoes.L2 ? ef.echoes.L2.narrative : '';
+        var tension = ef.echoes.L3 ? ef.echoes.L3.tension : 0;
+        var mood = ef.echoes.L2 ? ef.echoes.L2.dominantMood : 'neutral';
+        var deathText = narr;
+        if (tension > 0.5) deathText += ' The world trembles with conflict.';
+        else if (tension < 0.2) deathText += ' A quiet moment broken.';
+        if (mood === 'desperate') deathText += ' Desperation hangs in the air.';
+        else if (mood === 'thriving') deathText += ' Life persists around you.';
+        deathNarr.textContent = deathText;
+      }
+    }
+    if (typeof VFX !== 'undefined' && typeof WorldMode !== 'undefined' && WorldMode.player) {
+      VFX.burst(WorldMode.player.mesh.position, 'kill');
+      VFX.screenFlash('#ff0000', 0.5);
+    }
     if (typeof Audio !== 'undefined' && Audio.playDeath) Audio.playDeath();
   },
 

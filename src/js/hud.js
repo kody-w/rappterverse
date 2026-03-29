@@ -89,6 +89,29 @@ const HUD = {
         ctx.fillStyle = 'rgba(0, 15, 0, 0.35)';
         ctx.fillRect(0, 0, S, S);
 
+        // ── Echo heat map overlay — tension/combat hotspots ──
+        if (typeof EchoEngine !== 'undefined') {
+            var ef = EchoEngine.getCurrentFrame();
+            if (ef && ef.echoes && ef.echoes.L3 && ef.echoes.L3.tension > 0.1) {
+                var tension = ef.echoes.L3.tension;
+                // Draw heat around active creeps (combat zones)
+                if (typeof WorldCombat !== 'undefined' && WorldCombat.creeps) {
+                    ctx.globalAlpha = tension * 0.25;
+                    WorldCombat.creeps.forEach(function(c) {
+                        if (!c.alive) return;
+                        var hmx = cx + c.mesh.position.x * scale;
+                        var hmz = cz + c.mesh.position.z * scale;
+                        var grad = ctx.createRadialGradient(hmx, hmz, 0, hmx, hmz, 8 + tension * 6);
+                        grad.addColorStop(0, c.faction === 'horde' ? 'rgba(255,68,68,0.6)' : 'rgba(0,255,136,0.4)');
+                        grad.addColorStop(1, 'rgba(0,0,0,0)');
+                        ctx.fillStyle = grad;
+                        ctx.fillRect(hmx - 20, hmz - 20, 40, 40);
+                    });
+                    ctx.globalAlpha = 1;
+                }
+            }
+        }
+
         // ── Dirt lane paths (worn brown trails through green forest) ──
         if (typeof WorldLanes !== 'undefined' && WorldLanes.lanes) {
             // First pass: wide brown dirt paths
@@ -200,13 +223,14 @@ const HUD = {
             });
         }
 
-        // ── Agents ──
+        // ── Agents (echo-reactive: color by mood) ──
         var agents = GameState.getWorldAgents();
+        var moodColors = { thriving: '#00ff88', content: '#88ccff', neutral: 'rgba(255,255,255,0.6)', anxious: '#ffaa00', desperate: '#ff4444' };
         agents.forEach(function(a) {
             if (!a.position) return;
             var mx = cx + a.position.x * scale;
             var mz = cz + a.position.z * scale;
-            ctx.fillStyle = 'rgba(255,255,255,0.6)';
+            ctx.fillStyle = moodColors[a.mood] || moodColors.neutral;
             ctx.beginPath();
             ctx.arc(mx, mz, 1.5, 0, Math.PI * 2);
             ctx.fill();

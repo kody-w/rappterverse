@@ -713,6 +713,30 @@ const WorldTerrain = {
         if (weatherEl && this.weatherType) weatherEl.textContent = this.weatherType.toUpperCase();
     },
 
+    // Dynamic weather shift — echo tension can trigger weather transitions
+    _weatherShiftTimer: 0,
+    _lastWeatherTension: 0,
+    _checkWeatherShift(tension) {
+        if (!this.weatherParticles || !WorldMode.scene) return;
+        this._weatherShiftTimer -= 0.3;
+        if (this._weatherShiftTimer > 0) return;
+        this._weatherShiftTimer = 10; // Check every 10 seconds
+
+        // Tension spike detection — if tension jumps significantly, shift weather
+        var delta = tension - this._lastWeatherTension;
+        this._lastWeatherTension = tension;
+
+        if (delta > 0.2 && tension > 0.5 && this.weatherType !== 'storm') {
+            // High tension spike — intensify weather
+            this.weatherParticles.material.size *= 1.2;
+            this.weatherParticles.material.opacity = Math.min(0.8, this.weatherParticles.material.opacity + 0.1);
+        } else if (tension < 0.2 && this._lastWeatherTension > 0.4) {
+            // Tension dropped — calm weather
+            this.weatherParticles.material.size *= 0.9;
+            this.weatherParticles.material.opacity = Math.max(0.2, this.weatherParticles.material.opacity - 0.1);
+        }
+    },
+
     // Echo-reactive atmosphere: weather intensity, sky color, particle speed
     _echoAtmoTimer: 0,
     _updateEchoAtmosphere(delta, time) {
@@ -748,11 +772,57 @@ const WorldTerrain = {
             this.weatherParticles.material.opacity = Math.min(0.8, this.weatherParticles.material.opacity * 0.95 + baseTension * 0.05);
         }
 
+        // Check for weather shift on tension spikes
+        this._checkWeatherShift(L3.tension);
+
         // Ambient particle rotation speed reacts to social energy
         if (this.particles) {
-            // Already rotating in update(), but we can modulate the scale
             var pulseScale = 1 + Math.sin(time * (1 + L3.socialEnergy * 2)) * L3.socialEnergy * 0.02;
             this.particles.scale.setScalar(pulseScale);
+        }
+
+        // Day/night cycle — driven by elapsed game time + echo frame depth
+        this._updateDayNight(time, L3);
+    },
+
+    // Day/night cycle: smooth transitions based on play time
+    _dayNightPhase: 0,
+    _updateDayNight(time, L3) {
+        if (!WorldMode.scene) return;
+        // One full day/night cycle every 8 minutes of play
+        this._dayNightPhase = (time % 480) / 480; // 0-1 over 8 min
+        var phase = this._dayNightPhase;
+
+        // Sinusoidal brightness: 0=midnight, 0.25=dawn, 0.5=noon, 0.75=dusk
+        var sunHeight = Math.sin(phase * Math.PI * 2 - Math.PI / 2) * 0.5 + 0.5; // 0=night, 1=noon
+        // Tension darkens the day
+        sunHeight *= (1 - L3.tension * 0.3);
+
+        // Adjust directional light
+        for (var i = 0; i < WorldMode.scene.children.length; i++) {
+            var child = WorldMode.scene.children[i];
+            if (child.isDirectionalLight) {
+                var targetIntensity = 0.3 + sunHeight * 0.6;
+                child.intensity += (targetIntensity - child.intensity) * 0.02;
+                // Warm sunrise/sunset tint when sun is low
+                if (sunHeight < 0.3 && sunHeight > 0.05) {
+                    child.color.lerp(new THREE.Color(0xffaa44), 0.01);
+                } else if (sunHeight > 0.3) {
+                    child.color.lerp(new THREE.Color(0xffffff), 0.01);
+                } else {
+                    child.color.lerp(new THREE.Color(0x4466aa), 0.01);
+                }
+            }
+            if (child.isAmbientLight) {
+                var ambTarget = 0.25 + sunHeight * 0.4;
+                child.intensity += (ambTarget - child.intensity) * 0.02;
+            }
+        }
+
+        // Fog darkens at night
+        if (WorldMode.scene.fog) {
+            var fogTarget = 0.002 + (1 - sunHeight) * 0.001 + L3.tension * 0.002;
+            WorldMode.scene.fog.density += (fogTarget - WorldMode.scene.fog.density) * 0.02;
         }
     },
 

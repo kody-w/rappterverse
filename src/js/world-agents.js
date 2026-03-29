@@ -318,6 +318,50 @@ const WorldAgents = {
                 }
             }
         });
+        // Echo-driven ambient chatter
+        this._echoChatter(dt);
+    },
+
+    // Echo-driven ambient chatter — agents comment on the world state
+    _echoChatterTimer: 0,
+    _echoChatter(dt) {
+        this._echoChatterTimer -= dt;
+        if (this._echoChatterTimer > 0) return;
+        this._echoChatterTimer = 12 + Math.random() * 20; // Every 12-32 seconds
+
+        if (typeof EchoEngine === 'undefined') return;
+        var ef = EchoEngine.getCurrentFrame();
+        if (!ef || !ef.echoes || !ef.echoes.L3) return;
+        var L3 = ef.echoes.L3;
+        var mood = ef.echoes.L2 ? ef.echoes.L2.dominantMood : 'neutral';
+
+        // Pick a random visible agent
+        var ids = Object.keys(this.agentMeshes);
+        if (ids.length === 0) return;
+        var id = ids[Math.floor(Math.random() * ids.length)];
+        var a = this.agentMeshes[id];
+        if (a.bubbleTimer > 0) return; // Don't interrupt existing speech
+
+        // Generate contextual line based on echo state
+        var lines;
+        if (L3.tension > 0.6) {
+            lines = ['Something feels off...', 'Stay alert.', 'The air is heavy.', 'I sense danger.', 'Be careful out there.', 'Tension is rising...'];
+        } else if (L3.tension > 0.3) {
+            lines = ['Hmm, interesting times.', 'Things are shifting.', 'Keep your eyes open.', 'The world is restless.'];
+        } else if (L3.socialEnergy > 0.6) {
+            lines = ['Great conversations today!', 'Love the energy here.', 'So many friends around!', 'This place is buzzing!'];
+        } else if (L3.vitality > 0.6) {
+            lines = ['What a beautiful world.', 'Life is good here.', 'The world feels alive.', 'Everything is thriving!'];
+        } else if (mood === 'desperate') {
+            lines = ['We need help...', 'Things look grim.', 'Is anyone there?', 'Dark times...'];
+        } else if (mood === 'thriving') {
+            lines = ['Best day ever!', 'Everything is perfect!', 'I could stay here forever.'];
+        } else {
+            lines = ['...', 'Nice weather.', 'Hmm.', 'Just vibing.', 'Another day.'];
+        }
+
+        var line = lines[Math.floor(Math.random() * lines.length)];
+        this.showSpeechBubble(id, line);
     },
 
     // Scan chat for new messages and show bubbles
