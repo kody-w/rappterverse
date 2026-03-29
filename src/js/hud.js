@@ -521,15 +521,18 @@ const HUD = {
 
     showToast(msg) {
         const container = document.getElementById('toast-container');
+        if (!container) return;
         const toast = document.createElement('div');
         toast.className = 'toast';
         toast.textContent = msg;
+        toast.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
         container.appendChild(toast);
+        // Limit visible toasts to 5
+        while (container.children.length > 5) container.removeChild(container.firstChild);
         setTimeout(() => {
             toast.style.opacity = '0';
             toast.style.transform = 'translateY(-10px)';
-            toast.style.transition = 'all 0.3s ease';
-            setTimeout(() => toast.remove(), 300);
+            setTimeout(() => { if (toast.parentNode) toast.remove(); }, 300);
         }, 3700);
     },
 

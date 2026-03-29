@@ -90,11 +90,21 @@
   cursor: pointer;
   border-radius: var(--radius-md);
   letter-spacing: 1px;
+  transition: border-color 0.15s var(--ease), color 0.15s var(--ease), transform 0.1s var(--ease);
 }
 
 .hud-btn:hover {
   border-color: var(--accent-cyan);
   color: var(--accent-cyan);
+}
+
+.hud-btn:active {
+  transform: scale(0.96);
+}
+
+.hud-btn:focus-visible {
+  outline: 2px solid var(--accent-cyan);
+  outline-offset: 2px;
 }
 
 /* ── Minimap ────────────────────────────────────────────── */
@@ -161,7 +171,9 @@
   position: absolute; top: 12px; right: 16px;
   background: none; border: none; color: #8b949e;
   font-size: 24px; cursor: pointer;
+  transition: color 0.15s ease;
 }
+#fullmap-close:hover { color: #fff; }
 
 /* ── Toast Notifications ────────────────────────────────── */
 .toast-container {

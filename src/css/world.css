@@ -24,12 +24,14 @@
   color: var(--accent-cyan);
   letter-spacing: 1px;
   z-index: var(--z-ui);
-  display: none;
-  animation: fade-in 0.2s var(--ease);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s var(--ease);
 }
 
 .interaction-prompt.visible {
-  display: block;
+  opacity: 1;
+  pointer-events: auto;
 }
 
 @keyframes fade-in {

@@ -278,7 +278,7 @@ const WorldMode = {
         // Camera follow (skip during replay — ReplaySystem controls camera)
         if (typeof ReplaySystem === 'undefined' || !ReplaySystem.playing) {
             const camTarget = this.player.mesh.position.clone().add(new THREE.Vector3(0, this._cameraBaseY * this.cameraZoom, this._cameraBaseZ * this.cameraZoom));
-            this.camera.position.lerp(camTarget, 0.05);
+            this.camera.position.lerp(camTarget, 0.1);
             this.camera.lookAt(this.player.mesh.position.x, 1, this.player.mesh.position.z);
             // Echo micro-shake: subtle camera tremor during high tension
             if (typeof EchoEngine !== 'undefined') {

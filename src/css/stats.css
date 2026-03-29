@@ -90,7 +90,7 @@
 #death-overlay {
     position: fixed;
     inset: 0;
-    z-index: var(--z-overlay);
+    z-index: 9500;
     display: none;
     flex-direction: column;
     align-items: center;
@@ -142,6 +142,7 @@
     font-size: 20px;
     cursor: pointer;
     user-select: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .ability-slot:hover { border-color: rgba(0,255,255,0.4); }

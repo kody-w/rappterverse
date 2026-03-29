@@ -104,6 +104,14 @@
   cursor: pointer;
   box-shadow: 0 0 20px rgba(0, 255, 255, 0.35);
   animation: pulse-glow 2s infinite;
+  transition: box-shadow 0.2s ease, transform 0.15s ease;
+}
+.approach-land-btn:hover {
+  box-shadow: 0 0 40px rgba(0, 255, 255, 0.6);
+  transform: translateY(-2px);
+}
+.approach-land-btn:active {
+  transform: translateY(0);
 }
 
 .approach-skip-btn {
@@ -115,6 +123,11 @@
   font-size: 11px;
   cursor: pointer;
   border-radius: 4px;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+.approach-skip-btn:hover {
+  border-color: #aaa;
+  color: #ddd;
 }
 
 /* --- Keyframes --- */
