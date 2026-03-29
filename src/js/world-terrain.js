@@ -168,7 +168,7 @@ const WorldTerrain = {
         const seed = WorldSeed.getSeed(worldId);
         const rng = seededRandom(seed + '-objects');
         const count = 250;
-        const laneExclusion = 8;
+        const laneExclusion = 14; // Keep biome objects off lanes
 
         for (let i = 0; i < count; i++) {
             const x = (rng() - 0.5) * w.bounds.x * 2;

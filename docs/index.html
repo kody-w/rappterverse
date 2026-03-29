@@ -5896,7 +5896,7 @@ const WorldTerrain = {
         const seed = WorldSeed.getSeed(worldId);
         const rng = seededRandom(seed + '-objects');
         const count = 250;
-        const laneExclusion = 8;
+        const laneExclusion = 14; // Keep biome objects off lanes
 
         for (let i = 0; i < count; i++) {
             const x = (rng() - 0.5) * w.bounds.x * 2;
@@ -6759,9 +6759,9 @@ const WorldLanes = {
     buildBrush(scene, sx, sz, w) {
         const rng = typeof seededRandom !== 'undefined' ? seededRandom('brush-' + (GameState.currentWorld || 'hub')) : Math.random;
         const biome = w.biome || 'Terra';
-        const laneCarveRadius = 8;  // Clear space around lanes
-        const riverCarveRadius = 12; // Clear space around river
-        const baseCarveRadius = 20;  // Clear space around team bases
+        const laneCarveRadius = 14; // Wide clear space around lanes
+        const riverCarveRadius = 16; // Wide clear space around river
+        const baseCarveRadius = 25;  // Clear space around team bases
 
         // Fill the ENTIRE map with forest — 600 objects on a grid
         const gridStep = Math.max(sx, sz) * 2 / 15; // ~15x15 grid
@@ -8369,20 +8369,19 @@ const WorldAgents = {
                 const dz = heroPos.z - agentPos.z;
                 const dist = Math.sqrt(dx * dx + dz * dz);
 
-                // Move toward hero at speed proportional to distance
-                const speed = 0.06;
-                const attackRange = 4.5;
+                // Move toward hero FAST — defensive swarm rushes to protect player
+                const speed = 0.15;
+                const attackRange = 6;
                 if (dist > attackRange) {
-                    // Rush toward enemy
                     a.group.position.x += dx / dist * speed;
                     a.group.position.z += dz / dist * speed;
                 } else {
-                    // In range — attack! Deal damage every 1.5 seconds
+                    // In range — attack! Deal damage every 0.8 seconds (fast swarm)
                     if (!this.agentAttackTimers[id]) this.agentAttackTimers[id] = 0;
-                    this.agentAttackTimers[id] += 0.016; // ~60fps
-                    if (this.agentAttackTimers[id] >= 1.5) {
+                    this.agentAttackTimers[id] += 0.016;
+                    if (this.agentAttackTimers[id] >= 0.8) {
                         this.agentAttackTimers[id] = 0;
-                        const dmg = 3 + Math.random() * 4; // 3-7 damage per agent
+                        const dmg = 5 + Math.random() * 6; // 5-11 damage per agent
                         EnemyHero.damage(dmg);
                     }
                     // Jitter around attack position
@@ -10335,7 +10334,7 @@ const WorldMode = {
             Inventory.updateDrops(time);
         }
 
-        // Skip all combat damage during warmup
+        // Skip ALL combat during warmup — no hero, no creep damage, no enemy anything
         if (!WorldCombat._warmupActive) {
             // Enemy hero update
             if (typeof EnemyHero !== 'undefined') {
@@ -10352,6 +10351,11 @@ const WorldMode = {
                         PlayerStats.takeDamage(creep.isBoss ? 3 * delta : 1 * delta);
                     }
                 }
+            }
+        } else {
+            // During warmup: hide enemy hero far away so it can't interact
+            if (typeof EnemyHero !== 'undefined' && EnemyHero.mesh) {
+                EnemyHero.mesh.position.set(9999, 0, 9999);
             }
         }
 

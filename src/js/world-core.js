@@ -303,7 +303,7 @@ const WorldMode = {
             Inventory.updateDrops(time);
         }
 
-        // Skip all combat damage during warmup
+        // Skip ALL combat during warmup — no hero, no creep damage, no enemy anything
         if (!WorldCombat._warmupActive) {
             // Enemy hero update
             if (typeof EnemyHero !== 'undefined') {
@@ -320,6 +320,11 @@ const WorldMode = {
                         PlayerStats.takeDamage(creep.isBoss ? 3 * delta : 1 * delta);
                     }
                 }
+            }
+        } else {
+            // During warmup: hide enemy hero far away so it can't interact
+            if (typeof EnemyHero !== 'undefined' && EnemyHero.mesh) {
+                EnemyHero.mesh.position.set(9999, 0, 9999);
             }
         }
 

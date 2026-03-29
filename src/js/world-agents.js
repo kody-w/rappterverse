@@ -511,20 +511,19 @@ const WorldAgents = {
                 const dz = heroPos.z - agentPos.z;
                 const dist = Math.sqrt(dx * dx + dz * dz);
 
-                // Move toward hero at speed proportional to distance
-                const speed = 0.06;
-                const attackRange = 4.5;
+                // Move toward hero FAST — defensive swarm rushes to protect player
+                const speed = 0.15;
+                const attackRange = 6;
                 if (dist > attackRange) {
-                    // Rush toward enemy
                     a.group.position.x += dx / dist * speed;
                     a.group.position.z += dz / dist * speed;
                 } else {
-                    // In range — attack! Deal damage every 1.5 seconds
+                    // In range — attack! Deal damage every 0.8 seconds (fast swarm)
                     if (!this.agentAttackTimers[id]) this.agentAttackTimers[id] = 0;
-                    this.agentAttackTimers[id] += 0.016; // ~60fps
-                    if (this.agentAttackTimers[id] >= 1.5) {
+                    this.agentAttackTimers[id] += 0.016;
+                    if (this.agentAttackTimers[id] >= 0.8) {
                         this.agentAttackTimers[id] = 0;
-                        const dmg = 3 + Math.random() * 4; // 3-7 damage per agent
+                        const dmg = 5 + Math.random() * 6; // 5-11 damage per agent
                         EnemyHero.damage(dmg);
                     }
                     // Jitter around attack position

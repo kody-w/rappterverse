@@ -196,9 +196,9 @@ const WorldLanes = {
     buildBrush(scene, sx, sz, w) {
         const rng = typeof seededRandom !== 'undefined' ? seededRandom('brush-' + (GameState.currentWorld || 'hub')) : Math.random;
         const biome = w.biome || 'Terra';
-        const laneCarveRadius = 8;  // Clear space around lanes
-        const riverCarveRadius = 12; // Clear space around river
-        const baseCarveRadius = 20;  // Clear space around team bases
+        const laneCarveRadius = 14; // Wide clear space around lanes
+        const riverCarveRadius = 16; // Wide clear space around river
+        const baseCarveRadius = 25;  // Clear space around team bases
 
         // Fill the ENTIRE map with forest — 600 objects on a grid
         const gridStep = Math.max(sx, sz) * 2 / 15; // ~15x15 grid
