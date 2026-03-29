@@ -1353,10 +1353,10 @@ button:focus-visible,
 /* ── World Populations Panel ───────────────────────────── */
 #world-populations {
   position: fixed;
-  top: 60px;
+  top: 170px;
   right: 16px;
   pointer-events: none;
-  z-index: var(--z-panel);
+  z-index: 800;
   text-align: right;
   display: none;
 }
@@ -2548,11 +2548,10 @@ button:focus-visible,
         <div class="status-dot"></div>
         <span class="status-text">LIVE</span>
         <span class="agent-count-badge" id="hud-agent-count">0 agents</span>
-        <button class="hud-btn" id="btn-mute" title="Mute/Unmute Audio" aria-label="Toggle audio">🔊</button>
+        <button class="hud-btn" id="btn-fullscreen" title="Fullscreen (F11)" aria-label="Fullscreen">⛶</button>
+        <button class="hud-btn" id="btn-mute" title="Mute (F11)" aria-label="Toggle audio">🔊</button>
         <button class="hud-btn" id="btn-screenshot" title="Screenshot" aria-label="Screenshot">📸</button>
         <button class="hud-btn" id="btn-share" title="Share Link" aria-label="Share">🔗</button>
-        <button class="hud-btn" id="btn-voice" title="Voice Commands (V)" aria-label="Voice controls">🎤</button>
-        <button class="hud-btn" id="btn-gesture" title="Gesture Controls (H)" aria-label="Gesture controls">🖐️</button>
         <button class="hud-btn" id="btn-bridge" title="Bridge (B)" aria-label="Open bridge">🚀 Bridge</button>
         <button class="hud-btn" id="btn-minimap" title="Minimap (M)" aria-label="Toggle minimap">🗺️ Map</button>
     </div>
@@ -15458,6 +15457,15 @@ const QuestTracker = {
 
     // ── Fullmap close ──
     _on('fullmap-close', 'click', () => { if (typeof HUD !== 'undefined') HUD.toggleFullmap(); });
+
+    // ── Fullscreen toggle ──
+    _on('btn-fullscreen', 'click', () => {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen().catch(function(){});
+        } else {
+            document.exitFullscreen().catch(function(){});
+        }
+    });
 
     // ── Mute toggle ──
     _on('btn-mute', 'click', () => {

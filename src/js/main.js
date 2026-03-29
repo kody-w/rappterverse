@@ -257,6 +257,15 @@
     // ── Fullmap close ──
     _on('fullmap-close', 'click', () => { if (typeof HUD !== 'undefined') HUD.toggleFullmap(); });
 
+    // ── Fullscreen toggle ──
+    _on('btn-fullscreen', 'click', () => {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen().catch(function(){});
+        } else {
+            document.exitFullscreen().catch(function(){});
+        }
+    });
+
     // ── Mute toggle ──
     _on('btn-mute', 'click', () => {
         if (typeof Audio === 'undefined' || !Audio.masterGain) return;
