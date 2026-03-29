@@ -7,6 +7,9 @@ const WorldMode = {
     player: null,
     playerSpeed: 25,
     keys: {},
+    cameraZoom: 1.0,      // 0.4 = close, 1.0 = default, 2.0 = far
+    _cameraBaseY: 8,
+    _cameraBaseZ: 12,
 
     init(worldId) {
         this.currentWorld = worldId;
@@ -77,6 +80,15 @@ const WorldMode = {
         this.keyUp = (e) => { this.keys[e.code] = false; };
         window.addEventListener('keydown', this.keyDown);
         window.addEventListener('keyup', this.keyUp);
+
+        // Scroll wheel zoom
+        this._onWheel = (e) => {
+            if (!this.active || GameState.mode !== 'world') return;
+            e.preventDefault();
+            this.cameraZoom += e.deltaY * 0.001;
+            this.cameraZoom = Math.max(0.4, Math.min(2.5, this.cameraZoom));
+        };
+        window.addEventListener('wheel', this._onWheel, { passive: false });
 
         // Set mode to world so main loop renders us
         GameState.setMode('world');
@@ -265,7 +277,7 @@ const WorldMode = {
 
         // Camera follow (skip during replay — ReplaySystem controls camera)
         if (typeof ReplaySystem === 'undefined' || !ReplaySystem.playing) {
-            const camTarget = this.player.mesh.position.clone().add(new THREE.Vector3(0, 8, 12));
+            const camTarget = this.player.mesh.position.clone().add(new THREE.Vector3(0, this._cameraBaseY * this.cameraZoom, this._cameraBaseZ * this.cameraZoom));
             this.camera.position.lerp(camTarget, 0.05);
             this.camera.lookAt(this.player.mesh.position.x, 1, this.player.mesh.position.z);
             // Echo micro-shake: subtle camera tremor during high tension
@@ -405,7 +417,9 @@ const WorldMode = {
         this.active = false;
         window.removeEventListener('keydown', this.keyDown);
         window.removeEventListener('keyup', this.keyUp);
+        if (this._onWheel) window.removeEventListener('wheel', this._onWheel);
         this.keys = {};
+        this.cameraZoom = 1.0;
 
         if (typeof ReplaySystem !== 'undefined') ReplaySystem.cleanup();
         if (typeof VFX !== 'undefined') VFX.cleanup();
