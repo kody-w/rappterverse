@@ -114,6 +114,10 @@ const PlayerStats = {
     this.hp = this.maxHp;
     this.mp = this.maxMp;
     if (typeof HUD !== 'undefined' && HUD.showToast) HUD.showToast(`LEVEL UP! Level ${this.level}`);
+    if (typeof VFX !== 'undefined' && typeof WorldMode !== 'undefined' && WorldMode.player) {
+      VFX.burst(WorldMode.player.mesh.position, 'levelUp');
+      VFX.screenFlash('#ffd700', 0.3);
+    }
     if (typeof Audio !== 'undefined' && Audio.playWaveHorn) Audio.playWaveHorn();
     if (typeof Abilities !== 'undefined' && Abilities.awardSkillPoint) Abilities.awardSkillPoint();
     this.save();

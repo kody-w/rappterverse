@@ -2331,6 +2331,166 @@ button:focus-visible,
   #equipment-panel { width: 220px; font-size: 11px; }
 }
 
+/* === css/replay.css === */
+/* Replay System — Cinematic Battle Replay */
+
+#replay-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 8000;
+    pointer-events: none;
+}
+
+#replay-overlay.active {
+    display: block;
+}
+
+/* Cinematic letterbox bars */
+.replay-letterbox-top,
+.replay-letterbox-bot {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 0;
+    background: #000;
+    transition: height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 8001;
+}
+.replay-letterbox-top { top: 0; }
+.replay-letterbox-bot { bottom: 0; }
+
+#replay-overlay.active .replay-letterbox-top,
+#replay-overlay.active .replay-letterbox-bot {
+    height: 8vh;
+}
+
+/* VHS / REPLAY badge */
+.replay-badge {
+    position: absolute;
+    top: calc(8vh + 12px);
+    left: 16px;
+    font-family: monospace;
+    font-size: 14px;
+    color: #ff3333;
+    text-shadow: 0 0 6px rgba(255, 50, 50, 0.8);
+    z-index: 8002;
+    animation: replay-blink 1s step-end infinite;
+    letter-spacing: 2px;
+}
+
+@keyframes replay-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
+/* Timecode */
+.replay-timecode {
+    position: absolute;
+    top: calc(8vh + 12px);
+    right: 16px;
+    font-family: monospace;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.7);
+    z-index: 8002;
+    letter-spacing: 1px;
+}
+
+/* Kill banner — flashes on kills */
+.replay-kill-banner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    font-family: monospace;
+    font-size: 42px;
+    font-weight: bold;
+    color: #ff4444;
+    text-shadow: 0 0 30px rgba(255, 68, 68, 0.9), 0 0 60px rgba(255, 68, 68, 0.5);
+    z-index: 8003;
+    opacity: 0;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+.replay-kill-banner.show {
+    animation: kill-slam 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes kill-slam {
+    0% { transform: translate(-50%, -50%) scale(3); opacity: 0; }
+    15% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    70% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    100% { transform: translate(-50%, -50%) scale(1.1); opacity: 0; }
+}
+
+/* Slow-mo vignette flash */
+.replay-slowmo-flash {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: radial-gradient(ellipse at center, transparent 40%, rgba(255, 50, 50, 0.3) 100%);
+    opacity: 0;
+    z-index: 8001;
+    pointer-events: none;
+    transition: opacity 0.15s;
+}
+
+.replay-slowmo-flash.active {
+    opacity: 1;
+}
+
+/* Event ticker at bottom */
+.replay-ticker {
+    position: absolute;
+    bottom: calc(8vh + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: monospace;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.8);
+    background: rgba(0, 0, 0, 0.6);
+    padding: 4px 16px;
+    border-radius: 4px;
+    z-index: 8002;
+    white-space: nowrap;
+    max-width: 80vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Scanline effect */
+.replay-scanlines {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.05) 2px,
+        rgba(0, 0, 0, 0.05) 4px
+    );
+    z-index: 8001;
+    pointer-events: none;
+}
+
+/* Controls hint */
+.replay-controls {
+    position: absolute;
+    bottom: calc(8vh + 32px);
+    right: 16px;
+    font-family: monospace;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.4);
+    z-index: 8002;
+    text-align: right;
+    line-height: 1.6;
+}
+
     </style>
 </head>
 <body>
@@ -3721,6 +3881,10 @@ const PlayerStats = {
     this.hp = this.maxHp;
     this.mp = this.maxMp;
     if (typeof HUD !== 'undefined' && HUD.showToast) HUD.showToast(`LEVEL UP! Level ${this.level}`);
+    if (typeof VFX !== 'undefined' && typeof WorldMode !== 'undefined' && WorldMode.player) {
+      VFX.burst(WorldMode.player.mesh.position, 'levelUp');
+      VFX.screenFlash('#ffd700', 0.3);
+    }
     if (typeof Audio !== 'undefined' && Audio.playWaveHorn) Audio.playWaveHorn();
     if (typeof Abilities !== 'undefined' && Abilities.awardSkillPoint) Abilities.awardSkillPoint();
     this.save();
@@ -3912,6 +4076,8 @@ const StatusEffects = (function () {
 
             _tracked.add(mob);
             _refreshEmissive(mob);
+            // VFX element burst
+            if (typeof VFX !== 'undefined' && mob.position) VFX.burst(mob.position, element, { count: 5 });
         },
 
         /**
@@ -7155,6 +7321,398 @@ const WorldLanes = {
     }
 };
 
+// === js/vfx.js ===
+// VFX — GPU Particle System & Visual Effects
+// Pooled particles, burst emitters, persistent emitters, screen effects
+// Usage: VFX.burst(pos, preset) | VFX.emit(pos, preset) | VFX.trail(mesh, preset)
+
+const VFX = {
+    scene: null,
+    active: false,
+    _pools: {},       // { presetName: [particle...] }
+    _emitters: [],    // active emitters
+    _trails: [],      // mesh trail attachments
+    _screenFlashes: [],
+    _poolSize: 300,
+
+    // ── Presets ──
+    presets: {
+        // Kill explosion — red/orange burst
+        kill: {
+            count: 24, life: 0.8, speed: 12, spread: 1.0,
+            size: 0.3, sizeEnd: 0.05, gravity: -4,
+            color: 0xff4444, colorEnd: 0xff8800,
+            emissive: 0.8, fadeOut: true
+        },
+        // Boss kill — massive purple/gold explosion
+        bossKill: {
+            count: 60, life: 1.4, speed: 18, spread: 1.0,
+            size: 0.5, sizeEnd: 0.1, gravity: -2,
+            color: 0xaa44ff, colorEnd: 0xffd700,
+            emissive: 1.0, fadeOut: true, ring: true
+        },
+        // Hit spark — small white/yellow flash
+        hitSpark: {
+            count: 8, life: 0.3, speed: 8, spread: 0.6,
+            size: 0.15, sizeEnd: 0.02, gravity: -8,
+            color: 0xffffcc, colorEnd: 0xff8800,
+            emissive: 1.0, fadeOut: true
+        },
+        // Tower shot impact
+        towerImpact: {
+            count: 12, life: 0.5, speed: 6, spread: 0.8,
+            size: 0.2, sizeEnd: 0.05, gravity: -6,
+            color: 0x00ccff, colorEnd: 0x0044ff,
+            emissive: 0.6, fadeOut: true
+        },
+        // Ability: Slash arc
+        slashArc: {
+            count: 16, life: 0.4, speed: 10, spread: 0.4,
+            size: 0.2, sizeEnd: 0.08, gravity: 0,
+            color: 0x00ffff, colorEnd: 0x0088ff,
+            emissive: 0.9, fadeOut: true, arc: true
+        },
+        // Ability: Nova explosion
+        novaBlast: {
+            count: 40, life: 0.7, speed: 20, spread: 1.0,
+            size: 0.35, sizeEnd: 0.05, gravity: 0,
+            color: 0xff4400, colorEnd: 0xffdd00,
+            emissive: 1.0, fadeOut: true, ring: true
+        },
+        // Ability: Dash trail
+        dashTrail: {
+            count: 3, life: 0.6, speed: 0.5, spread: 0.3,
+            size: 0.25, sizeEnd: 0.1, gravity: 0,
+            color: 0x88ccff, colorEnd: 0x4488ff,
+            emissive: 0.5, fadeOut: true
+        },
+        // Ability: Shield shimmer
+        shieldShimmer: {
+            count: 6, life: 0.8, speed: 2, spread: 0.5,
+            size: 0.15, sizeEnd: 0.08, gravity: 1,
+            color: 0xffd700, colorEnd: 0xffaa00,
+            emissive: 0.7, fadeOut: true
+        },
+        // Pulse Shot trail
+        pulseTrail: {
+            count: 2, life: 0.4, speed: 1, spread: 0.2,
+            size: 0.12, sizeEnd: 0.04, gravity: 0,
+            color: 0x00ffff, colorEnd: 0x0044ff,
+            emissive: 0.8, fadeOut: true
+        },
+        // Creep spawn poof
+        spawnPoof: {
+            count: 10, life: 0.5, speed: 4, spread: 0.8,
+            size: 0.25, sizeEnd: 0.0, gravity: 2,
+            color: 0x88ff88, colorEnd: 0x44aa44,
+            emissive: 0.4, fadeOut: true
+        },
+        // Gold pickup sparkle
+        goldPickup: {
+            count: 8, life: 0.6, speed: 5, spread: 0.5,
+            size: 0.1, sizeEnd: 0.02, gravity: 3,
+            color: 0xffd700, colorEnd: 0xffaa00,
+            emissive: 1.0, fadeOut: true
+        },
+        // Level up column
+        levelUp: {
+            count: 30, life: 1.2, speed: 8, spread: 0.3,
+            size: 0.2, sizeEnd: 0.05, gravity: 6,
+            color: 0xffd700, colorEnd: 0xffffff,
+            emissive: 1.0, fadeOut: true, column: true
+        },
+        // Fire element
+        fire: {
+            count: 10, life: 0.5, speed: 3, spread: 0.4,
+            size: 0.2, sizeEnd: 0.05, gravity: 3,
+            color: 0xff4400, colorEnd: 0xffdd00,
+            emissive: 0.9, fadeOut: true
+        },
+        // Ice element
+        ice: {
+            count: 10, life: 0.6, speed: 2, spread: 0.5,
+            size: 0.15, sizeEnd: 0.08, gravity: -1,
+            color: 0x88ccff, colorEnd: 0xffffff,
+            emissive: 0.6, fadeOut: true
+        },
+        // Void element
+        void: {
+            count: 10, life: 0.7, speed: 2, spread: 0.6,
+            size: 0.2, sizeEnd: 0.1, gravity: -2,
+            color: 0x8800ff, colorEnd: 0x4400aa,
+            emissive: 0.8, fadeOut: true
+        },
+        // Cosmic element
+        cosmic: {
+            count: 12, life: 0.5, speed: 4, spread: 0.7,
+            size: 0.15, sizeEnd: 0.03, gravity: 0,
+            color: 0xffd700, colorEnd: 0xffffff,
+            emissive: 1.0, fadeOut: true
+        },
+        // Boss aura — persistent emitter
+        bossAura: {
+            count: 3, life: 1.0, speed: 1.5, spread: 0.8,
+            size: 0.3, sizeEnd: 0.1, gravity: 2,
+            color: 0xaa44ff, colorEnd: 0x6600aa,
+            emissive: 0.6, fadeOut: true
+        },
+        // Throne damage
+        throneDamage: {
+            count: 15, life: 0.6, speed: 8, spread: 0.7,
+            size: 0.3, sizeEnd: 0.05, gravity: -8,
+            color: 0xff8800, colorEnd: 0xff0000,
+            emissive: 0.7, fadeOut: true
+        }
+    },
+
+    init(scene) {
+        this.scene = scene;
+        this.active = true;
+        this._pools = {};
+        this._emitters = [];
+        this._trails = [];
+        this._screenFlashes = [];
+    },
+
+    // ── One-shot burst at position ──
+    burst(pos, presetName, opts) {
+        if (!this.active || !this.scene) return;
+        var p = this.presets[presetName];
+        if (!p) return;
+        var count = (opts && opts.count) || p.count;
+        var baseColor = new THREE.Color((opts && opts.color) || p.color);
+        var endColor = new THREE.Color(p.colorEnd || p.color);
+
+        for (var i = 0; i < count; i++) {
+            var particle = this._getParticle(presetName);
+
+            // Velocity — spherical spread
+            var vx, vy, vz;
+            if (p.arc) {
+                // Arc pattern (for slash)
+                var angle = (i / count) * Math.PI - Math.PI / 2;
+                vx = Math.cos(angle) * p.speed;
+                vy = Math.sin(angle) * p.speed * 0.3;
+                vz = Math.sin(angle) * p.speed;
+            } else if (p.column) {
+                // Column pattern (upward)
+                var ca = Math.random() * Math.PI * 2;
+                var cr = Math.random() * 1.5;
+                vx = Math.cos(ca) * cr;
+                vy = p.speed * (0.5 + Math.random() * 0.5);
+                vz = Math.sin(ca) * cr;
+            } else if (p.ring) {
+                // Ring pattern (outward from center)
+                var ra = (i / count) * Math.PI * 2;
+                vx = Math.cos(ra) * p.speed * (0.8 + Math.random() * 0.4);
+                vy = (Math.random() - 0.3) * p.speed * 0.3;
+                vz = Math.sin(ra) * p.speed * (0.8 + Math.random() * 0.4);
+            } else {
+                // Spherical spread
+                var theta = Math.random() * Math.PI * 2;
+                var phi = Math.random() * Math.PI * p.spread;
+                vx = Math.sin(phi) * Math.cos(theta) * p.speed * (0.5 + Math.random() * 0.5);
+                vy = Math.cos(phi) * p.speed * (0.3 + Math.random() * 0.7);
+                vz = Math.sin(phi) * Math.sin(theta) * p.speed * (0.5 + Math.random() * 0.5);
+            }
+
+            particle.mesh.position.set(
+                pos.x + (Math.random() - 0.5) * 0.5,
+                (pos.y || 1) + (Math.random() - 0.5) * 0.5,
+                pos.z + (Math.random() - 0.5) * 0.5
+            );
+            particle.vx = vx;
+            particle.vy = vy;
+            particle.vz = vz;
+            particle.life = 0;
+            particle.maxLife = p.life * (0.7 + Math.random() * 0.6);
+            particle.gravity = p.gravity || 0;
+            particle.startSize = p.size * (0.7 + Math.random() * 0.6);
+            particle.endSize = p.sizeEnd;
+            particle.startColor = baseColor.clone();
+            particle.endColor = endColor.clone();
+            particle.fadeOut = p.fadeOut;
+            particle.alive = true;
+            particle.mesh.visible = true;
+            particle.mesh.scale.setScalar(particle.startSize);
+            particle.mesh.material.opacity = 1;
+            particle.mesh.material.emissiveIntensity = p.emissive;
+
+            if (!particle.mesh.parent) this.scene.add(particle.mesh);
+        }
+    },
+
+    // ── Persistent emitter (returns handle to stop) ──
+    emit(pos, presetName, duration) {
+        if (!this.active) return null;
+        var emitter = {
+            pos: pos, preset: presetName,
+            interval: 0.08, timer: 0,
+            life: 0, duration: duration || 999,
+            alive: true
+        };
+        this._emitters.push(emitter);
+        return emitter;
+    },
+
+    stopEmitter(emitter) {
+        if (emitter) emitter.alive = false;
+    },
+
+    // ── Trail attached to a mesh ──
+    trail(mesh, presetName) {
+        if (!this.active) return null;
+        var t = { mesh: mesh, preset: presetName, timer: 0, interval: 0.05, alive: true };
+        this._trails.push(t);
+        return t;
+    },
+
+    stopTrail(trail) {
+        if (trail) trail.alive = false;
+    },
+
+    // ── Screen flash (CSS overlay) ──
+    screenFlash(color, duration) {
+        var el = document.createElement('div');
+        el.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:7999;opacity:0.5;background:' + color + ';transition:opacity ' + (duration || 0.3) + 's;';
+        document.body.appendChild(el);
+        requestAnimationFrame(function() { el.style.opacity = '0'; });
+        setTimeout(function() { if (el.parentNode) el.parentNode.removeChild(el); }, (duration || 0.3) * 1000 + 100);
+    },
+
+    // ── Update all particles ──
+    update(delta) {
+        if (!this.active) return;
+
+        // Update particles in all pools
+        for (var key in this._pools) {
+            var pool = this._pools[key];
+            for (var i = 0; i < pool.length; i++) {
+                var p = pool[i];
+                if (!p.alive) continue;
+
+                p.life += delta;
+                var t = p.life / p.maxLife;
+
+                if (t >= 1) {
+                    p.alive = false;
+                    p.mesh.visible = false;
+                    continue;
+                }
+
+                // Physics
+                p.mesh.position.x += p.vx * delta;
+                p.mesh.position.y += p.vy * delta;
+                p.mesh.position.z += p.vz * delta;
+                p.vy += p.gravity * delta;
+
+                // Drag
+                p.vx *= 0.98;
+                p.vz *= 0.98;
+
+                // Size interpolation
+                var size = p.startSize + (p.endSize - p.startSize) * t;
+                p.mesh.scale.setScalar(Math.max(0.01, size));
+
+                // Color interpolation
+                p.mesh.material.color.lerpColors(p.startColor, p.endColor, t);
+                p.mesh.material.emissive.lerpColors(p.startColor, p.endColor, t);
+
+                // Fade out
+                if (p.fadeOut) {
+                    p.mesh.material.opacity = t < 0.6 ? 1 : 1 - (t - 0.6) / 0.4;
+                }
+            }
+        }
+
+        // Update emitters
+        for (var e = this._emitters.length - 1; e >= 0; e--) {
+            var em = this._emitters[e];
+            if (!em.alive) { this._emitters.splice(e, 1); continue; }
+            em.life += delta;
+            if (em.life >= em.duration) { em.alive = false; this._emitters.splice(e, 1); continue; }
+            em.timer -= delta;
+            if (em.timer <= 0) {
+                em.timer = em.interval;
+                this.burst(em.pos, em.preset, { count: 1 });
+            }
+        }
+
+        // Update trails
+        for (var tr = this._trails.length - 1; tr >= 0; tr--) {
+            var trail = this._trails[tr];
+            if (!trail.alive || !trail.mesh || !trail.mesh.parent) {
+                this._trails.splice(tr, 1); continue;
+            }
+            trail.timer -= delta;
+            if (trail.timer <= 0) {
+                trail.timer = trail.interval;
+                this.burst(trail.mesh.position, trail.preset, { count: 1 });
+            }
+        }
+    },
+
+    // ── Particle pool ──
+    _getParticle(presetName) {
+        if (!this._pools[presetName]) this._pools[presetName] = [];
+        var pool = this._pools[presetName];
+
+        // Find dead particle
+        for (var i = 0; i < pool.length; i++) {
+            if (!pool[i].alive) return pool[i];
+        }
+
+        // Create new if under limit
+        if (pool.length < this._poolSize) {
+            var preset = this.presets[presetName];
+            var geo = new THREE.SphereGeometry(1, 4, 4); // unit sphere, scaled by .scale
+            var mat = new THREE.MeshStandardMaterial({
+                color: preset.color,
+                emissive: preset.color,
+                emissiveIntensity: preset.emissive || 0.5,
+                transparent: true,
+                opacity: 1,
+                roughness: 0.3,
+                depthWrite: false
+            });
+            var mesh = new THREE.Mesh(geo, mat);
+            mesh.visible = false;
+            var particle = {
+                mesh: mesh,
+                vx: 0, vy: 0, vz: 0,
+                life: 0, maxLife: 1,
+                gravity: 0,
+                startSize: 0.2, endSize: 0.05,
+                startColor: new THREE.Color(preset.color),
+                endColor: new THREE.Color(preset.colorEnd || preset.color),
+                fadeOut: true,
+                alive: false
+            };
+            pool.push(particle);
+            return particle;
+        }
+
+        // Pool full — reuse oldest
+        return pool[0];
+    },
+
+    cleanup() {
+        for (var key in this._pools) {
+            var pool = this._pools[key];
+            for (var i = 0; i < pool.length; i++) {
+                var p = pool[i];
+                if (p.mesh.parent) p.mesh.parent.remove(p.mesh);
+                p.mesh.geometry.dispose();
+                p.mesh.material.dispose();
+            }
+        }
+        this._pools = {};
+        this._emitters = [];
+        this._trails = [];
+        this.active = false;
+    }
+};
+
 // === js/world-combat.js ===
 // World Combat — Creep Waves, Tower Attacks, Momentum, Player Combat
 const COMBAT_CONFIG = {
@@ -7323,6 +7881,9 @@ const WorldCombat = {
             }
         }
 
+        // Log wave event for replay
+        if (typeof ReplaySystem !== 'undefined') ReplaySystem.logEvent('wave', { number: this.waveNumber, siege: isSiegeWave });
+
         var echoMsg = 'Wave ' + this.waveNumber + (isSiegeWave ? ' [SIEGE WAVE]' : '');
         if (typeof EchoEngine !== 'undefined') {
             var ef = EchoEngine.getCurrentFrame();
@@ -7469,6 +8030,13 @@ const WorldCombat = {
         this.bossActive = true;
         this.boss = creep;
 
+        // VFX boss spawn + persistent aura
+        if (typeof VFX !== 'undefined') {
+            VFX.burst(group.position, 'bossKill');
+            VFX.screenFlash(isVoidColossus ? '#6600aa' : '#00ffcc', 0.5);
+            creep._auraEmitter = VFX.emit(group.position, 'bossAura', 999);
+        }
+
         // Boss intro overlay
         const overlay = document.createElement('div');
         overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.7);z-index:9999;opacity:0;transition:opacity 0.5s;pointer-events:none;';
@@ -7479,6 +8047,9 @@ const WorldCombat = {
         setTimeout(() => { if (overlay.parentNode) overlay.parentNode.removeChild(overlay); }, 2000);
 
         if (typeof Audio !== 'undefined' && Audio.playWaveHorn) Audio.playWaveHorn();
+
+        // Log boss spawn for replay
+        if (typeof ReplaySystem !== 'undefined') ReplaySystem.logEvent('boss_spawn', { name: bossName, lane: laneKey, wave: this.waveNumber });
     },
 
     updateCreeps(delta) {
@@ -7511,6 +8082,17 @@ const WorldCombat = {
                     enemy.hp -= COMBAT_CONFIG.creepDamage;
                     if (enemy.hp <= 0) {
                         enemy.alive = false;
+                        // VFX kill burst
+                        if (typeof VFX !== 'undefined') VFX.burst(enemy.mesh.position, enemy.isBoss ? 'bossKill' : 'kill');
+                        // Log kill for replay
+                        if (typeof ReplaySystem !== 'undefined') {
+                            var evtType = enemy.isBoss ? 'boss_kill' : 'kill';
+                            ReplaySystem.logEvent(evtType, {
+                                name: enemy.isBoss ? enemy.bossName : (enemy.faction + ' ' + (enemy.creepType || 'creep')),
+                                pos: { x: enemy.mesh.position.x, y: enemy.mesh.position.y, z: enemy.mesh.position.z },
+                                isBoss: !!enemy.isBoss, killer: creep.faction
+                            });
+                        }
                         // Boss death
                         if (enemy.isBoss) {
                             this.bossActive = false;
@@ -7653,7 +8235,8 @@ const WorldCombat = {
             const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
 
             if (dist < 1) {
-                // Hit
+                // Hit — VFX impact
+                if (typeof VFX !== 'undefined') VFX.burst(proj.mesh.position, 'towerImpact');
                 proj.target.hp -= proj.damage;
                 if (proj.target.hp <= 0) {
                     proj.target.alive = false;
@@ -7741,6 +8324,8 @@ const WorldCombat = {
 
         nearest.hp -= dmg * comboMult;
         this.showDamageNumber(nearest.mesh.position, dmg * comboMult, '#ff4444');
+        // VFX hit spark
+        if (typeof VFX !== 'undefined') VFX.burst(nearest.mesh.position, 'hitSpark');
 
         // Apply status effect from equipped weapon
         if (typeof StatusEffects !== 'undefined' && typeof Equipment !== 'undefined') {
@@ -7750,6 +8335,20 @@ const WorldCombat = {
 
         if (nearest.hp <= 0) {
             nearest.alive = false;
+            // VFX kill burst
+            if (typeof VFX !== 'undefined') {
+                VFX.burst(nearest.mesh.position, nearest.isBoss ? 'bossKill' : 'kill');
+                if (nearest.isBoss) VFX.screenFlash('#aa44ff', 0.4);
+            }
+            // Log player kill for replay
+            if (typeof ReplaySystem !== 'undefined') {
+                var evtType = nearest.isBoss ? 'boss_kill' : 'kill';
+                ReplaySystem.logEvent(evtType, {
+                    name: nearest.isBoss ? (nearest.bossName || 'BOSS') : 'CREEP',
+                    pos: { x: nearest.mesh.position.x, y: nearest.mesh.position.y, z: nearest.mesh.position.z },
+                    isBoss: !!nearest.isBoss, killer: 'player'
+                });
+            }
             if (typeof ComboSystem !== 'undefined') ComboSystem.registerKill();
             if (typeof PlayerStats !== 'undefined') {
                 PlayerStats.awardXp(nearest.isBoss ? 50 : 10);
@@ -7911,6 +8510,625 @@ const WorldCombat = {
         this.active = false;
         this.bossActive = false;
         this.boss = null;
+    }
+};
+
+// === js/replay.js ===
+// Replay System — Cinematic Battle Replay with Slow-Mo Kills
+// Records combat events in real-time, replays with cinematic camera paths
+// Toggle: R key | During replay: SPACE = pause, ESC = exit, ←/→ = speed
+
+const ReplaySystem = {
+    // Recording state
+    recording: true,
+    eventLog: [],       // { time, type, data }
+    snapshots: [],      // { time, creeps[], projectiles[], momentum, wave, playerPos, heroPos, heroHp }
+    maxEvents: 2000,
+    maxSnapshots: 600,  // ~10 min at 1 snapshot/sec
+    _lastSnapshotTime: 0,
+
+    // Playback state
+    playing: false,
+    paused: false,
+    playbackTime: 0,
+    playbackSpeed: 1.0,
+    playbackStartTime: 0,
+    playbackDuration: 0,
+    _savedCameraPos: null,
+    _savedCameraTarget: null,
+    _slowMoUntil: 0,
+    _currentCameraMode: 'orbit',  // orbit, tracking, dramatic, topdown
+    _cameraModeTimer: 0,
+    _trackingTarget: null,
+    _orbitAngle: 0,
+    _killBannerTimeout: null,
+
+    // Camera path keyframes for cinematic shots
+    _cameraShots: [
+        { name: 'orbit',    duration: 6,  height: 25, radius: 40, speed: 0.4 },
+        { name: 'tracking', duration: 4,  height: 8,  offset: 6,  followDist: 12 },
+        { name: 'dramatic', duration: 3,  height: 3,  radius: 8,  speed: 0.8 },
+        { name: 'topdown',  duration: 5,  height: 60, radius: 0,  speed: 0 },
+        { name: 'sweep',    duration: 5,  height: 15, radius: 50, speed: 0.2 },
+    ],
+
+    init() {
+        this.eventLog = [];
+        this.snapshots = [];
+        this.recording = true;
+        this.playing = false;
+        this._lastSnapshotTime = 0;
+        this._buildOverlay();
+    },
+
+    _buildOverlay() {
+        if (document.getElementById('replay-overlay')) return;
+        const el = document.createElement('div');
+        el.id = 'replay-overlay';
+        el.innerHTML = `
+            <div class="replay-letterbox-top"></div>
+            <div class="replay-letterbox-bot"></div>
+            <div class="replay-scanlines"></div>
+            <div class="replay-badge">&#9679; REPLAY</div>
+            <div class="replay-timecode">00:00 / 00:00</div>
+            <div class="replay-kill-banner" id="replay-kill-banner"></div>
+            <div class="replay-slowmo-flash" id="replay-slowmo-flash"></div>
+            <div class="replay-ticker" id="replay-ticker"></div>
+            <div class="replay-controls">R exit &middot; SPACE pause &middot; &larr;&rarr; speed</div>
+        `;
+        document.body.appendChild(el);
+    },
+
+    // === RECORDING ===
+
+    logEvent(type, data) {
+        if (!this.recording || this.playing) return;
+        if (this.eventLog.length >= this.maxEvents) {
+            this.eventLog.splice(0, 200); // trim oldest
+        }
+        this.eventLog.push({
+            time: performance.now(),
+            type: type,
+            data: Object.assign({}, data)
+        });
+    },
+
+    takeSnapshot() {
+        if (!this.recording || this.playing) return;
+        const now = performance.now();
+        if (now - this._lastSnapshotTime < 1000) return; // 1 per second
+        this._lastSnapshotTime = now;
+
+        if (this.snapshots.length >= this.maxSnapshots) {
+            this.snapshots.splice(0, 60);
+        }
+
+        const creepData = [];
+        for (const c of WorldCombat.creeps) {
+            if (!c.alive) continue;
+            creepData.push({
+                pos: { x: c.mesh.position.x, y: c.mesh.position.y, z: c.mesh.position.z },
+                faction: c.faction,
+                lane: c.lane,
+                hp: c.hp,
+                maxHp: c.maxHp,
+                type: c.creepType,
+                isBoss: !!c.isBoss,
+                bossName: c.bossName || null,
+                rotY: c.mesh.rotation.y
+            });
+        }
+
+        const playerPos = WorldMode.player ? {
+            x: WorldMode.player.mesh.position.x,
+            y: WorldMode.player.mesh.position.y,
+            z: WorldMode.player.mesh.position.z
+        } : { x: 0, y: 0, z: 0 };
+
+        const heroPos = (typeof EnemyHero !== 'undefined' && EnemyHero.mesh) ? {
+            x: EnemyHero.mesh.position.x,
+            y: EnemyHero.mesh.position.y,
+            z: EnemyHero.mesh.position.z,
+            hp: EnemyHero.state ? EnemyHero.state.hp : 0,
+            alive: EnemyHero.state ? EnemyHero.state.alive : false
+        } : null;
+
+        this.snapshots.push({
+            time: now,
+            creeps: creepData,
+            momentum: WorldCombat.momentum,
+            wave: WorldCombat.waveNumber,
+            playerPos: playerPos,
+            heroPos: heroPos,
+            creepCount: creepData.length
+        });
+    },
+
+    // === PLAYBACK ===
+
+    startReplay() {
+        if (this.snapshots.length < 3) {
+            if (typeof HUD !== 'undefined') HUD.showToast('Not enough combat data — fight some creeps first!');
+            return;
+        }
+
+        this.playing = true;
+        this.paused = false;
+        this.recording = false;
+        this.playbackSpeed = 1.0;
+        this.playbackTime = 0;
+        this._orbitAngle = 0;
+        this._cameraModeTimer = 0;
+        this._currentCameraMode = 'orbit';
+        this._trackingTarget = null;
+
+        // Save camera state
+        this._savedCameraPos = WorldMode.camera.position.clone();
+
+        // Calculate timeline
+        const firstTime = this.snapshots[0].time;
+        const lastTime = this.snapshots[this.snapshots.length - 1].time;
+        this.playbackStartTime = firstTime;
+        this.playbackDuration = (lastTime - firstTime) / 1000;
+
+        // Build ghost creeps for replay visualization
+        this._ghostCreeps = [];
+        this._ghostProjectiles = [];
+
+        // Show overlay
+        const overlay = document.getElementById('replay-overlay');
+        if (overlay) overlay.classList.add('active');
+
+        // Hide game HUD
+        this._hideGameHUD(true);
+
+        // Disable player input
+        WorldMode.keys = {};
+
+        if (typeof HUD !== 'undefined') HUD.showToast('REPLAY STARTED — R to exit');
+    },
+
+    stopReplay() {
+        this.playing = false;
+        this.recording = true;
+
+        // Restore camera
+        if (this._savedCameraPos) {
+            WorldMode.camera.position.copy(this._savedCameraPos);
+        }
+
+        // Remove ghost meshes
+        this._cleanupGhosts();
+
+        // Hide overlay
+        const overlay = document.getElementById('replay-overlay');
+        if (overlay) overlay.classList.remove('active');
+
+        // Show game HUD
+        this._hideGameHUD(false);
+
+        // Clear kill banner
+        const banner = document.getElementById('replay-kill-banner');
+        if (banner) banner.classList.remove('show');
+        const flash = document.getElementById('replay-slowmo-flash');
+        if (flash) flash.classList.remove('active');
+
+        if (typeof HUD !== 'undefined') HUD.showToast('Replay ended');
+    },
+
+    toggleReplay() {
+        if (this.playing) {
+            this.stopReplay();
+        } else {
+            this.startReplay();
+        }
+    },
+
+    // === UPDATE (called every frame from WorldMode.update) ===
+
+    update(delta, time) {
+        // Always take snapshots while recording
+        if (this.recording && !this.playing && WorldCombat.active) {
+            this.takeSnapshot();
+        }
+
+        if (!this.playing) return;
+        if (this.paused) {
+            this._updateReplayCamera(0, time);
+            this._updateOverlay();
+            return;
+        }
+
+        // Advance playback time
+        var speed = this.playbackSpeed;
+        if (performance.now() < this._slowMoUntil) {
+            speed *= 0.15; // slow-mo
+        }
+        this.playbackTime += delta * speed;
+
+        // Loop or end
+        if (this.playbackTime >= this.playbackDuration) {
+            this.playbackTime = 0; // loop
+        }
+
+        // Find current snapshot
+        var targetTime = this.playbackStartTime + this.playbackTime * 1000;
+        var snapIdx = this._findSnapshotIndex(targetTime);
+        var snap = this.snapshots[snapIdx];
+
+        // Check for kill events near this time window
+        this._checkKillEvents(targetTime);
+
+        // Update ghost creeps
+        this._updateGhostCreeps(snap);
+
+        // Update camera
+        this._updateReplayCamera(delta * speed, time);
+
+        // Update overlay
+        this._updateOverlay();
+    },
+
+    _findSnapshotIndex(targetTime) {
+        // Binary search for closest snapshot
+        var lo = 0, hi = this.snapshots.length - 1;
+        while (lo < hi) {
+            var mid = (lo + hi + 1) >> 1;
+            if (this.snapshots[mid].time <= targetTime) lo = mid;
+            else hi = mid - 1;
+        }
+        return lo;
+    },
+
+    // === GHOST CREEPS (replay visualization) ===
+
+    _updateGhostCreeps(snap) {
+        if (!snap) return;
+        var scene = WorldMode.scene;
+
+        // Remove excess ghosts
+        while (this._ghostCreeps.length > snap.creeps.length) {
+            var g = this._ghostCreeps.pop();
+            if (g.parent) g.parent.remove(g);
+            g.traverse(function(child) {
+                if (child.geometry) child.geometry.dispose();
+                if (child.material) child.material.dispose();
+            });
+        }
+
+        // Add/update ghosts
+        for (var i = 0; i < snap.creeps.length; i++) {
+            var cd = snap.creeps[i];
+            var ghost = this._ghostCreeps[i];
+
+            if (!ghost) {
+                ghost = this._createGhostCreep(cd);
+                scene.add(ghost);
+                this._ghostCreeps.push(ghost);
+            }
+
+            // Smooth lerp to target position
+            ghost.position.x += (cd.pos.x - ghost.position.x) * 0.15;
+            ghost.position.y += (cd.pos.y - ghost.position.y) * 0.15;
+            ghost.position.z += (cd.pos.z - ghost.position.z) * 0.15;
+            ghost.rotation.y = cd.rotY;
+
+            // Update color based on faction/boss
+            var bodyMesh = ghost.children[0];
+            if (bodyMesh && bodyMesh.material) {
+                var c = cd.faction === 'explorer' ? 0x00ff88 : 0xff4488;
+                if (cd.isBoss) c = 0xaa44ff;
+                bodyMesh.material.color.setHex(c);
+                bodyMesh.material.emissive.setHex(c);
+                // Ghost glow effect
+                bodyMesh.material.emissiveIntensity = 0.4 + Math.sin(performance.now() * 0.003 + i) * 0.2;
+            }
+        }
+    },
+
+    _createGhostCreep(cd) {
+        var group = new THREE.Group();
+        var size = cd.isBoss ? 1.5 : (cd.type === 'siege' ? 0.6 : 0.4);
+        var geo;
+        if (cd.isBoss) geo = new THREE.SphereGeometry(size, 10, 10);
+        else if (cd.type === 'ranged') geo = new THREE.OctahedronGeometry(size, 0);
+        else if (cd.type === 'siege') geo = new THREE.BoxGeometry(size * 1.5, size * 1.2, size * 1.5);
+        else geo = new THREE.SphereGeometry(size, 8, 8);
+
+        var color = cd.faction === 'explorer' ? 0x00ff88 : 0xff4488;
+        if (cd.isBoss) color = 0xaa44ff;
+
+        var mat = new THREE.MeshStandardMaterial({
+            color: color,
+            emissive: color,
+            emissiveIntensity: 0.5,
+            transparent: true,
+            opacity: 0.8,
+            roughness: 0.3
+        });
+        var body = new THREE.Mesh(geo, mat);
+        body.position.y = size + 0.1;
+        group.add(body);
+
+        // Ghost trail ring
+        var ringGeo = new THREE.RingGeometry(size * 0.8, size * 1.2, 16);
+        var ringMat = new THREE.MeshBasicMaterial({
+            color: color, transparent: true, opacity: 0.2, side: THREE.DoubleSide
+        });
+        var ring = new THREE.Mesh(ringGeo, ringMat);
+        ring.rotation.x = -Math.PI / 2;
+        ring.position.y = 0.05;
+        group.add(ring);
+
+        return group;
+    },
+
+    _cleanupGhosts() {
+        for (var i = 0; i < this._ghostCreeps.length; i++) {
+            var g = this._ghostCreeps[i];
+            if (g.parent) g.parent.remove(g);
+            g.traverse(function(child) {
+                if (child.geometry) child.geometry.dispose();
+                if (child.material) child.material.dispose();
+            });
+        }
+        this._ghostCreeps = [];
+    },
+
+    // === CINEMATIC CAMERA ===
+
+    _updateReplayCamera(delta, time) {
+        if (!WorldMode.camera || !WorldMode.scene) return;
+
+        this._cameraModeTimer -= delta;
+        if (this._cameraModeTimer <= 0) {
+            this._advanceCameraMode();
+        }
+
+        var cam = WorldMode.camera;
+        var centerX = 0, centerZ = 0;
+
+        // Find center of action from current snapshot
+        var snapIdx = this._findSnapshotIndex(this.playbackStartTime + this.playbackTime * 1000);
+        var snap = this.snapshots[snapIdx];
+        if (snap && snap.creeps.length > 0) {
+            for (var i = 0; i < snap.creeps.length; i++) {
+                centerX += snap.creeps[i].pos.x;
+                centerZ += snap.creeps[i].pos.z;
+            }
+            centerX /= snap.creeps.length;
+            centerZ /= snap.creeps.length;
+        }
+
+        var isSlowMo = performance.now() < this._slowMoUntil;
+
+        switch (this._currentCameraMode) {
+            case 'orbit':
+                this._orbitAngle += delta * 0.4;
+                var ox = centerX + Math.cos(this._orbitAngle) * 40;
+                var oz = centerZ + Math.sin(this._orbitAngle) * 40;
+                var targetPos = new THREE.Vector3(ox, 25, oz);
+                cam.position.lerp(targetPos, 0.03);
+                cam.lookAt(centerX, 2, centerZ);
+                break;
+
+            case 'tracking':
+                // Follow the most interesting target (boss > hero > random creep)
+                var trackPos = this._getTrackingTarget(snap);
+                if (trackPos) {
+                    var tx = trackPos.x + 6;
+                    var ty = 8;
+                    var tz = trackPos.z + 12;
+                    cam.position.lerp(new THREE.Vector3(tx, ty, tz), isSlowMo ? 0.01 : 0.04);
+                    cam.lookAt(trackPos.x, 1.5, trackPos.z);
+                }
+                break;
+
+            case 'dramatic':
+                // Low angle, close to action, slow orbit
+                this._orbitAngle += delta * 0.8;
+                var dr = isSlowMo ? 5 : 8;
+                var dx = centerX + Math.cos(this._orbitAngle) * dr;
+                var dz = centerZ + Math.sin(this._orbitAngle) * dr;
+                cam.position.lerp(new THREE.Vector3(dx, 3, dz), 0.05);
+                cam.lookAt(centerX, 1, centerZ);
+                break;
+
+            case 'topdown':
+                cam.position.lerp(new THREE.Vector3(centerX, 60, centerZ + 5), 0.02);
+                cam.lookAt(centerX, 0, centerZ);
+                break;
+
+            case 'sweep':
+                // Wide sweeping arc across the battlefield
+                this._orbitAngle += delta * 0.2;
+                var sx = Math.cos(this._orbitAngle) * 50;
+                var sz = Math.sin(this._orbitAngle) * 50;
+                cam.position.lerp(new THREE.Vector3(sx, 15, sz), 0.02);
+                cam.lookAt(0, 0, 0);
+                break;
+        }
+    },
+
+    _advanceCameraMode() {
+        var shots = this._cameraShots;
+        var currentIdx = shots.findIndex(function(s) { return s.name === ReplaySystem._currentCameraMode; });
+        var nextIdx = (currentIdx + 1) % shots.length;
+
+        // On kills, force dramatic mode
+        if (performance.now() < this._slowMoUntil) {
+            nextIdx = shots.findIndex(function(s) { return s.name === 'dramatic'; });
+        }
+
+        this._currentCameraMode = shots[nextIdx].name;
+        this._cameraModeTimer = shots[nextIdx].duration;
+    },
+
+    _getTrackingTarget(snap) {
+        if (!snap || snap.creeps.length === 0) return { x: 0, y: 0, z: 0 };
+
+        // Prefer boss
+        for (var i = 0; i < snap.creeps.length; i++) {
+            if (snap.creeps[i].isBoss) return snap.creeps[i].pos;
+        }
+
+        // Prefer hero
+        if (snap.heroPos && snap.heroPos.alive) return snap.heroPos;
+
+        // Random creep that changes every few seconds
+        var idx = Math.floor(performance.now() / 3000) % snap.creeps.length;
+        return snap.creeps[idx].pos;
+    },
+
+    // === KILL EVENTS ===
+
+    _checkKillEvents(targetTime) {
+        var windowMs = 1500;
+        for (var i = 0; i < this.eventLog.length; i++) {
+            var evt = this.eventLog[i];
+            if (evt._played) continue;
+            if (Math.abs(evt.time - targetTime) > windowMs) continue;
+
+            evt._played = true;
+
+            if (evt.type === 'kill') {
+                this._triggerSlowMo(evt.data);
+            } else if (evt.type === 'boss_spawn') {
+                this._showTicker('BOSS INCOMING: ' + (evt.data.name || 'Unknown'));
+            } else if (evt.type === 'wave') {
+                this._showTicker('WAVE ' + evt.data.number + (evt.data.siege ? ' [SIEGE]' : ''));
+            } else if (evt.type === 'boss_kill') {
+                this._triggerSlowMo({ name: evt.data.name + ' SLAIN', isBoss: true });
+            } else if (evt.type === 'tower_destroy') {
+                this._showTicker('TOWER DESTROYED');
+            }
+        }
+    },
+
+    _triggerSlowMo(data) {
+        // Enter slow-mo for 2 seconds
+        this._slowMoUntil = performance.now() + 2000;
+
+        // Force dramatic camera
+        this._currentCameraMode = 'dramatic';
+        this._cameraModeTimer = 2.5;
+
+        // Show kill banner
+        var banner = document.getElementById('replay-kill-banner');
+        if (banner) {
+            var text = data.isBoss ? data.name : 'ELIMINATED';
+            if (data.name && !data.isBoss) text = data.name;
+            banner.textContent = text;
+            banner.classList.remove('show');
+            void banner.offsetWidth; // reflow
+            banner.classList.add('show');
+        }
+
+        // Flash vignette
+        var flash = document.getElementById('replay-slowmo-flash');
+        if (flash) {
+            flash.classList.add('active');
+            setTimeout(function() { flash.classList.remove('active'); }, 1800);
+        }
+
+        // Screen shake
+        this._screenShake(data.isBoss ? 1.5 : 0.6);
+    },
+
+    _screenShake(intensity) {
+        if (!WorldMode.camera) return;
+        var cam = WorldMode.camera;
+        var origX = cam.position.x;
+        var origY = cam.position.y;
+        var shakeCount = 0;
+        var maxShakes = 8;
+        var interval = setInterval(function() {
+            shakeCount++;
+            var decay = 1 - (shakeCount / maxShakes);
+            cam.position.x = origX + (Math.random() - 0.5) * intensity * decay;
+            cam.position.y = origY + (Math.random() - 0.5) * intensity * 0.5 * decay;
+            if (shakeCount >= maxShakes) {
+                clearInterval(interval);
+            }
+        }, 30);
+    },
+
+    _showTicker(msg) {
+        var ticker = document.getElementById('replay-ticker');
+        if (ticker) ticker.textContent = msg;
+    },
+
+    // === OVERLAY ===
+
+    _updateOverlay() {
+        // Timecode
+        var tc = document.querySelector('.replay-timecode');
+        if (tc) {
+            var current = this._formatTime(this.playbackTime);
+            var total = this._formatTime(this.playbackDuration);
+            var speedStr = this.playbackSpeed !== 1.0 ? ' [' + this.playbackSpeed.toFixed(1) + 'x]' : '';
+            var slowStr = performance.now() < this._slowMoUntil ? ' SLOW-MO' : '';
+            var pauseStr = this.paused ? ' PAUSED' : '';
+            tc.textContent = current + ' / ' + total + speedStr + slowStr + pauseStr;
+        }
+    },
+
+    _formatTime(seconds) {
+        var m = Math.floor(seconds / 60);
+        var s = Math.floor(seconds % 60);
+        return (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+    },
+
+    _hideGameHUD(hide) {
+        var ids = ['combat-hud', 'player-stats-bar', 'gold-kda-bar', 'level-badge', 'ability-bar', 'minimap-container'];
+        for (var i = 0; i < ids.length; i++) {
+            var el = document.getElementById(ids[i]);
+            if (el) el.style.opacity = hide ? '0' : '1';
+        }
+    },
+
+    // === INPUT ===
+
+    handleKey(key) {
+        if (!this.playing) return false;
+
+        switch (key) {
+            case 'Escape':
+            case 'r':
+                this.stopReplay();
+                return true;
+            case ' ':
+                this.paused = !this.paused;
+                return true;
+            case 'ArrowRight':
+                this.playbackSpeed = Math.min(4.0, this.playbackSpeed + 0.5);
+                this._showTicker('Speed: ' + this.playbackSpeed.toFixed(1) + 'x');
+                return true;
+            case 'ArrowLeft':
+                this.playbackSpeed = Math.max(0.25, this.playbackSpeed - 0.25);
+                this._showTicker('Speed: ' + this.playbackSpeed.toFixed(1) + 'x');
+                return true;
+            case 'ArrowUp':
+                // Skip forward 5 seconds
+                this.playbackTime = Math.min(this.playbackDuration, this.playbackTime + 5);
+                return true;
+            case 'ArrowDown':
+                // Skip backward 5 seconds
+                this.playbackTime = Math.max(0, this.playbackTime - 5);
+                return true;
+        }
+        return false;
+    },
+
+    cleanup() {
+        if (this.playing) this.stopReplay();
+        this._cleanupGhosts();
+        this.eventLog = [];
+        this.snapshots = [];
+        // Reset played flags
+        for (var i = 0; i < this.eventLog.length; i++) {
+            delete this.eventLog[i]._played;
+        }
     }
 };
 
@@ -9306,6 +10524,7 @@ const Inventory = {
             const dz = d.mesh.position.z - playerPos.z;
             if (dx * dx + dz * dz < 25) { // within 5 units
                 if (this.addItem(d.item.id)) {
+                    if (typeof VFX !== 'undefined') VFX.burst(d.mesh.position, 'goldPickup');
                     if (d.mesh.parent) d.mesh.parent.remove(d.mesh);
                     this.droppedItems.splice(i, 1);
                 }
@@ -9512,13 +10731,16 @@ const Abilities = {
     const ring = new THREE.Mesh(geo, mat);
     ring.rotation.x = -Math.PI / 2; ring.position.copy(pos); ring.position.y = 0.1;
     this._addEffect(ring, 0.3);
+    if (typeof VFX !== 'undefined') VFX.burst(pos, 'slashArc');
     if (typeof Audio !== 'undefined' && Audio.playHit) Audio.playHit();
   },
   _doPulseShot(pos, dir, def) {
     const mesh = new THREE.Mesh(new THREE.SphereGeometry(0.3, 8, 8), new THREE.MeshBasicMaterial({ color: 0x00ffff }));
     mesh.position.copy(pos); mesh.position.y = 1;
     WorldMode.scene.add(mesh);
-    this.projectiles.push({ mesh, direction: dir.clone(), speed: def.speed, damage: this._scaledDmg(def.damage), life: 0 });
+    var projObj = { mesh, direction: dir.clone(), speed: def.speed, damage: this._scaledDmg(def.damage), life: 0 };
+    if (typeof VFX !== 'undefined') projObj._trail = VFX.trail(mesh, 'pulseTrail');
+    this.projectiles.push(projObj);
     if (typeof Audio !== 'undefined' && Audio.playTowerShot) Audio.playTowerShot();
   },
   _doShield(def) {
@@ -9528,6 +10750,7 @@ const Abilities = {
       ring._origColor = ring.material.color.getHex(); ring._origScale = ring.scale.clone();
       ring.material.color.setHex(0xffd700); ring.scale.set(2, 2, 2);
     }
+    if (typeof VFX !== 'undefined') VFX.emit(WorldMode.player.mesh.position, 'shieldShimmer', def.duration);
     if (typeof Audio !== 'undefined' && Audio.playClick) Audio.playClick();
   },
   _doDash(pos, dir, def) {
@@ -9543,6 +10766,7 @@ const Abilities = {
         pos.z - dir.z * def.distance * (i / 5) + (Math.random() - 0.5));
       this._addEffect(p, 0.4);
     }
+    if (typeof VFX !== 'undefined') VFX.burst(pos, 'dashTrail', { count: 8 });
     if (typeof Audio !== 'undefined' && Audio.playClick) Audio.playClick();
   },
   _doNova(pos, def) {
@@ -9556,6 +10780,7 @@ const Abilities = {
     const sphere = new THREE.Mesh(new THREE.SphereGeometry(1, 16, 16), mat);
     sphere.position.copy(pos); sphere.position.y = 1; sphere._novaRange = def.range;
     this._addEffect(sphere, 0.5);
+    if (typeof VFX !== 'undefined') { VFX.burst(pos, 'novaBlast'); VFX.screenFlash('#ff4400', 0.2); }
     const cam = WorldMode.camera;
     if (cam) {
       const ox = cam.position.x, oy = cam.position.y; let shakeT = 0;
@@ -9594,7 +10819,11 @@ const Abilities = {
           hit = true; break;
         }
       }
-      if (hit || p.life > 3) { WorldMode.scene.remove(p.mesh); this.projectiles.splice(i, 1); }
+      if (hit || p.life > 3) {
+        if (hit && typeof VFX !== 'undefined') VFX.burst(p.mesh.position, 'towerImpact');
+        if (p._trail && typeof VFX !== 'undefined') VFX.stopTrail(p._trail);
+        WorldMode.scene.remove(p.mesh); this.projectiles.splice(i, 1);
+      }
     }
     // Shield
     if (this.shieldActive) {
@@ -10135,6 +11364,7 @@ const WorldMode = {
         // Build terrain, lanes, combat, agents
         WorldTerrain.build(this.scene, w, worldId);
         WorldLanes.init(this.scene, w);
+        if (typeof VFX !== 'undefined') VFX.init(this.scene);
         WorldCombat.init(this.scene);
         if (typeof JungleCamps !== "undefined") JungleCamps.init(this.scene, w);
         if (typeof FogOfWar !== 'undefined') FogOfWar.init(this.scene, w);
@@ -10194,6 +11424,9 @@ const WorldMode = {
         if (typeof Tutorial !== 'undefined') Tutorial.start();
         // Quest tracker
         if (typeof QuestTracker !== 'undefined') QuestTracker.show();
+        // Init Replay System
+        if (typeof ReplaySystem !== 'undefined') ReplaySystem.init();
+
         // Init Echo Engine
         if (typeof EchoEngine !== 'undefined') {
             EchoEngine.init();
@@ -10341,10 +11574,12 @@ const WorldMode = {
             this.player.mesh.position.y += (terrainY - this.player.mesh.position.y) * 0.15;
         }
 
-        // Camera follow
-        const camTarget = this.player.mesh.position.clone().add(new THREE.Vector3(0, 8, 12));
-        this.camera.position.lerp(camTarget, 0.05);
-        this.camera.lookAt(this.player.mesh.position.x, 1, this.player.mesh.position.z);
+        // Camera follow (skip during replay — ReplaySystem controls camera)
+        if (typeof ReplaySystem === 'undefined' || !ReplaySystem.playing) {
+            const camTarget = this.player.mesh.position.clone().add(new THREE.Vector3(0, 8, 12));
+            this.camera.position.lerp(camTarget, 0.05);
+            this.camera.lookAt(this.player.mesh.position.x, 1, this.player.mesh.position.z);
+        }
 
         // Ground ring pulse
         if (this.player.ring) {
@@ -10361,6 +11596,8 @@ const WorldMode = {
         WorldTerrain.update(time, delta);
         WorldLanes.updateTowerVisuals(time);
         WorldCombat.update(delta, time, this.player.mesh.position);
+        if (typeof VFX !== 'undefined') VFX.update(delta);
+        if (typeof ReplaySystem !== 'undefined') ReplaySystem.update(delta, time);
         if (typeof JungleCamps !== "undefined") JungleCamps.update(delta, this.player.mesh.position);
         WorldAgents.updateAnimations(time);
         WorldAgents.checkInteractions(this.player.mesh.position);
@@ -10453,6 +11690,8 @@ const WorldMode = {
         window.removeEventListener('keyup', this.keyUp);
         this.keys = {};
 
+        if (typeof ReplaySystem !== 'undefined') ReplaySystem.cleanup();
+        if (typeof VFX !== 'undefined') VFX.cleanup();
         WorldCombat.cleanup();
         if (typeof JungleCamps !== "undefined") JungleCamps.cleanup();
         WorldLanes.cleanup();
@@ -12788,6 +14027,7 @@ const HelpOverlay = {
                         <div class="help-row"><span class="help-key">SPACE</span><span>Attack</span></div>
                         <div class="help-row"><span class="help-key">E</span><span>Interact / Enter Portal</span></div>
                         <div class="help-row"><span class="help-key">F</span><span>Poke Agent</span></div>
+                        <div class="help-row"><span class="help-key">R</span><span>Battle Replay (cinematic)</span></div>
                         <div class="help-row"><span class="help-key">ESC</span><span>Return to Galaxy</span></div>
                     </div>
                     <div class="help-section">
@@ -15241,6 +16481,17 @@ const QuestTracker = {
     document.addEventListener('keydown', (e) => {
         // Track keys for debug overlay
         if (typeof DebugOverlay !== 'undefined') DebugOverlay.recordKey(e.code);
+
+        // Replay system input intercept
+        if (typeof ReplaySystem !== 'undefined' && ReplaySystem.playing) {
+            if (ReplaySystem.handleKey(e.key)) { e.preventDefault(); return; }
+        }
+
+        // Replay toggle (R in world mode)
+        if (e.code === 'KeyR' && GameState.mode === 'world') {
+            if (typeof ReplaySystem !== 'undefined') ReplaySystem.toggleReplay();
+            return;
+        }
 
         // Debug overlay toggle (Ctrl+Shift+D)
         if (e.code === 'KeyD' && e.ctrlKey && e.shiftKey) {

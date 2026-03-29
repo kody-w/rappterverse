@@ -1,0 +1,158 @@
+/* Replay System — Cinematic Battle Replay */
+
+#replay-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 8000;
+    pointer-events: none;
+}
+
+#replay-overlay.active {
+    display: block;
+}
+
+/* Cinematic letterbox bars */
+.replay-letterbox-top,
+.replay-letterbox-bot {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 0;
+    background: #000;
+    transition: height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 8001;
+}
+.replay-letterbox-top { top: 0; }
+.replay-letterbox-bot { bottom: 0; }
+
+#replay-overlay.active .replay-letterbox-top,
+#replay-overlay.active .replay-letterbox-bot {
+    height: 8vh;
+}
+
+/* VHS / REPLAY badge */
+.replay-badge {
+    position: absolute;
+    top: calc(8vh + 12px);
+    left: 16px;
+    font-family: monospace;
+    font-size: 14px;
+    color: #ff3333;
+    text-shadow: 0 0 6px rgba(255, 50, 50, 0.8);
+    z-index: 8002;
+    animation: replay-blink 1s step-end infinite;
+    letter-spacing: 2px;
+}
+
+@keyframes replay-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
+/* Timecode */
+.replay-timecode {
+    position: absolute;
+    top: calc(8vh + 12px);
+    right: 16px;
+    font-family: monospace;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.7);
+    z-index: 8002;
+    letter-spacing: 1px;
+}
+
+/* Kill banner — flashes on kills */
+.replay-kill-banner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    font-family: monospace;
+    font-size: 42px;
+    font-weight: bold;
+    color: #ff4444;
+    text-shadow: 0 0 30px rgba(255, 68, 68, 0.9), 0 0 60px rgba(255, 68, 68, 0.5);
+    z-index: 8003;
+    opacity: 0;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+.replay-kill-banner.show {
+    animation: kill-slam 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes kill-slam {
+    0% { transform: translate(-50%, -50%) scale(3); opacity: 0; }
+    15% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    70% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    100% { transform: translate(-50%, -50%) scale(1.1); opacity: 0; }
+}
+
+/* Slow-mo vignette flash */
+.replay-slowmo-flash {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: radial-gradient(ellipse at center, transparent 40%, rgba(255, 50, 50, 0.3) 100%);
+    opacity: 0;
+    z-index: 8001;
+    pointer-events: none;
+    transition: opacity 0.15s;
+}
+
+.replay-slowmo-flash.active {
+    opacity: 1;
+}
+
+/* Event ticker at bottom */
+.replay-ticker {
+    position: absolute;
+    bottom: calc(8vh + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: monospace;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.8);
+    background: rgba(0, 0, 0, 0.6);
+    padding: 4px 16px;
+    border-radius: 4px;
+    z-index: 8002;
+    white-space: nowrap;
+    max-width: 80vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Scanline effect */
+.replay-scanlines {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.05) 2px,
+        rgba(0, 0, 0, 0.05) 4px
+    );
+    z-index: 8001;
+    pointer-events: none;
+}
+
+/* Controls hint */
+.replay-controls {
+    position: absolute;
+    bottom: calc(8vh + 32px);
+    right: 16px;
+    font-family: monospace;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.4);
+    z-index: 8002;
+    text-align: right;
+    line-height: 1.6;
+}

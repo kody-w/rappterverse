@@ -41,6 +41,17 @@
         // Track keys for debug overlay
         if (typeof DebugOverlay !== 'undefined') DebugOverlay.recordKey(e.code);
 
+        // Replay system input intercept
+        if (typeof ReplaySystem !== 'undefined' && ReplaySystem.playing) {
+            if (ReplaySystem.handleKey(e.key)) { e.preventDefault(); return; }
+        }
+
+        // Replay toggle (R in world mode)
+        if (e.code === 'KeyR' && GameState.mode === 'world') {
+            if (typeof ReplaySystem !== 'undefined') ReplaySystem.toggleReplay();
+            return;
+        }
+
         // Debug overlay toggle (Ctrl+Shift+D)
         if (e.code === 'KeyD' && e.ctrlKey && e.shiftKey) {
             e.preventDefault();

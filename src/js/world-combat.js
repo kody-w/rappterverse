@@ -165,6 +165,9 @@ const WorldCombat = {
             }
         }
 
+        // Log wave event for replay
+        if (typeof ReplaySystem !== 'undefined') ReplaySystem.logEvent('wave', { number: this.waveNumber, siege: isSiegeWave });
+
         var echoMsg = 'Wave ' + this.waveNumber + (isSiegeWave ? ' [SIEGE WAVE]' : '');
         if (typeof EchoEngine !== 'undefined') {
             var ef = EchoEngine.getCurrentFrame();
@@ -311,6 +314,13 @@ const WorldCombat = {
         this.bossActive = true;
         this.boss = creep;
 
+        // VFX boss spawn + persistent aura
+        if (typeof VFX !== 'undefined') {
+            VFX.burst(group.position, 'bossKill');
+            VFX.screenFlash(isVoidColossus ? '#6600aa' : '#00ffcc', 0.5);
+            creep._auraEmitter = VFX.emit(group.position, 'bossAura', 999);
+        }
+
         // Boss intro overlay
         const overlay = document.createElement('div');
         overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.7);z-index:9999;opacity:0;transition:opacity 0.5s;pointer-events:none;';
@@ -321,6 +331,9 @@ const WorldCombat = {
         setTimeout(() => { if (overlay.parentNode) overlay.parentNode.removeChild(overlay); }, 2000);
 
         if (typeof Audio !== 'undefined' && Audio.playWaveHorn) Audio.playWaveHorn();
+
+        // Log boss spawn for replay
+        if (typeof ReplaySystem !== 'undefined') ReplaySystem.logEvent('boss_spawn', { name: bossName, lane: laneKey, wave: this.waveNumber });
     },
 
     updateCreeps(delta) {
@@ -353,6 +366,17 @@ const WorldCombat = {
                     enemy.hp -= COMBAT_CONFIG.creepDamage;
                     if (enemy.hp <= 0) {
                         enemy.alive = false;
+                        // VFX kill burst
+                        if (typeof VFX !== 'undefined') VFX.burst(enemy.mesh.position, enemy.isBoss ? 'bossKill' : 'kill');
+                        // Log kill for replay
+                        if (typeof ReplaySystem !== 'undefined') {
+                            var evtType = enemy.isBoss ? 'boss_kill' : 'kill';
+                            ReplaySystem.logEvent(evtType, {
+                                name: enemy.isBoss ? enemy.bossName : (enemy.faction + ' ' + (enemy.creepType || 'creep')),
+                                pos: { x: enemy.mesh.position.x, y: enemy.mesh.position.y, z: enemy.mesh.position.z },
+                                isBoss: !!enemy.isBoss, killer: creep.faction
+                            });
+                        }
                         // Boss death
                         if (enemy.isBoss) {
                             this.bossActive = false;
@@ -495,7 +519,8 @@ const WorldCombat = {
             const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
 
             if (dist < 1) {
-                // Hit
+                // Hit — VFX impact
+                if (typeof VFX !== 'undefined') VFX.burst(proj.mesh.position, 'towerImpact');
                 proj.target.hp -= proj.damage;
                 if (proj.target.hp <= 0) {
                     proj.target.alive = false;
@@ -583,6 +608,8 @@ const WorldCombat = {
 
         nearest.hp -= dmg * comboMult;
         this.showDamageNumber(nearest.mesh.position, dmg * comboMult, '#ff4444');
+        // VFX hit spark
+        if (typeof VFX !== 'undefined') VFX.burst(nearest.mesh.position, 'hitSpark');
 
         // Apply status effect from equipped weapon
         if (typeof StatusEffects !== 'undefined' && typeof Equipment !== 'undefined') {
@@ -592,6 +619,20 @@ const WorldCombat = {
 
         if (nearest.hp <= 0) {
             nearest.alive = false;
+            // VFX kill burst
+            if (typeof VFX !== 'undefined') {
+                VFX.burst(nearest.mesh.position, nearest.isBoss ? 'bossKill' : 'kill');
+                if (nearest.isBoss) VFX.screenFlash('#aa44ff', 0.4);
+            }
+            // Log player kill for replay
+            if (typeof ReplaySystem !== 'undefined') {
+                var evtType = nearest.isBoss ? 'boss_kill' : 'kill';
+                ReplaySystem.logEvent(evtType, {
+                    name: nearest.isBoss ? (nearest.bossName || 'BOSS') : 'CREEP',
+                    pos: { x: nearest.mesh.position.x, y: nearest.mesh.position.y, z: nearest.mesh.position.z },
+                    isBoss: !!nearest.isBoss, killer: 'player'
+                });
+            }
             if (typeof ComboSystem !== 'undefined') ComboSystem.registerKill();
             if (typeof PlayerStats !== 'undefined') {
                 PlayerStats.awardXp(nearest.isBoss ? 50 : 10);

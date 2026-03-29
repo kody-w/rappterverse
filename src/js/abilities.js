@@ -171,13 +171,16 @@ const Abilities = {
     const ring = new THREE.Mesh(geo, mat);
     ring.rotation.x = -Math.PI / 2; ring.position.copy(pos); ring.position.y = 0.1;
     this._addEffect(ring, 0.3);
+    if (typeof VFX !== 'undefined') VFX.burst(pos, 'slashArc');
     if (typeof Audio !== 'undefined' && Audio.playHit) Audio.playHit();
   },
   _doPulseShot(pos, dir, def) {
     const mesh = new THREE.Mesh(new THREE.SphereGeometry(0.3, 8, 8), new THREE.MeshBasicMaterial({ color: 0x00ffff }));
     mesh.position.copy(pos); mesh.position.y = 1;
     WorldMode.scene.add(mesh);
-    this.projectiles.push({ mesh, direction: dir.clone(), speed: def.speed, damage: this._scaledDmg(def.damage), life: 0 });
+    var projObj = { mesh, direction: dir.clone(), speed: def.speed, damage: this._scaledDmg(def.damage), life: 0 };
+    if (typeof VFX !== 'undefined') projObj._trail = VFX.trail(mesh, 'pulseTrail');
+    this.projectiles.push(projObj);
     if (typeof Audio !== 'undefined' && Audio.playTowerShot) Audio.playTowerShot();
   },
   _doShield(def) {
@@ -187,6 +190,7 @@ const Abilities = {
       ring._origColor = ring.material.color.getHex(); ring._origScale = ring.scale.clone();
       ring.material.color.setHex(0xffd700); ring.scale.set(2, 2, 2);
     }
+    if (typeof VFX !== 'undefined') VFX.emit(WorldMode.player.mesh.position, 'shieldShimmer', def.duration);
     if (typeof Audio !== 'undefined' && Audio.playClick) Audio.playClick();
   },
   _doDash(pos, dir, def) {
@@ -202,6 +206,7 @@ const Abilities = {
         pos.z - dir.z * def.distance * (i / 5) + (Math.random() - 0.5));
       this._addEffect(p, 0.4);
     }
+    if (typeof VFX !== 'undefined') VFX.burst(pos, 'dashTrail', { count: 8 });
     if (typeof Audio !== 'undefined' && Audio.playClick) Audio.playClick();
   },
   _doNova(pos, def) {
@@ -215,6 +220,7 @@ const Abilities = {
     const sphere = new THREE.Mesh(new THREE.SphereGeometry(1, 16, 16), mat);
     sphere.position.copy(pos); sphere.position.y = 1; sphere._novaRange = def.range;
     this._addEffect(sphere, 0.5);
+    if (typeof VFX !== 'undefined') { VFX.burst(pos, 'novaBlast'); VFX.screenFlash('#ff4400', 0.2); }
     const cam = WorldMode.camera;
     if (cam) {
       const ox = cam.position.x, oy = cam.position.y; let shakeT = 0;
@@ -253,7 +259,11 @@ const Abilities = {
           hit = true; break;
         }
       }
-      if (hit || p.life > 3) { WorldMode.scene.remove(p.mesh); this.projectiles.splice(i, 1); }
+      if (hit || p.life > 3) {
+        if (hit && typeof VFX !== 'undefined') VFX.burst(p.mesh.position, 'towerImpact');
+        if (p._trail && typeof VFX !== 'undefined') VFX.stopTrail(p._trail);
+        WorldMode.scene.remove(p.mesh); this.projectiles.splice(i, 1);
+      }
     }
     // Shield
     if (this.shieldActive) {

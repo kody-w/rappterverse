@@ -76,6 +76,8 @@ const StatusEffects = (function () {
 
             _tracked.add(mob);
             _refreshEmissive(mob);
+            // VFX element burst
+            if (typeof VFX !== 'undefined' && mob.position) VFX.burst(mob.position, element, { count: 5 });
         },
 
         /**

@@ -236,6 +236,7 @@ const Inventory = {
             const dz = d.mesh.position.z - playerPos.z;
             if (dx * dx + dz * dz < 25) { // within 5 units
                 if (this.addItem(d.item.id)) {
+                    if (typeof VFX !== 'undefined') VFX.burst(d.mesh.position, 'goldPickup');
                     if (d.mesh.parent) d.mesh.parent.remove(d.mesh);
                     this.droppedItems.splice(i, 1);
                 }

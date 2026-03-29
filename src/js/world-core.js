@@ -44,6 +44,7 @@ const WorldMode = {
         // Build terrain, lanes, combat, agents
         WorldTerrain.build(this.scene, w, worldId);
         WorldLanes.init(this.scene, w);
+        if (typeof VFX !== 'undefined') VFX.init(this.scene);
         WorldCombat.init(this.scene);
         if (typeof JungleCamps !== "undefined") JungleCamps.init(this.scene, w);
         if (typeof FogOfWar !== 'undefined') FogOfWar.init(this.scene, w);
@@ -103,6 +104,9 @@ const WorldMode = {
         if (typeof Tutorial !== 'undefined') Tutorial.start();
         // Quest tracker
         if (typeof QuestTracker !== 'undefined') QuestTracker.show();
+        // Init Replay System
+        if (typeof ReplaySystem !== 'undefined') ReplaySystem.init();
+
         // Init Echo Engine
         if (typeof EchoEngine !== 'undefined') {
             EchoEngine.init();
@@ -250,10 +254,12 @@ const WorldMode = {
             this.player.mesh.position.y += (terrainY - this.player.mesh.position.y) * 0.15;
         }
 
-        // Camera follow
-        const camTarget = this.player.mesh.position.clone().add(new THREE.Vector3(0, 8, 12));
-        this.camera.position.lerp(camTarget, 0.05);
-        this.camera.lookAt(this.player.mesh.position.x, 1, this.player.mesh.position.z);
+        // Camera follow (skip during replay — ReplaySystem controls camera)
+        if (typeof ReplaySystem === 'undefined' || !ReplaySystem.playing) {
+            const camTarget = this.player.mesh.position.clone().add(new THREE.Vector3(0, 8, 12));
+            this.camera.position.lerp(camTarget, 0.05);
+            this.camera.lookAt(this.player.mesh.position.x, 1, this.player.mesh.position.z);
+        }
 
         // Ground ring pulse
         if (this.player.ring) {
@@ -270,6 +276,8 @@ const WorldMode = {
         WorldTerrain.update(time, delta);
         WorldLanes.updateTowerVisuals(time);
         WorldCombat.update(delta, time, this.player.mesh.position);
+        if (typeof VFX !== 'undefined') VFX.update(delta);
+        if (typeof ReplaySystem !== 'undefined') ReplaySystem.update(delta, time);
         if (typeof JungleCamps !== "undefined") JungleCamps.update(delta, this.player.mesh.position);
         WorldAgents.updateAnimations(time);
         WorldAgents.checkInteractions(this.player.mesh.position);
@@ -362,6 +370,8 @@ const WorldMode = {
         window.removeEventListener('keyup', this.keyUp);
         this.keys = {};
 
+        if (typeof ReplaySystem !== 'undefined') ReplaySystem.cleanup();
+        if (typeof VFX !== 'undefined') VFX.cleanup();
         WorldCombat.cleanup();
         if (typeof JungleCamps !== "undefined") JungleCamps.cleanup();
         WorldLanes.cleanup();

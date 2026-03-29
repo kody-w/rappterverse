@@ -28,6 +28,7 @@ CSS_FILES=(
     src/css/hud.css
     src/css/stats.css
     src/css/equipment.css
+    src/css/replay.css
 )
 
 # JS bundle order (dependency order matters)
@@ -46,7 +47,9 @@ JS_FILES=(
     src/js/landing.js
     src/js/world-terrain.js
     src/js/world-lanes.js
+    src/js/vfx.js
     src/js/world-combat.js
+    src/js/replay.js
     src/js/world-agents.js
     src/js/debug.js
     src/js/inventory.js

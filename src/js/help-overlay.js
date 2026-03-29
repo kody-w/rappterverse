@@ -31,6 +31,7 @@ const HelpOverlay = {
                         <div class="help-row"><span class="help-key">SPACE</span><span>Attack</span></div>
                         <div class="help-row"><span class="help-key">E</span><span>Interact / Enter Portal</span></div>
                         <div class="help-row"><span class="help-key">F</span><span>Poke Agent</span></div>
+                        <div class="help-row"><span class="help-key">R</span><span>Battle Replay (cinematic)</span></div>
                         <div class="help-row"><span class="help-key">ESC</span><span>Return to Galaxy</span></div>
                     </div>
                     <div class="help-section">
