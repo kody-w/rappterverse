@@ -6628,67 +6628,127 @@ const WorldLanes = {
         this.createThrones(scene, sx, sz);
     },
 
-    // ── RIVER (diagonal water strip from top-left to bottom-right) ──
+    // ── RIVER (wide diagonal water with banks and shimmer) ──
     buildRiver(scene, sx, sz, w) {
-        // River runs perpendicular to mid lane: from (-sx, sz) to (sx, -sz)
-        const riverWidth = Math.max(sx, sz) * 0.08;
-        const segments = 20;
+        const riverWidth = Math.max(sx, sz) * 0.14; // Wide river
+        const segments = 30;
         const points = [];
         for (let i = 0; i <= segments; i++) {
             const t = i / segments;
             const x = -sx + t * sx * 2;
             const z = sz - t * sz * 2;
-            // Add some waviness
-            const wave = Math.sin(t * Math.PI * 3) * riverWidth * 0.3;
-            points.push({ x: x + wave, z: z + wave * 0.5 });
+            const wave = Math.sin(t * Math.PI * 4) * riverWidth * 0.2;
+            const wave2 = Math.sin(t * Math.PI * 7) * riverWidth * 0.08;
+            points.push({ x: x + wave + wave2, z: z + wave * 0.4 });
         }
 
-        // Build river as a series of quads
+        // Muddy riverbanks (wider, dark brown)
         for (let i = 0; i < points.length - 1; i++) {
             const a = points[i], b = points[i + 1];
             const dx = b.x - a.x, dz = b.z - a.z;
-            const len = Math.sqrt(dx * dx + dz * dz);
-            const nx = -dz / len * riverWidth, nz = dx / len * riverWidth;
-
+            const len = Math.sqrt(dx * dx + dz * dz) || 1;
+            const bankW = riverWidth * 1.3;
+            const nx = -dz / len * bankW, nz = dx / len * bankW;
             const geo = new THREE.BufferGeometry();
-            const verts = new Float32Array([
-                a.x - nx, 0.02, a.z - nz,
-                a.x + nx, 0.02, a.z + nz,
-                b.x + nx, 0.02, b.z + nz,
-                a.x - nx, 0.02, a.z - nz,
-                b.x + nx, 0.02, b.z + nz,
-                b.x - nx, 0.02, b.z - nz,
-            ]);
-            geo.setAttribute('position', new THREE.BufferAttribute(verts, 3));
-            geo.computeVertexNormals();
-            const mat = new THREE.MeshStandardMaterial({
-                color: 0x2266aa, roughness: 0.15, metalness: 0.4,
-                transparent: true, opacity: 0.55
-            });
-            const mesh = new THREE.Mesh(geo, mat);
+            geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array([
+                a.x-nx, 0.01, a.z-nz, a.x+nx, 0.01, a.z+nz, b.x+nx, 0.01, b.z+nz,
+                a.x-nx, 0.01, a.z-nz, b.x+nx, 0.01, b.z+nz, b.x-nx, 0.01, b.z-nz,
+            ]), 3));
+            const mesh = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({
+                color: 0x4a3a20, roughness: 0.95, metalness: 0.05
+            }));
             scene.add(mesh);
             this.lanePaths.push(mesh);
         }
 
-        // River shimmer particles
-        const count = 200;
+        // Deep water (main river body)
+        for (let i = 0; i < points.length - 1; i++) {
+            const a = points[i], b = points[i + 1];
+            const dx = b.x - a.x, dz = b.z - a.z;
+            const len = Math.sqrt(dx * dx + dz * dz) || 1;
+            const nx = -dz / len * riverWidth, nz = dx / len * riverWidth;
+            const geo = new THREE.BufferGeometry();
+            geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array([
+                a.x-nx, 0.03, a.z-nz, a.x+nx, 0.03, a.z+nz, b.x+nx, 0.03, b.z+nz,
+                a.x-nx, 0.03, a.z-nz, b.x+nx, 0.03, b.z+nz, b.x-nx, 0.03, b.z-nz,
+            ]), 3));
+            const mesh = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({
+                color: 0x1a5588, roughness: 0.08, metalness: 0.6,
+                transparent: true, opacity: 0.7
+            }));
+            scene.add(mesh);
+            this.lanePaths.push(mesh);
+        }
+
+        // Shallow highlight (center strip — lighter blue)
+        for (let i = 0; i < points.length - 1; i++) {
+            const a = points[i], b = points[i + 1];
+            const dx = b.x - a.x, dz = b.z - a.z;
+            const len = Math.sqrt(dx * dx + dz * dz) || 1;
+            const hw = riverWidth * 0.4;
+            const nx = -dz / len * hw, nz = dx / len * hw;
+            const geo = new THREE.BufferGeometry();
+            geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array([
+                a.x-nx, 0.04, a.z-nz, a.x+nx, 0.04, a.z+nz, b.x+nx, 0.04, b.z+nz,
+                a.x-nx, 0.04, a.z-nz, b.x+nx, 0.04, b.z+nz, b.x-nx, 0.04, b.z-nz,
+            ]), 3));
+            const mesh = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({
+                color: 0x3399cc, roughness: 0.05, metalness: 0.7,
+                transparent: true, opacity: 0.5
+            }));
+            scene.add(mesh);
+            this.lanePaths.push(mesh);
+        }
+
+        // Rocks along riverbanks
+        const rng = typeof seededRandom !== 'undefined' ? seededRandom('river-rocks') : Math.random;
+        for (let i = 0; i < 40; i++) {
+            const t = rng();
+            const pi = Math.floor(t * (points.length - 1));
+            const p = points[pi];
+            const next = points[Math.min(pi + 1, points.length - 1)];
+            const lt = t * (points.length - 1) - pi;
+            const rx = p.x + (next.x - p.x) * lt;
+            const rz = p.z + (next.z - p.z) * lt;
+            // Offset to bank edge
+            const side = rng() > 0.5 ? 1 : -1;
+            const dx = next.x - p.x, dz = next.z - p.z;
+            const len = Math.sqrt(dx * dx + dz * dz) || 1;
+            const ox = (-dz / len) * riverWidth * (0.9 + rng() * 0.4) * side;
+            const oz = (dx / len) * riverWidth * (0.9 + rng() * 0.4) * side;
+            const s = 0.3 + rng() * 0.8;
+            const rock = new THREE.Mesh(
+                new THREE.DodecahedronGeometry(s, 0),
+                new THREE.MeshStandardMaterial({
+                    color: 0x555555 + Math.floor(rng() * 0x222222),
+                    roughness: 0.9, flatShading: true
+                })
+            );
+            rock.position.set(rx + ox, s * 0.3, rz + oz);
+            rock.rotation.set(rng(), rng() * Math.PI, rng());
+            scene.add(rock);
+            this.lanePaths.push(rock);
+        }
+
+        // Water shimmer particles (more, brighter)
+        const count = 400;
         const pGeo = new THREE.BufferGeometry();
         const pos = new Float32Array(count * 3);
         for (let i = 0; i < count; i++) {
-            const t = Math.random();
-            const p = points[Math.floor(t * (points.length - 1))];
-            const next = points[Math.min(Math.floor(t * (points.length - 1)) + 1, points.length - 1)];
-            const lerp = t * (points.length - 1) - Math.floor(t * (points.length - 1));
-            pos[i * 3] = p.x + (next.x - p.x) * lerp + (Math.random() - 0.5) * riverWidth * 1.5;
-            pos[i * 3 + 1] = 0.05 + Math.random() * 0.3;
-            pos[i * 3 + 2] = p.z + (next.z - p.z) * lerp + (Math.random() - 0.5) * riverWidth * 1.5;
+            const t = rng();
+            const pi = Math.floor(t * (points.length - 1));
+            const p = points[pi];
+            const next = points[Math.min(pi + 1, points.length - 1)];
+            const lt = t * (points.length - 1) - pi;
+            pos[i * 3] = p.x + (next.x - p.x) * lt + (rng() - 0.5) * riverWidth * 1.8;
+            pos[i * 3 + 1] = 0.06 + rng() * 0.2;
+            pos[i * 3 + 2] = p.z + (next.z - p.z) * lt + (rng() - 0.5) * riverWidth * 1.8;
         }
         pGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-        const pMat = new THREE.PointsMaterial({
-            color: 0x88ccff, size: 0.15, transparent: true, opacity: 0.3,
+        const shimmer = new THREE.Points(pGeo, new THREE.PointsMaterial({
+            color: 0xaaddff, size: 0.2, transparent: true, opacity: 0.4,
             blending: THREE.AdditiveBlending, sizeAttenuation: true
-        });
-        const shimmer = new THREE.Points(pGeo, pMat);
+        }));
         scene.add(shimmer);
         this.lanePaths.push(shimmer);
     },
