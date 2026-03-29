@@ -357,6 +357,13 @@ const Abilities = {
     this._effects.forEach(e => WorldMode.scene && WorldMode.scene.remove(e.mesh));
     this.projectiles = []; this._effects = [];
     this.shieldActive = false; PlayerStats.shielded = false;
+    // Dispose shield bubble
+    if (this._shieldBubble) {
+      if (this._shieldBubble.parent) this._shieldBubble.parent.remove(this._shieldBubble);
+      if (this._shieldBubble.geometry) this._shieldBubble.geometry.dispose();
+      if (this._shieldBubble.material) this._shieldBubble.material.dispose();
+      this._shieldBubble = null;
+    }
     this.cooldowns = [0, 0, 0, 0, 0];
   }
 };

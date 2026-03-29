@@ -234,6 +234,9 @@ const ReplaySystem = {
             WorldMode.scene.fog.density = 0.002;
         }
 
+        // Clear timers
+        if (this._shakeInterval) { clearInterval(this._shakeInterval); this._shakeInterval = null; }
+
         // Clear kill banner
         const banner = document.getElementById('replay-kill-banner');
         if (banner) banner.classList.remove('show');
@@ -602,20 +605,25 @@ const ReplaySystem = {
         this._screenShake(data.isBoss ? 1.5 : 0.6);
     },
 
+    _shakeInterval: null,
     _screenShake(intensity) {
         if (!WorldMode.camera) return;
+        // Clear any existing shake
+        if (this._shakeInterval) clearInterval(this._shakeInterval);
         var cam = WorldMode.camera;
         var origX = cam.position.x;
         var origY = cam.position.y;
         var shakeCount = 0;
         var maxShakes = 8;
-        var interval = setInterval(function() {
+        var self = this;
+        this._shakeInterval = setInterval(function() {
             shakeCount++;
             var decay = 1 - (shakeCount / maxShakes);
             cam.position.x = origX + (Math.random() - 0.5) * intensity * decay;
             cam.position.y = origY + (Math.random() - 0.5) * intensity * 0.5 * decay;
             if (shakeCount >= maxShakes) {
-                clearInterval(interval);
+                clearInterval(self._shakeInterval);
+                self._shakeInterval = null;
             }
         }, 30);
     },
@@ -782,11 +790,11 @@ const ReplaySystem = {
     cleanup() {
         if (this.playing) this.stopReplay();
         this._cleanupGhosts();
-        this.eventLog = [];
-        this.snapshots = [];
-        // Reset played flags
+        // Reset played flags BEFORE clearing
         for (var i = 0; i < this.eventLog.length; i++) {
             delete this.eventLog[i]._played;
         }
+        this.eventLog = [];
+        this.snapshots = [];
     }
 };

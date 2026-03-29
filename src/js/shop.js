@@ -83,24 +83,14 @@ const Shop = {
         if (!itemsEl) return;
         var filtered = this._category === 'all' ? this._items : this._items.filter(function(i) { return i.category === Shop._category; });
 
-        // Echo-reactive price modifier: tension inflates, social energy discounts
-        var priceMod = 1.0;
+        var priceMod = this._getPriceMod();
         var priceTag = '';
-        if (typeof EchoEngine !== 'undefined') {
-            var ef = EchoEngine.getCurrentFrame();
-            if (ef && ef.echoes && ef.echoes.L3) {
-                var t = ef.echoes.L3.tension;
-                var s = ef.echoes.L3.socialEnergy;
-                priceMod = 1 + t * 0.25 - s * 0.15; // +25% at max tension, -15% at max social
-                priceMod = Math.max(0.8, Math.min(1.3, priceMod));
-                if (priceMod > 1.05) priceTag = ' <span style="color:#f85149;font-size:9px;">↑WAR TAX</span>';
-                else if (priceMod < 0.95) priceTag = ' <span style="color:#00ff88;font-size:9px;">↓SOCIAL DISCOUNT</span>';
-            }
-        }
+        if (priceMod > 1.05) priceTag = ' <span style="color:#f85149;font-size:9px;">↑WAR TAX</span>';
+        else if (priceMod < 0.95) priceTag = ' <span style="color:#00ff88;font-size:9px;">↓SOCIAL DISCOUNT</span>';
 
         itemsEl.innerHTML = filtered.map(function(item, i) {
             var idx = Shop._items.indexOf(item);
-            var adjustedCost = Math.round(item.cost * priceMod);
+            var adjustedCost = Math.max(1, Math.round(item.cost * priceMod));
             var canBuy = gold >= adjustedCost;
             var costColor = priceMod > 1.05 ? '#f85149' : priceMod < 0.95 ? '#00ff88' : '#fbbf24';
             return '<div class="shop-item">' +

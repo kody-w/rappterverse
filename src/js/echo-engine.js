@@ -200,7 +200,7 @@ const EchoEngine = {
             agentClusterCenter: clusterCenter,
             objectDensityMultiplier: 0.8 + vitality * 0.4,
             fogDensity: 0.002 + tension * 0.002,
-            terrainAmplitude: 1.0 + (snap.frame * 0.01) // terrain slowly amplifies over frames
+            terrainAmplitude: Math.min(2.0, 1.0 + (snap.frame * 0.01)) // terrain slowly amplifies, capped at 2.0
         };
 
         // L5: World render directives (compiled into VM expressions)

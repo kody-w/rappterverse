@@ -444,8 +444,11 @@ const VFX = {
             return particle;
         }
 
-        // Pool full — reuse oldest
-        return pool[0];
+        // Pool full — reuse oldest (kill it first)
+        var oldest = pool[0];
+        oldest.alive = false;
+        oldest.mesh.visible = false;
+        return oldest;
     },
 
     cleanup() {

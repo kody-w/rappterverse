@@ -152,12 +152,12 @@ const PostProcessing = {
         var L3 = ef.echoes.L3;
 
         // Bloom: brighter during tension (combat glow), dimmer when calm
-        var targetBloom = 0.3 + L3.tension * 0.5 + L3.vitality * 0.1;
+        var targetBloom = Math.min(0.9, 0.3 + L3.tension * 0.5 + L3.vitality * 0.1);
         var currentBloom = this._bloomMesh.material.uniforms.bloomStrength.value;
         this._bloomMesh.material.uniforms.bloomStrength.value = currentBloom + (targetBloom - currentBloom) * 0.03;
 
         // Vignette: tighter when tense, relaxed when calm
-        var targetVignette = 0.2 + L3.tension * 0.4;
+        var targetVignette = Math.min(0.6, 0.2 + L3.tension * 0.4);
         var currentVignette = this._compositeMesh.material.uniforms.vignetteStrength.value;
         this._compositeMesh.material.uniforms.vignetteStrength.value = currentVignette + (targetVignette - currentVignette) * 0.03;
     },

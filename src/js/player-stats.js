@@ -97,6 +97,7 @@ const PlayerStats = {
     this.hp = this.maxHp;
     this.mp = this.maxMp;
     this.energy = this.maxEnergy;
+    this._echoXpBonus = 1; // Reset echo bonus on respawn
     const overlay = document.getElementById('death-overlay');
     if (overlay) overlay.style.display = 'none';
     // Echo-reactive spawn position — during tension, spawn near explorer base for safety
