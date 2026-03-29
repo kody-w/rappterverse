@@ -59,6 +59,12 @@
             return;
         }
 
+        // Echo Dashboard toggle (backtick)
+        if (e.code === 'Backquote' && GameState.mode === 'world') {
+            if (typeof EchoDashboard !== 'undefined') EchoDashboard.toggle();
+            return;
+        }
+
         // Boot skip
         if (e.code === 'Space' && GameState.mode === 'boot') {
             e.preventDefault();

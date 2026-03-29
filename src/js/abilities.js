@@ -195,6 +195,7 @@ const Abilities = {
     this.projectiles.push(projObj);
     if (typeof Audio !== 'undefined' && Audio.playTowerShot) Audio.playTowerShot();
   },
+  _shieldBubble: null,
   _doShield(def) {
     this.shieldActive = true; this.shieldTimer = def.duration; PlayerStats.shielded = true;
     const ring = WorldMode.player.ring;
@@ -203,6 +204,19 @@ const Abilities = {
       ring.material.color.setHex(0xffd700); ring.scale.set(2, 2, 2);
     }
     if (typeof VFX !== 'undefined') VFX.emit(WorldMode.player.mesh.position, 'shieldShimmer', def.duration);
+    // Shield bubble dome
+    if (WorldMode.scene && !this._shieldBubble) {
+      var bubbleGeo = new THREE.SphereGeometry(2.5, 16, 12);
+      var bubbleMat = new THREE.MeshStandardMaterial({
+        color: 0xffd700, emissive: 0xffd700, emissiveIntensity: 0.3,
+        transparent: true, opacity: 0.15, side: THREE.DoubleSide,
+        roughness: 0.1, metalness: 0.8, wireframe: false
+      });
+      this._shieldBubble = new THREE.Mesh(bubbleGeo, bubbleMat);
+      this._shieldBubble.position.copy(WorldMode.player.mesh.position);
+      this._shieldBubble.position.y = 1;
+      WorldMode.scene.add(this._shieldBubble);
+    }
     if (typeof Audio !== 'undefined' && Audio.playClick) Audio.playClick();
   },
   _doDash(pos, dir, def) {
@@ -277,15 +291,29 @@ const Abilities = {
         WorldMode.scene.remove(p.mesh); this.projectiles.splice(i, 1);
       }
     }
-    // Shield
+    // Shield + bubble
     if (this.shieldActive) {
       this.shieldTimer -= delta;
+      // Animate shield bubble
+      if (this._shieldBubble && WorldMode.player) {
+        this._shieldBubble.position.copy(WorldMode.player.mesh.position);
+        this._shieldBubble.position.y = 1;
+        this._shieldBubble.rotation.y += delta * 2;
+        this._shieldBubble.material.opacity = 0.1 + Math.sin(Date.now() * 0.005) * 0.08;
+      }
       if (this.shieldTimer <= 0) {
         this.shieldActive = false; PlayerStats.shielded = false;
         const ring = WorldMode.player.ring;
         if (ring) {
           ring.material.color.setHex(ring._origColor || 0x00ffff);
           ring.scale.copy(ring._origScale || new THREE.Vector3(1, 1, 1));
+        }
+        // Remove shield bubble
+        if (this._shieldBubble && WorldMode.scene) {
+          WorldMode.scene.remove(this._shieldBubble);
+          this._shieldBubble.geometry.dispose();
+          this._shieldBubble.material.dispose();
+          this._shieldBubble = null;
         }
       }
     }

@@ -5,6 +5,7 @@ const Settings = {
         masterVolume: 0.3,
         voiceEnabled: false,
         gestureEnabled: false,
+        echoEffects: true,
     },
 
     _data: null,

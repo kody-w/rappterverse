@@ -290,6 +290,8 @@ const VFX = {
     updateEchoAtmosphere(delta) {
         if (!this.active || !this.scene) return;
         if (typeof EchoEngine === 'undefined') return;
+        // Respect echo effects toggle
+        if (typeof Settings !== 'undefined' && Settings.get('echoEffects') === false) return;
         var ef = EchoEngine.getCurrentFrame();
         if (!ef || !ef.echoes || !ef.echoes.L3) return;
         var L3 = ef.echoes.L3;

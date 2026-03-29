@@ -579,6 +579,23 @@ const WorldLanes = {
             }
             if (throne.crown) throne.crown.rotation.z = time * crownSpeed;
         }
+
+        // Echo-reactive river color — tension reddens water, calm keeps it blue
+        if (echoT > 0.3) {
+            var riverTint = echoT * 0.3;
+            this.lanePaths.forEach(function(mesh) {
+                if (mesh.material && mesh.material.metalness > 0.4) {
+                    // Water meshes have high metalness
+                    mesh.material.color.lerp(new THREE.Color(0x883333), riverTint * 0.02);
+                }
+            });
+        } else if (echoV > 0.5) {
+            this.lanePaths.forEach(function(mesh) {
+                if (mesh.material && mesh.material.metalness > 0.4) {
+                    mesh.material.color.lerp(new THREE.Color(0x1a5588), 0.01); // Restore blue
+                }
+            });
+        }
     },
 
     cleanup() {

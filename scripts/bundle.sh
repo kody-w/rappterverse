@@ -29,6 +29,7 @@ CSS_FILES=(
     src/css/stats.css
     src/css/equipment.css
     src/css/replay.css
+    src/css/echo-dashboard.css
 )
 
 # JS bundle order (dependency order matters)
@@ -51,6 +52,7 @@ JS_FILES=(
     src/js/world-combat.js
     src/js/replay.js
     src/js/echo-events.js
+    src/js/echo-dashboard.js
     src/js/world-agents.js
     src/js/debug.js
     src/js/inventory.js

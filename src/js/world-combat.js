@@ -453,6 +453,11 @@ const WorldCombat = {
                     creep.waypointIdx = nextIdx;
                 } else {
                     let spd = creep.speed;
+                    // Echo-reactive creep speed: tension makes creeps faster
+                    if (typeof EchoEngine !== 'undefined') {
+                        var ef = EchoEngine.getCurrentFrame();
+                        if (ef && ef.echoes && ef.echoes.L3) spd *= (1 + ef.echoes.L3.tension * 0.2);
+                    }
                     if (typeof StatusEffects !== 'undefined') spd *= StatusEffects.getSpeedMultiplier(creep.mesh);
                     const mx = (dx / dist) * spd * delta;
                     const mz = (dz / dist) * spd * delta;

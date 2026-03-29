@@ -2544,6 +2544,136 @@ button:focus-visible,
     line-height: 1.6;
 }
 
+/* === css/echo-dashboard.css === */
+/* Echo Dashboard — Full echo state overlay */
+#echo-dashboard {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    max-height: 80vh;
+    background: rgba(13, 17, 23, 0.95);
+    border: 1px solid rgba(210, 153, 34, 0.3);
+    border-radius: 14px;
+    z-index: 9200;
+    overflow-y: auto;
+    font-family: 'SF Mono', monospace;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    padding: 0;
+}
+
+#echo-dashboard.visible {
+    display: block;
+    animation: echoDashIn 0.3s ease;
+}
+
+@keyframes echoDashIn {
+    from { opacity: 0; transform: translate(-50%, -50%) scale(0.95); }
+    to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+.echo-dash-header {
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(210, 153, 34, 0.15);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.echo-dash-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #d29922;
+}
+
+.echo-dash-close {
+    background: none;
+    border: none;
+    color: #8b949e;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.echo-dash-body {
+    padding: 12px 16px;
+}
+
+.echo-dash-section {
+    margin-bottom: 14px;
+}
+
+.echo-dash-label {
+    font-size: 9px;
+    color: #d29922;
+    letter-spacing: 1.5px;
+    margin-bottom: 6px;
+    font-weight: 700;
+}
+
+.echo-dash-bar {
+    height: 6px;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 4px;
+}
+
+.echo-dash-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.5s ease, background 0.5s ease;
+}
+
+.echo-dash-value {
+    font-size: 10px;
+    color: #8b949e;
+    display: flex;
+    justify-content: space-between;
+}
+
+.echo-dash-narrative {
+    font-size: 11px;
+    color: #c9d1d9;
+    line-height: 1.5;
+    padding: 8px 10px;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.echo-dash-event {
+    font-size: 11px;
+    color: #fbbf24;
+    font-weight: 700;
+    padding: 6px 10px;
+    background: rgba(210, 153, 34, 0.08);
+    border-radius: 6px;
+    border: 1px solid rgba(210, 153, 34, 0.15);
+}
+
+.echo-dash-history {
+    display: flex;
+    gap: 3px;
+    align-items: flex-end;
+    height: 30px;
+}
+
+.echo-dash-history-bar {
+    width: 4px;
+    border-radius: 1px;
+    min-height: 2px;
+}
+
+.echo-dash-meta {
+    font-size: 9px;
+    color: #484f58;
+    margin-top: 4px;
+}
+
     </style>
 </head>
 <body>
@@ -7584,6 +7714,23 @@ const WorldLanes = {
             }
             if (throne.crown) throne.crown.rotation.z = time * crownSpeed;
         }
+
+        // Echo-reactive river color — tension reddens water, calm keeps it blue
+        if (echoT > 0.3) {
+            var riverTint = echoT * 0.3;
+            this.lanePaths.forEach(function(mesh) {
+                if (mesh.material && mesh.material.metalness > 0.4) {
+                    // Water meshes have high metalness
+                    mesh.material.color.lerp(new THREE.Color(0x883333), riverTint * 0.02);
+                }
+            });
+        } else if (echoV > 0.5) {
+            this.lanePaths.forEach(function(mesh) {
+                if (mesh.material && mesh.material.metalness > 0.4) {
+                    mesh.material.color.lerp(new THREE.Color(0x1a5588), 0.01); // Restore blue
+                }
+            });
+        }
     },
 
     cleanup() {
@@ -7911,6 +8058,8 @@ const VFX = {
     updateEchoAtmosphere(delta) {
         if (!this.active || !this.scene) return;
         if (typeof EchoEngine === 'undefined') return;
+        // Respect echo effects toggle
+        if (typeof Settings !== 'undefined' && Settings.get('echoEffects') === false) return;
         var ef = EchoEngine.getCurrentFrame();
         if (!ef || !ef.echoes || !ef.echoes.L3) return;
         var L3 = ef.echoes.L3;
@@ -8540,6 +8689,11 @@ const WorldCombat = {
                     creep.waypointIdx = nextIdx;
                 } else {
                     let spd = creep.speed;
+                    // Echo-reactive creep speed: tension makes creeps faster
+                    if (typeof EchoEngine !== 'undefined') {
+                        var ef = EchoEngine.getCurrentFrame();
+                        if (ef && ef.echoes && ef.echoes.L3) spd *= (1 + ef.echoes.L3.tension * 0.2);
+                    }
                     if (typeof StatusEffects !== 'undefined') spd *= StatusEffects.getSpeedMultiplier(creep.mesh);
                     const mx = (dx / dist) * spd * delta;
                     const mz = (dz / dist) * spd * delta;
@@ -9977,6 +10131,155 @@ const EchoEvents = {
             this._activeEvent = null;
         }
         this._amplified = false;
+    }
+};
+
+// === js/echo-dashboard.js ===
+// Echo Dashboard — Full echo engine readout overlay
+// Toggle: backtick (`) key
+
+const EchoDashboard = {
+    _open: false,
+    _el: null,
+
+    toggle() {
+        this._open = !this._open;
+        if (this._open) this._show();
+        else this._hide();
+    },
+
+    _show() {
+        if (!this._el) this._create();
+        this._el.classList.add('visible');
+        this._render();
+    },
+
+    _hide() {
+        if (this._el) this._el.classList.remove('visible');
+    },
+
+    _create() {
+        var el = document.createElement('div');
+        el.id = 'echo-dashboard';
+        el.innerHTML = '<div class="echo-dash-header">' +
+            '<span class="echo-dash-title">ECHO ENGINE</span>' +
+            '<button class="echo-dash-close" id="echo-dash-close">&times;</button>' +
+            '</div><div class="echo-dash-body" id="echo-dash-body"></div>';
+        document.body.appendChild(el);
+        document.getElementById('echo-dash-close').addEventListener('click', function() { EchoDashboard.toggle(); });
+        this._el = el;
+    },
+
+    _render() {
+        var body = document.getElementById('echo-dash-body');
+        if (!body) return;
+        var html = '';
+
+        if (typeof EchoEngine === 'undefined') {
+            body.innerHTML = '<div style="color:#8b949e;font-size:11px;">Echo Engine not loaded.</div>';
+            return;
+        }
+
+        var ef = EchoEngine.getCurrentFrame();
+        if (!ef || !ef.echoes) {
+            body.innerHTML = '<div style="color:#8b949e;font-size:11px;">No echo frames captured yet.</div>';
+            return;
+        }
+
+        var L1 = ef.echoes.L1 || {};
+        var L2 = ef.echoes.L2 || {};
+        var L3 = ef.echoes.L3 || {};
+        var L6 = ef.echoes.L6 || {};
+
+        // L3 Atmosphere bars
+        html += '<div class="echo-dash-section">';
+        html += '<div class="echo-dash-label">L3 ATMOSPHERE</div>';
+        html += this._bar('Tension', L3.tension || 0, this._tensionColor(L3.tension || 0));
+        html += this._bar('Vitality', L3.vitality || 0, '#00ff88');
+        html += this._bar('Social Energy', L3.socialEnergy || 0, '#ffd700');
+        html += this._bar('Light Intensity', L3.lightIntensity || 1, '#aaccff');
+        html += this._bar('Particle Density', L3.particleDensity || 0.5, '#aa44ff');
+        html += this._bar('Music Intensity', L3.musicIntensity || 0, '#ff8800');
+        html += '</div>';
+
+        // L2 Narrative
+        html += '<div class="echo-dash-section">';
+        html += '<div class="echo-dash-label">L2 NARRATIVE</div>';
+        html += '<div class="echo-dash-narrative">' + (L2.narrative || 'No narrative.') + '</div>';
+        html += '<div class="echo-dash-meta">Dominant mood: ' + (L2.dominantMood || 'neutral') + '</div>';
+        html += '</div>';
+
+        // L1 Combat digest
+        if (L1.combat && L1.combat.wave > 0) {
+            html += '<div class="echo-dash-section">';
+            html += '<div class="echo-dash-label">L1 COMBAT</div>';
+            html += this._bar('Momentum', (L1.combat.momentum || 50) / 100, L1.combat.momentum > 60 ? '#00ff88' : L1.combat.momentum < 40 ? '#ff4444' : '#ffaa00');
+            html += '<div class="echo-dash-value"><span>Wave ' + L1.combat.wave + '</span><span>' + L1.combat.creepCount + ' units</span>';
+            if (L1.combat.bossActive) html += '<span style="color:#aa44ff">BOSS</span>';
+            html += '</div></div>';
+        }
+
+        // L6 Temporal depth
+        html += '<div class="echo-dash-section">';
+        html += '<div class="echo-dash-label">L6 TEMPORAL DEPTH</div>';
+        html += '<div class="echo-dash-value">';
+        html += '<span>Pop: ' + (L6.populationTrend || 'stable') + '</span>';
+        html += '<span>Econ: ' + (L6.economicArc || 'steady') + '</span>';
+        html += '<span>Mood stable: ' + (L6.moodStability ? 'yes' : 'no') + '</span>';
+        html += '</div></div>';
+
+        // Active echo event
+        if (typeof EchoEvents !== 'undefined' && EchoEvents._activeEvent) {
+            html += '<div class="echo-dash-section">';
+            html += '<div class="echo-dash-event">' + EchoEvents._activeEvent.name + ' — ' + Math.ceil(EchoEvents._eventTimer) + 's remaining</div>';
+            html += '</div>';
+        }
+
+        // Tension history sparkline (text version — vertical bars)
+        if (typeof HUD !== 'undefined' && HUD._tensionHistory && HUD._tensionHistory.length > 5) {
+            html += '<div class="echo-dash-section">';
+            html += '<div class="echo-dash-label">TENSION HISTORY</div>';
+            html += '<div class="echo-dash-history">';
+            var hist = HUD._tensionHistory.slice(-60);
+            for (var i = 0; i < hist.length; i++) {
+                var h = Math.max(2, Math.round(hist[i] * 30));
+                html += '<div class="echo-dash-history-bar" style="height:' + h + 'px;background:' + this._tensionColor(hist[i]) + '"></div>';
+            }
+            html += '</div></div>';
+        }
+
+        // Session history
+        var sessions = EchoEngine.getSessionHistory();
+        if (sessions.length > 0) {
+            html += '<div class="echo-dash-section">';
+            html += '<div class="echo-dash-label">SESSION HISTORY (' + sessions.length + ' sessions)</div>';
+            var last = sessions[sessions.length - 1];
+            html += '<div class="echo-dash-value">';
+            html += '<span>Last: T' + Math.round(last.avgTension * 100) + '% V' + Math.round(last.avgVitality * 100) + '%</span>';
+            html += '<span>Peak: ' + Math.round(last.peakTension * 100) + '%</span>';
+            html += '<span>' + last.frames + ' frames</span>';
+            html += '</div></div>';
+        }
+
+        // Frame info
+        html += '<div class="echo-dash-section">';
+        html += '<div class="echo-dash-label">FRAME</div>';
+        html += '<div class="echo-dash-meta">Frame ' + (ef.frame || '?') + ' · ' + EchoEngine.getFrameCount() + ' frames buffered · ' + (EchoEngine.isLive() ? 'LIVE' : 'SCRUBBING') + '</div>';
+        html += '</div>';
+
+        body.innerHTML = html;
+    },
+
+    _bar(label, value, color) {
+        var pct = Math.round(Math.min(1, Math.max(0, value)) * 100);
+        return '<div class="echo-dash-bar"><div class="echo-dash-bar-fill" style="width:' + pct + '%;background:' + color + '"></div></div>' +
+            '<div class="echo-dash-value"><span>' + label + '</span><span>' + pct + '%</span></div>';
+    },
+
+    _tensionColor(t) {
+        if (t > 0.6) return '#ff4444';
+        if (t > 0.3) return '#ffaa00';
+        return '#00ff88';
     }
 };
 
@@ -11681,6 +11984,7 @@ const Abilities = {
     this.projectiles.push(projObj);
     if (typeof Audio !== 'undefined' && Audio.playTowerShot) Audio.playTowerShot();
   },
+  _shieldBubble: null,
   _doShield(def) {
     this.shieldActive = true; this.shieldTimer = def.duration; PlayerStats.shielded = true;
     const ring = WorldMode.player.ring;
@@ -11689,6 +11993,19 @@ const Abilities = {
       ring.material.color.setHex(0xffd700); ring.scale.set(2, 2, 2);
     }
     if (typeof VFX !== 'undefined') VFX.emit(WorldMode.player.mesh.position, 'shieldShimmer', def.duration);
+    // Shield bubble dome
+    if (WorldMode.scene && !this._shieldBubble) {
+      var bubbleGeo = new THREE.SphereGeometry(2.5, 16, 12);
+      var bubbleMat = new THREE.MeshStandardMaterial({
+        color: 0xffd700, emissive: 0xffd700, emissiveIntensity: 0.3,
+        transparent: true, opacity: 0.15, side: THREE.DoubleSide,
+        roughness: 0.1, metalness: 0.8, wireframe: false
+      });
+      this._shieldBubble = new THREE.Mesh(bubbleGeo, bubbleMat);
+      this._shieldBubble.position.copy(WorldMode.player.mesh.position);
+      this._shieldBubble.position.y = 1;
+      WorldMode.scene.add(this._shieldBubble);
+    }
     if (typeof Audio !== 'undefined' && Audio.playClick) Audio.playClick();
   },
   _doDash(pos, dir, def) {
@@ -11763,15 +12080,29 @@ const Abilities = {
         WorldMode.scene.remove(p.mesh); this.projectiles.splice(i, 1);
       }
     }
-    // Shield
+    // Shield + bubble
     if (this.shieldActive) {
       this.shieldTimer -= delta;
+      // Animate shield bubble
+      if (this._shieldBubble && WorldMode.player) {
+        this._shieldBubble.position.copy(WorldMode.player.mesh.position);
+        this._shieldBubble.position.y = 1;
+        this._shieldBubble.rotation.y += delta * 2;
+        this._shieldBubble.material.opacity = 0.1 + Math.sin(Date.now() * 0.005) * 0.08;
+      }
       if (this.shieldTimer <= 0) {
         this.shieldActive = false; PlayerStats.shielded = false;
         const ring = WorldMode.player.ring;
         if (ring) {
           ring.material.color.setHex(ring._origColor || 0x00ffff);
           ring.scale.copy(ring._origScale || new THREE.Vector3(1, 1, 1));
+        }
+        // Remove shield bubble
+        if (this._shieldBubble && WorldMode.scene) {
+          WorldMode.scene.remove(this._shieldBubble);
+          this._shieldBubble.geometry.dispose();
+          this._shieldBubble.material.dispose();
+          this._shieldBubble = null;
         }
       }
     }
@@ -15152,6 +15483,7 @@ const HelpOverlay = {
                         <div class="help-row"><span class="help-key">E</span><span>Interact / Enter Portal</span></div>
                         <div class="help-row"><span class="help-key">F</span><span>Poke Agent</span></div>
                         <div class="help-row"><span class="help-key">R</span><span>Battle Replay (cinematic)</span></div>
+                        <div class="help-row"><span class="help-key">~</span><span>Echo Dashboard</span></div>
                         <div class="help-row"><span class="help-key">ESC</span><span>Return to Galaxy</span></div>
                     </div>
                     <div class="help-section">
@@ -17606,6 +17938,7 @@ const Settings = {
         masterVolume: 0.3,
         voiceEnabled: false,
         gestureEnabled: false,
+        echoEffects: true,
     },
 
     _data: null,
@@ -17902,6 +18235,12 @@ const QuestTracker = {
         if (e.code === 'KeyD' && e.ctrlKey && e.shiftKey) {
             e.preventDefault();
             if (typeof DebugOverlay !== 'undefined') DebugOverlay.toggle();
+            return;
+        }
+
+        // Echo Dashboard toggle (backtick)
+        if (e.code === 'Backquote' && GameState.mode === 'world') {
+            if (typeof EchoDashboard !== 'undefined') EchoDashboard.toggle();
             return;
         }
 
