@@ -303,19 +303,22 @@ const WorldMode = {
             Inventory.updateDrops(time);
         }
 
-        // Enemy hero update
-        if (typeof EnemyHero !== 'undefined') {
-            EnemyHero.update(delta, time, this.player.mesh.position);
-        }
+        // Skip all combat damage during warmup
+        if (!WorldCombat._warmupActive) {
+            // Enemy hero update
+            if (typeof EnemyHero !== 'undefined') {
+                EnemyHero.update(delta, time, this.player.mesh.position);
+            }
 
-        // Creep damage to player
-        if (typeof PlayerStats !== 'undefined' && !PlayerStats.dead) {
-            for (const creep of WorldCombat.creeps) {
-                if (!creep.alive || creep.faction !== 'horde') continue;
-                const dx = this.player.mesh.position.x - creep.mesh.position.x;
-                const dz = this.player.mesh.position.z - creep.mesh.position.z;
-                if (Math.sqrt(dx*dx + dz*dz) < 2) {
-                    PlayerStats.takeDamage(creep.isBoss ? 3 * delta : 1 * delta);
+            // Creep damage to player
+            if (typeof PlayerStats !== 'undefined' && !PlayerStats.dead) {
+                for (const creep of WorldCombat.creeps) {
+                    if (!creep.alive || creep.faction !== 'horde') continue;
+                    const dx = this.player.mesh.position.x - creep.mesh.position.x;
+                    const dz = this.player.mesh.position.z - creep.mesh.position.z;
+                    if (Math.sqrt(dx*dx + dz*dz) < 2) {
+                        PlayerStats.takeDamage(creep.isBoss ? 3 * delta : 1 * delta);
+                    }
                 }
             }
         }
