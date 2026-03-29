@@ -145,7 +145,14 @@ const WorldCombat = {
     },
 
     spawnWave() {
-        const scaleFactor = 1 + (this.waveNumber * 0.08);
+        var scaleFactor = 1 + (this.waveNumber * 0.08);
+        // Echo-reactive difficulty: tension boosts creep power up to 15%
+        if (typeof EchoEngine !== 'undefined') {
+            var ef = EchoEngine.getCurrentFrame();
+            if (ef && ef.echoes && ef.echoes.L3) {
+                scaleFactor *= (1 + ef.echoes.L3.tension * 0.15);
+            }
+        }
         const isSiegeWave = this.waveNumber % 5 === 0;
 
         for (const [laneKey, lane] of Object.entries(LANE_DEFS)) {

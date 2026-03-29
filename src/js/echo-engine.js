@@ -98,12 +98,24 @@ const EchoEngine = {
         var chatAuthors = {};
         snap.recentChat.forEach(function(m) { chatAuthors[m.author] = (chatAuthors[m.author] || 0) + 1; });
         var topChatter = Object.keys(chatAuthors).sort(function(a,b) { return chatAuthors[b] - chatAuthors[a]; })[0];
+        // Combat digest
+        var combatDigest = {};
+        if (typeof WorldCombat !== 'undefined' && WorldCombat.active) {
+            combatDigest = {
+                wave: WorldCombat.waveNumber,
+                momentum: Math.round(WorldCombat.momentum),
+                creepCount: WorldCombat.creeps ? WorldCombat.creeps.filter(function(c) { return c.alive; }).length : 0,
+                bossActive: !!WorldCombat.bossActive,
+                bossName: WorldCombat.boss ? WorldCombat.boss.bossName : null
+            };
+        }
         echoes.L1 = {
             chatCount: snap.recentChat.length,
             topChatter: topChatter || 'none',
             actionSummary: Object.keys(snap.actionCounts).map(function(k) { return k + ':' + snap.actionCounts[k]; }).join(', ') || 'idle',
             mood: snap.agentPositions.length > 0 ?
-                snap.agentPositions.reduce(function(acc, a) { acc[a.mood] = (acc[a.mood]||0) + 1; return acc; }, {}) : {}
+                snap.agentPositions.reduce(function(acc, a) { acc[a.mood] = (acc[a.mood]||0) + 1; return acc; }, {}) : {},
+            combat: combatDigest
         };
 
         // L2: Activity narrative
@@ -117,7 +129,17 @@ const EchoEngine = {
             var moodEntries = Object.entries(echoes.L1.mood).sort(function(a,b) { return b[1] - a[1]; });
             if (moodEntries.length > 0) dominantMood = moodEntries[0][0];
         }
-        narrative += 'The prevailing mood was ' + dominantMood + '.';
+        narrative += 'The prevailing mood was ' + dominantMood + '. ';
+        // Combat narrative
+        if (typeof WorldCombat !== 'undefined' && WorldCombat.active && WorldCombat.waveNumber > 0) {
+            narrative += 'Wave ' + WorldCombat.waveNumber + ' in progress. ';
+            if (WorldCombat.momentum > 65) narrative += 'Explorers gaining ground. ';
+            else if (WorldCombat.momentum < 35) narrative += 'The horde pushes forward. ';
+            if (WorldCombat.bossActive) narrative += 'A boss stalks the battlefield. ';
+        }
+        if (typeof PlayerStats !== 'undefined' && PlayerStats.kills > 5) {
+            narrative += 'The player has claimed ' + PlayerStats.kills + ' kills. ';
+        }
         echoes.L2 = { narrative: narrative, dominantMood: dominantMood };
 
         // L3: Atmosphere parameters (drives lighting, music, particle density)
@@ -128,7 +150,34 @@ const EchoEngine = {
         if (dominantMood === 'desperate') tension += 0.4;
         if (snap.actionCounts.challenge) tension += 0.1 * snap.actionCounts.challenge;
         if (snap.actionCounts.defend) tension += 0.2;
+        // Combat state feeds tension — live battlefield data
+        if (typeof WorldCombat !== 'undefined' && WorldCombat.active) {
+            // Momentum imbalance = tension (either side dominating)
+            var momImbalance = Math.abs(WorldCombat.momentum - 50) / 50; // 0=balanced, 1=dominated
+            tension += momImbalance * 0.3;
+            // Active creep count = battle intensity
+            var creepCount = WorldCombat.creeps ? WorldCombat.creeps.filter(function(c) { return c.alive; }).length : 0;
+            tension += Math.min(0.3, creepCount / 40);
+            // Boss alive = high tension
+            if (WorldCombat.bossActive) tension += 0.25;
+            // Wave number progression
+            if (WorldCombat.waveNumber > 0) tension += Math.min(0.15, WorldCombat.waveNumber * 0.01);
+        }
+        // Player combat stats feed tension
+        if (typeof PlayerStats !== 'undefined') {
+            if (PlayerStats.dead) tension += 0.3;
+            var hpRatio = PlayerStats.hp / (PlayerStats.maxHp || 1);
+            if (hpRatio < 0.3) tension += 0.2;
+        }
+        // Enemy hero alive and fighting = tension
+        if (typeof EnemyHero !== 'undefined' && EnemyHero.state && EnemyHero.state.alive && EnemyHero.state.aiState === 'fighting') {
+            tension += 0.2;
+        }
         var vitality = Math.min(1, snap.worldPopulation / 60);
+        // Combat kill count boosts vitality (action = life)
+        if (typeof PlayerStats !== 'undefined' && PlayerStats.kills > 0) {
+            vitality = Math.min(1, vitality + Math.min(0.2, PlayerStats.kills * 0.01));
+        }
         var socialEnergy = Math.min(1, snap.recentChat.length / 5);
         echoes.L3 = {
             tension: Math.min(1, tension),
