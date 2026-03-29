@@ -55,6 +55,12 @@ const ReplaySystem = {
             <div class="replay-scanlines"></div>
             <div class="replay-badge">&#9679; REPLAY</div>
             <div class="replay-timecode">00:00 / 00:00</div>
+            <div class="replay-echo-panel" id="replay-echo-panel">
+                <div class="replay-echo-frame" id="replay-echo-frame">F---</div>
+                <div class="replay-echo-mood" id="replay-echo-mood"></div>
+                <div class="replay-echo-tension-bar"><div class="replay-echo-tension-fill" id="replay-echo-tension-fill"></div></div>
+                <div class="replay-echo-narrative" id="replay-echo-narrative"></div>
+            </div>
             <div class="replay-kill-banner" id="replay-kill-banner"></div>
             <div class="replay-slowmo-flash" id="replay-slowmo-flash"></div>
             <div class="replay-ticker" id="replay-ticker"></div>
@@ -117,6 +123,27 @@ const ReplaySystem = {
             alive: EnemyHero.state ? EnemyHero.state.alive : false
         } : null;
 
+        // Capture echo state at this moment
+        var echo = null;
+        if (typeof EchoEngine !== 'undefined') {
+            var ef = EchoEngine.getCurrentFrame();
+            if (ef && ef.echoes) {
+                echo = {
+                    tension: ef.echoes.L3 ? ef.echoes.L3.tension : 0,
+                    vitality: ef.echoes.L3 ? ef.echoes.L3.vitality : 0.5,
+                    socialEnergy: ef.echoes.L3 ? ef.echoes.L3.socialEnergy : 0,
+                    lightIntensity: ef.echoes.L3 ? ef.echoes.L3.lightIntensity : 1,
+                    particleDensity: ef.echoes.L3 ? ef.echoes.L3.particleDensity : 0.5,
+                    fogDensity: ef.echoes.L4 ? ef.echoes.L4.fogDensity : 0.002,
+                    narrative: ef.echoes.L2 ? ef.echoes.L2.narrative : '',
+                    dominantMood: ef.echoes.L2 ? ef.echoes.L2.dominantMood : 'neutral',
+                    frame: ef.frame || 0,
+                    popTrend: ef.echoes.L6 ? ef.echoes.L6.populationTrend : 'stable',
+                    econArc: ef.echoes.L6 ? ef.echoes.L6.economicArc : 'steady'
+                };
+            }
+        }
+
         this.snapshots.push({
             time: now,
             creeps: creepData,
@@ -124,7 +151,8 @@ const ReplaySystem = {
             wave: WorldCombat.waveNumber,
             playerPos: playerPos,
             heroPos: heroPos,
-            creepCount: creepData.length
+            creepCount: creepData.length,
+            echo: echo
         });
     },
 
@@ -159,6 +187,11 @@ const ReplaySystem = {
         this._ghostCreeps = [];
         this._ghostProjectiles = [];
 
+        // Pause echo engine live updates — replay will scrub echo state from snapshots
+        if (typeof EchoEngine !== 'undefined') {
+            this._wasEchoScrubbing = EchoEngine._scrubbing;
+        }
+
         // Show overlay
         const overlay = document.getElementById('replay-overlay');
         if (overlay) overlay.classList.add('active');
@@ -169,7 +202,7 @@ const ReplaySystem = {
         // Disable player input
         WorldMode.keys = {};
 
-        if (typeof HUD !== 'undefined') HUD.showToast('REPLAY STARTED — R to exit');
+        if (typeof HUD !== 'undefined') HUD.showToast('REPLAY — R exit / SPACE pause / arrows speed');
     },
 
     stopReplay() {
@@ -190,6 +223,16 @@ const ReplaySystem = {
 
         // Show game HUD
         this._hideGameHUD(false);
+
+        // Restore echo engine to live
+        if (typeof EchoEngine !== 'undefined' && !this._wasEchoScrubbing) {
+            EchoEngine.scrubToLive();
+        }
+
+        // Restore fog density
+        if (WorldMode.scene && WorldMode.scene.fog) {
+            WorldMode.scene.fog.density = 0.002;
+        }
 
         // Clear kill banner
         const banner = document.getElementById('replay-kill-banner');
@@ -297,15 +340,20 @@ const ReplaySystem = {
             ghost.position.z += (cd.pos.z - ghost.position.z) * 0.15;
             ghost.rotation.y = cd.rotY;
 
-            // Update color based on faction/boss
+            // Update color based on faction/boss — echo-reactive glow
             var bodyMesh = ghost.children[0];
             if (bodyMesh && bodyMesh.material) {
                 var c = cd.faction === 'explorer' ? 0x00ff88 : 0xff4488;
                 if (cd.isBoss) c = 0xaa44ff;
                 bodyMesh.material.color.setHex(c);
                 bodyMesh.material.emissive.setHex(c);
-                // Ghost glow effect
-                bodyMesh.material.emissiveIntensity = 0.4 + Math.sin(performance.now() * 0.003 + i) * 0.2;
+                // Ghost glow — pulses faster with tension, brighter with vitality
+                var echoT = (snap && snap.echo) ? snap.echo.tension : 0;
+                var echoV = (snap && snap.echo) ? snap.echo.vitality : 0.5;
+                var pulseSpeed = 0.003 + echoT * 0.006;
+                var baseGlow = 0.3 + echoV * 0.3;
+                bodyMesh.material.emissiveIntensity = baseGlow + Math.sin(performance.now() * pulseSpeed + i) * (0.15 + echoT * 0.15);
+                bodyMesh.material.opacity = 0.7 + echoV * 0.2;
             }
         }
     },
@@ -386,12 +434,22 @@ const ReplaySystem = {
 
         var isSlowMo = performance.now() < this._slowMoUntil;
 
+        // Echo-reactive camera parameters
+        var echoData = snap ? snap.echo : null;
+        var tension = echoData ? echoData.tension : 0;
+        var vitality = echoData ? echoData.vitality : 0.5;
+        // High tension = tighter shots, faster cuts; low tension = wider, slower
+        var tensionSpeedMod = 1 + tension * 0.6;
+        var tensionRadiusMod = 1 - tension * 0.3; // tighter radius when tense
+        var tensionHeightMod = 1 - tension * 0.2;  // lower camera when tense
+
         switch (this._currentCameraMode) {
             case 'orbit':
-                this._orbitAngle += delta * 0.4;
-                var ox = centerX + Math.cos(this._orbitAngle) * 40;
-                var oz = centerZ + Math.sin(this._orbitAngle) * 40;
-                var targetPos = new THREE.Vector3(ox, 25, oz);
+                this._orbitAngle += delta * 0.4 * tensionSpeedMod;
+                var orbitR = 40 * tensionRadiusMod;
+                var ox = centerX + Math.cos(this._orbitAngle) * orbitR;
+                var oz = centerZ + Math.sin(this._orbitAngle) * orbitR;
+                var targetPos = new THREE.Vector3(ox, 25 * tensionHeightMod, oz);
                 cam.position.lerp(targetPos, 0.03);
                 cam.lookAt(centerX, 2, centerZ);
                 break;
@@ -400,35 +458,39 @@ const ReplaySystem = {
                 // Follow the most interesting target (boss > hero > random creep)
                 var trackPos = this._getTrackingTarget(snap);
                 if (trackPos) {
-                    var tx = trackPos.x + 6;
-                    var ty = 8;
-                    var tz = trackPos.z + 12;
-                    cam.position.lerp(new THREE.Vector3(tx, ty, tz), isSlowMo ? 0.01 : 0.04);
+                    var trackDist = 12 * tensionRadiusMod;
+                    var tx = trackPos.x + 6 * tensionRadiusMod;
+                    var ty = 8 * tensionHeightMod;
+                    var tz = trackPos.z + trackDist;
+                    cam.position.lerp(new THREE.Vector3(tx, ty, tz), isSlowMo ? 0.01 : 0.04 * tensionSpeedMod);
                     cam.lookAt(trackPos.x, 1.5, trackPos.z);
                 }
                 break;
 
             case 'dramatic':
-                // Low angle, close to action, slow orbit
-                this._orbitAngle += delta * 0.8;
-                var dr = isSlowMo ? 5 : 8;
+                // Low angle, close to action, slow orbit — even tighter when tense
+                this._orbitAngle += delta * 0.8 * tensionSpeedMod;
+                var dr = (isSlowMo ? 5 : 8) * tensionRadiusMod;
+                var dh = 3 * tensionHeightMod;
                 var dx = centerX + Math.cos(this._orbitAngle) * dr;
                 var dz = centerZ + Math.sin(this._orbitAngle) * dr;
-                cam.position.lerp(new THREE.Vector3(dx, 3, dz), 0.05);
+                cam.position.lerp(new THREE.Vector3(dx, Math.max(1.5, dh), dz), 0.05);
                 cam.lookAt(centerX, 1, centerZ);
                 break;
 
             case 'topdown':
-                cam.position.lerp(new THREE.Vector3(centerX, 60, centerZ + 5), 0.02);
+                var topH = 60 * (1 - tension * 0.15);
+                cam.position.lerp(new THREE.Vector3(centerX, topH, centerZ + 5), 0.02);
                 cam.lookAt(centerX, 0, centerZ);
                 break;
 
             case 'sweep':
                 // Wide sweeping arc across the battlefield
-                this._orbitAngle += delta * 0.2;
-                var sx = Math.cos(this._orbitAngle) * 50;
-                var sz = Math.sin(this._orbitAngle) * 50;
-                cam.position.lerp(new THREE.Vector3(sx, 15, sz), 0.02);
+                this._orbitAngle += delta * 0.2 * tensionSpeedMod;
+                var sweepR = 50 * tensionRadiusMod;
+                var sx = Math.cos(this._orbitAngle) * sweepR;
+                var sz = Math.sin(this._orbitAngle) * sweepR;
+                cam.position.lerp(new THREE.Vector3(sx, 15 * tensionHeightMod, sz), 0.02);
                 cam.lookAt(0, 0, 0);
                 break;
         }
@@ -445,7 +507,12 @@ const ReplaySystem = {
         }
 
         this._currentCameraMode = shots[nextIdx].name;
-        this._cameraModeTimer = shots[nextIdx].duration;
+        // Echo-reactive duration — high tension = faster cuts
+        var baseDuration = shots[nextIdx].duration;
+        var snapIdx = this._findSnapshotIndex(this.playbackStartTime + this.playbackTime * 1000);
+        var snap = this.snapshots[snapIdx];
+        var tension = (snap && snap.echo) ? snap.echo.tension : 0;
+        this._cameraModeTimer = baseDuration * (1 - tension * 0.4); // Up to 40% faster cuts
     },
 
     _getTrackingTarget(snap) {
@@ -497,12 +564,28 @@ const ReplaySystem = {
         this._currentCameraMode = 'dramatic';
         this._cameraModeTimer = 2.5;
 
-        // Show kill banner
+        // Show kill banner — echo-tinted
         var banner = document.getElementById('replay-kill-banner');
         if (banner) {
             var text = data.isBoss ? data.name : 'ELIMINATED';
             if (data.name && !data.isBoss) text = data.name;
             banner.textContent = text;
+
+            // Echo-reactive banner color
+            var snapIdx = this._findSnapshotIndex(this.playbackStartTime + this.playbackTime * 1000);
+            var snap = this.snapshots[snapIdx];
+            var echoT = (snap && snap.echo) ? snap.echo.tension : 0;
+            if (echoT > 0.5) {
+                banner.style.color = '#ff2222';
+                banner.style.textShadow = '0 0 30px rgba(255,34,34,0.9), 0 0 80px rgba(255,34,34,0.5)';
+            } else if (data.isBoss) {
+                banner.style.color = '#aa44ff';
+                banner.style.textShadow = '0 0 30px rgba(170,68,255,0.9), 0 0 80px rgba(170,68,255,0.5)';
+            } else {
+                banner.style.color = '#ff4444';
+                banner.style.textShadow = '0 0 30px rgba(255,68,68,0.9), 0 0 60px rgba(255,68,68,0.5)';
+            }
+
             banner.classList.remove('show');
             void banner.offsetWidth; // reflow
             banner.classList.add('show');
@@ -554,6 +637,98 @@ const ReplaySystem = {
             var slowStr = performance.now() < this._slowMoUntil ? ' SLOW-MO' : '';
             var pauseStr = this.paused ? ' PAUSED' : '';
             tc.textContent = current + ' / ' + total + speedStr + slowStr + pauseStr;
+        }
+
+        // Echo panel — pull echo data from current snapshot
+        var snapIdx = this._findSnapshotIndex(this.playbackStartTime + this.playbackTime * 1000);
+        var snap = this.snapshots[snapIdx];
+        var echo = snap ? snap.echo : null;
+
+        if (echo) {
+            var frameEl = document.getElementById('replay-echo-frame');
+            if (frameEl) frameEl.textContent = 'F' + echo.frame + ' L' + Math.ceil(echo.tension * 6);
+
+            var moodEl = document.getElementById('replay-echo-mood');
+            if (moodEl) {
+                var moodIcons = { neutral: '', thriving: '', content: '', anxious: '', desperate: '' };
+                moodEl.textContent = echo.dominantMood.toUpperCase() + (echo.popTrend !== 'stable' ? ' / ' + echo.popTrend : '') + (echo.econArc !== 'steady' ? ' / econ ' + echo.econArc : '');
+            }
+
+            var tensionFill = document.getElementById('replay-echo-tension-fill');
+            if (tensionFill) {
+                tensionFill.style.width = (echo.tension * 100) + '%';
+                // Color: green (low) → orange → red (high)
+                if (echo.tension > 0.6) tensionFill.style.background = '#ff4444';
+                else if (echo.tension > 0.3) tensionFill.style.background = '#ffaa00';
+                else tensionFill.style.background = '#00ff88';
+            }
+
+            var narrEl = document.getElementById('replay-echo-narrative');
+            if (narrEl && echo.narrative) {
+                narrEl.textContent = echo.narrative;
+            }
+
+            // Apply echo atmosphere during replay — fog density, light intensity
+            this._applyEchoAtmosphere(echo);
+        }
+    },
+
+    _applyEchoAtmosphere(echo) {
+        if (!echo || !WorldMode.scene) return;
+
+        // Fog reacts to tension
+        if (WorldMode.scene.fog) {
+            var targetFog = echo.fogDensity || 0.002;
+            WorldMode.scene.fog.density += (targetFog - WorldMode.scene.fog.density) * 0.05;
+        }
+
+        // Ambient light dims with tension
+        if (WorldMode.scene.children) {
+            for (var i = 0; i < WorldMode.scene.children.length; i++) {
+                var child = WorldMode.scene.children[i];
+                if (child.isAmbientLight) {
+                    var targetIntensity = echo.lightIntensity * 0.6;
+                    child.intensity += (targetIntensity - child.intensity) * 0.03;
+                }
+            }
+        }
+
+        // VFX ambient particles scaled by echo vitality + social energy
+        if (typeof VFX !== 'undefined' && VFX.active) {
+            // Spawn ambient echo particles around the action center based on atmosphere
+            if (!this._echoEmitTimer) this._echoEmitTimer = 0;
+            this._echoEmitTimer -= 0.016;
+            if (this._echoEmitTimer <= 0) {
+                var interval = Math.max(0.1, 1.0 - echo.particleDensity);
+                this._echoEmitTimer = interval;
+
+                // Tension sparks — red ambient particles when tension is high
+                if (echo.tension > 0.3 && Math.random() < echo.tension) {
+                    var snapIdx2 = this._findSnapshotIndex(this.playbackStartTime + this.playbackTime * 1000);
+                    var s = this.snapshots[snapIdx2];
+                    if (s && s.creeps.length > 0) {
+                        var rc = s.creeps[Math.floor(Math.random() * s.creeps.length)];
+                        VFX.burst(
+                            { x: rc.pos.x + (Math.random() - 0.5) * 4, y: 2, z: rc.pos.z + (Math.random() - 0.5) * 4 },
+                            'echoTension', { count: 2 }
+                        );
+                    }
+                }
+
+                // Vitality glow — green ambient when world is alive
+                if (echo.vitality > 0.4 && Math.random() < echo.vitality * 0.3) {
+                    var rx = (Math.random() - 0.5) * 60;
+                    var rz = (Math.random() - 0.5) * 60;
+                    VFX.burst({ x: rx, y: 0.5, z: rz }, 'echoVitality', { count: 1 });
+                }
+
+                // Social fireflies — golden sparks near agents when social energy is high
+                if (echo.socialEnergy > 0.5 && Math.random() < echo.socialEnergy * 0.4) {
+                    var sx = (Math.random() - 0.5) * 40;
+                    var sz = (Math.random() - 0.5) * 40;
+                    VFX.burst({ x: sx, y: 1 + Math.random() * 3, z: sz }, 'echoSocial', { count: 1 });
+                }
+            }
         }
     },
 

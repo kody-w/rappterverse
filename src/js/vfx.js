@@ -138,6 +138,25 @@ const VFX = {
             size: 0.3, sizeEnd: 0.05, gravity: -8,
             color: 0xff8800, colorEnd: 0xff0000,
             emissive: 0.7, fadeOut: true
+        },
+        // Echo-reactive ambient particles
+        echoTension: {
+            count: 2, life: 1.2, speed: 1, spread: 0.8,
+            size: 0.12, sizeEnd: 0.03, gravity: 0.5,
+            color: 0xff2222, colorEnd: 0xff6600,
+            emissive: 0.6, fadeOut: true
+        },
+        echoVitality: {
+            count: 1, life: 2.0, speed: 0.5, spread: 0.3,
+            size: 0.08, sizeEnd: 0.02, gravity: 1.5,
+            color: 0x00ff44, colorEnd: 0x88ffaa,
+            emissive: 0.4, fadeOut: true
+        },
+        echoSocial: {
+            count: 1, life: 1.5, speed: 0.8, spread: 0.5,
+            size: 0.06, sizeEnd: 0.02, gravity: 0.3,
+            color: 0xffdd44, colorEnd: 0xffffaa,
+            emissive: 0.9, fadeOut: true
         }
     },
 
@@ -150,12 +169,22 @@ const VFX = {
         this._screenFlashes = [];
     },
 
+    // ── Get echo intensity multiplier (1.0 = normal, up to ~1.6 at max tension) ──
+    _getEchoIntensity() {
+        if (typeof EchoEngine === 'undefined') return 1.0;
+        var ef = EchoEngine.getCurrentFrame();
+        if (!ef || !ef.echoes || !ef.echoes.L3) return 1.0;
+        // Tension + vitality boost particle intensity
+        return 1.0 + ef.echoes.L3.tension * 0.4 + ef.echoes.L3.vitality * 0.2;
+    },
+
     // ── One-shot burst at position ──
     burst(pos, presetName, opts) {
         if (!this.active || !this.scene) return;
         var p = this.presets[presetName];
         if (!p) return;
-        var count = (opts && opts.count) || p.count;
+        var echoMult = this._getEchoIntensity();
+        var count = Math.round(((opts && opts.count) || p.count) * echoMult);
         var baseColor = new THREE.Color((opts && opts.color) || p.color);
         var endColor = new THREE.Color(p.colorEnd || p.color);
 
@@ -203,8 +232,8 @@ const VFX = {
             particle.life = 0;
             particle.maxLife = p.life * (0.7 + Math.random() * 0.6);
             particle.gravity = p.gravity || 0;
-            particle.startSize = p.size * (0.7 + Math.random() * 0.6);
-            particle.endSize = p.sizeEnd;
+            particle.startSize = p.size * (0.7 + Math.random() * 0.6) * Math.sqrt(echoMult);
+            particle.endSize = p.sizeEnd * Math.sqrt(echoMult);
             particle.startColor = baseColor.clone();
             particle.endColor = endColor.clone();
             particle.fadeOut = p.fadeOut;
@@ -256,9 +285,54 @@ const VFX = {
         setTimeout(function() { if (el.parentNode) el.parentNode.removeChild(el); }, (duration || 0.3) * 1000 + 100);
     },
 
+    // ── Echo-driven ambient atmosphere ──
+    _echoTimer: 0,
+    updateEchoAtmosphere(delta) {
+        if (!this.active || !this.scene) return;
+        if (typeof EchoEngine === 'undefined') return;
+        var ef = EchoEngine.getCurrentFrame();
+        if (!ef || !ef.echoes || !ef.echoes.L3) return;
+        var L3 = ef.echoes.L3;
+
+        this._echoTimer -= delta;
+        if (this._echoTimer > 0) return;
+        var interval = Math.max(0.15, 1.2 - L3.particleDensity);
+        this._echoTimer = interval;
+
+        // Tension sparks near combat
+        if (L3.tension > 0.3 && Math.random() < L3.tension * 0.6) {
+            var playerPos = (typeof WorldMode !== 'undefined' && WorldMode.player) ? WorldMode.player.mesh.position : null;
+            if (playerPos) {
+                VFX.burst(
+                    { x: playerPos.x + (Math.random() - 0.5) * 20, y: 1 + Math.random() * 3, z: playerPos.z + (Math.random() - 0.5) * 20 },
+                    'echoTension', { count: 1 }
+                );
+            }
+        }
+
+        // Vitality glow — subtle green life in the terrain
+        if (L3.vitality > 0.5 && Math.random() < L3.vitality * 0.2) {
+            VFX.burst(
+                { x: (Math.random() - 0.5) * 80, y: 0.3, z: (Math.random() - 0.5) * 80 },
+                'echoVitality', { count: 1 }
+            );
+        }
+
+        // Social fireflies — golden sparkle near crowds
+        if (L3.socialEnergy > 0.5 && Math.random() < L3.socialEnergy * 0.3) {
+            VFX.burst(
+                { x: (Math.random() - 0.5) * 50, y: 1.5 + Math.random() * 2, z: (Math.random() - 0.5) * 50 },
+                'echoSocial', { count: 1 }
+            );
+        }
+    },
+
     // ── Update all particles ──
     update(delta) {
         if (!this.active) return;
+
+        // Echo atmosphere ambient particles
+        this.updateEchoAtmosphere(delta);
 
         // Update particles in all pools
         for (var key in this._pools) {
