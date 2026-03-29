@@ -125,6 +125,18 @@ const WorldCombat = {
         // Cleanup dead creeps
         this.creeps = this.creeps.filter(c => {
             if (!c.alive) {
+                // Type-specific death VFX
+                if (typeof VFX !== 'undefined' && c.mesh.position) {
+                    if (c.creepType === 'siege') {
+                        VFX.burst(c.mesh.position, 'novaBlast', { count: 15 });
+                    } else if (c.creepType === 'ranged') {
+                        VFX.burst(c.mesh.position, 'cosmic', { count: 6 });
+                    }
+                    // Spawn poof on all deaths
+                    VFX.burst(c.mesh.position, 'spawnPoof', { count: 4 });
+                }
+                // Stop boss aura emitter
+                if (c._auraEmitter && typeof VFX !== 'undefined') VFX.stopEmitter(c._auraEmitter);
                 if (c.mesh.parent) c.mesh.parent.remove(c.mesh);
                 return false;
             }

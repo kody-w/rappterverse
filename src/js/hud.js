@@ -300,6 +300,21 @@ const HUD = {
             ctx.closePath();
             ctx.fill();
             ctx.restore();
+
+            // Echo tension pulse ring around player
+            if (typeof EchoEngine !== 'undefined') {
+                var ef2 = EchoEngine.getCurrentFrame();
+                if (ef2 && ef2.echoes && ef2.echoes.L3 && ef2.echoes.L3.tension > 0.2) {
+                    var t2 = ef2.echoes.L3.tension;
+                    var pulseRadius = 10 + t2 * 15 + Math.sin(Date.now() * 0.003) * 3;
+                    var pulseAlpha = t2 * 0.3;
+                    ctx.strokeStyle = 'rgba(255,' + Math.round(68 * (1 - t2)) + ',' + Math.round(68 * (1 - t2)) + ',' + pulseAlpha + ')';
+                    ctx.lineWidth = 1.5;
+                    ctx.beginPath();
+                    ctx.arc(px, pz, pulseRadius, 0, Math.PI * 2);
+                    ctx.stroke();
+                }
+            }
         }
     },
 

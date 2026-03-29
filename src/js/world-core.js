@@ -268,11 +268,37 @@ const WorldMode = {
             const camTarget = this.player.mesh.position.clone().add(new THREE.Vector3(0, 8, 12));
             this.camera.position.lerp(camTarget, 0.05);
             this.camera.lookAt(this.player.mesh.position.x, 1, this.player.mesh.position.z);
+            // Echo micro-shake: subtle camera tremor during high tension
+            if (typeof EchoEngine !== 'undefined') {
+                var ef = EchoEngine.getCurrentFrame();
+                if (ef && ef.echoes && ef.echoes.L3 && ef.echoes.L3.tension > 0.4) {
+                    var shakeAmt = (ef.echoes.L3.tension - 0.4) * 0.15;
+                    this.camera.position.x += (Math.random() - 0.5) * shakeAmt;
+                    this.camera.position.y += (Math.random() - 0.5) * shakeAmt * 0.5;
+                }
+            }
         }
 
-        // Ground ring pulse
+        // Ground ring pulse — echo-reactive: faster + brighter with tension
         if (this.player.ring) {
-            this.player.ring.material.opacity = 0.2 + Math.sin(time * 3) * 0.1;
+            var ringSpeed = 3, ringBase = 0.2, ringAmp = 0.1;
+            if (typeof EchoEngine !== 'undefined') {
+                var ef = EchoEngine.getCurrentFrame();
+                if (ef && ef.echoes && ef.echoes.L3) {
+                    ringSpeed = 3 + ef.echoes.L3.tension * 4;
+                    ringBase = 0.2 + ef.echoes.L3.vitality * 0.1;
+                    ringAmp = 0.1 + ef.echoes.L3.tension * 0.1;
+                    // Color shift: cyan when calm, red-shift when tense
+                    if (ef.echoes.L3.tension > 0.5 && !this.player.ring._echoTinted) {
+                        this.player.ring.material.color.setHex(0xff4444);
+                        this.player.ring._echoTinted = true;
+                    } else if (ef.echoes.L3.tension <= 0.5 && this.player.ring._echoTinted) {
+                        this.player.ring.material.color.setHex(0x00ffff);
+                        this.player.ring._echoTinted = false;
+                    }
+                }
+            }
+            this.player.ring.material.opacity = ringBase + Math.sin(time * ringSpeed) * ringAmp;
         }
 
         // Touch controls

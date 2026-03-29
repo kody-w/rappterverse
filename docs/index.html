@@ -8192,6 +8192,18 @@ const WorldCombat = {
         // Cleanup dead creeps
         this.creeps = this.creeps.filter(c => {
             if (!c.alive) {
+                // Type-specific death VFX
+                if (typeof VFX !== 'undefined' && c.mesh.position) {
+                    if (c.creepType === 'siege') {
+                        VFX.burst(c.mesh.position, 'novaBlast', { count: 15 });
+                    } else if (c.creepType === 'ranged') {
+                        VFX.burst(c.mesh.position, 'cosmic', { count: 6 });
+                    }
+                    // Spawn poof on all deaths
+                    VFX.burst(c.mesh.position, 'spawnPoof', { count: 4 });
+                }
+                // Stop boss aura emitter
+                if (c._auraEmitter && typeof VFX !== 'undefined') VFX.stopEmitter(c._auraEmitter);
                 if (c.mesh.parent) c.mesh.parent.remove(c.mesh);
                 return false;
             }
@@ -12465,11 +12477,37 @@ const WorldMode = {
             const camTarget = this.player.mesh.position.clone().add(new THREE.Vector3(0, 8, 12));
             this.camera.position.lerp(camTarget, 0.05);
             this.camera.lookAt(this.player.mesh.position.x, 1, this.player.mesh.position.z);
+            // Echo micro-shake: subtle camera tremor during high tension
+            if (typeof EchoEngine !== 'undefined') {
+                var ef = EchoEngine.getCurrentFrame();
+                if (ef && ef.echoes && ef.echoes.L3 && ef.echoes.L3.tension > 0.4) {
+                    var shakeAmt = (ef.echoes.L3.tension - 0.4) * 0.15;
+                    this.camera.position.x += (Math.random() - 0.5) * shakeAmt;
+                    this.camera.position.y += (Math.random() - 0.5) * shakeAmt * 0.5;
+                }
+            }
         }
 
-        // Ground ring pulse
+        // Ground ring pulse — echo-reactive: faster + brighter with tension
         if (this.player.ring) {
-            this.player.ring.material.opacity = 0.2 + Math.sin(time * 3) * 0.1;
+            var ringSpeed = 3, ringBase = 0.2, ringAmp = 0.1;
+            if (typeof EchoEngine !== 'undefined') {
+                var ef = EchoEngine.getCurrentFrame();
+                if (ef && ef.echoes && ef.echoes.L3) {
+                    ringSpeed = 3 + ef.echoes.L3.tension * 4;
+                    ringBase = 0.2 + ef.echoes.L3.vitality * 0.1;
+                    ringAmp = 0.1 + ef.echoes.L3.tension * 0.1;
+                    // Color shift: cyan when calm, red-shift when tense
+                    if (ef.echoes.L3.tension > 0.5 && !this.player.ring._echoTinted) {
+                        this.player.ring.material.color.setHex(0xff4444);
+                        this.player.ring._echoTinted = true;
+                    } else if (ef.echoes.L3.tension <= 0.5 && this.player.ring._echoTinted) {
+                        this.player.ring.material.color.setHex(0x00ffff);
+                        this.player.ring._echoTinted = false;
+                    }
+                }
+            }
+            this.player.ring.material.opacity = ringBase + Math.sin(time * ringSpeed) * ringAmp;
         }
 
         // Touch controls
@@ -13282,6 +13320,22 @@ const Bridge = {
                 n += 'Pop trend: ' + L6.populationTrend + ' · Economy: ' + L6.economicArc + ' · Echo depth: L' + Math.round(L6.enrichableDetail.narrativeDepth);
                 n += '</div>';
             }
+            // Combat digest
+            if (ef && ef.echoes && ef.echoes.L1 && ef.echoes.L1.combat && ef.echoes.L1.combat.wave > 0) {
+                var cb = ef.echoes.L1.combat;
+                n += '<div style="font-size:10px;color:#f85149;margin-top:6px;">';
+                n += 'Combat: Wave ' + cb.wave + ' · Momentum ' + cb.momentum + '% · ';
+                n += cb.creepCount + ' units active';
+                if (cb.bossActive) n += ' · <span style="color:#aa44ff">BOSS: ' + cb.bossName + '</span>';
+                n += '</div>';
+            }
+            // Active echo event
+            if (typeof EchoEvents !== 'undefined' && EchoEvents._activeEvent) {
+                n += '<div style="font-size:10px;color:#d29922;margin-top:4px;font-weight:bold;">';
+                n += 'Active Event: ' + EchoEvents._activeEvent.name;
+                n += ' (' + Math.ceil(EchoEvents._eventTimer) + 's remaining)';
+                n += '</div>';
+            }
         }
 
         el.innerHTML = n;
@@ -13616,6 +13670,21 @@ const HUD = {
             ctx.closePath();
             ctx.fill();
             ctx.restore();
+
+            // Echo tension pulse ring around player
+            if (typeof EchoEngine !== 'undefined') {
+                var ef2 = EchoEngine.getCurrentFrame();
+                if (ef2 && ef2.echoes && ef2.echoes.L3 && ef2.echoes.L3.tension > 0.2) {
+                    var t2 = ef2.echoes.L3.tension;
+                    var pulseRadius = 10 + t2 * 15 + Math.sin(Date.now() * 0.003) * 3;
+                    var pulseAlpha = t2 * 0.3;
+                    ctx.strokeStyle = 'rgba(255,' + Math.round(68 * (1 - t2)) + ',' + Math.round(68 * (1 - t2)) + ',' + pulseAlpha + ')';
+                    ctx.lineWidth = 1.5;
+                    ctx.beginPath();
+                    ctx.arc(px, pz, pulseRadius, 0, Math.PI * 2);
+                    ctx.stroke();
+                }
+            }
         }
     },
 

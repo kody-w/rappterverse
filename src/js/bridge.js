@@ -656,6 +656,22 @@ const Bridge = {
                 n += 'Pop trend: ' + L6.populationTrend + ' · Economy: ' + L6.economicArc + ' · Echo depth: L' + Math.round(L6.enrichableDetail.narrativeDepth);
                 n += '</div>';
             }
+            // Combat digest
+            if (ef && ef.echoes && ef.echoes.L1 && ef.echoes.L1.combat && ef.echoes.L1.combat.wave > 0) {
+                var cb = ef.echoes.L1.combat;
+                n += '<div style="font-size:10px;color:#f85149;margin-top:6px;">';
+                n += 'Combat: Wave ' + cb.wave + ' · Momentum ' + cb.momentum + '% · ';
+                n += cb.creepCount + ' units active';
+                if (cb.bossActive) n += ' · <span style="color:#aa44ff">BOSS: ' + cb.bossName + '</span>';
+                n += '</div>';
+            }
+            // Active echo event
+            if (typeof EchoEvents !== 'undefined' && EchoEvents._activeEvent) {
+                n += '<div style="font-size:10px;color:#d29922;margin-top:4px;font-weight:bold;">';
+                n += 'Active Event: ' + EchoEvents._activeEvent.name;
+                n += ' (' + Math.ceil(EchoEvents._eventTimer) + 's remaining)';
+                n += '</div>';
+            }
         }
 
         el.innerHTML = n;
