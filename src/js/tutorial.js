@@ -71,6 +71,13 @@ const Tutorial = {
             hint: 'Press <b>?</b> anytime for full controls. Press <b>V</b> for voice commands.',
             icon: '🚀',
             keys: 'B'
+        },
+        {
+            title: 'THE ECHO ENGINE',
+            body: 'The world reacts to everything — combat, social activity, economy. The <b>Echo Engine</b> reads the simulation and changes lighting, music, weather, AI behavior, and particle effects in real-time.',
+            hint: 'Press <b>R</b> to replay combat with cinematic cameras. Watch the tension sparkline in the universe card.',
+            icon: '🌊',
+            keys: 'R'
         }
     ],
 

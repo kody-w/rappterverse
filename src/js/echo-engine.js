@@ -334,5 +334,49 @@ const EchoEngine = {
         return this._frames.length > 0 ? this._frames[this._frames.length - 1] : null;
     },
     getFrameCount() { return this._frames.length; },
-    isLive() { return !this._scrubbing; }
+    isLive() { return !this._scrubbing; },
+
+    // Echo session summary — persists across sessions for depth
+    getSessionSummary() {
+        if (this._frames.length === 0) return null;
+        var totalTension = 0, totalVitality = 0, totalSocial = 0;
+        var peakTension = 0;
+        this._frames.forEach(function(f) {
+            if (f.echoes && f.echoes.L3) {
+                totalTension += f.echoes.L3.tension;
+                totalVitality += f.echoes.L3.vitality;
+                totalSocial += f.echoes.L3.socialEnergy;
+                if (f.echoes.L3.tension > peakTension) peakTension = f.echoes.L3.tension;
+            }
+        });
+        var count = this._frames.length;
+        return {
+            frames: count,
+            avgTension: totalTension / count,
+            avgVitality: totalVitality / count,
+            avgSocial: totalSocial / count,
+            peakTension: peakTension,
+            timestamp: new Date().toISOString()
+        };
+    },
+
+    // Save session echo summary to localStorage
+    saveSessionSummary() {
+        var summary = this.getSessionSummary();
+        if (!summary) return;
+        try {
+            var history = JSON.parse(localStorage.getItem('rappterverse-echo-sessions') || '[]');
+            history.push(summary);
+            // Keep last 20 sessions
+            while (history.length > 20) history.shift();
+            localStorage.setItem('rappterverse-echo-sessions', JSON.stringify(history));
+        } catch(e) {}
+    },
+
+    // Get historical session data for cross-session echo depth
+    getSessionHistory() {
+        try {
+            return JSON.parse(localStorage.getItem('rappterverse-echo-sessions') || '[]');
+        } catch(e) { return []; }
+    }
 };

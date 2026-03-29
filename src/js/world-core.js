@@ -437,6 +437,8 @@ const WorldMode = {
         if (timeline) timeline.classList.remove('visible');
         const narr = document.getElementById('timeline-narrative');
         if (narr) narr.classList.remove('visible');
+        // Save echo session summary
+        if (typeof EchoEngine !== 'undefined' && EchoEngine.saveSessionSummary) EchoEngine.saveSessionSummary();
         // Stop VM
         if (typeof RappterVM !== 'undefined') RappterVM._running = false;
         // Hide quest tracker

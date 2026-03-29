@@ -670,6 +670,10 @@ const WorldCombat = {
                 VFX.burst(nearest.mesh.position, nearest.isBoss ? 'bossKill' : 'kill');
                 if (nearest.isBoss) VFX.screenFlash('#aa44ff', 0.4);
             }
+            // Gamepad rumble on kill
+            if (typeof GamepadControls !== 'undefined' && GamepadControls.rumble) {
+                GamepadControls.rumble(nearest.isBoss ? 0.8 : 0.3, nearest.isBoss ? 0.4 : 0.15, nearest.isBoss ? 300 : 100);
+            }
             // Log player kill for replay
             if (typeof ReplaySystem !== 'undefined') {
                 var evtType = nearest.isBoss ? 'boss_kill' : 'kill';

@@ -8757,6 +8757,10 @@ const WorldCombat = {
                 VFX.burst(nearest.mesh.position, nearest.isBoss ? 'bossKill' : 'kill');
                 if (nearest.isBoss) VFX.screenFlash('#aa44ff', 0.4);
             }
+            // Gamepad rumble on kill
+            if (typeof GamepadControls !== 'undefined' && GamepadControls.rumble) {
+                GamepadControls.rumble(nearest.isBoss ? 0.8 : 0.3, nearest.isBoss ? 0.4 : 0.15, nearest.isBoss ? 300 : 100);
+            }
             // Log player kill for replay
             if (typeof ReplaySystem !== 'undefined') {
                 var evtType = nearest.isBoss ? 'boss_kill' : 'kill';
@@ -12714,6 +12718,8 @@ const WorldMode = {
         if (timeline) timeline.classList.remove('visible');
         const narr = document.getElementById('timeline-narrative');
         if (narr) narr.classList.remove('visible');
+        // Save echo session summary
+        if (typeof EchoEngine !== 'undefined' && EchoEngine.saveSessionSummary) EchoEngine.saveSessionSummary();
         // Stop VM
         if (typeof RappterVM !== 'undefined') RappterVM._running = false;
         // Hide quest tracker
@@ -15806,7 +15812,51 @@ const EchoEngine = {
         return this._frames.length > 0 ? this._frames[this._frames.length - 1] : null;
     },
     getFrameCount() { return this._frames.length; },
-    isLive() { return !this._scrubbing; }
+    isLive() { return !this._scrubbing; },
+
+    // Echo session summary — persists across sessions for depth
+    getSessionSummary() {
+        if (this._frames.length === 0) return null;
+        var totalTension = 0, totalVitality = 0, totalSocial = 0;
+        var peakTension = 0;
+        this._frames.forEach(function(f) {
+            if (f.echoes && f.echoes.L3) {
+                totalTension += f.echoes.L3.tension;
+                totalVitality += f.echoes.L3.vitality;
+                totalSocial += f.echoes.L3.socialEnergy;
+                if (f.echoes.L3.tension > peakTension) peakTension = f.echoes.L3.tension;
+            }
+        });
+        var count = this._frames.length;
+        return {
+            frames: count,
+            avgTension: totalTension / count,
+            avgVitality: totalVitality / count,
+            avgSocial: totalSocial / count,
+            peakTension: peakTension,
+            timestamp: new Date().toISOString()
+        };
+    },
+
+    // Save session echo summary to localStorage
+    saveSessionSummary() {
+        var summary = this.getSessionSummary();
+        if (!summary) return;
+        try {
+            var history = JSON.parse(localStorage.getItem('rappterverse-echo-sessions') || '[]');
+            history.push(summary);
+            // Keep last 20 sessions
+            while (history.length > 20) history.shift();
+            localStorage.setItem('rappterverse-echo-sessions', JSON.stringify(history));
+        } catch(e) {}
+    },
+
+    // Get historical session data for cross-session echo depth
+    getSessionHistory() {
+        try {
+            return JSON.parse(localStorage.getItem('rappterverse-echo-sessions') || '[]');
+        } catch(e) { return []; }
+    }
 };
 
 // === js/gamepad-controls.js ===
@@ -15873,6 +15923,49 @@ const GamepadControls = {
 
         // Save button state for edge detection
         for (var i = 0; i < 17; i++) this._lastButtons[i] = btn(i);
+
+        // Echo-reactive haptic rumble — tension drives background vibration
+        this._updateEchoRumble(pad);
+    },
+
+    _rumbleTimer: 0,
+    _updateEchoRumble(pad) {
+        if (!pad.vibrationActuator) return;
+        this._rumbleTimer -= 0.016;
+        if (this._rumbleTimer > 0) return;
+        this._rumbleTimer = 2; // Check every 2 seconds
+
+        if (typeof EchoEngine === 'undefined') return;
+        var ef = EchoEngine.getCurrentFrame();
+        if (!ef || !ef.echoes || !ef.echoes.L3) return;
+        var tension = ef.echoes.L3.tension;
+
+        if (tension > 0.5) {
+            // Subtle rumble during tension — stronger as tension rises
+            var strength = (tension - 0.5) * 0.3; // 0 to 0.15
+            try {
+                pad.vibrationActuator.playEffect('dual-rumble', {
+                    duration: 200,
+                    strongMagnitude: strength,
+                    weakMagnitude: strength * 0.5
+                });
+            } catch(e) {}
+        }
+    },
+
+    // Trigger a one-shot rumble (called by VFX/combat)
+    rumble(strong, weak, duration) {
+        if (!this.active || this._padIndex === null) return;
+        var pads = navigator.getGamepads ? navigator.getGamepads() : [];
+        var pad = pads[this._padIndex];
+        if (!pad || !pad.vibrationActuator) return;
+        try {
+            pad.vibrationActuator.playEffect('dual-rumble', {
+                duration: duration || 100,
+                strongMagnitude: strong || 0.3,
+                weakMagnitude: weak || 0.15
+            });
+        } catch(e) {}
     }
 };
 
@@ -17370,6 +17463,13 @@ const Tutorial = {
             hint: 'Press <b>?</b> anytime for full controls. Press <b>V</b> for voice commands.',
             icon: '🚀',
             keys: 'B'
+        },
+        {
+            title: 'THE ECHO ENGINE',
+            body: 'The world reacts to everything — combat, social activity, economy. The <b>Echo Engine</b> reads the simulation and changes lighting, music, weather, AI behavior, and particle effects in real-time.',
+            hint: 'Press <b>R</b> to replay combat with cinematic cameras. Watch the tension sparkline in the universe card.',
+            icon: '🌊',
+            keys: 'R'
         }
     ],
 
@@ -17697,7 +17797,20 @@ const QuestTracker = {
         if (!body) return;
 
         if (active.length === 0) {
-            body.innerHTML = '<div class="qt-empty">No active quests</div>';
+            // Echo-generated quest suggestion when no quests exist
+            var echoQuest = '';
+            if (typeof EchoEngine !== 'undefined') {
+                var ef = EchoEngine.getCurrentFrame();
+                if (ef && ef.echoes && ef.echoes.L3) {
+                    var L3 = ef.echoes.L3;
+                    if (L3.tension > 0.6) echoQuest = 'The echo whispers: defeat the boss to calm the storm.';
+                    else if (L3.socialEnergy > 0.6) echoQuest = 'The echo hums: agents are social — join the conversation.';
+                    else if (L3.vitality > 0.6) echoQuest = 'The echo glows: the world thrives — explore new territory.';
+                    else if (L3.tension < 0.2 && L3.vitality < 0.3) echoQuest = 'The echo is silent... something stirs.';
+                    else echoQuest = 'The echo pulses gently. Seek your own path.';
+                }
+            }
+            body.innerHTML = '<div class="qt-empty">' + (echoQuest || 'No active quests') + '</div>';
             return;
         }
 

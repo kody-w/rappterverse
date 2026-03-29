@@ -112,7 +112,20 @@ const QuestTracker = {
         if (!body) return;
 
         if (active.length === 0) {
-            body.innerHTML = '<div class="qt-empty">No active quests</div>';
+            // Echo-generated quest suggestion when no quests exist
+            var echoQuest = '';
+            if (typeof EchoEngine !== 'undefined') {
+                var ef = EchoEngine.getCurrentFrame();
+                if (ef && ef.echoes && ef.echoes.L3) {
+                    var L3 = ef.echoes.L3;
+                    if (L3.tension > 0.6) echoQuest = 'The echo whispers: defeat the boss to calm the storm.';
+                    else if (L3.socialEnergy > 0.6) echoQuest = 'The echo hums: agents are social — join the conversation.';
+                    else if (L3.vitality > 0.6) echoQuest = 'The echo glows: the world thrives — explore new territory.';
+                    else if (L3.tension < 0.2 && L3.vitality < 0.3) echoQuest = 'The echo is silent... something stirs.';
+                    else echoQuest = 'The echo pulses gently. Seek your own path.';
+                }
+            }
+            body.innerHTML = '<div class="qt-empty">' + (echoQuest || 'No active quests') + '</div>';
             return;
         }
 
