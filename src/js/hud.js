@@ -88,8 +88,8 @@ const HUD = {
         ctx.lineWidth = 1;
         ctx.strokeRect(cx - bx, cz - bz, bx * 2, bz * 2);
 
-        // ── Darken forest areas (everything not lane/river) ──
-        ctx.fillStyle = 'rgba(0, 15, 0, 0.35)';
+        // ── Darken forest areas (Dota 2-style dark green) ──
+        ctx.fillStyle = 'rgba(0, 8, 0, 0.50)';
         ctx.fillRect(0, 0, S, S);
 
         // ── Echo heat map overlay — tension/combat hotspots ──
@@ -147,24 +147,91 @@ const HUD = {
             ctx.lineJoin = 'miter';
         }
 
-        // ── River (blue water through middle) ──
-        ctx.strokeStyle = '#3388cc';
-        ctx.lineWidth = 7;
-        ctx.lineCap = 'round';
-        ctx.globalAlpha = 0.7;
-        ctx.beginPath();
-        ctx.moveTo(cx - bx, cz + bz);
-        ctx.lineTo(cx + bx, cz - bz);
-        ctx.stroke();
-        // River highlight
-        ctx.strokeStyle = '#55aaee';
-        ctx.lineWidth = 3;
-        ctx.beginPath();
-        ctx.moveTo(cx - bx, cz + bz);
-        ctx.lineTo(cx + bx, cz - bz);
-        ctx.stroke();
-        ctx.globalAlpha = 1;
-        ctx.lineCap = 'butt';
+        // ── River (organic curve using stored river points) ──
+        if (typeof WorldLanes !== 'undefined' && WorldLanes.riverPoints && WorldLanes.riverPoints.length > 1) {
+            var rPts = WorldLanes.riverPoints;
+            // River bank shadow
+            ctx.strokeStyle = '#1a3a50';
+            ctx.lineWidth = 9;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.globalAlpha = 0.5;
+            ctx.beginPath();
+            rPts.forEach(function(p, i) {
+                var rx = cx + p.x * scale, rz = cz + p.z * scale;
+                if (i === 0) ctx.moveTo(rx, rz); else ctx.lineTo(rx, rz);
+            });
+            ctx.stroke();
+            // Main water
+            ctx.strokeStyle = '#2a6a99';
+            ctx.lineWidth = 6;
+            ctx.globalAlpha = 0.75;
+            ctx.beginPath();
+            rPts.forEach(function(p, i) {
+                var rx = cx + p.x * scale, rz = cz + p.z * scale;
+                if (i === 0) ctx.moveTo(rx, rz); else ctx.lineTo(rx, rz);
+            });
+            ctx.stroke();
+            // Highlight center
+            ctx.strokeStyle = '#4499cc';
+            ctx.lineWidth = 2.5;
+            ctx.globalAlpha = 0.6;
+            ctx.beginPath();
+            rPts.forEach(function(p, i) {
+                var rx = cx + p.x * scale, rz = cz + p.z * scale;
+                if (i === 0) ctx.moveTo(rx, rz); else ctx.lineTo(rx, rz);
+            });
+            ctx.stroke();
+            ctx.globalAlpha = 1;
+            ctx.lineCap = 'butt';
+            ctx.lineJoin = 'miter';
+        } else {
+            // Fallback straight river
+            ctx.strokeStyle = '#2a6a99';
+            ctx.lineWidth = 6;
+            ctx.lineCap = 'round';
+            ctx.globalAlpha = 0.7;
+            ctx.beginPath();
+            ctx.moveTo(cx - bx, cz + bz);
+            ctx.lineTo(cx + bx, cz - bz);
+            ctx.stroke();
+            ctx.globalAlpha = 1;
+            ctx.lineCap = 'butt';
+        }
+
+        // ── Rune spots (golden circles on river) ──
+        if (typeof WorldLanes !== 'undefined' && WorldLanes.runeSpots) {
+            ctx.fillStyle = '#ffd700';
+            ctx.globalAlpha = 0.6;
+            WorldLanes.runeSpots.forEach(function(rune) {
+                var rx = cx + rune.x * scale, rz = cz + rune.z * scale;
+                ctx.beginPath();
+                ctx.arc(rx, rz, 2.5, 0, Math.PI * 2);
+                ctx.fill();
+            });
+            ctx.globalAlpha = 1;
+        }
+
+        // ── Roshan pit marker ──
+        if (typeof WorldLanes !== 'undefined' && WorldLanes.roshanPit) {
+            var rosh = WorldLanes.roshanPit;
+            var rpx = cx + rosh.x * scale, rpz = cz + rosh.z * scale;
+            ctx.fillStyle = '#661100';
+            ctx.globalAlpha = 0.4;
+            ctx.beginPath();
+            ctx.arc(rpx, rpz, 6, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.globalAlpha = 1;
+            // Skull icon (diamond)
+            ctx.fillStyle = '#ff4400';
+            ctx.beginPath();
+            ctx.moveTo(rpx, rpz - 3);
+            ctx.lineTo(rpx + 2.5, rpz);
+            ctx.lineTo(rpx, rpz + 3);
+            ctx.lineTo(rpx - 2.5, rpz);
+            ctx.closePath();
+            ctx.fill();
+        }
 
         // ── Base areas (cleared dirt circles at corners) ──
         // Explorer base (bottom-left)
@@ -252,20 +319,50 @@ const HUD = {
             ctx.stroke();
         }
 
-        // ── Jungle Camps ──
+        // ── Jungle Camps (type-specific icons) ──
         if (typeof JungleCamps !== 'undefined' && JungleCamps.camps) {
             JungleCamps.camps.forEach(function(camp) {
-                if (!camp.alive) return;
                 var mx = cx + camp.x * scale;
                 var mz = cz + camp.z * scale;
-                ctx.fillStyle = '#886644';
+                if (camp.isRoshan) return; // Roshan drawn separately above
+                if (!camp.alive) {
+                    // Dead camp — faint outline with timer
+                    ctx.strokeStyle = 'rgba(136,102,68,0.25)';
+                    ctx.lineWidth = 0.5;
+                    ctx.beginPath();
+                    ctx.arc(mx, mz, 2, 0, Math.PI * 2);
+                    ctx.stroke();
+                    return;
+                }
+                var r = camp.type === 'ancient' ? 3.5 : camp.type === 'large' ? 3 : camp.type === 'medium' ? 2.5 : 1.8;
+                var col = camp.type === 'ancient' ? '#aa7744' : camp.type === 'large' ? '#886644' : '#776655';
+                ctx.fillStyle = col;
                 ctx.beginPath();
-                ctx.arc(mx, mz, camp.size === 'medium' ? 3 : 2, 0, Math.PI * 2);
+                ctx.arc(mx, mz, r, 0, Math.PI * 2);
                 ctx.fill();
-                ctx.strokeStyle = '#ffaa00';
-                ctx.lineWidth = 0.5;
-                ctx.stroke();
+                if (camp.type === 'ancient' || camp.type === 'large') {
+                    ctx.strokeStyle = '#ffaa00';
+                    ctx.lineWidth = 0.6;
+                    ctx.stroke();
+                }
             });
+        }
+
+        // ── Creep waves (moving dots — makes minimap feel alive) ──
+        if (typeof WorldCombat !== 'undefined' && WorldCombat.creeps) {
+            WorldCombat.creeps.forEach(function(c) {
+                if (!c.alive || !c.mesh) return;
+                var cx2 = cx + c.mesh.position.x * scale;
+                var cz2 = cz + c.mesh.position.z * scale;
+                var col = c.faction === 'explorer' ? '#44cc88' : '#cc4466';
+                var r = c.isBoss ? 3 : (c.creepType === 'siege' ? 1.8 : 1.2);
+                ctx.fillStyle = col;
+                ctx.globalAlpha = c.isBoss ? 1 : 0.7;
+                ctx.beginPath();
+                ctx.arc(cx2, cz2, r, 0, Math.PI * 2);
+                ctx.fill();
+            });
+            ctx.globalAlpha = 1;
         }
 
         // ── Player (arrow showing direction) ──
@@ -275,6 +372,20 @@ const HUD = {
             var pz = cz + p.z * scale;
             var rot = WorldMode.player.mesh.rotation.y;
 
+            // Camera view cone
+            ctx.save();
+            ctx.translate(px, pz);
+            ctx.rotate(-rot);
+            ctx.fillStyle = 'rgba(0,212,255,0.06)';
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(-25, -50);
+            ctx.lineTo(25, -50);
+            ctx.closePath();
+            ctx.fill();
+            ctx.restore();
+
+            // Player arrow
             ctx.save();
             ctx.translate(px, pz);
             ctx.rotate(-rot);
@@ -293,19 +404,6 @@ const HUD = {
 
             // Minimap pings
             this.renderMinimapPings(ctx, S);
-
-            // Camera view cone
-            ctx.save();
-            ctx.translate(px, pz);
-            ctx.rotate(-rot);
-            ctx.fillStyle = 'rgba(0,212,255,0.06)';
-            ctx.beginPath();
-            ctx.moveTo(0, 0);
-            ctx.lineTo(-25, -50);
-            ctx.lineTo(25, -50);
-            ctx.closePath();
-            ctx.fill();
-            ctx.restore();
 
             // Echo tension pulse ring around player
             if (typeof EchoEngine !== 'undefined') {
@@ -617,20 +715,56 @@ const HUD = {
             ctx.fillRect(0, 0, S, S);
         }
 
+        // Darken forest overlay (Dota 2 style)
+        ctx.fillStyle = 'rgba(0, 8, 0, 0.45)';
+        ctx.fillRect(0, 0, S, S);
+
         // Boundary
         var bx = w.bounds.x * scale, bz = w.bounds.z * scale;
-        ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+        ctx.strokeStyle = 'rgba(255,255,255,0.15)';
         ctx.lineWidth = 1;
         ctx.strokeRect(cx - bx, cz - bz, bx * 2, bz * 2);
 
-        // Lanes
+        // Lanes (wider brown roads + lane color overlay)
         if (typeof WorldLanes !== 'undefined' && WorldLanes.lanes) {
+            // Brown dirt roads
+            WorldLanes.lanes.forEach(function(lane) {
+                if (!lane.waypoints) return;
+                ctx.strokeStyle = '#7B6345';
+                ctx.lineWidth = 10;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+                ctx.globalAlpha = 0.6;
+                ctx.beginPath();
+                lane.waypoints.forEach(function(wp, i) {
+                    var mx = cx + wp.x * scale, mz = cz + wp.z * scale;
+                    if (i === 0) ctx.moveTo(mx, mz); else ctx.lineTo(mx, mz);
+                });
+                ctx.stroke();
+            });
+            // Worn center path
+            WorldLanes.lanes.forEach(function(lane) {
+                if (!lane.waypoints) return;
+                ctx.strokeStyle = '#9A8565';
+                ctx.lineWidth = 4;
+                ctx.globalAlpha = 0.5;
+                ctx.beginPath();
+                lane.waypoints.forEach(function(wp, i) {
+                    var mx = cx + wp.x * scale, mz = cz + wp.z * scale;
+                    if (i === 0) ctx.moveTo(mx, mz); else ctx.lineTo(mx, mz);
+                });
+                ctx.stroke();
+            });
+            ctx.globalAlpha = 1;
+            ctx.lineCap = 'butt';
+            ctx.lineJoin = 'miter';
+            // Lane color overlays + names
             var laneColors = ['#58a6ff', '#f97316', '#3fb950'];
             WorldLanes.lanes.forEach(function(lane, li) {
                 if (!lane.waypoints) return;
                 ctx.strokeStyle = laneColors[li] || '#888';
-                ctx.lineWidth = 3;
-                ctx.globalAlpha = 0.5;
+                ctx.lineWidth = 2;
+                ctx.globalAlpha = 0.3;
                 ctx.beginPath();
                 lane.waypoints.forEach(function(wp, i) {
                     var mx = cx + wp.x * scale, mz = cz + wp.z * scale;
@@ -652,10 +786,99 @@ const HUD = {
             });
         }
 
+        // River (organic curve)
+        if (typeof WorldLanes !== 'undefined' && WorldLanes.riverPoints && WorldLanes.riverPoints.length > 1) {
+            var rPts = WorldLanes.riverPoints;
+            ctx.strokeStyle = '#1a3a50';
+            ctx.lineWidth = 14;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.globalAlpha = 0.5;
+            ctx.beginPath();
+            rPts.forEach(function(p, i) {
+                var rx = cx + p.x * scale, rz = cz + p.z * scale;
+                if (i === 0) ctx.moveTo(rx, rz); else ctx.lineTo(rx, rz);
+            });
+            ctx.stroke();
+            ctx.strokeStyle = '#2a6a99';
+            ctx.lineWidth = 9;
+            ctx.globalAlpha = 0.7;
+            ctx.beginPath();
+            rPts.forEach(function(p, i) {
+                var rx = cx + p.x * scale, rz = cz + p.z * scale;
+                if (i === 0) ctx.moveTo(rx, rz); else ctx.lineTo(rx, rz);
+            });
+            ctx.stroke();
+            ctx.strokeStyle = '#4499cc';
+            ctx.lineWidth = 3;
+            ctx.globalAlpha = 0.5;
+            ctx.beginPath();
+            rPts.forEach(function(p, i) {
+                var rx = cx + p.x * scale, rz = cz + p.z * scale;
+                if (i === 0) ctx.moveTo(rx, rz); else ctx.lineTo(rx, rz);
+            });
+            ctx.stroke();
+            ctx.globalAlpha = 1;
+            ctx.lineCap = 'butt';
+            ctx.lineJoin = 'miter';
+        }
+
+        // Rune spots
+        if (typeof WorldLanes !== 'undefined' && WorldLanes.runeSpots) {
+            ctx.fillStyle = '#ffd700';
+            ctx.globalAlpha = 0.7;
+            WorldLanes.runeSpots.forEach(function(rune) {
+                var rx = cx + rune.x * scale, rz = cz + rune.z * scale;
+                ctx.beginPath();
+                ctx.arc(rx, rz, 5, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.font = '8px monospace';
+                ctx.fillStyle = '#ffd700';
+                ctx.textAlign = 'center';
+                ctx.fillText('RUNE', rx, rz - 8);
+            });
+            ctx.globalAlpha = 1;
+        }
+
+        // Roshan pit
+        if (typeof WorldLanes !== 'undefined' && WorldLanes.roshanPit) {
+            var rosh = WorldLanes.roshanPit;
+            var rpx = cx + rosh.x * scale, rpz = cz + rosh.z * scale;
+            ctx.fillStyle = '#441100';
+            ctx.globalAlpha = 0.4;
+            ctx.beginPath();
+            ctx.arc(rpx, rpz, 12, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.globalAlpha = 1;
+            ctx.fillStyle = '#ff4400';
+            ctx.beginPath();
+            ctx.moveTo(rpx, rpz - 6);
+            ctx.lineTo(rpx + 5, rpz);
+            ctx.lineTo(rpx, rpz + 6);
+            ctx.lineTo(rpx - 5, rpz);
+            ctx.closePath();
+            ctx.fill();
+            ctx.font = 'bold 9px monospace';
+            ctx.fillStyle = '#ff6622';
+            ctx.textAlign = 'center';
+            ctx.fillText('ROSHAN', rpx, rpz - 14);
+        }
+
+        // Base areas (cleared dirt)
+        ctx.fillStyle = '#6A5B40';
+        ctx.beginPath();
+        ctx.arc(cx - bx, cz - bz, 20, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#6A5B40';
+        ctx.beginPath();
+        ctx.arc(cx + bx, cz + bz, 20, 0, Math.PI * 2);
+        ctx.fill();
+
         // Towers
         if (typeof WorldLanes !== 'undefined' && WorldLanes.towers) {
             WorldLanes.towers.forEach(function(t) {
                 if (!t.mesh || !t.mesh.position) return;
+                if (t.hp <= 0) return;
                 var mx = cx + t.mesh.position.x * scale;
                 var mz = cz + t.mesh.position.z * scale;
                 ctx.fillStyle = t.faction === 'explorer' ? '#58a6ff' : '#f85149';
@@ -714,25 +937,32 @@ const HUD = {
             ctx.fillText('RAVAGER', hx, hz - 10);
         }
 
-        // Jungle Camps
+        // Jungle Camps (type-specific)
         if (typeof JungleCamps !== 'undefined' && JungleCamps.camps) {
             JungleCamps.camps.forEach(function(camp) {
+                if (camp.isRoshan) return; // drawn above
                 var mx = cx + camp.x * scale;
                 var mz = cz + camp.z * scale;
                 if (camp.alive) {
-                    ctx.fillStyle = '#886644';
+                    var r = camp.type === 'ancient' ? 7 : camp.type === 'large' ? 6 : camp.type === 'medium' ? 5 : 3.5;
+                    var col = camp.type === 'ancient' ? '#aa7744' : camp.type === 'large' ? '#886644' : '#776655';
+                    ctx.fillStyle = col;
                     ctx.beginPath();
-                    ctx.arc(mx, mz, camp.size === 'medium' ? 6 : 4, 0, Math.PI * 2);
+                    ctx.arc(mx, mz, r, 0, Math.PI * 2);
                     ctx.fill();
-                    ctx.strokeStyle = '#ffaa00';
-                    ctx.lineWidth = 1;
-                    ctx.stroke();
+                    if (camp.type === 'ancient' || camp.type === 'large') {
+                        ctx.strokeStyle = '#ffaa00';
+                        ctx.lineWidth = 1;
+                        ctx.stroke();
+                    }
                     ctx.fillStyle = '#ffaa00';
-                    ctx.font = '8px monospace';
+                    ctx.font = '7px monospace';
                     ctx.textAlign = 'center';
-                    ctx.fillText(camp.size === 'medium' ? 'MED' : 'SM', mx, mz - 8);
+                    var label = camp.type === 'ancient' ? 'ANC' : camp.type === 'large' ? 'LRG' : camp.type === 'medium' ? 'MED' : '';
+                    if (label) ctx.fillText(label, mx, mz - r - 2);
                 } else {
-                    ctx.strokeStyle = 'rgba(136,102,68,0.3)';
+                    ctx.strokeStyle = 'rgba(136,102,68,0.25)';
+                    ctx.lineWidth = 1;
                     ctx.beginPath();
                     ctx.arc(mx, mz, 4, 0, Math.PI * 2);
                     ctx.stroke();
@@ -742,6 +972,23 @@ const HUD = {
                     ctx.fillText(Math.ceil(camp.respawnTimer) + 's', mx, mz + 3);
                 }
             });
+        }
+
+        // Creep waves (moving dots)
+        if (typeof WorldCombat !== 'undefined' && WorldCombat.creeps) {
+            WorldCombat.creeps.forEach(function(c) {
+                if (!c.alive || !c.mesh) return;
+                var cx2 = cx + c.mesh.position.x * scale;
+                var cz2 = cz + c.mesh.position.z * scale;
+                var col = c.faction === 'explorer' ? '#44cc88' : '#cc4466';
+                var r = c.isBoss ? 5 : (c.creepType === 'siege' ? 3 : 2);
+                ctx.fillStyle = col;
+                ctx.globalAlpha = c.isBoss ? 1 : 0.7;
+                ctx.beginPath();
+                ctx.arc(cx2, cz2, r, 0, Math.PI * 2);
+                ctx.fill();
+            });
+            ctx.globalAlpha = 1;
         }
 
         // Player

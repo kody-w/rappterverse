@@ -1,84 +1,121 @@
-// Jungle Camps — neutral creep camps between lanes that respawn
-const JungleCamps = {
+// Jungle Camps — Authentic neutral creep camps mirroring Dota 2 layout
+// Small / Medium / Large / Ancient camps per jungle side + Echo Titan (Roshan-style river boss)
+
+var CAMP_TYPES = {
+    small:   { hp: 25, gold: 12, xp: 12, respawn: 60,  size: 0.6, neutrals: 2, color: 0x886644 },
+    medium:  { hp: 50, gold: 22, xp: 22, respawn: 60,  size: 0.9, neutrals: 3, color: 0x996633 },
+    large:   { hp: 80, gold: 35, xp: 35, respawn: 60,  size: 1.2, neutrals: 3, color: 0x774422 },
+    ancient: { hp: 120, gold: 55, xp: 55, respawn: 90,  size: 1.5, neutrals: 4, color: 0x554433 }
+};
+
+var JungleCamps = {
     camps: [],
     _scene: null,
 
-    init(scene, w) {
+    init: function(scene, w) {
         this._scene = scene;
         this.camps = [];
         var sx = w.bounds.x * 0.9, sz = w.bounds.z * 0.9;
 
-        // 6 camps: 3 per side, positioned between lanes
+        // ── 14 camps mirroring Dota 2 layout ──
         var campDefs = [
-            // Explorer jungle (bottom-left quadrant)
-            { x: -0.5, z: -0.4, size: 'small', gold: 15, xp: 15 },
-            { x: -0.7, z: 0.1, size: 'medium', gold: 25, xp: 25 },
-            { x: -0.3, z: -0.7, size: 'small', gold: 15, xp: 15 },
-            // Horde jungle (top-right quadrant)
-            { x: 0.5, z: 0.4, size: 'small', gold: 15, xp: 15 },
-            { x: 0.7, z: -0.1, size: 'medium', gold: 25, xp: 25 },
-            { x: 0.3, z: 0.7, size: 'small', gold: 15, xp: 15 },
+            // Explorer safe-side jungle
+            { x: -0.50, z: -0.78, type: 'small', label: 'Pull' },
+            { x: -0.62, z: -0.50, type: 'medium', label: 'Medium' },
+            { x: -0.42, z: -0.38, type: 'large', label: 'Hard' },
+            { x: -0.78, z: -0.28, type: 'ancient', label: 'Ancient' },
+            { x: -0.30, z: -0.22, type: 'small', label: 'Mid' },
+            // Explorer off-side jungle
+            { x: -0.72, z: 0.40, type: 'small', label: 'Offlane' },
+            { x: -0.52, z: 0.58, type: 'medium', label: 'Offlane Med' },
+            // Horde safe-side jungle
+            { x: 0.50, z: 0.78, type: 'small', label: 'Pull' },
+            { x: 0.62, z: 0.50, type: 'medium', label: 'Medium' },
+            { x: 0.42, z: 0.38, type: 'large', label: 'Hard' },
+            { x: 0.78, z: 0.28, type: 'ancient', label: 'Ancient' },
+            { x: 0.30, z: 0.22, type: 'small', label: 'Mid' },
+            // Horde off-side jungle
+            { x: 0.72, z: -0.40, type: 'small', label: 'Offlane' },
+            { x: 0.52, z: -0.58, type: 'medium', label: 'Offlane Med' }
         ];
 
         var self = this;
         campDefs.forEach(function(def) {
+            var typeData = CAMP_TYPES[def.type];
             var camp = {
                 x: def.x * sx, z: def.z * sz,
-                size: def.size, gold: def.gold, xp: def.xp,
-                alive: true, respawnTimer: 0, respawnTime: 45,
-                hp: def.size === 'medium' ? 60 : 30,
-                maxHp: def.size === 'medium' ? 60 : 30,
-                mesh: null, hpBar: null
+                type: def.type, label: def.label, size: typeData.size,
+                gold: typeData.gold, xp: typeData.xp,
+                alive: true, respawnTimer: 0, respawnTime: typeData.respawn,
+                hp: typeData.hp, maxHp: typeData.hp,
+                neutralCount: typeData.neutrals,
+                mesh: null, hpBar: null, body: null
             };
             self._createCampMesh(scene, camp);
             self.camps.push(camp);
         });
     },
 
-    _createCampMesh(scene, camp) {
+    _createCampMesh: function(scene, camp) {
         var g = new THREE.Group();
-        var s = camp.size === 'medium' ? 1.2 : 0.8;
-        // Neutral creep body
-        var body = new THREE.Mesh(
-            new THREE.DodecahedronGeometry(s, 0),
-            new THREE.MeshStandardMaterial({
-                color: 0x886644, emissive: 0x443322, emissiveIntensity: 0.2,
+        var typeData = CAMP_TYPES[camp.type];
+        var s = typeData.size;
+        var rng = typeof seededRandom !== 'undefined' ? seededRandom('camp-' + camp.x + '-' + camp.z) : Math.random;
+        var neutralCount = typeData.neutrals;
+        var mainBody = null;
+
+        for (var n = 0; n < neutralCount; n++) {
+            var ns = s * (n === 0 ? 1 : 0.5 + rng() * 0.3);
+            var angle = neutralCount > 1 ? (n / neutralCount) * Math.PI * 2 + rng() * 0.3 : 0;
+            var dist = n === 0 ? 0 : 1 + rng() * 0.8;
+            var creepColor = typeData.color + Math.floor(rng() * 0x111111);
+            var creepGeo;
+            if (camp.type === 'ancient') creepGeo = new THREE.OctahedronGeometry(ns, 0);
+            else if (camp.type === 'large') creepGeo = new THREE.DodecahedronGeometry(ns, 0);
+            else creepGeo = new THREE.SphereGeometry(ns, 6, 5);
+            var creep = new THREE.Mesh(creepGeo, new THREE.MeshStandardMaterial({
+                color: creepColor,
+                emissive: camp.type === 'ancient' ? 0x443322 : 0x221100,
+                emissiveIntensity: camp.type === 'ancient' ? 0.25 : 0.1,
                 roughness: 0.8, flatShading: true
-            })
-        );
-        body.position.y = s;
-        g.add(body);
-        // Eyes
-        var eyeMat = new THREE.MeshBasicMaterial({ color: 0xffaa00 });
-        var eyeL = new THREE.Mesh(new THREE.SphereGeometry(0.12, 4, 4), eyeMat);
-        eyeL.position.set(-0.3, s + 0.2, s * 0.8);
-        g.add(eyeL);
-        var eyeR = new THREE.Mesh(new THREE.SphereGeometry(0.12, 4, 4), eyeMat);
-        eyeR.position.set(0.3, s + 0.2, s * 0.8);
-        g.add(eyeR);
-        // Ground circle
+            }));
+            creep.position.set(Math.cos(angle) * dist, ns * 0.8, Math.sin(angle) * dist);
+            g.add(creep);
+            if (n === 0) mainBody = creep;
+            if (ns > 0.4) {
+                var eMat = new THREE.MeshBasicMaterial({ color: 0xffaa00 });
+                var eL = new THREE.Mesh(new THREE.SphereGeometry(ns * 0.12, 4, 4), eMat);
+                eL.position.set(creep.position.x - ns * 0.3, creep.position.y + ns * 0.2, creep.position.z + ns * 0.7);
+                g.add(eL);
+                var eR = new THREE.Mesh(new THREE.SphereGeometry(ns * 0.12, 4, 4), eMat);
+                eR.position.set(creep.position.x + ns * 0.3, creep.position.y + ns * 0.2, creep.position.z + ns * 0.7);
+                g.add(eR);
+            }
+        }
+        camp.body = mainBody;
+
+        var circleRadius = s * 2;
         var circle = new THREE.Mesh(
-            new THREE.CircleGeometry(s * 2, 12),
-            new THREE.MeshBasicMaterial({ color: 0x443322, transparent: true, opacity: 0.15, side: THREE.DoubleSide })
+            new THREE.CircleGeometry(circleRadius, 12),
+            new THREE.MeshBasicMaterial({ color: 0x332211, transparent: true, opacity: 0.12, side: THREE.DoubleSide })
         );
-        circle.rotation.x = -Math.PI / 2;
-        circle.position.y = 0.01;
+        circle.rotation.x = -Math.PI / 2; circle.position.y = 0.01;
         g.add(circle);
-        // HP bar
-        var hpGeo = new THREE.PlaneGeometry(2, 0.2);
-        var hpBar = new THREE.Mesh(hpGeo, new THREE.MeshBasicMaterial({ color: 0xffaa00 }));
-        hpBar.position.y = s * 2 + 0.5;
+
+        var hpBar = new THREE.Mesh(
+            new THREE.PlaneGeometry(2, 0.2),
+            new THREE.MeshBasicMaterial({ color: 0xffaa00 })
+        );
+        hpBar.position.y = s * 2 + 0.8;
         g.add(hpBar);
 
         g.position.set(camp.x, 0, camp.z);
         scene.add(g);
         camp.mesh = g;
         camp.hpBar = hpBar;
-        camp.body = body;
     },
 
-    update(delta, playerPos) {
-        var self = this;
+    update: function(delta, playerPos) {
         this.camps.forEach(function(camp) {
             if (!camp.alive) {
                 camp.respawnTimer -= delta;
@@ -90,15 +127,10 @@ const JungleCamps = {
                 return;
             }
             if (!camp.mesh) return;
-            // Idle bob + echo-reactive glow
-            var echoGlow = 0.2;
-            if (typeof EchoEngine !== 'undefined') {
-                var ef = EchoEngine.getCurrentFrame();
-                if (ef && ef.echoes && ef.echoes.L3) echoGlow = 0.2 + ef.echoes.L3.tension * 0.3;
+            if (camp.body) {
+                var baseY = CAMP_TYPES[camp.type].size * 0.8;
+                camp.body.position.y = baseY + Math.sin(Date.now() * 0.002 + camp.x * 3) * 0.08;
             }
-            if (camp.body && camp.body.material) camp.body.material.emissiveIntensity = echoGlow;
-            if (camp.body) camp.body.position.y = (camp.size === 'medium' ? 1.2 : 0.8) + Math.sin(Date.now() * 0.002 + camp.x) * 0.1;
-            // HP bar
             if (camp.hpBar) {
                 var ratio = camp.hp / camp.maxHp;
                 camp.hpBar.scale.x = ratio;
@@ -115,39 +147,40 @@ const JungleCamps = {
         }
     },
 
-    // Called by combat system when player attacks
-    tryAttack(playerPos, damage) {
+    tryAttack: function(playerPos, damage) {
         // Check Titan first
         if (this.attackTitan(playerPos, damage)) return true;
+        var attackRange = 5;
         for (var i = 0; i < this.camps.length; i++) {
             var camp = this.camps[i];
             if (!camp.alive) continue;
             var dx = playerPos.x - camp.x, dz = playerPos.z - camp.z;
             var dist = Math.sqrt(dx * dx + dz * dz);
-            if (dist < 4) {
+            if (dist < attackRange) {
                 camp.hp -= damage;
-                // VFX hit spark
                 if (typeof VFX !== 'undefined' && camp.mesh) VFX.burst(camp.mesh.position, 'hitSpark');
                 if (camp.hp <= 0) {
                     camp.alive = false;
                     camp.respawnTimer = camp.respawnTime;
                     if (camp.mesh) camp.mesh.visible = false;
-                    // Echo-scaled rewards: tension boosts gold/xp
                     var rewardMult = 1;
                     if (typeof EchoEngine !== 'undefined') {
                         var ef = EchoEngine.getCurrentFrame();
-                        if (ef && ef.echoes && ef.echoes.L3) {
-                            rewardMult = 1 + ef.echoes.L3.tension * 0.3; // Up to +30%
-                        }
+                        if (ef && ef.echoes && ef.echoes.L3) rewardMult = 1 + ef.echoes.L3.tension * 0.3;
                     }
                     if (typeof PlayerStats !== 'undefined') {
                         PlayerStats.awardXp(Math.round(camp.xp * rewardMult));
                         PlayerStats.kills++;
                         PlayerStats.awardGold(Math.round(camp.gold * rewardMult), 'jungle');
                     }
-                    // Death VFX
                     if (typeof VFX !== 'undefined' && camp.mesh) VFX.burst(camp.mesh.position, 'kill', { count: 10 });
                     if (typeof Audio !== 'undefined' && Audio.playHit) Audio.playHit();
+                    // Drop items from larger camps
+                    if (typeof Inventory !== 'undefined' && camp.mesh) {
+                        if (camp.type === 'large' || camp.type === 'ancient') {
+                            Inventory.spawnDrop(camp.mesh.position.clone(), GameState.currentWorld, 0, i);
+                        }
+                    }
                 }
                 return true;
             }
@@ -160,10 +193,10 @@ const JungleCamps = {
     _titanSpawnTimer: 0,
     _titanSpawned: false,
 
-    spawnTitan(scene, w) {
+    spawnTitan: function(scene, w) {
         if (this._titan && this._titan.alive) return;
         var titan = {
-            x: 0, z: 0, // River center
+            x: 0, z: 0,
             hp: 500, maxHp: 500,
             damage: 20, attackTimer: 0, attackCooldown: 1.2,
             alive: true, mesh: null, hpBar: null, body: null,
@@ -172,17 +205,12 @@ const JungleCamps = {
         };
 
         var g = new THREE.Group();
-        // Massive body
         var bodyGeo = new THREE.IcosahedronGeometry(3, 1);
-        var bodyMat = new THREE.MeshStandardMaterial({
-            color: 0xff6600, emissive: 0xff4400, emissiveIntensity: 0.5,
-            roughness: 0.3, metalness: 0.7, flatShading: true
-        });
+        var bodyMat = new THREE.MeshStandardMaterial({ color: 0xff6600, emissive: 0xff4400, emissiveIntensity: 0.5, roughness: 0.3, metalness: 0.7, flatShading: true });
         var body = new THREE.Mesh(bodyGeo, bodyMat);
         body.position.y = 4;
         g.add(body);
 
-        // Glowing eyes
         var eyeMat = new THREE.MeshBasicMaterial({ color: 0xff0000 });
         [-0.8, 0.8].forEach(function(offset) {
             var eye = new THREE.Mesh(new THREE.SphereGeometry(0.4, 6, 6), eyeMat);
@@ -190,18 +218,15 @@ const JungleCamps = {
             g.add(eye);
         });
 
-        // Aura light
         var light = new THREE.PointLight(0xff4400, 3, 30);
         light.position.y = 5;
         g.add(light);
 
-        // HP bar
         var hpGeo = new THREE.PlaneGeometry(6, 0.3);
         var hpBar = new THREE.Mesh(hpGeo, new THREE.MeshBasicMaterial({ color: 0xff0000 }));
         hpBar.position.y = 8;
         g.add(hpBar);
 
-        // Crown/horns
         var hornMat = new THREE.MeshStandardMaterial({ color: 0xffaa00, emissive: 0xff6600, emissiveIntensity: 0.3, flatShading: true });
         [-1.5, 1.5].forEach(function(offset) {
             var horn = new THREE.Mesh(new THREE.ConeGeometry(0.3, 2, 4), hornMat);
@@ -218,14 +243,12 @@ const JungleCamps = {
         this._titan = titan;
         this._titanSpawned = true;
 
-        // VFX + announcement
         if (typeof VFX !== 'undefined') VFX.burst({ x: 0, y: 3, z: 0 }, 'bossKill');
         if (typeof VFX !== 'undefined') VFX.screenFlash('#ff6600', 0.5);
         if (typeof VFX !== 'undefined') VFX.emit({ x: 0, y: 2, z: 0 }, 'bossAura', 999);
         if (typeof HUD !== 'undefined') HUD.showToast('ECHO TITAN has awakened in the river!');
         if (typeof Audio !== 'undefined' && Audio.playWaveHorn) Audio.playWaveHorn();
 
-        // Boss intro overlay
         var overlay = document.createElement('div');
         overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.7);z-index:9999;opacity:0;transition:opacity 0.5s;pointer-events:none;';
         overlay.innerHTML = '<div style="color:#ff6600;font-size:48px;font-family:monospace;text-transform:uppercase;letter-spacing:8px;text-shadow:0 0 30px #ff6600;">ECHO TITAN</div>';
@@ -235,40 +258,25 @@ const JungleCamps = {
         setTimeout(function() { if (overlay.parentNode) overlay.parentNode.removeChild(overlay); }, 2000);
     },
 
-    updateTitan(delta, playerPos) {
+    updateTitan: function(delta, playerPos) {
         if (!this._titan) return;
         var titan = this._titan;
-
         if (!titan.alive) {
             titan.respawnTimer -= delta;
-            if (titan.respawnTimer <= 0 && this._scene) {
-                this.spawnTitan(this._scene, WORLDS[GameState.currentWorld]);
-            }
+            if (titan.respawnTimer <= 0 && this._scene) this.spawnTitan(this._scene, WORLDS[GameState.currentWorld]);
             return;
         }
-
         if (!titan.mesh || !playerPos) return;
-
-        // Idle animation — slow rotation + bob
         titan.body.rotation.y += delta * 0.3;
         titan.body.position.y = 4 + Math.sin(Date.now() * 0.001) * 0.5;
-
-        // Echo-reactive glow
         if (typeof EchoEngine !== 'undefined') {
             var ef = EchoEngine.getCurrentFrame();
-            if (ef && ef.echoes && ef.echoes.L3) {
-                titan.body.material.emissiveIntensity = 0.5 + ef.echoes.L3.tension * 0.5;
-            }
+            if (ef && ef.echoes && ef.echoes.L3) titan.body.material.emissiveIntensity = 0.5 + ef.echoes.L3.tension * 0.5;
         }
-
-        // HP bar
         var ratio = titan.hp / titan.maxHp;
         titan.hpBar.scale.x = ratio;
         titan.hpBar.material.color.setHex(ratio > 0.5 ? 0xff6600 : ratio > 0.25 ? 0xff0000 : 0x880000);
-
-        // Damage player if close
-        var dx = playerPos.x - titan.x;
-        var dz = playerPos.z - titan.z;
+        var dx = playerPos.x - titan.x, dz = playerPos.z - titan.z;
         var dist = Math.sqrt(dx * dx + dz * dz);
         if (dist < 6) {
             titan.attackTimer -= delta;
@@ -282,35 +290,19 @@ const JungleCamps = {
         }
     },
 
-    attackTitan(playerPos, damage) {
+    attackTitan: function(playerPos, damage) {
         if (!this._titan || !this._titan.alive) return false;
-        var dx = playerPos.x - this._titan.x;
-        var dz = playerPos.z - this._titan.z;
+        var dx = playerPos.x - this._titan.x, dz = playerPos.z - this._titan.z;
         if (Math.sqrt(dx * dx + dz * dz) > 8) return false;
-
         this._titan.hp -= damage;
         if (typeof VFX !== 'undefined') VFX.burst({ x: this._titan.x, y: 3, z: this._titan.z }, 'hitSpark');
         this.showDamageNumber(this._titan.mesh.position, damage);
-
         if (this._titan.hp <= 0) {
             this._titan.alive = false;
             this._titan.respawnTimer = this._titan.respawnTime;
             if (this._titan.mesh) this._titan.mesh.visible = false;
-
-            // Massive rewards
-            if (typeof PlayerStats !== 'undefined') {
-                PlayerStats.awardXp(this._titan.xp);
-                PlayerStats.awardGold(this._titan.gold, 'TITAN');
-                PlayerStats.kills++;
-            }
-
-            // Epic VFX
-            if (typeof VFX !== 'undefined') {
-                VFX.burst({ x: 0, y: 3, z: 0 }, 'bossKill');
-                VFX.burst({ x: 0, y: 5, z: 0 }, 'novaBlast');
-                VFX.screenFlash('#ffd700', 0.5);
-            }
-
+            if (typeof PlayerStats !== 'undefined') { PlayerStats.awardXp(this._titan.xp); PlayerStats.awardGold(this._titan.gold, 'TITAN'); PlayerStats.kills++; }
+            if (typeof VFX !== 'undefined') { VFX.burst({ x: 0, y: 3, z: 0 }, 'bossKill'); VFX.burst({ x: 0, y: 5, z: 0 }, 'novaBlast'); VFX.screenFlash('#ffd700', 0.5); }
             if (typeof HUD !== 'undefined') HUD.showToast('ECHO TITAN SLAIN! +' + this._titan.gold + ' gold, +' + this._titan.xp + ' XP');
             if (typeof Audio !== 'undefined' && Audio.playWaveHorn) Audio.playWaveHorn();
             if (typeof ReplaySystem !== 'undefined') ReplaySystem.logEvent('boss_kill', { name: 'Echo Titan', isBoss: true });
@@ -319,19 +311,13 @@ const JungleCamps = {
         return true;
     },
 
-    showDamageNumber(pos, dmg) {
-        if (typeof WorldCombat !== 'undefined' && WorldCombat.showDamageNumber) {
-            WorldCombat.showDamageNumber(pos, dmg, '#ff6600');
-        }
+    showDamageNumber: function(pos, dmg) {
+        if (typeof WorldCombat !== 'undefined' && WorldCombat.showDamageNumber) WorldCombat.showDamageNumber(pos, dmg, '#ff6600');
     },
 
-    cleanup() {
-        this.camps.forEach(function(c) {
-            if (c.mesh && c.mesh.parent) c.mesh.parent.remove(c.mesh);
-        });
-        if (this._titan && this._titan.mesh && this._titan.mesh.parent) {
-            this._titan.mesh.parent.remove(this._titan.mesh);
-        }
+    cleanup: function() {
+        this.camps.forEach(function(c) { if (c.mesh && c.mesh.parent) c.mesh.parent.remove(c.mesh); });
+        if (this._titan && this._titan.mesh && this._titan.mesh.parent) this._titan.mesh.parent.remove(this._titan.mesh);
         this._titan = null;
         this._titanSpawned = false;
         this.camps = [];
