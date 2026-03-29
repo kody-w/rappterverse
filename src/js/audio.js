@@ -433,7 +433,13 @@ cleanup() {
       g.gain.exponentialRampToValueAtTime(0.001, t + 0.08 + Math.random() * 0.1);
       osc.connect(g); g.connect(self.musicGain);
       osc.start(t); osc.stop(t + 0.2);
-      const next = (minInterval + Math.random() * (maxInterval - minInterval)) * 1000;
+      // Echo-reactive chirp interval: tension makes chirps more frequent and louder
+      var echoMod = 1;
+      if (typeof EchoEngine !== 'undefined') {
+        var ef = EchoEngine.getCurrentFrame();
+        if (ef && ef.echoes && ef.echoes.L3) echoMod = 1 - ef.echoes.L3.tension * 0.5; // Up to 50% faster
+      }
+      const next = (minInterval + Math.random() * (maxInterval - minInterval)) * 1000 * Math.max(0.3, echoMod);
       self._chirpTimer = setTimeout(chirp, next);
     }
     self._chirpTimer = setTimeout(chirp, minInterval * 1000);
@@ -453,7 +459,13 @@ cleanup() {
       g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(0.001, t + 0.06);
       ns.connect(bpf); bpf.connect(g); g.connect(self.musicGain);
       ns.start(t); ns.stop(t + 0.06);
-      self._crackleTimer = setTimeout(crack, 500 + Math.random() * 2000);
+      // Echo-reactive crackle: tension makes crackles more frequent
+      var crackEcho = 1;
+      if (typeof EchoEngine !== 'undefined') {
+        var ef2 = EchoEngine.getCurrentFrame();
+        if (ef2 && ef2.echoes && ef2.echoes.L3) crackEcho = 1 - ef2.echoes.L3.tension * 0.4;
+      }
+      self._crackleTimer = setTimeout(crack, (500 + Math.random() * 2000) * Math.max(0.3, crackEcho));
     }
     self._crackleTimer = setTimeout(crack, 1000);
     this._envNodes.push({ timer: true });

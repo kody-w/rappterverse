@@ -3881,7 +3881,13 @@ cleanup() {
       g.gain.exponentialRampToValueAtTime(0.001, t + 0.08 + Math.random() * 0.1);
       osc.connect(g); g.connect(self.musicGain);
       osc.start(t); osc.stop(t + 0.2);
-      const next = (minInterval + Math.random() * (maxInterval - minInterval)) * 1000;
+      // Echo-reactive chirp interval: tension makes chirps more frequent and louder
+      var echoMod = 1;
+      if (typeof EchoEngine !== 'undefined') {
+        var ef = EchoEngine.getCurrentFrame();
+        if (ef && ef.echoes && ef.echoes.L3) echoMod = 1 - ef.echoes.L3.tension * 0.5; // Up to 50% faster
+      }
+      const next = (minInterval + Math.random() * (maxInterval - minInterval)) * 1000 * Math.max(0.3, echoMod);
       self._chirpTimer = setTimeout(chirp, next);
     }
     self._chirpTimer = setTimeout(chirp, minInterval * 1000);
@@ -3901,7 +3907,13 @@ cleanup() {
       g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(0.001, t + 0.06);
       ns.connect(bpf); bpf.connect(g); g.connect(self.musicGain);
       ns.start(t); ns.stop(t + 0.06);
-      self._crackleTimer = setTimeout(crack, 500 + Math.random() * 2000);
+      // Echo-reactive crackle: tension makes crackles more frequent
+      var crackEcho = 1;
+      if (typeof EchoEngine !== 'undefined') {
+        var ef2 = EchoEngine.getCurrentFrame();
+        if (ef2 && ef2.echoes && ef2.echoes.L3) crackEcho = 1 - ef2.echoes.L3.tension * 0.4;
+      }
+      self._crackleTimer = setTimeout(crack, (500 + Math.random() * 2000) * Math.max(0.3, crackEcho));
     }
     self._crackleTimer = setTimeout(crack, 1000);
     this._envNodes.push({ timer: true });
@@ -4083,8 +4095,23 @@ const PlayerStats = {
     this.energy = this.maxEnergy;
     const overlay = document.getElementById('death-overlay');
     if (overlay) overlay.style.display = 'none';
+    // Echo-reactive spawn position — during tension, spawn near explorer base for safety
+    var spawnX = 0, spawnZ = 5;
+    if (typeof EchoEngine !== 'undefined') {
+      var ef = EchoEngine.getCurrentFrame();
+      if (ef && ef.echoes && ef.echoes.L3 && ef.echoes.L3.tension > 0.5) {
+        // Spawn near explorer throne (safe zone)
+        var w = typeof WORLDS !== 'undefined' && typeof GameState !== 'undefined' ? WORLDS[GameState.currentWorld] : null;
+        if (w) { spawnX = -w.bounds.x * 0.7; spawnZ = -w.bounds.z * 0.7; }
+      }
+    }
     if (typeof WorldMode !== 'undefined' && WorldMode.player && WorldMode.player.mesh) {
-      WorldMode.player.mesh.position.set(0, 0, 5);
+      WorldMode.player.mesh.position.set(spawnX, 0, spawnZ);
+    }
+    // Respawn VFX
+    if (typeof VFX !== 'undefined' && typeof WorldMode !== 'undefined' && WorldMode.player) {
+      VFX.burst(WorldMode.player.mesh.position, 'levelUp', { count: 15 });
+      VFX.screenFlash('#00ffff', 0.3);
     }
   },
 
@@ -9085,7 +9112,23 @@ const WorldCombat = {
                 echoText += '\n' + frames.length + ' echo frames captured across this session.';
                 if (ef.echoes.L2) echoText += '\n' + ef.echoes.L2.narrative;
             }
-            echoSummary.textContent = echoText;
+            // Compute echo score — measures how dynamic the session was
+            var echoScore = 0;
+            var summary = EchoEngine.getSessionSummary();
+            if (summary) {
+                // Score components (0-100 each)
+                var tensionScore = Math.round(summary.avgTension * 40 + summary.peakTension * 20); // Tension experienced
+                var vitalityScore = Math.round(summary.avgVitality * 30); // World liveliness
+                var socialScore = Math.round(summary.avgSocial * 20); // Community engagement
+                var frameScore = Math.min(10, summary.frames); // Session depth
+                echoScore = Math.min(100, tensionScore + vitalityScore + socialScore + frameScore);
+            }
+            var grade = echoScore >= 90 ? 'S+' : echoScore >= 80 ? 'S' : echoScore >= 70 ? 'A' : echoScore >= 55 ? 'B' : echoScore >= 40 ? 'C' : 'D';
+            var gradeColor = echoScore >= 80 ? '#ffd700' : echoScore >= 55 ? '#00ff88' : echoScore >= 40 ? '#ffaa00' : '#8b949e';
+            echoText += '\n\nECHO SCORE: ' + echoScore + '/100 [' + grade + ']';
+
+            echoSummary.innerHTML = echoText.replace(/\n/g, '<br>') +
+                '<div style="font-size:24px;color:' + gradeColor + ';font-weight:bold;margin-top:8px;letter-spacing:4px;">' + grade + '</div>';
         }
         // VFX victory burst
         if (typeof VFX !== 'undefined') {

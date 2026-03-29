@@ -99,8 +99,23 @@ const PlayerStats = {
     this.energy = this.maxEnergy;
     const overlay = document.getElementById('death-overlay');
     if (overlay) overlay.style.display = 'none';
+    // Echo-reactive spawn position — during tension, spawn near explorer base for safety
+    var spawnX = 0, spawnZ = 5;
+    if (typeof EchoEngine !== 'undefined') {
+      var ef = EchoEngine.getCurrentFrame();
+      if (ef && ef.echoes && ef.echoes.L3 && ef.echoes.L3.tension > 0.5) {
+        // Spawn near explorer throne (safe zone)
+        var w = typeof WORLDS !== 'undefined' && typeof GameState !== 'undefined' ? WORLDS[GameState.currentWorld] : null;
+        if (w) { spawnX = -w.bounds.x * 0.7; spawnZ = -w.bounds.z * 0.7; }
+      }
+    }
     if (typeof WorldMode !== 'undefined' && WorldMode.player && WorldMode.player.mesh) {
-      WorldMode.player.mesh.position.set(0, 0, 5);
+      WorldMode.player.mesh.position.set(spawnX, 0, spawnZ);
+    }
+    // Respawn VFX
+    if (typeof VFX !== 'undefined' && typeof WorldMode !== 'undefined' && WorldMode.player) {
+      VFX.burst(WorldMode.player.mesh.position, 'levelUp', { count: 15 });
+      VFX.screenFlash('#00ffff', 0.3);
     }
   },
 

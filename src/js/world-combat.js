@@ -849,7 +849,23 @@ const WorldCombat = {
                 echoText += '\n' + frames.length + ' echo frames captured across this session.';
                 if (ef.echoes.L2) echoText += '\n' + ef.echoes.L2.narrative;
             }
-            echoSummary.textContent = echoText;
+            // Compute echo score — measures how dynamic the session was
+            var echoScore = 0;
+            var summary = EchoEngine.getSessionSummary();
+            if (summary) {
+                // Score components (0-100 each)
+                var tensionScore = Math.round(summary.avgTension * 40 + summary.peakTension * 20); // Tension experienced
+                var vitalityScore = Math.round(summary.avgVitality * 30); // World liveliness
+                var socialScore = Math.round(summary.avgSocial * 20); // Community engagement
+                var frameScore = Math.min(10, summary.frames); // Session depth
+                echoScore = Math.min(100, tensionScore + vitalityScore + socialScore + frameScore);
+            }
+            var grade = echoScore >= 90 ? 'S+' : echoScore >= 80 ? 'S' : echoScore >= 70 ? 'A' : echoScore >= 55 ? 'B' : echoScore >= 40 ? 'C' : 'D';
+            var gradeColor = echoScore >= 80 ? '#ffd700' : echoScore >= 55 ? '#00ff88' : echoScore >= 40 ? '#ffaa00' : '#8b949e';
+            echoText += '\n\nECHO SCORE: ' + echoScore + '/100 [' + grade + ']';
+
+            echoSummary.innerHTML = echoText.replace(/\n/g, '<br>') +
+                '<div style="font-size:24px;color:' + gradeColor + ';font-weight:bold;margin-top:8px;letter-spacing:4px;">' + grade + '</div>';
         }
         // VFX victory burst
         if (typeof VFX !== 'undefined') {
