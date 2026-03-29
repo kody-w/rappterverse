@@ -545,6 +545,22 @@ const WorldAgents = {
                 }
             } else {
                 // ── ANIMAL CROSSING-STYLE AUTONOMOUS BEHAVIOR ──
+                // Echo-reactive: tension makes agents huddle (smaller wander), vitality makes them lively
+                var echoT = 0, echoV = 0.5, echoS = 0;
+                if (typeof EchoEngine !== 'undefined') {
+                    var ef = EchoEngine.getCurrentFrame();
+                    if (ef && ef.echoes && ef.echoes.L3) {
+                        echoT = ef.echoes.L3.tension;
+                        echoV = ef.echoes.L3.vitality;
+                        echoS = ef.echoes.L3.socialEnergy;
+                    }
+                }
+                // Emissive glow reacts to echo vitality
+                if (a.body.material) {
+                    var targetGlow = 0.15 + echoV * 0.15 + echoS * 0.1;
+                    a.body.material.emissiveIntensity = a.body.material.emissiveIntensity * 0.95 + targetGlow * 0.05;
+                }
+
                 const dt = 0.016; // ~60fps
                 a.behaviorTimer -= dt;
                 a.stateTimer -= dt;
@@ -554,9 +570,14 @@ const WorldAgents = {
                     const roll = Math.random();
                     const agentPos = a.group.position;
 
-                    if (roll < 0.35) {
-                        // WANDER — pick a random point near home and walk to it
-                        const wanderRadius = 4 + Math.random() * 6;
+                    // Echo: tension shrinks wander radius (huddle), vitality expands it
+                    var echoWanderMod = 1 + echoV * 0.5 - echoT * 0.4;
+                    // Echo: social energy biases toward socializing
+                    var socialBias = 0.35 + echoS * 0.15;
+
+                    if (roll < (0.35 - echoS * 0.1)) {
+                        // WANDER — echo modulates radius
+                        const wanderRadius = (4 + Math.random() * 6) * echoWanderMod;
                         const angle = Math.random() * Math.PI * 2;
                         a.wanderTarget = new THREE.Vector3(
                             a.homePos.x + Math.cos(angle) * wanderRadius,
@@ -566,8 +587,8 @@ const WorldAgents = {
                         a.behaviorState = 'walking';
                         a.stateTimer = 3 + Math.random() * 5;
                         a.behaviorTimer = a.stateTimer + 1;
-                    } else if (roll < 0.55) {
-                        // SOCIALIZE — walk toward a nearby agent
+                    } else if (roll < socialBias) {
+                        // SOCIALIZE — walk toward a nearby agent (echo: more social when energy high)
                         const others = Object.entries(this.agentMeshes);
                         const nearby = others.filter(([oid, o]) => {
                             if (oid === id) return false;

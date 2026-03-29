@@ -278,6 +278,7 @@ const WorldMode = {
         WorldCombat.update(delta, time, this.player.mesh.position);
         if (typeof VFX !== 'undefined') VFX.update(delta);
         if (typeof ReplaySystem !== 'undefined') ReplaySystem.update(delta, time);
+        if (typeof Audio !== 'undefined' && Audio.updateEchoAudio) Audio.updateEchoAudio(delta);
         if (typeof JungleCamps !== "undefined") JungleCamps.update(delta, this.player.mesh.position);
         WorldAgents.updateAnimations(time);
         WorldAgents.checkInteractions(this.player.mesh.position);

@@ -478,10 +478,37 @@ const Galaxy = {
         this.camera.position.y = 50 + Math.sin(this.cameraAngle * 0.5) * 10;
         this.camera.lookAt(0, 0, 0);
 
-        // Star pulse
+        // Star pulse — echo-reactive: tension makes it throb harder
         if (this.starMesh) {
-            const pulse = 1 + Math.sin(time * 2) * 0.05;
+            var starPulse = 0.05;
+            var starSpeed = 2;
+            if (typeof EchoEngine !== 'undefined') {
+                var ef = EchoEngine.getCurrentFrame();
+                if (ef && ef.echoes && ef.echoes.L3) {
+                    starPulse = 0.05 + ef.echoes.L3.tension * 0.08;
+                    starSpeed = 2 + ef.echoes.L3.tension * 3;
+                }
+            }
+            const pulse = 1 + Math.sin(time * starSpeed) * starPulse;
             this.starMesh.scale.setScalar(pulse);
+        }
+
+        // Planet glow — echo-reactive per world
+        if (typeof EchoEngine !== 'undefined') {
+            var frames = EchoEngine.getFrames();
+            if (frames.length > 0) {
+                var latestFrame = frames[frames.length - 1];
+                if (latestFrame.echoes && latestFrame.echoes.L3) {
+                    var globalTension = latestFrame.echoes.L3.tension;
+                    // Make planets breathe with world vitality
+                    this.planetMeshes.forEach((group) => {
+                        if (!group.userData.selected) {
+                            var breathe = 0.12 + globalTension * 0.1 + Math.sin(time * 1.5 + group.userData.orbitAngle) * 0.05;
+                            group.children[0].material.emissiveIntensity = breathe;
+                        }
+                    });
+                }
+            }
         }
 
         // Rotate starfield slowly

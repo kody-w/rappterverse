@@ -45,18 +45,34 @@ const FogOfWar = {
         var bx = this._bounds.x, bz = this._bounds.z;
         var maxB = Math.max(bx, bz) + 5;
 
-        // Fill with fog (dark)
-        ctx.fillStyle = 'rgba(5, 5, 16, 0.65)';
+        // Echo-reactive fog: tension makes fog denser and redder, vitality clears it
+        var fogR = 5, fogG = 5, fogB = 16, fogAlpha = 0.65;
+        var visionMod = 1.0;
+        if (typeof EchoEngine !== 'undefined') {
+            var ef = EchoEngine.getCurrentFrame();
+            if (ef && ef.echoes && ef.echoes.L3) {
+                var tension = ef.echoes.L3.tension;
+                var vitality = ef.echoes.L3.vitality;
+                // Tension: darker + redder fog
+                fogR = Math.round(5 + tension * 20);
+                fogAlpha = 0.55 + tension * 0.2;
+                // Vitality: slightly more vision
+                visionMod = 1.0 + vitality * 0.2 - tension * 0.15;
+            }
+        }
+
+        // Fill with fog
+        ctx.fillStyle = 'rgba(' + fogR + ',' + fogG + ',' + fogB + ',' + fogAlpha + ')';
         ctx.fillRect(0, 0, S, S);
 
         // Clear vision circles (erase fog)
         ctx.globalCompositeOperation = 'destination-out';
 
-        // Player vision
+        // Player vision — echo-modulated radius
         if (playerPos) {
             var px = (playerPos.x / maxB + 1) * 0.5 * S;
             var pz = (playerPos.z / maxB + 1) * 0.5 * S;
-            var vr = (this._visionRadius / maxB) * 0.5 * S;
+            var vr = (this._visionRadius * visionMod / maxB) * 0.5 * S;
             var grad = ctx.createRadialGradient(px, pz, 0, px, pz, vr);
             grad.addColorStop(0, 'rgba(0,0,0,1)');
             grad.addColorStop(0.7, 'rgba(0,0,0,0.8)');

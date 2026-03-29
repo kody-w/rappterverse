@@ -534,6 +534,21 @@ const WorldLanes = {
     },
 
     updateTowerVisuals(time) {
+        // Get echo state for reactive visuals
+        var echoT = 0, echoV = 0.5, echoS = 0;
+        if (typeof EchoEngine !== 'undefined') {
+            var ef = EchoEngine.getCurrentFrame();
+            if (ef && ef.echoes && ef.echoes.L3) {
+                echoT = ef.echoes.L3.tension;
+                echoV = ef.echoes.L3.vitality;
+                echoS = ef.echoes.L3.socialEnergy;
+            }
+        }
+
+        // Tower orb glow: pulses faster + brighter with tension
+        var orbPulseSpeed = 3 + echoT * 4; // 3-7 Hz
+        var orbGlowBase = 0.3 + echoT * 0.3; // 0.3-0.6
+
         this.towers.forEach(t => {
             if (t.hp <= 0) {
                 if (t.mesh.visible) t.mesh.visible = false;
@@ -542,8 +557,13 @@ const WorldLanes = {
             const ratio = t.hp / t.maxHp;
             t.hpBar.scale.x = ratio;
             t.hpBar.material.color.setHex(ratio > 0.5 ? 0x00ff00 : ratio > 0.25 ? 0xffaa00 : 0xff0000);
-            if (t.orb) t.orb.material.emissiveIntensity = 0.3 + Math.sin(time * 3) * 0.2;
+            if (t.orb) t.orb.material.emissiveIntensity = orbGlowBase + Math.sin(time * orbPulseSpeed) * (0.15 + echoT * 0.15);
         });
+
+        // Throne crystal: spins faster with tension, bobs higher with vitality
+        var crystalSpeed = 0.5 + echoT * 0.8;
+        var crystalBob = 0.3 + echoV * 0.3;
+        var crownSpeed = 0.3 + echoS * 0.5;
 
         for (const [faction, throne] of Object.entries(this.thrones)) {
             if (throne.hp <= 0) {
@@ -554,10 +574,10 @@ const WorldLanes = {
             throne.hpBar.scale.x = ratio;
             throne.hpBar.material.color.setHex(ratio > 0.5 ? 0x00ff00 : ratio > 0.25 ? 0xffaa00 : 0xff0000);
             if (throne.crystal) {
-                throne.crystal.rotation.y = time * 0.5;
-                throne.crystal.position.y = 5 + Math.sin(time * 0.8) * 0.3;
+                throne.crystal.rotation.y = time * crystalSpeed;
+                throne.crystal.position.y = 5 + Math.sin(time * 0.8) * crystalBob;
             }
-            if (throne.crown) throne.crown.rotation.z = time * 0.3;
+            if (throne.crown) throne.crown.rotation.z = time * crownSpeed;
         }
     },
 

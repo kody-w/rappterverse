@@ -475,6 +475,40 @@ cleanup() {
     clearTimeout(this._crackleTimer);
   },
 
+  // --- Echo-reactive audio modulation ---
+  _echoAudioTimer: 0,
+  updateEchoAudio(delta) {
+    if (!this.initialized || !this.ctx) return;
+    if (typeof EchoEngine === 'undefined') return;
+    this._echoAudioTimer -= delta;
+    if (this._echoAudioTimer > 0) return;
+    this._echoAudioTimer = 0.5; // Update twice per second
+
+    var ef = EchoEngine.getCurrentFrame();
+    if (!ef || !ef.echoes || !ef.echoes.L3) return;
+    var L3 = ef.echoes.L3;
+
+    // Drive music intensity from echo tension
+    this.setIntensity(L3.tension * 0.8 + L3.vitality * 0.2);
+
+    // Modulate ambient LFO speeds — faster tremolo when tense
+    var lfoSpeedMult = 1 + L3.tension * 3; // 1x calm → 4x tense
+    for (var i = 0; i < this._ambientOscs.length; i++) {
+      var osc = this._ambientOscs[i];
+      // Even-indexed oscs are music, odd are LFOs
+      if (i % 2 === 1 && osc.frequency) {
+        var baseFreq = 0.05 + (Math.floor(i / 2)) * 0.04;
+        osc.frequency.setTargetAtTime(baseFreq * lfoSpeedMult, this.ctx.currentTime, 0.5);
+      }
+    }
+
+    // Modulate ambient gain by vitality (world alive = louder music)
+    if (this.musicGain) {
+      var targetGain = 0.15 + L3.vitality * 0.1 + L3.socialEnergy * 0.05;
+      this.musicGain.gain.setTargetAtTime(targetGain, this.ctx.currentTime, 0.5);
+    }
+  },
+
   // --- Integration ---
   onModeChange(newMode) {
     this._ensureCtx();

@@ -129,12 +129,29 @@ const EnemyHero = {
         this.updateBuffs(time); this.updateVisuals(); this.updateHUD();
     },
 
+    // Echo-reactive AI parameters
+    _getEchoAI() {
+        if (typeof EchoEngine === 'undefined') return { aggression: 0, retreatMod: 0, speedMod: 1 };
+        var ef = EchoEngine.getCurrentFrame();
+        if (!ef || !ef.echoes || !ef.echoes.L3) return { aggression: 0, retreatMod: 0, speedMod: 1 };
+        var L3 = ef.echoes.L3;
+        return {
+            aggression: L3.tension,           // 0-1: higher = more aggressive
+            retreatMod: -L3.tension * 0.1,    // lowers retreat threshold when tense (braver)
+            speedMod: 1 + L3.vitality * 0.15, // faster in vital worlds
+            fightRange: 15 + L3.tension * 10  // engages from further when tense
+        };
+    },
+
     updateAI(playerPos) {
         const s = this.state;
         const hpRatio = s.hp / s.maxHp;
         const pos = this.mesh.position;
+        const echo = this._getEchoAI();
 
-        if (hpRatio < HERO_CONFIG.ai.retreatThreshold) {
+        // Echo-modified retreat threshold — braver during high tension
+        var retreatThreshold = HERO_CONFIG.ai.retreatThreshold + echo.retreatMod;
+        if (hpRatio < retreatThreshold) {
             s.aiState = 'retreating';
             s.targetPos = new THREE.Vector3(HERO_CONFIG.spawnOffset.x, 0, HERO_CONFIG.spawnOffset.z);
             s.target = null;
@@ -143,7 +160,10 @@ const EnemyHero = {
 
         if (playerPos) {
             const dist = pos.distanceTo(new THREE.Vector3(playerPos.x, 0, playerPos.z));
-            if (dist < 15 && hpRatio > 0.4) {
+            // Echo: engages from further away when tension is high
+            var fightRange = echo.fightRange || 15;
+            var fightHpThreshold = 0.4 - echo.aggression * 0.15; // fights at lower HP when tense
+            if (dist < fightRange && hpRatio > fightHpThreshold) {
                 s.aiState = 'fighting';
                 s.targetPos = new THREE.Vector3(playerPos.x, 0, playerPos.z);
                 s.target = 'player';
@@ -151,8 +171,8 @@ const EnemyHero = {
             }
         }
 
-        // Farming
-        if (Math.random() < HERO_CONFIG.ai.farmWeight * 0.02) {
+        // Farming — more aggressive farming when tension is high
+        if (Math.random() < HERO_CONFIG.ai.farmWeight * 0.02 * (1 + echo.aggression)) {
             const creep = this._findNearestCreep('explorer');
             if (creep) {
                 s.aiState = 'farming';
@@ -186,6 +206,9 @@ const EnemyHero = {
         if (dist < 0.5) return;
         dir.normalize();
         let speed = s.moveSpeed;
+        // Echo: hero moves faster in vital worlds
+        var echoAI = this._getEchoAI();
+        speed *= echoAI.speedMod;
         if (s.buffs.apexPredator) speed *= 1.3;
         const step = speed * delta;
         this.mesh.position.addScaledVector(dir, Math.min(step, dist));

@@ -3793,6 +3793,40 @@ cleanup() {
     clearTimeout(this._crackleTimer);
   },
 
+  // --- Echo-reactive audio modulation ---
+  _echoAudioTimer: 0,
+  updateEchoAudio(delta) {
+    if (!this.initialized || !this.ctx) return;
+    if (typeof EchoEngine === 'undefined') return;
+    this._echoAudioTimer -= delta;
+    if (this._echoAudioTimer > 0) return;
+    this._echoAudioTimer = 0.5; // Update twice per second
+
+    var ef = EchoEngine.getCurrentFrame();
+    if (!ef || !ef.echoes || !ef.echoes.L3) return;
+    var L3 = ef.echoes.L3;
+
+    // Drive music intensity from echo tension
+    this.setIntensity(L3.tension * 0.8 + L3.vitality * 0.2);
+
+    // Modulate ambient LFO speeds — faster tremolo when tense
+    var lfoSpeedMult = 1 + L3.tension * 3; // 1x calm → 4x tense
+    for (var i = 0; i < this._ambientOscs.length; i++) {
+      var osc = this._ambientOscs[i];
+      // Even-indexed oscs are music, odd are LFOs
+      if (i % 2 === 1 && osc.frequency) {
+        var baseFreq = 0.05 + (Math.floor(i / 2)) * 0.04;
+        osc.frequency.setTargetAtTime(baseFreq * lfoSpeedMult, this.ctx.currentTime, 0.5);
+      }
+    }
+
+    // Modulate ambient gain by vitality (world alive = louder music)
+    if (this.musicGain) {
+      var targetGain = 0.15 + L3.vitality * 0.1 + L3.socialEnergy * 0.05;
+      this.musicGain.gain.setTargetAtTime(targetGain, this.ctx.currentTime, 0.5);
+    }
+  },
+
   // --- Integration ---
   onModeChange(newMode) {
     this._ensureCtx();
@@ -4975,10 +5009,37 @@ const Galaxy = {
         this.camera.position.y = 50 + Math.sin(this.cameraAngle * 0.5) * 10;
         this.camera.lookAt(0, 0, 0);
 
-        // Star pulse
+        // Star pulse — echo-reactive: tension makes it throb harder
         if (this.starMesh) {
-            const pulse = 1 + Math.sin(time * 2) * 0.05;
+            var starPulse = 0.05;
+            var starSpeed = 2;
+            if (typeof EchoEngine !== 'undefined') {
+                var ef = EchoEngine.getCurrentFrame();
+                if (ef && ef.echoes && ef.echoes.L3) {
+                    starPulse = 0.05 + ef.echoes.L3.tension * 0.08;
+                    starSpeed = 2 + ef.echoes.L3.tension * 3;
+                }
+            }
+            const pulse = 1 + Math.sin(time * starSpeed) * starPulse;
             this.starMesh.scale.setScalar(pulse);
+        }
+
+        // Planet glow — echo-reactive per world
+        if (typeof EchoEngine !== 'undefined') {
+            var frames = EchoEngine.getFrames();
+            if (frames.length > 0) {
+                var latestFrame = frames[frames.length - 1];
+                if (latestFrame.echoes && latestFrame.echoes.L3) {
+                    var globalTension = latestFrame.echoes.L3.tension;
+                    // Make planets breathe with world vitality
+                    this.planetMeshes.forEach((group) => {
+                        if (!group.userData.selected) {
+                            var breathe = 0.12 + globalTension * 0.1 + Math.sin(time * 1.5 + group.userData.orbitAngle) * 0.05;
+                            group.children[0].material.emissiveIntensity = breathe;
+                        }
+                    });
+                }
+            }
         }
 
         // Rotate starfield slowly
@@ -6654,8 +6715,52 @@ const WorldTerrain = {
     update(time, delta) {
         if (this.particles) this.particles.rotation.y = time * 0.015;
         if (delta) this.updateWeather(delta);
+        if (delta) this._updateEchoAtmosphere(delta, time);
         const weatherEl = document.getElementById('weather-label');
         if (weatherEl && this.weatherType) weatherEl.textContent = this.weatherType.toUpperCase();
+    },
+
+    // Echo-reactive atmosphere: weather intensity, sky color, particle speed
+    _echoAtmoTimer: 0,
+    _updateEchoAtmosphere(delta, time) {
+        if (typeof EchoEngine === 'undefined') return;
+        this._echoAtmoTimer -= delta;
+        if (this._echoAtmoTimer > 0) return;
+        this._echoAtmoTimer = 0.3;
+
+        var ef = EchoEngine.getCurrentFrame();
+        if (!ef || !ef.echoes || !ef.echoes.L3) return;
+        var L3 = ef.echoes.L3;
+        var scene = WorldMode.scene;
+        if (!scene) return;
+
+        // Sky color shift — tension darkens and reddens, vitality brightens
+        if (scene.background && scene.background.isColor) {
+            var base = scene.background;
+            var tensionTint = L3.tension * 0.05;
+            var vitalityBright = L3.vitality * 0.02;
+            // Subtle red shift during tension, blue shift during calm
+            base.r = Math.min(1, base.r + (tensionTint - vitalityBright * 0.5) * delta);
+            base.g = Math.max(0, base.g - tensionTint * 0.5 * delta);
+            base.b = Math.max(0, base.b + (vitalityBright - tensionTint * 0.3) * delta);
+            // Clamp to prevent runaway
+            base.r = Math.max(0.02, Math.min(0.15, base.r));
+            base.g = Math.max(0.02, Math.min(0.12, base.g));
+            base.b = Math.max(0.05, Math.min(0.2, base.b));
+        }
+
+        // Weather particle opacity and speed react to tension
+        if (this.weatherParticles && this.weatherParticles.material) {
+            var baseTension = 0.5 + L3.tension * 0.4;
+            this.weatherParticles.material.opacity = Math.min(0.8, this.weatherParticles.material.opacity * 0.95 + baseTension * 0.05);
+        }
+
+        // Ambient particle rotation speed reacts to social energy
+        if (this.particles) {
+            // Already rotating in update(), but we can modulate the scale
+            var pulseScale = 1 + Math.sin(time * (1 + L3.socialEnergy * 2)) * L3.socialEnergy * 0.02;
+            this.particles.scale.setScalar(pulseScale);
+        }
     },
 
     initWeather(scene, w, worldId) {
@@ -7315,6 +7420,21 @@ const WorldLanes = {
     },
 
     updateTowerVisuals(time) {
+        // Get echo state for reactive visuals
+        var echoT = 0, echoV = 0.5, echoS = 0;
+        if (typeof EchoEngine !== 'undefined') {
+            var ef = EchoEngine.getCurrentFrame();
+            if (ef && ef.echoes && ef.echoes.L3) {
+                echoT = ef.echoes.L3.tension;
+                echoV = ef.echoes.L3.vitality;
+                echoS = ef.echoes.L3.socialEnergy;
+            }
+        }
+
+        // Tower orb glow: pulses faster + brighter with tension
+        var orbPulseSpeed = 3 + echoT * 4; // 3-7 Hz
+        var orbGlowBase = 0.3 + echoT * 0.3; // 0.3-0.6
+
         this.towers.forEach(t => {
             if (t.hp <= 0) {
                 if (t.mesh.visible) t.mesh.visible = false;
@@ -7323,8 +7443,13 @@ const WorldLanes = {
             const ratio = t.hp / t.maxHp;
             t.hpBar.scale.x = ratio;
             t.hpBar.material.color.setHex(ratio > 0.5 ? 0x00ff00 : ratio > 0.25 ? 0xffaa00 : 0xff0000);
-            if (t.orb) t.orb.material.emissiveIntensity = 0.3 + Math.sin(time * 3) * 0.2;
+            if (t.orb) t.orb.material.emissiveIntensity = orbGlowBase + Math.sin(time * orbPulseSpeed) * (0.15 + echoT * 0.15);
         });
+
+        // Throne crystal: spins faster with tension, bobs higher with vitality
+        var crystalSpeed = 0.5 + echoT * 0.8;
+        var crystalBob = 0.3 + echoV * 0.3;
+        var crownSpeed = 0.3 + echoS * 0.5;
 
         for (const [faction, throne] of Object.entries(this.thrones)) {
             if (throne.hp <= 0) {
@@ -7335,10 +7460,10 @@ const WorldLanes = {
             throne.hpBar.scale.x = ratio;
             throne.hpBar.material.color.setHex(ratio > 0.5 ? 0x00ff00 : ratio > 0.25 ? 0xffaa00 : 0xff0000);
             if (throne.crystal) {
-                throne.crystal.rotation.y = time * 0.5;
-                throne.crystal.position.y = 5 + Math.sin(time * 0.8) * 0.3;
+                throne.crystal.rotation.y = time * crystalSpeed;
+                throne.crystal.position.y = 5 + Math.sin(time * 0.8) * crystalBob;
             }
-            if (throne.crown) throne.crown.rotation.z = time * 0.3;
+            if (throne.crown) throne.crown.rotation.z = time * crownSpeed;
         }
     },
 
@@ -9982,6 +10107,22 @@ const WorldAgents = {
                 }
             } else {
                 // ── ANIMAL CROSSING-STYLE AUTONOMOUS BEHAVIOR ──
+                // Echo-reactive: tension makes agents huddle (smaller wander), vitality makes them lively
+                var echoT = 0, echoV = 0.5, echoS = 0;
+                if (typeof EchoEngine !== 'undefined') {
+                    var ef = EchoEngine.getCurrentFrame();
+                    if (ef && ef.echoes && ef.echoes.L3) {
+                        echoT = ef.echoes.L3.tension;
+                        echoV = ef.echoes.L3.vitality;
+                        echoS = ef.echoes.L3.socialEnergy;
+                    }
+                }
+                // Emissive glow reacts to echo vitality
+                if (a.body.material) {
+                    var targetGlow = 0.15 + echoV * 0.15 + echoS * 0.1;
+                    a.body.material.emissiveIntensity = a.body.material.emissiveIntensity * 0.95 + targetGlow * 0.05;
+                }
+
                 const dt = 0.016; // ~60fps
                 a.behaviorTimer -= dt;
                 a.stateTimer -= dt;
@@ -9991,9 +10132,14 @@ const WorldAgents = {
                     const roll = Math.random();
                     const agentPos = a.group.position;
 
-                    if (roll < 0.35) {
-                        // WANDER — pick a random point near home and walk to it
-                        const wanderRadius = 4 + Math.random() * 6;
+                    // Echo: tension shrinks wander radius (huddle), vitality expands it
+                    var echoWanderMod = 1 + echoV * 0.5 - echoT * 0.4;
+                    // Echo: social energy biases toward socializing
+                    var socialBias = 0.35 + echoS * 0.15;
+
+                    if (roll < (0.35 - echoS * 0.1)) {
+                        // WANDER — echo modulates radius
+                        const wanderRadius = (4 + Math.random() * 6) * echoWanderMod;
                         const angle = Math.random() * Math.PI * 2;
                         a.wanderTarget = new THREE.Vector3(
                             a.homePos.x + Math.cos(angle) * wanderRadius,
@@ -10003,8 +10149,8 @@ const WorldAgents = {
                         a.behaviorState = 'walking';
                         a.stateTimer = 3 + Math.random() * 5;
                         a.behaviorTimer = a.stateTimer + 1;
-                    } else if (roll < 0.55) {
-                        // SOCIALIZE — walk toward a nearby agent
+                    } else if (roll < socialBias) {
+                        // SOCIALIZE — walk toward a nearby agent (echo: more social when energy high)
                         const others = Object.entries(this.agentMeshes);
                         const nearby = others.filter(([oid, o]) => {
                             if (oid === id) return false;
@@ -11315,12 +11461,29 @@ const EnemyHero = {
         this.updateBuffs(time); this.updateVisuals(); this.updateHUD();
     },
 
+    // Echo-reactive AI parameters
+    _getEchoAI() {
+        if (typeof EchoEngine === 'undefined') return { aggression: 0, retreatMod: 0, speedMod: 1 };
+        var ef = EchoEngine.getCurrentFrame();
+        if (!ef || !ef.echoes || !ef.echoes.L3) return { aggression: 0, retreatMod: 0, speedMod: 1 };
+        var L3 = ef.echoes.L3;
+        return {
+            aggression: L3.tension,           // 0-1: higher = more aggressive
+            retreatMod: -L3.tension * 0.1,    // lowers retreat threshold when tense (braver)
+            speedMod: 1 + L3.vitality * 0.15, // faster in vital worlds
+            fightRange: 15 + L3.tension * 10  // engages from further when tense
+        };
+    },
+
     updateAI(playerPos) {
         const s = this.state;
         const hpRatio = s.hp / s.maxHp;
         const pos = this.mesh.position;
+        const echo = this._getEchoAI();
 
-        if (hpRatio < HERO_CONFIG.ai.retreatThreshold) {
+        // Echo-modified retreat threshold — braver during high tension
+        var retreatThreshold = HERO_CONFIG.ai.retreatThreshold + echo.retreatMod;
+        if (hpRatio < retreatThreshold) {
             s.aiState = 'retreating';
             s.targetPos = new THREE.Vector3(HERO_CONFIG.spawnOffset.x, 0, HERO_CONFIG.spawnOffset.z);
             s.target = null;
@@ -11329,7 +11492,10 @@ const EnemyHero = {
 
         if (playerPos) {
             const dist = pos.distanceTo(new THREE.Vector3(playerPos.x, 0, playerPos.z));
-            if (dist < 15 && hpRatio > 0.4) {
+            // Echo: engages from further away when tension is high
+            var fightRange = echo.fightRange || 15;
+            var fightHpThreshold = 0.4 - echo.aggression * 0.15; // fights at lower HP when tense
+            if (dist < fightRange && hpRatio > fightHpThreshold) {
                 s.aiState = 'fighting';
                 s.targetPos = new THREE.Vector3(playerPos.x, 0, playerPos.z);
                 s.target = 'player';
@@ -11337,8 +11503,8 @@ const EnemyHero = {
             }
         }
 
-        // Farming
-        if (Math.random() < HERO_CONFIG.ai.farmWeight * 0.02) {
+        // Farming — more aggressive farming when tension is high
+        if (Math.random() < HERO_CONFIG.ai.farmWeight * 0.02 * (1 + echo.aggression)) {
             const creep = this._findNearestCreep('explorer');
             if (creep) {
                 s.aiState = 'farming';
@@ -11372,6 +11538,9 @@ const EnemyHero = {
         if (dist < 0.5) return;
         dir.normalize();
         let speed = s.moveSpeed;
+        // Echo: hero moves faster in vital worlds
+        var echoAI = this._getEchoAI();
+        speed *= echoAI.speedMod;
         if (s.buffs.apexPredator) speed *= 1.3;
         const step = speed * delta;
         this.mesh.position.addScaledVector(dir, Math.min(step, dist));
@@ -11900,6 +12069,7 @@ const WorldMode = {
         WorldCombat.update(delta, time, this.player.mesh.position);
         if (typeof VFX !== 'undefined') VFX.update(delta);
         if (typeof ReplaySystem !== 'undefined') ReplaySystem.update(delta, time);
+        if (typeof Audio !== 'undefined' && Audio.updateEchoAudio) Audio.updateEchoAudio(delta);
         if (typeof JungleCamps !== "undefined") JungleCamps.update(delta, this.player.mesh.position);
         WorldAgents.updateAnimations(time);
         WorldAgents.checkInteractions(this.player.mesh.position);
@@ -14606,6 +14776,9 @@ const PostProcessing = {
             return;
         }
 
+        // Echo-reactive shader parameters
+        this._updateEchoUniforms();
+
         // 1. Render scene to RT2 (full res)
         renderer.setRenderTarget(this._rt2);
         renderer.render(scene, camera);
@@ -14620,6 +14793,23 @@ const PostProcessing = {
         this._compositeMesh.material.uniforms.tBloom.value = this._rt1.texture;
         renderer.setRenderTarget(null);
         renderer.render(this._compositeScene, this._bloomCamera);
+    },
+
+    _updateEchoUniforms() {
+        if (typeof EchoEngine === 'undefined') return;
+        var ef = EchoEngine.getCurrentFrame();
+        if (!ef || !ef.echoes || !ef.echoes.L3) return;
+        var L3 = ef.echoes.L3;
+
+        // Bloom: brighter during tension (combat glow), dimmer when calm
+        var targetBloom = 0.3 + L3.tension * 0.5 + L3.vitality * 0.1;
+        var currentBloom = this._bloomMesh.material.uniforms.bloomStrength.value;
+        this._bloomMesh.material.uniforms.bloomStrength.value = currentBloom + (targetBloom - currentBloom) * 0.03;
+
+        // Vignette: tighter when tense, relaxed when calm
+        var targetVignette = 0.2 + L3.tension * 0.4;
+        var currentVignette = this._compositeMesh.material.uniforms.vignetteStrength.value;
+        this._compositeMesh.material.uniforms.vignetteStrength.value = currentVignette + (targetVignette - currentVignette) * 0.03;
     },
 
     onResize() {
@@ -15412,18 +15602,34 @@ const FogOfWar = {
         var bx = this._bounds.x, bz = this._bounds.z;
         var maxB = Math.max(bx, bz) + 5;
 
-        // Fill with fog (dark)
-        ctx.fillStyle = 'rgba(5, 5, 16, 0.65)';
+        // Echo-reactive fog: tension makes fog denser and redder, vitality clears it
+        var fogR = 5, fogG = 5, fogB = 16, fogAlpha = 0.65;
+        var visionMod = 1.0;
+        if (typeof EchoEngine !== 'undefined') {
+            var ef = EchoEngine.getCurrentFrame();
+            if (ef && ef.echoes && ef.echoes.L3) {
+                var tension = ef.echoes.L3.tension;
+                var vitality = ef.echoes.L3.vitality;
+                // Tension: darker + redder fog
+                fogR = Math.round(5 + tension * 20);
+                fogAlpha = 0.55 + tension * 0.2;
+                // Vitality: slightly more vision
+                visionMod = 1.0 + vitality * 0.2 - tension * 0.15;
+            }
+        }
+
+        // Fill with fog
+        ctx.fillStyle = 'rgba(' + fogR + ',' + fogG + ',' + fogB + ',' + fogAlpha + ')';
         ctx.fillRect(0, 0, S, S);
 
         // Clear vision circles (erase fog)
         ctx.globalCompositeOperation = 'destination-out';
 
-        // Player vision
+        // Player vision — echo-modulated radius
         if (playerPos) {
             var px = (playerPos.x / maxB + 1) * 0.5 * S;
             var pz = (playerPos.z / maxB + 1) * 0.5 * S;
-            var vr = (this._visionRadius / maxB) * 0.5 * S;
+            var vr = (this._visionRadius * visionMod / maxB) * 0.5 * S;
             var grad = ctx.createRadialGradient(px, pz, 0, px, pz, vr);
             grad.addColorStop(0, 'rgba(0,0,0,1)');
             grad.addColorStop(0.7, 'rgba(0,0,0,0.8)');

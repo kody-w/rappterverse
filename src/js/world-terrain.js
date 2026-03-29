@@ -708,8 +708,52 @@ const WorldTerrain = {
     update(time, delta) {
         if (this.particles) this.particles.rotation.y = time * 0.015;
         if (delta) this.updateWeather(delta);
+        if (delta) this._updateEchoAtmosphere(delta, time);
         const weatherEl = document.getElementById('weather-label');
         if (weatherEl && this.weatherType) weatherEl.textContent = this.weatherType.toUpperCase();
+    },
+
+    // Echo-reactive atmosphere: weather intensity, sky color, particle speed
+    _echoAtmoTimer: 0,
+    _updateEchoAtmosphere(delta, time) {
+        if (typeof EchoEngine === 'undefined') return;
+        this._echoAtmoTimer -= delta;
+        if (this._echoAtmoTimer > 0) return;
+        this._echoAtmoTimer = 0.3;
+
+        var ef = EchoEngine.getCurrentFrame();
+        if (!ef || !ef.echoes || !ef.echoes.L3) return;
+        var L3 = ef.echoes.L3;
+        var scene = WorldMode.scene;
+        if (!scene) return;
+
+        // Sky color shift — tension darkens and reddens, vitality brightens
+        if (scene.background && scene.background.isColor) {
+            var base = scene.background;
+            var tensionTint = L3.tension * 0.05;
+            var vitalityBright = L3.vitality * 0.02;
+            // Subtle red shift during tension, blue shift during calm
+            base.r = Math.min(1, base.r + (tensionTint - vitalityBright * 0.5) * delta);
+            base.g = Math.max(0, base.g - tensionTint * 0.5 * delta);
+            base.b = Math.max(0, base.b + (vitalityBright - tensionTint * 0.3) * delta);
+            // Clamp to prevent runaway
+            base.r = Math.max(0.02, Math.min(0.15, base.r));
+            base.g = Math.max(0.02, Math.min(0.12, base.g));
+            base.b = Math.max(0.05, Math.min(0.2, base.b));
+        }
+
+        // Weather particle opacity and speed react to tension
+        if (this.weatherParticles && this.weatherParticles.material) {
+            var baseTension = 0.5 + L3.tension * 0.4;
+            this.weatherParticles.material.opacity = Math.min(0.8, this.weatherParticles.material.opacity * 0.95 + baseTension * 0.05);
+        }
+
+        // Ambient particle rotation speed reacts to social energy
+        if (this.particles) {
+            // Already rotating in update(), but we can modulate the scale
+            var pulseScale = 1 + Math.sin(time * (1 + L3.socialEnergy * 2)) * L3.socialEnergy * 0.02;
+            this.particles.scale.setScalar(pulseScale);
+        }
     },
 
     initWeather(scene, w, worldId) {
