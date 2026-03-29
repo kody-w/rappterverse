@@ -89,13 +89,15 @@ const HUD = {
         ctx.fillStyle = 'rgba(0, 15, 0, 0.35)';
         ctx.fillRect(0, 0, S, S);
 
-        // ── Clear lane paths as lighter areas ──
+        // ── Dirt lane paths (worn brown trails through green forest) ──
         if (typeof WorldLanes !== 'undefined' && WorldLanes.lanes) {
-            ctx.globalCompositeOperation = 'destination-out';
+            // First pass: wide brown dirt paths
             WorldLanes.lanes.forEach(function(lane) {
                 if (!lane.waypoints) return;
-                ctx.strokeStyle = 'rgba(0,0,0,0.25)';
-                ctx.lineWidth = 10;
+                ctx.strokeStyle = '#8B7355';
+                ctx.lineWidth = 12;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
                 ctx.beginPath();
                 lane.waypoints.forEach(function(wp, i) {
                     var mx = cx + wp.x * scale, mz = cz + wp.z * scale;
@@ -103,26 +105,10 @@ const HUD = {
                 });
                 ctx.stroke();
             });
-            ctx.globalCompositeOperation = 'source-over';
-        }
-
-        // ── River ──
-        ctx.strokeStyle = '#2266aa';
-        ctx.lineWidth = 4;
-        ctx.globalAlpha = 0.6;
-        ctx.beginPath();
-        ctx.moveTo(cx - bx, cz + bz);
-        ctx.lineTo(cx + bx, cz - bz);
-        ctx.stroke();
-        ctx.globalAlpha = 1;
-
-        // ── Lane Roads (dark background paths) ──
-        if (typeof WorldLanes !== 'undefined' && WorldLanes.lanes) {
-            var laneColors = ['#58a6ff', '#f97316', '#3fb950'];
-            WorldLanes.lanes.forEach(function(lane, li) {
+            // Second pass: lighter center worn path
+            WorldLanes.lanes.forEach(function(lane) {
                 if (!lane.waypoints) return;
-                // Road background (wide dark line)
-                ctx.strokeStyle = 'rgba(40,35,25,0.8)';
+                ctx.strokeStyle = '#A0926B';
                 ctx.lineWidth = 6;
                 ctx.beginPath();
                 lane.waypoints.forEach(function(wp, i) {
@@ -130,19 +116,41 @@ const HUD = {
                     if (i === 0) ctx.moveTo(mx, mz); else ctx.lineTo(mx, mz);
                 });
                 ctx.stroke();
-                // Lane color line on top
-                ctx.strokeStyle = laneColors[li] || '#888';
-                ctx.lineWidth = 2;
-                ctx.globalAlpha = 0.8;
-                ctx.beginPath();
-                lane.waypoints.forEach(function(wp, i) {
-                    var mx = cx + wp.x * scale, mz = cz + wp.z * scale;
-                    if (i === 0) ctx.moveTo(mx, mz); else ctx.lineTo(mx, mz);
-                });
-                ctx.stroke();
-                ctx.globalAlpha = 1;
             });
+            ctx.lineCap = 'butt';
+            ctx.lineJoin = 'miter';
         }
+
+        // ── River (blue water through middle) ──
+        ctx.strokeStyle = '#3388cc';
+        ctx.lineWidth = 7;
+        ctx.lineCap = 'round';
+        ctx.globalAlpha = 0.7;
+        ctx.beginPath();
+        ctx.moveTo(cx - bx, cz + bz);
+        ctx.lineTo(cx + bx, cz - bz);
+        ctx.stroke();
+        // River highlight
+        ctx.strokeStyle = '#55aaee';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(cx - bx, cz + bz);
+        ctx.lineTo(cx + bx, cz - bz);
+        ctx.stroke();
+        ctx.globalAlpha = 1;
+        ctx.lineCap = 'butt';
+
+        // ── Base areas (cleared dirt circles at corners) ──
+        // Explorer base (bottom-left)
+        ctx.fillStyle = '#7A6B50';
+        ctx.beginPath();
+        ctx.arc(cx - bx, cz - bz, 14, 0, Math.PI * 2);
+        ctx.fill();
+        // Horde base (top-right)
+        ctx.fillStyle = '#7A6B50';
+        ctx.beginPath();
+        ctx.arc(cx + bx, cz + bz, 14, 0, Math.PI * 2);
+        ctx.fill();
 
         // ── Towers ──
         if (typeof WorldLanes !== 'undefined' && WorldLanes.towers) {

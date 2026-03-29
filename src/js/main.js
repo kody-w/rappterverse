@@ -125,6 +125,17 @@
             return;
         }
 
+        // Fullscreen game mode (F11 or F)
+        if (e.code === 'F11') {
+            e.preventDefault();
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(function(){});
+            } else {
+                document.exitFullscreen().catch(function(){});
+            }
+            return;
+        }
+
         // Voice controls toggle
         if (e.code === 'KeyV' && GameState.mode !== 'boot') {
             if (typeof VoiceControls !== 'undefined') VoiceControls.toggle();

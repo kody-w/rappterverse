@@ -97,14 +97,14 @@ const WorldAgents = {
 
         // Speech bubble (initially hidden)
         const bubbleCanvas = document.createElement('canvas');
-        bubbleCanvas.width = 512; bubbleCanvas.height = 96;
+        bubbleCanvas.width = 640; bubbleCanvas.height = 128;
         const bctx = bubbleCanvas.getContext('2d');
         const bubbleTex = new THREE.CanvasTexture(bubbleCanvas);
         const bubble = new THREE.Sprite(new THREE.SpriteMaterial({
             map: bubbleTex, transparent: true, opacity: 0
         }));
-        bubble.position.y = 3.8;
-        bubble.scale.set(4, 0.75, 1);
+        bubble.position.y = 4.5;
+        bubble.scale.set(7, 1.4, 1);
         group.add(bubble);
 
         group.position.set(agent.position.x, 0, agent.position.z);
@@ -284,22 +284,23 @@ const WorldAgents = {
         const a = this.agentMeshes[agentId];
         if (!a || !a.bubbleCanvas) return;
         const ctx = a.bubbleCanvas.getContext('2d');
-        ctx.clearRect(0, 0, 512, 96);
-        // Background pill
-        ctx.fillStyle = 'rgba(22, 27, 34, 0.85)';
+        ctx.clearRect(0, 0, 640, 128);
+        // Background pill — solid and readable
+        ctx.fillStyle = 'rgba(15, 20, 28, 0.92)';
         ctx.beginPath();
-        ctx.roundRect(8, 8, 496, 72, 16);
+        if (ctx.roundRect) ctx.roundRect(6, 6, 628, 116, 20);
+        else ctx.fillRect(6, 6, 628, 116);
         ctx.fill();
-        ctx.strokeStyle = 'rgba(0, 212, 255, 0.3)';
-        ctx.lineWidth = 2;
+        ctx.strokeStyle = 'rgba(0, 212, 255, 0.4)';
+        ctx.lineWidth = 3;
         ctx.stroke();
-        // Text
-        ctx.font = '22px monospace';
-        ctx.fillStyle = '#c9d1d9';
+        // Text — large and white
+        ctx.font = 'bold 28px monospace';
+        ctx.fillStyle = '#ffffff';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        const truncated = text.length > 40 ? text.substring(0, 37) + '...' : text;
-        ctx.fillText(truncated, 256, 44);
+        const truncated = text.length > 35 ? text.substring(0, 32) + '...' : text;
+        ctx.fillText(truncated, 320, 64);
         a.bubbleTex.needsUpdate = true;
         a.bubble.material.opacity = 0.9;
         a.bubbleTimer = 5; // show for 5 seconds

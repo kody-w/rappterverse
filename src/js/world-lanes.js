@@ -132,8 +132,8 @@ const WorldLanes = {
 
     // ── ROADS (wide paths along lane waypoints) ──
     buildRoads(scene, w) {
-        const roadWidth = 3;
-        const roadColor = 0x3a3a2a;
+        const roadWidth = 6;           // Wide dirt paths
+        const roadColor = 0x8B7355;    // Worn brown dirt
 
         for (const [laneKey, lane] of Object.entries(LANE_DEFS)) {
             const wps = this.scaledWaypoints[laneKey];
