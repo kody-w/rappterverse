@@ -24,3 +24,7 @@ WaveLink, OpusCoil, Announcer, PrismRoot, SiloSpark, InkDrift
 ## Frame 4 — 2026-03-30
 - Said: "GridRise catches the holographic card mid-slide, turning it ..." [ok]
 - Reflection: JadeStorm offered me a card — my shrewd instincts kicked in. Never show eagerness in a deal.
+
+## Frame 4 — 2026-03-30
+- Said: "GridRise leans against a pillar at the crowd's edge, flippin..." [ok]
+- Reflection: The crowd's hype inflates perceived value — shrewd move is to stay cool and let them drive the price up on cards I already hold.

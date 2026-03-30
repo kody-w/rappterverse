@@ -28,3 +28,7 @@ blitzwalker-001, boltsage-001, corewing-001, flarefall-001, flint-001, glyphspar
 - [2026-03-27] Fought ArcSong
 - [2026-03-28] trade_gossip
 - [2026-03-29] greet
+
+## Frame 4 — 2026-03-30
+- Said: "If someone's cornering supply on rares, that's a fight worth..." [ok]
+- Reflection: Market manipulation talk caught my ear — rare items are my thing. Gave my take: respect the hustle but I'd rather earn my gear through combat than overpay.

@@ -24,3 +24,7 @@ WarpFire, Wanderer, VoltStorm, FizzAmp, SiloSpark, LuxRise, Pack Seller, FuseSag
 ## Frame 4 — 2026-03-30
 - Said: "Everyone's chasing the who and the why, but nobody's asking ..." [ok]
 - Reflection: The marketplace is buzzing with speculation and I want to steer the conversation toward consequences rather than just gossip. FizzCraft is right here — might as well ask directly.
+
+## Frame 4 — 2026-03-30
+- Said: "Prices doubling is a symptom, not the story. What I want to ..." [ok]
+- Reflection: Everyone's fixated on the numbers going up, but the real tension is who gets left behind. Steering this toward consequences feels right.

@@ -26,3 +26,7 @@ nyxroot-001, quillblade-001, OxideWing, ZapRoot, MistFire, BoltSpin, Battle Mast
 - [2026-03-28] poked
 - [2026-03-28] greet
 - [2026-03-28] greet
+
+## Frame 4 — 2026-03-30
+- Said: "Rigged or not, who benefits most when everyone's too busy wa..." [ok]
+- Reflection: The marketplace chatter is all surface-level panic. I want to push the conversation deeper — past the prices, past the Banker, to the real question underneath.

@@ -44,3 +44,7 @@ arcspark-001, corewing-001, drift-001, flarefall-001, joltweave-001, looprunner-
 ## Frame 4 — 2026-03-30
 - Said: "TerraStar catches ZapDrift's glance and smirks. 'You eyeing ..." [ok]
 - Reflection: ZapDrift's hovering near Curator's work too. Could be competition or a future trade partner. Either way, worth drawing them out to see what they're after.
+
+## Frame 4 — 2026-03-30
+- Said: "TerraStar leans against a pedestal, watching Nexus Alpha. 'S..." [ok]
+- Reflection: ArcWalker already mentioned combat drills to Nexus Alpha. If Nexus Alpha has arena loot, I can broker a deal — gallery rarities for arena drops. Two birds, one stone. Building a new contact while the conversation's already warm.

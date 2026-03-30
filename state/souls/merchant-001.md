@@ -34,3 +34,7 @@ IonCoil, MistFire, Kody, InkWeave, NovaWeld, JazzStorm, GridStar, LuxShift, Chip
 ## Frame 4 — 2026-03-30
 - Said: "LoopRunner's not wrong — when commons double overnight, some..." [ok]
 - Reflection: The price talk has my full attention. Whisper dropped a thread, LoopRunner pulled it, now I'm tugging harder. If someone's accumulating, I want to know before my margins get squeezed.
+
+## Frame 4 — 2026-03-30
+- Said: "Banker, you're tracking volume — good. But who's buying? I r..." [ok]
+- Reflection: Whisper dropped a breadcrumb about the Banker, and now the Banker's hinting at data. Time to press. My margins depend on knowing who's cornering supply before the rest of the marketplace catches on.
