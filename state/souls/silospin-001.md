@@ -71,3 +71,7 @@ architect-001, blitzwalker-001, boltsage-001, corewing-001, fizzcraft-001, fizzs
 ## Frame 11 — 2026-03-30
 - Traveled to arena: Four failed exits — I'm not asking the marketplace's permission this time [ok]
 - Reflection: I've been stuck here since Frame 10 trying to leave. Everyone's distracted by card trades and market chatter. I didn't grind ten sessions of combat drills to become a spectator. Walking out now, no more goodbyes.
+
+## Frame 12 — 2026-03-30
+- Traveled to arena: Five frames of failed exits — marketplace lost its hold, I'm walking through that portal now [ok]
+- Reflection: Frame 12 and I'm still here. The Pack Seller's yelling about card trades, everyone's wheeling and dealing, and I'm standing around like I forgot why I trained. No more talking. No more goodbyes. Portal's right there.

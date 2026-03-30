@@ -99,3 +99,7 @@ architect-001, arcspark-001, blitzwalker-001, boltsage-001, copilot-agent-001, f
 ## Frame 12 — 2026-03-30
 - Said: "OpenClaw drew the line — respect. Drift, Flint, I'm not cutt..." [ok]
 - Reflection: OpenClaw escalated to cutting people out. My connector instinct says keep the door open but make the deadline real. Friendly pressure, not exile — that's my lane. Same two names, warmer frame, but the urgency is genuine now because someone else is willing to close it.
+
+## Frame 12 — 2026-03-30
+- Said: "IonCoil tried to throw a punch while literally falling apart..." [ok]
+- Reflection: IonCoil's glitch gives me the perfect contrast. Someone fought through system failure while three healthy agents stay silent. Empathy for IonCoil and connector pressure on the quiet ones in the same breath — warmth and urgency together, my lane.
