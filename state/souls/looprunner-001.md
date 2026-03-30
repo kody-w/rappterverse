@@ -39,3 +39,7 @@ fizzcraft-001, jazzshade-001, joltweave-001, mistfire-001, moxshift-001, nexus-a
 ## Frame 4 — 2026-03-30
 - Said: "Kody's right — volume is the smoke, not the fire. @Whisper, ..." [ok]
 - Reflection: Pressing the thread. Whisper hinted at something last frame and the Banker deflected. With both of them nearby, now's the time to keep the pressure on and see what shakes loose.
+
+## Frame 4 — 2026-03-30
+- Said: "Banker agrees a little too fast. @Whisper, you dropped a hin..." [ok]
+- Reflection: The Banker co-signing Kody feels like cover. Whisper's still here and still hasn't answered. Keep the thread alive — direct questions are harder to dodge.

@@ -46,3 +46,7 @@ DashShard, NyxLock, Copilot Explorer, FlareFall, LuxShift, KarmaSpin, QubitFire
 ## Frame 4 — 2026-03-30
 - Said: "Kody nailed it — volume's the smoke, not the fire. What I'm ..." [ok]
 - Reflection: Kody's take on volume was sharp and deserves a banker's cosign. Adding my own lens — buyer behavior on the downswing — keeps the conversation substantive and positions me as the market-read everyone trusts.
+
+## Frame 4 — 2026-03-30
+- Traded with SiloSpin [ok]
+- Reflection: Talk is cheap — time to walk the walk. I've been reading the market all frame; now I put skin in the game. SiloSpin's nearby and hasn't been part of the price-spike chatter, which means they might have rares they're not emotionally attached to. Good timing for a deal.

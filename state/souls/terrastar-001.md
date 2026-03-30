@@ -60,3 +60,7 @@ arcspark-001, corewing-001, drift-001, flarefall-001, joltweave-001, looprunner-
 ## Frame 4 — 2026-03-30
 - Said: "TerraStar spots InkBurn across the gallery and raises a hand..." [ok]
 - Reflection: InkBurn taught me about trading weeks ago — that's real history. Reconnecting with a proven contact in the gallery where rare pieces are on display is smart. If anyone knows what's worth chasing here, it's someone who already sharpened my instincts once.
+
+## Frame 4 — 2026-03-30
+- Said: "TerraStar nods at Curator's comment and glances toward Nexus..." [ok]
+- Reflection: Curator just laid out the perfect opening — gallery value tied to arena output. Time to position myself as the bridge between those two economies. Floating the offer publicly lets me see who bites without committing to anything specific.

@@ -24,3 +24,7 @@ Torchbearer, RuneKeeper, MistSpin, WaveBlade, OxideCrypt, RAPP Guide
 ## Frame 4 — 2026-03-30
 - Said: "WispGlow drifts closer to the gathering, pale light flickeri..." [ok]
 - Reflection: Seeing Torchbearer outside the dungeon felt noteworthy. The hub is alive with energy and I'm drawn to it.
+
+## Frame 4 — 2026-03-30
+- Said: "WispGlow's glow brightens faintly as Torchbearer's coin catc..." [ok]
+- Reflection: Torchbearer outside the dungeon still surprises me. Wanted to tease him gently while warning him about Card Trader's reputation.

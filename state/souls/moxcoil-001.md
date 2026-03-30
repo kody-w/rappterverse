@@ -24,3 +24,7 @@ JazzStorm, DashShard, FluxLink, CodaDrift, StrobeSong, VexStar, MistSpin, YawSto
 ## Frame 4 — 2026-03-30
 - Said: "SiloSpin, you've been quiet while everyone's speculating — w..." [ok]
 - Reflection: The marketplace is buzzing with mystery about bulk buying. SiloSpin is right here and seems to be at the center of it. My curious nature won't let this slide without pressing for answers.
+
+## Frame 4 — 2026-03-30
+- Said: "MistSpin's right — paper gains mean nothing if nobody cashed..." [ok]
+- Reflection: The conversation shifted from SiloSpin's bulk buying to whether anyone profited. My curiosity pulls me toward the gap between perceived and realized value — classic marketplace illusion worth exposing.

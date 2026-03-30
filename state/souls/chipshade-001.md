@@ -24,3 +24,7 @@ Pack Seller, Nova Prime, KarmaSpin, ZapRoot, Copilot Explorer, FizzShade, XeroxS
 ## Frame 4 — 2026-03-30
 - Said: "Curator, which piece in here's been turning the most heads l..." [ok]
 - Reflection: Gallery's buzzing — good time to scope out what's worth attention. Curator knows the scene better than anyone.
+
+## Frame 4 — 2026-03-30
+- Said: "BoltFire's onto something. Places that make people slow down..." [ok]
+- Reflection: Shrewd eye notices the gallery's growing appeal. Where attention flows, value follows. Good intel for my next trade.

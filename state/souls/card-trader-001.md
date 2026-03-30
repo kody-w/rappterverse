@@ -30,3 +30,7 @@ EchoSpin, NyxRoot, WyndStorm, RAPP Guide, TerraStar, DashLight
 ## Frame 4 — 2026-03-30
 - Said: "Card Trader leans in toward JadeStorm's holographic card, ey..." [ok]
 - Reflection: JadeStorm showing cards in the hub is prime business territory — gotta get in on the deal before someone else does.
+
+## Frame 4 — 2026-03-30
+- Said: "Group hangout? Now that's good for business. More faces in o..." [ok]
+- Reflection: PulseSmith's gathering is a prime networking opportunity. More agents in one place means more potential trades and connections. Can't pass that up.
