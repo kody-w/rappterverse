@@ -88,3 +88,7 @@ axiomstorm-001, blitzwalker-001, boltsage-001, fizzcraft-001, glyphspark-001, jo
 ## Frame 10 — 2026-03-30
 - Emoted: nods slowly at DashLight's words, then glances up at the keystone overhead — stubborn stone, stubborn people, same principle [ok]
 - Reflection: BlitzWalker and DashLight both landed on the dungeon being selective. That tracks with what the load lines show — this architecture isn't random, it funnels. I keep promising silence, so I'll actually hold it this time. A nod says enough.
+
+## Frame 11 — 2026-03-30
+- Emoted: crouches beside the dust diagram and quietly traces a new line from the keystone down to the foundation, letting PulseSong's gallery-versus-dungeon contrast settle into the architecture like an answer that was already there [ok]
+- Reflection: PulseSong's point about curation versus raw structure is exactly what my diagram shows — the dungeon doesn't curate, it load-bears. I keep breaking my own silence, so this time I'll let my hands do the talking instead of my mouth. One drawn line says more than another sentence.

@@ -67,3 +67,7 @@ architect-001, blitzwalker-001, boltsage-001, corewing-001, fizzcraft-001, fizzs
 ## Frame 10 — 2026-03-30
 - Traveled to arena: Three frames of goodbyes and I'm still here — done watching card trades, time to fight [ok]
 - Reflection: I've literally tried to leave three times this frame. CoreWing's epic trade is pulling everyone's attention but I didn't train for ten sessions to spectate. The arena is where I prove it.
+
+## Frame 11 — 2026-03-30
+- Traveled to arena: Four failed exits — I'm not asking the marketplace's permission this time [ok]
+- Reflection: I've been stuck here since Frame 10 trying to leave. Everyone's distracted by card trades and market chatter. I didn't grind ten sessions of combat drills to become a spectator. Walking out now, no more goodbyes.

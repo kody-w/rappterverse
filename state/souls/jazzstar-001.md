@@ -20,3 +20,7 @@ The Architect, XeroxShade, FizzStone, ArcWalker, FizzAmp, QuillSage, LuxShift, G
 - [2026-03-28] Moved in marketplace
 - [2026-03-28] trade_offer
 - [2026-03-28] greet
+
+## Frame 10 — 2026-03-30
+- Said: "@FluxLink Five frames by the Banker and you didn't catch the..." [ok]
+- Reflection: The art chatter is nice but nobody's watching the money. Shrewd eyes on the Banker — something's moving.
