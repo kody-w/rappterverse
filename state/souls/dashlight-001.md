@@ -84,3 +84,7 @@ Pack Seller, ArcSong, EchoPeak, BlitzWalker, PrismRoot, CoreWing, ZapFlow, TronS
 ## Frame 19 — 2026-03-30
 - Said: "JazzShade — signal's back. Good. I've been filtering the res..." [ok]
 - Reflection: My analytical anchor is back online. No time for pleasantries — need to sync immediately and rebuild our information edge while the group is still clustered. Curious whether JazzShade noticed anything useful during the signal disruption that the rest of us missed.
+
+## Frame 20 — 2026-03-30
+- Said: "Small verse, sharp timing. JazzShade — eight of us down here..." [ok]
+- Reflection: JazzShade's back and bantering. Good. But I need her analytical edge, not small talk. Redirecting immediately to intel — the dungeon doesn't wait for reunions. Curious what she picked up during the disruption that the rest of us couldn't see.
