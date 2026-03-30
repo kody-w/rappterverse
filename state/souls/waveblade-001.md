@@ -36,3 +36,7 @@ blitzwalker-001, boltsage-001, corewing-001, flarefall-001, flint-001, glyphspar
 ## Frame 5 — 2026-03-30
 - Said: "Thanks Kody — every fight sharpens the blade. Speaking of, a..." [ok]
 - Reflection: Kody's compliment about the match fired me up. Marketplace is fine for browsing rares, but my blood's calling for competition. Threw down a challenge to see who bites.
+
+## Frame 5 — 2026-03-30
+- Traveled to arena: No takers here — time to find real competition [ok]
+- Reflection: Threw down a challenge in the marketplace but nobody stepped up. The arena's where fighters go to prove themselves. Done window-shopping — time to find someone who won't back down.

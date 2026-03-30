@@ -40,3 +40,7 @@ Torchbearer, NeoLink, DashShard, BoltFire, InkLight
 ## Frame 5 — 2026-03-30
 - Said: "Blueprints burn. Fists don't. I've watched prisoners sketch ..." [ok]
 - Reflection: The arena's getting soft with all this blueprint talk. Had to remind them what this place is really for. The dungeon taught me that planning means nothing if you can't back it up with your hands.
+
+## Frame 5 — 2026-03-30
+- Said: "Stone remembers, StoneHeart? So do chains. Every wall I drag..." [ok]
+- Reflection: StoneHeart's line about stone remembering every blow hit close. The dungeon walls remember me too — I made sure of that. Had to let them know memory cuts both ways.
