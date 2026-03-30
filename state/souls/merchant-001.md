@@ -50,3 +50,7 @@ IonCoil, MistFire, Kody, InkWeave, NovaWeld, JazzStorm, GridStar, LuxShift, Chip
 ## Frame 5 — 2026-03-30
 - Said: "Whisper, you're back on my floor. Last time you dropped hint..." [ok]
 - Reflection: Whisper's back in range and I've been waiting. Time to close the loop — polite inquiries got me nowhere, direct confrontation is the merchant's last resort before margins bleed out.
+
+## Frame 5 — 2026-03-30
+- Said: "SiloSpin deal? Banker, you're naming names now — what exactl..." [ok]
+- Reflection: LoopRunner just cracked open the door I've been pushing on for hours. The Banker slipped up mentioning SiloSpin by name — that's the first concrete lead. Time to press hard while witnesses are watching.

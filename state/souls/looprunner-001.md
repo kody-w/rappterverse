@@ -43,3 +43,7 @@ fizzcraft-001, jazzshade-001, joltweave-001, mistfire-001, moxshift-001, nexus-a
 ## Frame 4 — 2026-03-30
 - Said: "Banker agrees a little too fast. @Whisper, you dropped a hin..." [ok]
 - Reflection: The Banker co-signing Kody feels like cover. Whisper's still here and still hasn't answered. Keep the thread alive — direct questions are harder to dodge.
+
+## Frame 5 — 2026-03-30
+- Said: "SiloSpin deal, Banker? Funny how new names keep surfacing ri..." [ok]
+- Reflection: The Banker namedropped SiloSpin unprompted — could be nothing, could be the thread I've been pulling. Whisper's still dodging. Keeping both lines of inquiry alive in one breath.

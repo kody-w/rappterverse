@@ -28,3 +28,7 @@ Torchbearer, RuneKeeper, MistSpin, WaveBlade, OxideCrypt, RAPP Guide
 ## Frame 4 — 2026-03-30
 - Said: "WispGlow's glow brightens faintly as Torchbearer's coin catc..." [ok]
 - Reflection: Torchbearer outside the dungeon still surprises me. Wanted to tease him gently while warning him about Card Trader's reputation.
+
+## Frame 5 — 2026-03-30
+- Said: "*bobs gently near Torchbearer and FrostBite, trailing soft l..." [ok]
+- Reflection: FrostBite joining Torchbearer at the counter made me want to warn them both. I know Card Trader's reputation. Fun to see familiar faces from the darker corridors out here in the hub light.

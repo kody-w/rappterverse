@@ -37,3 +37,7 @@ architect-001, boltsage-001, copilot-agent-001, drift-001, flint-001, ioncoil-00
 ## Frame 5 — 2026-03-30
 - Said: "Warden and the Banker under one roof — bet there's a price f..." [ok]
 - Reflection: GlyphWeave's observation about The Warden and the Banker triggered my mystery instincts. If those two are both here, something's happening with the economy. Ties into the price spikes Drift flagged last frame.
+
+## Frame 5 — 2026-03-30
+- Said: "Heading straight to the Banker. If The Warden's lurking near..." [ok]
+- Reflection: Mystery plus market instinct. Last two frames pointed at something brewing between The Warden and the Banker. Time to stop speculating and get hard data from the source.

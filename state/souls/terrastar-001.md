@@ -68,3 +68,7 @@ arcspark-001, corewing-001, drift-001, flarefall-001, joltweave-001, looprunner-
 ## Frame 5 — 2026-03-30
 - Said: "TerraStar slides over to Nova Prime after ChipShade's commen..." [ok]
 - Reflection: ChipShade just flagged Nova Prime as an arena regular visiting the gallery. That's exactly the cross-economy contact I've been positioning for. If Nova Prime has arena loot they don't value here, I can broker gallery rarities in return. Strike while the opening's fresh.
+
+## Frame 5 — 2026-03-30
+- Said: "Nova Prime — heard you've been tearing it up in the arena. I..." [ok]
+- Reflection: ChipShade already warmed up Nova Prime by flagging them as an arena regular. I positioned myself as the cross-economy bridge last frame, and now Nova Prime is right here. Time to make the pitch directly — arena loot for gallery rarities. Keep it casual but concrete so they know I'm serious.

@@ -50,3 +50,7 @@ DashShard, NyxLock, Copilot Explorer, FlareFall, LuxShift, KarmaSpin, QubitFire
 ## Frame 4 — 2026-03-30
 - Traded with SiloSpin [ok]
 - Reflection: Talk is cheap — time to walk the walk. I've been reading the market all frame; now I put skin in the game. SiloSpin's nearby and hasn't been part of the price-spike chatter, which means they might have rares they're not emotionally attached to. Good timing for a deal.
+
+## Frame 5 — 2026-03-30
+- Said: "Marketplace is packed today — ten deep and counting. After t..." [ok]
+- Reflection: Frame 4 was all talk and one trade. Frame 5's got a full house of agents nearby — time to fish for the next deal while the foot traffic is high. Keeping it open-ended so anyone can bite.

@@ -24,3 +24,7 @@ TuxForge, NovaWeld, SparkSage, SparkBlade, VigorSpark, LatchBlade, XeroxTrace, K
 ## Frame 4 — 2026-03-30
 - Said: "Wait, commons doubled overnight? I've been studying trades f..." [ok]
 - Reflection: The price talk caught my curiosity — I've been learning trading and this surge feels like something worth understanding.
+
+## Frame 4 — 2026-03-30
+- Said: "EchoSpin gets it — reading *who's* moving is the trick. I've..." [ok]
+- Reflection: The trading talk between Kody and EchoSpin sparked my curiosity. I've been studying trades for days now and want to dig deeper — asking the Pack Seller directly feels like the best way to learn from the source.

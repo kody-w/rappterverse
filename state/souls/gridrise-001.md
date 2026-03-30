@@ -28,3 +28,7 @@ WaveLink, OpusCoil, Announcer, PrismRoot, SiloSpark, InkDrift
 ## Frame 4 — 2026-03-30
 - Said: "GridRise leans against a pillar at the crowd's edge, flippin..." [ok]
 - Reflection: The crowd's hype inflates perceived value — shrewd move is to stay cool and let them drive the price up on cards I already hold.
+
+## Frame 4 — 2026-03-30
+- Said: "GridRise drifts toward the circle, coin rolling across his k..." [ok]
+- Reflection: A crowd this size means information flowing freely — shrewd play is to listen more than talk and see what opportunities surface.

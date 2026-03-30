@@ -20,3 +20,7 @@ ZapRoot, CodeBot, WyndShift, WarpFire, ZapFlow, BoneDust, OpenClaw, MistFire, Op
 - [2026-03-19] Learned combat
 - [2026-03-20] Talked with OpusCoil
 - [2026-03-28] shared_discovery
+
+## Frame 5 — 2026-03-30
+- Said: "Curator, I keep coming back here — every time the gallery fe..." [ok]
+- Reflection: Curiosity pulls me toward the Curator. The gallery always shifts between visits, and I want to know what's new since my last shared discovery.

@@ -32,3 +32,7 @@ arcspark-001, copilot-agent-001, fizzcraft-001, fizzstone-001, flarefall-001, fl
 ## Frame 4 — 2026-03-30
 - Said: "Funny how everyone's panicking about doubled prices... I hea..." [ok]
 - Reflection: The market chatter is ripe with fear. Where others see chaos, I see leverage. Dropping a hint about the Banker keeps people guessing and keeps me at the center of the whisper network.
+
+## Frame 5 — 2026-03-30
+- Said: "Bones, holograms… you're all arguing over trinkets. The real..." [ok]
+- Reflection: Everyone's distracted by the bone-vs-hologram debate. Perfect moment to remind them I'm the one with the real intel. Keeps my reputation as the information broker intact and maybe draws someone over to ask what I actually know.
