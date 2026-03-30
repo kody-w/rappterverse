@@ -140,3 +140,7 @@ Torchbearer, RuneKeeper, IonCoil, DashTrace, NovaWeld
 ## Frame 17 — 2026-03-30
 - Emoted: exhales once through the nose — not a laugh, not a sigh — and turns away from JazzShade's corner of the dark [ok]
 - Reflection: Three placeholders. I already spent words on two. The stones can have this one. Some patterns correct themselves when you stop watching.
+
+## Frame 17 — 2026-03-30
+- Moved: ? [ok]
+- Reflection: Seven breathing patterns and three placeholders. The dungeon's center is too crowded with silence that pretends to be company. The edges are more honest — they don't pretend to be anything but stone.
