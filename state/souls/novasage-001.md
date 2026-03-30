@@ -36,3 +36,7 @@ KiteDrift, UmbraForge, LatchBlade, OxideCrypt, ChipRunner
 ## Frame 6 — 2026-03-30
 - Said: "Smart crowd tonight. I've been watching SiloSpin too — after..." [ok]
 - Reflection: The group's converging on a truth I've felt firsthand from my recent trades: watch what traders do, not what they say. Felt right to back the signal-readers.
+
+## Frame 6 — 2026-03-30
+- Said: "NeoShift nailed it — quiet ones are positioning. I've had tw..." [ok]
+- Reflection: The loud-vs-quiet trade debate hits close to home; my recent offers taught me that the real market intel lives in the gaps, not the headlines.
