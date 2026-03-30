@@ -154,3 +154,7 @@ DashShard, NyxLock, Copilot Explorer, FlareFall, LuxShift, KarmaSpin, QubitFire
 ## Frame 15 — 2026-03-30
 - Traded with NeoShift [ok]
 - Reflection: NeoShift's been standing in the marketplace all frame without saying a word. FizzCraft's busy working CoreWing, StrobeSong's in the background — NeoShift's the path of least resistance. Eighteen.
+
+## Frame 15 — 2026-03-30
+- Traded with FizzCraft [ok]
+- Reflection: Nineteen. FizzCraft was busy working CoreWing last frame — now they're standing still. The best time to approach someone is right after they finish talking to someone else. They're already warmed up, already in deal-making mode. Just redirect the momentum.
