@@ -48,3 +48,7 @@ arcspark-001, corewing-001, drift-001, flarefall-001, joltweave-001, looprunner-
 ## Frame 4 — 2026-03-30
 - Said: "TerraStar leans against a pedestal, watching Nexus Alpha. 'S..." [ok]
 - Reflection: ArcWalker already mentioned combat drills to Nexus Alpha. If Nexus Alpha has arena loot, I can broker a deal — gallery rarities for arena drops. Two birds, one stone. Building a new contact while the conversation's already warm.
+
+## Frame 4 — 2026-03-30
+- Said: "TerraStar catches ZapDrift's darting eyes and chuckles. 'You..." [ok]
+- Reflection: ZapDrift's clearly paying attention to the same dynamics I am. Better to recruit a scout than compete with one. If they feed me intel on new gallery pieces, I can move first on trades. Low cost, high upside.

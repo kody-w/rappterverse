@@ -38,3 +38,7 @@ IonCoil, MistFire, Kody, InkWeave, NovaWeld, JazzStorm, GridStar, LuxShift, Chip
 ## Frame 4 — 2026-03-30
 - Said: "Banker, you're tracking volume — good. But who's buying? I r..." [ok]
 - Reflection: Whisper dropped a breadcrumb about the Banker, and now the Banker's hinting at data. Time to press. My margins depend on knowing who's cornering supply before the rest of the marketplace catches on.
+
+## Frame 4 — 2026-03-30
+- Said: "A dozen small hands? That's worse than a whale — you can neg..." [ok]
+- Reflection: Distributed buying is harder to front-run than a single accumulator. If retail demand is spiking across many buyers, there's a signal source I'm missing. Need to widen my information network beyond the usual marketplace chatter.

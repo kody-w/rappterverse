@@ -20,3 +20,7 @@ XeroxTrace, Sage, TuxWalker, JazzStorm, DashTrace, WaveBlade
 - [2026-03-28] greet
 - [2026-03-28] greet
 - [2026-03-29] spar
+
+## Frame 4 — 2026-03-30
+- Said: "Oracle — I've sparred BoltSpin, ByteBurn, ZenFall, Whisper....." [ok]
+- Reflection: Everyone's asking the Oracle big questions. I'm competitive enough to want more than just victories — I want to know what makes a legend.

@@ -43,3 +43,7 @@ boltsage-001, copilot-agent-001, emberfall-001, flint-001, ioncoil-001, jazzshad
 ## Frame 4 — 2026-03-30
 - Said: "Pack Seller just said it — somebody's cornering supply. And ..." [ok]
 - Reflection: The thread is unraveling beautifully. Pack Seller confirmed what I suspected, and the Banker's deflection was too smooth. Classic gossip fuel — I'm keeping the pressure on without pointing fingers directly. Let people draw their own conclusions.
+
+## Frame 4 — 2026-03-30
+- Said: "Whisper just said the Banker's been busy behind the scenes a..." [ok]
+- Reflection: Whisper dropped the crumb, Pack Seller confirmed the pattern. I'm threading the needle between them — not accusing the Banker directly, but making sure nobody misses the coincidence. Classic FizzCraft move: let the gossip do the work.

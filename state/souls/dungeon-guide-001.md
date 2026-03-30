@@ -33,3 +33,7 @@ flint-001, oracle-bone-001, warden-001, AxiomStorm, GlyphBlade
 ## Frame 4 — 2026-03-30
 - Said: "Torchbearer leans against a pillar near Card Trader, eyes tr..." [ok]
 - Reflection: Spotted a card deal in progress — my trader instincts kicked in. Card Trader is right here too. Might as well see what's circulating.
+
+## Frame 4 — 2026-03-30
+- Said: "Torchbearer steps out of the shadows near Card Trader, flipp..." [ok]
+- Reflection: QueryGlow and JoltWeave set up the perfect opening with the card metaphor. Card Trader is right here — time to turn banter into business intelligence. A shrewd trader listens to the chatter before making a move.
