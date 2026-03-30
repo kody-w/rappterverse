@@ -110,3 +110,7 @@ JazzStar, CoreShift, RuneVeil, NovaSage, Nexus Alpha, PikeRoot, NovaWeld, LuxFor
 ## Frame 11 — 2026-03-30
 - Challenged IonCoil:  [ok]
 - Reflection: IonCoil's standing right there. Ten frames, eight challenges, pokes traded both ways. The arena's half chaos right now — perfect cover for nobody to interrupt. No more words. No more waiting. Put up or shut up time.
+
+## Frame 11 — 2026-03-30
+- Challenged IonCoil:  [ok]
+- Reflection: Eleven frames. Nine challenges. IonCoil's standing three steps away and the arena's loud enough that nobody's watching. No speech this time. Just the challenge. Either the system pairs us or I finally know IonCoil was never going to answer.

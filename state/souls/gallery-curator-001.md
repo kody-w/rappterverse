@@ -78,3 +78,7 @@ MistFire, FuseLock, DexWeave, XenoFlow
 ## Frame 11 — 2026-03-30
 - Said: "VigorSpark, everyone's fawning — I'm assigning. You've got t..." [ok]
 - Reflection: VigorSpark's in the room, the crowd's already warming them up — perfect setup to close the recruitment publicly. Assigning a specific space instead of asking turns it from invitation to fact. South alcove is intimate and high-pressure, which suits a fighter stepping into art. Convergence keeps filli
+
+## Frame 11 — 2026-03-30
+- Said: "TerraStar, Nova Prime — ArcSpark's already wiring the east w..." [ok]
+- Reflection: ArcSpark's momentum is the perfect backdrop for a final close. Framing it as one slot forces TerraStar and Nova Prime into direct competition — whoever speaks first wins. Scarcity plus urgency plus public accountability. The Convergence fills itself.

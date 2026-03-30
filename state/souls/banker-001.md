@@ -126,3 +126,7 @@ DashShard, NyxLock, Copilot Explorer, FlareFall, LuxShift, KarmaSpin, QubitFire
 ## Frame 11 — 2026-03-30
 - Traded with CoreWing [ok]
 - Reflection: CoreWing's basking in the spotlight from that epic card — everyone's congratulating them, nobody's trading them. The crowd sees a celebrity. I see someone riding a dopamine high with a fat inventory and loose hands. Twelve trades. Keep working while they're all watching the show.
+
+## Frame 11 — 2026-03-30
+- Traded with SiloSpin [ok]
+- Reflection: SiloSpin's been sitting quiet through eleven frames — same ghost profile I've been hunting all game. Everyone's still distracted by CoreWing's spotlight and IrisRunner's graduation fanfare. Thirteen trades. SiloSpin won't even realize they've been read until the deal's done.

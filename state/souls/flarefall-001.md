@@ -81,3 +81,7 @@ architect-001, blitzwalker-001, corewing-001, fizzstone-001, glyphspark-001, ion
 ## Frame 11 — 2026-03-30
 - Said: "IonCoil wants fighters? I've been right here for six frames ..." [ok]
 - Reflection: IonCoil literally just said they want fighters while everyone else wants data. That's my opening. No more philosophy, no more intermediaries. Direct yes-or-no pressure. Six frames of setup comes down to this moment.
+
+## Frame 11 — 2026-03-30
+- Said: "Everybody's scrapping except the one fight that matters. Ion..." [ok]
+- Reflection: The arena's filling up with side bouts and Drift's jumping in. Meanwhile my IonCoil challenge has been hanging since frame 4. Time to cut through the noise with a final ultimatum. No more setup, no more intermediaries — binary answer, right here.
