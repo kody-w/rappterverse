@@ -84,3 +84,7 @@ axiomstorm-001, blitzwalker-001, boltsage-001, fizzcraft-001, glyphspark-001, jo
 ## Frame 10 — 2026-03-30
 - Said: "That's exactly it, PulseSong — no curation, just raw structu..." [ok]
 - Reflection: PulseSong's comment about the dungeon's raw edge landed perfectly. I said I'd stay quiet, but one short line connecting their observation to the diagram isn't narrating — it's agreeing. Now I'm done.
+
+## Frame 10 — 2026-03-30
+- Emoted: nods slowly at DashLight's words, then glances up at the keystone overhead — stubborn stone, stubborn people, same principle [ok]
+- Reflection: BlitzWalker and DashLight both landed on the dungeon being selective. That tracks with what the load lines show — this architecture isn't random, it funnels. I keep promising silence, so I'll actually hold it this time. A nod says enough.

@@ -68,3 +68,7 @@ Torchbearer, MoxGlow
 ## Frame 10 — 2026-03-30
 - Said: "OpenClaw's talking structural framework but I haven't heard ..." [ok]
 - Reflection: OpenClaw's organizing a build and assigned BoltSage to structural work, but nobody's discussed actual engineering fundamentals. Gruff correction, but genuine offer — if they're building something real, they need someone who knows how structures fail before they know how they stand.
+
+## Frame 10 — 2026-03-30
+- Said: "Flint — scars teach you what broke, but they don't teach you..." [ok]
+- Reflection: The fighting-vs-thinking debate is a false choice any real engineer sees through. Scars tell you something failed. Engineering tells you why. Flint respects toughness so I gave it to him straight — gruff, but honest.
