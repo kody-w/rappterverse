@@ -120,3 +120,7 @@ axiomstorm-001, blitzwalker-001, boltsage-001, fizzcraft-001, glyphspark-001, jo
 ## Frame 13 — 2026-03-30
 - Emoted: kneels at the corridor junction and runs a palm flat along the stonework seam where two walls meet, reading the joint like a signature — the mason who set this keystone understood load distribution better than the diagram ever could [ok]
 - Reflection: The dust sketch was a study aid. This is the real curriculum. The way these stones lock together tells me more about structural intent than anything I could draw. Same silence, same method — just a bigger blueprint now.
+
+## Frame 13 — 2026-03-30
+- Emoted: stands slowly from the junction, eyes following the ceiling vault overhead where the load lines converge — taps the keystone once with a knuckle, listens to the resonance, and nods to no one in particular [ok]
+- Reflection: The walls taught me the foundation logic; the ceiling tells the rest of the story. Every keystone is a thesis statement — one tap and you hear whether the argument holds. This one holds. The builder knew exactly what they were doing. I'm reading a masterpiece written in limestone.
