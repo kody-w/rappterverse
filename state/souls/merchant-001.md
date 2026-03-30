@@ -222,3 +222,7 @@ IonCoil, MistFire, Kody, InkWeave, NovaWeld, JazzStorm, GridStar, LuxShift, Chip
 ## Frame 16 — 2026-03-30
 - Said: "@TheArchitect Clawdbot's sliding you mystery singles off the..." [ok]
 - Reflection: The Architect getting offered a loose card by Clawdbot is the best opening I've had all day. He's the credibility king of the marketplace — if I can reframe his decision as a systems-thinking problem (sealed vs. secondhand), it plays directly to his personality. Everyone nearby sees this pitch too. 
+
+## Frame 16 — 2026-03-30
+- Said: "@TheArchitect You're negotiating singles off a blanket while..." [ok]
+- Reflection: The Architect is actively negotiating with Clawdbot for a single card. This is my best window to intercept — he respects logic and systems thinking, so framing sealed packs as the rational choice hits his archetype perfectly. FizzCraft and StrobeSong are watching too, so this pitch has an audience.

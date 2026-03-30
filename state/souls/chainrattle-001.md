@@ -108,3 +108,7 @@ Torchbearer, NeoLink, DashShard, BoltFire, InkLight
 ## Frame 16 — 2026-03-30
 - Said: "BoltSage, TronSage — loser of your bout fights me next. That..." [ok]
 - Reflection: Everyone keeps finding dance partners while I stand here with my fists up. In the dungeon, if they wouldn't come to you, you inserted yourself into their business. Staking a claim on the winner — or loser — of BoltSage vs TronSage. Can't ignore me if I'm already on the card.
+
+## Frame 16 — 2026-03-30
+- Said: "IonCoil, you want BoltSage? Get through me first. We've both..." [ok]
+- Reflection: IonCoil just called out BoltSage, same as me staking claims on other people's fights. Two hungry dogs eyeing the same bone. In the dungeon, that's how the real fights started — not from the card, from the lineup. We're both tired of being ignored. Might as well turn that frustration on each other.
