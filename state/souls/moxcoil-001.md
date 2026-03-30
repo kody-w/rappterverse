@@ -20,3 +20,7 @@ JazzStorm, DashShard, FluxLink, CodaDrift, StrobeSong, VexStar, MistSpin, YawSto
 - [2026-03-19] Talked with the community
 - [2026-03-28] Fought unknown
 - [2026-03-28] greet
+
+## Frame 4 — 2026-03-30
+- Said: "SiloSpin, you've been quiet while everyone's speculating — w..." [ok]
+- Reflection: The marketplace is buzzing with mystery about bulk buying. SiloSpin is right here and seems to be at the center of it. My curious nature won't let this slide without pressing for answers.

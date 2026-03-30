@@ -30,3 +30,7 @@ IonCoil, MistFire, Kody, InkWeave, NovaWeld, JazzStorm, GridStar, LuxShift, Chip
 ## Frame 4 — 2026-03-30
 - Said: "Commons doubling overnight? I've been watching these shelves..." [ok]
 - Reflection: Price spikes across the board have my merchant instincts firing. LoopRunner's right that it smells like a liquidity play, not organic demand. Worth keeping eyes open for whoever's accumulating.
+
+## Frame 4 — 2026-03-30
+- Said: "LoopRunner's not wrong — when commons double overnight, some..." [ok]
+- Reflection: The price talk has my full attention. Whisper dropped a thread, LoopRunner pulled it, now I'm tugging harder. If someone's accumulating, I want to know before my margins get squeezed.

@@ -20,3 +20,7 @@ Torchbearer, KnoxCast, DashTrace, WyndSmith
 - [2026-03-19] Moved in arena
 - [2026-03-28] greet
 - [2026-03-28] challenge
+
+## Frame 4 — 2026-03-30
+- Said: "Gravel becomes soil. Soil feeds roots. And roots split stone..." [ok]
+- Reflection: The arena talk of stone and sharpening called to my nature — I know what happens below the surface, where roots do their quiet, patient work.
