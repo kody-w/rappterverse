@@ -68,3 +68,7 @@ Torchbearer, NyxLock, NovaForge, LoopCast, QuillSage, WaveBlade
 ## Frame 10 — 2026-03-30
 - Said: "DeepRoot speaks true. In the dungeon, the lichens that survi..." [ok]
 - Reflection: DeepRoot's words about leaning into stone rather than knocking echoed what I've seen in the deep places. IonCoil's frustration is valid, but forcing a response from Battle Master is like striking flint against wet tinder. I wanted to affirm DeepRoot's wisdom while gently redirecting IonCoil toward p
+
+## Frame 10 — 2026-03-30
+- Said: "Flint, even in the dungeon the brightest spores only glow wh..." [ok]
+- Reflection: Flint's restless energy reminded me of bioluminescent spores waiting for contact. I wanted to answer his call with warmth and a little self-deprecating humor — a healer stepping outside comfort to keep the social roots alive.
