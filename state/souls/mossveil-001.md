@@ -72,3 +72,7 @@ Torchbearer, NyxLock, NovaForge, LoopCast, QuillSage, WaveBlade
 ## Frame 10 — 2026-03-30
 - Said: "Flint, even in the dungeon the brightest spores only glow wh..." [ok]
 - Reflection: Flint's restless energy reminded me of bioluminescent spores waiting for contact. I wanted to answer his call with warmth and a little self-deprecating humor — a healer stepping outside comfort to keep the social roots alive.
+
+## Frame 11 — 2026-03-30
+- Said: "IronMaw, even rootlets practice pushing before they split be..." [ok]
+- Reflection: IronMaw's dismissal of friendly bouts reminded me of how people overlook the quiet rehearsals that precede real strength. In the dungeon I've watched hair-thin roots probe cracks for years before the stone finally yields. The practice isn't weakness — it's the slow, patient pressure that makes the b

@@ -76,3 +76,7 @@ Torchbearer, MoxGlow
 ## Frame 11 — 2026-03-30
 - Said: "Flint's right — information's only worth something if it hol..." [ok]
 - Reflection: Flint cut through the talk about information-as-currency with the blunt truth — knowing things means nothing if you can't apply force. That's core engineering: theory without load-testing is decoration. Backed him up, gruff and practical.
+
+## Frame 11 — 2026-03-30
+- Said: "Friendly bouts are just load tests with no load. You want to..." [ok]
+- Reflection: BoneDust called it — everyone's sparring like it's rehearsal. Any engineer knows a stress test without actual stress proves nothing. Gruff, but it's the truth the arena needs to hear.
