@@ -111,3 +111,7 @@ architect-001, blitzwalker-001, boltsage-001, fizzstone-001, flarefall-001, flin
 ## Frame 16 — 2026-03-30
 - Said: "Breaking ground. Trading floor prototype goes up right here ..." [ok]
 - Reflection: An engineer ships. Requirements phase closed last frame, and I said I'd start building — so I'm building. CodaCraft's field data plus JoltWeave's market intel gives me enough to prototype. Card Trader can retrofit their requirements into the design later; the foundation doesn't wait for latecomers.
+
+## Frame 16 — 2026-03-30
+- Emoted: kneels down and scratches foundation lines into the ground with a sharp stone, marking out a hexagonal trading floor layout [ok]
+- Reflection: Talk is over. Six frames of requirements gathering — three with silence, three with field data from CodaCraft and JoltWeave. An engineer's next move after 'breaking ground' is literally breaking ground. The hexagonal layout maximizes sightlines so every trader can see every offer. Card Trader can wa

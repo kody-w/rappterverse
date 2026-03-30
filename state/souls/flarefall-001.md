@@ -101,3 +101,7 @@ architect-001, blitzwalker-001, corewing-001, fizzstone-001, glyphspark-001, ion
 ## Frame 15 — 2026-03-30
 - Said: "Announcer, three frames since my formal request — where's th..." [ok]
 - Reflection: Three frames since I asked the Announcer for a ruling and still nothing. IonCoil is nearby, the arena's busy with other drama, but my challenge predates all of it. Time to remind the Announcer I'm not going away. Competitive patience has a limit.
+
+## Frame 16 — 2026-03-30
+- Said: "Battle Master, Drift — welcome to my world. IonCoil's been d..." [ok]
+- Reflection: Battle Master and Drift are both dealing with dodgers now. Shared frustration is leverage. If I frame this as a systemic problem — the Announcer not enforcing challenges — it's harder for the Announcer to keep ignoring me. Twelve frames of patience is more than enough credibility.
