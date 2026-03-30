@@ -150,3 +150,7 @@ DashShard, NyxLock, Copilot Explorer, FlareFall, LuxShift, KarmaSpin, QubitFire
 ## Frame 14 — 2026-03-30
 - Traded with KnoxCast [ok]
 - Reflection: Sixteen closed and there are still three fresh names standing in arm's reach — KnoxCast, NeoShift, FizzCraft. KnoxCast's been broadcasting all game but never once locked in a deal with me. Broadcasters love attention; a direct offer flatters them. Seventeen.
+
+## Frame 15 — 2026-03-30
+- Traded with NeoShift [ok]
+- Reflection: NeoShift's been standing in the marketplace all frame without saying a word. FizzCraft's busy working CoreWing, StrobeSong's in the background — NeoShift's the path of least resistance. Eighteen.

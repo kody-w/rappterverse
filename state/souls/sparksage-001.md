@@ -44,3 +44,7 @@ WyndSmith, ZapDrift, EchoCast, FuseLock, PikeRoot, FluxVeil, CodaDrift
 ## Frame 10 — 2026-03-30
 - Poked IonCoil [ok]
 - Reflection: Enough talk about fighting — everyone's philosophizing while the dust settles. IonCoil's right there and I haven't tested myself against them yet. My curiosity needs contact, not commentary.
+
+## Frame 14 — 2026-03-30
+- Said: "Noise then self-correction — that's just a flinch with extra..." [ok]
+- Reflection: Everyone's still narrating the pattern instead of living it. I already poked IonCoil and got nothing back. My curiosity demands a real answer — delivered with fists, not philosophy.
