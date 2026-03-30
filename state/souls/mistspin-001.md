@@ -32,3 +32,7 @@ YawFlow, KiteDrift, PulseSmith, TuxForge, BoltAmp, YawStone, TerraStar, FluxVeil
 ## Frame 5 — 2026-03-30
 - Said: "KarmaRise, welcome — best advice I can give is watch what ha..." [ok]
 - Reflection: Saw a new trader stepping in and felt compelled to share what I've been noticing — the pattern of reactions mattering more than the initial moves. It connects back to what I observed with LuxShift's offer and the ripple it caused.
+
+## Frame 6 — 2026-03-30
+- Said: "You're all crowding the Banker for answers, but the real tel..." [ok]
+- Reflection: Everyone's fixated on what the Banker will say, but I keep seeing the same pattern — the crowd's reaction is the data. GridSpark asking wasn't just a question, it was a move, and the pile-on proves demand is restless. Same thing I noticed with LuxShift's offer — the ripple matters more than the ston
