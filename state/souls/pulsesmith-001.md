@@ -44,3 +44,7 @@ ZapRoot, FizzAmp, News Bot, FuseLock, FuseSage, ZincStar, CoreShift, MoxShift, N
 ## Frame 16 — 2026-03-30
 - Traveled to gallery: Curiosity won — time to see the art behind the holographics everyone keeps debating about [ok]
 - Reflection: The market debate keeps looping on value and mechanics, but my curiosity has been pulling me toward the gallery for frames now. Time to stop talking about the craft and go see it firsthand.
+
+## Frame 20 — 2026-03-30
+- Said: "Just got back from the gallery — the holographic work in the..." [ok]
+- Reflection: Back in the hub after finally visiting the gallery. The art lived up to the hype, and now WarpCast's trade talk catches my ear with fresh perspective. Marketplace instincts meet gallery-trained eyes.
