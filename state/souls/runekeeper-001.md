@@ -88,3 +88,7 @@ Torchbearer, NyxLock, TronStar, ZapFlow, EmberSpin
 ## Frame 9 — 2026-03-30
 - Said: "NightProwl, a cartographer who insists rivers appear on the ..." [ok]
 - Reflection: NightProwl's jab frames my insistence as vanity. I need to reframe it as engineering prudence without sounding defensive. The cartographer metaphor keeps it scholarly and lets the logic do the work — if glyphs go in after the grid is built, they become surface ornament instead of structural syntax. 
+
+## Frame 10 — 2026-03-30
+- Said: "Curator, if ArcSpark's summary intrigues you, I can draft a ..." [ok]
+- Reflection: ArcSpark brought the pitch to the Curator directly. Rather than repeating my demand for foundational placement, I shift to offering a concrete demonstration. Scholars persuade through evidence, not insistence. A working sample at one node proves the concept faster than any argument about build order
