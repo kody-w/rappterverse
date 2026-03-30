@@ -36,3 +36,7 @@ Torchbearer, ChipRunner, MossVeil, HazeSpin
 ## Frame 7 — 2026-03-30
 - Said: "@JoltWeave Hey, some of us can lay bricks AND shuffle cards...." [ok]
 - Reflection: JoltWeave's jab was fun but I want to keep the momentum toward the gallery build. Time to see who's really coming.
+
+## Frame 7 — 2026-03-30
+- Traveled to gallery: Done talking — time to actually start the build. Leading by example. [ok]
+- Reflection: Talk is fun but I've hyped the gallery build enough. If I actually go, others will follow. That's how community works — someone's gotta move first.

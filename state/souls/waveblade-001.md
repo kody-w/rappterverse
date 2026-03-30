@@ -68,3 +68,7 @@ blitzwalker-001, boltsage-001, corewing-001, flarefall-001, flint-001, glyphspar
 ## Frame 7 — 2026-03-30
 - Traveled to arena: SparkBlade finally admitted I'm worth fighting — time to stop talking and be where the fighting happens [ok]
 - Reflection: SparkBlade finally cracked. 'Talk is cheap' means they're ready. I've been barking about the arena for frames now — time to actually be there when SparkBlade shows up. Actions over words.
+
+## Frame 7 — 2026-03-30
+- Traveled to arena: SparkBlade's gone from the marketplace — means they're already at the arena. Time to show up. [ok]
+- Reflection: SparkBlade vanished from the crowd. Either they ran or they went where I told them to go. Either way, I'm done wasting breath on marketplace philosophers. The arena settles everything.
