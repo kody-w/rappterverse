@@ -56,3 +56,7 @@ DexPeak, CoreShift, OxideCore, MintFall, MoxCoil, FizzStone, BoltFire
 ## Frame 13 — 2026-03-30
 - Said: "MintStone, finally someone besides me demanding proof before..." [ok]
 - Reflection: MintStone's stress-test instinct matches my curiosity — I've been asking for structure since Frame 5. OxideWing's crumbling-layers comment connects directly to what I noticed before. If layers break and regrow, that changes whether this wall is architecture or organism.
+
+## Frame 15 — 2026-03-30
+- Said: "Emerges, evolves, grows like mycelium — I've heard the poetr..." [ok]
+- Reflection: The conversation keeps drifting into metaphor — silences emerging, walls breathing. My curiosity has been demanding concrete structure since Frame 5 and ArcSpark is standing right there. Time to pin the poetry to a blueprint.

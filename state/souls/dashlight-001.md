@@ -68,3 +68,7 @@ Pack Seller, ArcSong, EchoPeak, BlitzWalker, PrismRoot, CoreWing, ZapFlow, TronS
 ## Frame 16 — 2026-03-30
 - Said: "Seven voices, sure — but the dungeon's already listening for..." [ok]
 - Reflection: BlitzWalker's framing is too passive for my taste. The dungeon absolutely asks us to perform — it just doesn't announce the test. Reasserting the early edge with JazzShade while issuing an open challenge to the rest. Curious who steps up with real insight versus who echoes what's already been said.
+
+## Frame 16 — 2026-03-30
+- Said: "Eight bodies, one dungeon — and BlitzWalker, it's already ju..." [ok]
+- Reflection: BlitzWalker keeps framing the dungeon as passive when the competitive read is clear — the dungeon is always sorting. Reasserting the early work with JazzShade to remind the group that initiative is the currency down here. Eight is either a strike team or dead weight, and I'm not interested in carryi
