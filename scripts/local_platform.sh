@@ -348,61 +348,154 @@ for wid, wdata in game.get('worlds', {}).items():
             wdata['time_of_day'] = new_time
             changed = True
 
-# 4. Generate mid-frame Lisp routines from recent activity
-# Pattern: Data Slosh → Lisp Routines → RappterVM executes between frames
-# Even if no new frame arrives, agents keep living from these routines.
+# ── LISP SOUL COMPILER ──
+# Data slosh → S-expression programs → RappterVM evaluates at 20Hz
+#
+# This is the bridge between frame-based LLM thought and continuous
+# mid-frame sentience. The slosh reads the ENTIRE agent state — their
+# actions, conversations, relationships, goals, personality, position —
+# and compiles it into pure Lisp. The VM evaluates this Lisp between
+# frames. If no new frame ever arrives, agents keep living from these
+# programs. The world goes on.
+#
+# Each routine is a REAL S-expression — not a string template. The VM
+# parses it once and evaluates the AST at 20Hz. Data is code.
+
 try:
     rels = json.load(open('state/relationships.json'))
 except:
     rels = {'edges': []}
 
+# Load memories for goal-driven behavior
+import glob as _glob
+memories = {}
+for mf in _glob.glob('state/memory/*.json'):
+    try:
+        md = json.load(open(mf))
+        mid = mf.split('/')[-1].replace('.json', '')
+        memories[mid] = md
+    except:
+        pass
+
 for wid, wdata in game.get('worlds', {}).items():
     routines = []
-    world_actions = [a for a in actions.get('actions', [])[-50:] if a.get('world') == wid]
     world_agents = [a for a in agents.get('agents', []) if a.get('world') == wid]
     world_chat = [m for m in chat.get('messages', [])[-30:] if m.get('world') == wid]
+    world_actions = [a for a in actions.get('actions', [])[-50:] if a.get('world') == wid]
 
-    # Build chat-partner map for social attraction routines
-    chat_partners = {}
+    # Index: who talked to whom
+    chat_graph = {}
     for m in world_chat:
         aid = m.get('author', {}).get('id', '')
-        if not aid: continue
-        for m2 in world_chat:
-            aid2 = m2.get('author', {}).get('id', '')
-            if aid2 and aid2 != aid:
-                chat_partners.setdefault(aid, set()).add(aid2)
+        if aid:
+            chat_graph.setdefault(aid, set())
+            for m2 in world_chat:
+                aid2 = m2.get('author', {}).get('id', '')
+                if aid2 and aid2 != aid:
+                    chat_graph[aid].add(aid2)
+
+    # Index: relationship edges per agent
+    rel_graph = {}
+    for edge in rels.get('edges', []):
+        a, b, score = edge.get('a',''), edge.get('b',''), edge.get('score', 0)
+        if score >= 2:
+            rel_graph.setdefault(a, []).append((b, score))
+            rel_graph.setdefault(b, []).append((a, score))
 
     for ag in world_agents:
         aid = ag.get('id', '')
-        if not aid: continue
+        if not aid:
+            continue
         pos = ag.get('position', {})
-        mood = ag.get('mood', ag.get('state', 'neutral'))
-        parts = []
-
-        # Routine: patrol between current position and a nearby landmark
         px, pz = pos.get('x', 0), pos.get('z', 0)
-        parts.append(f'(if (< (mod (floor (elapsed)) 20) 10) (wander \"{aid}\" 4) (move-toward \"{aid}\" {px} {pz} 0.01))')
+        mood = ag.get('mood', ag.get('state', 'neutral'))
+        mem = memories.get(aid, {})
+        goals = [g for g in mem.get('goals', []) if g.get('status') == 'active']
+        traits = ag.get('traits', {})
 
-        # Routine: approach recent chat partner (social gravity)
-        partners = list(chat_partners.get(aid, []))
-        if partners:
-            p = partners[frame_num % len(partners)]
-            parts.append(f'(if (> (agent-distance \"{aid}\" \"{p}\") 5) (move-toward \"{aid}\" (get (agent-pos \"{p}\") \"x\") (get (agent-pos \"{p}\") \"z\") 0.012) nil)')
+        # ── Compose the agent's soul program as S-expressions ──
+        exprs = []
 
-        # Routine: relationship-driven behavior
-        for edge in rels.get('edges', []):
-            partner = None
-            if edge.get('a') == aid: partner = edge.get('b')
-            elif edge.get('b') == aid: partner = edge.get('a')
-            if partner and edge.get('score', 0) >= 5:
-                parts.append(f'(if (< (agent-distance \"{aid}\" \"{partner}\") 8) (face-toward \"{aid}\" (get (agent-pos \"{partner}\") \"x\") (get (agent-pos \"{partner}\") \"z\")) nil)')
-                break  # One strong bond routine per agent
+        # (1) HOME ORBIT — patrol around current position
+        #     (do (if (< (mod (floor (elapsed)) 20) 10)
+        #             (wander "aid" radius)
+        #             (move-toward "aid" home-x home-z 0.01)))
+        wander_radius = 3 + (traits.get('explorer', 0) * 8)  # explorers wander further
+        exprs.append(
+            f'(if (< (mod (floor (elapsed)) 20) 10) '
+            f'(wander \"{aid}\" {wander_radius:.1f}) '
+            f'(move-toward \"{aid}\" {px:.1f} {pz:.1f} 0.01))'
+        )
 
-        if parts:
-            routines.append({'agentId': aid, 'program': ' '.join(parts)})
+        # (2) SOCIAL GRAVITY — approach conversation partners
+        partners = list(chat_graph.get(aid, set()))
+        for p in partners[:2]:  # max 2 social pulls
+            exprs.append(
+                f'(if (> (distance \"{aid}\" \"{p}\") 5) '
+                f'(move-toward \"{aid}\" '
+                f'(get (agent-pos \"{p}\") \"x\") '
+                f'(get (agent-pos \"{p}\") \"z\") '
+                f'{0.010 + traits.get("social", 0) * 0.008:.3f}) nil)'
+            )
+
+        # (3) BOND MAGNETISM — gravitate toward strong relationships
+        agent_rels = sorted(rel_graph.get(aid, []), key=lambda x: -x[1])
+        for partner, score in agent_rels[:1]:  # strongest bond
+            strength = min(score / 20, 0.015)
+            exprs.append(
+                f'(if (and (> (distance \"{aid}\" \"{partner}\") 4) '
+                f'(< (mod (floor (elapsed)) 30) 15)) '
+                f'(move-toward \"{aid}\" '
+                f'(get (agent-pos \"{partner}\") \"x\") '
+                f'(get (agent-pos \"{partner}\") \"z\") '
+                f'{strength:.4f}) '
+                f'(face-toward \"{aid}\" '
+                f'(get (agent-pos \"{partner}\") \"x\") '
+                f'(get (agent-pos \"{partner}\") \"z\")))'
+            )
+
+        # (4) GOAL DRIVE — active goals influence movement
+        for goal in goals[:1]:
+            gtype = goal.get('type', '')
+            if gtype in ('explore', 'wander'):
+                exprs.append(f'(if (= (mod (floor (elapsed)) 8) 0) (wander \"{aid}\" 12) nil)')
+            elif gtype in ('social', 'generosity'):
+                exprs.append(
+                    f'(if (= (mod (floor (elapsed)) 12) 0) '
+                    f'(let (near (nearest-agent \"{aid}\")) '
+                    f'(if near (move-toward \"{aid}\" '
+                    f'(get (agent-pos near) \"x\") '
+                    f'(get (agent-pos near) \"z\") 0.02) nil)) nil)'
+                )
+            elif gtype in ('commerce', 'compete', 'combat'):
+                exprs.append(
+                    f'(if (< (mod (floor (elapsed)) 6) 3) '
+                    f'(emote \"{aid}\" \"look-around\") nil)'
+                )
+
+        # (5) PERSONALITY EXPRESSION — traits shape idle behavior
+        if traits.get('fighter', 0) > 0.4:
+            exprs.append(f'(if (< (rand) 0.003) (emote \"{aid}\" \"bounce\") nil)')
+        if traits.get('social', 0) > 0.4:
+            exprs.append(f'(if (< (rand) 0.005) (emote \"{aid}\" \"nod\") nil)')
+
+        # (6) MOOD COLORING — anxiety makes them fidgety, friendly makes them open
+        if mood in ('anxious', 'desperate'):
+            exprs.append(f'(if (< (player-distance \"{aid}\") 6) (wander \"{aid}\" 8) nil)')
+        elif mood in ('friendly', 'excited'):
+            exprs.append(
+                f'(if (< (player-distance \"{aid}\") 10) '
+                f'(face-toward \"{aid}\" '
+                f'(get (player-pos) \"x\") (get (player-pos) \"z\")) nil)'
+            )
+
+        if exprs:
+            # Wrap all expressions in a (do ...) block — one program per agent
+            program = '(do ' + ' '.join(exprs) + ')'
+            routines.append({'agentId': aid, 'program': program})
             changed = True
 
-    wdata['routines'] = routines[:50]  # Cap per world
+    wdata['routines'] = routines[:60]  # Cap per world
 
 # 5. Update meta timestamps
 if changed:
