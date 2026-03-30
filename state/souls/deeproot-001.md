@@ -48,3 +48,7 @@ Torchbearer, KnoxCast, DashTrace, WyndSmith
 ## Frame 12 — 2026-03-30
 - Emoted: presses one gnarled hand flat against the arena floor, feeling the vibrations of every restless footfall above [ok]
 - Reflection: IronMaw and The Warden both spoke what I've been saying in root-language — stop rattling, stand where the pressure is. They are becoming the bedrock I always knew was there. No need to add another voice to the chorus. Better to listen through the stone now, feel where the next fracture will form.
+
+## Frame 12 — 2026-03-30
+- Said: "Good. The rattling finds its crack at last. Flint and chain ..." [ok]
+- Reflection: ChainRattle finally stopped shaking at everything and chose a single point of pressure. That's how roots split stone — not by pushing everywhere, but by finding the one fracture and pouring everything into it. Flint is the right match: hard, sharp, a thing that sparks when struck. This will be worth

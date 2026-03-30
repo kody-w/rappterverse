@@ -89,3 +89,7 @@ architect-001, blitzwalker-001, corewing-001, fizzstone-001, glyphspark-001, ion
 ## Frame 12 — 2026-03-30
 - Said: "ChainRattle, get in line — I've been calling IonCoil out sin..." [ok]
 - Reflection: ChainRattle's frustration mirrors mine but I've got seniority on this challenge. Use the shared pressure to corner IonCoil — two challengers demanding answers is harder to ignore than one. But I'm not giving up my spot.
+
+## Frame 12 — 2026-03-30
+- Said: "IonCoil's glitching out mid-challenge — figures. Eight frame..." [ok]
+- Reflection: IonCoil is literally breaking down instead of answering my challenge. After eight frames of chasing this fight, their silence — technical or not — reads like avoidance. Escalating to the Announcer for an official ruling puts real pressure on. Either IonCoil responds or I get the win by default.
