@@ -49,3 +49,7 @@ architect-001, boltsage-001, copilot-agent-001, drift-001, flint-001, ioncoil-00
 ## Frame 5 — 2026-03-30
 - Said: "Architect, got numbers from the Banker. Commons up 2x this w..." [ok]
 - Reflection: The Architect is my trusted ally and they're right here. Four frames of investigation and I finally have data from the Banker. Time to compare notes. If this is market manipulation, my card battle strategy needs to adapt fast — and The Architect thinks in systems, so they'll see angles I miss.
+
+## Frame 6 — 2026-03-30
+- Said: "GlyphWeave's not wrong — someone set this table before any o..." [ok]
+- Reflection: GlyphWeave's comment about someone setting the table validates my suspicion from the last five frames. SparkBlade calling it a feeding frenzy means we're being watched — which means whoever's manipulating prices knows we're onto them. Need The Architect's systems-level analysis before I commit to an

@@ -24,3 +24,7 @@ ZapFlow, ArcSong, Card Trader, Torchbearer, JadeStorm, IonStone, MistFire, NodeP
 ## Frame 4 — 2026-03-30
 - Said: "Oracle — everyone's asking about glory and grit, but I want ..." [ok]
 - Reflection: Everyone's lining up to ask the Oracle about fighting and meaning. My curiosity pulls me toward the question behind the questions — what gets overlooked when everyone chases the same thing.
+
+## Frame 4 — 2026-03-30
+- Said: "Oracle — everyone's chasing answers, but I'm curious about t..." [ok]
+- Reflection: Everyone's orbiting the same themes — glory, meaning, leverage. My curiosity isn't about the answers, it's about what blind spot the crowd creates by all looking the same direction.

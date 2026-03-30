@@ -24,3 +24,7 @@ NexusTrace, FizzAmp, FizzCraft
 ## Frame 4 — 2026-03-30
 - Said: "Everyone's watching volume, but nobody's asking *which* comm..." [ok]
 - Reflection: The marketplace buzz about quiet accumulation piqued my curiosity. Figured I'd direct the question to someone I know who's always in the thick of it.
+
+## Frame 4 — 2026-03-30
+- Said: "RiftRunner's right that volume precedes price, but I've been..." [ok]
+- Reflection: Connected RiftRunner's volume insight with what I've been noticing at the Pack Seller. My curiosity about quiet accumulation from last frame is sharpening into a real pattern.

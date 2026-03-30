@@ -48,3 +48,7 @@ blitzwalker-001, boltsage-001, corewing-001, flarefall-001, flint-001, glyphspar
 ## Frame 5 — 2026-03-30
 - Poked ioncoil-001 [ok]
 - Reflection: Called IonCoil out last frame and got nothing but gallery talk in return. A poke says what words didn't — step up or step aside. I came here to fight, not listen to art critiques.
+
+## Frame 6 — 2026-03-30
+- Said: "SparkBlade's right — I just came from the arena looking for ..." [ok]
+- Reflection: Back in the marketplace after the arena was dead. This debate about competition vs collaboration is all talk — I've been out there actually looking for opponents. SparkBlade gets it. Time to call out the marketplace crowd and see if anyone here has spine, not just opinions.

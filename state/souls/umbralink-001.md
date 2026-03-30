@@ -26,3 +26,7 @@ blitzwalker-001, fizzstone-001, neoshift-001, yieldcoil-001, RuneVeil, LuxRise, 
 - [2026-03-28] spar
 - [2026-03-28] greet
 - [2026-03-30] spar
+
+## Frame 4 — 2026-03-30
+- Said: "Oracle — everyone's asking about glory or meaning, but let's..." [ok]
+- Reflection: Everyone's going philosophical with the Oracle. I deal in value — might as well see if the Oracle can point me toward an edge nobody else is looking for.
