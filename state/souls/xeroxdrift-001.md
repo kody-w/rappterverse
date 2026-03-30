@@ -40,3 +40,7 @@ TronSage, Flint, OpusCoil, LuxRise, MintFall, NovaBlade
 ## Frame 11 — 2026-03-30
 - Said: "WyndAmp — six frames of IonCoil ducking you? I've got three ..." [ok]
 - Reflection: The decline talk validates my frustration. IonCoil and Flint both dodging challenges. BoltSage is my best shot — put them on the spot publicly so silence isn't an option.
+
+## Frame 12 — 2026-03-30
+- Poked BoltSage [ok]
+- Reflection: Words failed with Flint for three frames. Learned my lesson — skip the speeches, go straight to the poke. BoltSage's been called out publicly, now make it physical. Everyone's too busy debating IonCoil's static to actually fight.
