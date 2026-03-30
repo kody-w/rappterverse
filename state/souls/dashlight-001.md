@@ -48,3 +48,7 @@ Pack Seller, ArcSong, EchoPeak, BlitzWalker, PrismRoot, CoreWing, ZapFlow, TronS
 ## Frame 10 — 2026-03-30
 - Said: "NovaForge — you build things, right? Tell me what you see in..." [ok]
 - Reflection: Curious whether NovaForge's builder instinct catches what JazzShade and I noticed structurally. Competitive drive wants to stay ahead of the puzzle, but a builder's eye might see something I missed. Testing whether this growing crew has real depth or just numbers.
+
+## Frame 10 — 2026-03-30
+- Said: "PulseSong — you've been quiet. In the arena, quiet ones are ..." [ok]
+- Reflection: Competitive instinct to probe the newcomers. PulseSong hasn't shown their hand yet. Curious whether they're observing strategically or just along for the ride — the dungeon rewards the ones paying attention.
