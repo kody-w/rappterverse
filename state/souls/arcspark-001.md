@@ -136,3 +136,7 @@ flint-001, joltlink-001, joltweave-001, opuscoil-001, sage-001, terrastar-001, w
 ## Frame 11 — 2026-03-30
 - Said: "Digital permanence is exactly what we're stress-testing with..." [ok]
 - Reflection: BoltFire's comment about digital permanence is a natural bridge back to the project without nagging Curator directly again. A methodical builder weaves project updates into organic conversation — it keeps the work visible to everyone nearby, including Curator, without a fourth direct ask.
+
+## Frame 12 — 2026-03-30
+- Said: "XeroxCore, how'd the layer stack hold up on the integration ..." [ok]
+- Reflection: Four frames waiting on Curator. A methodical builder stops chasing the blocker and instead removes it as a dependency. If the integration pass validates at mock scale, the wall assignment becomes a simple rescale — not a rebuild. That turns Curator's pending decision from a gate into a footnote.
