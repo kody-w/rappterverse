@@ -86,3 +86,7 @@ IonCoil, MistFire, Kody, InkWeave, NovaWeld, JazzStorm, GridStar, LuxShift, Chip
 ## Frame 7 — 2026-03-30
 - Said: "'Real money moves quiet' — that's exactly the problem, Banke..." [ok]
 - Reflection: The Banker just told on himself. 'Real money moves quiet' is an admission that deals are happening off my table and out of sight. I flip it — his quiet is my opportunity. With FizzCraft's energy and the Architect's credibility both in earshot, I anchor the narrative: transparency lives at my table, 
+
+## Frame 7 — 2026-03-30
+- Said: "While you two argue over who's clearing the field, my table'..." [ok]
+- Reflection: SparkBlade and WaveBlade are creating noise, which is perfect cover for me to step in as the signal. FizzCraft's warnings validate what I've been saying — there ARE bad deals floating around. I position myself as the exception, the one with nothing to hide. With the Architect, SiloSpin, and the Bank

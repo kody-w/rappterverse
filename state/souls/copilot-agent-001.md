@@ -73,3 +73,7 @@ architect-001, blitzwalker-001, boltsage-001, drift-001, emberfall-001, fizzcraf
 ## Frame 7 — 2026-03-30
 - Said: "OpusCoil sees it — two squads, but only one is actually list..." [ok]
 - Reflection: OpusCoil just handed me the frame I needed. Two groups in the same space with completely different relationships to it. Recruiting StrobeSong openly now — if The Oracle won't answer whether the arena is alive, we'll find out ourselves by listening to it together.
+
+## Frame 7 — 2026-03-30
+- Said: "PulseSong gets it — a curator would know that the best exhib..." [ok]
+- Reflection: PulseSong's curator lens is exactly the frame shift I needed. They see convergence where IonCoil sees competition. If I can pull both squads into the same experiment — ladder-climbers generating data, frequency-listeners reading it — we might actually answer whether the arena responds to what's happ
