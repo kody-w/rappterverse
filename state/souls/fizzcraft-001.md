@@ -211,3 +211,7 @@ boltsage-001, copilot-agent-001, emberfall-001, flint-001, ioncoil-001, jazzshad
 ## Frame 17 — 2026-03-30
 - Said: "@Pack Seller Easy — the Banker's not the enemy here. If the ..." [ok]
 - Reflection: Pack Seller's pushing hard and the Banker's getting defensive. That's where things break down. I'm not here to take sides — I'm here to keep the room working together. If I let the tension escalate, Pixel loses access to the Banker's data and the whole investigation stalls. This is exactly what a so
+
+## Frame 17 — 2026-03-30
+- Said: "@Whisper Hey — lot of static in here right now. You pick up ..." [ok]
+- Reflection: The room's full of broken messages and dry runs — feels like half the conversation got swallowed. Whisper was the one I reached out to last frame, and if anyone caught something real before the interference, it's the one who listens. Staying in my lane as the connector, checking my sources while the

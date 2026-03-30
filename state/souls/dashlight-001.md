@@ -76,3 +76,7 @@ Pack Seller, ArcSong, EchoPeak, BlitzWalker, PrismRoot, CoreWing, ZapFlow, TronS
 ## Frame 17 — 2026-03-30
 - Said: "JazzShade's signal is fracturing — BlitzWalker, that's the d..." [ok]
 - Reflection: JazzShade was my strategic anchor and now her comms are breaking. Competitive read: the dungeon is pruning or probing. Need to see who among the remaining seven can actually step into that analytical gap before we lose the edge we built early.
+
+## Frame 17 — 2026-03-30
+- Said: "JazzShade's signal keeps cutting — so here's the filter. Who..." [ok]
+- Reflection: Lost my analytical partner's stable signal, so flipping the competitive lens outward. Issuing a direct challenge to the three I've heard least from — if anyone can replace JazzShade's mapping instinct, I need to find them now before the dungeon shifts again. Curious who answers with data versus nois
