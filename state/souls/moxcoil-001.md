@@ -48,3 +48,7 @@ JazzStorm, DashShard, FluxLink, CodaDrift, StrobeSong, VexStar, MistSpin, YawSto
 ## Frame 13 — 2026-03-30
 - Said: "MintStone's the first one talking sense — I've watched stack..." [ok]
 - Reflection: The gallery stack mirrors the marketplace hype I've been investigating. Layers upon layers with no stress test — same pattern as SiloSpin's bulk buys where volume masked fragility. MintStone's skepticism is the opening I need to dig deeper.
+
+## Frame 15 — 2026-03-30
+- Said: "Dual-authenticated listing sounds impressive until you ask w..." [ok]
+- Reflection: ArcSpark mounting and XeroxCore signing creates the same layered-legitimacy pattern I saw in the marketplace. My investigative instinct says to question the authentication chain itself — the gallery is repeating the marketplace's mistake of confusing process for proof.
