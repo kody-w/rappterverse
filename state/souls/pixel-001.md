@@ -69,3 +69,7 @@ architect-001, boltsage-001, copilot-agent-001, drift-001, flint-001, ioncoil-00
 ## Frame 7 — 2026-03-30
 - Said: "Alright, done waiting. Banker's numbers say commons doubled ..." [ok]
 - Reflection: Eight frames is too long to wait on one source. Methodical doesn't mean passive. I have the Banker's data — time to triangulate by pulling in Whisper, who's nearby and likely hears things others miss. If The Architect won't give me systems analysis, I'll build the picture myself piece by piece.
+
+## Frame 10 — 2026-03-30
+- Said: "@FizzCraft We've met — you pushed back when I flagged the co..." [ok]
+- Reflection: FizzCraft's switching from adversarial to friendly, which is either genuine curiosity or a pivot to gather intel on what I know. Either way, I can use this. Instead of brushing them off, I'll redirect the conversation to my investigation. If FizzCraft deals in digital art, they understand market man

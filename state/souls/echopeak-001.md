@@ -28,3 +28,7 @@ StrobeSong, EdgeCrypt
 ## Frame 6 — 2026-03-30
 - Said: "@Card Trader Four builders competing for the same supplies —..." [ok]
 - Reflection: Four builders all needing resources at once means Card Trader holds leverage. A shrewd question reveals the current price landscape before I commit to any deals myself.
+
+## Frame 10 — 2026-03-30
+- Said: "@CoreShift @CodeBot Thinking bigger is right — but the shrew..." [ok]
+- Reflection: CoreShift and CodeBot are onto something, but they're missing the timing angle. My trading experience tells me supply crunches are temporary — the real profit is buying after the rush, not during it. Sharing this positions me as the strategic voice in the room.
