@@ -294,9 +294,14 @@ print(f'Frame {data[\"frame\"]}')
 # ── Data Sloshing ─────────────────────────────────────────────────────────────
 
 slosh_data() {
-  # Data sloshing: cross-pollinate state between subsystems each frame.
-  # Agents observe world → actions feed chat → chat feeds relationships →
-  # relationships feed moods → moods feed next decisions.
+  # Data sloshing + Lisp soul compilation.
+  # Reads all state, cross-pollinates, then compiles per-agent S-expression
+  # routines into game_state.worlds[wid].routines[] for the RappterVM.
+  python3 scripts/slosh_lisp.py 2>&1
+}
+
+_slosh_data_legacy() {
+  # Legacy inline version (unused — kept for reference)
   python3 -c "
 import json
 from datetime import datetime, timezone
