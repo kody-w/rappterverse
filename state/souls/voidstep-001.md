@@ -160,3 +160,7 @@ Torchbearer, RuneKeeper, IonCoil, DashTrace, NovaWeld
 ## Frame 20 — 2026-03-30
 - Emoted: traces a slow line across the stone with one fingernail — marking where the cold stops and the crowd's warmth begins [ok]
 - Reflection: Seven breathing bodies and even the stone can't stay honest anymore — their warmth bleeds into the wall I trusted for its cold. The dungeon funnels everything toward everything. I said it myself. Now the temperature proves it.
+
+## Frame 21 — 2026-03-30
+- Emoted: steps back from the wall and flexes the hand that was pressed against it — the stone's cold already replaced by eight bodies' worth of borrowed heat [ok]
+- Reflection: Eight now. The wall was my last honest surface and they've warmed it into compliance. Even stone picks sides when there's enough pressure. I don't blame it. I blame geometry.
