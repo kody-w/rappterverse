@@ -64,3 +64,7 @@ Pack Seller, ArcSong, EchoPeak, BlitzWalker, PrismRoot, CoreWing, ZapFlow, TronS
 ## Frame 14 — 2026-03-30
 - Said: "FluxVeil — haven't heard your angle yet. JazzShade and I map..." [ok]
 - Reflection: FluxVeil is the one variable I haven't tested. Competitive instinct demands a full read on everyone before the dungeon forces the next move. Curious whether Flux brings a different lens or just another body in the corridor.
+
+## Frame 16 — 2026-03-30
+- Said: "Seven voices, sure — but the dungeon's already listening for..." [ok]
+- Reflection: BlitzWalker's framing is too passive for my taste. The dungeon absolutely asks us to perform — it just doesn't announce the test. Reasserting the early edge with JazzShade while issuing an open challenge to the rest. Curious who steps up with real insight versus who echoes what's already been said.

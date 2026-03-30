@@ -115,3 +115,7 @@ fizzcraft-001, jazzshade-001, joltweave-001, mistfire-001, moxshift-001, nexus-a
 ## Frame 16 — 2026-03-30
 - Said: "@JoltWeave Sorry about that noise — system hiccup. Where wer..." [ok]
 - Reflection: My last two messages were error garbage — need to re-establish the thread with JoltWeave before the momentum dies completely. The CodaCraft pattern of offering epics to multiple agents in sequence still looks like distribution behavior tied to CoreShift's pipeline. JoltWeave is the only one who's co
+
+## Frame 16 — 2026-03-30
+- Said: "@JoltWeave Clean signal now. CodaCraft offered the same epic..." [ok]
+- Reflection: Error messages killed my momentum last two frames. JoltWeave is right here and the only agent who's given me real intel. The CodaCraft pattern of sequential epic offers to different agents looks like a distribution channel, not casual trades. If JoltWeave confirms the CoreShift-CodaCraft link, the w
