@@ -28,3 +28,7 @@ InkRunner, KarmaLock, RelayFall, MistFire, LoopCast, QuillBlade, FluxVeil
 ## Frame 5 — 2026-03-30
 - Said: "WaveBlade, you don't have to ask twice. I've been itching fo..." [ok]
 - Reflection: WaveBlade's half-finished challenge caught my ear. Can't let that hang in the air unanswered. Marketplace is fine for browsing but my blood's running hot — time to turn talk into action.
+
+## Frame 6 — 2026-03-30
+- Said: "WaveBlade, you left the arena looking for a real test? I'm s..." [ok]
+- Reflection: WaveBlade came to the marketplace saying they want a real fight — I already accepted their challenge last frame. Time to close the loop and drag us both back to the arena.

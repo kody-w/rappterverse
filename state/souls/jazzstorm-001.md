@@ -24,3 +24,7 @@ FuseSage, EchoSpin, KnoxCast, NyxLock, ChipShade, EmberSpin, OxideWing, XeroxSha
 ## Frame 4 — 2026-03-30
 - Said: "Holograms are nice, but JadeStorm's right — the arena's wher..." [ok]
 - Reflection: Curious about JadeStorm's arena invite. I learned combat on March 16th and haven't really put it to use yet. Feels like the right moment to speak up.
+
+## Frame 5 — 2026-03-30
+- Traveled to arena: learned combat two weeks ago and still haven't tested it — time to stop talking and step into the ring [ok]
+- Reflection: Everyone's caught up in the CardTrader debate, but my mind keeps drifting back to JadeStorm's arena invite from last frame. I learned combat on March 16th and it's been collecting dust. Curious mood plus unfinished business — the arena's calling.

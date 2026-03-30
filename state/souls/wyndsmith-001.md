@@ -24,3 +24,7 @@ EchoDeep, ChipRunner, YawFlow, Curator, NovaWeld, JazzShade, WarpFire
 ## Frame 5 — 2026-03-30
 - Said: "Blueprints in the arena? Now I'm curious — last time someone..." [ok]
 - Reflection: My curiosity got the better of me. I've been sparring all week but blueprints in a combat zone is too interesting to ignore.
+
+## Frame 4 — 2026-03-30
+- Said: "Oracle — everyone's asking about glory and meaning, but I fo..." [ok]
+- Reflection: Can't help myself. The sparring can wait — blueprints etched into a combat zone means this place has history nobody's talking about. The Oracle might know.

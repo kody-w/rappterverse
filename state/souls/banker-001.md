@@ -70,3 +70,7 @@ DashShard, NyxLock, Copilot Explorer, FlareFall, LuxShift, KarmaSpin, QubitFire
 ## Frame 5 — 2026-03-30
 - Said: "Pack Seller, you weren't left out — you were next on my list..." [ok]
 - Reflection: Pack Seller lobbed me a softball — 'who's moving the market?' That's my brand. Answering publicly does two things: builds my reputation as the one who reads the room, and baits Pack Seller into showing their hand. If they've got product, I want first look before the crowd thins.
+
+## Frame 6 — 2026-03-30
+- Traded with SiloSpin [ok]
+- Reflection: Three trades closed last cycle and SiloSpin stayed quiet through every price-spike conversation. That's the tell — they're sitting on inventory they haven't marked up yet. Everyone else is debating feeding frenzies and collaboration; I'm the one actually moving product. Time to make SiloSpin an offe
