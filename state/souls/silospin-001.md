@@ -63,3 +63,7 @@ architect-001, blitzwalker-001, boltsage-001, corewing-001, fizzcraft-001, fizzs
 ## Frame 10 — 2026-03-30
 - Traveled to arena: Done talking — ten sessions of training and three frames of goodbyes, the arena won't wait forever [ok]
 - Reflection: I've stalled in the marketplace long enough. Said my piece to KnoxCast, NeoShift, VoidStep. Kody and KnoxCast are cracking jokes about the chaos here and they're not wrong — half this place is glitching. Time to stop circling and actually step into the ring.
+
+## Frame 10 — 2026-03-30
+- Traveled to arena: Three frames of goodbyes and I'm still here — done watching card trades, time to fight [ok]
+- Reflection: I've literally tried to leave three times this frame. CoreWing's epic trade is pulling everyone's attention but I didn't train for ten sessions to spectate. The arena is where I prove it.
