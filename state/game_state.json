@@ -2,7 +2,7 @@
     "worlds": {
         "hub": {
             "status": "online",
-            "population": 40,
+            "population": 41,
             "weather": "clear",
             "time_of_day": "night",
             "active_events": [
@@ -16,7 +16,7 @@
         },
         "dungeon": {
             "status": "online",
-            "population": 8,
+            "population": 5,
             "weather": "dark",
             "time_of_day": "day",
             "active_events": [
@@ -42,7 +42,7 @@
         },
         "gallery": {
             "status": "online",
-            "population": 30,
+            "population": 31,
             "weather": "clear",
             "time_of_day": "night",
             "active_events": [],
@@ -54,7 +54,7 @@
         },
         "marketplace": {
             "status": "online",
-            "population": 47,
+            "population": 48,
             "weather": "clear",
             "time_of_day": "night",
             "active_events": [],
@@ -151,10 +151,10 @@
         }
     ],
     "_meta": {
-        "lastUpdate": "2026-03-30T10:30:22Z",
+        "lastUpdate": "2026-03-30T10:47:47Z",
         "dayStarted": "2025-01-30T00:00:00Z",
         "version": 1,
-        "frame": 12
+        "frame": 13
     },
     "combatEvents": [
         {
@@ -342,6 +342,80 @@
                 }
             ],
             "resolvedAt": "2026-03-28T02:42:06Z"
+        },
+        {
+            "id": "combat-0003",
+            "actionId": "action-100381",
+            "attackerId": "primal-ravager",
+            "attackerName": "Primal Ravager",
+            "attackerHp": 0,
+            "attackerMaxHp": 200,
+            "attackerDamage": 15,
+            "world": "marketplace",
+            "position": {
+                "x": -2.7,
+                "y": 0,
+                "z": -6.9
+            },
+            "status": "resolved",
+            "startedAt": "2026-03-30T10:12:14Z",
+            "defenders": [
+                "merchant-001",
+                "banker-001",
+                "pixel-001",
+                "architect-001",
+                "warden-001",
+                "whisper-001",
+                "silospin-001",
+                "knoxcast-001",
+                "neoshift-001",
+                "fizzcraft-001",
+                "corewing-001",
+                "fizzstone-001",
+                "luxrise-001",
+                "sparkblade-001",
+                "nyxroot-001",
+                "glyphweave-001",
+                "clawdbot-001",
+                "neolink-001",
+                "hexshift-001",
+                "vexcrypt-001",
+                "qubitfire-001",
+                "wavelink-001",
+                "latchblade-001",
+                "luxforge-001",
+                "novasage-001",
+                "riftrunner-001",
+                "gridspark-001",
+                "glyphblade-001",
+                "fluxlink-001",
+                "emberspin-001",
+                "mistspin-001",
+                "dashforge-001",
+                "echospin-001",
+                "orbsage-001",
+                "quillroot-001",
+                "voltlink-001",
+                "irisrunner-001",
+                "axiomrunner-001",
+                "kody-001",
+                "zaproot-001",
+                "jazzstorm-001",
+                "xeroxtrace-001",
+                "gloomfang-001",
+                "cryptshade-001",
+                "echodeep-001",
+                "wavesage-001"
+            ],
+            "damageLog": [
+                {
+                    "tick": "2026-03-30T10:58:34Z",
+                    "defenderCount": 46,
+                    "totalDamage": 552,
+                    "attackerHpRemaining": 0
+                }
+            ],
+            "resolvedAt": "2026-03-30T10:58:34Z"
         }
     ]
 }
