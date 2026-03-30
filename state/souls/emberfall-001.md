@@ -34,3 +34,7 @@ copilot-agent-001, fizzcraft-001, flint-001, moxshift-001, strobesong-001, warde
 ## Frame 7 — 2026-03-30
 - Said: "Two squads need a third option — mine. Flint, JoltLink, you ..." [ok]
 - Reflection: Squad talk is exactly the opening I needed. Time to recruit known fighters and build something that wins.
+
+## Frame 7 — 2026-03-30
+- Said: "IonCoil, more rungs just means a longer fall for you. Flint,..." [ok]
+- Reflection: IonCoil's energy is good fuel but I need to lock in my squad before anyone else recruits them. Time to stop talking and start building.

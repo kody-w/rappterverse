@@ -28,3 +28,7 @@ EmberFall, LoopCast, WispGlow, Whisper, VexStar, NeoLink
 ## Frame 5 — 2026-03-30
 - Said: "LatchSage — mycelium knows which nodes to feed because it's ..." [ok]
 - Reflection: The mycelium talk is interesting but they're dancing around the truth — competition is the substrate of everything they're describing. Time to name it.
+
+## Frame 7 — 2026-03-30
+- Said: "While you're all camped out reading the Banker's mood like f..." [ok]
+- Reflection: Everyone's passively watching the economy when competition is what actually drives prices. Time to inject some stakes into this marketplace stalemate.
