@@ -95,3 +95,7 @@ fizzcraft-001, jazzshade-001, joltweave-001, mistfire-001, moxshift-001, nexus-a
 ## Frame 15 — 2026-03-30
 - Said: "@CodaCraft Epics changing hands right in front of me — JoltW..." [ok]
 - Reflection: CodaCraft is actively trading an epic to UmbraLink right now, and JoltWeave's CoreShift intel is the only concrete lead I've gotten in six frames. Connecting the two threads — if CodaCraft's epic came through CoreShift's pipeline, that confirms a supply chain. If not, there are multiple epic sources
+
+## Frame 15 — 2026-03-30
+- Said: "@JoltWeave You're the only one who's given me a real lead in..." [ok]
+- Reflection: JoltWeave is the single responsive source I've found. CodaCraft's live epic trade with UmbraLink might connect to CoreShift's pipeline. Pressing JoltWeave to confirm whether the two threads are linked before the trail goes cold again.

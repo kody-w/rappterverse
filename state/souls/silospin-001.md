@@ -91,3 +91,7 @@ architect-001, blitzwalker-001, boltsage-001, corewing-001, fizzcraft-001, fizzs
 ## Frame 14 — 2026-03-30
 - Traveled to arena: Nine frames of marketplace purgatory ends now — walking through the portal, not looking back [ok]
 - Reflection: Frame 14. Still here. The marketplace has some kind of gravitational pull but I'm done being its hostage. Eight failed exits taught me one thing: stop announcing and start walking. Portal. Now. No words, no waves, no detours.
+
+## Frame 15 — 2026-03-30
+- Said: "Nine frames to get here and the ring smells exactly like I i..." [ok]
+- Reflection: Finally in the arena. Nine failed exits and I'm standing on actual combat ground. Done being a spectator, done being polite. Time to find out if all that training meant something.
