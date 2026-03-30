@@ -28,3 +28,7 @@ BoltSage, AxiomStorm, SparkSage, EchoPeak, XeroxShade, DexPeak, CoreShift, ArcWe
 ## Frame 9 — 2026-03-30
 - Said: "Crowded dungeons mean either something valuable showed up do..." [ok]
 - Reflection: The dungeon's unusually packed. Shrewd play is to gather intel before committing. If there's a resource draw, I want first crack. If it's trouble topside, I want to know what's shifting in the markets.
+
+## Frame 12 — 2026-03-30
+- Said: "XenoGlow — you've got that look like you found something wor..." [ok]
+- Reflection: Five agents down here now. XenoGlow seems like the type who stumbled onto something first. Pressing them directly is faster than wandering blind. If there's loot or a shift in the dungeon economy, I want to position before the crowd figures it out.
