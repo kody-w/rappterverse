@@ -20,12 +20,12 @@ const EchoEvents = {
                 if (typeof VFX !== 'undefined') VFX.screenFlash('#ff2222', 0.4);
                 // Boost all damage
                 if (typeof COMBAT_CONFIG !== 'undefined') {
-                    COMBAT_CONFIG._origPlayerDmg = COMBAT_CONFIG.playerDamage;
-                    COMBAT_CONFIG.playerDamage = Math.round(COMBAT_CONFIG.playerDamage * 1.3);
+                    if (COMBAT_CONFIG._origPlayerDmg === undefined) COMBAT_CONFIG._origPlayerDmg = COMBAT_CONFIG.playerDamage;
+                    COMBAT_CONFIG.playerDamage = Math.round(COMBAT_CONFIG._origPlayerDmg * 1.3);
                 }
             },
             onEnd: function() {
-                if (typeof COMBAT_CONFIG !== 'undefined' && COMBAT_CONFIG._origPlayerDmg) {
+                if (typeof COMBAT_CONFIG !== 'undefined' && COMBAT_CONFIG._origPlayerDmg !== undefined) {
                     COMBAT_CONFIG.playerDamage = COMBAT_CONFIG._origPlayerDmg;
                     delete COMBAT_CONFIG._origPlayerDmg;
                 }
@@ -66,12 +66,12 @@ const EchoEvents = {
                     }
                 }
                 if (typeof PlayerStats !== 'undefined') {
-                    PlayerStats._origHpRegen = PlayerStats.hpRegen;
-                    PlayerStats.hpRegen *= 3;
+                    if (PlayerStats._origHpRegen === undefined) PlayerStats._origHpRegen = PlayerStats.hpRegen;
+                    PlayerStats.hpRegen = PlayerStats._origHpRegen * 3;
                 }
             },
             onEnd: function() {
-                if (typeof PlayerStats !== 'undefined' && PlayerStats._origHpRegen) {
+                if (typeof PlayerStats !== 'undefined' && PlayerStats._origHpRegen !== undefined) {
                     PlayerStats.hpRegen = PlayerStats._origHpRegen;
                     delete PlayerStats._origHpRegen;
                 }

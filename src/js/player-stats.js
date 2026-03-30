@@ -16,6 +16,7 @@ const PlayerStats = {
   shielded: false,
   respawnTimer: 0,
   damageFlashTimer: 0,
+  _lastDeathDisplay: -1,
 
   init() {
     this.hp = this.maxHp = 100;
@@ -27,7 +28,7 @@ const PlayerStats = {
     this.kills = 0; this.deaths = 0; this.assists = 0;
     this.hpRegen = 1; this.mpRegen = 2; this.energyRegen = 5;
     this.dead = false; this.shielded = false;
-    this.respawnTimer = 0; this.damageFlashTimer = 0;
+    this.respawnTimer = 0; this.damageFlashTimer = 0; this._lastDeathDisplay = -1;
   },
 
   takeDamage(amount) {
@@ -171,8 +172,12 @@ const PlayerStats = {
   update(delta) {
     if (this.dead) {
       this.respawnTimer -= delta;
-      const timerEl = document.getElementById('death-timer');
-      if (timerEl) timerEl.textContent = 'Respawning in ' + Math.ceil(this.respawnTimer) + '...';
+      var displayVal = Math.ceil(this.respawnTimer);
+      if (displayVal !== this._lastDeathDisplay) {
+        this._lastDeathDisplay = displayVal;
+        var timerEl = document.getElementById('death-timer');
+        if (timerEl) timerEl.textContent = 'Respawning in ' + displayVal + '...';
+      }
       if (this.respawnTimer <= 0) this.respawn();
     } else {
       this.hp = Math.min(this.maxHp, this.hp + this.hpRegen * delta);

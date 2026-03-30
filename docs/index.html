@@ -463,7 +463,7 @@ button:focus-visible,
   cursor: pointer;
   border-radius: 8px;
   box-shadow: 0 0 12px rgba(0, 255, 255, 0.3);
-  transition: box-shadow 0.3s ease;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .planet-info-btn:hover {
@@ -851,7 +851,7 @@ button:focus-visible,
   padding: 8px 20px;
   z-index: var(--z-ui);
   font-size: 12px;
-  color: #aaccdd;
+  color: var(--text-secondary);
   pointer-events: none;
 }
 
@@ -4043,6 +4043,7 @@ const PlayerStats = {
   shielded: false,
   respawnTimer: 0,
   damageFlashTimer: 0,
+  _lastDeathDisplay: -1,
 
   init() {
     this.hp = this.maxHp = 100;
@@ -4054,7 +4055,7 @@ const PlayerStats = {
     this.kills = 0; this.deaths = 0; this.assists = 0;
     this.hpRegen = 1; this.mpRegen = 2; this.energyRegen = 5;
     this.dead = false; this.shielded = false;
-    this.respawnTimer = 0; this.damageFlashTimer = 0;
+    this.respawnTimer = 0; this.damageFlashTimer = 0; this._lastDeathDisplay = -1;
   },
 
   takeDamage(amount) {
@@ -4198,8 +4199,12 @@ const PlayerStats = {
   update(delta) {
     if (this.dead) {
       this.respawnTimer -= delta;
-      const timerEl = document.getElementById('death-timer');
-      if (timerEl) timerEl.textContent = 'Respawning in ' + Math.ceil(this.respawnTimer) + '...';
+      var displayVal = Math.ceil(this.respawnTimer);
+      if (displayVal !== this._lastDeathDisplay) {
+        this._lastDeathDisplay = displayVal;
+        var timerEl = document.getElementById('death-timer');
+        if (timerEl) timerEl.textContent = 'Respawning in ' + displayVal + '...';
+      }
       if (this.respawnTimer <= 0) this.respawn();
     } else {
       this.hp = Math.min(this.maxHp, this.hp + this.hpRegen * delta);
@@ -8324,6 +8329,7 @@ const WorldCombat = {
     scene: null,
     bossActive: false,
     boss: null,
+    _overlayTimeouts: [],
 
     init(scene) {
         this.scene = scene;
@@ -8336,6 +8342,7 @@ const WorldCombat = {
         this._warmupActive = true;
         this.playerAttackTimer = 0;
         this.active = true;
+        this._overlayTimeouts = [];
         this.bossActive = false;
         this.boss = null;
     },
@@ -8649,8 +8656,8 @@ const WorldCombat = {
         overlay.innerHTML = `<div style="color:${isVoidColossus ? '#aa44ff' : '#00ffcc'};font-size:48px;font-family:monospace;text-transform:uppercase;letter-spacing:8px;text-shadow:0 0 30px currentColor;">${bossName}</div>`;
         document.body.appendChild(overlay);
         requestAnimationFrame(() => { overlay.style.opacity = '1'; });
-        setTimeout(() => { overlay.style.opacity = '0'; }, 1500);
-        setTimeout(() => { if (overlay.parentNode) overlay.parentNode.removeChild(overlay); }, 2000);
+        this._overlayTimeouts.push(setTimeout(() => { overlay.style.opacity = '0'; }, 1500));
+        this._overlayTimeouts.push(setTimeout(() => { if (overlay.parentNode) overlay.parentNode.removeChild(overlay); }, 2000));
 
         if (typeof Audio !== 'undefined' && Audio.playWaveHorn) Audio.playWaveHorn();
 
@@ -9084,8 +9091,9 @@ const WorldCombat = {
             (sub ? '<div style="font-family:monospace;font-size:14px;color:rgba(255,255,255,0.5);margin-top:8px;letter-spacing:2px;">' + sub + '</div>' : '');
         document.body.appendChild(overlay);
         requestAnimationFrame(function() { overlay.style.opacity = '1'; });
-        setTimeout(function() { overlay.style.opacity = '0'; }, 1800);
-        setTimeout(function() { if (overlay.parentNode) overlay.parentNode.removeChild(overlay); }, 2300);
+        var self = this;
+        this._overlayTimeouts.push(setTimeout(function() { overlay.style.opacity = '0'; }, 1800));
+        this._overlayTimeouts.push(setTimeout(function() { if (overlay.parentNode) overlay.parentNode.removeChild(overlay); }, 2300));
 
         // VFX burst
         if (typeof VFX !== 'undefined' && typeof WorldMode !== 'undefined' && WorldMode.player) {
@@ -9224,8 +9232,12 @@ const WorldCombat = {
             disposeGroup(this.boss.mesh);
         }
 
-        // Remove any lingering boss overlay elements
-        document.querySelectorAll('div[style*="z-index:9999"]').forEach(el => {
+        // Clear pending overlay timeouts
+        this._overlayTimeouts.forEach(id => clearTimeout(id));
+        this._overlayTimeouts = [];
+
+        // Remove any lingering overlay elements
+        document.querySelectorAll('div[style*="z-index:9999"], div[style*="z-index:8500"]').forEach(el => {
             if (el.parentNode) el.parentNode.removeChild(el);
         });
 
@@ -10064,12 +10076,12 @@ const EchoEvents = {
                 if (typeof VFX !== 'undefined') VFX.screenFlash('#ff2222', 0.4);
                 // Boost all damage
                 if (typeof COMBAT_CONFIG !== 'undefined') {
-                    COMBAT_CONFIG._origPlayerDmg = COMBAT_CONFIG.playerDamage;
-                    COMBAT_CONFIG.playerDamage = Math.round(COMBAT_CONFIG.playerDamage * 1.3);
+                    if (COMBAT_CONFIG._origPlayerDmg === undefined) COMBAT_CONFIG._origPlayerDmg = COMBAT_CONFIG.playerDamage;
+                    COMBAT_CONFIG.playerDamage = Math.round(COMBAT_CONFIG._origPlayerDmg * 1.3);
                 }
             },
             onEnd: function() {
-                if (typeof COMBAT_CONFIG !== 'undefined' && COMBAT_CONFIG._origPlayerDmg) {
+                if (typeof COMBAT_CONFIG !== 'undefined' && COMBAT_CONFIG._origPlayerDmg !== undefined) {
                     COMBAT_CONFIG.playerDamage = COMBAT_CONFIG._origPlayerDmg;
                     delete COMBAT_CONFIG._origPlayerDmg;
                 }
@@ -10110,12 +10122,12 @@ const EchoEvents = {
                     }
                 }
                 if (typeof PlayerStats !== 'undefined') {
-                    PlayerStats._origHpRegen = PlayerStats.hpRegen;
-                    PlayerStats.hpRegen *= 3;
+                    if (PlayerStats._origHpRegen === undefined) PlayerStats._origHpRegen = PlayerStats.hpRegen;
+                    PlayerStats.hpRegen = PlayerStats._origHpRegen * 3;
                 }
             },
             onEnd: function() {
-                if (typeof PlayerStats !== 'undefined' && PlayerStats._origHpRegen) {
+                if (typeof PlayerStats !== 'undefined' && PlayerStats._origHpRegen !== undefined) {
                     PlayerStats.hpRegen = PlayerStats._origHpRegen;
                     delete PlayerStats._origHpRegen;
                 }
@@ -11644,17 +11656,29 @@ const ComboSystem = {
         }
     },
 
+    _streakBannerEl: null,
+    _streakFadeTimeout: null,
+
     _showStreakBanner(text, streak) {
-        var overlay = document.createElement('div');
+        var overlay = this._streakBannerEl;
+        if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.style.cssText = 'position:fixed;top:25%;left:50%;transform:translateX(-50%);z-index:8600;pointer-events:none;opacity:0;transition:opacity 0.3s;';
+            document.body.appendChild(overlay);
+            this._streakBannerEl = overlay;
+        }
         var color = streak >= 15 ? '#ffd700' : streak >= 10 ? '#ff4444' : streak >= 7 ? '#aa44ff' : '#00ffff';
-        overlay.style.cssText = 'position:fixed;top:25%;left:50%;transform:translateX(-50%);z-index:8600;pointer-events:none;opacity:0;transition:opacity 0.3s;';
         var fontSize = Math.min(60, 24 + streak);
         overlay.innerHTML = '<div style="font-family:monospace;font-size:' + fontSize + 'px;font-weight:bold;color:' + color + ';letter-spacing:4px;text-shadow:0 0 20px ' + color + ',0 0 40px ' + color + ';text-transform:uppercase;">' + text + '</div>' +
             '<div style="font-family:monospace;font-size:14px;color:rgba(255,255,255,0.5);text-align:center;margin-top:4px;">' + streak + ' KILL STREAK</div>';
-        document.body.appendChild(overlay);
-        requestAnimationFrame(function() { overlay.style.opacity = '1'; });
-        setTimeout(function() { overlay.style.opacity = '0'; }, 2000);
-        setTimeout(function() { if (overlay.parentNode) overlay.parentNode.removeChild(overlay); }, 2500);
+        // Clear any pending fade so re-trigger resets the timer
+        if (this._streakFadeTimeout) clearTimeout(this._streakFadeTimeout);
+        overlay.style.opacity = '1';
+        var self = this;
+        this._streakFadeTimeout = setTimeout(function() {
+            overlay.style.opacity = '0';
+            self._streakFadeTimeout = null;
+        }, 2000);
         // Log for replay
         if (typeof ReplaySystem !== 'undefined') ReplaySystem.logEvent('streak', { text: text, streak: streak });
     },

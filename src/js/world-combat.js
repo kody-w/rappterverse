@@ -29,6 +29,7 @@ const WorldCombat = {
     scene: null,
     bossActive: false,
     boss: null,
+    _overlayTimeouts: [],
 
     init(scene) {
         this.scene = scene;
@@ -41,6 +42,7 @@ const WorldCombat = {
         this._warmupActive = true;
         this.playerAttackTimer = 0;
         this.active = true;
+        this._overlayTimeouts = [];
         this.bossActive = false;
         this.boss = null;
     },
@@ -354,8 +356,8 @@ const WorldCombat = {
         overlay.innerHTML = `<div style="color:${isVoidColossus ? '#aa44ff' : '#00ffcc'};font-size:48px;font-family:monospace;text-transform:uppercase;letter-spacing:8px;text-shadow:0 0 30px currentColor;">${bossName}</div>`;
         document.body.appendChild(overlay);
         requestAnimationFrame(() => { overlay.style.opacity = '1'; });
-        setTimeout(() => { overlay.style.opacity = '0'; }, 1500);
-        setTimeout(() => { if (overlay.parentNode) overlay.parentNode.removeChild(overlay); }, 2000);
+        this._overlayTimeouts.push(setTimeout(() => { overlay.style.opacity = '0'; }, 1500));
+        this._overlayTimeouts.push(setTimeout(() => { if (overlay.parentNode) overlay.parentNode.removeChild(overlay); }, 2000));
 
         if (typeof Audio !== 'undefined' && Audio.playWaveHorn) Audio.playWaveHorn();
 
@@ -789,8 +791,9 @@ const WorldCombat = {
             (sub ? '<div style="font-family:monospace;font-size:14px;color:rgba(255,255,255,0.5);margin-top:8px;letter-spacing:2px;">' + sub + '</div>' : '');
         document.body.appendChild(overlay);
         requestAnimationFrame(function() { overlay.style.opacity = '1'; });
-        setTimeout(function() { overlay.style.opacity = '0'; }, 1800);
-        setTimeout(function() { if (overlay.parentNode) overlay.parentNode.removeChild(overlay); }, 2300);
+        var self = this;
+        this._overlayTimeouts.push(setTimeout(function() { overlay.style.opacity = '0'; }, 1800));
+        this._overlayTimeouts.push(setTimeout(function() { if (overlay.parentNode) overlay.parentNode.removeChild(overlay); }, 2300));
 
         // VFX burst
         if (typeof VFX !== 'undefined' && typeof WorldMode !== 'undefined' && WorldMode.player) {
@@ -929,8 +932,12 @@ const WorldCombat = {
             disposeGroup(this.boss.mesh);
         }
 
-        // Remove any lingering boss overlay elements
-        document.querySelectorAll('div[style*="z-index:9999"]').forEach(el => {
+        // Clear pending overlay timeouts
+        this._overlayTimeouts.forEach(id => clearTimeout(id));
+        this._overlayTimeouts = [];
+
+        // Remove any lingering overlay elements
+        document.querySelectorAll('div[style*="z-index:9999"], div[style*="z-index:8500"]').forEach(el => {
             if (el.parentNode) el.parentNode.removeChild(el);
         });
 

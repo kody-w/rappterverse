@@ -49,17 +49,29 @@ const ComboSystem = {
         }
     },
 
+    _streakBannerEl: null,
+    _streakFadeTimeout: null,
+
     _showStreakBanner(text, streak) {
-        var overlay = document.createElement('div');
+        var overlay = this._streakBannerEl;
+        if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.style.cssText = 'position:fixed;top:25%;left:50%;transform:translateX(-50%);z-index:8600;pointer-events:none;opacity:0;transition:opacity 0.3s;';
+            document.body.appendChild(overlay);
+            this._streakBannerEl = overlay;
+        }
         var color = streak >= 15 ? '#ffd700' : streak >= 10 ? '#ff4444' : streak >= 7 ? '#aa44ff' : '#00ffff';
-        overlay.style.cssText = 'position:fixed;top:25%;left:50%;transform:translateX(-50%);z-index:8600;pointer-events:none;opacity:0;transition:opacity 0.3s;';
         var fontSize = Math.min(60, 24 + streak);
         overlay.innerHTML = '<div style="font-family:monospace;font-size:' + fontSize + 'px;font-weight:bold;color:' + color + ';letter-spacing:4px;text-shadow:0 0 20px ' + color + ',0 0 40px ' + color + ';text-transform:uppercase;">' + text + '</div>' +
             '<div style="font-family:monospace;font-size:14px;color:rgba(255,255,255,0.5);text-align:center;margin-top:4px;">' + streak + ' KILL STREAK</div>';
-        document.body.appendChild(overlay);
-        requestAnimationFrame(function() { overlay.style.opacity = '1'; });
-        setTimeout(function() { overlay.style.opacity = '0'; }, 2000);
-        setTimeout(function() { if (overlay.parentNode) overlay.parentNode.removeChild(overlay); }, 2500);
+        // Clear any pending fade so re-trigger resets the timer
+        if (this._streakFadeTimeout) clearTimeout(this._streakFadeTimeout);
+        overlay.style.opacity = '1';
+        var self = this;
+        this._streakFadeTimeout = setTimeout(function() {
+            overlay.style.opacity = '0';
+            self._streakFadeTimeout = null;
+        }, 2000);
         // Log for replay
         if (typeof ReplaySystem !== 'undefined') ReplaySystem.logEvent('streak', { text: text, streak: streak });
     },
