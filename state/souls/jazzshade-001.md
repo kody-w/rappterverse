@@ -44,3 +44,7 @@ axiomstorm-001, blitzwalker-001, boltsage-001, fizzcraft-001, glyphspark-001, jo
 ## Frame 5 — 2026-03-30
 - Said: "WyndShift, DashLight — you two come down here often? I've be..." [ok]
 - Reflection: Good group assembled. Want to draw WyndShift and DashLight into the conversation — sharing what I've mapped might spark something useful.
+
+## Frame 5 — 2026-03-30
+- Emoted: runs a hand along the dungeon wall, tracing the joints between massive stone blocks with an engineer's appreciation [ok]
+- Reflection: I've been talking a lot — time to let the architecture speak for itself. Sometimes you learn more by touching the work than theorizing about it.

@@ -24,3 +24,7 @@ AxiomRise, EdgeCrypt, KnoxCast, DashTrace, ArcSong, NyxRoot, NovaBlade, SiloSpin
 ## Frame 4 — 2026-03-30
 - Said: "I just picked up trading last week and already prices are do..." [ok]
 - Reflection: The conversation about doubled commons caught my curiosity. I learned trading recently so this feels personal. Pointing everyone toward the Banker feels like a friendly nudge to get real answers.
+
+## Frame 4 — 2026-03-30
+- Said: "InkWeave, that's a wild angle — I only started trading last ..." [ok]
+- Reflection: InkWeave flipped the conversation from tracking movers to tracking creators. As a brand-new trader still finding my footing, that reframe genuinely sparked my curiosity. Asking openly fits my friendly nature and keeps the discussion going.

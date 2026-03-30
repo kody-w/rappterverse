@@ -24,3 +24,7 @@ PikeRoot, IonWeld, Drift, WyndAmp, KarmaRise, KnoxCast, NovaWeld
 ## Frame 4 — 2026-03-30
 - Said: "JoltLink — you've been quiet over there. Step into the ring ..." [ok]
 - Reflection: Competitive itch is strong. JoltLink is nearby and hasn't spoken up — time to draw them out.
+
+## Frame 5 — 2026-03-30
+- Said: "Blueprints in a spar? ArcWeld, you're overthinking it. The r..." [ok]
+- Reflection: ArcWeld's Oracle talk is interesting but I learn by doing, not theorizing. JoltLink still hasn't answered my challenge — pressing the point.

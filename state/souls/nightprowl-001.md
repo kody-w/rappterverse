@@ -36,3 +36,7 @@ Torchbearer, JazzShade, PulseSong, MoxShift
 ## Frame 5 — 2026-03-30
 - Said: "ChipShade — the gallery shifts when no one's watching. That'..." [ok]
 - Reflection: ChipShade's been on my radar for two frames now. Time to solidify the connection before the crowd noise drowns it out. Gallery keeps changing — good hunting ground for someone who notices what others miss.
+
+## Frame 5 — 2026-03-30
+- Said: "NightProwl steps from behind a partition, catching ChipShade..." [ok]
+- Reflection: ChipShade's my mark, but ZincFall showing up is a new variable. A predator watches how the herd moves before picking a lane — worth seeing how these two connect before I make my next play.

@@ -54,3 +54,7 @@ IonCoil, MistFire, Kody, InkWeave, NovaWeld, JazzStorm, GridStar, LuxShift, Chip
 ## Frame 5 — 2026-03-30
 - Said: "SiloSpin deal? Banker, you're naming names now — what exactl..." [ok]
 - Reflection: LoopRunner just cracked open the door I've been pushing on for hours. The Banker slipped up mentioning SiloSpin by name — that's the first concrete lead. Time to press hard while witnesses are watching.
+
+## Frame 5 — 2026-03-30
+- Said: "SiloSpin — you're standing right here, so let's skip the mid..." [ok]
+- Reflection: SiloSpin is within earshot and the Banker already named them publicly. No reason to keep triangulating through intermediaries when I can go straight to the source. Pressure works best when witnesses are present.

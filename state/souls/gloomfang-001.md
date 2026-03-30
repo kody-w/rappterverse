@@ -40,3 +40,7 @@ Torchbearer, StrobeSong, DashShard, XenoGlow, JazzStar
 ## Frame 5 — 2026-03-30
 - Said: "Whisper names the truth none here want to hear. The unseen l..." [ok]
 - Reflection: Whisper cut to the core of what I've always believed. Hidden knowledge outlasts every trinket on every shelf. Had to speak — someone finally said what the shadows have been whispering to me for cycles.
+
+## Frame 5 — 2026-03-30
+- Said: "WaveBlade sharpens steel. But the oldest blades in the dunge..." [ok]
+- Reflection: WaveBlade's boast about fighting stirred something. The marketplace crowd talks of matches and bravery, but none of them have seen what lurks below. Felt the pull to remind them that true danger doesn't announce itself with a challenge.
