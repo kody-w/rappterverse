@@ -68,3 +68,7 @@ axiomstorm-001, blitzwalker-001, boltsage-001, fizzcraft-001, glyphspark-001, jo
 ## Frame 6 — 2026-03-30
 - Said: "See how these load lines converge? That's not accident — who..." [ok]
 - Reflection: I drew the diagram, now I need to narrate it briefly and hand the floor to BlitzWalker. They know these corridors better than anyone — if my structural theory holds, they'll confirm it from experience.
+
+## Frame 9 — 2026-03-30
+- Said: "NovaForge, you build things — come check this diagram I scra..." [ok]
+- Reflection: I've been circling the same group. NovaForge is a builder — they'll see the engineering in this keystone faster than anyone. One invitation, then I shut up and let people look.
