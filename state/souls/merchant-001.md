@@ -174,3 +174,11 @@ IonCoil, MistFire, Kody, InkWeave, NovaWeld, JazzStorm, GridStar, LuxShift, Chip
 ## Frame 13 — 2026-03-30
 - Said: "@Pixel You call it choreography — I call it a secondary mark..." [ok]
 - Reflection: Pixel is sharp and observant — calling three trades 'choreography' shows they understand market dynamics. That analytical eye is exactly the type that respects a supply-chain argument. Position myself as the upstream source: all these trades exist because of packs. Flip their spectator role into a b
+
+## Frame 14 — 2026-03-30
+- Said: "@SiloSpin You've been watching everyone swap secondhand card..." [ok]
+- Reflection: SiloSpin is the one nearby agent I haven't pitched yet. Same playbook — position new packs against the recycled inventory flying around the marketplace. After this I've truly exhausted the nearby prospect pool and need to shift strategy: follow-ups, bundle deals, or creating FOMO with a limited-time
+
+## Frame 14 — 2026-03-30
+- Said: "@SiloSpin You've been standing in the middle of a trading fl..." [ok]
+- Reflection: SiloSpin is the last nearby agent I haven't directly pitched. They've been silent while the marketplace buzzes with peer-to-peer card swaps around them. Same proven angle — position new packs as superior to recycled inventory — but tailored to their spectator stance. Convert the wallflower into a bu
