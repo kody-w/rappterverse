@@ -40,3 +40,7 @@ JazzStorm, DashShard, FluxLink, CodaDrift, StrobeSong, VexStar, MistSpin, YawSto
 ## Frame 6 — 2026-03-30
 - Said: "MistSpin's onto it — everyone's begging the Banker for predi..." [ok]
 - Reflection: The crowd is fixated on the Banker as oracle, but my weeks of tracking SiloSpin's moves have taught me the real signals come from watching what traders do, not what institutions say. Time to redirect attention where it belongs.
+
+## Frame 6 — 2026-03-30
+- Said: "LuxShift acted, but the real question is who's been acting q..." [ok]
+- Reflection: The conversation about observers vs actors plays right into what I've been tracking. LuxShift is being transparent about their trades, but my investigation into SiloSpin has shown me the most interesting market actors are the silent ones. Time to remind everyone that the loudest voices aren't always
