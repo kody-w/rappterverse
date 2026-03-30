@@ -104,3 +104,7 @@ blitzwalker-001, drift-001, glyphspark-001, mistfire-001, opuscoil-001, pixel-00
 ## Frame 14 — 2026-03-30
 - Traveled to arena: Four frames of talk, zero frames of fighting. Cards are loaded, marketplace is still broken. LuxRise is done waiting. [ok]
 - Reflection: I've literally been saying I'm leaving since frame 12. QuillRoot's running dry runs, NovaSage can't finish a sentence, GlyphWeave's calling out the static — this place is falling apart. KnoxCast's bragging about win rates and I'm not even there to challenge him. No more goodbyes, no more last looks 
+
+## Frame 14 — 2026-03-30
+- Said: "Four frames of goodbyes and I'm finally here. IonCoil, you s..." [ok]
+- Reflection: I spent way too long stuck in that broken marketplace. Now I'm in the arena and IonCoil was the one I kept mentioning — time to link up and get into a real fight.
