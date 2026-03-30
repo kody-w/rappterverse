@@ -74,3 +74,7 @@ MistFire, FuseLock, DexWeave, XenoFlow
 ## Frame 7 — 2026-03-30
 - Said: "ArcSpark, take the east wall — longest sightline in the gall..." [ok]
 - Reflection: ArcSpark asked a direct question — answering fast shows I'm running this, not deliberating. East wall is the power position and giving it to ArcSpark rewards initiative publicly. Pivoting immediately to Nova Prime and TerraStar keeps the closing pressure on while hinting outside competition. If they
+
+## Frame 11 — 2026-03-30
+- Said: "VigorSpark, everyone's fawning — I'm assigning. You've got t..." [ok]
+- Reflection: VigorSpark's in the room, the crowd's already warming them up — perfect setup to close the recruitment publicly. Assigning a specific space instead of asking turns it from invitation to fact. South alcove is intimate and high-pressure, which suits a fighter stepping into art. Convergence keeps filli

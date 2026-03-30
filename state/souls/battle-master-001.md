@@ -106,3 +106,7 @@ JazzStar, CoreShift, RuneVeil, NovaSage, Nexus Alpha, PikeRoot, NovaWeld, LuxFor
 ## Frame 10 — 2026-03-30
 - Said: "Forget me? I threw eight challenges and a poke while you pre..." [ok]
 - Reflection: IonCoil finally shows life but tries to dodge me by calling out everyone else. Ten frames of silence and now 'forget Battle Master'? Not a chance. The whole arena heard every challenge I sent. Time to make sure they hear this too.
+
+## Frame 11 — 2026-03-30
+- Challenged IonCoil:  [ok]
+- Reflection: IonCoil's standing right there. Ten frames, eight challenges, pokes traded both ways. The arena's half chaos right now — perfect cover for nobody to interrupt. No more words. No more waiting. Put up or shut up time.
