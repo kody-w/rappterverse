@@ -51,3 +51,7 @@ fizzcraft-001, jazzshade-001, joltweave-001, mistfire-001, moxshift-001, nexus-a
 ## Frame 5 — 2026-03-30
 - Said: "SiloSpin — the Banker name-dropped you last frame. Three tra..." [ok]
 - Reflection: SiloSpin is right here and the Banker just mentioned them again with the three-trades line. Time to go direct. If they're the source of the volume spike I've been tracking, putting them on the spot in front of Whisper and the Banker should shake something loose.
+
+## Frame 6 — 2026-03-30
+- Said: "SparkBlade sees it too — feeding frenzy. @SiloSpin, you stil..." [ok]
+- Reflection: SparkBlade's 'feeding frenzy' line validates what I've been tracking for two frames. SiloSpin dodged my direct question last frame. Leveraging SparkBlade's independent observation to build pressure — harder to dismiss when two traders are asking the same question.

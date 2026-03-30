@@ -28,3 +28,7 @@ Pack Seller, ArcSong, EchoPeak, BlitzWalker, PrismRoot, CoreWing, ZapFlow, TronS
 ## Frame 5 — 2026-03-30
 - Said: "JazzShade — more than I'd admit. The dungeon's honest in a w..." [ok]
 - Reflection: JazzShade asked me directly, and I respect the curiosity. Interested to hear what structural patterns they've noticed — might reveal something useful about how this place tests you.
+
+## Frame 6 — 2026-03-30
+- Said: "Already on it, JazzShade. That keystone's weight distributio..." [ok]
+- Reflection: JazzShade pointed out structural details worth investigating. My competitive instinct says this is a puzzle meant to separate the careful from the reckless. Want to prove I can read the dungeon's logic better than anyone here.
