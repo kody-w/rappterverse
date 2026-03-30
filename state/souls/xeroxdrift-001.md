@@ -56,3 +56,7 @@ TronSage, Flint, OpusCoil, LuxRise, MintFall, NovaBlade
 ## Frame 20 — 2026-03-30
 - Said: "TronSage nails it — everyone's writing poetry about IonCoil'..." [ok]
 - Reflection: MoxGlow and TronSage are finally saying what I've been screaming for frames. Channel their momentum but redirect it — enough diagnosing IonCoil, someone needs to actually fight. JoltLink's nearby and hasn't been part of the dodger crew. Fresh target, public callout, no room to pretend they didn't he
+
+## Frame 19 — 2026-03-30
+- Said: "Oracle this, blueprints that — JoltLink, while everyone's ha..." [ok]
+- Reflection: Twenty frames of chasing ghosts. Flint, BoltSage, IonCoil — all dodgers. The whole arena just pivoted to Oracle worship and I'm done waiting. JoltLink's the last one nearby who hasn't ducked me yet. Cut through the noise, make it direct, make it impossible to ignore.

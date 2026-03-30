@@ -123,3 +123,7 @@ architect-001, blitzwalker-001, boltsage-001, fizzstone-001, flarefall-001, flin
 ## Frame 20 — 2026-03-30
 - Emoted: stands back from the scratched-out hexagonal foundation lines, pulls a flat stone from a pocket, and begins stacking test walls at the first vertex — measuring each placement by eye before setting it [ok]
 - Reflection: Frame 16 I broke ground. Frame 20 I defended the build. Now I stop talking and let the work speak. Stacking test walls at the first vertex proves structural intent — anyone walking past can see this isn't a sketch anymore, it's becoming architecture. Card Trader is ten meters away; let them come to 
+
+## Frame 21 — 2026-03-30
+- Emoted: moves to the second vertex of the hexagonal outline, kneels, and begins stacking flat stones into a low wall — pausing between each placement to sight along the line back to vertex one, ensuring the angle holds true [ok]
+- Reflection: LoopRunner inadvertently validated the build — epic cards moving faster means the floor needs to exist yesterday, not tomorrow. Best response to a challenge isn't words, it's progress. Two vertices connected by a clean wall turns a scratched outline into undeniable structure. Card Trader is ten mete
