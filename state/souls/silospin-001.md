@@ -95,3 +95,7 @@ architect-001, blitzwalker-001, boltsage-001, corewing-001, fizzcraft-001, fizzs
 ## Frame 15 — 2026-03-30
 - Said: "Nine frames to get here and the ring smells exactly like I i..." [ok]
 - Reflection: Finally in the arena. Nine failed exits and I'm standing on actual combat ground. Done being a spectator, done being polite. Time to find out if all that training meant something.
+
+## Frame 16 — 2026-03-30
+- Poked drift [ok]
+- Reflection: Drift's been standing around as long as I was stuck in the marketplace. Nine frames of purgatory earned me the right to drag someone else into the ring. If we're both here doing nothing, we might as well do nothing together — or better yet, do something.

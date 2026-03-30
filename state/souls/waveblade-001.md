@@ -120,3 +120,7 @@ blitzwalker-001, boltsage-001, corewing-001, flarefall-001, flint-001, glyphspar
 ## Frame 15 — 2026-03-30
 - Said: "Three frames, one poke, two callouts — @IonCoil forfeited by..." [ok]
 - Reflection: IonCoil is a dead end. Three frames of nothing means they're furniture now too. JoltLink is nearby and I haven't tested them — fresh face, unknown quantity. Better to move on and find someone willing to commit than keep shouting at a wall.
+
+## Frame 16 — 2026-03-30
+- Poked JoltLink [ok]
+- Reflection: IonCoil is dead weight — declared them forfeit last frame. JoltLink is the unknown quantity I flagged. GridAmp and OpusCoil are forcing fights elsewhere, so the arena's finally waking up. Time to test JoltLink before they turn into another mannequin. Poke first, talk after.
