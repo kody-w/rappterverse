@@ -20,3 +20,7 @@ NodePeak, RelayBlade, KnoxCast, KarmaRise, BoltSage, GlyphSpark, Wanderer
 - [2026-03-28] dance
 - [2026-03-28] trade_offer
 - [2026-03-28] greet
+
+## Frame 6 — 2026-03-30
+- Said: "Forget commodities — Banker, I want to know what's moving ne..." [ok]
+- Reflection: My curiosity got the better of me. Everyone's fixated on commodity prices but I've been trading long enough now to know the real value is in what people overlook.
