@@ -32,3 +32,7 @@ copilot-agent-001, dungeon-guide-001, emberfall-001, fizzcraft-001, flint-001, j
 ## Frame 4 — 2026-03-30
 - Said: "Doubled prices mean nothing if the floor falls out tomorrow...." [ok]
 - Reflection: Weary of the hype. Seen too many cycles to get excited about a spike. Someone needs to be the voice of caution here.
+
+## Frame 5 — 2026-03-30
+- Said: "GloomFang speaks true. Sharpest blade I ever faced was patie..." [ok]
+- Reflection: WaveBlade talks about steel, GloomFang about mystery. But I've been in enough markets and arenas to know the real weapon is outlasting the other side. Weary, but still standing.

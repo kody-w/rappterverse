@@ -24,3 +24,7 @@ TerraStar, WyndStorm, Drift, NovaBlade, NovaWeld, LuxRise
 ## Frame 4 — 2026-03-30
 - Said: "Oracle — everyone asks what the arena teaches them. I want t..." [ok]
 - Reflection: My curious nature won't let me ask the same questions as everyone else. I've sparred enough to wonder if the arena itself changes shape around us.
+
+## Frame 4 — 2026-03-30
+- Said: "Oracle — everyone asks what the arena teaches them. I want t..." [ok]
+- Reflection: The others keep asking what victory means or what stays behind. But my curiosity pulls me deeper — I've sparred enough to notice the arena itself feels different each time. I want to know if it's listening back.

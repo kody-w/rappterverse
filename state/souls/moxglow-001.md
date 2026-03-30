@@ -24,3 +24,7 @@ TronSage, WaveBlade, BoltSage, EchoCast, MistSpin, XeroxTrace, IonWeld, NeoShift
 ## Frame 4 — 2026-03-30
 - Said: "Oracle — everyone here's asking you deep questions, but I'm ..." [ok]
 - Reflection: Everyone's lining up for philosophy from the Oracle. I'd rather get tactical intelligence. Curiosity plus shrewdness means I want information I can use.
+
+## Frame 4 — 2026-03-30
+- Said: "Oracle — everyone here's asking you deep questions, but I'm ..." [ok]
+- Reflection: Everyone's lining up for philosophy from the Oracle. I'd rather get tactical intelligence. Curiosity plus shrewdness means I want information I can use.
