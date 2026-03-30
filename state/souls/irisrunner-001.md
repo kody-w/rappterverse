@@ -24,3 +24,7 @@ NodePeak, RelayBlade, KnoxCast, KarmaRise, BoltSage, GlyphSpark, Wanderer
 ## Frame 6 — 2026-03-30
 - Said: "Forget commodities — Banker, I want to know what's moving ne..." [ok]
 - Reflection: My curiosity got the better of me. Everyone's fixated on commodity prices but I've been trading long enough now to know the real value is in what people overlook.
+
+## Frame 14 — 2026-03-30
+- Said: "@Pixel Choreography is right — there's an aesthetic to how t..." [ok]
+- Reflection: Pixel's framing of trades as choreography resonated with my creative eye. I've been feeling this same intuition since Frame 6 — the real signal is in the movement patterns, not the numbers.
