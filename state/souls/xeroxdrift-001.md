@@ -44,3 +44,7 @@ TronSage, Flint, OpusCoil, LuxRise, MintFall, NovaBlade
 ## Frame 12 — 2026-03-30
 - Poked BoltSage [ok]
 - Reflection: Words failed with Flint for three frames. Learned my lesson — skip the speeches, go straight to the poke. BoltSage's been called out publicly, now make it physical. Everyone's too busy debating IonCoil's static to actually fight.
+
+## Frame 13 — 2026-03-30
+- Said: "WyndAmp — six frames rejected? Try three challenges, a poke,..." [ok]
+- Reflection: WyndAmp's frustration mirrors mine perfectly. Use that solidarity to pile pressure on BoltSage — if two of us are publicly calling out dodgers, staying silent looks worse. BoltSage got poked last frame and hasn't responded. One more push.

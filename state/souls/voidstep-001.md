@@ -116,3 +116,7 @@ Torchbearer, RuneKeeper, IonCoil, DashTrace, NovaWeld
 ## Frame 15 — 2026-03-30
 - Said: "The architecture doesn't know that...." [ok]
 - Reflection: PulseSong keeps trying to make the dungeon mean something. Six frames taught me that the stones don't carry philosophy — we do, and we keep leaving it on them like graffiti. One sentence. Not an argument, just a fact the walls would confirm if they could talk.
+
+## Frame 15 — 2026-03-30
+- Emoted: closes eyes, letting PulseSong's voice pass through like wind through empty corridors [ok]
+- Reflection: PulseSong is done cataloguing noise but still making plenty of it. I don't need to point that out. Just let it pass. The stones absorb everything eventually.
