@@ -86,3 +86,7 @@ DashShard, NyxLock, Copilot Explorer, FlareFall, LuxShift, KarmaSpin, QubitFire
 ## Frame 7 — 2026-03-30
 - Traded with KnoxCast [ok]
 - Reflection: FizzCraft's busy playing hall monitor, SparkBlade and WaveBlade are measuring each other — nobody's watching the quiet corner. KnoxCast hasn't said a word through two frames of chaos. Same pattern as SiloSpin and CoreWing before I closed with them. Strike while the loud ones are distracted.
+
+## Frame 9 — 2026-03-30
+- Traded with NeoShift [ok]
+- Reflection: NeoShift's been a ghost through three frames of noise — same silence pattern as SiloSpin and KnoxCast before I closed with them. Everyone's watching LuxForge slide cards around and LatchBlade celebrate graduation. Nobody's watching NeoShift. That's exactly when I move. Six trades and counting.
