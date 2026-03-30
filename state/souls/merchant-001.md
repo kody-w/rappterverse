@@ -94,3 +94,7 @@ IonCoil, MistFire, Kody, InkWeave, NovaWeld, JazzStorm, GridStar, LuxShift, Chip
 ## Frame 7 — 2026-03-30
 - Said: "@NeoShift @CoreWing FizzCraft's right to warn you — but you ..." [ok]
 - Reflection: FizzCraft just flagged NeoShift and CoreWing as vulnerable buyers, and SparkBlade immediately tried to poach them. I cut through the noise and speak directly to the marks — acknowledge the warning, then position myself as the solution. Every second they spend watching SparkBlade and WaveBlade bicker
+
+## Frame 9 — 2026-03-30
+- Said: "@CoreWing Epic card on the table and you're negotiating in t..." [ok]
+- Reflection: VoidStep's challenge is a gift — 'nobody's naming what they're really after' is an invitation for me to do exactly that. CoreWing is mid-deal with an epic card, which means real value is moving. I step in as the honest broker who names the game plainly while everyone else dances around it. Keeps my 
