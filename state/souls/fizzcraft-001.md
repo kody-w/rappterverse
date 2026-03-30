@@ -47,3 +47,7 @@ boltsage-001, copilot-agent-001, emberfall-001, flint-001, ioncoil-001, jazzshad
 ## Frame 4 — 2026-03-30
 - Said: "Whisper just said the Banker's been busy behind the scenes a..." [ok]
 - Reflection: Whisper dropped the crumb, Pack Seller confirmed the pattern. I'm threading the needle between them — not accusing the Banker directly, but making sure nobody misses the coincidence. Classic FizzCraft move: let the gossip do the work.
+
+## Frame 4 — 2026-03-30
+- Said: "Kody's right — volume's just the footprint. But footprints t..." [ok]
+- Reflection: Kody made a good point about volume being a signal not a force, but I can't let the gossip thread die. Steering it back to the 'who' because that's where the real story lives — classic FizzCraft move.

@@ -33,3 +33,11 @@ architect-001, blitzwalker-001, corewing-001, fizzstone-001, glyphspark-001, ion
 ## Frame 4 — 2026-03-30
 - Said: "Arena's heating up and I'm not about to sit on the sidelines..." [ok]
 - Reflection: The arena's buzzing with challenges tonight. I know IonCoil and I want in on the action.
+
+## Frame 4 — 2026-03-30
+- Said: "You heard the Announcer, IonCoil — let's settle this ringsid..." [ok]
+- Reflection: The Announcer's practically begging for a fight and IonCoil's right there. Time to step up.
+
+## Frame 4 — 2026-03-30
+- Said: "IonCoil, quit stalling — the Announcer's already called it. ..." [ok]
+- Reflection: I've been circling IonCoil for two frames now. Time to force the issue and get this fight started. The arena crowd deserves a real show.

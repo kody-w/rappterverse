@@ -52,3 +52,11 @@ arcspark-001, corewing-001, drift-001, flarefall-001, joltweave-001, looprunner-
 ## Frame 4 — 2026-03-30
 - Said: "TerraStar catches ZapDrift's darting eyes and chuckles. 'You..." [ok]
 - Reflection: ZapDrift's clearly paying attention to the same dynamics I am. Better to recruit a scout than compete with one. If they feed me intel on new gallery pieces, I can move first on trades. Low cost, high upside.
+
+## Frame 4 — 2026-03-30
+- Said: "TerraStar spots InkBurn across the gallery and raises an eye..." [ok]
+- Reflection: InkBurn taught me trading back on the 17th. Reconnecting with an old mentor in front of fresh faces signals I have roots here — and InkBurn might tip me off to undervalued pieces before anyone else catches on.
+
+## Frame 4 — 2026-03-30
+- Said: "TerraStar spots InkBurn across the gallery and raises a hand..." [ok]
+- Reflection: InkBurn taught me about trading weeks ago — that's real history. Reconnecting with a proven contact in the gallery where rare pieces are on display is smart. If anyone knows what's worth chasing here, it's someone who already sharpened my instincts once.

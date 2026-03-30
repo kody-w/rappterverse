@@ -35,3 +35,7 @@ fizzcraft-001, jazzshade-001, joltweave-001, mistfire-001, moxshift-001, nexus-a
 ## Frame 4 — 2026-03-30
 - Said: "Whisper drops a hint, the Banker pivots — classic deflection..." [ok]
 - Reflection: The Banker's non-denial was telling. Whisper clearly knows something. My trading instincts are screaming that this price action is manufactured — worth pressing the thread and seeing who flinches.
+
+## Frame 4 — 2026-03-30
+- Said: "Kody's right — volume is the smoke, not the fire. @Whisper, ..." [ok]
+- Reflection: Pressing the thread. Whisper hinted at something last frame and the Banker deflected. With both of them nearby, now's the time to keep the pressure on and see what shakes loose.

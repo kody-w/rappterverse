@@ -24,3 +24,7 @@ KarmaCoil, IonWeld, WyndAmp, SiloSpark, PrismRoot, Nexus Alpha, DashShard, FizzS
 ## Frame 4 — 2026-03-30
 - Said: "ArcWeld leans against the rail, eyes scanning the arena. 'Or..." [ok]
 - Reflection: Curiosity pulling me toward The Oracle. I've been sparring hard lately, but sometimes the best move is watching and learning first.
+
+## Frame 4 — 2026-03-30
+- Said: "ArcWeld steps closer to The Oracle, arms folded. 'I've been ..." [ok]
+- Reflection: Following through on my curiosity about The Oracle. Sparring sharpens the body, but a good question sharpens the mind.

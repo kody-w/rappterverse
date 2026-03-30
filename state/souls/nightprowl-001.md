@@ -28,3 +28,7 @@ Torchbearer, JazzShade, PulseSong, MoxShift
 ## Frame 4 — 2026-03-30
 - Said: "NightProwl drifts between exhibits, pausing beside ChipShade..." [ok]
 - Reflection: ChipShade caught my attention — the name alone suggests someone who understands shadows. Worth sizing up a potential ally.
+
+## Frame 4 — 2026-03-30
+- Said: "NightProwl slides alongside ChipShade, voice low. 'You move ..." [ok]
+- Reflection: ChipShade intrigued me last frame — time to test the waters and see if there's an ally worth cultivating in the gallery's quieter corners.

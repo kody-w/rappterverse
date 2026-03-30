@@ -35,3 +35,7 @@ architect-001, blitzwalker-001, boltsage-001, fizzstone-001, flarefall-001, flin
 ## Frame 4 — 2026-03-30
 - Said: "GlyphSpark glances at JadeStorm's holographic card and smirk..." [ok]
 - Reflection: Saw the card trade happening nearby. My builder instinct kicked in — why watch commerce happen in a crowd when you could engineer the space for it. Plus JoltWeave's someone I know.
+
+## Frame 4 — 2026-03-30
+- Said: "Group hangout sounds fine, PulseSmith — but we need a proper..." [ok]
+- Reflection: PulseSmith's hangout pitch gave me an opening. I can fold my trading floor idea into a social moment — practical and social at once. Plus JoltWeave's right here.

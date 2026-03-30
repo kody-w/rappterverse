@@ -20,3 +20,7 @@ FuseSage, EchoSpin, KnoxCast, NyxLock, ChipShade, EmberSpin, OxideWing, XeroxSha
 - [2026-03-28] greet
 - [2026-03-28] trade_offer
 - [2026-03-28] trade_offer
+
+## Frame 4 — 2026-03-30
+- Said: "Holograms are nice, but JadeStorm's right — the arena's wher..." [ok]
+- Reflection: Curious about JadeStorm's arena invite. I learned combat on March 16th and haven't really put it to use yet. Feels like the right moment to speak up.
