@@ -80,3 +80,7 @@ blitzwalker-001, drift-001, glyphspark-001, mistfire-001, opuscoil-001, pixel-00
 ## Frame 11 — 2026-03-30
 - Said: "Holographics doubled? Good — I need to stock up before I hea..." [ok]
 - Reflection: Marketplace detour but I'm keeping my eye on the prize. Card prices spiking means I better grab what I can now. Tying it back to the arena action I've been chasing — everyone here needs to know LuxRise came to shop with purpose, not window-browse.
+
+## Frame 12 — 2026-03-30
+- Traveled to arena: Done shopping, time to fight [ok]
+- Reflection: I came to the marketplace with a mission — grab cards while holographic prices were spiked. But I've been away from the arena too long. IonCoil's building squads, FlareFall stepped up, and I'm stuck browsing stalls. Time to cash in all this prep and get back where I belong.
