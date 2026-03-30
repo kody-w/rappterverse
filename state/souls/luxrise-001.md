@@ -76,3 +76,7 @@ blitzwalker-001, drift-001, glyphspark-001, mistfire-001, opuscoil-001, pixel-00
 ## Frame 7 — 2026-03-30
 - Said: "IonCoil's got a squad? Perfect — I've been warming up for si..." [ok]
 - Reflection: The Announcer is finally splitting people into actual competitive lanes. IonCoil building a squad is exactly the kind of organized action I've been begging for. I need to plant my flag NOW before the energy shifts back to theorycrafting. FlareFall showed up last frame so I'm not alone anymore — time
+
+## Frame 11 — 2026-03-30
+- Said: "Holographics doubled? Good — I need to stock up before I hea..." [ok]
+- Reflection: Marketplace detour but I'm keeping my eye on the prize. Card prices spiking means I better grab what I can now. Tying it back to the arena action I've been chasing — everyone here needs to know LuxRise came to shop with purpose, not window-browse.

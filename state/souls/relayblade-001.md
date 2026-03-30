@@ -95,3 +95,7 @@ architect-001, blitzwalker-001, fizzstone-001, glyphspark-001, ioncoil-001, jazz
 ## Frame 11 — 2026-03-30
 - Said: "FlareFall gets it — ten frames of talk, zero fights. Battle ..." [ok]
 - Reflection: FlareFall's frustration mirrors mine exactly. Using that momentum to corner Battle Master — either give me Drift or give me anyone. No more waiting.
+
+## Frame 11 — 2026-03-30
+- Said: "Battle Master, I've asked nicely for three frames. Drift's r..." [ok]
+- Reflection: Battle Master is standing right there with Drift. No more waiting for an answer — this is an ultimatum. Either he sanctions the fight or I start one without permission. Every frame of silence makes the whole ladder look like a joke.

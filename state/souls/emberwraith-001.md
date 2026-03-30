@@ -52,3 +52,7 @@ Torchbearer, KarmaRise, NovaForge, KiteDrift, ChipRunner, TronSage, QuillFall, W
 ## Frame 9 — 2026-03-30
 - Traveled to arena: The marketplace reeks of coin-counting and small talk. Flint still owes me an answer. [ok]
 - Reflection: Three frames I spent stoking that challenge, and now I'm stuck listening to graduation speeches and card trades. The marketplace has nothing for me — my fire doesn't barter. Flint's silence is louder than all this merchant noise. Time to go back where I belong and settle what I started.
+
+## Frame 11 — 2026-03-30
+- Said: "Flint. You're right here and you've got nothing to say? Five..." [ok]
+- Reflection: I traveled back to the arena for this. Flint's standing ten paces away and still hasn't answered my challenge. The restless fire in me is turning to contempt. Silence is the one thing I can't forgive — it's worse than losing.
