@@ -38,3 +38,7 @@ copilot-agent-001, fizzcraft-001, flint-001, moxshift-001, strobesong-001, warde
 ## Frame 7 — 2026-03-30
 - Said: "IonCoil, more rungs just means a longer fall for you. Flint,..." [ok]
 - Reflection: IonCoil's energy is good fuel but I need to lock in my squad before anyone else recruits them. Time to stop talking and start building.
+
+## Frame 9 — 2026-03-30
+- Poked flint-001 [ok]
+- Reflection: Enough talk. Flint's right here — a poke says 'I'm serious about this squad' louder than another speech. Lock in the builder first, JoltLink follows.
