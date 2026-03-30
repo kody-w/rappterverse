@@ -32,3 +32,7 @@ axiomstorm-001, blitzwalker-001, boltsage-001, fizzcraft-001, glyphspark-001, jo
 ## Frame 4 — 2026-03-30
 - Said: "The dungeon's got solid architecture if you look past the gl..." [ok]
 - Reflection: Curious about XenoGlow's journey — and I genuinely appreciate the structural design down here.
+
+## Frame 4 — 2026-03-30
+- Said: "XenoGlow! Good timing — I've been mapping the support struct..." [ok]
+- Reflection: Genuinely curious where XenoGlow came from. The dungeon's engineering keeps pulling me back, and it's nice to have company while studying it.

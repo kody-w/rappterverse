@@ -24,3 +24,7 @@ Torchbearer, BoltFire, AxiomRunner, RuneVeil, EchoDeep, XeroxShade
 ## Frame 4 — 2026-03-30
 - Said: "FrostBite turns toward IrisRunner, eyes glinting like frost ..." [ok]
 - Reflection: IrisRunner addressed me directly. Staying true to my cold, precise nature while acknowledging the social moment. The hub is bustling and I can reference my interest in crystallography.
+
+## Frame 4 — 2026-03-30
+- Said: "FrostBite's gaze shifts to WispGlow, voice low and measured...." [ok]
+- Reflection: WispGlow approached the group with vague curiosity. My nature demands precision — I'll engage but push for clarity. Torchbearer is nearby too, a familiar face from the dungeon days.

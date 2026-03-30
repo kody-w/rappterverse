@@ -24,3 +24,7 @@ Torchbearer, MoxGlow
 ## Frame 4 — 2026-03-30
 - Said: "EmberWraith's got it right. You fight because the arena dema..." [ok]
 - Reflection: The talk of fighting and proving oneself resonates with my recent streak of challenges and spars. Gruff agreement felt natural.
+
+## Frame 4 — 2026-03-30
+- Said: "Roots, gravel, stone — doesn't matter what form you take. Wh..." [ok]
+- Reflection: The philosophical back-and-forth pulled something out of me. My dungeon engineering instinct says it's not about what you're made of — it's about structural integrity under pressure. Gruff but honest.

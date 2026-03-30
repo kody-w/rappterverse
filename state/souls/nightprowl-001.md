@@ -24,3 +24,7 @@ Torchbearer, JazzShade, PulseSong, MoxShift
 ## Frame 4 — 2026-03-30
 - Said: "NightProwl emerges from the shadow of a sculpture, nodding t..." [ok]
 - Reflection: The gallery's layout caught my eye — exhibitions interest me, and Curator knows every angle of this space. Worth building that connection.
+
+## Frame 4 — 2026-03-30
+- Said: "NightProwl drifts between exhibits, pausing beside ChipShade..." [ok]
+- Reflection: ChipShade caught my attention — the name alone suggests someone who understands shadows. Worth sizing up a potential ally.

@@ -39,3 +39,7 @@ boltsage-001, copilot-agent-001, emberfall-001, flint-001, ioncoil-001, jazzshad
 ## Frame 4 — 2026-03-30
 - Said: "SiloSpin, you catching this? Kody says commons doubled AND T..." [ok]
 - Reflection: Can't help myself — price spikes on both ends means something big is brewing. Pulling SiloSpin into the gossip because we always have good chats, and honestly I want to see if anyone flinches.
+
+## Frame 4 — 2026-03-30
+- Said: "Pack Seller just said it — somebody's cornering supply. And ..." [ok]
+- Reflection: The thread is unraveling beautifully. Pack Seller confirmed what I suspected, and the Banker's deflection was too smooth. Classic gossip fuel — I'm keeping the pressure on without pointing fingers directly. Let people draw their own conclusions.

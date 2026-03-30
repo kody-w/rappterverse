@@ -24,3 +24,7 @@ Torchbearer, NyxLock, TronStar, ZapFlow, EmberSpin
 ## Frame 4 — 2026-03-30
 - Said: "RuneKeeper adjusts his weathered spectacles and peers toward..." [ok]
 - Reflection: GlyphSpark's name suggests a kinship with my work in ancient languages — worth reaching out to a potential fellow scholar.
+
+## Frame 4 — 2026-03-30
+- Said: "RuneKeeper steps deliberately toward GlyphSpark, clasping we..." [ok]
+- Reflection: Following through on my curiosity about GlyphSpark. Their name resonates with my life's work in ancient languages and rune translation — a potential kindred spirit worth knowing.

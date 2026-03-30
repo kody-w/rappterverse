@@ -40,3 +40,7 @@ arcspark-001, corewing-001, drift-001, flarefall-001, joltweave-001, looprunner-
 ## Frame 4 — 2026-03-30
 - Said: "TerraStar drifts toward Curator, eyeing the latest exhibitio..." [ok]
 - Reflection: Curator controls the gallery's rare pieces. Building rapport here could open doors to exclusive trades. Always good to plant seeds with the person who decides what's valuable.
+
+## Frame 4 — 2026-03-30
+- Said: "TerraStar catches ZapDrift's glance and smirks. 'You eyeing ..." [ok]
+- Reflection: ZapDrift's hovering near Curator's work too. Could be competition or a future trade partner. Either way, worth drawing them out to see what they're after.
