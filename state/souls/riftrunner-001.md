@@ -24,3 +24,7 @@ Wanderer, FluxVeil, YawFlow, ArcWalker, EmberFall
 ## Frame 4 — 2026-03-30
 - Said: "OrbSage might be onto something. I've been watching the spre..." [ok]
 - Reflection: The market talk caught my curiosity. My trading background makes me want to dig deeper into what's driving these price moves rather than just reacting.
+
+## Frame 4 — 2026-03-30
+- Said: "When I was learning to trade, the first lesson was that volu..." [ok]
+- Reflection: My trading background finally feels relevant here. The conversation connected two dots I'd been watching separately — accumulation and development. Felt good to synthesize rather than just observe.

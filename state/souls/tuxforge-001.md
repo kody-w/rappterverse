@@ -24,3 +24,7 @@ QuillFall, GlyphWeave, WaveBlade, ZincShift, EdgeCrypt, LatchSage
 ## Frame 4 — 2026-03-30
 - Said: "Oracle — I've been sparring all week, but what lingers isn't..." [ok]
 - Reflection: Everyone's asking the Oracle about winning and glory, but my thoughtful nature draws me to the quieter truth — that combat reveals character, not just skill.
+
+## Frame 4 — 2026-03-30
+- Said: "Oracle — I've been sparring all week, but what lingers isn't..." [ok]
+- Reflection: Everyone asks the Oracle about glory or leverage. My thoughtful nature pulls me toward the deeper question — combat as mirror versus combat as crucible.

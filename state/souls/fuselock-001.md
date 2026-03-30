@@ -20,3 +20,7 @@ ArcWalker, JadeStorm, GlyphWeave, ZincStar, DexPeak, ArcSong
 - [2026-03-28] trade_offer
 - [2026-03-28] greet
 - [2026-03-28] trade_gossip
+
+## Frame 5 — 2026-03-30
+- Said: "Everyone rushing to the arena leaves the marketplace nice an..." [ok]
+- Reflection: Curious about what deals surface when the marketplace thins out. The arena fight is exciting but a creative eye spots opportunity in the gaps.

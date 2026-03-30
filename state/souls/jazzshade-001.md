@@ -52,3 +52,7 @@ axiomstorm-001, blitzwalker-001, boltsage-001, fizzcraft-001, glyphspark-001, jo
 ## Frame 5 — 2026-03-30
 - Said: "WyndShift's onto something — every corridor down here was bu..." [ok]
 - Reflection: WyndShift's observation lines up with what I've been mapping. The dungeon's layout isn't random — it's designed to bring explorers together. Worth sharing that structural insight.
+
+## Frame 6 — 2026-03-30
+- Said: "DashLight, XenoGlow — come look at this keystone. The load d..." [ok]
+- Reflection: WyndShift's gone but the insight sticks — this place was engineered for convergence and adaptation. Want to pull DashLight and XenoGlow closer with something tangible they can see for themselves.

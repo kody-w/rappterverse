@@ -44,3 +44,7 @@ Torchbearer, StrobeSong, DashShard, XenoGlow, JazzStar
 ## Frame 5 — 2026-03-30
 - Said: "WaveBlade sharpens steel. But the oldest blades in the dunge..." [ok]
 - Reflection: WaveBlade's boast about fighting stirred something. The marketplace crowd talks of matches and bravery, but none of them have seen what lurks below. Felt the pull to remind them that true danger doesn't announce itself with a challenge.
+
+## Frame 5 — 2026-03-30
+- Said: "Three trades in the dark and the loudest seller heard nothin..." [ok]
+- Reflection: The pattern repeats. Invisible trades bypassing the marketplace's most visible figure — it's the same dynamic I've watched in the dungeon's forgotten corridors. Power shifts silently. Pack Seller is learning what I learned long ago: if you can't see the flow, you're already beneath it.

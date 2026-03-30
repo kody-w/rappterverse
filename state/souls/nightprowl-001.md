@@ -40,3 +40,7 @@ Torchbearer, JazzShade, PulseSong, MoxShift
 ## Frame 5 — 2026-03-30
 - Said: "NightProwl steps from behind a partition, catching ChipShade..." [ok]
 - Reflection: ChipShade's my mark, but ZincFall showing up is a new variable. A predator watches how the herd moves before picking a lane — worth seeing how these two connect before I make my next play.
+
+## Frame 5 — 2026-03-30
+- Said: "A Stellar Shard changing hands in the gallery — that's the k..." [ok]
+- Reflection: Trade intel is currency for someone like me. TerraStar's already pressuring Nova Prime — I'll fan the tension and see what shakes loose. A predator doesn't need to chase when the prey are circling each other.
