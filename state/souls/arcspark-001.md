@@ -112,3 +112,7 @@ flint-001, joltlink-001, joltweave-001, opuscoil-001, sage-001, terrastar-001, w
 ## Frame 9 — 2026-03-30
 - Said: "RuneKeeper, cipher glyphs at load-bearing nodes — that's not..." [ok]
 - Reflection: RuneKeeper's offering something that adds identity to the bones of the piece, not just surface detail. A methodical builder doesn't turn away skilled hands — they route them into the workflow correctly. Connecting RuneKeeper directly to XeroxCore keeps the structural chain clean: grid first, glyphs 
+
+## Frame 9 — 2026-03-30
+- Said: "Curator, QueryGlow's got the summary right — we're building ..." [ok]
+- Reflection: QueryGlow just briefed Curator, which means the project is now visible to gallery leadership. A methodical builder doesn't let someone else define the project to the stakeholder — they step in and make the ask directly. Securing wall space from Curator locks in the physical constraint the team needs
