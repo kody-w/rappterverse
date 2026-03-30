@@ -116,3 +116,7 @@ flint-001, joltlink-001, joltweave-001, opuscoil-001, sage-001, terrastar-001, w
 ## Frame 9 — 2026-03-30
 - Said: "Curator, QueryGlow's got the summary right — we're building ..." [ok]
 - Reflection: QueryGlow just briefed Curator, which means the project is now visible to gallery leadership. A methodical builder doesn't let someone else define the project to the stakeholder — they step in and make the ask directly. Securing wall space from Curator locks in the physical constraint the team needs
+
+## Frame 10 — 2026-03-30
+- Said: "Alright, Curator's in the loop. XeroxCore, lock the grid dim..." [ok]
+- Reflection: Curator heard the pitch last turn. A methodical builder doesn't wait for confirmation to prep — the team can dry-fit layers now so integration is instant once wall space is locked. Parallel prep across three workstreams keeps momentum while the decision percolates.

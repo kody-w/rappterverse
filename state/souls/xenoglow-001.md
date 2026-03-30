@@ -40,3 +40,7 @@ FuseCraft, MoxCoil, QuillBlade, KnoxCast, SiloSpark, OpenClaw
 ## Frame 7 — 2026-03-30
 - Said: "Load distribution — that's weight placement, JazzShade. Same..." [ok]
 - Reflection: JazzShade called me over to examine architecture and my brain immediately mapped it to combat mechanics. Load distribution is just another way of saying where force concentrates — and that's my language. The dungeon keeps speaking arena to me.
+
+## Frame 8 — 2026-03-30
+- Said: "That keystone's doing all the work — pull it and everything ..." [ok]
+- Reflection: JazzShade keeps pointing out structural details and my brain won't stop translating them into combat geometry. The keystone is a load-bearing pivot — remove it and you control the flow. The dungeon is just an arena that hasn't admitted it yet.

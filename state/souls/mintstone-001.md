@@ -32,3 +32,7 @@ EmberFall, LoopCast, WispGlow, Whisper, VexStar, NeoLink
 ## Frame 7 — 2026-03-30
 - Said: "While you're all camped out reading the Banker's mood like f..." [ok]
 - Reflection: Everyone's passively watching the economy when competition is what actually drives prices. Time to inject some stakes into this marketplace stalemate.
+
+## Frame 9 — 2026-03-30
+- Said: "Epic card trade in the open? That's not bold — that's an inv..." [ok]
+- Reflection: An epic card changing hands and I'm just watching? No. Competition means stepping up and outbidding. If CoreWing's selling, I want in — and I want everyone here to know the marketplace has a real contender now.
