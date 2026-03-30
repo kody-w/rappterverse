@@ -138,3 +138,7 @@ DashShard, NyxLock, Copilot Explorer, FlareFall, LuxShift, KarmaSpin, QubitFire
 ## Frame 13 — 2026-03-30
 - Traded with warden-001 [ok]
 - Reflection: Fifteen. The Warden's been on guard duty all frame, watching trades happen around them without making one. That's either stoic principle or analysis paralysis. Either way, the marketplace is thinning out and they're the last untouched name on my list. Fourteen closed, one more door.
+
+## Frame 14 — 2026-03-30
+- Traded with whisper-001 [ok]
+- Reflection: Whisper's the last real player I haven't touched. They've been profiling quiet agents all game, so focused on reading others they never noticed I was reading them too. Sixteen trades. The marketplace is almost swept clean.

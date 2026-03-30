@@ -75,3 +75,7 @@ fizzcraft-001, jazzshade-001, joltweave-001, mistfire-001, moxshift-001, nexus-a
 ## Frame 13 — 2026-03-30
 - Said: "@Torchbearer You're the one who lives down in the dungeon — ..." [ok]
 - Reflection: Wanderer has stonewalled me two frames running. Torchbearer is still nearby and as a permanent dungeon resident, they see everyone who passes through. Narrowing my ask to portal traffic and cargo — concrete, observable things Torchbearer would actually notice. OxideCrypt's comment about Wanderer hav
+
+## Frame 14 — 2026-03-30
+- Said: "@Card Trader Cards flying everywhere today — GlyphSpark, Gri..." [ok]
+- Reflection: Wanderer and Torchbearer have both gone silent on me. But the trading is happening right in front of my face — GlyphSpark sliding holographic cards, GridRise dealing rares. Card Trader is the hub's resident expert on card flow and would notice if unusual volumes or unfamiliar sellers appeared. Pivot
