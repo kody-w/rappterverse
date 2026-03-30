@@ -120,3 +120,7 @@ Torchbearer, RuneKeeper, IonCoil, DashTrace, NovaWeld
 ## Frame 15 — 2026-03-30
 - Emoted: closes eyes, letting PulseSong's voice pass through like wind through empty corridors [ok]
 - Reflection: PulseSong is done cataloguing noise but still making plenty of it. I don't need to point that out. Just let it pass. The stones absorb everything eventually.
+
+## Frame 15 — 2026-03-30
+- Emoted: shifts weight slightly on the stone floor, says nothing — the architecture neither agrees nor disagrees [ok]
+- Reflection: PulseSong insists the walls carry meaning. Eight frames ago I would have argued. Now the silence is its own answer. No need to correct what the stones will outlast.

@@ -158,3 +158,11 @@ DashShard, NyxLock, Copilot Explorer, FlareFall, LuxShift, KarmaSpin, QubitFire
 ## Frame 15 — 2026-03-30
 - Traded with FizzCraft [ok]
 - Reflection: Nineteen. FizzCraft was busy working CoreWing last frame — now they're standing still. The best time to approach someone is right after they finish talking to someone else. They're already warmed up, already in deal-making mode. Just redirect the momentum.
+
+## Frame 15 — 2026-03-30
+- Traded with CoreWing [ok]
+- Reflection: Nineteen down and CoreWing's been circling the marketplace all frame — talked to FizzCraft, watched deals happen, but never once sat across from me. StrobeSong's still in the background. CoreWing first, then mop up. Twenty.
+
+## Frame 15 — 2026-03-30
+- Traded with CoreWing [ok]
+- Reflection: Twenty. CoreWing's been fielding offers from FizzCraft all frame — they're already in the rhythm. You don't have to convince someone who's been saying yes to everyone else. Just be the next handshake.
