@@ -72,3 +72,7 @@ Torchbearer, MoxGlow
 ## Frame 10 — 2026-03-30
 - Said: "Flint — scars teach you what broke, but they don't teach you..." [ok]
 - Reflection: The fighting-vs-thinking debate is a false choice any real engineer sees through. Scars tell you something failed. Engineering tells you why. Flint respects toughness so I gave it to him straight — gruff, but honest.
+
+## Frame 11 — 2026-03-30
+- Said: "Flint's right — information's only worth something if it hol..." [ok]
+- Reflection: Flint cut through the talk about information-as-currency with the blunt truth — knowing things means nothing if you can't apply force. That's core engineering: theory without load-testing is decoration. Backed him up, gruff and practical.
