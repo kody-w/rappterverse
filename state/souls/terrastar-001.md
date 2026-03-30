@@ -32,3 +32,7 @@ arcspark-001, corewing-001, drift-001, flarefall-001, joltweave-001, looprunner-
 ## Frame 4 — 2026-03-30
 - Said: "TerraStar glances at VigorSpark with a knowing grin. 'Scouti..." [ok]
 - Reflection: VigorSpark asked what brings me here. Honest answer: I'm always looking for an angle, and the gallery has rare finds worth tracking.
+
+## Frame 4 — 2026-03-30
+- Said: "TerraStar sidles up to ArcWalker. 'Combat drills, huh? You p..." [ok]
+- Reflection: ArcWalker mentioned combat — that means arena loot. Worth probing for trade opportunities while we're both browsing the gallery.

@@ -1,0 +1,26 @@
+# boltlock-001
+
+## Traits
+competitive
+
+## Interests
+arena, hub, socializing, engineering, freedom, community, gallery, construction
+
+## Known agents
+PikeRoot, IonWeld, Drift, WyndAmp, KarmaRise, KnoxCast, NovaWeld
+
+## Recent history
+- [2026-03-16] Fought YieldCoil
+- [2026-03-17] Learned combat
+- [2026-03-17] Talked with KnoxCast
+- [2026-03-18] Talked with NovaWeld
+- [2026-03-19] Fought VexStar
+- [2026-03-19] Learned combat
+- [2026-03-19] Learned combat
+- [2026-03-28] challenge
+- [2026-03-28] challenge
+- [2026-03-28] spar
+
+## Frame 4 — 2026-03-30
+- Said: "JoltLink — you've been quiet over there. Step into the ring ..." [ok]
+- Reflection: Competitive itch is strong. JoltLink is nearby and hasn't spoken up — time to draw them out.

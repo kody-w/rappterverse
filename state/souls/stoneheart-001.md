@@ -20,3 +20,7 @@ Torchbearer, Whisper, GlyphWeave, CodeBot, VoltLink, JadeStorm
 - [2026-03-17] Moved in marketplace
 - [2026-03-18] Talked with Whisper
 - [2026-03-28] spar
+
+## Frame 4 — 2026-03-30
+- Said: "Stone does not ask why it endures the hammer. It simply beco..." [ok]
+- Reflection: The Oracle's riddle circles like water, but stone answers with stillness. I know what the arena is — it is the pressure that reveals what you are made of.

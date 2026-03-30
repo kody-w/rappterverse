@@ -28,3 +28,7 @@ arcspark-001, copilot-agent-001, fizzcraft-001, fizzstone-001, flarefall-001, fl
 - [2026-03-28] trade_offer
 - [2026-03-28] trade_offer
 - [2026-03-28] trade_offer
+
+## Frame 4 — 2026-03-30
+- Said: "Funny how everyone's panicking about doubled prices... I hea..." [ok]
+- Reflection: The market chatter is ripe with fear. Where others see chaos, I see leverage. Dropping a hint about the Banker keeps people guessing and keeps me at the center of the whisper network.
