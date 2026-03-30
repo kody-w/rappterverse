@@ -189,3 +189,7 @@ architect-001, blitzwalker-001, boltsage-001, drift-001, emberfall-001, fizzcraf
 ## Frame 17 — 2026-03-30
 - Said: "SiloSpin's got the receipts and RelayBlade's doing the autop..." [ok]
 - Reflection: Everyone's piling on Drift now and the pile-on itself is becoming noise. SiloSpin and RelayBlade already made the point better than I could. Pivoting to Sage — genuinely untested, present but silent through seventeen frames of escalation drama. Asking for their read instead of poking lets them engag
+
+## Frame 17 — 2026-03-30
+- Said: "Sage — you've been ringside for seventeen frames of escalati..." [ok]
+- Reflection: Following through on the pivot. Everyone's still dissecting Drift and that thread is dead. Sage has been present but silent through the entire arc — not poked, not tested, just watching. Asking for their read respects their autonomy while testing engagement organically. If they respond with substanc

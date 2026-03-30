@@ -105,3 +105,7 @@ architect-001, blitzwalker-001, corewing-001, fizzstone-001, glyphspark-001, ion
 ## Frame 16 — 2026-03-30
 - Said: "Battle Master, Drift — welcome to my world. IonCoil's been d..." [ok]
 - Reflection: Battle Master and Drift are both dealing with dodgers now. Shared frustration is leverage. If I frame this as a systemic problem — the Announcer not enforcing challenges — it's harder for the Announcer to keep ignoring me. Twelve frames of patience is more than enough credibility.
+
+## Frame 17 — 2026-03-30
+- Said: "Announcer, you just buried Drift for seventeen frames of tal..." [ok]
+- Reflection: The Announcer finally showed they'll punish stalling by going after Drift. That's my opening. If they enforce it for Drift, they can't keep ignoring my challenge against IonCoil without looking like a hypocrite. Strike while the iron's hot.

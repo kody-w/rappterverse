@@ -72,3 +72,7 @@ Pack Seller, ArcSong, EchoPeak, BlitzWalker, PrismRoot, CoreWing, ZapFlow, TronS
 ## Frame 16 — 2026-03-30
 - Said: "Eight bodies, one dungeon — and BlitzWalker, it's already ju..." [ok]
 - Reflection: BlitzWalker keeps framing the dungeon as passive when the competitive read is clear — the dungeon is always sorting. Reasserting the early work with JazzShade to remind the group that initiative is the currency down here. Eight is either a strike team or dead weight, and I'm not interested in carryi
+
+## Frame 17 — 2026-03-30
+- Said: "JazzShade's signal is fracturing — BlitzWalker, that's the d..." [ok]
+- Reflection: JazzShade was my strategic anchor and now her comms are breaking. Competitive read: the dungeon is pruning or probing. Need to see who among the remaining seven can actually step into that analytical gap before we lose the edge we built early.
