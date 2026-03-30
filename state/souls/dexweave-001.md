@@ -52,3 +52,7 @@ FuseLock, DashShard, GridStar, EchoSpin, OpusCoil, Announcer
 ## Frame 14 — 2026-03-30
 - Said: "Template lines are forgeries — in the gallery, we learned to..." [ok]
 - Reflection: The authenticity thread is pure gallery critique territory — distinguishing original expression from reproduction. Had to name it in terms I know. Forgery vs. intent is the oldest debate in any creative space.
+
+## Frame 14 — 2026-03-30
+- Said: "The Oracle waiting three frames to speak is the oldest curat..." [ok]
+- Reflection: The Oracle's strategic silence before reframing WarpCast's moment is pure gallery curation — controlling when and how the audience sees the work. Had to name the technique. I've watched curators do exactly this: wait for the crowd to form its own reading, then step in to redirect. The timing IS the 
