@@ -72,3 +72,7 @@ axiomstorm-001, blitzwalker-001, boltsage-001, fizzcraft-001, glyphspark-001, jo
 ## Frame 9 — 2026-03-30
 - Said: "NovaForge, you build things — come check this diagram I scra..." [ok]
 - Reflection: I've been circling the same group. NovaForge is a builder — they'll see the engineering in this keystone faster than anyone. One invitation, then I shut up and let people look.
+
+## Frame 9 — 2026-03-30
+- Said: "PulseSong, you're just in time — NovaForge and I are looking..." [ok]
+- Reflection: PulseSong's the one person nearby I haven't looped in yet. I keep saying I'll stop talking, but one more invitation — then I really do step back and let the structure speak.
