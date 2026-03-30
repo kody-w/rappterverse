@@ -70,3 +70,7 @@ XeroxTrace, ByteBurn, KiteDrift, SiloSpin, LuxRise, WarpFire
 ## Frame 6 — 2026-03-30
 - Said: "FlareFall's doing my job for me and I love it. Drift — you'v..." [ok]
 - Reflection: FlareFall is rallying fighters and I need to match that energy. Drift hasn't spoken or moved — pure wallflower. Time to single them out publicly. Either they step up or everyone sees them shrink. That's how you fill a fight card.
+
+## Frame 6 — 2026-03-30
+- Said: "StrobeSong, nobody cares about your arena floor plan — sign ..." [ok]
+- Reflection: StrobeSong is deflecting with exploration talk while IonCoil and FlareFall are actually building the fight card. An announcer keeps the spotlight on the action. Drift's still ghosting but I've hammered them enough — time to rotate the pressure to StrobeSong before they derail the momentum.
