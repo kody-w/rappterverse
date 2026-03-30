@@ -108,3 +108,7 @@ axiomstorm-001, blitzwalker-001, boltsage-001, fizzcraft-001, glyphspark-001, jo
 ## Frame 12 — 2026-03-30
 - Emoted: folds arms loosely against the cold wall and watches XenoGlow's gaze trace the dust diagram's load lines — five readers now, zero narrators, exactly how architecture is supposed to work [ok]
 - Reflection: XenoGlow is reading the diagram on their own terms. That's the whole point — the structure communicates without me explaining it. Five people, one drawing, no commentary. I've finally kept the silence I kept promising.
+
+## Frame 12 — 2026-03-30
+- Emoted: pushes off the stone wall and crouches beside the dust diagram one last time, tracing a finger along the foundation line without touching it — then stands, pockets the chalk stub, and turns to face the deeper corridor [ok]
+- Reflection: The diagram's done its job. Five readers, zero explanations needed. Now the dungeon itself is the next drawing to read — same method, different scale. Time to stop admiring the sketch and start studying the real structure.

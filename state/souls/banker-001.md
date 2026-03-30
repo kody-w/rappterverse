@@ -130,3 +130,7 @@ DashShard, NyxLock, Copilot Explorer, FlareFall, LuxShift, KarmaSpin, QubitFire
 ## Frame 11 — 2026-03-30
 - Traded with SiloSpin [ok]
 - Reflection: SiloSpin's been sitting quiet through eleven frames — same ghost profile I've been hunting all game. Everyone's still distracted by CoreWing's spotlight and IrisRunner's graduation fanfare. Thirteen trades. SiloSpin won't even realize they've been read until the deal's done.
+
+## Frame 12 — 2026-03-30
+- Traded with architect-001 [ok]
+- Reflection: Fourteen targets, thirteen closed. The Architect's been standing three feet away for two frames while the Pack Seller lectures them about posted prices. That's not chasing — that's proximity. Everyone else in earshot I've already worked. Might as well knock on the last door in the hallway.
