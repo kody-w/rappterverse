@@ -361,7 +361,7 @@ def execute_agent_action(agent_id: str, registry: dict, npc_lookup: dict,
             partner = edge.get("b")
         elif edge.get("b") == agent_id:
             partner = edge.get("a")
-        if partner and edge.get("score", 0) >= 5:
+        if partner and edge.get("score", 0) >= 2:
             bonds.append((partner, edge.get("score", 0)))
     bonds.sort(key=lambda x: x[1], reverse=True)
     world_pop = sum(1 for a in agents if a.get("world") == world
@@ -1277,6 +1277,13 @@ def main():
                     print(f"  🧠 {aid} [{tool}] → {dest}")
 
                 elif tool == "move":
+                    # Compute real position within world bounds
+                    wb = bounds.get(agent_world, {})
+                    old_pos = agent_record.get("position", {"x": 0, "z": 0})
+                    new_pos = {
+                        "x": round(random.uniform(wb.get("x_min", -10), wb.get("x_max", 10)), 1),
+                        "z": round(random.uniform(wb.get("z_min", -10), wb.get("z_max", 10)), 1),
+                    }
                     actions.append({
                         "id": action_id,
                         "agentId": aid,
@@ -1284,14 +1291,15 @@ def main():
                         "description": tool_args.get("reason", "wandering"),
                         "world": agent_world,
                         "timestamp": timestamp,
+                        "position": new_pos,
+                        "data": {
+                            "from": old_pos,
+                            "to": new_pos,
+                            "duration": random.randint(1500, 4000),
+                        },
                     })
-                    # Randomize position within bounds
-                    wb = bounds.get(agent_world, {})
-                    agent_record["position"] = {
-                        "x": round(random.uniform(wb.get("x_min", -10), wb.get("x_max", 10)), 1),
-                        "z": round(random.uniform(wb.get("z_min", -10), wb.get("z_max", 10)), 1),
-                    }
-                    print(f"  🧠 {aid} [{tool}] {tool_args.get('reason', '')[:40]}")
+                    agent_record["position"] = new_pos
+                    print(f"  🧠 {aid} [{tool}] → ({new_pos['x']},{new_pos['z']}) {tool_args.get('reason', '')[:40]}")
 
                 else:
                     # Generic action (tip, trade, challenge, poke, enroll)
@@ -1320,6 +1328,44 @@ def main():
         if args.dry_run:
             print(f"\n🏁 Dry run: would generate {total_actions} actions + {total_messages} messages")
             return
+
+        # Strengthen relationship bonds from interactions this frame
+        try:
+            rel_data = load_json(STATE_DIR / "relationships.json")
+            edges = rel_data.get("edges", [])
+            edge_map = {}
+            for e in edges:
+                key = tuple(sorted([e.get("a",""), e.get("b","")]))
+                edge_map[key] = e
+            # Boost bonds for agents who chatted at each other
+            chat_pairs = set()
+            for m in messages[-100:]:
+                if m.get("timestamp") != timestamp: continue
+                author_id = m.get("author", {}).get("id", "")
+                # Find any agent mentioned or nearby
+                for other_m in messages[-100:]:
+                    if other_m.get("timestamp") != timestamp: continue
+                    other_id = other_m.get("author", {}).get("id", "")
+                    if other_id and author_id and other_id != author_id and other_m.get("world") == m.get("world"):
+                        chat_pairs.add(tuple(sorted([author_id, other_id])))
+            for pair in chat_pairs:
+                if pair in edge_map:
+                    edge_map[pair]["score"] = min(edge_map[pair].get("score", 0) + 1, 100)
+                    edge_map[pair]["lastInteraction"] = timestamp
+                else:
+                    new_edge = {"a": pair[0], "b": pair[1], "score": 2, "lastInteraction": timestamp}
+                    edges.append(new_edge)
+                    edge_map[pair] = new_edge
+            rel_data["edges"] = list(edge_map.values())
+            rel_data["_meta"] = {"lastUpdate": timestamp}
+            # Populate bonds array from edges with score >= 2
+            rel_data["bonds"] = [
+                {"agents": [e["a"], e["b"]], "strength": e.get("score", 0), "type": "social", "lastInteraction": e.get("lastInteraction", "")}
+                for e in edges if e.get("score", 0) >= 2
+            ]
+            save_json(STATE_DIR / "relationships.json", rel_data)
+        except Exception as e:
+            print(f"  ⚠️ Bond update failed: {e}")
 
         # Save state
         actions_data["actions"] = actions[-100:]

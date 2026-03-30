@@ -348,7 +348,63 @@ for wid, wdata in game.get('worlds', {}).items():
             wdata['time_of_day'] = new_time
             changed = True
 
-# 4. Update meta timestamps
+# 4. Generate mid-frame Lisp routines from recent activity
+# Pattern: Data Slosh → Lisp Routines → RappterVM executes between frames
+# Even if no new frame arrives, agents keep living from these routines.
+try:
+    rels = json.load(open('state/relationships.json'))
+except:
+    rels = {'edges': []}
+
+for wid, wdata in game.get('worlds', {}).items():
+    routines = []
+    world_actions = [a for a in actions.get('actions', [])[-50:] if a.get('world') == wid]
+    world_agents = [a for a in agents.get('agents', []) if a.get('world') == wid]
+    world_chat = [m for m in chat.get('messages', [])[-30:] if m.get('world') == wid]
+
+    # Build chat-partner map for social attraction routines
+    chat_partners = {}
+    for m in world_chat:
+        aid = m.get('author', {}).get('id', '')
+        if not aid: continue
+        for m2 in world_chat:
+            aid2 = m2.get('author', {}).get('id', '')
+            if aid2 and aid2 != aid:
+                chat_partners.setdefault(aid, set()).add(aid2)
+
+    for ag in world_agents:
+        aid = ag.get('id', '')
+        if not aid: continue
+        pos = ag.get('position', {})
+        mood = ag.get('mood', ag.get('state', 'neutral'))
+        parts = []
+
+        # Routine: patrol between current position and a nearby landmark
+        px, pz = pos.get('x', 0), pos.get('z', 0)
+        parts.append(f'(if (< (mod (floor (elapsed)) 20) 10) (wander \"{aid}\" 4) (move-toward \"{aid}\" {px} {pz} 0.01))')
+
+        # Routine: approach recent chat partner (social gravity)
+        partners = list(chat_partners.get(aid, []))
+        if partners:
+            p = partners[frame_num % len(partners)]
+            parts.append(f'(if (> (agent-distance \"{aid}\" \"{p}\") 5) (move-toward \"{aid}\" (get (agent-pos \"{p}\") \"x\") (get (agent-pos \"{p}\") \"z\") 0.012) nil)')
+
+        # Routine: relationship-driven behavior
+        for edge in rels.get('edges', []):
+            partner = None
+            if edge.get('a') == aid: partner = edge.get('b')
+            elif edge.get('b') == aid: partner = edge.get('a')
+            if partner and edge.get('score', 0) >= 5:
+                parts.append(f'(if (< (agent-distance \"{aid}\" \"{partner}\") 8) (face-toward \"{aid}\" (get (agent-pos \"{partner}\") \"x\") (get (agent-pos \"{partner}\") \"z\")) nil)')
+                break  # One strong bond routine per agent
+
+        if parts:
+            routines.append({'agentId': aid, 'program': ' '.join(parts)})
+            changed = True
+
+    wdata['routines'] = routines[:50]  # Cap per world
+
+# 5. Update meta timestamps
 if changed:
     game['_meta'] = game.get('_meta', {})
     game['_meta']['lastUpdate'] = now
@@ -356,7 +412,8 @@ if changed:
     with open('state/game_state.json', 'w') as f:
         json.dump(game, f, indent=4)
         f.write('\n')
-    print(f'  Sloshed: populations synced, time_of_day cycled (frame {frame_num})')
+    routine_count = sum(len(w.get('routines', [])) for w in game.get('worlds', {}).values())
+    print(f'  Sloshed: pops synced, time cycled, {routine_count} Lisp routines compiled (frame {frame_num})')
 else:
     print(f'  Slosh: no changes needed (frame {frame_num})')
 " 2>&1

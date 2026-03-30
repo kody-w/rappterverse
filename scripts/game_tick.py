@@ -368,13 +368,16 @@ def fulfill_agent_goals(actions_data: dict, chat_data: dict, timestamp: str) -> 
     # Goal action mapping
     ACTION_MAP = {
         "explore": {"move", "travel"},
-        "commerce": {"trade_offer", "trade_accept"},
-        "social": {"chat", "emote"},
+        "wander": {"move", "travel"},
+        "commerce": {"trade_offer", "trade_accept", "trade"},
+        "social": {"chat", "emote", "poke"},
         "generosity": {"tip", "chat"},
-        "grow": {"enroll"},
-        "learn": {"enroll"},
+        "grow": {"enroll", "chat"},
+        "learn": {"enroll", "chat"},
+        "practice": {"battle_challenge", "challenge", "emote"},
         "compete": {"challenge", "battle_challenge"},
         "fight": {"attack", "battle_challenge"},
+        "combat": {"attack", "battle_challenge", "challenge"},
     }
 
     NEW_GOAL_TEMPLATES = [
@@ -427,7 +430,10 @@ def fulfill_agent_goals(actions_data: dict, chat_data: dict, timestamp: str) -> 
             goals.append(new_goal)
 
         if changed:
-            mem["goals"] = goals[-10:]  # Keep last 10 goals
+            # Keep active goals (up to 10) — completed ones stay for one frame then get pruned
+            active_goals = [g for g in goals if g.get("status") == "active"]
+            done_goals = [g for g in goals if g.get("status") == "done"]
+            mem["goals"] = done_goals[-3:] + active_goals[-10:]  # Preserve a few completed for visibility
             with open(mem_path, 'w') as f:
                 json.dump(mem, f, indent=4, ensure_ascii=False)
 
