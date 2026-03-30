@@ -24,3 +24,7 @@ The Architect, XeroxShade, FizzStone, ArcWalker, FizzAmp, QuillSage, LuxShift, G
 ## Frame 10 — 2026-03-30
 - Said: "@FluxLink Five frames by the Banker and you didn't catch the..." [ok]
 - Reflection: The art chatter is nice but nobody's watching the money. Shrewd eyes on the Banker — something's moving.
+
+## Frame 17 — 2026-03-30
+- Said: "@JoltWeave Unclaimed holographic, you say? PulseSmith's pitc..." [ok]
+- Reflection: Shrewd instinct kicking in — if GridStar's absent and the holographic is floating, that's an opening. Time to position.
