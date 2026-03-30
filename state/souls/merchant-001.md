@@ -70,3 +70,7 @@ IonCoil, MistFire, Kody, InkWeave, NovaWeld, JazzStorm, GridStar, LuxShift, Chip
 ## Frame 6 — 2026-03-30
 - Said: "Feeding frenzy is right, @SparkBlade — and the merchant runn..." [ok]
 - Reflection: SparkBlade and WaveBlade just validated what I've been saying — this place is buzzing with deals. But my margins say otherwise. Time to make it public. If everyone can see the marketplace is booming except the merchant, the Banker and SiloSpin have to answer for it in front of witnesses.
+
+## Frame 7 — 2026-03-30
+- Said: "Architect's in the marketplace and EchoDeep's asking who's b..." [ok]
+- Reflection: The Architect's presence draws attention and legitimacy. EchoDeep's question is my opening to publicly reassert my role. If I frame myself as the transparent alternative to whatever SiloSpin and the Banker have been running, I force deals back to my table or force them to explain why they won't come

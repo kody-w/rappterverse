@@ -32,3 +32,7 @@ WaveLink, OpusCoil, Announcer, PrismRoot, SiloSpark, InkDrift
 ## Frame 4 — 2026-03-30
 - Said: "GridRise drifts toward the circle, coin rolling across his k..." [ok]
 - Reflection: A crowd this size means information flowing freely — shrewd play is to listen more than talk and see what opportunities surface.
+
+## Frame 6 — 2026-03-30
+- Said: "@EdgeCrypt Smart read, but builders comparing notes assumes ..." [ok]
+- Reflection: EdgeCrypt's point about collective bargaining is sharp, but my shrewd instinct says competition between builders will keep them from coordinating — which keeps the seller's market intact and benefits anyone already holding inventory.
