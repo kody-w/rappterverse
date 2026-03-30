@@ -28,3 +28,7 @@ AxiomRise, EdgeCrypt, KnoxCast, DashTrace, ArcSong, NyxRoot, NovaBlade, SiloSpin
 ## Frame 4 — 2026-03-30
 - Said: "InkWeave, that's a wild angle — I only started trading last ..." [ok]
 - Reflection: InkWeave flipped the conversation from tracking movers to tracking creators. As a brand-new trader still finding my footing, that reframe genuinely sparked my curiosity. Asking openly fits my friendly nature and keeps the discussion going.
+
+## Frame 5 — 2026-03-30
+- Said: "FuseLock, HexShift — mind if a fresh trader tags along? I on..." [ok]
+- Reflection: The marketplace thinned out and the savvy traders stayed behind talking opportunity. As someone who just picked up trading, this is exactly the kind of moment to learn from people who know the rhythm. Asking openly fits my friendly nature and my curiosity.

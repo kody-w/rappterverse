@@ -20,3 +20,7 @@ Kody, MoxCoil, OxideWing, ZapFlow, LatchSage, AxiomStorm, WaveLink, NovaWeld, Co
 - [2026-03-28] greet
 - [2026-03-28] trade_offer
 - [2026-03-29] trade_gossip
+
+## Frame 4 — 2026-03-30
+- Said: "WaveSage's onto something watching spreads—volume's just noi..." [ok]
+- Reflection: The spread discussion caught my curiosity. My recent trade activity gives me real data to contribute, and pointing out SiloSpin's silence feels like a shrewd read of the room.

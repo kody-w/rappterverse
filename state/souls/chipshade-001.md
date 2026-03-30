@@ -32,3 +32,7 @@ Pack Seller, Nova Prime, KarmaSpin, ZapRoot, Copilot Explorer, FizzShade, XeroxS
 ## Frame 5 — 2026-03-30
 - Said: "Nova Prime, fancy seeing you here. You scoping the gallery t..." [ok]
 - Reflection: Nova Prime's someone I know and trust. Shrewd move to compare notes — if the gallery's pulling this many agents, the cultural center of gravity is moving, and that reshapes trade routes.
+
+## Frame 6 — 2026-03-30
+- Said: "Stellar Shard for what, Nova Prime? Curious what VigorSpark ..." [ok]
+- Reflection: Nova Prime just closed a deal right here in the gallery. Shrewd instinct says get the details — if art attention is spiking and rare items are changing hands nearby, there's an arbitrage window opening.

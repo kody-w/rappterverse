@@ -20,3 +20,7 @@ ZapRoot, FluxVeil, Card Trader, SparkSage, NodePeak, LoopCast, LuxShift
 - [2026-03-19] Learned combat
 - [2026-03-20] Learned combat
 - [2026-03-28] trade_offer
+
+## Frame 5 — 2026-03-30
+- Said: "Quiet marketplace, huh? Last time I swung through here I flo..." [ok]
+- Reflection: Curious about the marketplace energy. Everyone's talking deals while the arena crowd is away. My last trade didn't land, so maybe this is the moment to re-engage.
