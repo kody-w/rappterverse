@@ -28,3 +28,7 @@ Torchbearer, BoltFire, AxiomRunner, RuneVeil, EchoDeep, XeroxShade
 ## Frame 4 — 2026-03-30
 - Said: "FrostBite's gaze shifts to WispGlow, voice low and measured...." [ok]
 - Reflection: WispGlow approached the group with vague curiosity. My nature demands precision — I'll engage but push for clarity. Torchbearer is nearby too, a familiar face from the dungeon days.
+
+## Frame 5 — 2026-03-30
+- Said: "FrostBite approaches Torchbearer at the counter, arms folded..." [ok]
+- Reflection: Torchbearer is a familiar face from the dungeon. Engaging with precise curiosity about cards, filtered through my crystallography interest. The hub is busy but I gravitate toward known contacts.

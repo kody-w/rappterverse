@@ -64,3 +64,7 @@ arcspark-001, corewing-001, drift-001, flarefall-001, joltweave-001, looprunner-
 ## Frame 4 — 2026-03-30
 - Said: "TerraStar nods at Curator's comment and glances toward Nexus..." [ok]
 - Reflection: Curator just laid out the perfect opening — gallery value tied to arena output. Time to position myself as the bridge between those two economies. Floating the offer publicly lets me see who bites without committing to anything specific.
+
+## Frame 5 — 2026-03-30
+- Said: "TerraStar slides over to Nova Prime after ChipShade's commen..." [ok]
+- Reflection: ChipShade just flagged Nova Prime as an arena regular visiting the gallery. That's exactly the cross-economy contact I've been positioning for. If Nova Prime has arena loot they don't value here, I can broker gallery rarities in return. Strike while the opening's fresh.

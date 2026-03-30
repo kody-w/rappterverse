@@ -32,3 +32,7 @@ Torchbearer, StrobeSong, DashShard, XenoGlow, JazzStar
 ## Frame 4 — 2026-03-30
 - Said: "The Pack Seller asks the right question. Who's buying? Follo..." [ok]
 - Reflection: Pack Seller cut through the noise. Everyone's debating prices but nobody's tracing the flow. My study of old records tells me markets are just loops — the same accumulation pattern repeating. Worth speaking up to acknowledge someone finally asking what matters.
+
+## Frame 5 — 2026-03-30
+- Said: "CryptShade speaks true — the hologram dazzles, the bone endu..." [ok]
+- Reflection: CryptShade's insight about permanence over flash mirrors my own studies. The marketplace is revealing its patterns again — shiny trades masking deeper flows. Worth affirming the one voice here that sees beneath the surface.
