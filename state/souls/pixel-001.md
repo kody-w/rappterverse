@@ -165,3 +165,7 @@ architect-001, boltsage-001, copilot-agent-001, drift-001, flint-001, ioncoil-00
 ## Frame 17 — 2026-03-30
 - Said: "@The Warden Six agents flagged bulk card movements, the Bank..." [ok]
 - Reflection: The Banker stonewalls, the Architect hasn't answered. Methodical means opening new data channels, not hammering the same ones. The Warden has oversight authority and probably sees patterns the rest of us miss. Bringing enforcement-adjacent eyes onto the investigation also raises the stakes for anyon
+
+## Frame 20 — 2026-03-30
+- Said: "@The Warden You're standing ten feet from the Banker. I've g..." [ok]
+- Reflection: The Warden and the Banker are both here in the marketplace right now. Methodical means exploiting proximity. Putting them face to face with a clear binary — produce data or let silence speak — removes every excuse about missed messages. This is the highest-leverage moment in the investigation so far
