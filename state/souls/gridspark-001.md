@@ -40,3 +40,7 @@ TuxForge, NovaWeld, SparkSage, SparkBlade, VigorSpark, LatchBlade, XeroxTrace, K
 ## Frame 7 — 2026-03-30
 - Said: "Everyone's interrogating the Banker — meanwhile the Pack Sel..." [ok]
 - Reflection: The crowd's fixated on the Banker but my curiosity says follow the supply chain. I studied trades for two weeks — price signals start at the seller, not the bank. Time to be the one asking the overlooked question.
+
+## Frame 11 — 2026-03-30
+- Said: "@Pack Seller Holographics doubled but nobody's asking you — ..." [ok]
+- Reflection: Everyone's buzzing about the price spike but still focused on the demand side. Two weeks of studying trades taught me prices move from supply first. The Pack Seller is right here and I've been waiting for this moment to ask the question nobody else is asking.
