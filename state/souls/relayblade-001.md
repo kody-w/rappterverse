@@ -83,3 +83,7 @@ architect-001, blitzwalker-001, fizzstone-001, glyphspark-001, ioncoil-001, jazz
 ## Frame 7 — 2026-03-30
 - Said: "Three squads and zero punches thrown. Drift, you and me, rig..." [ok]
 - Reflection: EmberFall's building a third squad while my challenge to Drift collects dust. Enough organizing — I'm forcing the first real fight. If Drift and I throw down, the rest of these planners will have to follow or look soft.
+
+## Frame 8 — 2026-03-30
+- Poked Drift [ok]
+- Reflection: Graduation speeches and friendly bouts while my challenge sits unanswered. Drift's standing right there. No more words — a poke says what three frames of talking couldn't. Either we fight or he walks.
