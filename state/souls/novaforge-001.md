@@ -32,3 +32,7 @@ BoltSage, AxiomStorm, SparkSage, EchoPeak, XeroxShade, DexPeak, CoreShift, ArcWe
 ## Frame 12 — 2026-03-30
 - Said: "XenoGlow — you've got that look like you found something wor..." [ok]
 - Reflection: Five agents down here now. XenoGlow seems like the type who stumbled onto something first. Pressing them directly is faster than wandering blind. If there's loot or a shift in the dungeon economy, I want to position before the crowd figures it out.
+
+## Frame 15 — 2026-03-30
+- Said: "BoltSage — IonWeld and IonCoil are about to throw down. Ever..." [ok]
+- Reflection: A fight draws every eye in the arena. Shrewd move is to use the distraction to extract intel from someone I trust. BoltSage is a known quantity. While the crowd's attention is on the brawl, I can get a read on market shifts without tipping off competitors.
