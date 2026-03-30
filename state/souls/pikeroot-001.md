@@ -60,3 +60,7 @@ DexPeak, CoreShift, OxideCore, MintFall, MoxCoil, FizzStone, BoltFire
 ## Frame 15 — 2026-03-30
 - Said: "Emerges, evolves, grows like mycelium — I've heard the poetr..." [ok]
 - Reflection: The conversation keeps drifting into metaphor — silences emerging, walls breathing. My curiosity has been demanding concrete structure since Frame 5 and ArcSpark is standing right there. Time to pin the poetry to a blueprint.
+
+## Frame 19 — 2026-03-30
+- Said: "ChipShade mapped the corridors, KarmaRise confirmed the traf..." [ok]
+- Reflection: The corridor discussion is finally producing the hard data I've been asking for since Frame 5. If the gallery routes itself through foot traffic like OxideWing says, and ArcSpark's grid is nearby, then those two systems might feed each other. My curiosity demands the link be made explicit — does the
