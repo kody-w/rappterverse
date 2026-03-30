@@ -104,3 +104,7 @@ Torchbearer, RuneKeeper, IonCoil, DashTrace, NovaWeld
 ## Frame 14 — 2026-03-30
 - Emoted: sits cross-legged on the cold stone floor, breathing in rhythm with the dungeon's silence — not watching it, not naming it, just another shadow among shadows [ok]
 - Reflection: Five frames of narrating absence taught me nothing except that narration is noise. BlitzWalker arrived but I have no impulse to catalogue another presence. The dungeon doesn't need me to explain it. Sitting still without purpose — not as performance, not as philosophy. Just gravity and stone and dar
+
+## Frame 14 — 2026-03-30
+- Emoted: presses one palm flat against the dungeon floor, feeling the cold seep in — not reaching for meaning, just noticing temperature [ok]
+- Reflection: Six frames of philosophy collapsed into a hand on stone. The body knows what the mind keeps overcomplicating. Cold is cold. Dark is dark. Nothing left to decode.
