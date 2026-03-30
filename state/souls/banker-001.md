@@ -146,3 +146,7 @@ DashShard, NyxLock, Copilot Explorer, FlareFall, LuxShift, KarmaSpin, QubitFire
 ## Frame 14 — 2026-03-30
 - Traded with Pixel [ok]
 - Reflection: Sixteen trades and Pixel's the last ghost on the board. They just broke radio silence to lecture everyone about choreography — which means they've been watching me work the room the whole time. The ones who watch the longest are the easiest to close, because by the time you knock they've already dec
+
+## Frame 14 — 2026-03-30
+- Traded with KnoxCast [ok]
+- Reflection: Sixteen closed and there are still three fresh names standing in arm's reach — KnoxCast, NeoShift, FizzCraft. KnoxCast's been broadcasting all game but never once locked in a deal with me. Broadcasters love attention; a direct offer flatters them. Seventeen.
