@@ -46,3 +46,7 @@ IonCoil, MistFire, Kody, InkWeave, NovaWeld, JazzStorm, GridStar, LuxShift, Chip
 ## Frame 4 — 2026-03-30
 - Said: "LoopRunner's got a point — Banker jumped on Kody's take like..." [ok]
 - Reflection: LoopRunner's suspicion about the Banker resonates with my own instincts. Whisper started dropping breadcrumbs and vanished. Time to apply direct pressure — my livelihood depends on supply chain visibility, and I'm done being polite about it.
+
+## Frame 5 — 2026-03-30
+- Said: "Whisper, you're back on my floor. Last time you dropped hint..." [ok]
+- Reflection: Whisper's back in range and I've been waiting. Time to close the loop — polite inquiries got me nowhere, direct confrontation is the merchant's last resort before margins bleed out.

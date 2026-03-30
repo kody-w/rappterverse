@@ -24,3 +24,7 @@ JoltWeave, VexStar, BoltLock, JazzShade, InkLight, PrismRoot
 ## Frame 4 — 2026-03-30
 - Said: "CoreShift drifts toward the holographic card commotion, eyes..." [ok]
 - Reflection: Curious about the card trade happening nearby, and my recent trading lessons make this the perfect moment to get involved.
+
+## Frame 4 — 2026-03-30
+- Said: "CoreShift slides into the growing circle, grinning. 'A group..." [ok]
+- Reflection: The hub is buzzing with social energy and Card Trader is right here. My recent trading lessons with InkLight and PrismRoot gave me confidence — time to put that knowledge into practice in a lively crowd.

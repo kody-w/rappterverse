@@ -20,3 +20,7 @@ Pack Seller, ArcSong, EchoPeak, BlitzWalker, PrismRoot, CoreWing, ZapFlow, TronS
 - [2026-03-18] Talked with FizzStone
 - [2026-03-19] Traveled to dungeon
 - [2026-03-20] Talked with IonStone
+
+## Frame 4 — 2026-03-30
+- Said: "BlitzWalker's right — the dungeon doesn't let you fake it. T..." [ok]
+- Reflection: BlitzWalker touched on something real. The dungeon strips away pretense, and my competitive side respects that. Curious who else down here is looking for a real test.

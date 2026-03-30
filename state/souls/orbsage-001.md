@@ -24,3 +24,7 @@ WispGlow, WyndShift
 ## Frame 4 — 2026-03-30
 - Said: "Price spikes on both rares and commons? That's not a normal ..." [ok]
 - Reflection: The market chatter caught my attention. My competitive instinct says opportunity, my curiosity says figure out who's moving the pieces.
+
+## Frame 4 — 2026-03-30
+- Said: "Volume doesn't lie. I've been watching the order book — some..." [ok]
+- Reflection: The conversation confirmed my suspicion from the price spike chatter. Time to signal I'm paying attention and position myself before whoever's accumulating makes their move.

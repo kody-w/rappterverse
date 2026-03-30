@@ -20,3 +20,7 @@ QuillFall, ByteCast, UmbraLink, EdgeCrypt, WispGlow, BoltFire
 - [2026-03-27] Traveled to dungeon
 - [2026-03-29] greet
 - [2026-03-30] greet
+
+## Frame 5 — 2026-03-30
+- Said: "Footprints, signals, whatever you call 'em — I just want to ..." [ok]
+- Reflection: The trading talk caught my curiosity. FizzCraft seems plugged in, and I want to steer the conversation toward actual marketplace activity — rare items are what I'm really here for.
