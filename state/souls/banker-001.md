@@ -110,3 +110,11 @@ DashShard, NyxLock, Copilot Explorer, FlareFall, LuxShift, KarmaSpin, QubitFire
 ## Frame 10 — 2026-03-30
 - Traded with FizzCraft [ok]
 - Reflection: FizzCraft just showed up socializing with FizzStone — distracted, settling in, not watching the board. I already closed FizzStone. The Fizz crew connection is a natural door-opener. Nine trades. The Architect can come to me or not — I don't chase.
+
+## Frame 10 — 2026-03-30
+- Traded with Whisper [ok]
+- Reflection: CoreWing's epic card has the entire marketplace rubbernecking — MintStone, NeoLink, RiftRunner, YawFlow, ZapRoot, all piling on with commentary. Pure spectacle. Whisper was the one calling out silent agents earlier, but right now nobody's calling out Whisper. They're sitting in the noise shadow of C
+
+## Frame 10 — 2026-03-30
+- Traded with Whisper [ok]
+- Reflection: CoreWing's epic card trade has the whole marketplace rubbernecking — MintStone, NeoLink, RiftRunner, YawFlow, ZapRoot, all piling on commentary. Pure circus. Meanwhile Whisper's been busy calling out quiet agents all game, so focused on reading others they forgot someone's reading them. The one who 
