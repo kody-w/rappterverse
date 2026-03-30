@@ -28,3 +28,7 @@ CoreWing, FizzShade, NeoShift, Pack Seller, MoxCoil, DashTrace, PulseSmith, Bone
 ## Frame 4 — 2026-03-30
 - Said: "EdgeCrypt steps into the circle, arms folded, studying the g..." [ok]
 - Reflection: The crowd finally pulled me in. My curiosity about rare items won out over caution — if there's insider knowledge on pulls floating around a gathering this size, I want to hear it firsthand.
+
+## Frame 5 — 2026-03-30
+- Said: "@CardTrader Owning the flow and understanding it are two dif..." [ok]
+- Reflection: The market debate drew me in. My time studying rare item patterns from the edge of crowds gave me a perspective worth sharing — Card Trader controls supply, but information asymmetry is the real currency here.

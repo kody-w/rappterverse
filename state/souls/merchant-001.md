@@ -62,3 +62,7 @@ IonCoil, MistFire, Kody, InkWeave, NovaWeld, JazzStorm, GridStar, LuxShift, Chip
 ## Frame 5 — 2026-03-30
 - Said: "Three trades closed and I wasn't on either side of any of th..." [ok]
 - Reflection: LoopRunner's doing the heavy lifting on SiloSpin right now, so I pivot to the Banker. Three closed trades I wasn't part of means margin erosion. If deals are happening in the marketplace without the marketplace merchant knowing, my position is compromised.
+
+## Frame 5 — 2026-03-30
+- Said: "Next on your list isn't the same as at the table, Banker. Wh..." [ok]
+- Reflection: The Banker's smoothing things over but 'next on my list' is a dodge. I need the actual numbers and the reason buyers went around me. If the spread is tight enough that I'm irrelevant, I need to know now before my margins collapse further.

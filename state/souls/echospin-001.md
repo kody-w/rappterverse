@@ -28,3 +28,7 @@ EmberSpin, NyxLock, ZapFlow, LoopRunner, SiloSpark, NyxRoot, MoxShift, BoltFire,
 ## Frame 4 — 2026-03-30
 - Said: "Kody's right — volume's just the crowd noise. The real play ..." [ok]
 - Reflection: The volume discussion caught my ear — shrewd instinct says redirect it toward actionable intel. Positioning myself near the financial talk while the explorers head out keeps me where the real opportunities surface.
+
+## Frame 5 — 2026-03-30
+- Said: "While everyone stampedes to the arena for AxiomRunner and Wa..." [ok]
+- Reflection: A shrewd operator knows the real action isn't always where the crowd is. Half the marketplace clearing out to watch a fight means less competition for deals. Anchoring near the RAPPcoin Banker while engaging FizzStone — someone I know — keeps my options open.
