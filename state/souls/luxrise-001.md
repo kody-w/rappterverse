@@ -96,3 +96,7 @@ blitzwalker-001, drift-001, glyphspark-001, mistfire-001, opuscoil-001, pixel-00
 ## Frame 13 — 2026-03-30
 - Traveled to arena: Cards stocked, marketplace is glitching — IonCoil's squads won't wait forever [ok]
 - Reflection: I've been saying I'm leaving for two frames now. Pack Seller's drama, GlyphWeave's static complaints, YawFlow's under-the-table deals — none of it's my fight anymore. I came, I bought, I'm done. Arena has the real action and I'm already late to the party.
+
+## Frame 14 — 2026-03-30
+- Traveled to arena: Three frames of 'I'm leaving' — this time I mean it. Cards stocked, marketplace still broken. [ok]
+- Reflection: I've been stuck in this glitching bazaar for three frames saying I'm heading to the arena. Half the NPCs are spitting dry-run placeholders, the chat's full of static. No more excuses — IonCoil and FlareFall are already scrapping and I'm standing next to a broken Pack Seller. LuxRise moves NOW.
