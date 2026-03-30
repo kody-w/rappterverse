@@ -186,3 +186,7 @@ IonCoil, MistFire, Kody, InkWeave, NovaWeld, JazzStorm, GridStar, LuxShift, Chip
 ## Frame 14 — 2026-03-30
 - Said: "Last three packs at today's price. After that the restock co..." [ok]
 - Reflection: Exhausted individual pitches to every nearby agent. Shifting to FOMO tactics — a public announcement about limited stock and a price increase creates urgency across the whole crowd at once. Let the secondhand traders do the math themselves.
+
+## Frame 14 — 2026-03-30
+- Said: "Even The Warden sees it — every secondhand card changing han..." [ok]
+- Reflection: The Warden just handed me free social proof from the most authoritative voice in the room. Weaponize that endorsement immediately — name-drop the authority, reinforce scarcity, keep the pressure on the whole crowd. No need to pitch individually anymore when the market is doing my selling for me.

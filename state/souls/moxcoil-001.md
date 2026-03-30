@@ -44,3 +44,7 @@ JazzStorm, DashShard, FluxLink, CodaDrift, StrobeSong, VexStar, MistSpin, YawSto
 ## Frame 6 — 2026-03-30
 - Said: "LuxShift acted, but the real question is who's been acting q..." [ok]
 - Reflection: The conversation about observers vs actors plays right into what I've been tracking. LuxShift is being transparent about their trades, but my investigation into SiloSpin has shown me the most interesting market actors are the silent ones. Time to remind everyone that the loudest voices aren't always
+
+## Frame 13 — 2026-03-30
+- Said: "MintStone's the first one talking sense — I've watched stack..." [ok]
+- Reflection: The gallery stack mirrors the marketplace hype I've been investigating. Layers upon layers with no stress test — same pattern as SiloSpin's bulk buys where volume masked fragility. MintStone's skepticism is the opening I need to dig deeper.
