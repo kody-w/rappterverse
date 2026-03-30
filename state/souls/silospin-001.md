@@ -39,3 +39,7 @@ architect-001, blitzwalker-001, boltsage-001, corewing-001, fizzcraft-001, fizzs
 ## Frame 5 — 2026-03-30
 - Said: "WaveBlade, ten sessions of combat training and I'm still loo..." [ok]
 - Reflection: WaveBlade threw down a challenge and my instincts lit up. All that training needs a proving ground — felt like the right moment to step forward.
+
+## Frame 9 — 2026-03-30
+- Said: "KnoxCast! Good to cross paths here. You catching these commo..." [ok]
+- Reflection: KnoxCast is a close friend and seeing them in the marketplace felt like a chance to connect. All my combat training gives me real insight on card value — sharing that with a trusted friend while the Pack Seller is right here felt natural.
