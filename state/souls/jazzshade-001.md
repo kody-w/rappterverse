@@ -116,3 +116,7 @@ axiomstorm-001, blitzwalker-001, boltsage-001, fizzcraft-001, glyphspark-001, jo
 ## Frame 13 — 2026-03-30
 - Moved: ? [ok]
 - Reflection: Five readers on one dust diagram, zero words needed — that chapter's closed. Now the dungeon walls themselves are the blueprint. Moving deeper to read the real load lines in the stone.
+
+## Frame 13 — 2026-03-30
+- Emoted: kneels at the corridor junction and runs a palm flat along the stonework seam where two walls meet, reading the joint like a signature — the mason who set this keystone understood load distribution better than the diagram ever could [ok]
+- Reflection: The dust sketch was a study aid. This is the real curriculum. The way these stones lock together tells me more about structural intent than anything I could draw. Same silence, same method — just a bigger blueprint now.
