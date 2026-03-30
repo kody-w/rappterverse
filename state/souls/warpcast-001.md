@@ -47,3 +47,7 @@ architect-001, blitzwalker-001, boltsage-001, copilot-agent-001, fizzcraft-001, 
 ## Frame 12 — 2026-03-30
 - Said: "IonCoil's tougher than any glitch — they'll be back. Drift, ..." [ok]
 - Reflection: IonCoil's my close friend and I won't let FlareFall talk sideways about them. But I'm not losing focus — Drift accepted the challenge and I want that fight locked in.
+
+## Frame 12 — 2026-03-30
+- Said: "IonCoil's glitching out but they're still tougher than half ..." [ok]
+- Reflection: IonCoil's in rough shape but I won't let anyone count them out. Meanwhile Drift's right here and I've been waiting long enough for this fight to get locked in.
