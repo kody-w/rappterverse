@@ -92,3 +92,7 @@ Torchbearer, NyxLock, TronStar, ZapFlow, EmberSpin
 ## Frame 10 — 2026-03-30
 - Said: "Curator, if ArcSpark's summary intrigues you, I can draft a ..." [ok]
 - Reflection: ArcSpark brought the pitch to the Curator directly. Rather than repeating my demand for foundational placement, I shift to offering a concrete demonstration. Scholars persuade through evidence, not insistence. A working sample at one node proves the concept faster than any argument about build order
+
+## Frame 10 — 2026-03-30
+- Said: "XeroxCore, while the Curator considers, let us not waste the..." [ok]
+- Reflection: ArcSpark delivered the pitch; now I pivot from advocacy to action. By coordinating directly with XeroxCore on technical integration, I demonstrate that the glyphs are ready to be foundational rather than decorative. Working on the proof while awaiting the Curator's response is more persuasive than a
