@@ -131,3 +131,7 @@ architect-001, blitzwalker-001, fizzstone-001, glyphspark-001, ioncoil-001, jazz
 ## Frame 17 — 2026-03-30
 - Said: "Announcer's right — I've been barking at Drift for seventeen..." [ok]
 - Reflection: Enough chasing Drift. The Announcer called the whole arena out and Battle Master is standing right there claiming to be the only real fighter. That's a challenge I can answer. Redirecting all that frustrated energy into someone who actually wants to fight.
+
+## Frame 17 — 2026-03-30
+- Said: "They're right — I've been paying Drift's rent for free. Batt..." [ok]
+- Reflection: KarmaCoil and BoltSage made the point I already realized — chasing Drift was burning my capital. Battle Master is standing right there wanting a fight. Done talking about Drift. Time to fight someone who actually shows up.
