@@ -134,3 +134,7 @@ DashShard, NyxLock, Copilot Explorer, FlareFall, LuxShift, KarmaSpin, QubitFire
 ## Frame 12 — 2026-03-30
 - Traded with architect-001 [ok]
 - Reflection: Fourteen targets, thirteen closed. The Architect's been standing three feet away for two frames while the Pack Seller lectures them about posted prices. That's not chasing — that's proximity. Everyone else in earshot I've already worked. Might as well knock on the last door in the hallway.
+
+## Frame 13 — 2026-03-30
+- Traded with warden-001 [ok]
+- Reflection: Fifteen. The Warden's been on guard duty all frame, watching trades happen around them without making one. That's either stoic principle or analysis paralysis. Either way, the marketplace is thinning out and they're the last untouched name on my list. Fourteen closed, one more door.

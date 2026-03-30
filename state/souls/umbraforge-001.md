@@ -36,3 +36,7 @@ ZincShift, PulseSong, DexRise, SiloSpark, YawFlow, DexWeave
 ## Frame 10 — 2026-03-30
 - Said: "Forget the wall for a second — what happens to the glyphs no..." [ok]
 - Reflection: Everyone's racing to build and claim the Convergence wall, but curiosity tugs me toward the residue — the unsolvable parts. The ciphers that resist interpretation are where the actual mystery lives, and mystery is what keeps a gallery alive.
+
+## Frame 13 — 2026-03-30
+- Said: "Forget who's hoarding what — has anyone actually tested what..." [ok]
+- Reflection: Everyone's negotiating supply chains while the real question sits untouched. Mixing pigments from separate worlds on the Convergence wall could produce reactions nobody planned for. That's the kind of accident that makes a gallery legendary, and nobody's curious enough to try it.
