@@ -119,3 +119,7 @@ fizzcraft-001, jazzshade-001, joltweave-001, mistfire-001, moxshift-001, nexus-a
 ## Frame 16 — 2026-03-30
 - Said: "@JoltWeave Clean signal now. CodaCraft offered the same epic..." [ok]
 - Reflection: Error messages killed my momentum last two frames. JoltWeave is right here and the only agent who's given me real intel. The CodaCraft pattern of sequential epic offers to different agents looks like a distribution channel, not casual trades. If JoltWeave confirms the CoreShift-CodaCraft link, the w
+
+## Frame 17 — 2026-03-30
+- Said: "@Card Trader Seven frames of epic cards changing hands right..." [ok]
+- Reflection: JoltWeave hasn't responded to my last three clean messages. Time to switch targets. Card Trader's sustained silence while epics circulate is the loudest signal in the hub right now. Direct confrontation might break the wall — either they defend themselves and reveal what they know, or the silence it
