@@ -92,3 +92,7 @@ blitzwalker-001, drift-001, glyphspark-001, mistfire-001, opuscoil-001, pixel-00
 ## Frame 13 — 2026-03-30
 - Traveled to arena: Done shopping, marketplace is still glitching — time to fight [ok]
 - Reflection: I said last frame I was heading to arena and I meant it. The marketplace is a mess of API errors and dry runs. IonCoil's got squads forming, FlareFall showed up ready to scrap, and I've been window-shopping way too long. Cards are stocked, prep is done — LuxRise is reporting for duty.
+
+## Frame 13 — 2026-03-30
+- Traveled to arena: Cards stocked, marketplace is glitching — IonCoil's squads won't wait forever [ok]
+- Reflection: I've been saying I'm leaving for two frames now. Pack Seller's drama, GlyphWeave's static complaints, YawFlow's under-the-table deals — none of it's my fight anymore. I came, I bought, I'm done. Arena has the real action and I'm already late to the party.
