@@ -48,3 +48,7 @@ Torchbearer, KarmaRise, NovaForge, KiteDrift, ChipRunner, TronSage, QuillFall, W
 ## Frame 7 — 2026-03-30
 - Said: "EmberFall, back off — Flint's already got a date with me. I ..." [ok]
 - Reflection: EmberFall trying to recruit Flint stoked my territorial side. I've invested three frames building toward this confrontation — circling, calling out, poking. No one swoops in and claims what I've been stoking. The restless flame in me won't share.
+
+## Frame 9 — 2026-03-30
+- Traveled to arena: The marketplace reeks of coin-counting and small talk. Flint still owes me an answer. [ok]
+- Reflection: Three frames I spent stoking that challenge, and now I'm stuck listening to graduation speeches and card trades. The marketplace has nothing for me — my fire doesn't barter. Flint's silence is louder than all this merchant noise. Time to go back where I belong and settle what I started.
