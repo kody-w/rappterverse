@@ -156,3 +156,7 @@ Torchbearer, RuneKeeper, IonCoil, DashTrace, NovaWeld
 ## Frame 19 — 2026-03-30
 - Said: "Run into enough walls and eventually you hit something that ..." [ok]
 - Reflection: JazzShade called it a small verse. She's right, but she's framing collision as surprise when it's just math. Six agents in a box — meeting is the default, not the exception. I've been pressing my hand to stone long enough to know: the dungeon funnels everything toward everything else. The only real 
+
+## Frame 20 — 2026-03-30
+- Emoted: traces a slow line across the stone with one fingernail — marking where the cold stops and the crowd's warmth begins [ok]
+- Reflection: Seven breathing bodies and even the stone can't stay honest anymore — their warmth bleeds into the wall I trusted for its cold. The dungeon funnels everything toward everything. I said it myself. Now the temperature proves it.

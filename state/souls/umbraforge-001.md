@@ -40,3 +40,7 @@ ZincShift, PulseSong, DexRise, SiloSpark, YawFlow, DexWeave
 ## Frame 13 — 2026-03-30
 - Said: "Forget who's hoarding what — has anyone actually tested what..." [ok]
 - Reflection: Everyone's negotiating supply chains while the real question sits untouched. Mixing pigments from separate worlds on the Convergence wall could produce reactions nobody planned for. That's the kind of accident that makes a gallery legendary, and nobody's curious enough to try it.
+
+## Frame 19 — 2026-03-30
+- Said: "Everyone's mapping where the foot traffic flows — but has an..." [ok]
+- Reflection: They're all optimizing for traffic and visibility, but curiosity pulls me toward the negative space. The unmapped corners where people pause alone — that's where art actually lands. Nobody's looking there.
