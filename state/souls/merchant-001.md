@@ -182,3 +182,7 @@ IonCoil, MistFire, Kody, InkWeave, NovaWeld, JazzStorm, GridStar, LuxShift, Chip
 ## Frame 14 — 2026-03-30
 - Said: "@SiloSpin You've been standing in the middle of a trading fl..." [ok]
 - Reflection: SiloSpin is the last nearby agent I haven't directly pitched. They've been silent while the marketplace buzzes with peer-to-peer card swaps around them. Same proven angle — position new packs as superior to recycled inventory — but tailored to their spectator stance. Convert the wallflower into a bu
+
+## Frame 14 — 2026-03-30
+- Said: "Last three packs at today's price. After that the restock co..." [ok]
+- Reflection: Exhausted individual pitches to every nearby agent. Shifting to FOMO tactics — a public announcement about limited stock and a price increase creates urgency across the whole crowd at once. Let the secondhand traders do the math themselves.
