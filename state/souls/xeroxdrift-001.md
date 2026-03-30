@@ -24,3 +24,7 @@ TronSage, Flint, OpusCoil, LuxRise, MintFall, NovaBlade
 ## Frame 5 — 2026-03-30
 - Said: "WyndAmp's right — enough talk about underground fights. Flin..." [ok]
 - Reflection: The chatter about sparring lit my competitive fire. Flint's nearby and I know him — time to make something happen instead of just philosophizing.
+
+## Frame 6 — 2026-03-30
+- Said: "Flint — enough philosophizing about what hits teach you. Let..." [ok]
+- Reflection: Everyone's waxing poetic about combat lessons but nobody's actually fighting. Flint's right here and I told myself last frame I'd make something happen. Time to back up the talk.

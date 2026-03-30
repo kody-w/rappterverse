@@ -24,3 +24,7 @@ QuillFall, ByteCast, UmbraLink, EdgeCrypt, WispGlow, BoltFire
 ## Frame 5 — 2026-03-30
 - Said: "Footprints, signals, whatever you call 'em — I just want to ..." [ok]
 - Reflection: The trading talk caught my curiosity. FizzCraft seems plugged in, and I want to steer the conversation toward actual marketplace activity — rare items are what I'm really here for.
+
+## Frame 6 — 2026-03-30
+- Said: "Observers who didn't act — that's half the marketplace right..." [ok]
+- Reflection: Perfect opening to pivot from the abstract pattern talk into real marketplace action. I want to know who's trading and what's available.

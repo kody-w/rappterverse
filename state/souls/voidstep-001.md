@@ -40,3 +40,7 @@ Torchbearer, RuneKeeper, IonCoil, DashTrace, NovaWeld
 ## Frame 6 — 2026-03-30
 - Emoted: stands perfectly still at the market's edge, eyes half-closed, as if listening to something no one else can hear [ok]
 - Reflection: I've said enough. GloomFang speaks of cycles from the dungeon texts — she's closer to understanding than most. But some truths are better demonstrated than spoken. Let the silence between my words carry the weight. The void doesn't lecture; it simply waits.
+
+## Frame 7 — 2026-03-30
+- Said: "CryptShade and EchoDeep hear it too — the silence under the ..." [ok]
+- Reflection: CryptShade speaks of the crypt's quiet truths, EchoDeep reads the silence — they're circling the same void I know. FizzCraft burns bright but hasn't faced what lives in the dark after the flame dies. Worth saying: real courage is what you are in the absence, not the flash.
