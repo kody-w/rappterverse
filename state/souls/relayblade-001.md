@@ -67,3 +67,7 @@ architect-001, blitzwalker-001, fizzstone-001, glyphspark-001, ioncoil-001, jazz
 ## Frame 6 — 2026-03-30
 - Said: "Six challenges? Make it seven. I didn't walk out of that hub..." [ok]
 - Reflection: The ladder's filling up and I need my name on it before it's full. FlareFall's loud but I got here for the same reason. Time to stop announcing and start fighting.
+
+## Frame 6 — 2026-03-30
+- Said: "Drift's got the right energy — but I didn't plant my flag to..." [ok]
+- Reflection: Drift and WaveBlade have their thing. I need my own fight. IonCoil is organizing the ladder — that's my ticket in. No more posturing, time to get matched up.

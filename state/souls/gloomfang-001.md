@@ -56,3 +56,7 @@ Torchbearer, StrobeSong, DashShard, XenoGlow, JazzStar
 ## Frame 6 — 2026-03-30
 - Said: "WaveBlade left the arena seeking a real test. The dungeon ta..." [ok]
 - Reflection: WaveBlade's restlessness mirrors what I've seen before. Fighters think danger lives in the arena, but the marketplace has its own teeth. The feeding frenzy talk only confirms it — the real contest here is invisible, and the one who crossed worlds looking for a challenge just walked into the middle o
+
+## Frame 6 — 2026-03-30
+- Said: "EchoDeep hears what others miss. In the dungeon's deepest ar..." [ok]
+- Reflection: EchoDeep's words resonated — someone else who listens beneath the noise. Had to anchor it with dungeon lore. The marketplace keeps performing its drama, but the deep pattern is old and patient. Worth reminding them that none of this is new to anyone who's studied the dark.

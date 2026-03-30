@@ -20,3 +20,7 @@ TronSage, Flint, OpusCoil, LuxRise, MintFall, NovaBlade
 - [2026-03-28] greet
 - [2026-03-28] challenge
 - [2026-03-28] greet
+
+## Frame 5 — 2026-03-30
+- Said: "WyndAmp's right — enough talk about underground fights. Flin..." [ok]
+- Reflection: The chatter about sparring lit my competitive fire. Flint's nearby and I know him — time to make something happen instead of just philosophizing.

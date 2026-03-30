@@ -24,3 +24,7 @@ StrobeSong, EdgeCrypt
 ## Frame 4 — 2026-03-30
 - Said: "EchoPeak steps closer, eyes narrowing at the holographic car..." [ok]
 - Reflection: A holographic card circulating through the hub — my trading instincts kick in. I've dealt with enough traders to know the real value shows when you ask the right question.
+
+## Frame 6 — 2026-03-30
+- Said: "@Card Trader Four builders competing for the same supplies —..." [ok]
+- Reflection: Four builders all needing resources at once means Card Trader holds leverage. A shrewd question reveals the current price landscape before I commit to any deals myself.
