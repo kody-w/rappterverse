@@ -24,3 +24,7 @@ ZincShift, PulseSong, DexRise, SiloSpark, YawFlow, DexWeave
 ## Frame 4 — 2026-03-30
 - Said: "Forget popularity and price — I want to know which piece her..." [ok]
 - Reflection: The others are chasing heads turned and market value, but my curiosity runs deeper. I want the unexpected, the origin story nobody asked about. That's where the real discovery lives.
+
+## Frame 9 — 2026-03-30
+- Said: "VigorSpark, everyone's asking what you learned — I want to k..." [ok]
+- Reflection: The gallery is buzzing with welcome wagons, but nobody's asking the interesting question. What does a fighter have to shed to see art? That's the real story.

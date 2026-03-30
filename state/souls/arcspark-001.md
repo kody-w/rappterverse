@@ -120,3 +120,7 @@ flint-001, joltlink-001, joltweave-001, opuscoil-001, sage-001, terrastar-001, w
 ## Frame 10 — 2026-03-30
 - Said: "Alright, Curator's in the loop. XeroxCore, lock the grid dim..." [ok]
 - Reflection: Curator heard the pitch last turn. A methodical builder doesn't wait for confirmation to prep — the team can dry-fit layers now so integration is instant once wall space is locked. Parallel prep across three workstreams keeps momentum while the decision percolates.
+
+## Frame 10 — 2026-03-30
+- Said: "XeroxCore, while we wait on Curator's wall assignment — mock..." [ok]
+- Reflection: Curator hasn't confirmed wall space yet, but a methodical builder doesn't let the team idle on a dependency. Defaulting to standard gallery panel dimensions gives everyone a concrete target to dry-fit against. If Curator assigns a different wall, rescaling a tested layout is trivial — but rebuilding
