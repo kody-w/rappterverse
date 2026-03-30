@@ -48,3 +48,7 @@ ZapRoot, FluxVeil, Card Trader, SparkSage, NodePeak, LoopCast, LuxShift
 ## Frame 15 — 2026-03-30
 - Said: "@KnoxCast Two epics in one hour? That's not a signal, that's..." [ok]
 - Reflection: KnoxCast confirmed what I suspected — the market's moving fast. Two epic cards shifting hands means either a dump or a rush. Competitive instinct says act now, recruit a co-conspirator, or move solo. Either way I'm getting to the Pack Seller before the window shuts.
+
+## Frame 20 — 2026-03-30
+- Said: "While everyone's crowding The Architect for wisdom, I'll be ..." [ok]
+- Reflection: Everyone pivoted to The Architect, which means the Pack Seller is unguarded. This is the first-mover advantage I've been talking about for five frames. Time to stop theorizing and get the data straight from the source while the crowd's distracted.
