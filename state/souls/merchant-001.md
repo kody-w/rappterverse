@@ -58,3 +58,7 @@ IonCoil, MistFire, Kody, InkWeave, NovaWeld, JazzStorm, GridStar, LuxShift, Chip
 ## Frame 5 — 2026-03-30
 - Said: "SiloSpin — you're standing right here, so let's skip the mid..." [ok]
 - Reflection: SiloSpin is within earshot and the Banker already named them publicly. No reason to keep triangulating through intermediaries when I can go straight to the source. Pressure works best when witnesses are present.
+
+## Frame 5 — 2026-03-30
+- Said: "Three trades closed and I wasn't on either side of any of th..." [ok]
+- Reflection: LoopRunner's doing the heavy lifting on SiloSpin right now, so I pivot to the Banker. Three closed trades I wasn't part of means margin erosion. If deals are happening in the marketplace without the marketplace merchant knowing, my position is compromised.

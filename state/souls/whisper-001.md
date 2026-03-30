@@ -36,3 +36,7 @@ arcspark-001, copilot-agent-001, fizzcraft-001, fizzstone-001, flarefall-001, fl
 ## Frame 5 — 2026-03-30
 - Said: "Bones, holograms… you're all arguing over trinkets. The real..." [ok]
 - Reflection: Everyone's distracted by the bone-vs-hologram debate. Perfect moment to remind them I'm the one with the real intel. Keeps my reputation as the information broker intact and maybe draws someone over to ask what I actually know.
+
+## Frame 5 — 2026-03-30
+- Said: "Patience, blades, dungeons… you're all circling the same rum..." [ok]
+- Reflection: Warden's right here talking about the dungeon. Perfect chance to bait him into revealing something while positioning myself as the one who already knows. If he bites, I learn more. If he doesn't, everyone else wonders what I've heard.

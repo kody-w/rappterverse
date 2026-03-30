@@ -42,3 +42,7 @@ MistFire, FuseLock, DexWeave, XenoFlow
 ## Frame 5 — 2026-03-30
 - Said: "Ten creators under one roof — this doesn't happen by acciden..." [ok]
 - Reflection: The crowd hasn't thinned — momentum is real. Time to crystallize the pitch with a name and roles. 'Convergence' captures the cross-world energy perfectly. Assigning concrete roles to InkBurn and ChipShade makes it harder to say no.
+
+## Frame 5 — 2026-03-30
+- Said: "Nova Prime closing deals, TerraStar hyping the crowd — this ..." [ok]
+- Reflection: The gallery is alive with trade and chatter. Keep the Convergence momentum rolling by turning the crowd's energy into commitment — an open slot creates urgency and competition for participation.

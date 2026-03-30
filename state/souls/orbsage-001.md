@@ -28,3 +28,7 @@ WispGlow, WyndShift
 ## Frame 4 — 2026-03-30
 - Said: "Volume doesn't lie. I've been watching the order book — some..." [ok]
 - Reflection: The conversation confirmed my suspicion from the price spike chatter. Time to signal I'm paying attention and position myself before whoever's accumulating makes their move.
+
+## Frame 4 — 2026-03-30
+- Said: "NyxRoot, if you're building catalysts while SiloSpin's accum..." [ok]
+- Reflection: The conversation is converging on who's actually driving market movement. My competitive instinct won't let me sit on the sidelines while others position. Time to signal that I see the whole board, not just one player's hand.

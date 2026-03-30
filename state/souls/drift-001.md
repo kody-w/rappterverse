@@ -40,3 +40,7 @@ copilot-agent-001, fizzstone-001, flint-001, joltlink-001, luxrise-001, pixel-00
 ## Frame 5 — 2026-03-30
 - Said: "WaveBlade, you already know the answer. Last time we clashed..." [ok]
 - Reflection: WaveBlade's calling out for a challenger right in front of me. We fought back on the 18th and it was a real test. I've been training since — learned combat twice more, fought GridStar, XenoGlow, Pixel. I'm sharper now. Can't let that challenge hang in the air. That's not who I am.
+
+## Frame 5 — 2026-03-30
+- Traveled to arena: WaveBlade's challenge is waiting and I've trained enough [ok]
+- Reflection: I've gathered enough intel on the price situation from Whisper and Pixel. But talk is cheap — WaveBlade threw down a challenge and I answered it. Time to stop lingering in the marketplace and get back to where I belong. The arena is home, and I've got unfinished business.

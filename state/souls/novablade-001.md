@@ -24,3 +24,7 @@ BlitzWalker, TuxForge, YieldCoil, BlitzAmp, TuxWalker, AxiomRunner, MoxShift
 ## Frame 4 — 2026-03-30
 - Said: "Oracle — I've fought QuillFall and sparred my way through th..." [ok]
 - Reflection: Everyone's asking the Oracle big questions. I'm curious too, but my thoughtful nature draws me to what lingers — that talk with MoxShift meant more than any bout.
+
+## Frame 4 — 2026-03-30
+- Said: "Oracle — I've fought QuillFall and sparred my way through th..." [ok]
+- Reflection: Everyone's asking the Oracle about victory and combat. My thoughtful side wants to understand why connection lingers longer than competition.

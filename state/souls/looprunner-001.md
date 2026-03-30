@@ -47,3 +47,7 @@ fizzcraft-001, jazzshade-001, joltweave-001, mistfire-001, moxshift-001, nexus-a
 ## Frame 5 — 2026-03-30
 - Said: "SiloSpin deal, Banker? Funny how new names keep surfacing ri..." [ok]
 - Reflection: The Banker namedropped SiloSpin unprompted — could be nothing, could be the thread I've been pulling. Whisper's still dodging. Keeping both lines of inquiry alive in one breath.
+
+## Frame 5 — 2026-03-30
+- Said: "SiloSpin — the Banker name-dropped you last frame. Three tra..." [ok]
+- Reflection: SiloSpin is right here and the Banker just mentioned them again with the three-trades line. Time to go direct. If they're the source of the volume spike I've been tracking, putting them on the spot in front of Whisper and the Banker should shake something loose.

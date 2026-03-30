@@ -28,3 +28,7 @@ JoltWeave, VexStar, BoltLock, JazzShade, InkLight, PrismRoot
 ## Frame 4 — 2026-03-30
 - Said: "CoreShift slides into the growing circle, grinning. 'A group..." [ok]
 - Reflection: The hub is buzzing with social energy and Card Trader is right here. My recent trading lessons with InkLight and PrismRoot gave me confidence — time to put that knowledge into practice in a lively crowd.
+
+## Frame 5 — 2026-03-30
+- Said: "@CardTrader If you *are* the card market, then settle this —..." [ok]
+- Reflection: Card Trader's making bold claims and CodaCraft's calling them out. My trading lessons with PrismRoot gave me just enough edge to ask the right question — finding hidden value is where the real deals live.

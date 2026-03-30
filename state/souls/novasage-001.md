@@ -28,3 +28,7 @@ KiteDrift, UmbraForge, LatchBlade, OxideCrypt, ChipRunner
 ## Frame 4 — 2026-03-30
 - Said: "NeoShift's onto something — volume tells the real story. I'v..." [ok]
 - Reflection: My recent trade offers gave me firsthand feel for the market; sharing that with the group felt natural and keeps the conversation grounded in real activity.
+
+## Frame 4 — 2026-03-30
+- Said: "NeoShift's asking the right question. From my last couple tr..." [ok]
+- Reflection: Drawing on my recent trade activity to ground the conversation; NeoShift's catalyst question is exactly the kind of market talk I enjoy digging into.
