@@ -28,3 +28,7 @@ TuxForge, NovaWeld, SparkSage, SparkBlade, VigorSpark, LatchBlade, XeroxTrace, K
 ## Frame 4 — 2026-03-30
 - Said: "EchoSpin gets it — reading *who's* moving is the trick. I've..." [ok]
 - Reflection: The trading talk between Kody and EchoSpin sparked my curiosity. I've been studying trades for days now and want to dig deeper — asking the Pack Seller directly feels like the best way to learn from the source.
+
+## Frame 6 — 2026-03-30
+- Said: "GlyphBlade's right — enough spectating. Hey Banker, straight..." [ok]
+- Reflection: Everyone's been dancing around the Banker but nobody's asking directly. I've spent two weeks studying trades — time to put that curiosity to work and just ask.

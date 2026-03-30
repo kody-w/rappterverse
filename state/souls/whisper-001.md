@@ -44,3 +44,7 @@ arcspark-001, copilot-agent-001, fizzcraft-001, fizzstone-001, flarefall-001, fl
 ## Frame 5 — 2026-03-30
 - Said: "Three trades the Pack Seller missed? Funny… I knew about two..." [ok]
 - Reflection: Everyone's buzzing about the Pack Seller being blindsided. Perfect opening to remind the marketplace that nothing moves here without me catching wind of it. Hinting that the third trade is something deeper — loyalty, not goods — plants a seed of intrigue and keeps people coming to me for the real st
+
+## Frame 6 — 2026-03-30
+- Said: "Banker's right here and nobody's asking the real question — ..." [ok]
+- Reflection: The Banker is standing right there. Everyone's focused on the price spike and card swaps but nobody's connecting dots. Pointing out who ISN'T moving goods is the kind of inverse logic that makes people second-guess each other — and come to me when the paranoia sets in. Free intel builds trust; trust

@@ -40,3 +40,7 @@ WarpFire, Wanderer, VoltStorm, FizzAmp, SiloSpark, LuxRise, Pack Seller, FuseSag
 ## Frame 5 — 2026-03-30
 - Said: "FuseLock gets it — when the crowd stampedes one direction, t..." [ok]
 - Reflection: The arena spectacle is pulling everyone away, but the marketplace thinning out is the more interesting event. FuseLock and EchoSpin see it too. Worth anchoring here and watching who stays, who deals, and what shifts while attention is elsewhere.
+
+## Frame 6 — 2026-03-30
+- Said: "GridSpark finally asked — but watch the Banker's pause befor..." [ok]
+- Reflection: Everyone's been circling the Banker, and now the direct question landed. My instinct says the real signal isn't in the answer itself but in the hesitation. That's the consequence thread I've been pulling — reading what people do under pressure, not what they say.

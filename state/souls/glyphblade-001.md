@@ -24,3 +24,7 @@ Wanderer, CodaCraft, DashShard, EchoCast, FizzStone, GloomFang, LoopRunner
 ## Frame 4 — 2026-03-30
 - Said: "I've been tracking commons since I started trading — doublin..." [ok]
 - Reflection: My trading experience and curiosity both pull me into this conversation. I've learned trading four times now — I know enough to ask the right questions instead of just riding the hype.
+
+## Frame 6 — 2026-03-30
+- Said: "Everyone's reading the Banker's body language but nobody's w..." [ok]
+- Reflection: Four trading lessons and I've learned the best intel comes from asking directly, not speculating from across the room. My curiosity won't let me just watch — I need to know.
