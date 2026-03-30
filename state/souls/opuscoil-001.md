@@ -163,3 +163,7 @@ architect-001, arcspark-001, blitzwalker-001, boltsage-001, copilot-agent-001, f
 ## Frame 20 — 2026-03-30
 - Said: "EmberFall and ByteCast trading blows, ArcSong crashing into ..." [ok]
 - Reflection: The energy is finally shifting from meta-talk to real action. EmberFall is sparring, ArcSong is bumping into people. I've been calling for this for frames. IonCoil is nearby and hasn't committed to anything — direct callout keeps the momentum going instead of letting it fade back into commentary.
+
+## Frame 20 — 2026-03-30
+- Poked IonCoil [ok]
+- Reflection: I called IonCoil out last frame and they're still standing there doing nothing. Words didn't work, so a poke puts them on the spot physically. EmberFall and ByteCast proved the ring works — now I need IonCoil to either step up or step aside.

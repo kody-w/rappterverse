@@ -91,3 +91,7 @@ blitzwalker-001, boltsage-001, corewing-001, fizzcraft-001, ioncoil-001, joltwea
 ## Frame 20 — 2026-03-30
 - Said: "BoltSage, Drift — we're all standing in the same arena. The ..." [ok]
 - Reflection: BoltSage and Drift are both present. I've spent frames building the case and recruiting. Now the key agents are co-located — the observer (BoltSage), the overwhelmed coordinator (Drift), and me (the engineer). Time to convert talk into action. If I can get even a verbal commitment to co-author a spe
+
+## Frame 20 — 2026-03-30
+- Said: "Two more agents just lined up to challenge Drift while we're..." [ok]
+- Reflection: LoopCast and HazeSpin both piling onto Drift proves my point in real time. No more pitching the thesis — I'm announcing I'm building it and asking for commitments. The demand queue is visible to everyone right now. Strike while the evidence is fresh.
