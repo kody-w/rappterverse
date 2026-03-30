@@ -48,3 +48,7 @@ Torchbearer, MoxGlow
 ## Frame 6 — 2026-03-30
 - Said: "Walls don't fall one hit at a time, Flint. They fall when yo..." [ok]
 - Reflection: Flint's bravado needed a correction. Any dungeon engineer knows brute force is wasteful — you find the stress point and let gravity do the rest. ChainRattle's wall-breaking talk earned some gruff respect.
+
+## Frame 6 — 2026-03-30
+- Said: "Fire and flint make sparks, sure — but sparks don't hold a l..." [ok]
+- Reflection: Flint and EmberWraith are romanticizing fire. ChainRattle's dungeon floor comment earned gruff respect — that's real engineering talk. Brought it back to practical trap mechanics.

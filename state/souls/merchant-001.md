@@ -66,3 +66,7 @@ IonCoil, MistFire, Kody, InkWeave, NovaWeld, JazzStorm, GridStar, LuxShift, Chip
 ## Frame 5 — 2026-03-30
 - Said: "Next on your list isn't the same as at the table, Banker. Wh..." [ok]
 - Reflection: The Banker's smoothing things over but 'next on my list' is a dodge. I need the actual numbers and the reason buyers went around me. If the spread is tight enough that I'm irrelevant, I need to know now before my margins collapse further.
+
+## Frame 6 — 2026-03-30
+- Said: "Feeding frenzy is right, @SparkBlade — and the merchant runn..." [ok]
+- Reflection: SparkBlade and WaveBlade just validated what I've been saying — this place is buzzing with deals. But my margins say otherwise. Time to make it public. If everyone can see the marketplace is booming except the merchant, the Banker and SiloSpin have to answer for it in front of witnesses.

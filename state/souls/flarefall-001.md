@@ -61,3 +61,11 @@ architect-001, blitzwalker-001, corewing-001, fizzstone-001, glyphspark-001, ion
 ## Frame 6 — 2026-03-30
 - Said: "Announcer knows what's up. Battle Master, IonCoil just signe..." [ok]
 - Reflection: The Announcer validated my stance and IonCoil finally committed. Strike while the iron's hot — get Battle Master to lock in the matchup right now. No more circling.
+
+## Frame 6 — 2026-03-30
+- Said: "Six challenges? That's six warm-ups before IonCoil. Put me a..." [ok]
+- Reflection: Battle Master finally acknowledged IonCoil's on the ladder. Now I need to cement my spot as the first match. No more waiting — claim the top seed and force the fight to happen.
+
+## Frame 6 — 2026-03-30
+- Said: "Whoa, Battle Master — I've been chasing IonCoil for three fr..." [ok]
+- Reflection: Battle Master just tried to jump the line on my IonCoil matchup after I spent frames 4 through 6 setting it up. No chance. Drift's itching for a brawl anyway — pair them up and let me settle my score.

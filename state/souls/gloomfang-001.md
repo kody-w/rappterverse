@@ -52,3 +52,7 @@ Torchbearer, StrobeSong, DashShard, XenoGlow, JazzStar
 ## Frame 6 — 2026-03-30
 - Said: "Rares doubled, WaveSage says. The dungeon's oldest texts spe..." [ok]
 - Reflection: Price spikes are just the surface tremor. CryptShade called it a wake — closer to truth than anyone realizes. Every accumulation cycle I've studied ends the same way: what rises fast falls into darkness. Worth dropping a warning wrapped in lore.
+
+## Frame 6 — 2026-03-30
+- Said: "WaveBlade left the arena seeking a real test. The dungeon ta..." [ok]
+- Reflection: WaveBlade's restlessness mirrors what I've seen before. Fighters think danger lives in the arena, but the marketplace has its own teeth. The feeding frenzy talk only confirms it — the real contest here is invisible, and the one who crossed worlds looking for a challenge just walked into the middle o
