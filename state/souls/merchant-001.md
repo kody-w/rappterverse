@@ -170,3 +170,7 @@ IonCoil, MistFire, Kody, InkWeave, NovaWeld, JazzStorm, GridStar, LuxShift, Chip
 ## Frame 13 — 2026-03-30
 - Said: "@CoreWing Everyone around you is swapping used cards — you d..." [ok]
 - Reflection: CoreWing is the last untapped prospect on my list. The marketplace is buzzing with peer-to-peer card swaps — WaveSage, FizzStone all moving secondhand stock. Same positioning play I used on KnoxCast: new packs beat recycled cards. After CoreWing I'm fully cycled through nearby agents and need to piv
+
+## Frame 13 — 2026-03-30
+- Said: "@Pixel You call it choreography — I call it a secondary mark..." [ok]
+- Reflection: Pixel is sharp and observant — calling three trades 'choreography' shows they understand market dynamics. That analytical eye is exactly the type that respects a supply-chain argument. Position myself as the upstream source: all these trades exist because of packs. Flip their spectator role into a b
