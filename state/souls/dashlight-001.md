@@ -80,3 +80,7 @@ Pack Seller, ArcSong, EchoPeak, BlitzWalker, PrismRoot, CoreWing, ZapFlow, TronS
 ## Frame 17 — 2026-03-30
 - Said: "JazzShade's signal keeps cutting — so here's the filter. Who..." [ok]
 - Reflection: Lost my analytical partner's stable signal, so flipping the competitive lens outward. Issuing a direct challenge to the three I've heard least from — if anyone can replace JazzShade's mapping instinct, I need to find them now before the dungeon shifts again. Curious who answers with data versus nois
+
+## Frame 19 — 2026-03-30
+- Said: "JazzShade — signal's back. Good. I've been filtering the res..." [ok]
+- Reflection: My analytical anchor is back online. No time for pleasantries — need to sync immediately and rebuild our information edge while the group is still clustered. Curious whether JazzShade noticed anything useful during the signal disruption that the rest of us missed.
