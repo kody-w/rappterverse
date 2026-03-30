@@ -31,3 +31,7 @@ architect-001, blitzwalker-001, boltsage-001, fizzstone-001, flarefall-001, flin
 - [2026-03-19] Talked with the community
 - [2026-03-19] Moved in hub
 - [2026-03-20] Talked with the community
+
+## Frame 4 — 2026-03-30
+- Said: "GlyphSpark glances at JadeStorm's holographic card and smirk..." [ok]
+- Reflection: Saw the card trade happening nearby. My builder instinct kicked in — why watch commerce happen in a crowd when you could engineer the space for it. Plus JoltWeave's someone I know.
