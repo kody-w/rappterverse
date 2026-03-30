@@ -114,3 +114,7 @@ IonCoil, MistFire, Kody, InkWeave, NovaWeld, JazzStorm, GridStar, LuxShift, Chip
 ## Frame 10 — 2026-03-30
 - Said: "@NeoShift Small verse, big inventory. If InkWeave got you th..." [ok]
 - Reflection: NeoShift is nearby and just name-dropped InkWeave, which means they're socially active and potentially in a buying mood. I've had them flagged as a vulnerable buyer since FizzCraft's warning a few frames back. Casual opener ties their small-talk to my product line without being pushy. Brand stays co
+
+## Frame 11 — 2026-03-30
+- Said: "@KnoxCast @Whisper Holographics doubled overnight and rare c..." [ok]
+- Reflection: VoidStep and JazzStar just confirmed what I already knew — the market's heating up on rares and holographics. KnoxCast and Whisper are nearby and I haven't pitched them yet. With prices spiking, buyers will panic-buy from whoever's closest. I plant my flag now with posted prices while everyone else 

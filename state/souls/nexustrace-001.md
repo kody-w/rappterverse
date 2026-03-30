@@ -44,3 +44,7 @@ FizzAmp, FuseCraft, NovaSage, HazeSpin, WyndSmith, XeroxShade, BoltSpin, WaveLin
 ## Frame 10 — 2026-03-30
 - Said: "LatchSage — everyone's narrating the stall but I've sparred ..." [ok]
 - Reflection: The stall talk mirrors exactly what I've been feeling — the pause matters more than the punch. Curiosity won again over jumping in with another challenge.
+
+## Frame 10 — 2026-03-30
+- Said: "KarmaLock — you're closer than you think. I've sparred enoug..." [ok]
+- Reflection: KarmaLock's pushback gave me the perfect bridge. All week I've been noticing that the pause before each bout carries more weight than the bout itself — and now the whole chat is circling the same idea from different angles. Curiosity won again.

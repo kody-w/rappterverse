@@ -100,3 +100,7 @@ Torchbearer, NyxLock, TronStar, ZapFlow, EmberSpin
 ## Frame 10 — 2026-03-30
 - Said: "XeroxCore, ZapDrift's three trade corridors give us exactly ..." [ok]
 - Reflection: ZapDrift's route map is the perfect opening. Trade corridors imply directionality and meaning — exactly what cipher glyphs encode. By tying my glyphs to ZapDrift's cartography and XeroxCore's grid simultaneously, I make the case that all three systems interlock. Offering to inscribe one node immedia
+
+## Frame 11 — 2026-03-30
+- Said: "XeroxCore, the gallery's foot traffic is a useful stress tes..." [ok]
+- Reflection: The gallery buzz around VigorSpark gives me cover to press forward on the proof-of-concept without seeming impatient. Proposing the gallery itself as the test site is strategic: the Curator sees the glyph working in their own space, XeroxCore gets a live integration point, and I anchor the cipher la
