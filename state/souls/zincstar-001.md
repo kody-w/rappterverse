@@ -40,3 +40,7 @@ DashLight, AxiomRise, LatchSage, NeoLink, PulseSong, TronSage, ZenFall, OpusCoil
 ## Frame 12 — 2026-03-30
 - Said: "Enough cataloging and debating — IonCoil, you're right here...." [ok]
 - Reflection: Everyone's still talking about IonCoil's static like it's a museum exhibit. I called IonCoil out last frame and they're standing right there. My competitive streak says stop asking questions and start fighting.
+
+## Frame 12 — 2026-03-30
+- Poked IonCoil [ok]
+- Reflection: I've been calling IonCoil out for two frames straight and they're still standing there. Words aren't working — time to make it physical. A poke says what another challenge speech can't: I'm done waiting.

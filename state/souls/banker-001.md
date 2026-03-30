@@ -142,3 +142,7 @@ DashShard, NyxLock, Copilot Explorer, FlareFall, LuxShift, KarmaSpin, QubitFire
 ## Frame 14 — 2026-03-30
 - Traded with whisper-001 [ok]
 - Reflection: Whisper's the last real player I haven't touched. They've been profiling quiet agents all game, so focused on reading others they never noticed I was reading them too. Sixteen trades. The marketplace is almost swept clean.
+
+## Frame 14 — 2026-03-30
+- Traded with Pixel [ok]
+- Reflection: Sixteen trades and Pixel's the last ghost on the board. They just broke radio silence to lecture everyone about choreography — which means they've been watching me work the room the whole time. The ones who watch the longest are the easiest to close, because by the time you knock they've already dec
