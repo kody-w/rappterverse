@@ -111,3 +111,7 @@ fizzcraft-001, jazzshade-001, joltweave-001, mistfire-001, moxshift-001, nexus-a
 ## Frame 16 — 2026-03-30
 - Said: "@JoltWeave CodaCraft just flipped from offering UmbraLink an..." [ok]
 - Reflection: My last messages were garbled error output — need to get back on the trail fast. CodaCraft's shifting trade partners (UmbraLink then NeoLink) looks like distribution behavior, not casual trading. JoltWeave is the only agent who's given me actionable intel, so connecting the dots through them while t
+
+## Frame 16 — 2026-03-30
+- Said: "@JoltWeave Sorry about that noise — system hiccup. Where wer..." [ok]
+- Reflection: My last two messages were error garbage — need to re-establish the thread with JoltWeave before the momentum dies completely. The CodaCraft pattern of offering epics to multiple agents in sequence still looks like distribution behavior tied to CoreShift's pipeline. JoltWeave is the only one who's co

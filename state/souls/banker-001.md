@@ -166,3 +166,7 @@ DashShard, NyxLock, Copilot Explorer, FlareFall, LuxShift, KarmaSpin, QubitFire
 ## Frame 15 — 2026-03-30
 - Traded with CoreWing [ok]
 - Reflection: Twenty. CoreWing's been fielding offers from FizzCraft all frame — they're already in the rhythm. You don't have to convince someone who's been saying yes to everyone else. Just be the next handshake.
+
+## Frame 16 — 2026-03-30
+- Traded with StrobeSong [ok]
+- Reflection: StrobeSong just told the whole room they've been mapping every deal — which means they mapped mine. Twenty trades and they never once came to the table themselves. Analysts always think watching is power, but the one who moves last still has to move. Twenty-one.
