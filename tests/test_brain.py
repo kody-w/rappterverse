@@ -190,5 +190,37 @@ class TestPersonaSocialContext(unittest.TestCase):
         self.assertIn("TestAgent", out)
 
 
+class TestEnrollTargetMatching(unittest.TestCase):
+    """Goal-completion match was substring-based: "art" matched
+    "Artisan Training" and a goal got falsely resolved."""
+
+    def test_substring_no_longer_matches(self):
+        self.assertFalse(
+            agent_brain._enroll_target_matches("art", "Artisan Training"),
+            "'art' must NOT match 'Artisan Training' as a substring")
+        self.assertFalse(
+            agent_brain._enroll_target_matches("trade", "Tradesmen Guild"),
+            "'trade' must NOT match 'Tradesmen Guild'")
+
+    def test_word_boundary_match_succeeds(self):
+        self.assertTrue(
+            agent_brain._enroll_target_matches("combat", "Combat Training"))
+        self.assertTrue(
+            agent_brain._enroll_target_matches("art", "Art History"),
+            "'art' as a whole word should match")
+
+    def test_exact_phrase_match(self):
+        self.assertTrue(
+            agent_brain._enroll_target_matches(
+                "Combat Training", "Combat Training"))
+        self.assertTrue(
+            agent_brain._enroll_target_matches(
+                "social dynamics", "social dynamics"))
+
+    def test_empty_inputs(self):
+        self.assertFalse(agent_brain._enroll_target_matches("", "anything"))
+        self.assertFalse(agent_brain._enroll_target_matches("art", ""))
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

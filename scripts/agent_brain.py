@@ -186,6 +186,27 @@ def set_goal(memory: dict, goal_type: str, target: str, action: str, reason: str
     memory["goals"] = [g for g in goals if g.get("status") == "active"][-MAX_GOALS:]
 
 
+def _enroll_target_matches(target: str, course: str) -> bool:
+    """Word-boundary match between a goal target and a course name.
+
+    Pre-fix used `target.lower() in course.lower()` which false-positives
+    on substrings: goal "art" would resolve when an agent enrolls in
+    "Artisan Training". Now splits the course into word tokens so the
+    target only resolves on a whole-word hit (or exact phrase).
+    """
+    if not target or not course:
+        return False
+    target_lc = target.lower().strip()
+    course_lc = course.lower()
+    # Exact phrase match still wins ("combat training" → "Combat Training")
+    if target_lc == course_lc:
+        return True
+    # Otherwise require the target to appear as a full word/phrase
+    import re
+    pattern = r"\b" + re.escape(target_lc) + r"\b"
+    return re.search(pattern, course_lc) is not None
+
+
 def evaluate_goals(memory: dict, completed_action: str, details: dict):
     """Check if a completed action satisfies any goals. Auto-generate new goals from experiences."""
     goals = memory.get("goals", [])
@@ -195,7 +216,8 @@ def evaluate_goals(memory: dict, completed_action: str, details: dict):
         if g.get("status") != "active":
             continue
         if g.get("action") == completed_action:
-            if completed_action == "enroll" and g.get("target", "").lower() in details.get("course", "").lower():
+            if completed_action == "enroll" and _enroll_target_matches(
+                    g.get("target", ""), details.get("course", "")):
                 g["status"] = "done"
             elif completed_action == "travel" and g.get("target") == details.get("to"):
                 g["status"] = "done"
