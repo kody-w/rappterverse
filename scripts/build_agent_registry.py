@@ -10,6 +10,7 @@ Usage:
     python scripts/build_agent_registry.py --dry-run    # Preview without writing
 """
 
+import argparse
 import json
 import sys
 from pathlib import Path
@@ -110,14 +111,21 @@ def build_registry_entry(agent: dict, npc_def: dict) -> dict:
 
 
 def main():
-    dry_run = "--dry-run" in sys.argv
+    parser = argparse.ArgumentParser(
+        description="Generate agents/*.agent.json from agents.json + worlds/*/npcs.json")
+    parser.add_argument("--dry-run", action="store_true",
+                        help="Preview without writing")
+    parser.add_argument("--force", action="store_true",
+                        help="Overwrite existing registry files (default: skip)")
+    args = parser.parse_args()
 
     agents_data = load_json(STATE_DIR / "agents.json")
     agents = agents_data.get("agents", [])
     npc_lookup = load_world_npcs()
 
     built = 0
-    skipped = 0
+    skipped_non_system = 0
+    skipped_existing = 0
 
     for agent in agents:
         aid = agent["id"]
@@ -125,7 +133,7 @@ def main():
 
         # Skip non-system agents (they control themselves)
         if controller != "system":
-            skipped += 1
+            skipped_non_system += 1
             continue
 
         npc_def = find_npc_for_agent(aid, npc_lookup)
@@ -139,7 +147,13 @@ def main():
         entry = build_registry_entry(agent, npc_def)
         out_path = AGENTS_DIR / f"{aid}.agent.json"
 
-        if dry_run:
+        # Default: don't overwrite. The previous behavior silently
+        # clobbered hand-edited registry files on every run.
+        if out_path.exists() and not args.force and not args.dry_run:
+            skipped_existing += 1
+            continue
+
+        if args.dry_run:
             print(f"  Would create: {out_path.name} ({entry['name']} in {entry['world']})")
         else:
             with open(out_path, 'w') as f:
@@ -148,7 +162,10 @@ def main():
 
         built += 1
 
-    print(f"\n{'Would build' if dry_run else 'Built'} {built} registry entries, skipped {skipped} non-system agents")
+    print(f"\n{'Would build' if args.dry_run else 'Built'} {built} registry entries; "
+          f"skipped {skipped_non_system} non-system agents")
+    if skipped_existing:
+        print(f"   ⏭️  Skipped {skipped_existing} (already exist, use --force to overwrite)")
 
 
 if __name__ == "__main__":
