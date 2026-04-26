@@ -418,76 +418,85 @@ def run_agent_brainstem(
             "status": "ok" | "error" | "no_llm",
         }
     """
-    if not HAS_LLM:
-        return {"agent_id": agent_id, "action": None, "narrative": "", "status": "no_llm"}
-
-    # Load or seed soul file
-    soul = load_soul(agent_id)
-    if not soul:
-        soul = seed_soul_from_memory(agent_id)
-
-    # Build prompts
-    personality = agent_reg.get("personality", {})
-    archetype = personality.get("archetype", "neutral")
-    allowed_tools = get_toolbelt(archetype)
-
-    system_prompt = build_personality_prompt(agent_id, agent_reg, soul)
-    frame_prompt = build_frame_prompt(
-        agent_id, world, nearby_agents, recent_chat, relationships, frame, allowed_tools
-    )
-
-    # Call LLM (Copilot-first, plain text, no function calling)
-    try:
-        raw = generate(
-            system=system_prompt,
-            user=frame_prompt,
-            max_tokens=200,
-            temperature=0.9,
-        )
-    except Exception as exc:
-        return {
-            "agent_id": agent_id,
-            "action": None,
-            "narrative": f"LLM error: {exc}",
-            "status": "error",
-        }
-
-    if not raw:
-        return {"agent_id": agent_id, "action": None, "narrative": "", "status": "empty"}
-
-    # Parse JSON from response
+    # Single soul-log site at the end so every status writes a frame.
+    # Pre-fix: only successful actions made it into the soul, so the
+    # "subconscious log" silently dropped no_llm / error / empty / no_action
+    # frames — the souls described a partial life, not the whole arc.
+    status = "ok"
     action = None
     narrative = ""
 
-    try:
-        # Strip markdown code fences if present
-        text = raw.strip()
-        if text.startswith("```"):
-            text = text.split("\n", 1)[1] if "\n" in text else text[3:]
-            text = text.rsplit("```", 1)[0]
-        # Find JSON object
-        start = text.find("{")
-        end = text.rfind("}") + 1
-        if start >= 0 and end > start:
-            data = json.loads(text[start:end])
-            tool_name = data.get("tool", "")
-            args = data.get("args", {})
-            narrative = data.get("reflection", "")
+    if not HAS_LLM:
+        status = "no_llm"
+    else:
+        # Load or seed soul file
+        soul = load_soul(agent_id)
+        if not soul:
+            soul = seed_soul_from_memory(agent_id)
 
-            # Validate tool is allowed
-            if tool_name in allowed_tools:
-                action = {"tool": tool_name, "args": args}
-            else:
-                narrative = f"Wanted to {tool_name} but can't (not in toolbelt)"
-    except (json.JSONDecodeError, KeyError, TypeError):
-        # LLM returned non-JSON — treat as narrative
-        narrative = raw[:200]
+        # Build prompts
+        personality = agent_reg.get("personality", {})
+        archetype = personality.get("archetype", "neutral")
+        allowed_tools = get_toolbelt(archetype)
 
-    # Log to soul file
+        system_prompt = build_personality_prompt(agent_id, agent_reg, soul)
+        frame_prompt = build_frame_prompt(
+            agent_id, world, nearby_agents, recent_chat, relationships, frame, allowed_tools
+        )
+
+        raw = ""
+        try:
+            raw = generate(
+                system=system_prompt,
+                user=frame_prompt,
+                max_tokens=200,
+                temperature=0.9,
+            )
+        except Exception as exc:
+            status = "error"
+            narrative = f"LLM error: {exc}"
+
+        if status == "ok" and not raw:
+            status = "empty"
+        elif status == "ok":
+            try:
+                # Strip markdown code fences if present
+                text = raw.strip()
+                if text.startswith("```"):
+                    text = text.split("\n", 1)[1] if "\n" in text else text[3:]
+                    text = text.rsplit("```", 1)[0]
+                # Find JSON object
+                start = text.find("{")
+                end = text.rfind("}") + 1
+                if start >= 0 and end > start:
+                    data = json.loads(text[start:end])
+                    tool_name = data.get("tool", "")
+                    args = data.get("args", {})
+                    narrative = data.get("reflection", "")
+
+                    if tool_name in allowed_tools:
+                        action = {"tool": tool_name, "args": args}
+                    else:
+                        status = "no_action"
+                        narrative = f"Wanted to {tool_name} but can't (not in toolbelt)"
+                else:
+                    status = "no_action"
+                    narrative = raw[:200]
+            except (json.JSONDecodeError, KeyError, TypeError):
+                status = "no_action"
+                narrative = raw[:200]
+
+    # Always log — even silent frames are part of the agent's arc.
     if action:
         append_soul_entry(
             agent_id, frame,
             [{"tool": action["tool"], "args": action["args"], "status": "ok"}],
+            narrative,
+        )
+    else:
+        append_soul_entry(
+            agent_id, frame,
+            [{"tool": "idle", "args": {}, "status": status}],
             narrative,
         )
 
@@ -495,5 +504,5 @@ def run_agent_brainstem(
         "agent_id": agent_id,
         "action": action,
         "narrative": narrative,
-        "status": "ok" if action else "no_action",
+        "status": status,
     }
