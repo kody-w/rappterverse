@@ -18,6 +18,7 @@ Options:
     --dry-run           Preview without writing state
 """
 
+import functools
 import json
 import os
 import random
@@ -50,24 +51,41 @@ VALID_EMOTES = ["wave", "dance", "bow", "clap", "think", "celebrate"]
 STRATEGIC_ACTIONS = {"trade", "enroll", "travel", "tip", "challenge"}
 
 
+# Per-cycle caches: each `agent_dispatch.py` invocation is a fresh
+# Python process, so a module-level cache lives exactly one tick. Within
+# one tick `execute_agent_action` reads these files once per agent —
+# with N agents that's N file reads + N JSON parses for data that never
+# changes mid-cycle. lru_cache turns that into one read total. Mutations
+# in this script all happen on in-memory dicts passed through args
+# (agents/actions/messages); the cached files are read-only here.
+@functools.lru_cache(maxsize=1)
 def _load_economy():
     """Load economy state for agent decision-making."""
     return load_json(STATE_DIR / "economy.json")
 
 
+@functools.lru_cache(maxsize=1)
 def _load_academy():
     """Load academy state for enrollment decisions."""
     return load_json(STATE_DIR / "academy.json")
 
 
+@functools.lru_cache(maxsize=1)
 def _load_relationships():
     """Load relationships for travel/interaction decisions."""
     return load_json(STATE_DIR / "relationships.json")
 
 
+@functools.lru_cache(maxsize=1)
 def _load_inventory():
     """Load inventory for trade decisions."""
     return load_json(STATE_DIR / "inventory.json")
+
+
+@functools.lru_cache(maxsize=4)
+def _load_state_cached(name: str) -> dict:
+    """Cache for incidental per-tick reads (game_state, evolution, etc.)."""
+    return load_json(STATE_DIR / name)
 
 
 def _agent_balance(economy: dict, agent_id: str) -> int:
@@ -343,7 +361,7 @@ def execute_agent_action(agent_id: str, registry: dict, npc_lookup: dict,
     ensure_brainstem(memory, world)
 
     # ── DEFENSIVE SWARM — Override all decisions if combat is active ──
-    game_state = load_json(STATE_DIR / "game_state.json")
+    game_state = _load_state_cached("game_state.json")
     active_combat = [ce for ce in game_state.get("combatEvents", [])
                      if ce.get("status") == "active" and ce.get("world") == world]
 
@@ -390,23 +408,21 @@ def execute_agent_action(agent_id: str, registry: dict, npc_lookup: dict,
     # the LLM path too so the brain can act on what self_improve has
     # observed (e.g., "you've been silent — talk more").
     evolution_hints = []
-    evo_path = STATE_DIR / "evolution.json"
-    if evo_path.exists():
+    evo = _load_state_cached("evolution.json")
+    for key, ov in (evo.get("active_overrides", {}) or {}).items():
+        if not key.startswith("weight."):
+            continue
+        action = key[7:]
         try:
-            evo = json.loads(evo_path.read_text())
-            for key, ov in (evo.get("active_overrides", {}) or {}).items():
-                if not key.startswith("weight."):
-                    continue
-                action = key[7:]
-                value = float(ov.get("value", 0))
-                # The fallback baseline is ~0.1–0.5; values above hint
-                # "do this more", below hint "do this less."
-                if value >= 0.4:
-                    evolution_hints.append(f"lean toward {action}")
-                elif value <= 0.1:
-                    evolution_hints.append(f"ease off {action}")
-        except Exception:
-            pass
+            value = float(ov.get("value", 0))
+        except (TypeError, ValueError):
+            continue
+        # The fallback baseline is ~0.1–0.5; values above hint
+        # "do this more", below hint "do this less."
+        if value >= 0.4:
+            evolution_hints.append(f"lean toward {action}")
+        elif value <= 0.1:
+            evolution_hints.append(f"ease off {action}")
 
     world_ctx = {
         "world": world,
@@ -456,17 +472,15 @@ def execute_agent_action(agent_id: str, registry: dict, npc_lookup: dict,
                     if k in weights:
                         weights[k] *= multiplier
 
-        # Apply self-improvement overrides from evolution.json (after trait
-        # bias so explicit overrides take precedence)
-        evo_path = STATE_DIR / "evolution.json"
-        if evo_path.exists():
-            try:
-                evo = json.loads(evo_path.read_text())
-                for key, ov in evo.get("active_overrides", {}).items():
-                    if key.startswith("weight.") and key[7:] in weights:
-                        weights[key[7:]] = float(ov["value"])
-            except Exception:
-                pass
+        # Apply self-improvement overrides (after trait bias so explicit
+        # overrides take precedence). Reuses the per-tick cached load.
+        for key, ov in (_load_state_cached("evolution.json")
+                        .get("active_overrides", {}) or {}).items():
+            if key.startswith("weight.") and key[7:] in weights:
+                try:
+                    weights[key[7:]] = float(ov["value"])
+                except (KeyError, TypeError, ValueError):
+                    pass
         activity = random.choices(
             list(weights.keys()), weights=list(weights.values()))[0]
 
