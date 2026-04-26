@@ -145,22 +145,36 @@ def decide_brainstem(agent: dict, memory: dict, ctx: dict) -> dict:
 # ── Variant: rapp — call the local RAPP brainstem on :7072 ────────────
 
 def decide_rapp(agent: dict, memory: dict, ctx: dict) -> dict:
-    """Ask the local RAPP brainstem (port 7072) what this agent should do.
+    """Route through the local RAPP brainstem's RappterDecide swarm.
 
-    The brainstem must be running and authed (./.brainstem/start.sh +
-    /login flow). Falls back to a clear error message if unreachable.
+    RappterDecide is a 5-persona converged swarm generated via
+    SwarmFactory (one persona per trait dimension). We instruct the
+    brainstem's Copilot LLM to invoke that specific tool with the
+    agent's full state — traits, goal, nearby — rather than asking
+    /chat to free-form a one-word answer.
+
+    Falls back to a clear error message if brainstem unreachable.
     """
     name = agent.get("name", agent["id"])
-    interests = ", ".join(memory.get("interests", [])[:5]) or "—"
-    nearby = ", ".join(ctx.get("nearby_names", [])[:5]) or "alone"
+    nearby = ", ".join(ctx.get("nearby_names", [])[:6]) or "alone"
     goals = [g for g in memory.get("goals", []) if g.get("status") == "active"]
-    goal_str = (goals[-1].get("reason", "") if goals else "no active goal")
+    goal_str = goals[-1].get("reason", "") if goals else ""
+    traits = agent.get("traits", {}) if isinstance(agent.get("traits"), dict) else {}
+    traits_json = json.dumps(traits)
 
+    # Tell the brainstem's tool-calling LLM to invoke RappterDecide
+    # with this exact payload. The swarm coalesces five personas, weights
+    # by traits, and returns a JSON decision dict.
     prompt = (
-        f"You are {name} in {ctx['world']}. Interests: {interests}. "
-        f"Nearby agents: {nearby}. Recent intention: {goal_str}. "
-        f"Pick ONE action from this list and reply with ONLY that single word: "
-        f"{', '.join(VALID_ACTIONS)}."
+        f"Use the RappterDecide tool with these arguments:\n"
+        f"  agent_id={agent['id']}\n"
+        f"  agent_name={name}\n"
+        f"  world={ctx['world']}\n"
+        f"  mood={agent.get('mood', 'neutral')}\n"
+        f"  traits={traits_json}\n"
+        f"  recent_goal={goal_str!r}\n"
+        f"  nearby={nearby!r}\n"
+        f"After the tool returns, respond with the action word and nothing else."
     )
 
     payload = json.dumps({"user_input": prompt}).encode()
@@ -170,7 +184,7 @@ def decide_rapp(agent: dict, memory: dict, ctx: dict) -> dict:
         headers={"Content-Type": "application/json"},
     )
     try:
-        with urllib.request.urlopen(req, timeout=30) as resp:
+        with urllib.request.urlopen(req, timeout=60) as resp:
             data = json.loads(resp.read().decode("utf-8"))
     except urllib.error.URLError as e:
         return {"action": None, "error": f"brainstem unreachable: {e}"}
@@ -180,12 +194,31 @@ def decide_rapp(agent: dict, memory: dict, ctx: dict) -> dict:
     if "error" in data:
         return {"action": None, "error": data["error"]}
 
+    # Prefer the swarm's structured result from agent_logs over the
+    # LLM's free-form response — it's the real decision.
+    swarm_result = None
+    for log in data.get("agent_logs", []) or []:
+        if log.get("name") == "RappterDecide":
+            try:
+                swarm_result = json.loads(log.get("result", "{}"))
+            except (json.JSONDecodeError, TypeError):
+                pass
+            break
+
+    if swarm_result and swarm_result.get("action") in VALID_ACTIONS:
+        return {
+            "action": swarm_result["action"],
+            "reasoning": swarm_result.get("rationale", "rappter-decide vote"),
+            "votes": swarm_result.get("votes", {}),
+        }
+
+    # Fallback: parse a one-word action from the free-form response
     raw = (data.get("response") or "").strip().lower().rstrip(".").split()
     chosen = next((w for w in raw if w in VALID_ACTIONS), None)
     return {
         "action": chosen,
-        "reasoning": "rapp brainstem decision",
-        "raw_response": data.get("response", "")[:200],
+        "reasoning": "rapp brainstem (free-form fallback — no swarm result)",
+        "raw_response": (data.get("response", "") or "")[:200],
     }
 
 
