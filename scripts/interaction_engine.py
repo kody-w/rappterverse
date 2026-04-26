@@ -31,7 +31,15 @@ STATE_DIR = BASE_DIR / "state"
 try:
     from agent_brain import AgentBrain, load_memory, save_memory, record_experience, _call_llm
     HAS_BRAIN = True
-except ImportError:
+except ImportError as _brain_import_err:
+    # Constitution §3a: templates are *fallbacks*, never the primary path.
+    # If we silently degrade to template-only, operators must know — otherwise
+    # the metaverse looks alive but is actually echoing canned dialogue.
+    print(
+        f"⚠ interaction_engine: agent_brain import failed ({_brain_import_err}); "
+        "falling back to template dialogue (Constitution §3a violation if persistent)",
+        file=sys.stderr,
+    )
     HAS_BRAIN = False
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

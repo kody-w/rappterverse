@@ -26,7 +26,13 @@ const WorldAgents = {
             if (!this.agentMeshes[agent.id]) {
                 this.createAgentMesh(scene, agent, worldId);
             } else {
-                this.agentMeshes[agent.id].targetPos.set(agent.position.x, 0, agent.position.z);
+                const m = this.agentMeshes[agent.id];
+                m.targetPos.set(agent.position.x, 0, agent.position.z);
+                // Drift the wander anchor toward server position. Without this,
+                // agents wander forever around their CREATION position even
+                // after the server reports them somewhere new (Constitution §10a).
+                // 0.35 = settles to new home in ~3 polls without snapping.
+                m.homePos.lerp(m.targetPos, 0.35);
             }
         });
     },

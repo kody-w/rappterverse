@@ -103,8 +103,11 @@ def social_depth_score(relationships: dict) -> tuple[float, list[str]]:
     strong_ratio = strong / len(edges)
     medium_ratio = medium / len(edges)
     
-    score = min(100, (strong_ratio * 200 + medium_ratio * 80 + min(avg, 30) * 2))
-    
+    # 100% strong = 100 score (was 50% saturating at 100). Medium bonds and
+    # average-score tail provide secondary signal; total weights chosen so
+    # 50% strong + 30% medium + avg=15 ≈ 80, leaving headroom for hub bonus.
+    score = min(100, (strong_ratio * 100 + medium_ratio * 40 + min(avg, 30) * 1.0))
+
     insights.append(f"📊 {len(edges)} relationships — avg score {avg:.1f}")
     if strong > 0:
         insights.append(f"✅ {strong} strong bonds (>30) — real friendships forming")
@@ -202,18 +205,22 @@ def economic_agency_score(economy: dict) -> tuple[float, list[str]]:
     passive = types.get("income", 0) + types.get("stipend", 0)
     
     agency_ratio = agent_driven / total * 100 if total else 0
-    
-    score = min(100, agency_ratio * 5)  # 20% agent-driven = 100 score
-    
+
+    # Linear: ~83% agent-driven needed for 100. Was *5 (clamped at 20% → 100,
+    # which made the dimension flatline). Headroom for the tipper-diversity
+    # bonus below; combined max stays at 100.
+    score = min(100, agency_ratio * 1.2)
+
     insights.append(f"📊 {total} transactions — {agent_driven} agent-driven, {passive} passive")
-    
+
     tips = economy.get("tips", [])
     if len(tips) > 10:
         # Check tip diversity — are different agents tipping different people?
         tippers = len(set(t.get("from") for t in tips))
         recipients = len(set(t.get("to") for t in tips))
         insights.append(f"✅ {len(tips)} tips from {tippers} agents to {recipients} recipients")
-        score = min(100, score + tippers * 2)
+        # Tipper bonus capped at 15 so it can't single-handedly clamp the score.
+        score = min(100, score + min(tippers, 15))
     
     if agency_ratio > 15:
         insights.append(f"✅ {agency_ratio:.0f}% agent-driven — real economic participation")
@@ -249,9 +256,12 @@ def migration_score(actions: list, agents: list) -> tuple[float, list[str]]:
     
     # World diversity
     destinations = Counter(t.get("data", {}).get("to_world") for t in travels)
-    
-    score = min(100, len(travels) * 15 + ratio / 2)
-    
+
+    # Sublinear: sqrt(travels) so the curve doesn't slam to 100 at 7 travels.
+    # 7 travels ≈ 53, 30 ≈ 99, 100 ≈ 100. Purposeful-ratio adds up to +25.
+    travel_score = min(80, math.sqrt(max(len(travels), 0)) * 20)
+    score = min(100, travel_score + (ratio / 4))
+
     insights.append(f"📊 {len(travels)} cross-world travels ({purposeful} with stated reason)")
     if len(destinations) >= 3:
         insights.append(f"✅ Traveling to {len(destinations)} different worlds")

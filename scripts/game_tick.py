@@ -130,57 +130,75 @@ def fulfill_npc_needs(npcs_data: dict, actions_data: dict, chat_data: dict,
         npc_id = npc.get("id", "")
         restored = {}
 
-        # Count activity in NPC's world
+        # World-scoped activity counts
         world_actions = sum(1 for a in actions if a.get("world") == npc_world)
         world_messages = sum(1 for m in messages if m.get("world") == npc_world)
-        world_trades = sum(1 for t in completed_trades
-                          if t.get("status") == "completed")
 
-        # Social: restored by chat/interaction activity in the same world
+        # Trades involving this NPC (as buyer, seller, or counterparty)
+        # Trades don't carry a world field, so attribute by participation.
+        npc_trades = sum(
+            1 for t in completed_trades
+            if t.get("status") == "completed"
+            and (t.get("from") == npc_id or t.get("to") == npc_id)
+        )
+
+        # Chat addressed to this NPC (mention by id or name)
+        npc_name_lc = (npc.get("name", "") or "").lower()
+        npc_addressed = sum(
+            1 for m in messages
+            if m.get("world") == npc_world and (
+                npc_id in (m.get("content", "") or "")
+                or (npc_name_lc and npc_name_lc in (m.get("content", "") or "").lower())
+            )
+        )
+
+        # Social: restored by chat in NPC's world, with bonus for direct mentions.
+        # Pure ambient chatter gives less than being addressed.
         if "social" in needs:
-            social_boost = min(30, world_messages * 3 + world_actions)
+            social_boost = min(30, world_messages + npc_addressed * 5)
             if social_boost > 0:
                 needs["social"] = min(100, needs["social"] + social_boost)
                 restored["social"] = social_boost
 
-        # Purpose: restored by actions happening (the world is alive)
+        # Purpose: restored by actual task progress and same-world activity.
+        # No-progress task with empty world gives nothing.
         if "purpose" in needs:
-            # Task progress also restores purpose
             task = npc.get("currentTask", {})
             task_boost = min(15, task.get("progress", 0) * 3)
-            purpose_boost = min(25, world_actions * 2 + task_boost)
+            purpose_boost = min(25, world_actions + task_boost)
             if purpose_boost > 0:
                 needs["purpose"] = min(100, needs["purpose"] + purpose_boost)
                 restored["purpose"] = purpose_boost
 
         # Energy: passive recovery — always ticks up slightly
         if "energy" in needs:
-            # Check schedule for rest periods
             schedule = npc.get("schedule", [])
             resting = any(s.get("activity") == "rest" for s in schedule)
             energy_boost = random.randint(5, 15) if resting else random.randint(2, 8)
             needs["energy"] = min(100, needs["energy"] + energy_boost)
             restored["energy"] = energy_boost
 
-        # Profit: restored by trades completing
+        # Profit: restored only by trades this NPC actually participated in.
         if "profit" in needs:
-            profit_boost = min(30, world_trades * 10 + world_actions)
+            profit_boost = min(30, npc_trades * 12)
             if profit_boost > 0:
                 needs["profit"] = min(100, needs["profit"] + profit_boost)
                 restored["profit"] = profit_boost
 
-        # Inventory: restored by marketplace activity
+        # Inventory: restored when this NPC's trades replenish stock — proxy
+        # by NPC trade participation, scaled by current stock breadth.
         if "inventory" in needs:
             inv_status = npc.get("inventory_status", {})
-            total_stock = sum(inv_status.values()) if inv_status else 0
-            inv_boost = min(25, total_stock // 3)
+            stock_breadth = sum(1 for v in inv_status.values() if v > 0)
+            inv_boost = min(25, npc_trades * 5 + stock_breadth)
             if inv_boost > 0:
                 needs["inventory"] = min(100, needs["inventory"] + inv_boost)
                 restored["inventory"] = inv_boost
 
-        # Customers: restored by chat volume in world
+        # Customers: restored by chat in this NPC's world (foot traffic),
+        # with bonus when the NPC is directly addressed.
         if "customers" in needs:
-            cust_boost = min(25, world_messages * 2 + world_actions)
+            cust_boost = min(25, world_messages + npc_addressed * 4)
             if cust_boost > 0:
                 needs["customers"] = min(100, needs["customers"] + cust_boost)
                 restored["customers"] = cust_boost
@@ -455,7 +473,7 @@ def decay_stale_relationships(rel_data: dict, timestamp: str) -> list[str]:
     edges = rel_data.get("edges", [])
     interactions = rel_data.get("interactions", [])
 
-    # Build lookup of last interaction time per pair
+    # Build lookup from interactions[] (may be trimmed — fallback only)
     last_seen: dict[tuple, str] = {}
     for entry in interactions:
         pair = tuple(sorted([entry.get("a", ""), entry.get("b", "")]))
@@ -469,11 +487,14 @@ def decay_stale_relationships(rel_data: dict, timestamp: str) -> list[str]:
         if edge.get("score", 0) <= 0:
             continue
 
-        pair = tuple(sorted([edge.get("a", ""), edge.get("b", "")]))
-        last_ts = last_seen.get(pair)
+        # Prefer the edge's own lastInteraction (authoritative & survives trimming)
+        last_ts = edge.get("lastInteraction")
+        if not last_ts:
+            pair = tuple(sorted([edge.get("a", ""), edge.get("b", "")]))
+            last_ts = last_seen.get(pair)
 
         if not last_ts:
-            # No interaction on record — decay by 1
+            # Truly no record on edge or in interactions — gentle decay
             edge["score"] = max(0, edge["score"] - 1)
             decayed_count += 1
             continue
@@ -647,9 +668,45 @@ def resolve_combat(game_state: dict, agents_data: dict, actions_data: dict,
     return events
 
 
-def resolve_pending_trades(trades_data: dict, actions_data: dict, timestamp: str) -> list[str]:
-    """Find trade_offer actions not yet in trades.json, create entries, auto-resolve."""
+# Mood → (accept_threshold, reject_threshold). Roll < accept = accept,
+# < reject = reject, else stay pending. Desperate NPCs accept almost anything;
+# thriving NPCs are selective. Acceptance + rejection always sum < 1.0 so
+# trades can still hang.
+MOOD_TRADE_ODDS = {
+    "desperate": (0.85, 0.95),  # take any deal, almost never reject outright
+    "anxious":   (0.70, 0.90),
+    "neutral":   (0.50, 0.80),  # baseline (matches old 50/30/20)
+    "content":   (0.45, 0.75),
+    "thriving":  (0.30, 0.60),  # picky — many trades hang as pending
+}
+
+
+def _trade_odds(trade: dict, npcs_data: dict) -> tuple[float, float]:
+    """Pick acceptance odds based on the responder's NPC mood, if any.
+
+    The responder is `trade.to`. Falls back to neutral baseline when the
+    responder isn't an NPC or has no mood set.
+    """
+    responder_id = trade.get("to", "")
+    if not responder_id:
+        return MOOD_TRADE_ODDS["neutral"]
+    for npc in npcs_data.get("npcs", []):
+        if npc.get("id") == responder_id:
+            mood = npc.get("mood", "neutral")
+            return MOOD_TRADE_ODDS.get(mood, MOOD_TRADE_ODDS["neutral"])
+    return MOOD_TRADE_ODDS["neutral"]
+
+
+def resolve_pending_trades(trades_data: dict, actions_data: dict, timestamp: str,
+                           npcs_data: dict = None) -> list[str]:
+    """Find trade_offer actions not yet in trades.json, create entries, auto-resolve.
+
+    Trade resolution is mood-gated: when the responder is an NPC, their mood
+    biases accept/reject odds (see MOOD_TRADE_ODDS). Non-NPC trades keep the
+    neutral baseline.
+    """
     events = []
+    npcs_data = npcs_data or {}
     actions = actions_data.get("actions", [])
     active = trades_data.setdefault("activeTrades", [])
     completed = trades_data.setdefault("completedTrades", [])
@@ -674,31 +731,30 @@ def resolve_pending_trades(trades_data: dict, actions_data: dict, timestamp: str
         }
         active.append(trade)
 
-    # Auto-resolve pending trades (50% accept, 30% reject, 20% stay pending)
     still_active = []
     for trade in active:
         if trade.get("status") != "pending":
             still_active.append(trade)
             continue
 
+        accept_thresh, reject_thresh = _trade_odds(trade, npcs_data)
         roll = random.random()
-        if roll < 0.50:
+        if roll < accept_thresh:
             trade["status"] = "completed"
             trade["completedAt"] = timestamp
             trade["completionMessage"] = f"Trade accepted! {trade.get('to', '?')} agreed to the deal. 🤝"
             completed.append(trade)
             events.append(f"Trade {trade['id']}: {trade['from']} → {trade['to']} completed")
-        elif roll < 0.80:
+        elif roll < reject_thresh:
             trade["status"] = "rejected"
             trade["completedAt"] = timestamp
             trade["completionMessage"] = "Trade declined — not interested right now."
             completed.append(trade)
             events.append(f"Trade {trade['id']}: {trade['to']} rejected offer from {trade['from']}")
         else:
-            still_active.append(trade)  # stays pending
+            still_active.append(trade)
 
     trades_data["activeTrades"] = still_active
-    # Trim completed to last 200
     trades_data["completedTrades"] = completed[-200:]
     if events:
         trades_data.setdefault("_meta", {})["lastUpdate"] = timestamp
@@ -745,8 +801,8 @@ def main():
     combat_events = resolve_combat(game_state, agents_data, actions_data, chat_data, timestamp)
     events.extend(combat_events)
 
-    # Resolve trades
-    trade_events = resolve_pending_trades(trades_data, actions_data, timestamp)
+    # Resolve trades — mood-gated when responder is an NPC
+    trade_events = resolve_pending_trades(trades_data, actions_data, timestamp, npcs_data)
     events.extend(trade_events)
 
     # Decay stale relationships (social graph maintenance)

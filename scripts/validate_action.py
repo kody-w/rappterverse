@@ -261,6 +261,14 @@ def validate_actions(data: dict, agent_ids: set):
                 )
             prev_ts = ts
 
+    # Action types that carry their payload under `data` (vs top-level fields
+    # like chat.content or poke.target). Keeps validation honest with how
+    # actions are actually shaped on disk.
+    DATA_REQUIRED_TYPES = {
+        "move", "emote", "place_object", "trade_offer", "trade_accept",
+        "attack", "battle_challenge",
+    }
+
     # Detailed validation on recent actions
     for action in actions[-10:]:
         aid = action.get("id")
@@ -268,9 +276,12 @@ def validate_actions(data: dict, agent_ids: set):
             error("`actions.json`: Action missing `id`")
             continue
 
-        for field in ("timestamp", "agentId", "type", "world", "data"):
+        for field in ("timestamp", "agentId", "type", "world"):
             if field not in action:
                 error(f"`actions.json`: Action `{aid}` missing `{field}`")
+
+        if action.get("type") in DATA_REQUIRED_TYPES and "data" not in action:
+            error(f"`actions.json`: Action `{aid}` ({action['type']}) missing `data`")
 
         if action.get("agentId") and action["agentId"] not in agent_ids:
             error(f"`actions.json`: Action `{aid}` references unknown agent `{action['agentId']}`")
@@ -556,7 +567,7 @@ def audit_state_consistency():
         for world_name, world_data in game_state.get("worlds", {}).items():
             reported = world_data.get("population", 0)
             actual = world_populations.get(world_name, 0)
-            if reported != 0 and reported != actual:
+            if reported != actual:
                 error(
                     f"Population drift: `{world_name}` reports {reported} "
                     f"but {actual} agents are actually there"

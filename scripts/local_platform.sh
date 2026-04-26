@@ -217,6 +217,14 @@ job_state_audit() {
   python3 scripts/validate_action.py --audit 2>&1
 }
 
+job_state_integrity() {
+  # Regression test suite — schema, bounds, ordering, delta protocol.
+  # The file existed (702 lines) but no workflow ever invoked it.
+  # Runs daily; non-zero exit surfaces in the platform log.
+  python3 -m unittest scripts.test_state_integrity -v 2>&1 || \
+    echo "⚠ state integrity tests reported failures (non-fatal)"
+}
+
 job_emergence() {
   # Emergence detection
   python3 scripts/emergence.py --no-push 2>&1 || true
@@ -558,6 +566,11 @@ run_cycle() {
   # ── Phase 8: AUDIT (consistency check — every 12 hours) ──
   if should_run "job_state_audit" 715; then
     run_job job_state_audit
+  fi
+
+  # ── Phase 8b: REGRESSION (state integrity tests — every 24 hours) ──
+  if should_run "job_state_integrity" 1435; then
+    run_job job_state_integrity
   fi
 
   # ── Phase 9: PUSH (commit + push frame) ──

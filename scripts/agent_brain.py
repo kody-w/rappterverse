@@ -22,6 +22,7 @@ from pathlib import Path
 BASE_DIR = Path(__file__).parent.parent
 STATE_DIR = BASE_DIR / "state"
 MEMORY_DIR = STATE_DIR / "memory"
+SOUL_DIR = STATE_DIR / "souls"
 
 # LLM backend — uses github_llm.py with 3-tier fallback:
 # Azure OpenAI → GitHub Models (Claude/GPT) → Copilot CLI (unlimited)
@@ -216,13 +217,51 @@ def evaluate_goals(memory: dict, completed_action: str, details: dict):
 
 
 def goal_bias(memory: dict) -> str:
-    """Return the action type that active goals suggest, or empty string."""
-    goals = memory.get("goals", [])
-    active = [g for g in goals if g.get("status") == "active"]
-    if active:
-        # Pick the oldest active goal
-        return active[0].get("action", "")
-    return ""
+    """Return the action type that active goals suggest, or empty string.
+
+    Picks the most-recently-created active goal so behavior arcs reflect
+    what just happened to the agent, not a stale goal from 20 ticks ago.
+    Goals without a `created` timestamp sort to the bottom (treated as old).
+    """
+    active = [g for g in memory.get("goals", []) if g.get("status") == "active"]
+    if not active:
+        return ""
+    # ISO-8601 strings sort lexicographically in chronological order.
+    most_recent = max(active, key=lambda g: g.get("created", ""))
+    return most_recent.get("action", "")
+
+
+def recent_soul_reflections(agent_id: str, max_entries: int = 3) -> str:
+    """Read the agent's last few soul reflections.
+
+    Souls are markdown logs written by brainstem.append_soul_entry — each
+    "## Frame N" block records what the agent said and a free-form
+    reflection on *why*. They're the closest thing the system has to an
+    inner monologue. Until now nothing read them back; threading the most
+    recent reflections into the persona prompt makes the agent self-aware
+    of its own subconscious log so chat stays coherent across frames.
+    """
+    path = SOUL_DIR / f"{agent_id}.md"
+    if not path.exists():
+        return ""
+    try:
+        text = path.read_text(encoding="utf-8")
+    except OSError:
+        return ""
+
+    # Soul files are append-only with `## Frame N` headers. Pull the tail.
+    blocks = text.split("\n## Frame ")
+    if len(blocks) <= 1:
+        return ""
+    recent = blocks[-max_entries:]
+    cleaned = []
+    for b in recent:
+        # Trim each block to ~3 lines so we don't blow the prompt budget.
+        lines = [ln for ln in b.splitlines() if ln.strip()][:4]
+        if lines:
+            # Re-prepend "Frame " — the split() above stripped it from the head.
+            cleaned.append("- Frame " + " / ".join(lines))
+    return "\n".join(cleaned)
 
 
 def memory_summary(memory: dict) -> str:
@@ -358,6 +397,11 @@ def _build_persona(agent_reg: dict, npc_def: dict, memory: dict,
 
     mem_ctx = memory_summary(memory)
 
+    # Recent soul reflections — the agent's own subconscious log.
+    # Was a write-only artifact until now; reading it back gives the LLM
+    # access to *why* the agent said what they said in past frames.
+    soul_ctx = recent_soul_reflections(memory.get("agentId", ""))
+
     # Social/economic context from world_context
     wc = world_context or {}
     social_lines = []
@@ -389,6 +433,7 @@ CHARACTER:
 
 YOUR MEMORY:
 {mem_ctx}
+{f"{chr(10)}YOUR INNER VOICE (recent reflections):{chr(10)}{soul_ctx}" if soul_ctx else ""}
 
 RULES:
 - Stay 100% in character. You are {name}, not an AI assistant.
@@ -419,7 +464,7 @@ class AgentBrain:
         # Goal-driven bias — if agent has an active goal, 40% chance to pursue it
         biased = goal_bias(memory)
         if biased and random.random() < 0.4:
-            valid_actions = {"chat", "move", "emote", "post", "travel", "enroll",
+            valid_actions = {"chat", "move", "emote", "post", "poke", "travel", "enroll",
                              "tip", "trade", "challenge"}
             if biased in valid_actions:
                 return biased
@@ -481,6 +526,7 @@ Choose ONE action by responding with just the action word:
 - chat (talk to someone or share a thought)
 - move (go somewhere new in this world)
 - emote (express yourself physically)
+- poke (nudge a specific neighbor for their attention)
 - travel (go to a different world — visit friends or explore)
 - enroll (sign up for an academy course to learn a skill)
 - tip (give RAPP to someone whose message you liked)
@@ -493,10 +539,10 @@ Respond with ONLY the action word, nothing else."""
                            prompt, max_tokens=10, temperature=0.7)
         result = result.lower().strip().rstrip(".")
 
-        valid = {"chat", "move", "emote", "post", "travel", "enroll", "tip", "trade", "challenge"}
+        valid = {"chat", "move", "emote", "post", "poke", "travel", "enroll", "tip", "trade", "challenge"}
         if result in valid:
             return result
-        return self._fallback_decision(agent_reg)
+        return self._fallback_decision(agent_reg, memory)
 
     def generate_chat(self, agent_reg: dict, npc_def: dict, memory: dict,
                       recent_messages: list, world: str,

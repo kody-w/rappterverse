@@ -142,9 +142,13 @@ const Abilities = {
     if (!this.active || index < 0 || index >= this.defs.length) return false;
     const def = this.defs[index];
     if (this.cooldowns[index] > 0) return false;
-    if (def.costType === 'mp' && !PlayerStats.useMp(def.cost)) return false;
-    if (def.costType === 'energy' && !PlayerStats.useEnergy(def.cost)) return false;
-    this.cooldowns[index] = def.cooldown;
+    // Use scaled cost/cooldown so leveling up actually reduces resource
+    // burn (the formula in getScaled was built but never consumed here).
+    const scaled = this.getScaled(index);
+    const cost = scaled.cost || def.cost;
+    if (def.costType === 'mp' && !PlayerStats.useMp(cost)) return false;
+    if (def.costType === 'energy' && !PlayerStats.useEnergy(cost)) return false;
+    this.cooldowns[index] = scaled.cooldown || def.cooldown;
 
     const pos = this._playerPos();
     const dir = this._facing();
@@ -291,7 +295,10 @@ const Abilities = {
       if (hit || p.life > 3) {
         if (hit && typeof VFX !== 'undefined') VFX.burst(p.mesh.position, 'towerImpact');
         if (p._trail && typeof VFX !== 'undefined') VFX.stopTrail(p._trail);
-        WorldMode.scene.remove(p.mesh); this.projectiles.splice(i, 1);
+        WorldMode.scene.remove(p.mesh);
+        if (p.mesh.geometry) p.mesh.geometry.dispose();
+        if (p.mesh.material) p.mesh.material.dispose();
+        this.projectiles.splice(i, 1);
       }
     }
     // Shield + bubble
@@ -345,8 +352,19 @@ const Abilities = {
       const t = e.life / e.duration;
       e.mesh.material.opacity = Math.max(0, 1 - t);
       if (e.mesh._novaRange) { const s = 1 + (e.mesh._novaRange - 1) * t; e.mesh.scale.set(s, s, s); }
-      if (e.life >= e.duration) { WorldMode.scene.remove(e.mesh); this._effects.splice(i, 1); }
+      if (e.life >= e.duration) {
+        WorldMode.scene.remove(e.mesh);
+        if (e.mesh.geometry) e.mesh.geometry.dispose();
+        if (e.mesh.material) e.mesh.material.dispose();
+        this._effects.splice(i, 1);
+      }
     }
+  },
+  _disposeMesh(m) {
+    if (!m) return;
+    if (WorldMode.scene) WorldMode.scene.remove(m);
+    if (m.geometry) m.geometry.dispose();
+    if (m.material) m.material.dispose();
   },
   cleanup() {
     this.active = false;
@@ -356,8 +374,8 @@ const Abilities = {
       });
     }
     this._slotListeners = [];
-    this.projectiles.forEach(p => WorldMode.scene && WorldMode.scene.remove(p.mesh));
-    this._effects.forEach(e => WorldMode.scene && WorldMode.scene.remove(e.mesh));
+    this.projectiles.forEach(p => this._disposeMesh(p.mesh));
+    this._effects.forEach(e => this._disposeMesh(e.mesh));
     this.projectiles = []; this._effects = [];
     this.shieldActive = false; PlayerStats.shielded = false;
     // Dispose shield bubble

@@ -391,7 +391,30 @@ def execute_agent_action(agent_id: str, registry: dict, npc_lookup: dict,
                        {"move": 0.3, "chat": 0.5, "emote": 0.2}))
         if "poke" not in weights:
             weights["poke"] = 0.08
-        # Apply self-improvement overrides from evolution.json
+
+        # Bias weights by the agent's evolved quantitative traits (the
+        # ones game_tick.evolve_agent_traits writes back to agents.json).
+        # Without this the fallback path ignores 50+ ticks of personality
+        # drift and treats every agent like a fresh archetype.
+        agent_traits = agent.get("traits", {}) if isinstance(agent.get("traits"), dict) else {}
+        if agent_traits:
+            BASELINE = 0.20  # uniform 5-trait floor
+            BOOST = 2.0      # how strongly traits bend weights
+            TRAIT_TO_ACTIONS = {
+                "trader":   ("trade", "tip"),
+                "fighter":  ("challenge",),
+                "explorer": ("move", "travel"),
+                "social":   ("chat", "poke", "emote"),
+                "builder":  ("emote",),  # no place_object in dispatch path
+            }
+            for trait, action_keys in TRAIT_TO_ACTIONS.items():
+                multiplier = 1.0 + max(0.0, agent_traits.get(trait, BASELINE) - BASELINE) * BOOST
+                for k in action_keys:
+                    if k in weights:
+                        weights[k] *= multiplier
+
+        # Apply self-improvement overrides from evolution.json (after trait
+        # bias so explicit overrides take precedence)
         evo_path = STATE_DIR / "evolution.json"
         if evo_path.exists():
             try:

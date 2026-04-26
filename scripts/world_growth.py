@@ -779,11 +779,11 @@ Say ONE thing — a thought, reaction, greeting, or observation. Be genuine and 
             inv = load_json(STATE_DIR / "inventory.json")
             inventories = inv.get("inventories", {})
             my_inv = inventories.get(agent_id, {})
-            my_cards = my_inv.get("cards", [])
+            my_items = my_inv.get("items", [])
             my_balance = my_inv.get("balance", 0)
 
-            if my_cards and my_balance >= 20:
-                offered_card = random.choice(my_cards)
+            if my_items and my_balance >= 20:
+                offered_card = random.choice(my_items)
                 trade_data = load_json(STATE_DIR / "trades.json")
                 active = trade_data.get("activeTrades", [])
                 trade_id = next_id("trade-", [t["id"] for t in active] +
@@ -795,7 +795,8 @@ Say ONE thing — a thought, reaction, greeting, or observation. Be genuine and 
                     "completedAt": ts,
                     "from": agent_id,
                     "to": partner["id"],
-                    "offering": [{"type": "card", "name": offered_card["name"],
+                    "offering": [{"type": offered_card.get("type", "card"),
+                                  "name": offered_card.get("name") or offered_card.get("id", "item"),
                                   "rarity": offered_card.get("rarity", "common")}],
                     "requesting": [{"type": "currency", "amount": random.randint(20, 100),
                                     "currency": "RAPPcoin"}],
