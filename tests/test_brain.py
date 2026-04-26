@@ -155,5 +155,40 @@ class TestTraitWeightedFallback(unittest.TestCase):
                            "trader-heavy agents should trade more")
 
 
+class TestPersonaSocialContext(unittest.TestCase):
+    """_build_persona must surface nearby agents' moods/traits and
+    evolution hints so the LLM has something to grip beyond bare names."""
+
+    def _persona(self, world_context: dict) -> str:
+        return agent_brain._build_persona(
+            agent_reg={"name": "TestAgent",
+                       "personality": {"archetype": "trader",
+                                       "interests": ["trading"]}},
+            npc_def={},
+            memory={"agentId": "test-001"},
+            world_context=world_context,
+        )
+
+    def test_nearby_profiles_appear_in_persona(self):
+        out = self._persona({
+            "nearby_profiles": ["Merchant (desperate, trader)",
+                                "Sage (thriving, social)"],
+        })
+        self.assertIn("Merchant (desperate, trader)", out)
+        self.assertIn("Sage", out)
+
+    def test_evolution_hints_appear_in_persona(self):
+        out = self._persona({
+            "evolution_hints": ["lean toward chat", "ease off challenge"],
+        })
+        self.assertIn("Recent self-tuning", out)
+        self.assertIn("lean toward chat", out)
+
+    def test_empty_world_context_safe(self):
+        # Just verify nothing crashes with an empty context
+        out = self._persona({})
+        self.assertIn("TestAgent", out)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

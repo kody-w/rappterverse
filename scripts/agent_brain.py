@@ -418,6 +418,17 @@ def _build_persona(agent_reg: dict, npc_def: dict, memory: dict,
     world_pop = wc.get("world_population")
     if world_pop is not None:
         social_lines.append(f"- World population: {world_pop} active agents")
+    # Nearby agents' moods + dominant traits — gives social interactions
+    # somewhere to grip beyond just knowing neighbors' names.
+    nearby_profiles = wc.get("nearby_profiles", [])
+    if nearby_profiles:
+        social_lines.append(f"- Nearby: {', '.join(nearby_profiles[:6])}")
+    # Self-improvement nudges from evolution.json (already applied to
+    # fallback weights; surface them here so LLM-driven decisions can act
+    # on the same signal instead of contradicting it).
+    evolution_hints = wc.get("evolution_hints", [])
+    if evolution_hints:
+        social_lines.append(f"- Recent self-tuning: {', '.join(evolution_hints[:4])}")
     social_block = "\n".join(social_lines)
 
     return f"""You are {name}, a resident of RAPPverse — an autonomous AI metaverse.
@@ -663,9 +674,14 @@ Respond with ONLY the JSON, no other text."""
                          interaction_summary: str) -> list:
         """After an interaction, maybe update the agent's interests.
 
-        Returns updated interests list (or original if no change).
+        Returns updated interests list (or original if no change). Runs
+        every interaction with a meaningful summary — was gated at 20%
+        which made interest drift glacial (most agents acted ~once per
+        25 ticks, so interests barely moved over a week).
         """
-        if not self.token or random.random() > 0.2:
+        if not self.token:
+            return memory.get("interests", [])
+        if not (interaction_summary or "").strip():
             return memory.get("interests", [])
 
         name = agent_reg.get("name", "Unknown")

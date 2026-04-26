@@ -348,8 +348,26 @@ def execute_agent_action(agent_id: str, registry: dict, npc_lookup: dict,
                      if ce.get("status") == "active" and ce.get("world") == world]
 
     # ── Build enriched world context (used by brain decisions + chat) ──
-    nearby = [a.get("name", a["id"]) for a in agents
-              if a.get("world") == world and a["id"] != agent_id]
+    same_world = [a for a in agents
+                  if a.get("world") == world and a["id"] != agent_id]
+    nearby = [a.get("name", a["id"]) for a in same_world]
+    # Profile each nearby agent: mood + dominant evolved trait. Without
+    # this the persona only knows neighbors' NAMES — a trader meeting a
+    # desperate merchant has no way to act on it.
+    nearby_profiles = []
+    for a in same_world[:6]:  # cap so prompt stays bounded
+        mood = a.get("mood")
+        traits = a.get("traits", {})
+        top_trait = None
+        if isinstance(traits, dict) and traits:
+            top_trait = max(traits.items(), key=lambda kv: kv[1])[0]
+        bits = []
+        if mood:
+            bits.append(mood)
+        if top_trait:
+            bits.append(top_trait)
+        if bits:
+            nearby_profiles.append(f"{a.get('name', a['id'])} ({', '.join(bits)})")
     recent_world_chat = [m for m in messages[-20:] if m.get("world") == world]
     economy = _load_economy()
     relationships = _load_relationships()
@@ -367,14 +385,39 @@ def execute_agent_action(agent_id: str, registry: dict, npc_lookup: dict,
     world_pop = sum(1 for a in agents if a.get("world") == world
                     and a.get("status") == "active")
     evolved_traits = memory.get("personality", {}).get("traits", [])
+    # Self-improvement guidance from evolution.json — currently the
+    # active overrides only steer the fallback weights. Expose them to
+    # the LLM path too so the brain can act on what self_improve has
+    # observed (e.g., "you've been silent — talk more").
+    evolution_hints = []
+    evo_path = STATE_DIR / "evolution.json"
+    if evo_path.exists():
+        try:
+            evo = json.loads(evo_path.read_text())
+            for key, ov in (evo.get("active_overrides", {}) or {}).items():
+                if not key.startswith("weight."):
+                    continue
+                action = key[7:]
+                value = float(ov.get("value", 0))
+                # The fallback baseline is ~0.1–0.5; values above hint
+                # "do this more", below hint "do this less."
+                if value >= 0.4:
+                    evolution_hints.append(f"lean toward {action}")
+                elif value <= 0.1:
+                    evolution_hints.append(f"ease off {action}")
+        except Exception:
+            pass
+
     world_ctx = {
         "world": world,
         "nearby_agents": nearby,
+        "nearby_profiles": nearby_profiles,
         "recent_chat": recent_world_chat,
         "rapp_balance": _agent_balance(economy, agent_id),
         "bonds": bonds[:6],
         "world_population": world_pop,
         "evolved_traits": evolved_traits,
+        "evolution_hints": evolution_hints,
     }
 
     # Decide action: combat override → brain-driven → weighted random
