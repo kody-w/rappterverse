@@ -39,3 +39,26 @@ jobs:
             --label "bug"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  bundle-fresh:
+    name: Bundle is up to date
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Rebuild docs/index.html from src/
+        run: bash scripts/bundle.sh
+
+      - name: Verify docs/index.html matches src/
+        run: |
+          if ! git diff --exit-code -- docs/index.html; then
+            echo ""
+            echo "::error::docs/index.html is out of sync with src/."
+            echo "::error::Run 'bash scripts/bundle.sh' locally and commit the regenerated docs/index.html."
+            exit 1
+          fi
+          echo "✅ docs/index.html matches the current src/ tree."

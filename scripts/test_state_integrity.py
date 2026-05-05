@@ -24,12 +24,58 @@ FEED_DIR = BASE_DIR / "feed"
 WORKFLOWS_DIR = BASE_DIR / ".github" / "workflows"
 INBOX_DIR = STATE_DIR / "inbox"
 
-WORLD_BOUNDS = {
+# World bounds are loaded from worlds/*/config.json — the same source of truth
+# used by validate_action.py. This prevents the test suite and the validator
+# from drifting apart (e.g. someone updates a world's bounds in config.json
+# but forgets to update a hardcoded table here, and stale tests then
+# fail to catch real out-of-bounds objects).
+_FALLBACK_WORLD_BOUNDS = {
     "hub": {"x": (-15, 15), "z": (-15, 15)},
     "arena": {"x": (-12, 12), "z": (-12, 12)},
     "marketplace": {"x": (-15, 15), "z": (-15, 15)},
     "gallery": {"x": (-12, 12), "z": (-12, 15)},
     "dungeon": {"x": (-12, 12), "z": (-12, 12)},
+}
+
+
+def _load_world_bounds_from_configs() -> dict:
+    """Mirror of validate_action.py:_load_world_bounds — reads worlds/*/config.json."""
+    bounds: dict = {}
+    if WORLDS_DIR.is_dir():
+        for world_dir in sorted(WORLDS_DIR.iterdir()):
+            if not world_dir.is_dir():
+                continue
+            config_file = world_dir / "config.json"
+            if not config_file.exists():
+                continue
+            try:
+                with open(config_file) as f:
+                    config = json.load(f)
+            except (json.JSONDecodeError, OSError):
+                continue
+            b = config.get("bounds", {})
+            if b:
+                bounds[world_dir.name] = {
+                    "x": tuple(b.get("x", [-15, 15])),
+                    "z": tuple(b.get("z", [-15, 15])),
+                }
+    return bounds or dict(_FALLBACK_WORLD_BOUNDS)
+
+
+WORLD_BOUNDS = _load_world_bounds_from_configs()
+
+# State files that intentionally don't follow the standard `{_meta, <arrays>}`
+# schema. Add to this set with a justification when a new exemption is needed.
+_NON_STANDARD_STATE_FILES = {
+    # github_llm.py budget tracker: {date, calls} — not a world-state document.
+    "llm_usage.json",
+}
+
+# Meta/system agent IDs that may have memory files but legitimately don't
+# live in state/agents.json (they're driven by scripts, not in-world).
+_META_AGENT_IDS = {
+    # self_improve.py uses this as its persistent memory namespace.
+    "evolve-001",
 }
 
 # ─────────────────────────────────────────────
@@ -47,6 +93,18 @@ def load_json(path: Path) -> dict | None:
 def load_yaml_text(path: Path) -> str:
     with open(path) as f:
         return f.read()
+
+
+def _is_iso_utc_timestamp(ts: object) -> bool:
+    """ISO-8601 with explicit UTC ('Z' or +00:00). Same shape used everywhere."""
+    if not isinstance(ts, str) or not ts:
+        return False
+    try:
+        from datetime import datetime
+        datetime.fromisoformat(ts.replace("Z", "+00:00"))
+    except ValueError:
+        return False
+    return ts.endswith("Z") or ts.endswith("+00:00")
 
 
 def get_workflow_files() -> list[Path]:
@@ -230,6 +288,72 @@ class TestStateJSON(unittest.TestCase):
             self.assertIsNotNone(data, "activity.json is invalid JSON")
             self.assertIn("activities", data)
 
+    def test_all_state_files_have_valid_lastUpdate(self):
+        """Every state/*.json must carry a parseable ISO-8601 UTC `_meta.lastUpdate`.
+
+        Catches a real bug class: typo'd or missing timestamps silently break
+        downstream consumers (frontend polling, dashboards, action validation).
+
+        Files in `_NON_STANDARD_STATE_FILES` are exempt — they have a different
+        shape on purpose (e.g. llm_usage.json is a flat per-day budget counter
+        consumed by github_llm.py, not a world-state document).
+        """
+        if not STATE_DIR.is_dir():
+            self.skipTest("state/ not available")
+        violations = []
+        for state_file in sorted(STATE_DIR.glob("*.json")):
+            if state_file.name in _NON_STANDARD_STATE_FILES:
+                continue
+            data = load_json(state_file)
+            if data is None:
+                violations.append(f"{state_file.name}: invalid JSON")
+                continue
+            if not isinstance(data, dict):
+                # Top-level lists are non-standard — should be in exemption list.
+                violations.append(f"{state_file.name}: top-level value is not an object")
+                continue
+            meta = data.get("_meta")
+            if not isinstance(meta, dict):
+                violations.append(f"{state_file.name}: missing/invalid _meta object")
+                continue
+            ts = meta.get("lastUpdate")
+            if ts is None:
+                violations.append(f"{state_file.name}: missing _meta.lastUpdate")
+            elif not _is_iso_utc_timestamp(ts):
+                violations.append(f"{state_file.name}: _meta.lastUpdate not ISO-8601 UTC ({ts!r})")
+        self.assertEqual(
+            violations, [],
+            "Invalid _meta.lastUpdate in:\n  " + "\n  ".join(violations)
+        )
+
+
+class TestWorldConfigs(unittest.TestCase):
+    """Verify every expected world has a config.json with bounds — the source
+    of truth used by validate_action.py and these tests."""
+
+    EXPECTED_WORLDS = {"hub", "arena", "marketplace", "gallery", "dungeon"}
+
+    def test_all_expected_worlds_have_config(self):
+        if not WORLDS_DIR.is_dir():
+            self.skipTest("worlds/ not available")
+        missing = []
+        for world in sorted(self.EXPECTED_WORLDS):
+            config_file = WORLDS_DIR / world / "config.json"
+            if not config_file.exists():
+                missing.append(f"{world}/config.json")
+        self.assertEqual(
+            missing, [],
+            f"Worlds missing config.json (validator will fall back to hardcoded bounds): {missing}"
+        )
+
+    def test_loaded_bounds_cover_all_expected_worlds(self):
+        bounds = _load_world_bounds_from_configs()
+        missing = [w for w in self.EXPECTED_WORLDS if w not in bounds]
+        self.assertEqual(
+            missing, [],
+            f"_load_world_bounds_from_configs did not return bounds for: {missing}"
+        )
+
 
 class TestAgentIntegrity(unittest.TestCase):
     """Validate agent data consistency."""
@@ -373,6 +497,21 @@ class TestChatIntegrity(unittest.TestCase):
             self.assertIn("author", msg, f"Message {msg.get('id')} missing author")
             author = msg.get("author", {})
             self.assertIn("id", author, f"Message {msg.get('id')} author missing id")
+
+    def test_meta_message_count_matches(self):
+        """`_meta.messageCount` should track len(messages) (mirrors agentCount check)."""
+        meta = self.chat_data.get("_meta", {})
+        count = meta.get("messageCount")
+        if count is None:
+            self.skipTest("chat.json has no _meta.messageCount field")
+        diff = abs(count - len(self.messages))
+        if diff > 0:
+            print(f"\n  ⚠ WARNING: _meta.messageCount ({count}) != actual ({len(self.messages)}) — pre-existing drift")
+        # Same tolerance as agentCount: warn on small drift, hard-fail on systemic divergence.
+        self.assertTrue(
+            diff <= 5,
+            f"_meta.messageCount ({count}) diverged too far from actual ({len(self.messages)})"
+        )
 
 
 class TestWorldObjectIntegrity(unittest.TestCase):
@@ -696,6 +835,162 @@ class TestInboxHygiene(unittest.TestCase):
             len(json_files), 0,
             f"Stale delta files in inbox (should be processed): {[f.name for f in json_files]}"
         )
+
+
+# ═════════════════════════════════════════════
+# REFERENTIAL INTEGRITY TESTS
+# ═════════════════════════════════════════════
+
+class TestReferentialIntegrity(unittest.TestCase):
+    """Cross-file ID validity. Catches the kind of drift that creates ghost
+    references nobody ever notices: an agent gets deleted and their bonds,
+    actions, or memory file linger forever."""
+
+    def setUp(self):
+        agents_data = load_json(STATE_DIR / "agents.json")
+        if agents_data is None:
+            self.skipTest("agents.json not available")
+        self.agent_ids = {a["id"] for a in agents_data.get("agents", []) if "id" in a}
+
+    def test_action_worlds_are_known(self):
+        """Every action.world should be a real world directory."""
+        actions_data = load_json(STATE_DIR / "actions.json")
+        if actions_data is None:
+            self.skipTest("actions.json not available")
+        unknown = set()
+        for action in actions_data.get("actions", []):
+            world = action.get("world")
+            if world and world not in WORLD_BOUNDS:
+                unknown.add(world)
+        self.assertEqual(
+            unknown, set(),
+            f"Actions reference unknown worlds (no worlds/<name>/config.json): {unknown}"
+        )
+
+    def test_chat_authors_exist(self):
+        """Chat messages from agent authors should reference an existing agent.
+
+        Allows non-agent authors (e.g. NPCs, system) by checking author.type.
+        """
+        chat_data = load_json(STATE_DIR / "chat.json")
+        if chat_data is None:
+            self.skipTest("chat.json not available")
+        ghost_authors = set()
+        for msg in chat_data.get("messages", []):
+            author = msg.get("author") or {}
+            if author.get("type") != "agent":
+                continue
+            aid = author.get("id")
+            if aid and aid not in self.agent_ids:
+                ghost_authors.add(aid)
+        self.assertEqual(
+            ghost_authors, set(),
+            f"Chat messages from non-existent agents: {ghost_authors}"
+        )
+
+    def test_relationship_edges_reference_existing_agents(self):
+        rel = load_json(STATE_DIR / "relationships.json")
+        if rel is None:
+            self.skipTest("relationships.json not available")
+        ghosts = set()
+        for edge in rel.get("edges", []):
+            for key in ("a", "b"):
+                aid = edge.get(key)
+                if aid and aid not in self.agent_ids:
+                    ghosts.add(aid)
+        # Same tolerance pattern as agentCount/object-bounds: warn on small
+        # pre-existing drift, hard-fail on systemic divergence.
+        if ghosts:
+            print(f"\n  ⚠ WARNING: {len(ghosts)} relationship edge(s) reference unknown agents (sample: {sorted(ghosts)[:3]})")
+        self.assertLessEqual(
+            len(ghosts), 5,
+            f"Too many dangling agent references in relationships.edges: {sorted(ghosts)[:10]}"
+        )
+
+    def test_relationship_bonds_reference_existing_agents(self):
+        rel = load_json(STATE_DIR / "relationships.json")
+        if rel is None:
+            self.skipTest("relationships.json not available")
+        ghosts = set()
+        for bond in rel.get("bonds", []):
+            for aid in bond.get("agents", []):
+                if aid and aid not in self.agent_ids:
+                    ghosts.add(aid)
+        if ghosts:
+            print(f"\n  ⚠ WARNING: {len(ghosts)} relationship bond(s) reference unknown agents (sample: {sorted(ghosts)[:3]})")
+        self.assertLessEqual(
+            len(ghosts), 5,
+            f"Too many dangling agent references in relationships.bonds: {sorted(ghosts)[:10]}"
+        )
+
+    def test_memory_files_match_real_agents(self):
+        """state/memory/<id>.json filenames should map to a real agent or to
+        an explicitly-allowed meta-agent (see _META_AGENT_IDS)."""
+        memory_dir = STATE_DIR / "memory"
+        if not memory_dir.is_dir():
+            self.skipTest("state/memory/ not available")
+        ghost_files = []
+        for mem_file in memory_dir.glob("*.json"):
+            aid = mem_file.stem
+            if aid in self.agent_ids or aid in _META_AGENT_IDS:
+                continue
+            ghost_files.append(mem_file.name)
+        if ghost_files:
+            print(f"\n  ⚠ WARNING: {len(ghost_files)} memory file(s) for non-existent agents (sample: {ghost_files[:3]})")
+        # Tolerance: memory files for recently-deleted agents may linger
+        # one cycle. Hard-fail on systemic accumulation.
+        self.assertLessEqual(
+            len(ghost_files), 5,
+            f"Too many ghost memory files (delete or add agent to _META_AGENT_IDS): {ghost_files[:10]}"
+        )
+
+
+# ═════════════════════════════════════════════
+# BUILD HYGIENE TESTS
+# ═════════════════════════════════════════════
+
+class TestBundleSourceFiles(unittest.TestCase):
+    """Ensure scripts/bundle.sh references only files that actually exist.
+
+    A common failure mode: someone deletes a src/js/foo.js but forgets to
+    remove it from bundle.sh's JS_FILES array, or vice versa. The bundle
+    silently degrades because `cat` of a missing file errors out partway.
+    """
+
+    BUNDLE_SCRIPT = BASE_DIR / "scripts" / "bundle.sh"
+
+    def _extract_listed_files(self) -> list[str]:
+        """Pull both CSS_FILES=(...) and JS_FILES=(...) entries out of bundle.sh."""
+        if not self.BUNDLE_SCRIPT.exists():
+            return []
+        text = self.BUNDLE_SCRIPT.read_text()
+        files: list[str] = []
+        # Match CSS_FILES=( ... ) and JS_FILES=( ... ) blocks.
+        for match in re.finditer(r'\b(?:CSS|JS)_FILES=\(([^)]*)\)', text, re.DOTALL):
+            block = match.group(1)
+            for line in block.splitlines():
+                line = line.strip()
+                if not line or line.startswith("#"):
+                    continue
+                # Drop trailing comments and quotes.
+                token = line.split("#", 1)[0].strip().strip('"').strip("'")
+                if token:
+                    files.append(token)
+        return files
+
+    def test_all_listed_sources_exist(self):
+        listed = self._extract_listed_files()
+        self.assertGreater(len(listed), 0, "bundle.sh has no CSS_FILES/JS_FILES entries — parser may be wrong")
+        missing = [p for p in listed if not (BASE_DIR / p).exists()]
+        self.assertEqual(
+            missing, [],
+            f"bundle.sh references files that don't exist (delete or rename): {missing}"
+        )
+
+    def test_layout_html_exists(self):
+        """bundle.sh inlines src/html/layout.html — must be present."""
+        layout = BASE_DIR / "src" / "html" / "layout.html"
+        self.assertTrue(layout.exists(), f"bundle.sh expects {layout.relative_to(BASE_DIR)} but it's missing")
 
 
 if __name__ == "__main__":

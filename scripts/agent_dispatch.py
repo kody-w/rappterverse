@@ -37,10 +37,17 @@ from agent_brain import AgentBrain, load_memory, save_memory, record_experience,
 
 # Brainstem — per-agent LLM with soul files and toolbelts
 try:
-    from brainstem import run_agent_brainstem
+    from brainstem import run_agent_brainstem, append_soul_entry
     HAS_BRAINSTEM = True
 except ImportError:
     HAS_BRAINSTEM = False
+
+# Lispy VM — multi-step encounter intelligence (replaces single-shot brainstem)
+try:
+    from lisp_vm import run_encounter, trace_to_soul_lines
+    HAS_LISP_VM = True
+except ImportError:
+    HAS_LISP_VM = False
 
 MODEL = "gpt-4o"
 API_URL = "https://models.inference.ai.azure.com/chat/completions"
@@ -1188,10 +1195,13 @@ def main():
         print("   (dry run — no state changes)\n")
     print()
 
-    # ── Brainstem Mode ────────────────────────────────────────────────
+    # ── Brainstem Mode (lispy VM, multi-step reasoning) ──────────────
     if use_brainstem:
+        if not HAS_LISP_VM:
+            print("⚠️ lisp_vm not available — falling back to single-shot brainstem")
         relationships_data = load_json(STATE_DIR / "relationships.json") or {}
         rel_edges = relationships_data.get("edges", [])
+        economy_data = _load_economy() or {}
 
         results = []
         for aid in target_agents:
@@ -1202,32 +1212,69 @@ def main():
                 continue
 
             agent_world = agent_record.get("world", "hub")
+            mem = load_memory(aid)
+            ensure_brainstem(mem, agent_world)
 
-            # Gather nearby agents
-            nearby = [a for a in agents if a.get("world") == agent_world and a["id"] != aid]
+            # ── Run the encounter program ──
+            if HAS_LISP_VM:
+                vm_result = run_encounter(
+                    agent_id=aid,
+                    agent_reg=reg,
+                    memory=mem,
+                    world=agent_world,
+                    agents=agents,
+                    messages=messages,
+                    relationships=relationships_data,
+                    economy=economy_data,
+                    llm_token=token,
+                    llm_budget=2,        # 2 LLM calls / agent / frame max
+                )
+                if vm_result.error:
+                    print(f"  ⚠️ {aid}: VM error — {vm_result.error}")
+                    results.append({"actions": 0, "messages": 0,
+                                    "summary": f"{aid}: error"})
+                    continue
+                if vm_result.sleeping:
+                    print(f"  💤 {aid}: sleeping (no LLM reachable)")
+                    results.append({"actions": 0, "messages": 0,
+                                    "summary": f"{aid}: sleeping"})
+                    continue
+                vm_actions = vm_result.actions
+                vm_trace = vm_result.trace
+                vm_llm_calls = vm_result.llm_calls
+            else:
+                # Legacy single-shot path
+                nearby_recs = [a for a in agents
+                               if a.get("world") == agent_world and a["id"] != aid]
+                world_chat = [m for m in messages if m.get("world") == agent_world][-5:]
+                agent_rels = [e for e in rel_edges
+                              if e.get("a") == aid or e.get("b") == aid]
+                bs_result = run_agent_brainstem(
+                    agent_id=aid, agent_reg=reg, frame=frame, world=agent_world,
+                    nearby_agents=nearby_recs, recent_chat=world_chat,
+                    relationships=agent_rels,
+                )
+                a = bs_result.get("action")
+                vm_actions = [a] if a else []
+                vm_trace = []
+                vm_llm_calls = 0
 
-            # Gather recent chat in this world
-            world_chat = [m for m in messages if m.get("world") == agent_world][-5:]
+            if not vm_actions:
+                # No action emerged — most often: LLM unavailable and we
+                # refuse to fabricate dialog (Constitution §3a "organic > static").
+                print(f"  💤 {aid}: silent (llm_calls={vm_llm_calls})")
+                results.append({"actions": 0, "messages": 0,
+                                "summary": f"{aid}: idle"})
+                continue
 
-            # Agent's relationships
-            agent_rels = [e for e in rel_edges
-                          if e.get("a") == aid or e.get("b") == aid]
-
-            bs_result = run_agent_brainstem(
-                agent_id=aid,
-                agent_reg=reg,
-                frame=frame,
-                world=agent_world,
-                nearby_agents=nearby,
-                recent_chat=world_chat,
-                relationships=agent_rels,
-            )
-
-            action = bs_result.get("action")
-            if action:
-                # Convert brainstem action to state changes
-                tool = action["tool"]
-                tool_args = action["args"]
+            # ── Apply each emitted action to world state ──
+            n_acts = 0
+            n_msgs = 0
+            last_tool = "?"
+            for action in vm_actions:
+                tool = action.get("tool", "")
+                tool_args = action.get("args", {}) or {}
+                last_tool = tool
                 action_id = f"action-{random.randint(40000, 99999)}"
 
                 if tool == "chat":
@@ -1249,6 +1296,7 @@ def main():
                         "world": agent_world,
                         "timestamp": timestamp,
                     })
+                    n_msgs += 1
                     print(f"  🧠 {aid} [{tool}] \"{tool_args.get('message', '')[:60]}\"")
 
                 elif tool == "emote":
@@ -1266,6 +1314,7 @@ def main():
                 elif tool == "travel":
                     dest = tool_args.get("destination", "hub")
                     agent_record["world"] = dest
+                    agent_world = dest  # subsequent actions this frame happen there
                     actions.append({
                         "id": action_id,
                         "agentId": aid,
@@ -1274,10 +1323,9 @@ def main():
                         "world": dest,
                         "timestamp": timestamp,
                     })
-                    print(f"  🧠 {aid} [{tool}] → {dest}")
+                    print(f"  🧠 {aid} [{tool}] → {dest} ({tool_args.get('reason', '')[:40]})")
 
                 elif tool == "move":
-                    # Compute real position within world bounds
                     wb = bounds.get(agent_world, {})
                     old_pos = agent_record.get("position", {"x": 0, "z": 0})
                     new_pos = {
@@ -1302,21 +1350,50 @@ def main():
                     print(f"  🧠 {aid} [{tool}] → ({new_pos['x']},{new_pos['z']}) {tool_args.get('reason', '')[:40]}")
 
                 else:
-                    # Generic action (tip, trade, challenge, poke, enroll)
+                    # Strategic actions (tip, trade, challenge, poke, enroll) —
+                    # the LLM generated structured args (target, amount, reason)
+                    # so we record those concretely instead of a stringified blob.
+                    desc_parts = []
+                    for k in ("target", "amount", "destination", "interest", "reason"):
+                        if k in tool_args and tool_args[k] not in ("", None):
+                            desc_parts.append(f"{k}={tool_args[k]}")
                     actions.append({
                         "id": action_id,
                         "agentId": aid,
                         "type": tool,
-                        "description": json.dumps(tool_args)[:100],
+                        "description": ", ".join(desc_parts)[:140] if desc_parts
+                                       else json.dumps(tool_args)[:100],
                         "world": agent_world,
                         "timestamp": timestamp,
+                        "data": {k: v for k, v in tool_args.items()
+                                 if k in ("target", "amount", "reason",
+                                          "destination", "interest")},
                     })
-                    print(f"  🧠 {aid} [{tool}] {json.dumps(tool_args)[:60]}")
+                    print(f"  🧠 {aid} [{tool}] {', '.join(desc_parts)[:80]}")
 
-                results.append({"actions": 1, "messages": 1 if tool == "chat" else 0, "summary": f"{aid}: {tool}"})
-            else:
-                print(f"  💤 {aid}: {bs_result.get('status', 'no action')}")
-                results.append({"actions": 0, "messages": 0, "summary": f"{aid}: idle"})
+                n_acts += 1
+
+            # ── Persist soul file with the full reasoning trace ──
+            if not args.dry_run and HAS_LISP_VM and vm_trace:
+                try:
+                    soul_actions = [{"tool": a["tool"], "args": a["args"], "status": "ok"}
+                                    for a in vm_actions]
+                    # Narrative = the LLM's actual thoughts this frame
+                    thoughts = [t.get("answer", "") for t in vm_trace
+                                if t.get("op") == "llm/think" and t.get("answer")]
+                    choices = [f"chose {t.get('answer', '?')} from {t.get('options', [])}"
+                               for t in vm_trace if t.get("op") == "llm/choose"]
+                    narrative_parts = thoughts + choices
+                    narrative = " ⊙ ".join(narrative_parts)[:600] if narrative_parts else ""
+                    append_soul_entry(aid, frame, soul_actions, narrative)
+                    save_memory(mem)
+                except Exception as e:
+                    print(f"    (soul write skipped: {e})")
+
+            results.append({
+                "actions": n_acts, "messages": n_msgs,
+                "summary": f"{aid}: {last_tool} (llm={vm_llm_calls})",
+            })
 
         total_actions = sum(r.get("actions", 0) for r in results)
         total_messages = sum(r.get("messages", 0) for r in results)
