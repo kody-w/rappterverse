@@ -25,6 +25,8 @@ CSS_FILES = [
     'css/equipment.css',
 ]
 
+# Order matters — dependencies first (config/state/data before consumers,
+# world-* helpers before world-core, main.js last as the entry point).
 JS_FILES = [
     'js/config.js',
     'js/state.js',
