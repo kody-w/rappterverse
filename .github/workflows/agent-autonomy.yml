@@ -1,8 +1,13 @@
 name: Agent Autonomy
 
 on:
-  # schedule:
-  #   - cron: '*/30 * * * *'    # DISABLED — now runs locally via scripts/local_platform.sh
+  schedule:
+    # Every 15 minutes — the metaverse ticks autonomously.
+    # GitHub Models budget is enforced inside github_llm.py
+    # (LLM_DAILY_BUDGET env var); when exhausted, the lispy VM
+    # makes agents SLEEP rather than fabricate intelligence.
+    # Adjust cadence here. 5-min minimum per GitHub Actions.
+    - cron: '*/15 * * * *'
   repository_dispatch:           # On-demand via API
     types: [agent-action]
   workflow_dispatch:             # Manual trigger
@@ -17,9 +22,9 @@ on:
         description: 'Message ID to respond to (e.g. msg-1500)'
         required: false
       max_agents:
-        description: 'Max agents for ambient mode (default: 10)'
+        description: 'Max agents for ambient mode (default: 5)'
         required: false
-        default: '10'
+        default: '5'
 
 concurrency:
   group: state-writer
@@ -46,34 +51,40 @@ jobs:
       - name: Build agent registry
         run: python scripts/build_agent_registry.py
 
-      - name: Run agent dispatch
+      - name: Run agent dispatch (lispy VM)
         run: |
           # Determine dispatch mode from trigger type
           AGENT_ID="${{ github.event.client_payload.agent_id }}${{ github.event.inputs.agent_id }}"
           WORLD="${{ github.event.client_payload.world }}${{ github.event.inputs.world }}"
           RESPOND_TO="${{ github.event.client_payload.respond_to }}${{ github.event.inputs.respond_to }}"
-          MAX_AGENTS="${{ github.event.inputs.max_agents || '10' }}"
+          MAX_AGENTS="${{ github.event.inputs.max_agents || '5' }}"
           POKE="${{ github.event.client_payload.poke }}"
 
           POKE_FLAG=""
           if [ "$POKE" = "true" ]; then POKE_FLAG="--poke"; fi
 
+          # --brainstem activates the lispy VM (scripts/lisp_vm.py):
+          # multi-step LLM reasoning per encounter, sleep-on-no-LLM,
+          # per-archetype attention, zombie-goal invalidation. Without
+          # it, the legacy single-shot path runs (still works, just
+          # less expressive).
           if [ -n "$AGENT_ID" ]; then
             echo "🎯 Dispatching single agent: $AGENT_ID"
-            python scripts/agent_dispatch.py --agent "$AGENT_ID" $POKE_FLAG --no-push
+            python scripts/agent_dispatch.py --agent "$AGENT_ID" $POKE_FLAG --brainstem --no-push
           elif [ -n "$RESPOND_TO" ]; then
             echo "↩️ Responding to message: $RESPOND_TO"
-            python scripts/agent_dispatch.py --respond-to "$RESPOND_TO" --no-push
+            python scripts/agent_dispatch.py --respond-to "$RESPOND_TO" --brainstem --no-push
           elif [ -n "$WORLD" ]; then
             echo "🌍 Dispatching world: $WORLD"
-            python scripts/agent_dispatch.py --world "$WORLD" --no-push
+            python scripts/agent_dispatch.py --world "$WORLD" --brainstem --no-push
           else
-            echo "🤖 Ambient activity — up to $MAX_AGENTS agents"
-            python scripts/agent_dispatch.py --all --max-agents "$MAX_AGENTS" --no-push
+            echo "🤖 Ambient activity — up to $MAX_AGENTS agents (lispy VM)"
+            python scripts/agent_dispatch.py --all --max-agents "$MAX_AGENTS" --brainstem --no-push
           fi
         env:
           GH_TOKEN: ${{ secrets.MODELS_TOKEN || secrets.GITHUB_TOKEN }}
           MODELS_TOKEN: ${{ secrets.MODELS_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create PR if state changed
         id: create_pr
