@@ -1,5 +1,5 @@
 ;; ── The Warden (warden-001) ────────────────────────────
-;; compiled at 2026-05-05T02:04:52Z for frame in 'marketplace'
+;; compiled at 2026-05-05T02:32:45Z for frame in 'marketplace'
 ;; team:      dire
 ;; template:  socializing
 ;; hp:        100/100

@@ -450,7 +450,32 @@ const Bridge = {
         group.userData.phase = Math.random() * Math.PI * 2;
 
         this.scene.add(group);
-        this.agentMeshes[agent.id] = { group, body, head };
+        this.agentMeshes[agent.id] = { group, body, head, ring, template: null };
+    },
+
+    // Brainstem template visual style for bridge view (cheaper than world).
+    // Just ring color + emissive + bob cadence — bridge is a status dashboard,
+    // not a behavior simulator.
+    _BRIDGE_STYLES: {
+        engaging:    { ring: 0xff3b3b, emissive: 0xff5050, glow: 0.55, bob: 4.0 },
+        fleeing:     { ring: 0xffffff, emissive: 0x6688aa, glow: 0.10, bob: 6.0 },
+        retreating:  { ring: 0xff9933, emissive: 0xaa6633, glow: 0.20, bob: 3.5 },
+        pushing:     { ring: 0x00d4ff, emissive: 0x3399cc, glow: 0.45, bob: 2.5 },
+        supporting:  { ring: 0x3fb950, emissive: 0x5fcf70, glow: 0.40, bob: 2.0 },
+        socializing: { ring: 0xff6ec7, emissive: 0xff6ec7, glow: 0.35, bob: 1.8 },
+        roaming:     { ring: 0x00ffff, emissive: 0x3333aa, glow: 0.20, bob: 2.0 },
+    },
+
+    _applyBridgeStyle(a, template) {
+        if (a.template === template) return;
+        const s = this._BRIDGE_STYLES[template] || this._BRIDGE_STYLES.roaming;
+        if (a.ring && a.ring.material) a.ring.material.color.setHex(s.ring);
+        if (a.body && a.body.material) {
+            a.body.material.emissive.setHex(s.emissive);
+            a.body.material.emissiveIntensity = s.glow;
+        }
+        a.template = template;
+        a._bridgeStyle = s;
     },
 
     // ── Input ──────────────────────────────────────────────────
@@ -566,9 +591,14 @@ const Bridge = {
             c.position.y = c.userData.baseY + Math.sin(time * c.userData.bobSpeed + c.userData.phase);
         });
 
-        // Agent idle bob
-        Object.values(this.agentMeshes).forEach(a => {
-            const bob = Math.sin(time * 2 + (a.group.userData.phase || 0)) * 0.08;
+        // Agent idle bob — driven by brainstem template (compiled lispy programs).
+        // engaging = fast aggressive bob, fleeing = panicked fast bob, socializing = slow nod, etc.
+        const brainstem = (GameState.data && GameState.data.brainstem) || {};
+        Object.entries(this.agentMeshes).forEach(([id, a]) => {
+            const tmpl = (brainstem[id] && brainstem[id].template) || 'roaming';
+            this._applyBridgeStyle(a, tmpl);
+            const bobSpeed = (a._bridgeStyle && a._bridgeStyle.bob) || 2.0;
+            const bob = Math.sin(time * bobSpeed + (a.group.userData.phase || 0)) * 0.08;
             a.body.position.y = 0.9 + bob;
             a.head.position.y = 1.65 + bob;
         });

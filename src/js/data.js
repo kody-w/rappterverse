@@ -36,7 +36,7 @@ const DataManager = {
 
     async fetchAllState() {
         this._showStatus('Syncing...');
-        const [agents, chat, actions, npcs, gameState, frameCounter,
+        const [agents, chat, actions, npcs, gameState, frameCounter, brainstem,
                hubConf, arenaConf, marketConf, galleryConf, dungeonConf,
                hubObj, arenaObj, marketObj, galleryObj, dungeonObj] = await Promise.allSettled([
             this.fetchJSON('state/agents.json'),
@@ -45,6 +45,7 @@ const DataManager = {
             this.fetchJSON('state/npcs.json'),
             this.fetchJSON('state/game_state.json'),
             this.fetchJSON('state/frame_counter.json'),
+            this.fetchJSON('state/programs/_lispvm/_status.json'),
             this.fetchJSON('worlds/hub/config.json'),
             this.fetchJSON('worlds/arena/config.json'),
             this.fetchJSON('worlds/marketplace/config.json'),
@@ -77,6 +78,13 @@ const DataManager = {
         const n = val(npcs); if (n?.npcs) GameState.data.npcs = n.npcs;
         const gs = val(gameState); if (gs) GameState.data.gameState = gs;
         const fc = val(frameCounter); if (fc) GameState.data.frameCounter = fc;
+
+        // Brainstem status — agentId → {template, hp, team, threats, goal, ...}
+        // Frontend reads this to drive distinct per-agent visuals (engaging,
+        // fleeing, pushing, supporting, socializing). Same raw GitHub fetch
+        // pattern as everything else — no new server, just static lispy state.
+        const bs = val(brainstem);
+        if (bs?.agents) GameState.data.brainstem = bs.agents;
 
         GameState.data.worldConfigs = {
             hub: val(hubConf) || {}, arena: val(arenaConf) || {},

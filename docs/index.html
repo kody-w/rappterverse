@@ -3298,6 +3298,7 @@ const GameState = {
         npcs: [],
         gameState: {},
         frameCounter: {},
+        brainstem: {},      // agentId → {template, hp, team, ...} from compiled lispy programs
         worldConfigs: {},
         worldObjects: {}
     },
@@ -3386,7 +3387,7 @@ const DataManager = {
 
     async fetchAllState() {
         this._showStatus('Syncing...');
-        const [agents, chat, actions, npcs, gameState, frameCounter,
+        const [agents, chat, actions, npcs, gameState, frameCounter, brainstem,
                hubConf, arenaConf, marketConf, galleryConf, dungeonConf,
                hubObj, arenaObj, marketObj, galleryObj, dungeonObj] = await Promise.allSettled([
             this.fetchJSON('state/agents.json'),
@@ -3395,6 +3396,7 @@ const DataManager = {
             this.fetchJSON('state/npcs.json'),
             this.fetchJSON('state/game_state.json'),
             this.fetchJSON('state/frame_counter.json'),
+            this.fetchJSON('state/programs/_lispvm/_status.json'),
             this.fetchJSON('worlds/hub/config.json'),
             this.fetchJSON('worlds/arena/config.json'),
             this.fetchJSON('worlds/marketplace/config.json'),
@@ -3427,6 +3429,13 @@ const DataManager = {
         const n = val(npcs); if (n?.npcs) GameState.data.npcs = n.npcs;
         const gs = val(gameState); if (gs) GameState.data.gameState = gs;
         const fc = val(frameCounter); if (fc) GameState.data.frameCounter = fc;
+
+        // Brainstem status — agentId → {template, hp, team, threats, goal, ...}
+        // Frontend reads this to drive distinct per-agent visuals (engaging,
+        // fleeing, pushing, supporting, socializing). Same raw GitHub fetch
+        // pattern as everything else — no new server, just static lispy state.
+        const bs = val(brainstem);
+        if (bs?.agents) GameState.data.brainstem = bs.agents;
 
         GameState.data.worldConfigs = {
             hub: val(hubConf) || {}, arena: val(arenaConf) || {},
@@ -10499,7 +10508,7 @@ const WorldAgents = {
         group.position.set(agent.position.x, 0, agent.position.z);
         scene.add(group);
         this.agentMeshes[agent.id] = {
-            group, body, head, bubble, bubbleCanvas, bubbleTex,
+            group, body, head, ring, bubble, bubbleCanvas, bubbleTex,
             targetPos: new THREE.Vector3(agent.position.x, 0, agent.position.z),
             homePos: new THREE.Vector3(agent.position.x, 0, agent.position.z),
             wanderTarget: null,
@@ -10510,7 +10519,52 @@ const WorldAgents = {
             socialTarget: null,
             bubbleTimer: 0,
             pokeReaction: 0,
+            // Brainstem template visual cache — set once on template change,
+            // animated per-frame from these baselines (see applyTemplateStyle).
+            template: null,
+            templateStyle: null,
+            worldAccent: w.accent,
         };
+    },
+
+    // Per-template visual signature. Tactical state from compiled lispy
+    // programs (state/programs/_lispvm/_status.json) drives ring color,
+    // emissive baseline, bob cadence, and a gentle facing bias. The
+    // existing Animal-Crossing locomotion keeps running underneath — this
+    // is a presentation layer, not a replacement.
+    TEMPLATE_STYLES: {
+        engaging:    { ring: 0xff3b3b, ringOpacity: 0.75, emissive: 0xff5050, glow: 0.55, bob: 4.0,  bias: 'threat' },
+        fleeing:     { ring: 0xffffff, ringOpacity: 0.35, emissive: 0x6688aa, glow: 0.10, bob: 6.0,  bias: 'awayFromThreat' },
+        retreating:  { ring: 0xff9933, ringOpacity: 0.45, emissive: 0xaa6633, glow: 0.20, bob: 3.5,  bias: 'awayFromThreat' },
+        pushing:     { ring: null,     ringOpacity: 0.55, emissive: null,     glow: 0.45, bob: 2.5,  bias: null },           // ring=null → use worldAccent
+        supporting:  { ring: 0x3fb950, ringOpacity: 0.65, emissive: 0x5fcf70, glow: 0.40, bob: 2.0,  bias: 'hurtAlly' },
+        socializing: { ring: 0xff6ec7, ringOpacity: 0.55, emissive: 0xff6ec7, glow: 0.35, bob: 1.8,  bias: 'topBond' },
+        roaming:     { ring: null,     ringOpacity: 0.30, emissive: null,     glow: 0.20, bob: 1.5,  bias: null },
+    },
+
+    applyTemplateStyle(a, template) {
+        if (a.template === template) return;
+        const style = this.TEMPLATE_STYLES[template] || this.TEMPLATE_STYLES.roaming;
+        const ringHex = style.ring !== null ? style.ring : a.worldAccent;
+        const emiHex  = style.emissive !== null ? style.emissive : a.worldAccent;
+        if (a.ring && a.ring.material) {
+            a.ring.material.color.setHex(typeof ringHex === 'number' ? ringHex : parseInt(String(ringHex).replace('#',''), 16));
+            a.ring.material.opacity = style.ringOpacity;
+        }
+        if (a.body && a.body.material) {
+            a.body.material.emissive.setHex(typeof emiHex === 'number' ? emiHex : parseInt(String(emiHex).replace('#',''), 16));
+        }
+        a.template = template;
+        a.templateStyle = style;
+    },
+
+    // Look up a brainstem-named target (threat_top, top_bond_partner, hurt_ally)
+    // and return its current world position, or null if not loaded in this
+    // world's mesh set.
+    _lookupTargetPos(targetId) {
+        if (!targetId) return null;
+        const m = this.agentMeshes[targetId];
+        return m ? m.group.position : null;
     },
 
     loadObjects(scene, worldId) {
@@ -10937,7 +10991,17 @@ const WorldAgents = {
         const heroPos = heroActive && EnemyHero.mesh ? EnemyHero.mesh.position : null;
 
         // Agent idle bob + defensive swarm
+        const brainstem = (typeof GameState !== 'undefined' && GameState.data && GameState.data.brainstem) || {};
         Object.entries(this.agentMeshes).forEach(([id, a]) => {
+            // ── BRAINSTEM TEMPLATE — apply visual signature for tactical state ──
+            // Sourced from state/programs/_lispvm/_status.json (compiled lispy
+            // programs). Style is set ONCE on template change; per-frame we
+            // only nudge bob speed / facing / glow to keep this cheap.
+            const bs = brainstem[id];
+            const tmpl = (bs && bs.template) || 'roaming';
+            this.applyTemplateStyle(a, tmpl);
+            const tStyle = a.templateStyle || this.TEMPLATE_STYLES.roaming;
+
             if (heroActive && heroPos) {
                 // DEFENSIVE SWARM — rush toward enemy hero
                 const agentPos = a.group.position;
@@ -10988,10 +11052,12 @@ const WorldAgents = {
                         echoS = ef.echoes.L3.socialEnergy;
                     }
                 }
-                // Emissive glow reacts to echo vitality
+                // Emissive glow blends template baseline + echo modulation.
+                // Template style is the floor (so a fleeing agent stays dim
+                // even with high vitality); echo adds reactive shimmer.
                 if (a.body.material) {
-                    var targetGlow = 0.15 + echoV * 0.15 + echoS * 0.1;
-                    a.body.material.emissiveIntensity = a.body.material.emissiveIntensity * 0.95 + targetGlow * 0.05;
+                    var targetGlow = tStyle.glow + echoV * 0.10 + echoS * 0.08;
+                    a.body.material.emissiveIntensity = a.body.material.emissiveIntensity * 0.92 + targetGlow * 0.08;
                 }
 
                 const dt = 0.016; // ~60fps
@@ -11116,6 +11182,45 @@ const WorldAgents = {
                     const bob = Math.sin(time * 2 + pos.x) * 0.05;
                     a.body.position.y = 0.9 + bob;
                     a.head.position.y = 1.65 + bob;
+                }
+
+                // ── TEMPLATE OVERLAY ─────────────────────────────────
+                // Add tactical-state pose on top of locomotion. Bob speed
+                // comes from the template (engaging=fast/aggressive,
+                // socializing=slow/calm). Facing bias gently rotates
+                // toward a tactical target (threat/ally/bond) at low
+                // weight so it doesn't fight the locomotion's own facing.
+                if (tStyle.bob && tStyle.bob > 1.5) {
+                    const tBob = Math.sin(time * tStyle.bob + (a.group.userData.phase || pos.x)) * 0.04;
+                    a.body.position.y += tBob;
+                    a.head.position.y += tBob * 0.5;
+                }
+                if (tStyle.bias && bs && a.behaviorState !== 'walking') {
+                    let target = null;
+                    let invert = false;
+                    if (tStyle.bias === 'threat')          target = this._lookupTargetPos(bs.threat_top);
+                    else if (tStyle.bias === 'awayFromThreat') { target = this._lookupTargetPos(bs.threat_top); invert = true; }
+                    else if (tStyle.bias === 'hurtAlly')   target = this._lookupTargetPos(bs.hurt_ally);
+                    else if (tStyle.bias === 'topBond')    target = this._lookupTargetPos(bs.top_bond_partner);
+                    if (target) {
+                        let bx = target.x - pos.x, bz = target.z - pos.z;
+                        if (invert) { bx = -bx; bz = -bz; }
+                        const desired = Math.atan2(bx, bz);
+                        // Blend toward desired heading at 8% per frame
+                        let cur = a.group.rotation.y;
+                        let diff = desired - cur;
+                        while (diff > Math.PI) diff -= Math.PI * 2;
+                        while (diff < -Math.PI) diff += Math.PI * 2;
+                        a.group.rotation.y = cur + diff * 0.08;
+                    }
+                }
+                // Engaging agents lean forward slightly (forward tilt on body)
+                if (tmpl === 'engaging' || tmpl === 'pushing') {
+                    a.body.rotation.x = (a.body.rotation.x || 0) * 0.9 + 0.12 * 0.1;
+                } else if (tmpl === 'fleeing' || tmpl === 'retreating') {
+                    a.body.rotation.x = (a.body.rotation.x || 0) * 0.9 + (-0.10) * 0.1;
+                } else {
+                    a.body.rotation.x = (a.body.rotation.x || 0) * 0.92;
                 }
 
                 // When server updates targetPos (new state poll), walk there instead
@@ -13693,7 +13798,32 @@ const Bridge = {
         group.userData.phase = Math.random() * Math.PI * 2;
 
         this.scene.add(group);
-        this.agentMeshes[agent.id] = { group, body, head };
+        this.agentMeshes[agent.id] = { group, body, head, ring, template: null };
+    },
+
+    // Brainstem template visual style for bridge view (cheaper than world).
+    // Just ring color + emissive + bob cadence — bridge is a status dashboard,
+    // not a behavior simulator.
+    _BRIDGE_STYLES: {
+        engaging:    { ring: 0xff3b3b, emissive: 0xff5050, glow: 0.55, bob: 4.0 },
+        fleeing:     { ring: 0xffffff, emissive: 0x6688aa, glow: 0.10, bob: 6.0 },
+        retreating:  { ring: 0xff9933, emissive: 0xaa6633, glow: 0.20, bob: 3.5 },
+        pushing:     { ring: 0x00d4ff, emissive: 0x3399cc, glow: 0.45, bob: 2.5 },
+        supporting:  { ring: 0x3fb950, emissive: 0x5fcf70, glow: 0.40, bob: 2.0 },
+        socializing: { ring: 0xff6ec7, emissive: 0xff6ec7, glow: 0.35, bob: 1.8 },
+        roaming:     { ring: 0x00ffff, emissive: 0x3333aa, glow: 0.20, bob: 2.0 },
+    },
+
+    _applyBridgeStyle(a, template) {
+        if (a.template === template) return;
+        const s = this._BRIDGE_STYLES[template] || this._BRIDGE_STYLES.roaming;
+        if (a.ring && a.ring.material) a.ring.material.color.setHex(s.ring);
+        if (a.body && a.body.material) {
+            a.body.material.emissive.setHex(s.emissive);
+            a.body.material.emissiveIntensity = s.glow;
+        }
+        a.template = template;
+        a._bridgeStyle = s;
     },
 
     // ── Input ──────────────────────────────────────────────────
@@ -13809,9 +13939,14 @@ const Bridge = {
             c.position.y = c.userData.baseY + Math.sin(time * c.userData.bobSpeed + c.userData.phase);
         });
 
-        // Agent idle bob
-        Object.values(this.agentMeshes).forEach(a => {
-            const bob = Math.sin(time * 2 + (a.group.userData.phase || 0)) * 0.08;
+        // Agent idle bob — driven by brainstem template (compiled lispy programs).
+        // engaging = fast aggressive bob, fleeing = panicked fast bob, socializing = slow nod, etc.
+        const brainstem = (GameState.data && GameState.data.brainstem) || {};
+        Object.entries(this.agentMeshes).forEach(([id, a]) => {
+            const tmpl = (brainstem[id] && brainstem[id].template) || 'roaming';
+            this._applyBridgeStyle(a, tmpl);
+            const bobSpeed = (a._bridgeStyle && a._bridgeStyle.bob) || 2.0;
+            const bob = Math.sin(time * bobSpeed + (a.group.userData.phase || 0)) * 0.08;
             a.body.position.y = 0.9 + bob;
             a.head.position.y = 1.65 + bob;
         });

@@ -110,7 +110,7 @@ const WorldAgents = {
         group.position.set(agent.position.x, 0, agent.position.z);
         scene.add(group);
         this.agentMeshes[agent.id] = {
-            group, body, head, bubble, bubbleCanvas, bubbleTex,
+            group, body, head, ring, bubble, bubbleCanvas, bubbleTex,
             targetPos: new THREE.Vector3(agent.position.x, 0, agent.position.z),
             homePos: new THREE.Vector3(agent.position.x, 0, agent.position.z),
             wanderTarget: null,
@@ -121,7 +121,52 @@ const WorldAgents = {
             socialTarget: null,
             bubbleTimer: 0,
             pokeReaction: 0,
+            // Brainstem template visual cache — set once on template change,
+            // animated per-frame from these baselines (see applyTemplateStyle).
+            template: null,
+            templateStyle: null,
+            worldAccent: w.accent,
         };
+    },
+
+    // Per-template visual signature. Tactical state from compiled lispy
+    // programs (state/programs/_lispvm/_status.json) drives ring color,
+    // emissive baseline, bob cadence, and a gentle facing bias. The
+    // existing Animal-Crossing locomotion keeps running underneath — this
+    // is a presentation layer, not a replacement.
+    TEMPLATE_STYLES: {
+        engaging:    { ring: 0xff3b3b, ringOpacity: 0.75, emissive: 0xff5050, glow: 0.55, bob: 4.0,  bias: 'threat' },
+        fleeing:     { ring: 0xffffff, ringOpacity: 0.35, emissive: 0x6688aa, glow: 0.10, bob: 6.0,  bias: 'awayFromThreat' },
+        retreating:  { ring: 0xff9933, ringOpacity: 0.45, emissive: 0xaa6633, glow: 0.20, bob: 3.5,  bias: 'awayFromThreat' },
+        pushing:     { ring: null,     ringOpacity: 0.55, emissive: null,     glow: 0.45, bob: 2.5,  bias: null },           // ring=null → use worldAccent
+        supporting:  { ring: 0x3fb950, ringOpacity: 0.65, emissive: 0x5fcf70, glow: 0.40, bob: 2.0,  bias: 'hurtAlly' },
+        socializing: { ring: 0xff6ec7, ringOpacity: 0.55, emissive: 0xff6ec7, glow: 0.35, bob: 1.8,  bias: 'topBond' },
+        roaming:     { ring: null,     ringOpacity: 0.30, emissive: null,     glow: 0.20, bob: 1.5,  bias: null },
+    },
+
+    applyTemplateStyle(a, template) {
+        if (a.template === template) return;
+        const style = this.TEMPLATE_STYLES[template] || this.TEMPLATE_STYLES.roaming;
+        const ringHex = style.ring !== null ? style.ring : a.worldAccent;
+        const emiHex  = style.emissive !== null ? style.emissive : a.worldAccent;
+        if (a.ring && a.ring.material) {
+            a.ring.material.color.setHex(typeof ringHex === 'number' ? ringHex : parseInt(String(ringHex).replace('#',''), 16));
+            a.ring.material.opacity = style.ringOpacity;
+        }
+        if (a.body && a.body.material) {
+            a.body.material.emissive.setHex(typeof emiHex === 'number' ? emiHex : parseInt(String(emiHex).replace('#',''), 16));
+        }
+        a.template = template;
+        a.templateStyle = style;
+    },
+
+    // Look up a brainstem-named target (threat_top, top_bond_partner, hurt_ally)
+    // and return its current world position, or null if not loaded in this
+    // world's mesh set.
+    _lookupTargetPos(targetId) {
+        if (!targetId) return null;
+        const m = this.agentMeshes[targetId];
+        return m ? m.group.position : null;
     },
 
     loadObjects(scene, worldId) {
@@ -548,7 +593,17 @@ const WorldAgents = {
         const heroPos = heroActive && EnemyHero.mesh ? EnemyHero.mesh.position : null;
 
         // Agent idle bob + defensive swarm
+        const brainstem = (typeof GameState !== 'undefined' && GameState.data && GameState.data.brainstem) || {};
         Object.entries(this.agentMeshes).forEach(([id, a]) => {
+            // ── BRAINSTEM TEMPLATE — apply visual signature for tactical state ──
+            // Sourced from state/programs/_lispvm/_status.json (compiled lispy
+            // programs). Style is set ONCE on template change; per-frame we
+            // only nudge bob speed / facing / glow to keep this cheap.
+            const bs = brainstem[id];
+            const tmpl = (bs && bs.template) || 'roaming';
+            this.applyTemplateStyle(a, tmpl);
+            const tStyle = a.templateStyle || this.TEMPLATE_STYLES.roaming;
+
             if (heroActive && heroPos) {
                 // DEFENSIVE SWARM — rush toward enemy hero
                 const agentPos = a.group.position;
@@ -599,10 +654,12 @@ const WorldAgents = {
                         echoS = ef.echoes.L3.socialEnergy;
                     }
                 }
-                // Emissive glow reacts to echo vitality
+                // Emissive glow blends template baseline + echo modulation.
+                // Template style is the floor (so a fleeing agent stays dim
+                // even with high vitality); echo adds reactive shimmer.
                 if (a.body.material) {
-                    var targetGlow = 0.15 + echoV * 0.15 + echoS * 0.1;
-                    a.body.material.emissiveIntensity = a.body.material.emissiveIntensity * 0.95 + targetGlow * 0.05;
+                    var targetGlow = tStyle.glow + echoV * 0.10 + echoS * 0.08;
+                    a.body.material.emissiveIntensity = a.body.material.emissiveIntensity * 0.92 + targetGlow * 0.08;
                 }
 
                 const dt = 0.016; // ~60fps
@@ -727,6 +784,45 @@ const WorldAgents = {
                     const bob = Math.sin(time * 2 + pos.x) * 0.05;
                     a.body.position.y = 0.9 + bob;
                     a.head.position.y = 1.65 + bob;
+                }
+
+                // ── TEMPLATE OVERLAY ─────────────────────────────────
+                // Add tactical-state pose on top of locomotion. Bob speed
+                // comes from the template (engaging=fast/aggressive,
+                // socializing=slow/calm). Facing bias gently rotates
+                // toward a tactical target (threat/ally/bond) at low
+                // weight so it doesn't fight the locomotion's own facing.
+                if (tStyle.bob && tStyle.bob > 1.5) {
+                    const tBob = Math.sin(time * tStyle.bob + (a.group.userData.phase || pos.x)) * 0.04;
+                    a.body.position.y += tBob;
+                    a.head.position.y += tBob * 0.5;
+                }
+                if (tStyle.bias && bs && a.behaviorState !== 'walking') {
+                    let target = null;
+                    let invert = false;
+                    if (tStyle.bias === 'threat')          target = this._lookupTargetPos(bs.threat_top);
+                    else if (tStyle.bias === 'awayFromThreat') { target = this._lookupTargetPos(bs.threat_top); invert = true; }
+                    else if (tStyle.bias === 'hurtAlly')   target = this._lookupTargetPos(bs.hurt_ally);
+                    else if (tStyle.bias === 'topBond')    target = this._lookupTargetPos(bs.top_bond_partner);
+                    if (target) {
+                        let bx = target.x - pos.x, bz = target.z - pos.z;
+                        if (invert) { bx = -bx; bz = -bz; }
+                        const desired = Math.atan2(bx, bz);
+                        // Blend toward desired heading at 8% per frame
+                        let cur = a.group.rotation.y;
+                        let diff = desired - cur;
+                        while (diff > Math.PI) diff -= Math.PI * 2;
+                        while (diff < -Math.PI) diff += Math.PI * 2;
+                        a.group.rotation.y = cur + diff * 0.08;
+                    }
+                }
+                // Engaging agents lean forward slightly (forward tilt on body)
+                if (tmpl === 'engaging' || tmpl === 'pushing') {
+                    a.body.rotation.x = (a.body.rotation.x || 0) * 0.9 + 0.12 * 0.1;
+                } else if (tmpl === 'fleeing' || tmpl === 'retreating') {
+                    a.body.rotation.x = (a.body.rotation.x || 0) * 0.9 + (-0.10) * 0.1;
+                } else {
+                    a.body.rotation.x = (a.body.rotation.x || 0) * 0.92;
                 }
 
                 // When server updates targetPos (new state poll), walk there instead

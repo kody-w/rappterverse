@@ -20,6 +20,7 @@ const GameState = {
         npcs: [],
         gameState: {},
         frameCounter: {},
+        brainstem: {},      // agentId → {template, hp, team, ...} from compiled lispy programs
         worldConfigs: {},
         worldObjects: {}
     },

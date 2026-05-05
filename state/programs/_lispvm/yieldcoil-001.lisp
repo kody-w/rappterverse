@@ -1,5 +1,5 @@
 ;; ── YieldCoil (yieldcoil-001) ────────────────────────────
-;; compiled at 2026-05-05T02:04:52Z for frame in 'gallery'
+;; compiled at 2026-05-05T02:32:45Z for frame in 'gallery'
 ;; team:      dire
 ;; template:  roaming
 ;; hp:        100/100

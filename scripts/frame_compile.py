@@ -417,6 +417,7 @@ def render_program(snap: dict, template_name: str, body: str) -> str:
 
 
 INDEX_PATH = PROGRAMS_DIR / "_index.json"
+STATUS_PATH = PROGRAMS_DIR / "_status.json"
 
 
 def _load_index() -> dict:
@@ -431,6 +432,27 @@ def _load_index() -> dict:
 def _save_index(index: dict) -> None:
     PROGRAMS_DIR.mkdir(parents=True, exist_ok=True)
     INDEX_PATH.write_text(json.dumps(index, indent=2, ensure_ascii=False) + "\n")
+
+
+def _save_status(status: dict) -> None:
+    """Frontend-facing snapshot of every agent's current tactical state.
+
+    Same shape regardless of whether the agent recompiled this tick — the
+    frontend reads this once per poll and applies template-specific visuals
+    (engaging = red lean, fleeing = retreat, pushing = forward stride, etc.)
+    so the substrate is VISIBLE in the 3D world. Pulled from raw.githubuser-
+    content.com just like all other state — same architecture, no new server.
+    """
+    PROGRAMS_DIR.mkdir(parents=True, exist_ok=True)
+    payload = {
+        "_meta": {
+            "lastUpdate": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "count": len(status),
+            "version": "1.0",
+        },
+        "agents": status,
+    }
+    STATUS_PATH.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
 
 
 def _hp_band(hp: int) -> str:
@@ -561,6 +583,7 @@ def compile_all(world: str | None = None,
     starting_index = dict(index)
 
     results = []
+    status = {}  # frontend-facing snapshot (agent_id → tactical state)
     for a in agents:
         aid = a.get("id")
         if not aid:
@@ -582,10 +605,42 @@ def compile_all(world: str | None = None,
         )
         results.append(result)
 
+        # Always populate status for ALL agents in the run, even if they
+        # didn't recompile this tick — frontend needs every agent's current
+        # template to drive visuals.
+        status[aid] = {
+            "template": result["template"],
+            "world": result["world"],
+            "team": result.get("team"),
+            "role": result.get("role"),
+            "hp": result["hp"],
+            "x": result["x"],
+            "z": result["z"],
+            "threat_count": len(result["threats"]),
+            "threat_top": (result["threats"][0][1] if result["threats"] else None),
+            "ally_count": len(result["allies"]),
+            "hurt_ally": next(
+                (al[1] for al in result["allies"] if al[3] < ALLY_HP_LOW),
+                None,
+            ),
+            "goal_action": (result["goal"] or {}).get("action") if result["goal"] else None,
+            "goal_target": (result["goal"] or {}).get("target") if result["goal"] else None,
+            "goal_valid": result["goal_valid"],
+            "top_bond_partner": (result["top_bonds"][0][1] if result["top_bonds"] else None),
+            "top_bond_score": (result["top_bonds"][0][0] if result["top_bonds"] else 0),
+        }
+
     # Always persist the index after a live run — keeps subsequent
     # --changed-only invocations honest. Skip on dry-run.
     if not dry_run and index != starting_index:
         _save_index(index)
+
+    # Status is small (~210 entries, ~30KB) and must reflect the FULL
+    # active population so the frontend can paint every agent. Rewrite
+    # every live full-population run, even when no .lisp files changed —
+    # otherwise stale data lingers when an agent shifts world or hp.
+    if not dry_run and not world and status:
+        _save_status(status)
 
     return results
 

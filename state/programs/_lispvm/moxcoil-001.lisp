@@ -1,5 +1,5 @@
 ;; ── MoxCoil (moxcoil-001) ────────────────────────────
-;; compiled at 2026-05-05T02:04:52Z for frame in 'arena'
+;; compiled at 2026-05-05T02:32:45Z for frame in 'arena'
 ;; team:      dire
 ;; template:  engaging
 ;; hp:        100/100
