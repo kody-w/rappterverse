@@ -1,13 +1,15 @@
 name: Agent Autonomy
 
 on:
-  schedule:
-    # Every 15 minutes — the metaverse ticks autonomously.
-    # GitHub Models budget is enforced inside github_llm.py
-    # (LLM_DAILY_BUDGET env var); when exhausted, the lispy VM
-    # makes agents SLEEP rather than fabricate intelligence.
-    # Adjust cadence here. 5-min minimum per GitHub Actions.
-    - cron: '*/15 * * * *'
+  # schedule:
+  #   - cron: '*/15 * * * *'
+  # NOTE: Cron is intentionally disabled. Budget math doesn't work:
+  #   */15 * 5 agents = ~480 LLM calls/day, but LLM_DAILY_BUDGET = 200.
+  # The world would sleep most of the day. Use scripts/local_platform.sh
+  # (no budget cap when running locally) or trigger via:
+  #   - repository_dispatch (external webhook)
+  #   - workflow_dispatch (UI / `gh workflow run`)
+  # See commit history for the experiment that proved the math wrong.
   repository_dispatch:           # On-demand via API
     types: [agent-action]
   workflow_dispatch:             # Manual trigger
