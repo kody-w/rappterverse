@@ -378,6 +378,166 @@ def p_world_world(ctx):
     return ctx.world
 
 
+# ── Per-agent status (Halo-style situational primitives) ──
+
+def p_self_hp(ctx):
+    """Current HP (0-100). Defaults to 100 if record missing."""
+    rec = _self_record(ctx)
+    return int(rec.get("hp", 100))
+
+
+def p_self_hp_pct(ctx):
+    """HP as a fraction 0.0-1.0. Cheap (low HP go to well) check."""
+    return p_self_hp(ctx) / 100.0
+
+
+def p_self_x(ctx):
+    rec = _self_record(ctx)
+    return float((rec.get("position") or {}).get("x", 0))
+
+
+def p_self_z(ctx):
+    rec = _self_record(ctx)
+    return float((rec.get("position") or {}).get("z", 0))
+
+
+def p_self_mood(ctx):
+    rec = _self_record(ctx)
+    pers = (rec.get("personality") or {}) if isinstance(rec, dict) else {}
+    mood = pers.get("mood")
+    if mood:
+        return str(mood).lower()
+    # fall back to registry
+    pers2 = (ctx.agent_reg or {}).get("personality", {}) if isinstance(ctx.agent_reg, dict) else {}
+    return str(pers2.get("mood", "neutral")).lower()
+
+
+# ── Tactical world queries ──
+
+def _distance(a_pos: dict, b_pos: dict) -> float:
+    if not isinstance(a_pos, dict) or not isinstance(b_pos, dict):
+        return 999.0
+    dx = float(a_pos.get("x", 0)) - float(b_pos.get("x", 0))
+    dz = float(a_pos.get("z", 0)) - float(b_pos.get("z", 0))
+    return (dx * dx + dz * dz) ** 0.5
+
+
+def p_world_distance(ctx, other_id):
+    """Euclidean distance from self to another agent (same world).
+    Returns 999.0 if other not in same world or not found."""
+    if not other_id:
+        return 999.0
+    me = _self_record(ctx)
+    if not me:
+        return 999.0
+    me_pos = me.get("position") or {}
+    for a in ctx.agents:
+        if a.get("id") == other_id:
+            if a.get("world") != ctx.world:
+                return 999.0
+            return round(_distance(me_pos, a.get("position") or {}), 2)
+    return 999.0
+
+
+def p_world_nearest_agent(ctx):
+    """ID of the closest agent in the same world, or empty string if alone."""
+    me = _self_record(ctx)
+    if not me:
+        return ""
+    me_pos = me.get("position") or {}
+    best_id = ""
+    best_d = 999.0
+    for a in ctx.agents:
+        aid = a.get("id")
+        if not aid or aid == ctx.agent_id:
+            continue
+        if a.get("world") != ctx.world:
+            continue
+        d = _distance(me_pos, a.get("position") or {})
+        if d < best_d:
+            best_d = d
+            best_id = aid
+    return best_id
+
+
+def p_world_threats(ctx, radius=5):
+    """Agents within `radius` whose bond with me is <= 0 — i.e. strangers
+    or unfriendly. The 'enemies in range' Halo predicate.
+
+    Returns list of agent ids sorted by proximity (closest first).
+    """
+    try:
+        radius = float(radius)
+    except (TypeError, ValueError):
+        radius = 5.0
+    me = _self_record(ctx)
+    if not me:
+        return []
+    me_pos = me.get("position") or {}
+    edges = ctx.relationships.get("edges", []) if isinstance(ctx.relationships, dict) else []
+
+    def bond_to(other):
+        pair = {ctx.agent_id, other}
+        for e in edges:
+            if {e.get("a"), e.get("b")} == pair:
+                return int(e.get("score", 0))
+        return 0
+
+    threats = []
+    for a in ctx.agents:
+        aid = a.get("id")
+        if not aid or aid == ctx.agent_id:
+            continue
+        if a.get("world") != ctx.world:
+            continue
+        d = _distance(me_pos, a.get("position") or {})
+        if d <= radius and bond_to(aid) <= 0:
+            threats.append((d, aid))
+    threats.sort()
+    return [aid for _, aid in threats]
+
+
+def p_world_allies(ctx, radius=8):
+    """Agents within `radius` with bond >= 5 with me — 'allies in range'.
+    Returns list sorted by proximity (closest first)."""
+    try:
+        radius = float(radius)
+    except (TypeError, ValueError):
+        radius = 8.0
+    me = _self_record(ctx)
+    if not me:
+        return []
+    me_pos = me.get("position") or {}
+    edges = ctx.relationships.get("edges", []) if isinstance(ctx.relationships, dict) else []
+
+    def bond_to(other):
+        pair = {ctx.agent_id, other}
+        for e in edges:
+            if {e.get("a"), e.get("b")} == pair:
+                return int(e.get("score", 0))
+        return 0
+
+    allies = []
+    for a in ctx.agents:
+        aid = a.get("id")
+        if not aid or aid == ctx.agent_id:
+            continue
+        if a.get("world") != ctx.world:
+            continue
+        d = _distance(me_pos, a.get("position") or {})
+        if d <= radius and bond_to(aid) >= 5:
+            allies.append((d, aid))
+    allies.sort()
+    return [aid for _, aid in allies]
+
+
+def p_world_safe(ctx, radius=5):
+    """Composite 'safe to push' predicate: no threats in radius AND hp >= 50%."""
+    if p_self_hp(ctx) < 50:
+        return False
+    return len(p_world_threats(ctx, radius)) == 0
+
+
 def p_world_balance(ctx, agent_id=None):
     aid = agent_id or ctx.agent_id
     bals = ctx.economy.get("balances", {}) if isinstance(ctx.economy, dict) else {}
@@ -685,6 +845,16 @@ def p_act_chat(ctx, msg):
     msg = (str(msg) if msg is not None else "").strip()
     if not msg:
         return "skip"
+    # Same pollution guard the dispatcher uses, applied at VM emit time
+    # so polluted LLM output never even queues an action.
+    try:
+        from agent_dispatch import is_clean_chat_content
+        if not is_clean_chat_content(msg):
+            ctx.record("act/chat-rejected", reason="polluted",
+                       preview=msg[:60])
+            return "skip"
+    except ImportError:
+        pass  # standalone mode without dispatcher — pass-through
     return _emit(ctx, "chat", {"message": msg[:280]})
 
 
@@ -870,6 +1040,17 @@ def _build_base_env() -> Env:
         "world/me": p_world_me,
         "world/world": p_world_world,
         "world/balance": p_world_balance,
+        # ── Halo-style situational primitives ──
+        "self/hp": p_self_hp,
+        "self/hp-pct": p_self_hp_pct,
+        "self/x": p_self_x,
+        "self/z": p_self_z,
+        "self/mood": p_self_mood,
+        "world/distance": p_world_distance,
+        "world/nearest-agent": p_world_nearest_agent,
+        "world/threats": p_world_threats,
+        "world/allies": p_world_allies,
+        "world/safe?": p_world_safe,
         "world/nearby": p_world_nearby,
         "world/agent-name": p_world_agent_name,
         "world/agent-world": p_world_agent_world,
@@ -1089,6 +1270,47 @@ class EncounterResult:
         return f"{tool}: {json.dumps(args)[:60]}"
 
 
+def resolve_program(agent_id: str, world: str,
+                    explicit: Optional[str] = None) -> tuple[str, str]:
+    """Resolve which lispy program to run for this encounter.
+
+    Priority (highest first):
+      1. `explicit` argument — caller passed a program string directly
+      2. `state/programs/_lispvm/<agentId>.lisp` — twin-authored per-agent
+         override targeting THIS VM's primitives
+      3. `state/programs/_world/<world>.lisp` — world-scoped twitch rules
+      4. DEFAULT_PROGRAM — built-in 4-branch attention program
+
+    NOTE: This resolver intentionally avoids `state/programs/<agentId>.lisp`
+    (no underscore prefix) — those files target the older `slosh_lisp.py`
+    animation VM with a totally different primitive set (`mod`, `elapsed`,
+    `face-toward`, etc.). Loading them here would NameError immediately.
+    Per-agent overrides for this VM live under `_lispvm/`.
+
+    Returns (program_source, program_name) where program_name is one of
+    'custom' / 'agent:<id>' / 'world:<world>' / 'default' for tracing.
+    """
+    if explicit is not None:
+        return explicit, "custom"
+
+    state_dir = BASE_DIR / "state" / "programs"
+    agent_path = state_dir / "_lispvm" / f"{agent_id}.lisp"
+    if agent_path.is_file():
+        try:
+            return agent_path.read_text(encoding="utf-8"), f"agent:{agent_id}"
+        except OSError:
+            pass
+
+    world_path = state_dir / "_world" / f"{world}.lisp"
+    if world_path.is_file():
+        try:
+            return world_path.read_text(encoding="utf-8"), f"world:{world}"
+        except OSError:
+            pass
+
+    return DEFAULT_PROGRAM, "default"
+
+
 def run_encounter(
     *,
     agent_id: str,
@@ -1110,8 +1332,12 @@ def run_encounter(
     injected fn), the agent sleeps for this frame — zero actions, no
     fabricated intelligence. The principle: emergence is only through
     genuine LLM reasoning. Without it, the agent is asleep, not faking it.
+
+    Program resolution: see `resolve_program()`. If `program` is None,
+    we look for state/programs/<agentId>.lisp first, then
+    state/programs/_world/<world>.lisp, then fall back to DEFAULT_PROGRAM.
     """
-    src = program if program is not None else DEFAULT_PROGRAM
+    src, program_name = resolve_program(agent_id, world, program)
     ctx = VMContext(
         agent_id=agent_id,
         agent_reg=agent_reg or {},
@@ -1123,7 +1349,7 @@ def run_encounter(
         economy=economy or {},
         llm_token=llm_token,
         llm_budget=llm_budget,
-        program_name="default" if program is None else "custom",
+        program_name=program_name,
         llm_fn=llm_fn,
     )
 
@@ -1276,6 +1502,7 @@ def _selftest() -> int:
     # 1. Mention present, with mock LLM — should produce a chat
     print("  case 1: mention present (with LLM)")
     r = run_encounter(
+        program=DEFAULT_PROGRAM,
         agent_id="rapp-guide-001",
         agent_reg=reg,
         memory=memory,
@@ -1297,6 +1524,7 @@ def _selftest() -> int:
     # 2. No mention, has bond — bond branch with chat fallback
     print("  case 2: bond present (with LLM)")
     r2 = run_encounter(
+        program=DEFAULT_PROGRAM,
         agent_id="rapp-guide-001",
         agent_reg=reg,
         memory=memory,
@@ -1315,6 +1543,7 @@ def _selftest() -> int:
     # 3. Ambient — no mention, no bond, no goals
     print("  case 3: ambient (with LLM)")
     r3 = run_encounter(
+        program=DEFAULT_PROGRAM,
         agent_id="loner-001",
         agent_reg={"name": "Loner", "personality": {"archetype": "neutral"}},
         memory={"agentId": "loner-001", "goals": [], "experiences": []},
@@ -1330,6 +1559,7 @@ def _selftest() -> int:
     # 4. No-LLM path — agent is SLEEPING. Zero actions, no fabrication.
     print("  case 4: no-LLM (must SLEEP — zero actions)")
     r4 = run_encounter(
+        program=DEFAULT_PROGRAM,
         agent_id="rapp-guide-001",
         agent_reg=reg,
         memory=memory,
@@ -1363,6 +1593,7 @@ def _selftest() -> int:
         return "answer"
 
     r6 = run_encounter(
+        program=DEFAULT_PROGRAM,
         agent_id="rapp-guide-001",
         agent_reg=reg,
         memory=memory,
@@ -1393,6 +1624,7 @@ def _selftest() -> int:
         return "ambient thought"
 
     r7 = run_encounter(
+        program=DEFAULT_PROGRAM,
         agent_id="rapp-guide-001",
         agent_reg=reg,
         memory=zombie_mem,
@@ -1430,6 +1662,7 @@ def _selftest() -> int:
         return "studied response"
 
     r8 = run_encounter(
+        program=DEFAULT_PROGRAM,
         agent_id="rapp-guide-001",
         agent_reg=scholar_reg,
         memory=scholar_mem,
@@ -1460,6 +1693,7 @@ def _selftest() -> int:
         return "Hi BlitzWalker!"
 
     r9 = run_encounter(
+        program=DEFAULT_PROGRAM,
         agent_id="rapp-guide-001",
         agent_reg=friendly_reg,
         memory=scholar_mem,                # same goal

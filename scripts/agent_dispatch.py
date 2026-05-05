@@ -121,6 +121,49 @@ def get_next_id(prefix: str, existing_ids: list) -> str:
     return f"{prefix}{max_num + 1:03d}"
 
 
+# ─── Content sanitization ─────────────────────────────────────────────
+# Patterns that have leaked into chat/action descriptions in the past.
+# These are NOT in-character speech — they are LLM error markers, dry-run
+# placeholders, and shell traces that escaped their guard rails. We reject
+# them at write time so they never reach state files. Source patterns:
+#   - github_llm.py:666 dry-run placeholder ("[DRY RUN — ... comment]")
+#   - github_llm.py:563 tool placeholder ("[DRY RUN] ...")
+#   - github_llm.py:567 budget banner ("[BUDGET] Daily LLM budget exceeded")
+#   - gh copilot CLI transient retry banner ("Request failed due to a transient")
+#   - shell trace markers ("✗ Check ... (shell)", " │ cat", "/home/runner/work")
+import re as _re_chat_filter
+
+_FORBIDDEN_CHAT_PATTERNS = [
+    _re_chat_filter.compile(r"\[DRY RUN", _re_chat_filter.IGNORECASE),
+    _re_chat_filter.compile(r"\[BUDGET\]", _re_chat_filter.IGNORECASE),
+    _re_chat_filter.compile(r"Request failed due to a transient",
+                             _re_chat_filter.IGNORECASE),
+    _re_chat_filter.compile(r"agent comment\]", _re_chat_filter.IGNORECASE),
+    _re_chat_filter.compile(r"^\s*✗\s+Check\s+.+\(shell\)",
+                             _re_chat_filter.IGNORECASE | _re_chat_filter.MULTILINE),
+    _re_chat_filter.compile(r"/home/runner/work/", _re_chat_filter.IGNORECASE),
+    _re_chat_filter.compile(r"^\s*│\s", _re_chat_filter.MULTILINE),
+    _re_chat_filter.compile(r"placeholder comment that would be generated",
+                             _re_chat_filter.IGNORECASE),
+]
+
+
+def is_clean_chat_content(text: str) -> bool:
+    """Return False if `text` contains any forbidden pollution marker.
+
+    Used as a write-time gate. Rejected messages are dropped silently —
+    the agent simply doesn't speak that frame, which is the correct
+    behavior under the constitution (no fabrication, prefer silence to
+    garbled output). Empty/whitespace text is also rejected.
+    """
+    if not text or not text.strip():
+        return False
+    for pat in _FORBIDDEN_CHAT_PATTERNS:
+        if pat.search(text):
+            return False
+    return True
+
+
 def get_gh_token() -> str:
     """Get GitHub token for LLM API calls.
 
@@ -1275,15 +1318,29 @@ def main():
                 tool = action.get("tool", "")
                 tool_args = action.get("args", {}) or {}
                 last_tool = tool
-                action_id = f"action-{random.randint(40000, 99999)}"
+                # Sequential ID against current+pending actions. Random IDs
+                # collide with the sequential >100k range produced by
+                # world_growth.py / interaction_engine.py / generate_activity.py
+                # and break test_action_ids_sequential.
+                action_id = get_next_id("action-",
+                                        [a["id"] for a in actions])
+                msg_id = get_next_id("msg-",
+                                     [m["id"] for m in messages]) if tool == "chat" else None
 
                 if tool == "chat":
-                    msg_id = f"msg-{random.randint(1000, 9999)}"
+                    chat_text = tool_args.get("message", "...")
+                    if not is_clean_chat_content(chat_text):
+                        # Pollution guard: dry-run / LLM error / shell trace
+                        # snuck into LLM output. Drop silently; agent stays
+                        # quiet rather than emit garbage.
+                        print(f"  🚫 {aid} [chat] dropped polluted content "
+                              f"({chat_text[:40]!r}...)")
+                        continue
                     name = reg.get("name", aid)
                     messages.append({
                         "id": msg_id,
                         "author": {"id": aid, "name": name},
-                        "content": tool_args.get("message", "..."),
+                        "content": chat_text,
                         "world": agent_world,
                         "type": "chat",
                         "timestamp": timestamp,
@@ -1292,12 +1349,12 @@ def main():
                         "id": action_id,
                         "agentId": aid,
                         "type": "chat",
-                        "description": f"Said: {tool_args.get('message', '')[:50]}",
+                        "description": f"Said: {chat_text[:50]}",
                         "world": agent_world,
                         "timestamp": timestamp,
                     })
                     n_msgs += 1
-                    print(f"  🧠 {aid} [{tool}] \"{tool_args.get('message', '')[:60]}\"")
+                    print(f"  🧠 {aid} [{tool}] \"{chat_text[:60]}\"")
 
                 elif tool == "emote":
                     emote = tool_args.get("action", "think")
