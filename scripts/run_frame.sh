@@ -6,6 +6,8 @@
 # next frame). Each phase is opt-in; pass --skip-<phase> to disable.
 #
 # Phases (in order):
+#   0. advance-frame      Bumps state/frame_counter.json by 1. Skip with
+#                         --dry-run or --skip-frame.
 #   1. team-assign        Idempotent. Reseeds teams.json if missing/stale
 #                         OR if --reassign-teams is passed.
 #   2. combat-resolve     Reads unresolved act/challenge actions, applies
@@ -40,6 +42,7 @@ SKIP_COMBAT=false
 SKIP_COMPILE=false
 SKIP_DISPATCH=false
 SKIP_CLEANUP=false
+SKIP_FRAME=false
 NO_LLM=false
 
 while [[ $# -gt 0 ]]; do
@@ -52,6 +55,7 @@ while [[ $# -gt 0 ]]; do
     --skip-compile)     SKIP_COMPILE=true; shift ;;
     --skip-dispatch)    SKIP_DISPATCH=true; shift ;;
     --skip-cleanup)     SKIP_CLEANUP=true; shift ;;
+    --skip-frame)       SKIP_FRAME=true; shift ;;
     --no-llm)           NO_LLM=true; shift ;;
     -h|--help)
       sed -n '/^#/p' "$0" | sed 's/^# \?//'
@@ -74,6 +78,34 @@ phase() {
   echo "▶ $1"
   echo "════════════════════════════════════════════════════════════════"
 }
+
+# 0. Frame counter — bump first so all state in this tick is "as of frame N+1".
+#    Skipped on --dry-run and --skip-frame-counter. Mirrors local_platform.sh's
+#    advance_frame so frame_counter.json keeps moving even when running this
+#    script directly instead of the full local_platform loop.
+if [[ "$DRY_RUN" != "true" && "$SKIP_FRAME" != "true" ]]; then
+  phase "advance-frame"
+  python3 -c "
+import json
+from datetime import datetime, timezone
+path = 'state/frame_counter.json'
+try:
+    with open(path) as f: data = json.load(f)
+except Exception:
+    data = {'frame': 0}
+data['frame'] = data.get('frame', 0) + 1
+now = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
+data['last_frame_at'] = now
+data['_meta'] = {
+    'lastUpdate': now,
+    'version': data.get('_meta', {}).get('version', 1),
+}
+with open(path, 'w') as f:
+    json.dump(data, f, indent=4)
+    f.write('\n')
+print(f'  frame {data[\"frame\"]} @ {now}')
+"
+fi
 
 # 1. Teams ── only assign if missing or --reassign-teams
 if [[ "$SKIP_TEAMS" != "true" ]]; then
