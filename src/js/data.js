@@ -5,14 +5,19 @@ const DataManager = {
     lastFetch: 0,
 
     async fetchJSON(path) {
-        try {
-            const res = await fetch(`${RAW}/${path}?_=${Date.now()}`);
-            if (!res.ok) return null;
-            return await res.json();
-        } catch(e) {
-            if (GameState.debug) console.warn(`[DATA] Fetch failed: ${path}`, e.message);
-            return null;
+        // Live world state lives on the pump's branch (STATE_BRANCH = 'frames')
+        // — that's where each [frame N] commit deltas appear. Fall back to
+        // BRANCH (the Pages branch) for any path that isn't there.
+        const bases = [STATE_RAW, RAW];
+        for (const base of bases) {
+            try {
+                const res = await fetch(`${base}/${path}?_=${Date.now()}`);
+                if (res.ok) return await res.json();
+            } catch(e) {
+                if (GameState.debug) console.warn(`[DATA] Fetch failed: ${base}/${path}`, e.message);
+            }
         }
+        return null;
     },
 
     _showStatus(msg, isError) {

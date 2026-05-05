@@ -3052,8 +3052,10 @@ button:focus-visible,
 // === js/config.js ===
 // RAPPterverse Configuration
 const REPO = 'kody-w/rappterverse';
-const BRANCH = 'main';
+const BRANCH = 'main';            // Pages serves the frontend HTML from this branch
+const STATE_BRANCH = 'frames';    // The pump's worktree commits live world state here
 const RAW = `https://raw.githubusercontent.com/${REPO}/${BRANCH}`;
+const STATE_RAW = `https://raw.githubusercontent.com/${REPO}/${STATE_BRANCH}`;
 const POLL_INTERVAL = 15000;
 
 const WORLDS = {
@@ -3356,14 +3358,19 @@ const DataManager = {
     lastFetch: 0,
 
     async fetchJSON(path) {
-        try {
-            const res = await fetch(`${RAW}/${path}?_=${Date.now()}`);
-            if (!res.ok) return null;
-            return await res.json();
-        } catch(e) {
-            if (GameState.debug) console.warn(`[DATA] Fetch failed: ${path}`, e.message);
-            return null;
+        // Live world state lives on the pump's branch (STATE_BRANCH = 'frames')
+        // — that's where each [frame N] commit deltas appear. Fall back to
+        // BRANCH (the Pages branch) for any path that isn't there.
+        const bases = [STATE_RAW, RAW];
+        for (const base of bases) {
+            try {
+                const res = await fetch(`${base}/${path}?_=${Date.now()}`);
+                if (res.ok) return await res.json();
+            } catch(e) {
+                if (GameState.debug) console.warn(`[DATA] Fetch failed: ${base}/${path}`, e.message);
+            }
         }
+        return null;
     },
 
     _showStatus(msg, isError) {
