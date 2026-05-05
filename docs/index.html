@@ -3473,6 +3473,10 @@ const DataManager = {
     startPolling() {
         if (this.polling) return;
         this.polling = true;
+        // Fire the first fetch IMMEDIATELY so the world isn't empty after
+        // a boot-skip (setInterval would otherwise wait POLL_INTERVAL ms
+        // before its first call, leaving Frame --- / 0 agents on screen).
+        this.fetchAllState();
         this._pollId = setInterval(() => this.fetchAllState(), POLL_INTERVAL);
     },
 
