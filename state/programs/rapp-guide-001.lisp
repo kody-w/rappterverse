@@ -1,0 +1,5 @@
+;; authored by Chronicle Monk at 2026-05-05T01:28:14Z
+;; for RAPP Guide (rapp-guide-001) in hub
+;; mood=neutral traits={"explorer": 0.1339, "social": 0.5621, "trader": 0.1247, "fighter": 0.0673, "builder": 0.112}
+
+(do (if (and (= (mod (floor (elapsed)) 7) 0) (< (rand) 0.45)) (emote "rapp-guide-001" "wave") nil) (if (and (= (mod (floor (elapsed)) 11) 3) (< (rand) 0.3)) (emote "rapp-guide-001" "look-around") nil) (if (and (= (mod (floor (elapsed)) 13) 5) (< (rand) 0.25)) (emote "rapp-guide-001" "nod") nil) (let (near (nearest-agent "rapp-guide-001")) (if (and near (< (rand) 0.55)) (let (p (agent-pos near)) (face-toward "rapp-guide-001" (get p "x") (get p "z"))) nil)) (if (< (player-distance "rapp-guide-001") 6) (let (pp (player-pos)) (face-toward "rapp-guide-001" (get pp "x") (get pp "z"))) nil) (if (and (< (player-distance "rapp-guide-001") 10) (> (player-distance "rapp-guide-001") 3) (< (rand) 0.2)) (let (pp (player-pos)) (move-toward "rapp-guide-001" (get pp "x") (get pp "z") 0.6)) nil) (if (and (= (mod (floor (elapsed)) 5) 2) (< (rand) 0.12)) (wander "rapp-guide-001" 2.5) nil))

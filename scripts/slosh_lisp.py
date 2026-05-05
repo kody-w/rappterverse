@@ -109,6 +109,31 @@ def main():
             aid = ag.get("id", "")
             if not aid:
                 continue
+            # ── Self-authored override: state/programs/<aid>.lisp ──
+            # Lispy Mirror — when an agent's twin has authored their own
+            # priority gates and action bias, honor it instead of
+            # synthesizing from state. Read more in: state/programs/README
+            program_path = os.path.join(STATE, "programs", f"{aid}.lisp")
+            if os.path.isfile(program_path):
+                try:
+                    with open(program_path) as f:
+                        raw = f.read()
+                    # Strip comment-only lines (;; …) so we get just the form
+                    body = "\n".join(
+                        line for line in raw.splitlines()
+                        if line.strip() and not line.strip().startswith(";;")
+                    ).strip()
+                    if body.startswith("(do ") and body.endswith(")"):
+                        routines.append({
+                            "agentId": aid,
+                            "program": body,
+                            "source": "self-authored",
+                        })
+                        changed = True
+                        continue  # skip auto-compilation for this agent
+                except OSError:
+                    pass
+
             pos = ag.get("position", {})
             px = pos.get("x", 0)
             pz = pos.get("z", 0)
