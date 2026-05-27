@@ -123,7 +123,7 @@ job_game_tick() {
 }
 
 job_agent_dispatch() {
-  # Ambient agent activity — ALL agents, Copilot is unlimited
+  # Ambient agent activity — ALL agents, via the GitHub Copilot CLI
   # Original: agent-autonomy.yml every 30 min (was capped at 10)
   python3 scripts/build_agent_registry.py 2>&1
   python3 scripts/agent_dispatch.py --all --max-agents 50 --no-push --brainstem 2>&1

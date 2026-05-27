@@ -345,8 +345,8 @@ def generate(
 ) -> str:
     """Generate text using the best available LLM backend.
 
-    Priority order (Copilot is UNLIMITED with subscription):
-      1. Copilot CLI (unlimited — no rate limits, no cost)
+    Priority order (GitHub Copilot CLI is the preferred backend):
+      1. Copilot CLI (preferred — tried first)
       2. GitHub Models (rate-limited, budget-tracked)
       3. Azure OpenAI (paid fallback)
 
@@ -369,7 +369,7 @@ def generate(
 
     errors = []
 
-    # Backend 1: Copilot CLI (UNLIMITED — always try first)
+    # Backend 1: Copilot CLI (preferred — always try first)
     try:
         result = _generate_copilot(system, user, max_tokens, temperature)
         _increment_budget()
