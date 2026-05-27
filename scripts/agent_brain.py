@@ -24,7 +24,7 @@ STATE_DIR = BASE_DIR / "state"
 MEMORY_DIR = STATE_DIR / "memory"
 
 # LLM backend — uses github_llm.py with 3-tier fallback:
-# Azure OpenAI → GitHub Models (Claude/GPT) → Copilot CLI (unlimited)
+# Azure OpenAI → GitHub Models (Claude/GPT) → Copilot CLI
 try:
     from github_llm import generate as _llm_generate
     HAS_LLM_MODULE = True
