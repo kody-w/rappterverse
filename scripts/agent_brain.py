@@ -287,7 +287,7 @@ def _call_llm(token: str, system_prompt: str, user_prompt: str,
               max_tokens: int = 120, temperature: float = 0.9) -> str:
     """Call LLM with 3-tier fallback. Returns response text or empty string.
 
-    Uses github_llm.py: Azure OpenAI → GitHub Models → Copilot CLI (unlimited).
+    Uses github_llm.py: Azure OpenAI → GitHub Models → Copilot CLI.
     The token param is kept for backward compat but github_llm reads env vars.
     """
     if HAS_LLM_MODULE:
