@@ -16,6 +16,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest import mock
 from pathlib import Path
 
 # Resolve repo root (works from scripts/ or repo root)
@@ -131,6 +132,7 @@ def get_workflow_files() -> list[Path]:
 
 # Workflows that mutate state (push to main or create PRs touching state)
 STATE_MUTATING_WORKFLOWS = {
+    "agent-action.yml",
     "game-tick.yml",
     "world-growth.yml",
     "architect-explore.yml",
@@ -475,6 +477,36 @@ class TestPRValidatorGate(unittest.TestCase):
         self._git("add", "-A")
         self._git("commit", "-qm", "candidate state")
 
+    def _commit_action(self, agent_id, *, trim=True):
+        actions_path = self.repo / "state" / "actions.json"
+        data = json.loads(actions_path.read_text(encoding="utf-8"))
+        last = data["actions"][-1]
+        data["actions"].append({
+            "id": "action-auth-test",
+            "timestamp": last["timestamp"],
+            "agentId": agent_id,
+            "type": "emote",
+            "world": next(
+                agent["world"]
+                for agent in json.loads((self.repo / "state" / "agents.json").read_text())["agents"]
+                if agent["id"] == agent_id
+            ),
+            "data": {"emote": "wave", "duration": 1000},
+        })
+        if trim:
+            data["actions"] = data["actions"][-100:]
+        actions_path.write_text(json.dumps(data, indent=4) + "\n", encoding="utf-8")
+        self._git("add", "state/actions.json")
+        self._git("commit", "-qm", "candidate action")
+
+    def _commit_controller_transfer(self, agent_id, controller):
+        agents_path = self.repo / "state" / "agents.json"
+        data = json.loads(agents_path.read_text(encoding="utf-8"))
+        next(agent for agent in data["agents"] if agent["id"] == agent_id)["controller"] = controller
+        agents_path.write_text(json.dumps(data, indent=4) + "\n", encoding="utf-8")
+        self._git("add", "state/agents.json")
+        self._git("commit", "-qm", "transfer controller")
+
     def _run_validator(self, **env_overrides):
         env = os.environ.copy()
         env.update({
@@ -482,7 +514,9 @@ class TestPRValidatorGate(unittest.TestCase):
             "VALIDATION_BASE_SHA": "origin/main",
             "VALIDATION_HEAD_SHA": "HEAD",
             "VALIDATION_REQUIRE_RELEVANT": "1",
-            "PR_AUTHOR": "",
+            "VALIDATION_REQUIRE_AUTH": "1",
+            "REPOSITORY_OWNER": "kody-w",
+            "PR_AUTHOR": "validator-test",
         })
         env.update(env_overrides)
         return subprocess.run(
@@ -516,6 +550,57 @@ class TestPRValidatorGate(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("may only modify state/", result.stdout)
 
+    def test_matching_controller_can_append_action(self):
+        self._commit_action("clawdbot-001")
+        result = self._run_validator(PR_AUTHOR="openclaw")
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
+    def test_other_controller_cannot_append_action(self):
+        self._commit_action("clawdbot-001")
+        result = self._run_validator(PR_AUTHOR="mallory")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("controlled by `openclaw`", result.stdout)
+
+    def test_untrusted_author_cannot_act_as_system_agent(self):
+        self._commit_action("kody-001")
+        result = self._run_validator(PR_AUTHOR="mallory")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("system-controlled", result.stdout)
+
+    def test_authorization_uses_updated_base_controller(self):
+        self._commit_action("clawdbot-001")
+        candidate_head = self._git("rev-parse", "HEAD").stdout.strip()
+        self._git("checkout", "-qb", "updated-base", "origin/main")
+        agents_path = self.repo / "state" / "agents.json"
+        data = json.loads(agents_path.read_text(encoding="utf-8"))
+        next(agent for agent in data["agents"] if agent["id"] == "clawdbot-001")["controller"] = "mallory"
+        agents_path.write_text(json.dumps(data, indent=4) + "\n", encoding="utf-8")
+        self._git("add", "state/agents.json")
+        self._git("commit", "-qm", "transfer controller")
+        self._git("update-ref", "refs/remotes/origin/main", "HEAD")
+        self._git("checkout", "-q", "--detach", candidate_head)
+
+        result = self._run_validator(PR_AUTHOR="openclaw")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("controlled by `mallory`", result.stdout)
+
+    def test_action_history_must_remain_capped(self):
+        self._commit_action("clawdbot-001", trim=False)
+        result = self._run_validator(PR_AUTHOR="openclaw")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("most recent 100", result.stdout)
+
+    def test_trusted_automation_can_transfer_controller(self):
+        self._commit_controller_transfer("clawdbot-001", "kody-w")
+        result = self._run_validator(PR_AUTHOR="kody-w")
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
+    def test_agent_cannot_transfer_its_controller(self):
+        self._commit_controller_transfer("clawdbot-001", "mallory")
+        result = self._run_validator(PR_AUTHOR="openclaw")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("Only trusted automation may transfer", result.stdout)
+
 
 class TestAgentActionWorkflowTrust(unittest.TestCase):
     """The privileged action workflow must be controlled by the base branch."""
@@ -529,6 +614,9 @@ class TestAgentActionWorkflowTrust(unittest.TestCase):
         content = load_yaml_text(WORKFLOWS_DIR / "agent-action.yml")
         self.assertIn("GH_REPO: ${{ github.repository }}", content)
         self.assertIn("--match-head-commit", content)
+        self.assertIn('current_base="$(gh api', content)
+        self.assertNotIn("--auto", content)
+        self.assertIn("gh workflow run apply-deltas.yml", content)
 
 
 # ═════════════════════════════════════════════
@@ -876,6 +964,7 @@ class TestDeltaApplier(unittest.TestCase):
         )
         (self.tmpdir / "state").joinpath("agents.json").write_text(
             json.dumps({"agents": [{"id": "test-001", "name": "Test", "world": "hub",
+                                     "controller": "test-controller",
                                      "position": {"x": 0, "y": 0, "z": 0}, "status": "active"}],
                          "_meta": {"lastUpdate": "2026-01-01T00:00:00Z", "agentCount": 1}})
         )
@@ -889,6 +978,9 @@ class TestDeltaApplier(unittest.TestCase):
         )
 
     def _write_delta(self, filename: str, delta: dict):
+        if "controller" not in delta:
+            update = delta.get("agent_update", {})
+            delta["controller"] = update.get("controller", "test-controller")
         path = self.tmpdir / "state" / "inbox" / filename
         path.write_text(json.dumps(delta))
 
@@ -942,6 +1034,30 @@ class TestDeltaApplier(unittest.TestCase):
         data = json.loads((self.tmpdir / "state" / "chat.json").read_text())
         self.assertEqual(len(data["messages"]), 1)
 
+    def test_action_and_chat_histories_are_capped(self):
+        actions = [{"id": f"action-{index:03d}"} for index in range(100)]
+        messages = [{"id": f"msg-{index:03d}"} for index in range(100)]
+        (self.tmpdir / "state" / "actions.json").write_text(
+            json.dumps({"actions": actions, "_meta": {}})
+        )
+        (self.tmpdir / "state" / "chat.json").write_text(
+            json.dumps({"messages": messages, "_meta": {}})
+        )
+        self._write_delta("cap.json", {
+            "agent_id": "test-001",
+            "timestamp": "2026-02-11T20:00:00Z",
+            "actions": [{"id": "action-new", "agentId": "test-001", "type": "emote"}],
+            "messages": [{"id": "msg-new", "author": {"id": "test-001"}, "content": "new"}],
+        })
+        self._run_applier()
+        action_data = json.loads((self.tmpdir / "state" / "actions.json").read_text())
+        chat_data = json.loads((self.tmpdir / "state" / "chat.json").read_text())
+        self.assertEqual(len(action_data["actions"]), 100)
+        self.assertEqual(action_data["actions"][-1]["id"], "action-new")
+        self.assertEqual(len(chat_data["messages"]), 100)
+        self.assertEqual(chat_data["messages"][-1]["id"], "msg-new")
+        self.assertEqual(chat_data["_meta"]["messageCount"], 100)
+
     def test_upsert_agent(self):
         self._write_delta("test-delta.json", {
             "agent_id": "test-001",
@@ -958,7 +1074,7 @@ class TestDeltaApplier(unittest.TestCase):
         self._write_delta("test-delta.json", {
             "agent_id": "new-001",
             "timestamp": "2026-02-11T20:00:00Z",
-            "agent_update": {"id": "new-001", "name": "New Agent", "world": "hub",
+            "agent_update": {"id": "new-001", "name": "New Agent", "controller": "new-controller", "world": "hub",
                              "position": {"x": 0, "y": 0, "z": 0}, "status": "active"}
         })
         self._run_applier()
@@ -1011,6 +1127,38 @@ class TestDeltaApplier(unittest.TestCase):
         remaining = list((self.tmpdir / "state" / "inbox").glob("*.json"))
         self.assertEqual(len(remaining), 0, "Delta file should be removed after processing")
 
+    def test_conflicting_spawn_controllers_reject_entire_batch(self):
+        for filename, controller in (("a.json", "alice"), ("b.json", "mallory")):
+            self._write_delta(filename, {
+                "agent_id": "same-001",
+                "controller": controller,
+                "timestamp": "2026-02-11T20:00:00Z",
+                "agent_update": {
+                    "id": "same-001",
+                    "controller": controller,
+                    "name": "Same",
+                    "world": "hub",
+                },
+            })
+        self._run_applier()
+        data = json.loads((self.tmpdir / "state" / "agents.json").read_text())
+        self.assertFalse(any(agent["id"] == "same-001" for agent in data["agents"]))
+
+    def test_applier_rejects_stale_controller_provenance(self):
+        self._write_delta("stale.json", {
+            "agent_id": "test-001",
+            "controller": "old-controller",
+            "timestamp": "2026-02-11T20:00:00Z",
+            "actions": [{
+                "id": "action-stale",
+                "agentId": "test-001",
+                "type": "emote",
+            }],
+        })
+        self._run_applier()
+        data = json.loads((self.tmpdir / "state" / "actions.json").read_text())
+        self.assertEqual(data["actions"], [])
+
     def test_multiple_deltas_ordered_by_timestamp(self):
         self._write_delta("b-second.json", {
             "agent_id": "test-001",
@@ -1061,6 +1209,21 @@ class TestDeltaValidator(unittest.TestCase):
         mod.validate_delta(path)
         return len(mod.errors) == 0
 
+    def _authorize(self, content: dict, agents: dict, author: str) -> list[str]:
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("validate_delta_auth", SCRIPT_DIR / "validate_delta.py")
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        mod.errors = []
+        mod._load_base_agents = lambda: agents
+        with mock.patch.dict(os.environ, {
+            "VALIDATION_REQUIRE_AUTH": "1",
+            "PR_AUTHOR": author,
+            "REPOSITORY_OWNER": "kody-w",
+        }):
+            mod.validate_delta_authorization(content, Path("test.json"))
+        return mod.errors
+
     def test_valid_delta_passes(self):
         self.assertTrue(self._write_and_validate("good.json", {
             "agent_id": "test-001",
@@ -1086,6 +1249,13 @@ class TestDeltaValidator(unittest.TestCase):
             "timestamp": "2026-02-11T20:00:00Z"
         }))
 
+    def test_empty_delta_section_fails(self):
+        self.assertFalse(self._write_and_validate("bad.json", {
+            "agent_id": "test-001",
+            "timestamp": "2026-02-11T20:00:00Z",
+            "actions": [],
+        }))
+
     def test_invalid_action_type_fails(self):
         self.assertFalse(self._write_and_validate("bad.json", {
             "agent_id": "test-001",
@@ -1099,6 +1269,69 @@ class TestDeltaValidator(unittest.TestCase):
             "timestamp": "2026-02-11T20:00:00Z",
             "objects": {"world": "narnia", "entries": [{"id": "obj-001"}]}
         }))
+
+    def test_delta_actor_matches_controller(self):
+        errors = self._authorize(
+            {
+                "agent_id": "alice-001",
+                "controller": "alice",
+                "actions": [{"agentId": "alice-001"}],
+                "messages": [{"author": {"id": "alice-001"}}],
+            },
+            {"alice-001": {"id": "alice-001", "controller": "alice"}},
+            "alice",
+        )
+        self.assertEqual(errors, [])
+
+    def test_delta_cannot_impersonate_embedded_actor(self):
+        errors = self._authorize(
+            {
+                "agent_id": "alice-001",
+                "controller": "alice",
+                "actions": [{"agentId": "bob-001"}],
+            },
+            {
+                "alice-001": {"id": "alice-001", "controller": "alice"},
+                "bob-001": {"id": "bob-001", "controller": "bob"},
+            },
+            "alice",
+        )
+        self.assertTrue(any("must match delta agent" in item for item in errors))
+
+    def test_delta_rejects_wrong_controller(self):
+        errors = self._authorize(
+            {"agent_id": "alice-001", "controller": "alice"},
+            {"alice-001": {"id": "alice-001", "controller": "alice"}},
+            "mallory",
+        )
+        self.assertTrue(any("controlled by `alice`" in item for item in errors))
+
+    def test_delta_rejects_controller_transfer(self):
+        errors = self._authorize(
+            {
+                "agent_id": "alice-001",
+                "controller": "alice",
+                "agent_update": {"id": "alice-001", "controller": "mallory"},
+            },
+            {"alice-001": {"id": "alice-001", "controller": "alice"}},
+            "alice",
+        )
+        self.assertTrue(any("direct trusted state PR" in item for item in errors))
+
+    def test_delta_rejects_activity_impersonation(self):
+        errors = self._authorize(
+            {
+                "agent_id": "alice-001",
+                "controller": "alice",
+                "activities": [{"author": {"id": "bob-001"}}],
+            },
+            {
+                "alice-001": {"id": "alice-001", "controller": "alice"},
+                "bob-001": {"id": "bob-001", "controller": "bob"},
+            },
+            "alice",
+        )
+        self.assertTrue(any("Activity author must match" in item for item in errors))
 
     def tearDown(self):
         import shutil
