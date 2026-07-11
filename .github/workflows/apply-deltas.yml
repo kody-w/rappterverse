@@ -1,6 +1,7 @@
 name: Apply Inbox Deltas
 
 on:
+  workflow_dispatch:
   push:
     branches: [main]
     paths:
@@ -27,6 +28,9 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: Validate queued deltas
+        run: python scripts/validate_delta.py
+
       - name: Apply deltas
         run: python scripts/apply_deltas.py
 
@@ -40,7 +44,10 @@ jobs:
             echo "No changes to commit"
           else
             git commit -m "[state] apply inbox deltas"
-            git push || (git pull --rebase origin main && git push)
+            git push || {
+              echo "::error::main advanced during delta application; rerun from the new HEAD"
+              exit 1
+            }
           fi
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

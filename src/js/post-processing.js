@@ -1,6 +1,9 @@
 // Post-Processing — WebGL bloom + vignette for visual polish
 const PostProcessing = {
     enabled: false,
+    requested: true,
+    supported: false,
+    ready: false,
     _rt1: null,
     _rt2: null,
     _bloomScene: null,
@@ -9,10 +12,23 @@ const PostProcessing = {
     _compositeMesh: null,
     _compositeScene: null,
 
+    setEnabled(value) {
+        this.requested = value !== false;
+        this.enabled = this.requested && this.supported && this.ready;
+        return this.enabled;
+    },
+
+    _isConstrainedDevice() {
+        const ua = navigator.userAgent || '';
+        return /iphone|ipad|ipod|android/i.test(ua) ||
+            (/Macintosh/i.test(ua) && navigator.maxTouchPoints > 1);
+    },
+
     init(renderer) {
-        // Only enable on desktop with decent GPU
-        const isMobile = /iphone|ipad|android/i.test(navigator.userAgent);
-        if (isMobile) return;
+        this.enabled = false;
+        this.ready = false;
+        this.supported = !this._isConstrainedDevice();
+        if (!this.supported) return false;
 
         const w = window.innerWidth;
         const h = window.innerHeight;
@@ -113,39 +129,55 @@ const PostProcessing = {
             this._compositeMesh = new THREE.Mesh(quadGeo.clone(), compositeMat);
             this._compositeScene.add(this._compositeMesh);
 
-            this.enabled = true;
+            this.ready = true;
+            this.setEnabled(this.requested);
+            return true;
         } catch(e) {
             if (GameState.debug) console.warn('[POST] Failed to init post-processing:', e);
+            this._disposeResources();
+            this.supported = false;
+            this.ready = false;
             this.enabled = false;
+            return false;
         }
     },
 
     render(renderer, scene, camera) {
-        if (!this.enabled) {
+        if (!this.enabled || !this.ready || !this._rt1 || !this._rt2 ||
+            !this._bloomMesh || !this._compositeMesh || !this._bloomScene ||
+            !this._compositeScene || !this._bloomCamera) {
             renderer.render(scene, camera);
             return;
         }
 
-        // Echo-reactive shader parameters
-        this._updateEchoUniforms();
+        try {
+            // Echo-reactive shader parameters
+            this._updateEchoUniforms();
 
-        // 1. Render scene to RT2 (full res)
-        renderer.setRenderTarget(this._rt2);
-        renderer.render(scene, camera);
+            // 1. Render scene to RT2 (full res)
+            renderer.setRenderTarget(this._rt2);
+            renderer.render(scene, camera);
 
-        // 2. Bloom pass: render RT2 through bloom shader to RT1
-        this._bloomMesh.material.uniforms.tDiffuse.value = this._rt2.texture;
-        renderer.setRenderTarget(this._rt1);
-        renderer.render(this._bloomScene, this._bloomCamera);
+            // 2. Bloom pass: render RT2 through bloom shader to RT1
+            this._bloomMesh.material.uniforms.tDiffuse.value = this._rt2.texture;
+            renderer.setRenderTarget(this._rt1);
+            renderer.render(this._bloomScene, this._bloomCamera);
 
-        // 3. Composite: combine RT2 (scene) + RT1 (bloom) to screen
-        this._compositeMesh.material.uniforms.tScene.value = this._rt2.texture;
-        this._compositeMesh.material.uniforms.tBloom.value = this._rt1.texture;
-        renderer.setRenderTarget(null);
-        renderer.render(this._compositeScene, this._bloomCamera);
+            // 3. Composite: combine RT2 (scene) + RT1 (bloom) to screen
+            this._compositeMesh.material.uniforms.tScene.value = this._rt2.texture;
+            this._compositeMesh.material.uniforms.tBloom.value = this._rt1.texture;
+            renderer.setRenderTarget(null);
+            renderer.render(this._compositeScene, this._bloomCamera);
+        } catch(e) {
+            this.enabled = false;
+            try { renderer.setRenderTarget(null); } catch(_) {}
+            renderer.render(scene, camera);
+            if (GameState.debug) console.warn('[POST] Disabled after render failure:', e);
+        }
     },
 
     _updateEchoUniforms() {
+        if (!this.ready || !this._bloomMesh || !this._compositeMesh) return;
         if (typeof EchoEngine === 'undefined') return;
         var ef = EchoEngine.getCurrentFrame();
         if (!ef || !ef.echoes || !ef.echoes.L3) return;
@@ -163,12 +195,30 @@ const PostProcessing = {
     },
 
     onResize() {
-        if (!this.enabled) return;
+        if (!this.ready || !this._rt1 || !this._rt2 || !this._bloomMesh || !this._compositeMesh) return;
         const w = window.innerWidth, h = window.innerHeight;
         const scale = 0.5;
         this._rt1.setSize(w * scale, h * scale);
         this._rt2.setSize(w, h);
         this._bloomMesh.material.uniforms.resolution.value.set(w * scale, h * scale);
         this._compositeMesh.material.uniforms.resolution.value.set(w, h);
+    },
+
+    _disposeResources() {
+        [this._rt1, this._rt2].forEach(function(target) {
+            if (target && target.dispose) target.dispose();
+        });
+        [this._bloomMesh, this._compositeMesh].forEach(function(mesh) {
+            if (!mesh) return;
+            if (mesh.geometry && mesh.geometry.dispose) mesh.geometry.dispose();
+            if (mesh.material && mesh.material.dispose) mesh.material.dispose();
+        });
+        this._rt1 = null;
+        this._rt2 = null;
+        this._bloomScene = null;
+        this._bloomCamera = null;
+        this._bloomMesh = null;
+        this._compositeMesh = null;
+        this._compositeScene = null;
     }
 };

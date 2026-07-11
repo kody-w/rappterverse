@@ -11,6 +11,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: state-writer
+  cancel-in-progress: false
+
 jobs:
   validate:
     runs-on: ubuntu-latest
@@ -21,6 +25,7 @@ jobs:
       summary: ${{ steps.validate.outputs.summary }}
       errors: ${{ steps.validate.outputs.errors }}
       head_sha: ${{ github.event.pull_request.head.sha }}
+      base_sha: ${{ github.event.pull_request.base.sha }}
     steps:
       - name: Checkout trusted validator
         uses: actions/checkout@v4
@@ -61,6 +66,8 @@ jobs:
           VALIDATION_BASE_SHA: ${{ github.event.pull_request.base.sha }}
           VALIDATION_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
           VALIDATION_REQUIRE_RELEVANT: '1'
+          VALIDATION_REQUIRE_AUTH: '1'
+          REPOSITORY_OWNER: ${{ github.repository_owner }}
           PR_TITLE: ${{ github.event.pull_request.title }}
           PR_AUTHOR: ${{ github.event.pull_request.user.login }}
 
@@ -95,16 +102,25 @@ jobs:
     if: needs.validate.outputs.result == 'success'
     runs-on: ubuntu-latest
     permissions:
+      actions: write
       contents: write
       pull-requests: write
     steps:
       - name: Auto-merge exact validated revision
-        run: gh pr merge "$PR_NUMBER" --squash --auto --match-head-commit "$HEAD_SHA"
+        run: |
+          current_base="$(gh api "repos/$GH_REPO/git/ref/heads/main" --jq '.object.sha')"
+          if [ "$current_base" != "$BASE_SHA" ]; then
+            echo "::error::main advanced after validation; update the PR and validate again"
+            exit 1
+          fi
+          gh pr merge "$PR_NUMBER" --squash --match-head-commit "$HEAD_SHA"
+          gh workflow run apply-deltas.yml --ref main
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_REPO: ${{ github.repository }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
           HEAD_SHA: ${{ needs.validate.outputs.head_sha }}
+          BASE_SHA: ${{ needs.validate.outputs.base_sha }}
 
   validation-gate:
     needs: [validate, report]

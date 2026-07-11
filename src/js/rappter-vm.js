@@ -13,6 +13,8 @@ const RappterVM = {
     _tickCount: 0,
     _lastFrameTime: 0,
     _running: false,
+    _activePrincipal: null,
+    _agentEnvs: {},
     _evalSteps: 0,
     _limits: {
         sourceLength: 20000,
@@ -140,6 +142,9 @@ const RappterVM = {
         if (op === 'def') {
             var defName = expr[1].symbol || expr[1];
             if (!this._isSafeKey(defName)) throw new Error('Unsafe Lisp definition');
+            if (Object.prototype.hasOwnProperty.call(this._env, defName)) {
+                throw new Error('Lisp capabilities are immutable');
+            }
             env[defName] = this.eval(expr[2], env);
             return null;
         }
@@ -166,6 +171,10 @@ const RappterVM = {
         key = key && key.keyword !== undefined ? key.keyword : key;
         if (obj == null || !this._isSafeKey(key)) return null;
         return Object.prototype.hasOwnProperty.call(Object(obj), key) ? obj[key] : null;
+    },
+
+    _canActAs(agentId) {
+        return typeof agentId === 'string' && agentId === this._activePrincipal;
     },
 
     _lookup(name, env) {
@@ -246,6 +255,7 @@ const RappterVM = {
 
         // ── World Actions (side effects on the 3D world) ──
         env['move-toward'] = function(agentId, tx, tz, speed) {
+            if (!RappterVM._canActAs(agentId)) return null;
             var a = typeof WorldAgents !== 'undefined' ? WorldAgents.agentMeshes[agentId] : null;
             if (!a) return null;
             speed = speed || 0.03;
@@ -260,6 +270,7 @@ const RappterVM = {
         };
 
         env['wander'] = function(agentId, radius) {
+            if (!RappterVM._canActAs(agentId)) return null;
             var a = typeof WorldAgents !== 'undefined' ? WorldAgents.agentMeshes[agentId] : null;
             if (!a) return null;
             radius = radius || 5;
@@ -274,6 +285,7 @@ const RappterVM = {
         };
 
         env['face-toward'] = function(agentId, tx, tz) {
+            if (!RappterVM._canActAs(agentId)) return null;
             var a = typeof WorldAgents !== 'undefined' ? WorldAgents.agentMeshes[agentId] : null;
             if (!a) return null;
             var dx = tx - a.group.position.x, dz = tz - a.group.position.z;
@@ -282,6 +294,7 @@ const RappterVM = {
         };
 
         env['emote'] = function(agentId, type) {
+            if (!RappterVM._canActAs(agentId)) return null;
             var a = typeof WorldAgents !== 'undefined' ? WorldAgents.agentMeshes[agentId] : null;
             if (!a) return null;
             if (type === 'bounce') {
@@ -297,6 +310,7 @@ const RappterVM = {
         };
 
         env['say'] = function(agentId, text) {
+            if (!RappterVM._canActAs(agentId)) return null;
             if (typeof WorldAgents !== 'undefined' && WorldAgents.showSpeechBubble) {
                 WorldAgents.showSpeechBubble(agentId, text);
             }
@@ -376,6 +390,8 @@ const RappterVM = {
     init() {
         this._env = Object.create(null);
         this._programs = {};
+        this._agentEnvs = {};
+        this._activePrincipal = null;
         this._tickCount = 0;
         this._lastFrameTime = Date.now();
         this._running = true;
@@ -434,6 +450,7 @@ const RappterVM = {
 
     _compileAgentBehaviors() {
         this._programs = {};
+        this._agentEnvs = {};
         var agents = typeof GameState !== 'undefined' ? GameState.getWorldAgents() : [];
         var self = this;
         var S = function(n) { return self._sym(n); };
@@ -591,6 +608,8 @@ const RappterVM = {
             );
 
             self._programs[id] = program;
+            self._agentEnvs[id] = Object.create(self._env);
+            self._agentEnvs[id].self = id;
         });
     },
 
@@ -612,10 +631,16 @@ const RappterVM = {
             var id = agentIds[i];
             var program = this._programs[id];
             if (!program) continue;
-            this._env['self'] = id;
+            var agentEnv = this._agentEnvs[id] || Object.create(this._env);
+            agentEnv.self = id;
+            this._activePrincipal = id;
             this._evalSteps = 0;
-            for (var j = 0; j < program.length; j++) {
-                try { this.eval(program[j], this._env); } catch(e) {}
+            try {
+                for (var j = 0; j < program.length; j++) {
+                    try { this.eval(program[j], agentEnv); } catch(e) {}
+                }
+            } finally {
+                this._activePrincipal = null;
             }
         }
     },
@@ -740,13 +765,18 @@ const RappterVM = {
         var agentIds = Object.keys(this._programs);
         for (var i = 0; i < agentIds.length; i++) {
             var id = agentIds[i];
-            for (var j = 0; j < this._reflexes.length; j++) {
-                var reflex = this._reflexes[j];
-                try {
-                    if (reflex.test.call(reflex, id, this._env)) {
-                        reflex.act.call(reflex, id, this._env);
-                    }
-                } catch(e) {}
+            this._activePrincipal = id;
+            try {
+                for (var j = 0; j < this._reflexes.length; j++) {
+                    var reflex = this._reflexes[j];
+                    try {
+                        if (reflex.test.call(reflex, id, this._env)) {
+                            reflex.act.call(reflex, id, this._env);
+                        }
+                    } catch(e) {}
+                }
+            } finally {
+                this._activePrincipal = null;
             }
         }
     },
