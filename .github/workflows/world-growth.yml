@@ -147,7 +147,7 @@ jobs:
 
       - name: PII scan
         if: ${{ github.event.inputs.dry_run != 'true' }}
-        run: python scripts/pii_scan.py state/ feed/
+        run: python scripts/pii_scan.py --paths state feed
 
       - name: Update dashboard
         if: ${{ github.event.inputs.dry_run != 'true' }}
@@ -186,8 +186,7 @@ jobs:
       - name: PII scan
         id: pii
         if: steps.create_pr.outputs.has_pr == 'true'
-        run: python scripts/pii_scan.py state/ feed/
-        continue-on-error: true
+        run: python scripts/pii_scan.py --paths state feed
 
       - name: Merge or flag PR
         if: steps.create_pr.outputs.has_pr == 'true'

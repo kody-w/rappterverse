@@ -1227,6 +1227,17 @@ button:focus-visible,
   letter-spacing: 1px;
 }
 
+.practice-mode-badge {
+  color: var(--accent-gold);
+  border: 1px solid rgba(251, 191, 36, 0.35);
+  background: rgba(251, 191, 36, 0.08);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 8px;
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+
 /* ── Agent Count Badge ──────────────────────────────────── */
 .agent-count-badge {
   background: rgba(0, 255, 255, 0.1);
@@ -2819,15 +2830,16 @@ button:focus-visible,
     <div class="stat-row"><span class="stat-label">HP</span><div class="stat-bar-container"><div class="stat-bar-fill" id="hp-fill"></div></div><span class="stat-text" id="hp-text">100/100</span></div>
     <div class="stat-row"><span class="stat-label">MP</span><div class="stat-bar-container"><div class="stat-bar-fill" id="mp-fill"></div></div><span class="stat-text" id="mp-text">50/50</span></div>
     <div class="stat-row"><span class="stat-label">EN</span><div class="stat-bar-container"><div class="stat-bar-fill" id="energy-fill"></div></div><span class="stat-text" id="energy-text">100/100</span></div>
-    <div class="stat-row"><span class="stat-label">XP</span><div class="stat-bar-container"><div class="stat-bar-fill" id="xp-fill"></div></div><span class="stat-text" id="xp-text">0/100</span></div>
+    <div class="stat-row"><span class="stat-label">P-XP</span><div class="stat-bar-container"><div class="stat-bar-fill" id="xp-fill"></div></div><span class="stat-text" id="xp-text">0/100</span></div>
 </div>
 <div id="level-badge">1</div>
 <div id="gold-kda-bar" style="position:fixed; bottom:72px; left:12px; display:none; gap:12px; font-size:11px; z-index:900; font-family:'SF Mono',monospace;">
-    <span id="gold-display" style="color:#fbbf24; font-weight:700;">0 G</span>
+    <span class="practice-mode-badge" title="Browser-local practice progress; not canonical RAPPcoin">LOCAL PRACTICE</span>
+    <span id="gold-display" style="color:#fbbf24; font-weight:700;">0 PG</span>
     <span style="color:rgba(255,255,255,0.2);">|</span>
     <span id="kda-display" style="color:#8b949e;">0/0/0</span>
     <span style="color:rgba(255,255,255,0.2);">|</span>
-    <span id="gpm-display" style="color:#8b949e; font-size:9px;">0 GPM</span>
+    <span id="gpm-display" style="color:#8b949e; font-size:9px;">0 PG/M</span>
 </div>
 <div id="warmup-timer" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:28px;font-weight:900;letter-spacing:4px;color:#d29922;text-shadow:0 0 30px rgba(210,153,34,0.4);z-index:950;pointer-events:none;font-family:'SF Mono',monospace;"></div>
 <div id="damage-vignette"></div>
@@ -2920,7 +2932,7 @@ button:focus-visible,
     </div>
     <div class="top-bar-right">
         <div class="status-dot"></div>
-        <span class="status-text">LIVE</span>
+        <span class="status-text" role="status" aria-live="polite">MAIN · SYNCING</span>
         <span class="agent-count-badge" id="hud-agent-count">0 agents</span>
         <button class="hud-btn" id="btn-fullscreen" title="Fullscreen (F11)" aria-label="Fullscreen">⛶</button>
         <button class="hud-btn" id="btn-mute" title="Mute (F11)" aria-label="Toggle audio">🔊</button>
@@ -3055,6 +3067,10 @@ const REPO = 'kody-w/rappterverse';
 const BRANCH = 'main';            // Canonical world state and Pages source
 const RAW = `https://raw.githubusercontent.com/${REPO}/${BRANCH}`;
 const POLL_INTERVAL = 15000;
+const CLIENT_AUTHORITY = Object.freeze({
+    world: 'canonical-main',
+    gameplay: 'local-practice'
+});
 
 function escapeHTML(value) {
     return String(value == null ? '' : value).replace(/[&<>"']/g, function(char) {
@@ -3306,6 +3322,7 @@ const GameState = {
     data: {
         agents: [],
         chat: [],
+        localChat: [],
         actions: [],
         npcs: [],
         gameState: {},
@@ -3426,7 +3443,10 @@ const DataManager = {
     _setLiveState(label, color) {
         var text = document.querySelector('.status-text');
         var dot = document.querySelector('.status-dot');
-        if (text) text.textContent = label;
+        if (text) {
+            text.textContent = 'MAIN · ' + label;
+            text.title = 'Canonical repository state from the main branch';
+        }
         if (dot) {
             dot.style.background = color;
             dot.style.boxShadow = '0 0 8px ' + color;
@@ -4151,7 +4171,7 @@ cleanup() {
 };
 
 // === js/player-stats.js ===
-// Player RPG Stats — HP, MP, Energy, XP, Gold, Leveling, Regen
+// Browser-local practice stats — never canonical RAPPcoin or shared world state
 const PlayerStats = {
   hp: 100, maxHp: 100,
   mp: 50, maxMp: 50,
@@ -4243,7 +4263,7 @@ const PlayerStats = {
     this.gold += amount;
     if (this.gold % 50 === 0) this.save(); // auto-save every 50 gold
     this.totalGold += amount;
-    if (typeof HUD !== 'undefined' && HUD.showToast) HUD.showToast('+' + amount + ' gold' + (source ? ' (' + source + ')' : ''));
+    if (typeof HUD !== 'undefined' && HUD.showToast) HUD.showToast('+' + amount + ' Practice Gold' + (source ? ' (' + source + ')' : ''));
   },
 
   respawn() {
@@ -4299,7 +4319,7 @@ const PlayerStats = {
     var xp = Math.round(amount * this._echoXpBonus);
     this.xp += xp;
     var bonusStr = this._echoXpBonus > 1 ? ' (echo bonus!)' : '';
-    if (typeof HUD !== 'undefined' && HUD.showToast) HUD.showToast('+' + xp + ' XP' + bonusStr);
+    if (typeof HUD !== 'undefined' && HUD.showToast) HUD.showToast('+' + xp + ' Practice XP' + bonusStr);
     if (this.xp >= this.xpToLevel) this.levelUp();
   },
 
@@ -4365,7 +4385,7 @@ const PlayerStats = {
     if (xpText) xpText.textContent = `${this.xp}/${this.xpToLevel}`;
     // Gold display
     const goldEl = document.getElementById('gold-display');
-    if (goldEl) goldEl.textContent = this.gold + ' G';
+    if (goldEl) goldEl.textContent = this.gold + ' PG';
     // KDA
     const kdaEl = document.getElementById('kda-display');
     if (kdaEl) kdaEl.textContent = this.kills + '/' + this.deaths + '/' + this.assists;
@@ -4407,7 +4427,7 @@ const PlayerStats = {
       this.maxMp = d.maxMp || 50;
       this.hp = this.maxHp;
       this.mp = this.maxMp;
-      if (typeof HUD !== "undefined") HUD.showToast("Progress loaded — Level " + this.level);
+      if (typeof HUD !== "undefined") HUD.showToast("Local practice profile loaded — Level " + this.level);
     } catch(e) {}
   },
 
@@ -4782,8 +4802,9 @@ const Boot = {
         "linked to the RAPPterverse autonomous network.",
         "Your neural bridge connects through GitHub's",
         "raw content layer. Every agent you encounter",
-        "is real. Every action persists. The metaverse",
-        "is alive, driven by commits and pull requests.",
+        "is real. Canonical agent actions persist in GitHub.",
+        "Your pilot combat and rewards are local practice.",
+        "The metaverse is alive, driven by commits and pull requests.",
         "Welcome aboard, Captain."
     ],
     phases: [
@@ -9256,7 +9277,7 @@ const WorldCombat = {
         }
         if (stats && typeof PlayerStats !== 'undefined') {
             var statText = 'KDA: ' + PlayerStats.kills + '/' + PlayerStats.deaths + '/' + PlayerStats.assists +
-                ' | Gold: ' + PlayerStats.gold + ' | GPM: ' + PlayerStats.getGPM() +
+                ' | Practice Gold: ' + PlayerStats.gold + ' | PG/M: ' + PlayerStats.getGPM() +
                 ' | Level: ' + PlayerStats.level + ' | Wave: ' + this.waveNumber;
             stats.textContent = statText;
         }
@@ -11676,7 +11697,7 @@ const WorldAgents = {
             content: `👉 poked ${agentId}`,
             type: 'poke'
         };
-        if (GameState.data.chat) GameState.data.chat.push(pokeMsg);
+        if (GameState.data.localChat) GameState.data.localChat.push(pokeMsg);
 
         try {
             localStorage.removeItem('rappterverse-token');
@@ -14799,7 +14820,10 @@ const HUD = {
 
         const currentWorld = GameState.currentWorld;
         // Show all worlds, highlight current
-        const msgs = (GameState.data.chat || []).slice(-20);
+        const msgs = [
+            ...(GameState.data.chat || []),
+            ...(GameState.data.localChat || [])
+        ].sort((a, b) => String(a.timestamp || '').localeCompare(String(b.timestamp || ''))).slice(-20);
 
         const signature = msgs.map(m => m.id || m.timestamp || '').join('|');
         if (signature === this.chatFeedLastSignature) return;
@@ -16410,9 +16434,18 @@ const PostProcessing = {
     _bloomMesh: null,
     _compositeMesh: null,
     _compositeScene: null,
+    _renderer: null,
+    _initializing: false,
 
     setEnabled(value) {
         this.requested = value !== false;
+        if (!this.requested && this.ready) {
+            this._disposeResources();
+            this.ready = false;
+        }
+        if (this.requested && this.supported && !this.ready && this._renderer && !this._initializing) {
+            return this.init(this._renderer);
+        }
         this.enabled = this.requested && this.supported && this.ready;
         return this.enabled;
     },
@@ -16424,10 +16457,13 @@ const PostProcessing = {
     },
 
     init(renderer) {
+        this._renderer = renderer;
         this.enabled = false;
         this.ready = false;
         this.supported = !this._isConstrainedDevice();
         if (!this.supported) return false;
+        if (!this.requested) return true;
+        this._initializing = true;
 
         const w = window.innerWidth;
         const h = window.innerHeight;
@@ -16529,6 +16565,7 @@ const PostProcessing = {
             this._compositeScene.add(this._compositeMesh);
 
             this.ready = true;
+            this._initializing = false;
             this.setEnabled(this.requested);
             return true;
         } catch(e) {
@@ -16537,6 +16574,7 @@ const PostProcessing = {
             this.supported = false;
             this.ready = false;
             this.enabled = false;
+            this._initializing = false;
             return false;
         }
     },
@@ -17573,7 +17611,7 @@ var JungleCamps = {
             if (this._titan.mesh) this._titan.mesh.visible = false;
             if (typeof PlayerStats !== 'undefined') { PlayerStats.awardXp(this._titan.xp); PlayerStats.awardGold(this._titan.gold, 'TITAN'); PlayerStats.kills++; }
             if (typeof VFX !== 'undefined') { VFX.burst({ x: 0, y: 3, z: 0 }, 'bossKill'); VFX.burst({ x: 0, y: 5, z: 0 }, 'novaBlast'); VFX.screenFlash('#ffd700', 0.5); }
-            if (typeof HUD !== 'undefined') HUD.showToast('ECHO TITAN SLAIN! +' + this._titan.gold + ' gold, +' + this._titan.xp + ' XP');
+            if (typeof HUD !== 'undefined') HUD.showToast('ECHO TITAN SLAIN! +' + this._titan.gold + ' Practice Gold, +' + this._titan.xp + ' Practice XP');
             if (typeof Audio !== 'undefined' && Audio.playWaveHorn) Audio.playWaveHorn();
             if (typeof ReplaySystem !== 'undefined') ReplaySystem.logEvent('boss_kill', { name: 'Echo Titan', isBoss: true });
             if (typeof GamepadControls !== 'undefined' && GamepadControls.rumble) GamepadControls.rumble(1.0, 0.5, 500);
@@ -17595,7 +17633,7 @@ var JungleCamps = {
 };
 
 // === js/shop.js ===
-// Item Shop — buy consumables, equipment, and wards with gold
+// Local Practice Shop — purchases never spend canonical RAPPcoin
 const Shop = {
     _open: false,
     _items: [
@@ -17646,9 +17684,9 @@ const Shop = {
         el.id = 'shop-panel';
         el.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:420px;max-height:85vh;background:rgba(22,27,34,0.95);border:1px solid rgba(210,153,34,0.3);border-radius:12px;z-index:9100;overflow:hidden;display:none;font-family:"SF Mono",monospace;backdrop-filter:blur(12px);';
         el.innerHTML = '<div style="padding:12px 16px;border-bottom:1px solid rgba(48,54,61,0.5);display:flex;justify-content:space-between;align-items:center;">' +
-            '<span style="font-size:12px;font-weight:700;letter-spacing:2px;color:#d29922;">SHOP</span>' +
+            '<span style="font-size:12px;font-weight:700;letter-spacing:2px;color:#d29922;">LOCAL PRACTICE SHOP</span>' +
             '<div style="display:flex;gap:4px;align-items:center;">' +
-            '<span id="shop-gold" style="color:#fbbf24;font-size:11px;font-weight:700;">0G</span>' +
+            '<span id="shop-gold" style="color:#fbbf24;font-size:11px;font-weight:700;">0 PG</span>' +
             '<button id="shop-close" style="background:none;border:none;color:#8b949e;font-size:18px;cursor:pointer;margin-left:8px;">&times;</button>' +
             '</div></div>' +
             '<div id="shop-tabs" style="padding:8px 16px;display:flex;gap:6px;border-bottom:1px solid rgba(48,54,61,0.3);"></div>' +
@@ -17664,7 +17702,7 @@ const Shop = {
     _render() {
         var gold = typeof PlayerStats !== 'undefined' ? PlayerStats.gold : 0;
         var goldEl = document.getElementById('shop-gold');
-        if (goldEl) goldEl.textContent = gold + 'G';
+        if (goldEl) goldEl.textContent = gold + ' PG';
 
         // Tabs
         var tabsEl = document.getElementById('shop-tabs');
@@ -17693,7 +17731,7 @@ const Shop = {
             return '<div class="shop-item">' +
                 '<span class="shop-icon">' + item.icon + '</span>' +
                 '<div class="shop-info"><div class="shop-name">' + item.name + '</div><div class="shop-desc">' + item.desc + '</div></div>' +
-                '<span class="shop-cost" style="color:' + costColor + '">' + adjustedCost + 'G' + priceTag + '</span>' +
+                '<span class="shop-cost" style="color:' + costColor + '">' + adjustedCost + ' PG' + priceTag + '</span>' +
                 '<button class="shop-buy" ' + (canBuy ? 'onclick="Shop.buy(' + idx + ')"' : 'disabled') + '>BUY</button></div>';
         }).join('');
     },
@@ -19413,7 +19451,10 @@ const QuestTracker = {
             let autoComplete = false;
             if (s.action === 'visit_hub' && GameState.currentWorld === 'hub') autoComplete = true;
             if (s.action === 'talk_to_guide') {
-                const poked = (GameState.data.chat || []).some(function(m) {
+                const poked = [
+                    ...(GameState.data.chat || []),
+                    ...(GameState.data.localChat || [])
+                ].some(function(m) {
                     return m.type === 'poke' && m.content && m.content.includes('rapp-guide');
                 });
                 if (poked) autoComplete = true;
@@ -19426,7 +19467,7 @@ const QuestTracker = {
 
         const rewards = q.rewards || {};
         const rewardHtml = rewards.rappcoin ?
-            '<div class="qt-reward">Reward: <span>' + escapeHTML(rewards.rappcoin) + ' RAPP</span></div>' : '';
+            '<div class="qt-reward">Canonical reward: <span>' + escapeHTML(rewards.rappcoin) + ' RAPP</span> (not awarded in local practice)</div>' : '';
 
         body.innerHTML = '<div class="qt-name">' + escapeHTML(q.name || 'Quest') + '</div>' +
             '<div class="qt-desc">' + escapeHTML(q.description || '') + '</div>' +

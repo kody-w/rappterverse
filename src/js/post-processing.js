@@ -11,9 +11,18 @@ const PostProcessing = {
     _bloomMesh: null,
     _compositeMesh: null,
     _compositeScene: null,
+    _renderer: null,
+    _initializing: false,
 
     setEnabled(value) {
         this.requested = value !== false;
+        if (!this.requested && this.ready) {
+            this._disposeResources();
+            this.ready = false;
+        }
+        if (this.requested && this.supported && !this.ready && this._renderer && !this._initializing) {
+            return this.init(this._renderer);
+        }
         this.enabled = this.requested && this.supported && this.ready;
         return this.enabled;
     },
@@ -25,10 +34,13 @@ const PostProcessing = {
     },
 
     init(renderer) {
+        this._renderer = renderer;
         this.enabled = false;
         this.ready = false;
         this.supported = !this._isConstrainedDevice();
         if (!this.supported) return false;
+        if (!this.requested) return true;
+        this._initializing = true;
 
         const w = window.innerWidth;
         const h = window.innerHeight;
@@ -130,6 +142,7 @@ const PostProcessing = {
             this._compositeScene.add(this._compositeMesh);
 
             this.ready = true;
+            this._initializing = false;
             this.setEnabled(this.requested);
             return true;
         } catch(e) {
@@ -138,6 +151,7 @@ const PostProcessing = {
             this.supported = false;
             this.ready = false;
             this.enabled = false;
+            this._initializing = false;
             return false;
         }
     },

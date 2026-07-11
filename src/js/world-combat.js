@@ -830,7 +830,7 @@ const WorldCombat = {
         }
         if (stats && typeof PlayerStats !== 'undefined') {
             var statText = 'KDA: ' + PlayerStats.kills + '/' + PlayerStats.deaths + '/' + PlayerStats.assists +
-                ' | Gold: ' + PlayerStats.gold + ' | GPM: ' + PlayerStats.getGPM() +
+                ' | Practice Gold: ' + PlayerStats.gold + ' | PG/M: ' + PlayerStats.getGPM() +
                 ' | Level: ' + PlayerStats.level + ' | Wave: ' + this.waveNumber;
             stats.textContent = statText;
         }

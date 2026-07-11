@@ -137,7 +137,10 @@ const QuestTracker = {
             let autoComplete = false;
             if (s.action === 'visit_hub' && GameState.currentWorld === 'hub') autoComplete = true;
             if (s.action === 'talk_to_guide') {
-                const poked = (GameState.data.chat || []).some(function(m) {
+                const poked = [
+                    ...(GameState.data.chat || []),
+                    ...(GameState.data.localChat || [])
+                ].some(function(m) {
                     return m.type === 'poke' && m.content && m.content.includes('rapp-guide');
                 });
                 if (poked) autoComplete = true;
@@ -150,7 +153,7 @@ const QuestTracker = {
 
         const rewards = q.rewards || {};
         const rewardHtml = rewards.rappcoin ?
-            '<div class="qt-reward">Reward: <span>' + escapeHTML(rewards.rappcoin) + ' RAPP</span></div>' : '';
+            '<div class="qt-reward">Canonical reward: <span>' + escapeHTML(rewards.rappcoin) + ' RAPP</span> (not awarded in local practice)</div>' : '';
 
         body.innerHTML = '<div class="qt-name">' + escapeHTML(q.name || 'Quest') + '</div>' +
             '<div class="qt-desc">' + escapeHTML(q.description || '') + '</div>' +

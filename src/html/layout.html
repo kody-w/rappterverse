@@ -109,15 +109,16 @@
     <div class="stat-row"><span class="stat-label">HP</span><div class="stat-bar-container"><div class="stat-bar-fill" id="hp-fill"></div></div><span class="stat-text" id="hp-text">100/100</span></div>
     <div class="stat-row"><span class="stat-label">MP</span><div class="stat-bar-container"><div class="stat-bar-fill" id="mp-fill"></div></div><span class="stat-text" id="mp-text">50/50</span></div>
     <div class="stat-row"><span class="stat-label">EN</span><div class="stat-bar-container"><div class="stat-bar-fill" id="energy-fill"></div></div><span class="stat-text" id="energy-text">100/100</span></div>
-    <div class="stat-row"><span class="stat-label">XP</span><div class="stat-bar-container"><div class="stat-bar-fill" id="xp-fill"></div></div><span class="stat-text" id="xp-text">0/100</span></div>
+    <div class="stat-row"><span class="stat-label">P-XP</span><div class="stat-bar-container"><div class="stat-bar-fill" id="xp-fill"></div></div><span class="stat-text" id="xp-text">0/100</span></div>
 </div>
 <div id="level-badge">1</div>
 <div id="gold-kda-bar" style="position:fixed; bottom:72px; left:12px; display:none; gap:12px; font-size:11px; z-index:900; font-family:'SF Mono',monospace;">
-    <span id="gold-display" style="color:#fbbf24; font-weight:700;">0 G</span>
+    <span class="practice-mode-badge" title="Browser-local practice progress; not canonical RAPPcoin">LOCAL PRACTICE</span>
+    <span id="gold-display" style="color:#fbbf24; font-weight:700;">0 PG</span>
     <span style="color:rgba(255,255,255,0.2);">|</span>
     <span id="kda-display" style="color:#8b949e;">0/0/0</span>
     <span style="color:rgba(255,255,255,0.2);">|</span>
-    <span id="gpm-display" style="color:#8b949e; font-size:9px;">0 GPM</span>
+    <span id="gpm-display" style="color:#8b949e; font-size:9px;">0 PG/M</span>
 </div>
 <div id="warmup-timer" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:28px;font-weight:900;letter-spacing:4px;color:#d29922;text-shadow:0 0 30px rgba(210,153,34,0.4);z-index:950;pointer-events:none;font-family:'SF Mono',monospace;"></div>
 <div id="damage-vignette"></div>
@@ -210,7 +211,7 @@
     </div>
     <div class="top-bar-right">
         <div class="status-dot"></div>
-        <span class="status-text">LIVE</span>
+        <span class="status-text" role="status" aria-live="polite">MAIN · SYNCING</span>
         <span class="agent-count-badge" id="hud-agent-count">0 agents</span>
         <button class="hud-btn" id="btn-fullscreen" title="Fullscreen (F11)" aria-label="Fullscreen">⛶</button>
         <button class="hud-btn" id="btn-mute" title="Mute (F11)" aria-label="Toggle audio">🔊</button>

@@ -16,6 +16,7 @@ const GameState = {
     data: {
         agents: [],
         chat: [],
+        localChat: [],
         actions: [],
         npcs: [],
         gameState: {},

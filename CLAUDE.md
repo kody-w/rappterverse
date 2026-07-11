@@ -112,7 +112,7 @@ python scripts/validate_action.py --audit
 
 **PII scan:**
 ```bash
-python scripts/pii_scan.py
+python scripts/pii_scan.py --all-tracked
 ```
 
 All scripts use **Python 3.11+ with stdlib only** — no external dependencies.

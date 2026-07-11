@@ -1157,7 +1157,7 @@ const WorldAgents = {
             content: `👉 poked ${agentId}`,
             type: 'poke'
         };
-        if (GameState.data.chat) GameState.data.chat.push(pokeMsg);
+        if (GameState.data.localChat) GameState.data.localChat.push(pokeMsg);
 
         try {
             localStorage.removeItem('rappterverse-token');

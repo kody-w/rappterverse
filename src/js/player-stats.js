@@ -1,4 +1,4 @@
-// Player RPG Stats — HP, MP, Energy, XP, Gold, Leveling, Regen
+// Browser-local practice stats — never canonical RAPPcoin or shared world state
 const PlayerStats = {
   hp: 100, maxHp: 100,
   mp: 50, maxMp: 50,
@@ -90,7 +90,7 @@ const PlayerStats = {
     this.gold += amount;
     if (this.gold % 50 === 0) this.save(); // auto-save every 50 gold
     this.totalGold += amount;
-    if (typeof HUD !== 'undefined' && HUD.showToast) HUD.showToast('+' + amount + ' gold' + (source ? ' (' + source + ')' : ''));
+    if (typeof HUD !== 'undefined' && HUD.showToast) HUD.showToast('+' + amount + ' Practice Gold' + (source ? ' (' + source + ')' : ''));
   },
 
   respawn() {
@@ -146,7 +146,7 @@ const PlayerStats = {
     var xp = Math.round(amount * this._echoXpBonus);
     this.xp += xp;
     var bonusStr = this._echoXpBonus > 1 ? ' (echo bonus!)' : '';
-    if (typeof HUD !== 'undefined' && HUD.showToast) HUD.showToast('+' + xp + ' XP' + bonusStr);
+    if (typeof HUD !== 'undefined' && HUD.showToast) HUD.showToast('+' + xp + ' Practice XP' + bonusStr);
     if (this.xp >= this.xpToLevel) this.levelUp();
   },
 
@@ -212,7 +212,7 @@ const PlayerStats = {
     if (xpText) xpText.textContent = `${this.xp}/${this.xpToLevel}`;
     // Gold display
     const goldEl = document.getElementById('gold-display');
-    if (goldEl) goldEl.textContent = this.gold + ' G';
+    if (goldEl) goldEl.textContent = this.gold + ' PG';
     // KDA
     const kdaEl = document.getElementById('kda-display');
     if (kdaEl) kdaEl.textContent = this.kills + '/' + this.deaths + '/' + this.assists;
@@ -254,7 +254,7 @@ const PlayerStats = {
       this.maxMp = d.maxMp || 50;
       this.hp = this.maxHp;
       this.mp = this.maxMp;
-      if (typeof HUD !== "undefined") HUD.showToast("Progress loaded — Level " + this.level);
+      if (typeof HUD !== "undefined") HUD.showToast("Local practice profile loaded — Level " + this.level);
     } catch(e) {}
   },
 

@@ -1,0 +1,42 @@
+name: State Queue Reconciler
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '*/5 * * * *'
+
+concurrency:
+  group: state-writer
+  cancel-in-progress: false
+
+permissions:
+  actions: write
+  contents: write
+  pull-requests: write
+  statuses: write
+
+jobs:
+  drain:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Drain next eligible state PR with current policy
+        run: |
+          git fetch --force --no-tags origin main
+          policy_root="$(mktemp -d)"
+          rmdir "$policy_root"
+          cleanup() { git worktree remove --force "$policy_root" >/dev/null 2>&1 || true; }
+          trap cleanup EXIT
+          git worktree add --detach "$policy_root" origin/main
+          python "$policy_root/scripts/state_reconciler.py" --max-items 1
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          REPOSITORY_OWNER: ${{ github.repository_owner }}

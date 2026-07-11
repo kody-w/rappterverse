@@ -1,203 +1,222 @@
 #!/usr/bin/env python3
-"""
-PII Scanner for RAPPterverse
-Scans staged files (or all files in --ci mode) for personal identifiable
-information and sensitive data. Blocks commits/PRs if anything is found.
-
-Usage:
-  Pre-commit hook:  python scripts/pii_scan.py
-  CI mode:          python scripts/pii_scan.py --ci
-"""
+"""Fail-closed PII scanner for staged, diff, path, or full-tree inputs."""
 
 from __future__ import annotations
 
-import json
+import argparse
 import os
 import re
 import subprocess
 import sys
 from pathlib import Path
 
-BASE_DIR = Path(__file__).parent.parent
+SCANNER_ROOT = Path(__file__).parent.parent.resolve()
+SCANNABLE_EXTENSIONS = {
+    ".json", ".md", ".py", ".yml", ".yaml", ".txt", ".html", ".js", ".ts", ".css"
+}
 
-# --- PII patterns to scan for ---
-
-EMAIL_PATTERN = re.compile(
-    r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}',
-)
-
+EMAIL_PATTERN = re.compile(r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}")
 PHONE_PATTERN = re.compile(
-    r'(?<![*\d])\b(?:\+?1[-.\s]?)?\(?\d{3}\)?[-.\s]\d{3}[-.\s]\d{4}\b',
+    r"(?<![*\d])\b(?:\+?1[-.\s]?)?\(?\d{3}\)?[-.\s]\d{3}[-.\s]\d{4}\b"
 )
-
-SSN_PATTERN = re.compile(
-    r'\b\d{3}-\d{2}-\d{4}\b',
-)
-
-DOLLAR_AMOUNT_PATTERN = re.compile(
-    r'\$\d{1,3}(?:,\d{3})*(?:\.\d+)?[MBKmk]?\b',
-)
-
+SSN_PATTERN = re.compile(r"\b\d{3}-\d{2}-\d{4}\b")
+DOLLAR_AMOUNT_PATTERN = re.compile(r"\$\d{1,3}(?:,\d{3})*(?:\.\d+)?[MBKmk]?\b")
 API_KEY_PATTERN = re.compile(
-    r'(?:api[_-]?key|token|secret|password|credential|auth)\s*[:=]\s*["\']?[a-zA-Z0-9_\-]{20,}',
+    r"(?:api[_-]?key|token|secret|password|credential|auth)"
+    r"\s*[:=]\s*[\"']?[a-zA-Z0-9_\-]{20,}",
     re.IGNORECASE,
 )
 
-# Allowlisted patterns that are NOT PII
-ALLOWLIST = {
-    "secrets.GITHUB_TOKEN",
-    "GH_TOKEN",
-    "GITHUB_TOKEN",
-    "${{ secrets.",
-    "kody-w",                   # Public GitHub username
-    "github.io",
-    "example.com",
-    "test@test.com",
-    "RAPPcoin",
-}
+ALLOWED_EMAIL_DOMAINS = {"example.com", "test.com", "github.com"}
+SENSITIVE_TERMS_FILE = SCANNER_ROOT / ".pii-blocklist.txt"
 
-# Sensitive terms — real-world entities that should never appear in game state
-# Add client names, personal names, or org names here
-SENSITIVE_TERMS_FILE = BASE_DIR / ".pii-blocklist.txt"
+
+class ScanError(RuntimeError):
+    """Raised when the scanner cannot prove that its selected input was scanned."""
+
+
+def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__)
+    modes = parser.add_mutually_exclusive_group(required=True)
+    modes.add_argument("--staged", action="store_const", const="staged", dest="mode")
+    modes.add_argument(
+        "--all-tracked", "--ci", action="store_const", const="all-tracked", dest="mode"
+    )
+    modes.add_argument("--diff", nargs=2, metavar=("BASE", "HEAD"))
+    modes.add_argument("--paths", nargs="+", metavar="PATH")
+    parser.add_argument(
+        "--repo-root",
+        type=Path,
+        default=SCANNER_ROOT,
+        help="Repository checkout containing the files to scan",
+    )
+    args = parser.parse_args(argv)
+    if args.diff:
+        args.mode = "diff"
+    elif args.paths:
+        args.mode = "paths"
+    args.repo_root = args.repo_root.resolve()
+    return args
+
 
 def load_sensitive_terms() -> list[str]:
-    """Load custom blocklist terms from .pii-blocklist.txt (one per line)."""
     if not SENSITIVE_TERMS_FILE.exists():
         return []
-    terms = []
-    for line in SENSITIVE_TERMS_FILE.read_text().splitlines():
-        line = line.strip()
-        if line and not line.startswith("#"):
-            terms.append(line)
-    return terms
+    return [
+        line.strip()
+        for line in SENSITIVE_TERMS_FILE.read_text(encoding="utf-8").splitlines()
+        if line.strip() and not line.lstrip().startswith("#")
+    ]
 
 
-def is_allowlisted(line: str) -> bool:
-    """Check if line contains only allowlisted patterns."""
-    for pattern in ALLOWLIST:
-        if pattern in line:
-            return True
-    return False
+def _email_is_allowed(email: str) -> bool:
+    domain = email.rsplit("@", 1)[-1].lower()
+    return domain in ALLOWED_EMAIL_DOMAINS or domain.endswith(".github.com")
 
 
 def scan_content(content: str, filepath: str, sensitive_terms: list[str]) -> list[str]:
-    """Scan file content for PII patterns. Returns list of findings."""
+    """Return redacted category/path/line findings without echoing matched values."""
     findings: list[str] = []
+    seen: set[tuple[int, str]] = set()
 
-    for line_num, line in enumerate(content.splitlines(), 1):
-        if is_allowlisted(line):
-            continue
+    def record(line_number: int, category: str):
+        key = (line_number, category)
+        if key not in seen:
+            seen.add(key)
+            findings.append(f"{filepath}:{line_number} — {category}")
 
-        # Email addresses
-        for match in EMAIL_PATTERN.finditer(line):
-            email = match.group()
-            if not any(a in email for a in ("example.com", "test.com", "github.com")):
-                findings.append(f"  {filepath}:{line_num} — Email: {email}")
+    for line_number, line in enumerate(content.splitlines(), 1):
+        if any(not _email_is_allowed(match.group()) for match in EMAIL_PATTERN.finditer(line)):
+            record(line_number, "Email")
+        if PHONE_PATTERN.search(line):
+            record(line_number, "Phone number")
+        if SSN_PATTERN.search(line):
+            record(line_number, "SSN pattern")
 
-        # Phone numbers
-        for match in PHONE_PATTERN.finditer(line):
-            findings.append(f"  {filepath}:{line_num} — Phone number: {match.group()}")
-
-        # SSNs
-        for match in SSN_PATTERN.finditer(line):
-            findings.append(f"  {filepath}:{line_num} — SSN pattern: ***-**-****")
-
-        # Dollar amounts (likely deal values / financial PII)
         for match in DOLLAR_AMOUNT_PATTERN.finditer(line):
-            amount = match.group()
-            # Allow small game-economy amounts (card prices, RAPPcoin)
-            raw = amount.replace("$", "").replace(",", "").rstrip("MBKmbk")
+            raw = match.group().replace("$", "").replace(",", "").rstrip("MBKmbk")
             try:
-                val = float(raw)
-                if val > 50000:
-                    findings.append(f"  {filepath}:{line_num} — Large dollar amount: {amount}")
+                if float(raw) > 50000:
+                    record(line_number, "Large dollar amount")
             except ValueError:
-                pass
+                record(line_number, "Unparseable dollar amount")
 
-        # API keys / secrets
-        for match in API_KEY_PATTERN.finditer(line):
-            findings.append(f"  {filepath}:{line_num} — Possible secret/key pattern")
+        if API_KEY_PATTERN.search(line):
+            record(line_number, "Possible secret/key pattern")
 
-        # Custom blocklist terms
-        line_lower = line.lower()
-        for term in sensitive_terms:
-            if term.lower() in line_lower:
-                findings.append(f"  {filepath}:{line_num} — Blocklisted term: '{term}'")
+        lower_line = line.lower()
+        if any(term.lower() in lower_line for term in sensitive_terms):
+            record(line_number, "Blocklisted term")
 
     return findings
 
 
-def get_staged_files() -> list[str]:
-    """Get list of staged files for commit."""
+def run_git(repo_root: Path, *args: str) -> list[str]:
     result = subprocess.run(
-        ["git", "diff", "--cached", "--name-only", "--diff-filter=ACM"],
-        capture_output=True, text=True, cwd=BASE_DIR,
+        ["git", *args],
+        cwd=repo_root,
+        capture_output=True,
+        text=True,
     )
-    return [f for f in result.stdout.strip().split("\n") if f]
+    if result.returncode != 0:
+        detail = result.stderr.strip() or f"git exited with status {result.returncode}"
+        raise ScanError(detail)
+    return [line for line in result.stdout.splitlines() if line]
 
 
-def get_all_tracked_files() -> list[str]:
-    """Get all tracked files (CI mode)."""
-    result = subprocess.run(
-        ["git", "ls-files"],
-        capture_output=True, text=True, cwd=BASE_DIR,
-    )
-    return [f for f in result.stdout.strip().split("\n") if f]
-
-
-def main():
-    ci_mode = "--ci" in sys.argv
-    sensitive_terms = load_sensitive_terms()
-
-    if ci_mode:
-        files = get_all_tracked_files()
-        mode_label = "CI scan (all tracked files)"
+def selected_files(args: argparse.Namespace) -> tuple[list[str], str]:
+    if args.mode == "staged":
+        files = run_git(args.repo_root, "diff", "--cached", "--name-only", "--diff-filter=ACMRT")
+        label = "staged diff"
+    elif args.mode == "all-tracked":
+        files = run_git(args.repo_root, "ls-files")
+        label = "all tracked files"
+    elif args.mode == "diff":
+        base, head = args.diff
+        files = run_git(
+            args.repo_root,
+            "diff",
+            "--name-only",
+            "--diff-filter=ACMRT",
+            f"{base}...{head}",
+            "--",
+        )
+        label = f"diff {base[:12]}...{head[:12]}"
     else:
-        files = get_staged_files()
-        mode_label = "Pre-commit scan (staged files)"
+        files = run_git(
+            args.repo_root,
+            "ls-files",
+            "--cached",
+            "--others",
+            "--exclude-standard",
+            "--",
+            *args.paths,
+        )
+        label = "paths " + ", ".join(args.paths)
+    return sorted(set(files)), label
 
-    if not files:
-        print(f"✅ {mode_label}: No files to scan.")
-        sys.exit(0)
 
-    # Only scan text files, skip binaries and images
-    scannable_ext = {".json", ".md", ".py", ".yml", ".yaml", ".txt", ".html", ".js", ".ts", ".css"}
-    files = [f for f in files if Path(f).suffix.lower() in scannable_ext]
+def read_scannable_file(repo_root: Path, filepath: str) -> str | None:
+    relative = Path(filepath)
+    if relative.is_absolute() or ".." in relative.parts:
+        raise ScanError(f"{filepath}: path escapes repository")
+    if relative.suffix.lower() not in SCANNABLE_EXTENSIONS:
+        return None
 
-    all_findings: list[str] = []
+    full_path = repo_root / relative
+    if full_path.is_symlink():
+        raise ScanError(f"{filepath}: symlinks are not scannable")
+    try:
+        full_path.resolve().relative_to(repo_root)
+    except ValueError as exc:
+        raise ScanError(f"{filepath}: path escapes repository") from exc
+    if not full_path.is_file():
+        raise ScanError(f"{filepath}: selected file is missing or unreadable")
+    try:
+        return full_path.read_text(encoding="utf-8")
+    except (OSError, UnicodeError) as exc:
+        raise ScanError(f"{filepath}: selected file is unreadable") from exc
 
-    for filepath in files:
-        full_path = BASE_DIR / filepath
-        if not full_path.exists():
-            continue
-        try:
-            content = full_path.read_text(errors="ignore")
-        except Exception:
-            continue
 
-        findings = scan_content(content, filepath, sensitive_terms)
-        all_findings.extend(findings)
+def set_output(name: str, value: str):
+    output_file = os.environ.get("GITHUB_OUTPUT")
+    if not output_file:
+        return
+    with open(output_file, "a", encoding="utf-8") as stream:
+        stream.write(f"{name}<<EOF\n{value}\nEOF\n")
 
-    if all_findings:
-        print(f"\n🚨 PII SCAN FAILED — {len(all_findings)} issue(s) found:\n")
-        for f in all_findings:
-            print(f"  ✗ {f}")
-        print(f"\nTo fix: Remove the flagged content before committing.")
-        print(f"To allowlist a pattern: Add it to ALLOWLIST in scripts/pii_scan.py")
-        print(f"To add blocklisted terms: Add them to .pii-blocklist.txt (one per line)\n")
 
-        # Set GitHub Actions output if in CI
-        output_file = os.environ.get("GITHUB_OUTPUT")
-        if output_file:
-            findings_text = "\n".join(all_findings)
-            with open(output_file, "a") as f:
-                f.write(f"pii_findings<<EOF\n{findings_text}\nEOF\n")
+def main(argv: list[str] | None = None) -> int:
+    args = parse_args(argv)
+    try:
+        files, label = selected_files(args)
+        sensitive_terms = load_sensitive_terms()
+        findings: list[str] = []
+        scanned = 0
+        for filepath in files:
+            content = read_scannable_file(args.repo_root, filepath)
+            if content is None:
+                continue
+            scanned += 1
+            findings.extend(scan_content(content, filepath, sensitive_terms))
+    except ScanError as exc:
+        message = f"Scanner error — {exc}"
+        print(f"❌ {message}")
+        set_output("pii_findings", message)
+        return 3
 
-        sys.exit(1)
-    else:
-        print(f"✅ {mode_label}: No PII detected in {len(files)} file(s).")
-        sys.exit(0)
+    if findings:
+        summary = "\n".join(findings)
+        print(f"\n🚨 PII SCAN FAILED — {len(findings)} redacted finding(s):\n")
+        for finding in findings:
+            print(f"  ✗ {finding}")
+        print("\nRemove the flagged content before publishing.")
+        set_output("pii_findings", summary)
+        return 1
+
+    print(f"✅ PII scan ({label}): No PII detected in {scanned} file(s).")
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
