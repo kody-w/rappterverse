@@ -3,6 +3,10 @@ const REPO = 'kody-w/rappterverse';
 const BRANCH = 'main';            // Canonical world state and Pages source
 const RAW = `https://raw.githubusercontent.com/${REPO}/${BRANCH}`;
 const POLL_INTERVAL = 15000;
+const CLIENT_AUTHORITY = Object.freeze({
+    world: 'canonical-main',
+    gameplay: 'local-practice'
+});
 
 function escapeHTML(value) {
     return String(value == null ? '' : value).replace(/[&<>"']/g, function(char) {

@@ -615,7 +615,10 @@ const HUD = {
 
         const currentWorld = GameState.currentWorld;
         // Show all worlds, highlight current
-        const msgs = (GameState.data.chat || []).slice(-20);
+        const msgs = [
+            ...(GameState.data.chat || []),
+            ...(GameState.data.localChat || [])
+        ].sort((a, b) => String(a.timestamp || '').localeCompare(String(b.timestamp || ''))).slice(-20);
 
         const signature = msgs.map(m => m.id || m.timestamp || '').join('|');
         if (signature === this.chatFeedLastSignature) return;

@@ -249,6 +249,7 @@ function testCapabilitySafePostProcessing() {
     disabled.post.setEnabled(false);
     assert.strictEqual(disabled.post.init(disabled.renderer), true);
     assert.strictEqual(disabled.post.enabled, false, 'saved bloom=false was overwritten');
+    assert.strictEqual(disabled.allocations(), 0, 'disabled bloom allocated render targets');
     disabled.post.render(disabled.renderer, {}, {});
     assert.strictEqual(disabled.renderer.renders, 1);
 
@@ -285,12 +286,30 @@ function testDashboardTrustBoundary() {
     inlineScripts.forEach(match => new Function(match[1]));
 }
 
+function testLocalPracticeBoundary() {
+    const state = fs.readFileSync('src/js/state.js', 'utf8');
+    const agents = fs.readFileSync('src/js/world-agents.js', 'utf8');
+    const layout = fs.readFileSync('src/html/layout.html', 'utf8');
+    const shop = fs.readFileSync('src/js/shop.js', 'utf8');
+    const stats = fs.readFileSync('src/js/player-stats.js', 'utf8');
+    const quests = fs.readFileSync('src/js/quests.js', 'utf8');
+    assert(state.includes('localChat: []'), 'local overlay state is missing');
+    assert(agents.includes('GameState.data.localChat.push(pokeMsg)'), 'local poke mutates canonical chat');
+    assert(!agents.includes('GameState.data.chat.push(pokeMsg)'), 'canonical chat is mutated by local poke');
+    assert(layout.includes('LOCAL PRACTICE'), 'local practice mode is not visible');
+    assert(layout.includes('MAIN · SYNCING'), 'canonical main status is not visible');
+    assert(shop.includes('LOCAL PRACTICE SHOP'), 'shop authority is ambiguous');
+    assert(stats.includes('Practice Gold'), 'local currency is still presented as canonical gold');
+    assert(quests.includes('GameState.data.localChat'), 'local poke cannot progress local guide quest');
+}
+
 async function main() {
     testEscapingAndCredentialRemoval();
     testLispSandbox();
     await testCanonicalStagedPolling();
     testCapabilitySafePostProcessing();
     testDashboardTrustBoundary();
+    testLocalPracticeBoundary();
     console.log('Frontend trust and polling tests passed');
 }
 

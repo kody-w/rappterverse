@@ -303,7 +303,7 @@ var JungleCamps = {
             if (this._titan.mesh) this._titan.mesh.visible = false;
             if (typeof PlayerStats !== 'undefined') { PlayerStats.awardXp(this._titan.xp); PlayerStats.awardGold(this._titan.gold, 'TITAN'); PlayerStats.kills++; }
             if (typeof VFX !== 'undefined') { VFX.burst({ x: 0, y: 3, z: 0 }, 'bossKill'); VFX.burst({ x: 0, y: 5, z: 0 }, 'novaBlast'); VFX.screenFlash('#ffd700', 0.5); }
-            if (typeof HUD !== 'undefined') HUD.showToast('ECHO TITAN SLAIN! +' + this._titan.gold + ' gold, +' + this._titan.xp + ' XP');
+            if (typeof HUD !== 'undefined') HUD.showToast('ECHO TITAN SLAIN! +' + this._titan.gold + ' Practice Gold, +' + this._titan.xp + ' Practice XP');
             if (typeof Audio !== 'undefined' && Audio.playWaveHorn) Audio.playWaveHorn();
             if (typeof ReplaySystem !== 'undefined') ReplaySystem.logEvent('boss_kill', { name: 'Echo Titan', isBoss: true });
             if (typeof GamepadControls !== 'undefined' && GamepadControls.rumble) GamepadControls.rumble(1.0, 0.5, 500);

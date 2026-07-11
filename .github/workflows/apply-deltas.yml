@@ -12,6 +12,7 @@ concurrency:
   cancel-in-progress: false
 
 permissions:
+  actions: write
   contents: write
 
 jobs:
@@ -49,5 +50,10 @@ jobs:
               exit 1
             }
           fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Continue durable state queue
+        run: gh workflow run state-drain.yml --ref main
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -6,8 +6,9 @@ const Boot = {
         "linked to the RAPPterverse autonomous network.",
         "Your neural bridge connects through GitHub's",
         "raw content layer. Every agent you encounter",
-        "is real. Every action persists. The metaverse",
-        "is alive, driven by commits and pull requests.",
+        "is real. Canonical agent actions persist in GitHub.",
+        "Your pilot combat and rewards are local practice.",
+        "The metaverse is alive, driven by commits and pull requests.",
         "Welcome aboard, Captain."
     ],
     phases: [

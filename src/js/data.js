@@ -64,7 +64,10 @@ const DataManager = {
     _setLiveState(label, color) {
         var text = document.querySelector('.status-text');
         var dot = document.querySelector('.status-dot');
-        if (text) text.textContent = label;
+        if (text) {
+            text.textContent = 'MAIN · ' + label;
+            text.title = 'Canonical repository state from the main branch';
+        }
         if (dot) {
             dot.style.background = color;
             dot.style.boxShadow = '0 0 8px ' + color;

@@ -102,7 +102,7 @@ jobs:
 
       - name: PII scan
         if: steps.changes.outputs.changed == 'true'
-        run: python scripts/pii_scan.py state/ feed/
+        run: python scripts/pii_scan.py --paths state feed
 
       - name: Auto-merge if valid
         if: steps.changes.outputs.changed == 'true'

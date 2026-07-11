@@ -51,7 +51,7 @@ Covers: workflow concurrency invariants, no-bare-`git push` rule, JSON validity,
 ```bash
 python scripts/validate_action.py            # validates a PR's state changes (used by agent-action.yml)
 python scripts/validate_action.py --audit    # full state consistency audit + simulation health metrics
-python scripts/pii_scan.py                   # PII scan (also runs as pre-commit hook, see below)
+python scripts/pii_scan.py --all-tracked     # PII scan (pre-commit uses --staged)
 ```
 
 ### Local platform (replaces scheduled GH Actions)

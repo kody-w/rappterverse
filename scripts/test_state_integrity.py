@@ -21,7 +21,7 @@ from pathlib import Path
 
 # Resolve repo root (works from scripts/ or repo root)
 SCRIPT_DIR = Path(__file__).parent
-BASE_DIR = SCRIPT_DIR.parent
+BASE_DIR = Path(os.environ.get("VALIDATION_REPO_ROOT", SCRIPT_DIR.parent)).resolve()
 STATE_DIR = BASE_DIR / "state"
 WORLDS_DIR = BASE_DIR / "worlds"
 FEED_DIR = BASE_DIR / "feed"
@@ -132,7 +132,6 @@ def get_workflow_files() -> list[Path]:
 
 # Workflows that mutate state (push to main or create PRs touching state)
 STATE_MUTATING_WORKFLOWS = {
-    "agent-action.yml",
     "game-tick.yml",
     "world-growth.yml",
     "architect-explore.yml",
@@ -140,6 +139,7 @@ STATE_MUTATING_WORKFLOWS = {
     "apply-deltas.yml",
     "npc-conversationalist.yml",
     "world-activity.yml",
+    "state-drain.yml",
 }
 
 
@@ -261,6 +261,116 @@ class TestWorkflowPII(unittest.TestCase):
             violations, [],
             f"Real email addresses found in workflows: {violations}"
         )
+
+    def test_pii_workflow_uses_trusted_scanner(self):
+        content = load_yaml_text(WORKFLOWS_DIR / "pii-scan.yml")
+        self.assertIn("pull_request_target:", content)
+        self.assertIn("python trusted/scripts/pii_scan.py", content)
+        self.assertIn("persist-credentials: false", content)
+        self.assertIn("context: 'pii-scan'", content)
+        self.assertIn("statuses: write", content)
+
+
+class TestPIIScanner(unittest.TestCase):
+    """Exercise strict scanner modes and verify findings never echo PII values."""
+
+    def setUp(self):
+        self.repo = Path(tempfile.mkdtemp(prefix="rappterverse-pii-"))
+        self.addCleanup(shutil.rmtree, self.repo)
+        (self.repo / "state").mkdir()
+        (self.repo / "state" / "note.txt").write_text("safe\n", encoding="utf-8")
+        self._git("init", "-q")
+        self._git("config", "user.name", "PII Test")
+        self._git("config", "user.email", "pii-test@users.noreply.github.com")
+        self._git("add", ".")
+        self._git("commit", "-qm", "base")
+        self._git("update-ref", "refs/remotes/origin/main", "HEAD")
+
+    def _git(self, *args):
+        return subprocess.run(
+            ["git", *args],
+            cwd=self.repo,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+
+    def _scan(self, *args):
+        return subprocess.run(
+            [
+                sys.executable,
+                str(BASE_DIR / "scripts" / "pii_scan.py"),
+                "--repo-root",
+                str(self.repo),
+                *args,
+            ],
+            capture_output=True,
+            text=True,
+        )
+
+    def test_paths_mode_detects_and_redacts_email(self):
+        email = "person" + "@" + "private.invalid"
+        (self.repo / "state" / "note.txt").write_text(
+            f"GH_TOKEN is allowed, but {email} is not\n",
+            encoding="utf-8",
+        )
+        self._git("add", "state/note.txt")
+        result = self._scan("--paths", "state")
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("state/note.txt:1 — Email", result.stdout)
+        self.assertNotIn(email, result.stdout)
+
+    def test_paths_mode_includes_untracked_files(self):
+        email = "untracked" + "@" + "private.invalid"
+        (self.repo / "state" / "new.txt").write_text(email + "\n", encoding="utf-8")
+        result = self._scan("--paths", "state")
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("state/new.txt:1 — Email", result.stdout)
+
+    def test_diff_mode_scans_exact_candidate_change(self):
+        email = "contact" + "@" + "private.invalid"
+        (self.repo / "state" / "note.txt").write_text(
+            email + "\n",
+            encoding="utf-8",
+        )
+        self._git("add", "state/note.txt")
+        self._git("commit", "-qm", "candidate")
+        result = self._scan("--diff", "origin/main", "HEAD")
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("state/note.txt:1 — Email", result.stdout)
+
+    def test_unknown_or_missing_mode_exits_two(self):
+        unknown = self._scan("--unknown")
+        missing = self._scan()
+        self.assertEqual(unknown.returncode, 2)
+        self.assertEqual(missing.returncode, 2)
+
+    def test_symlink_scan_fails_closed(self):
+        link = self.repo / "state" / "linked.txt"
+        link.symlink_to("/dev/null")
+        self._git("add", "state/linked.txt")
+        result = self._scan("--paths", "state")
+        self.assertEqual(result.returncode, 3)
+        self.assertIn("symlinks are not scannable", result.stdout)
+
+    def test_diff_mode_scans_renamed_files(self):
+        original = self.repo / "state" / "rename.txt"
+        original.write_text("".join(f"safe line {index}\n" for index in range(20)), encoding="utf-8")
+        self._git("add", "state/rename.txt")
+        self._git("commit", "-qm", "add rename fixture")
+        self._git("update-ref", "refs/remotes/origin/main", "HEAD")
+        self._git("mv", "state/rename.txt", "state/renamed.txt")
+        with (self.repo / "state" / "renamed.txt").open("a", encoding="utf-8") as stream:
+            stream.write("renamed" + "@" + "private.invalid\n")
+        self._git("add", "state/renamed.txt")
+        self._git("commit", "-qm", "rename candidate")
+        status = self._git(
+            "diff", "--name-status", "--find-renames", "origin/main...HEAD"
+        ).stdout
+        self.assertRegex(status, r"(?m)^R\d+\s")
+        result = self._scan("--diff", "origin/main", "HEAD")
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("state/renamed.txt:21 — Email", result.stdout)
 
 
 class TestDashboardFreshness(unittest.TestCase):
@@ -610,13 +720,155 @@ class TestAgentActionWorkflowTrust(unittest.TestCase):
         self.assertIn("pull_request_target:", content)
         self.assertNotRegex(content, r"(?m)^  pull_request:$")
 
-    def test_merge_has_explicit_repository_context(self):
+    def test_valid_actions_enter_durable_queue(self):
         content = load_yaml_text(WORKFLOWS_DIR / "agent-action.yml")
-        self.assertIn("GH_REPO: ${{ github.repository }}", content)
-        self.assertIn("--match-head-commit", content)
-        self.assertIn('current_base="$(gh api', content)
-        self.assertNotIn("--auto", content)
-        self.assertIn("gh workflow run apply-deltas.yml", content)
+        self.assertIn("state-validation-${{ github.event.pull_request.number }}", content)
+        self.assertIn("context: 'state-consensus'", content)
+        self.assertIn("gh workflow run state-drain.yml", content)
+        self.assertNotIn("gh pr merge", content)
+
+
+class TestStateReconciler(unittest.TestCase):
+    """The durable queue must retain and order every open state request."""
+
+    @classmethod
+    def setUpClass(cls):
+        import importlib.util
+        spec = importlib.util.spec_from_file_location(
+            "state_reconciler_test", SCRIPT_DIR / "state_reconciler.py"
+        )
+        cls.module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(cls.module)
+
+    def test_queue_is_fifo_and_lossless(self):
+        prs = [
+            {"number": number, "createdAt": f"2026-07-11T00:{number:02d}:00Z"}
+            for number in range(20, 0, -1)
+        ]
+        ordered = self.module.ordered_queue(prs)
+        self.assertEqual([item["number"] for item in ordered], list(range(1, 21)))
+
+    def test_requires_all_trusted_checks(self):
+        checks = [
+            {"context": "state-consensus", "state": "SUCCESS"},
+            {"name": "pii-scan", "conclusion": "SUCCESS"},
+            {"name": "test", "conclusion": "SUCCESS"},
+        ]
+        self.assertTrue(self.module.checks_satisfied(checks))
+        self.assertFalse(self.module.checks_satisfied(checks[:-1]))
+        failed = checks[:-1] + [{"name": "test", "conclusion": "FAILURE"}]
+        self.assertEqual(self.module.checks_state(failed), self.module.REJECTED)
+        self.assertEqual(self.module.checks_state(checks[:-1]), self.module.BLOCKED)
+
+    def test_terminal_reconciler_status_dead_letters_head(self):
+        self.assertEqual(
+            self.module.reconciler_state([
+                {"context": "state-reconciler", "state": "FAILURE"}
+            ]),
+            self.module.REJECTED,
+        )
+        self.assertEqual(
+            self.module.reconciler_state([
+                {"context": "state-reconciler", "state": "SUCCESS"}
+            ]),
+            self.module.MERGED,
+        )
+
+    def test_only_state_paths_enter_queue(self):
+        self.assertTrue(self.module.is_state_only([
+            {"path": "state/actions.json"},
+            {"path": "feed/activity.json"},
+        ]))
+        self.assertFalse(self.module.is_state_only([
+            {"path": "state/actions.json"},
+            {"path": "scripts/validate_action.py"},
+        ]))
+
+    def test_fifo_blocks_on_pending_head(self):
+        reconciler = self.module.StateReconciler("owner/repo", dry_run=True)
+        queue = [{"number": 1}, {"number": 2}]
+        called = []
+        reconciler.queue = lambda: queue
+        reconciler.process = lambda pr: called.append(pr["number"]) or self.module.BLOCKED
+        self.assertEqual(reconciler.drain(10), 0)
+        self.assertEqual(called, [1])
+
+    def test_rejected_item_does_not_block_next_merge(self):
+        reconciler = self.module.StateReconciler("owner/repo", dry_run=True)
+        queue = [{"number": 1}, {"number": 2}]
+        called = []
+        outcomes = {1: self.module.REJECTED, 2: self.module.MERGED}
+        reconciler.queue = lambda: queue
+        reconciler.process = lambda pr: called.append(pr["number"]) or outcomes[pr["number"]]
+        self.assertEqual(reconciler.drain(1), 1)
+        self.assertEqual(called, [1, 2])
+
+    def test_applied_head_is_skipped_without_budget_cost(self):
+        reconciler = self.module.StateReconciler("owner/repo", dry_run=True)
+        reconciler.details = lambda number: {
+            "state": "OPEN",
+            "baseRefName": "main",
+            "isDraft": False,
+            "headRefOid": "head-sha",
+            "files": [{"path": "state/actions.json"}],
+            "statusCheckRollup": [],
+        }
+        reconciler.published_commit = lambda number, head: "applied-sha"
+        result = reconciler.process({
+            "number": 1,
+            "baseRefName": "main",
+            "headRefOid": "head-sha",
+        })
+        self.assertEqual(result, self.module.SKIPPED)
+
+    def test_validation_distinguishes_rejection_from_infrastructure(self):
+        env = os.environ.copy()
+        with self.assertRaises(self.module.ValidationRejected):
+            self.module.run_validation(
+                [sys.executable, "-c", "raise SystemExit(1)"],
+                env=env,
+            )
+        with self.assertRaises(self.module.ReconcileError):
+            self.module.run_validation(
+                [sys.executable, "-c", "raise SystemExit(2)"],
+                env=env,
+            )
+
+    def test_candidate_preflight_rejects_symlinks(self):
+        candidate = Path(tempfile.mkdtemp(prefix="rappterverse-candidate-"))
+        self.addCleanup(shutil.rmtree, candidate)
+        (candidate / "state").mkdir()
+        (candidate / "state" / "agents.json").symlink_to("/dev/zero")
+        with self.assertRaises(self.module.ValidationRejected):
+            self.module.preflight_candidate(candidate, ["state/agents.json"])
+
+    def test_reconciler_validates_synthetic_merge_on_main(self):
+        source = (SCRIPT_DIR / "state_reconciler.py").read_text()
+        self.assertIn('"--base", "main"', source)
+        self.assertIn('"worktree", "add", "--detach", str(candidate), base_sha', source)
+        self.assertIn('"merge", "--no-commit", "--no-ff", head_sha', source)
+        self.assertIn('"commit-tree", tree_sha', source)
+        self.assertNotIn('"-p", head_sha', source)
+        self.assertIn('f"{merge_commit}:refs/heads/main"', source)
+        self.assertIn('"pr", "close"', source)
+        self.assertIn('f"Source-Head: {head_sha}"', source)
+        workflow = load_yaml_text(WORKFLOWS_DIR / "state-drain.yml")
+        self.assertIn('git worktree add --detach "$policy_root" origin/main', workflow)
+
+
+class TestLocalPlatformSafety(unittest.TestCase):
+    """Local publication must stop after validation or PII failure."""
+
+    def test_failed_job_propagates_before_git_sync(self):
+        content = (BASE_DIR / "scripts" / "local_platform.sh").read_text()
+        failed_branch = content.split('err "  Failed: $job"', 1)[1].split("fi", 1)[0]
+        self.assertIn("return 1", failed_branch)
+        self.assertNotIn("pii_scan.py --paths state feed 2>&1 || true", content)
+        self.assertIn("PUBLICATION_BLOCK", content)
+        self.assertIn("Publication blocked: state audit failed", content)
+        self.assertIn("Publication blocked: PII scan failed", content)
+        self.assertIn("Publication skipped because this cycle failed", content)
+        self.assertIn("if ! run_cycle; then", content)
 
 
 # ═════════════════════════════════════════════

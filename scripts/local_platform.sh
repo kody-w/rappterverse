@@ -29,6 +29,7 @@ cd "$REPO"
 STATE_DIR="state"
 LOG_DIR="$REPO/logs"
 STATUS_FILE="$LOG_DIR/local_platform_status.json"
+PUBLICATION_BLOCK="$LOG_DIR/publication-blocked"
 INTERVAL="${INTERVAL:-300}"  # 5 minutes default
 CYCLE=0
 
@@ -70,7 +71,10 @@ run_job() {
   else
     err "  Failed: $job"
     update_status "$job" "failed" "0"
+    touch "$PUBLICATION_BLOCK"
+    return 1
   fi
+  return 0
 }
 
 update_status() {
@@ -191,10 +195,16 @@ job_world_growth() {
   fi
 
   log "  [heartbeat] Validate state..."
-  python3 scripts/validate_action.py --audit 2>&1 || true
+  if ! python3 scripts/validate_action.py --audit 2>&1; then
+    err "  State audit failed"
+    failed=1
+  fi
 
   log "  [heartbeat] PII scan..."
-  python3 scripts/pii_scan.py state/ feed/ 2>&1 || true
+  if ! python3 scripts/pii_scan.py --paths state feed 2>&1; then
+    err "  PII scan failed"
+    failed=1
+  fi
 
   return $failed
 }
@@ -238,15 +248,29 @@ job_git_sync() {
   fi
 
   if ! python3 scripts/generate_chronicles.py --source-tree=head 2>&1; then
+    touch "$PUBLICATION_BLOCK"
     err "Chronicle generation failed; refusing to publish stale artifacts"
     return 1
   fi
 
   # Render the README from the final state of this frame.
   if ! python3 scripts/generate_dashboard.py 2>&1; then
+    touch "$PUBLICATION_BLOCK"
     err "Dashboard generation failed; refusing to publish stale artifacts"
     return 1
   fi
+
+  if ! python3 scripts/validate_action.py --audit 2>&1; then
+    touch "$PUBLICATION_BLOCK"
+    err "  Publication blocked: state audit failed"
+    return 1
+  fi
+  if ! python3 scripts/pii_scan.py --paths README.md state feed docs/dashboard.html docs/chronicles 2>&1; then
+    touch "$PUBLICATION_BLOCK"
+    err "  Publication blocked: PII scan failed"
+    return 1
+  fi
+  rm -f "$PUBLICATION_BLOCK"
 
   # Stage only generated dashboard/state/feed files (never src/ or docs/index.html)
   git add README.md 2>/dev/null || true
@@ -531,6 +555,7 @@ else:
 
 run_cycle() {
   CYCLE=$((CYCLE + 1))
+  local cycle_failed=0
 
   # Advance frame counter
   FRAME=$(advance_frame)
@@ -540,38 +565,46 @@ run_cycle() {
   git pull --rebase --autostash origin main 2>&1 | tail -1 || true
 
   # ── Phase 2: TICK (game mechanics) ──
-  run_job job_game_tick
+  if ! run_job job_game_tick; then cycle_failed=1; fi
 
   # ── Phase 3: SLOSH (cross-pollinate state) ──
-  slosh_data
+  if ! slosh_data; then
+    err "  Data slosh failed"
+    touch "$PUBLICATION_BLOCK"
+    cycle_failed=1
+  fi
 
   # ── Phase 4: AGENTS (LLM-driven activity — every 30 min) ──
   if should_run "job_agent_dispatch" 28; then
-    run_job job_agent_dispatch
+    if ! run_job job_agent_dispatch; then cycle_failed=1; fi
   fi
 
   # ── Phase 5: HEARTBEAT (world growth — every 4 hours) ──
   if should_run "job_world_growth" 235; then
-    run_job job_world_growth
+    if ! run_job job_world_growth; then cycle_failed=1; fi
   fi
 
   # ── Phase 6: EVOLVE (self-improvement — every 6 hours) ──
   if should_run "job_self_improve" 355; then
-    run_job job_self_improve
+    if ! run_job job_self_improve; then cycle_failed=1; fi
   fi
 
   # ── Phase 7: EMERGENCE (pattern detection — every 6 hours) ──
   if should_run "job_emergence" 355; then
-    run_job job_emergence
+    if ! run_job job_emergence; then cycle_failed=1; fi
   fi
 
   # ── Phase 8: AUDIT (consistency check — every 12 hours) ──
   if should_run "job_state_audit" 715; then
-    run_job job_state_audit
+    if ! run_job job_state_audit; then cycle_failed=1; fi
   fi
 
   # ── Phase 9: PUSH (commit + push frame) ──
-  run_job job_git_sync
+  if [ "$cycle_failed" -eq 0 ]; then
+    if ! run_job job_git_sync; then cycle_failed=1; fi
+  else
+    err "  Publication skipped because this cycle failed"
+  fi
 
   # Status line
   python3 -c "
@@ -590,6 +623,7 @@ except Exception as e:
 " 2>/dev/null || true
 
   log "=== $FRAME complete ==="
+  return "$cycle_failed"
 }
 
 # ── Entrypoints ───────────────────────────────────────────────────────────────
@@ -640,7 +674,9 @@ case "${1:-}" in
     log "  state-audit.yml      (every 12 hours)"
     log ""
     while true; do
-      run_cycle
+      if ! run_cycle; then
+        err "Cycle failed; retained publication block and will retry"
+      fi
       log "Sleeping ${INTERVAL}s..."
       sleep "$INTERVAL"
     done
