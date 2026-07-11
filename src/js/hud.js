@@ -539,6 +539,7 @@ const HUD = {
     // ── Live Chat Feed ──────────────────────────────────────
     chatFeedVisible: true,
     chatFeedLastCount: 0,
+    chatFeedLastSignature: '',
 
     initChatFeed() {
         // Create chat feed panel if it doesn't exist
@@ -616,8 +617,10 @@ const HUD = {
         // Show all worlds, highlight current
         const msgs = (GameState.data.chat || []).slice(-20);
 
-        if (msgs.length === this.chatFeedLastCount) return;
+        const signature = msgs.map(m => m.id || m.timestamp || '').join('|');
+        if (signature === this.chatFeedLastSignature) return;
         this.chatFeedLastCount = msgs.length;
+        this.chatFeedLastSignature = signature;
 
         container.innerHTML = msgs.map(m => {
             const author = m.author?.name || m.author?.id || '?';
@@ -628,10 +631,10 @@ const HUD = {
             const opacity = isCurrentWorld ? '1' : '0.5';
             const ts = m.timestamp ? this._chatTimeAgo(m.timestamp) : '';
             return `<div class="chat-msg" style="opacity:${opacity}">
-                <span class="chat-world">${world}</span>
-                <span class="chat-author">${avatar} ${author}</span>
-                <span class="chat-text">${text}</span>
-                <span class="chat-time">${ts}</span>
+                <span class="chat-world">${escapeHTML(world)}</span>
+                <span class="chat-author">${escapeHTML(avatar)} ${escapeHTML(author)}</span>
+                <span class="chat-text">${escapeHTML(text)}</span>
+                <span class="chat-time">${escapeHTML(ts)}</span>
             </div>`;
         }).join('');
 
@@ -666,8 +669,8 @@ const HUD = {
         feedEl.innerHTML = this._killFeed.map(function(k) {
             var op = Math.max(0.3, 1 - (now - k.time) / 4000);
             return '<div style="background:rgba(22,27,34,0.8);border:1px solid rgba(248,81,73,0.3);border-radius:6px;padding:3px 12px;font-size:10px;color:#c9d1d9;opacity:' + op + ';backdrop-filter:blur(4px);white-space:nowrap;">' +
-                '<span style="color:#00d4ff;font-weight:600;">YOU</span> killed <span style="color:#f85149;">' + k.victim + '</span>' +
-                (k.gold ? ' <span style="color:#fbbf24;">+' + k.gold + 'G</span>' : '') + '</div>';
+                '<span style="color:#00d4ff;font-weight:600;">YOU</span> killed <span style="color:#f85149;">' + escapeHTML(k.victim) + '</span>' +
+                (k.gold ? ' <span style="color:#fbbf24;">+' + escapeHTML(k.gold) + 'G</span>' : '') + '</div>';
         }).join('');
     },
 
@@ -1091,7 +1094,7 @@ const HUD = {
         };
         el.innerHTML = WORLD_IDS.map(function(id) {
             const w = WORLDS[id];
-            const pop = worlds[id] ? (worlds[id].population || 0) : 0;
+            const pop = worlds[id] ? (Number(worlds[id].population) || 0) : 0;
             const color = biomeColors[id];
             const active = id === GameState.currentWorld ? ' wp-active' : '';
             return '<div class="wp-item' + active + '" data-world="' + id + '">' +
@@ -1116,8 +1119,8 @@ const HUD = {
         const weather = ws.weather || 'clear';
         const totalAgents = GameState.data.agents.length;
 
-        textEl.innerHTML = 'Seed <span class="uc-seed">' + seed + '</span> · ' +
-            w.biome + ' biome · ' + pop + ' local / ' + totalAgents + ' total agents';
+        textEl.innerHTML = 'Seed <span class="uc-seed">' + escapeHTML(seed) + '</span> · ' +
+            escapeHTML(w.biome) + ' biome · ' + escapeHTML(pop) + ' local / ' + escapeHTML(totalAgents) + ' total agents';
 
         // Echo enrichment layer
         var echoInfo = '';
@@ -1134,12 +1137,12 @@ const HUD = {
         // Active echo event
         var eventInfo = '';
         if (typeof EchoEvents !== 'undefined' && EchoEvents._activeEvent) {
-            eventInfo = '<span style="color:#fbbf24;font-weight:700;">' + EchoEvents._activeEvent.name + ' ' + Math.ceil(EchoEvents._eventTimer) + 's</span>';
+            eventInfo = '<span style="color:#fbbf24;font-weight:700;">' + escapeHTML(EchoEvents._activeEvent.name) + ' ' + Math.ceil(EchoEvents._eventTimer) + 's</span>';
         }
 
-        metaEl.innerHTML = echoInfo + eventInfo + '<span>Frame ' + (fc.frame || '---') + '</span>' +
-            '<span>Economy: ' + trend + '</span>' +
-            '<span>Weather: ' + weather + '</span>';
+        metaEl.innerHTML = echoInfo + eventInfo + '<span>Frame ' + escapeHTML(fc.frame || '---') + '</span>' +
+            '<span>Economy: ' + escapeHTML(trend) + '</span>' +
+            '<span>Weather: ' + escapeHTML(weather) + '</span>';
 
         // Echo tension sparkline — tiny graph of tension history
         this._updateTensionSparkline();

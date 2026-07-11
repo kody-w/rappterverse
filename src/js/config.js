@@ -1,10 +1,20 @@
 // RAPPterverse Configuration
 const REPO = 'kody-w/rappterverse';
-const BRANCH = 'main';            // Pages serves the frontend HTML from this branch
-const STATE_BRANCH = 'frames';    // The pump's worktree commits live world state here
+const BRANCH = 'main';            // Canonical world state and Pages source
 const RAW = `https://raw.githubusercontent.com/${REPO}/${BRANCH}`;
-const STATE_RAW = `https://raw.githubusercontent.com/${REPO}/${STATE_BRANCH}`;
 const POLL_INTERVAL = 15000;
+
+function escapeHTML(value) {
+    return String(value == null ? '' : value).replace(/[&<>"']/g, function(char) {
+        return {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#39;'
+        }[char];
+    });
+}
 
 const WORLDS = {
     hub: {

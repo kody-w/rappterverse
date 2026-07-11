@@ -145,15 +145,15 @@ const QuestTracker = {
             const completed = done || autoComplete;
             return '<div class="qt-step">' +
                 '<div class="qt-check' + (completed ? ' done' : '') + '">' + (completed ? '✓' : '') + '</div>' +
-                '<span>' + (s.action || '').replace(/_/g, ' ') + '</span></div>';
+                '<span>' + escapeHTML((s.action || '').replace(/_/g, ' ')) + '</span></div>';
         }).join('');
 
         const rewards = q.rewards || {};
         const rewardHtml = rewards.rappcoin ?
-            '<div class="qt-reward">Reward: <span>' + rewards.rappcoin + ' RAPP</span></div>' : '';
+            '<div class="qt-reward">Reward: <span>' + escapeHTML(rewards.rappcoin) + ' RAPP</span></div>' : '';
 
-        body.innerHTML = '<div class="qt-name">' + (q.name || 'Quest') + '</div>' +
-            '<div class="qt-desc">' + (q.description || '') + '</div>' +
+        body.innerHTML = '<div class="qt-name">' + escapeHTML(q.name || 'Quest') + '</div>' +
+            '<div class="qt-desc">' + escapeHTML(q.description || '') + '</div>' +
             steps + rewardHtml;
     }
 };

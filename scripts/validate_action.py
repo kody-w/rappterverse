@@ -14,7 +14,9 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
-BASE_DIR = Path(__file__).parent.parent
+BASE_DIR = Path(
+    os.environ.get("VALIDATION_REPO_ROOT", Path(__file__).parent.parent)
+).resolve()
 STATE_DIR = BASE_DIR / "state"
 WORLDS_DIR = BASE_DIR / "worlds"
 
@@ -97,17 +99,23 @@ def load_json(path: Path) -> dict | None:
 
 def get_changed_files() -> list[str]:
     """Get list of files changed vs main."""
+    base_ref = os.environ.get("VALIDATION_BASE_SHA", "origin/main")
+    head_ref = os.environ.get("VALIDATION_HEAD_SHA", "HEAD")
     result = subprocess.run(
-        ["git", "diff", "--name-only", "origin/main...HEAD"],
-        capture_output=True, text=True, cwd=BASE_DIR.parent
+        ["git", "diff", "--name-only", f"{base_ref}...{head_ref}", "--"],
+        capture_output=True, text=True, cwd=BASE_DIR
     )
+    if result.returncode != 0:
+        detail = result.stderr.strip() or f"git exited with status {result.returncode}"
+        raise RuntimeError(f"Unable to determine changed files: {detail}")
     return [f for f in result.stdout.strip().split("\n") if f]
 
 
 def load_base_json(filepath: str):
     """Load a file's content from origin/main for comparison."""
+    base_ref = os.environ.get("VALIDATION_BASE_SHA", "origin/main")
     result = subprocess.run(
-        ["git", "show", f"origin/main:{filepath}"],
+        ["git", "show", f"{base_ref}:{filepath}"],
         capture_output=True, text=True, cwd=BASE_DIR
     )
     if result.returncode == 0:
@@ -125,10 +133,7 @@ def validate_agent_consent(current_agents: list, pr_author: str):
     if not pr_author:
         return  # Running locally or in system context — skip consent check
 
-    base_data = load_base_json("rappterverse/state/agents.json")
-    if not base_data:
-        # Try without prefix (depends on git root)
-        base_data = load_base_json("state/agents.json")
+    base_data = load_base_json("state/agents.json")
     if not base_data:
         return  # Can't compare — skip consent check (first run, etc.)
 
@@ -913,13 +918,35 @@ def main():
             sys.exit(0)
 
     # --- Standard PR validation mode ---
-    changed_files = get_changed_files()
-    rappterverse_files = [f for f in changed_files if f.startswith("state/") or f.startswith("worlds/") or f.startswith("feed/")]
+    try:
+        changed_files = get_changed_files()
+    except RuntimeError as exc:
+        error(str(exc))
+        set_output("errors", f"- {exc}")
+        set_output("summary", "Validation could not inspect the proposed changes.")
+        print(f"\n❌ Validation failed:\n\n  ✗ {exc}")
+        sys.exit(1)
+
+    allowed_prefixes = ("state/", "worlds/", "feed/")
+    rappterverse_files = [
+        f for f in changed_files if f.startswith(allowed_prefixes)
+    ]
+    unexpected_files = [
+        f for f in changed_files if not f.startswith(allowed_prefixes)
+    ]
+    if unexpected_files:
+        error(
+            "State action PRs may only modify state/, worlds/, or feed/: "
+            + ", ".join(unexpected_files)
+        )
 
     if not rappterverse_files:
-        info("No rappterverse files changed")
-        set_output("summary", "No rappterverse state files modified.")
-        sys.exit(0)
+        if os.environ.get("VALIDATION_REQUIRE_RELEVANT") == "1":
+            error("No state/, worlds/, or feed/ files were found in this state-triggered PR")
+        else:
+            info("No rappterverse files changed")
+            set_output("summary", "No rappterverse state files modified.")
+            sys.exit(0)
 
     info(f"Changed files: {', '.join(rappterverse_files)}")
 
@@ -932,15 +959,22 @@ def main():
     # Validate each changed state file
     for filepath in rappterverse_files:
         parts = filepath.split("/")
-        if len(parts) >= 2 and parts[0] == "state":
-            filename = parts[1]
-            data = load_json(STATE_DIR / filename)
+        full_path = BASE_DIR / filepath
+        if parts[0] == "state":
+            filename = parts[-1]
+            data = load_json(full_path)
             if data is not None:
-                validate_state_file(filename, data, agent_ids)
+                if len(parts) == 2:
+                    validate_state_file(filename, data, agent_ids)
+                else:
+                    info(f"`{filepath}`: JSON valid")
 
         elif len(parts) >= 3 and parts[0] == "worlds":
             # World config files — just validate JSON
-            full_path = BASE_DIR / filepath
+            data = load_json(full_path)
+            if data is not None:
+                info(f"`{filepath}`: JSON valid")
+        elif parts[0] == "feed":
             data = load_json(full_path)
             if data is not None:
                 info(f"`{filepath}`: JSON valid")

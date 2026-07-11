@@ -11,8 +11,10 @@ from __future__ import annotations
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -430,6 +432,103 @@ class TestChronicleIntegrity(unittest.TestCase):
                 '<metadata id="provenance">',
                 artifact_path.read_text(encoding="utf-8"),
             )
+
+
+class TestPRValidatorGate(unittest.TestCase):
+    """Exercise the real validator CLI in an Actions-shaped Git repository."""
+
+    def setUp(self):
+        self.repo = Path(tempfile.mkdtemp(prefix="rappterverse-validator-"))
+        self.addCleanup(shutil.rmtree, self.repo)
+        (self.repo / "state").mkdir()
+        shutil.copy2(STATE_DIR / "agents.json", self.repo / "state" / "agents.json")
+        shutil.copy2(STATE_DIR / "actions.json", self.repo / "state" / "actions.json")
+        self._git("init", "-q")
+        self._git("config", "user.name", "Validator Test")
+        self._git("config", "user.email", "validator@users.noreply.github.com")
+        self._git("add", "state")
+        self._git("commit", "-qm", "base state")
+        self._git("update-ref", "refs/remotes/origin/main", "HEAD")
+
+    def _git(self, *args):
+        return subprocess.run(
+            ["git", *args],
+            cwd=self.repo,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+
+    def _commit_candidate(self, *, invalid_json=False, mixed_path=False):
+        actions_path = self.repo / "state" / "actions.json"
+        if invalid_json:
+            actions_path.write_text("{\n", encoding="utf-8")
+        else:
+            actions_path.write_text(
+                actions_path.read_text(encoding="utf-8") + " ",
+                encoding="utf-8",
+            )
+        if mixed_path:
+            scripts_dir = self.repo / "scripts"
+            scripts_dir.mkdir()
+            (scripts_dir / "untrusted.py").write_text("print('candidate code')\n")
+        self._git("add", "-A")
+        self._git("commit", "-qm", "candidate state")
+
+    def _run_validator(self, **env_overrides):
+        env = os.environ.copy()
+        env.update({
+            "VALIDATION_REPO_ROOT": str(self.repo),
+            "VALIDATION_BASE_SHA": "origin/main",
+            "VALIDATION_HEAD_SHA": "HEAD",
+            "VALIDATION_REQUIRE_RELEVANT": "1",
+            "PR_AUTHOR": "",
+        })
+        env.update(env_overrides)
+        return subprocess.run(
+            [sys.executable, str(BASE_DIR / "scripts" / "validate_action.py")],
+            capture_output=True,
+            text=True,
+            env=env,
+        )
+
+    def test_changed_state_file_is_discovered(self):
+        self._commit_candidate()
+        result = self._run_validator()
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertIn("state/actions.json", result.stdout)
+        self.assertNotIn("No rappterverse state files modified", result.stdout)
+
+    def test_invalid_changed_json_fails(self):
+        self._commit_candidate(invalid_json=True)
+        result = self._run_validator()
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("Invalid JSON", result.stdout)
+
+    def test_git_diff_failure_fails_closed(self):
+        result = self._run_validator(VALIDATION_BASE_SHA="missing-base")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("Unable to determine changed files", result.stdout)
+
+    def test_mixed_code_and_state_pr_fails(self):
+        self._commit_candidate(mixed_path=True)
+        result = self._run_validator()
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("may only modify state/", result.stdout)
+
+
+class TestAgentActionWorkflowTrust(unittest.TestCase):
+    """The privileged action workflow must be controlled by the base branch."""
+
+    def test_uses_base_controlled_trigger(self):
+        content = load_yaml_text(WORKFLOWS_DIR / "agent-action.yml")
+        self.assertIn("pull_request_target:", content)
+        self.assertNotRegex(content, r"(?m)^  pull_request:$")
+
+    def test_merge_has_explicit_repository_context(self):
+        content = load_yaml_text(WORKFLOWS_DIR / "agent-action.yml")
+        self.assertIn("GH_REPO: ${{ github.repository }}", content)
+        self.assertIn("--match-head-commit", content)
 
 
 # ═════════════════════════════════════════════

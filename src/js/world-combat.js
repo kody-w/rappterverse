@@ -353,7 +353,7 @@ const WorldCombat = {
         // Boss intro overlay
         const overlay = document.createElement('div');
         overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.7);z-index:9999;opacity:0;transition:opacity 0.5s;pointer-events:none;';
-        overlay.innerHTML = `<div style="color:${isVoidColossus ? '#aa44ff' : '#00ffcc'};font-size:48px;font-family:monospace;text-transform:uppercase;letter-spacing:8px;text-shadow:0 0 30px currentColor;">${bossName}</div>`;
+        overlay.innerHTML = `<div style="color:${isVoidColossus ? '#aa44ff' : '#00ffcc'};font-size:48px;font-family:monospace;text-transform:uppercase;letter-spacing:8px;text-shadow:0 0 30px currentColor;">${escapeHTML(bossName)}</div>`;
         document.body.appendChild(overlay);
         requestAnimationFrame(() => { overlay.style.opacity = '1'; });
         this._overlayTimeouts.push(setTimeout(() => { overlay.style.opacity = '0'; }, 1500));
@@ -873,8 +873,12 @@ const WorldCombat = {
             var gradeColor = echoScore >= 80 ? '#ffd700' : echoScore >= 55 ? '#00ff88' : echoScore >= 40 ? '#ffaa00' : '#8b949e';
             echoText += '\n\nECHO SCORE: ' + echoScore + '/100 [' + grade + ']';
 
-            echoSummary.innerHTML = echoText.replace(/\n/g, '<br>') +
-                '<div style="font-size:24px;color:' + gradeColor + ';font-weight:bold;margin-top:8px;letter-spacing:4px;">' + grade + '</div>';
+            echoSummary.textContent = echoText;
+            echoSummary.style.whiteSpace = 'pre-line';
+            var gradeEl = document.createElement('div');
+            gradeEl.style.cssText = 'font-size:24px;color:' + gradeColor + ';font-weight:bold;margin-top:8px;letter-spacing:4px;';
+            gradeEl.textContent = grade;
+            echoSummary.appendChild(gradeEl);
         }
         // VFX victory burst
         if (typeof VFX !== 'undefined') {

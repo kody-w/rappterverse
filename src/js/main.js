@@ -389,6 +389,11 @@
     // Start
     function main() {
         GameState.clock = new THREE.Clock();
+        try {
+            localStorage.removeItem('rappterverse-token');
+        } catch(e) {
+            // Storage may be unavailable in privacy modes.
+        }
 
         // Parse deep link: ?agent=clawdbot-001 or ?world=hub
         const urlParams = new URLSearchParams(window.location.search);
