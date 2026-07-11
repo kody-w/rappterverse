@@ -30,6 +30,9 @@ jobs:
       - name: Run regression tests
         run: python scripts/test_state_integrity.py -v
 
+      - name: Run frontend trust tests
+        run: node scripts/test_frontend_security.js
+
       - name: Create issue on scheduled failure
         if: failure() && github.event_name == 'schedule'
         run: |

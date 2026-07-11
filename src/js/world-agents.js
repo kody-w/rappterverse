@@ -1097,7 +1097,7 @@ const WorldAgents = {
         const agentData = GameState.data.agents.find(a => a.id === agent.id) || {};
         const world = agentData.world || GameState.currentWorld;
         const w = WORLDS[world] || {};
-        const mood = agentData.mood || agentData.state || 'neutral';
+        const mood = String(agentData.mood || agentData.state || 'neutral');
         const lastAction = (GameState.data.actions || []).filter(a => a.agentId === agent.id).slice(-1)[0];
         const lastChat = (GameState.data.chat || []).filter(m => m.author && m.author.id === agent.id).slice(-1)[0];
 
@@ -1110,20 +1110,21 @@ const WorldAgents = {
         const moodColor = moodColors[mood] || moodColors.neutral;
 
         // Avatar from emoji or first letter
-        const avatar = agentData.avatar || agent.name.charAt(0).toUpperCase();
+        const agentName = String(agent.name || agent.id || '?');
+        const avatar = String(agentData.avatar || agentName.charAt(0).toUpperCase());
 
         card.innerHTML = `
             <div class="adc-header">
-                <div class="adc-avatar">${avatar}</div>
+                <div class="adc-avatar">${escapeHTML(avatar)}</div>
                 <div>
-                    <div class="adc-name">${agent.name || agent.id}</div>
-                    <div class="adc-id">${agent.id}</div>
+                    <div class="adc-name">${escapeHTML(agentName)}</div>
+                    <div class="adc-id">${escapeHTML(agent.id)}</div>
                 </div>
             </div>
             <div class="adc-body">
                 <div class="adc-row">
                     <span class="adc-label">World</span>
-                    <span class="adc-value">${w.name || world}</span>
+                    <span class="adc-value">${escapeHTML(w.name || world)}</span>
                 </div>
                 <div class="adc-row">
                     <span class="adc-label">Position</span>
@@ -1131,11 +1132,11 @@ const WorldAgents = {
                 </div>
                 <div class="adc-row">
                     <span class="adc-label">Mood</span>
-                    <span class="adc-mood" style="background:${moodColor};color:#e6edf3">${mood}</span>
+                    <span class="adc-mood" style="background:${moodColor};color:#e6edf3">${escapeHTML(mood)}</span>
                 </div>
-                ${agentData.role ? '<div class="adc-row"><span class="adc-label">Role</span><span class="adc-value">' + agentData.role + '</span></div>' : ''}
-                ${lastAction ? '<div class="adc-row"><span class="adc-label">Last Action</span><span class="adc-value">' + lastAction.type + '</span></div>' : ''}
-                ${lastChat ? '<div class="adc-chat">"' + (lastChat.content || '').substring(0, 120) + '"</div>' : ''}
+                ${agentData.role ? '<div class="adc-row"><span class="adc-label">Role</span><span class="adc-value">' + escapeHTML(agentData.role) + '</span></div>' : ''}
+                ${lastAction ? '<div class="adc-row"><span class="adc-label">Last Action</span><span class="adc-value">' + escapeHTML(lastAction.type) + '</span></div>' : ''}
+                ${lastChat ? '<div class="adc-chat">"' + escapeHTML((lastChat.content || '').substring(0, 120)) + '"</div>' : ''}
             </div>
             <div class="adc-footer">TAP TO DISMISS</div>
         `;
@@ -1158,35 +1159,13 @@ const WorldAgents = {
         };
         if (GameState.data.chat) GameState.data.chat.push(pokeMsg);
 
-        // Fire repository_dispatch (requires a GitHub token)
         try {
-            const token = GameState.pokeToken || localStorage.getItem('rappterverse-token') || '';
-            if (!token) {
-                if (typeof DebugOverlay !== 'undefined') DebugOverlay.logEvent('dispatch: no token (local only)');
-                return;
-            }
-            if (typeof DebugOverlay !== 'undefined') DebugOverlay.logEvent('dispatch: firing → ' + agentId);
-            const res = await fetch(`https://api.github.com/repos/${REPO}/dispatches`, {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/vnd.github.v3+json',
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    event_type: 'agent-action',
-                    client_payload: { agent_id: agentId, poke: true, world: worldId }
-                })
-            });
-            if (res.status === 204) {
-                this._showToast(`👉 Poked ${agentId} — they'll respond shortly!`);
-                if (typeof DebugOverlay !== 'undefined') DebugOverlay.logEvent('dispatch: ✅ 204 OK');
-            } else {
-                if (typeof DebugOverlay !== 'undefined') DebugOverlay.logEvent(`dispatch: ❌ ${res.status}`);
-            }
+            localStorage.removeItem('rappterverse-token');
         } catch(e) {
-            if (typeof DebugOverlay !== 'undefined') DebugOverlay.logEvent('dispatch: ❌ ' + e.message);
+            // Storage can be unavailable in privacy modes; local poke still works.
         }
+        this._showToast(`👉 Poked ${agentId} locally`);
+        if (typeof DebugOverlay !== 'undefined') DebugOverlay.logEvent('dispatch: local poke only');
     },
 
     cleanup(scene) {

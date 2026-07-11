@@ -7,56 +7,80 @@
 
 const RappterVM = {
     // ── Core state ──
-    _env: {},           // Global environment (bindings)
+    _env: Object.create(null), // Global environment (bindings)
     _programs: {},      // Per-agent programs: agentId → [expr, ...]
     _frameData: null,   // Last frame snapshot
     _tickCount: 0,
     _lastFrameTime: 0,
     _running: false,
+    _evalSteps: 0,
+    _limits: {
+        sourceLength: 20000,
+        tokens: 4096,
+        stringLength: 2048,
+        astDepth: 64,
+        forms: 128,
+        evalSteps: 4096
+    },
 
     // ── S-Expression Parser ──
     parse(src) {
+        if (typeof src !== 'string' || src.length > this._limits.sourceLength) {
+            throw new Error('Lisp source exceeds the allowed size');
+        }
         var tokens = this._tokenize(src);
         var result = [];
-        while (tokens.length > 0) result.push(this._readForm(tokens));
+        while (tokens.length > 0) {
+            if (result.length >= this._limits.forms) throw new Error('Lisp form budget exceeded');
+            result.push(this._readForm(tokens, 0));
+        }
         return result;
     },
 
     _tokenize(src) {
         var tokens = [];
+        var self = this;
+        var pushToken = function(token) {
+            tokens.push(token);
+            if (tokens.length > self._limits.tokens) throw new Error('Lisp token budget exceeded');
+        };
         var i = 0;
         while (i < src.length) {
             var c = src[i];
             if (c === ' ' || c === '\t' || c === '\n' || c === '\r') { i++; continue; }
             if (c === ';') { while (i < src.length && src[i] !== '\n') i++; continue; }
-            if (c === '(' || c === ')') { tokens.push(c); i++; continue; }
+            if (c === '(' || c === ')') { pushToken(c); i++; continue; }
             if (c === '"') {
                 var s = ''; i++;
                 while (i < src.length && src[i] !== '"') { s += src[i]; i++; }
-                i++; tokens.push('"' + s + '"'); continue;
+                if (i >= src.length) throw new Error('Unterminated Lisp string');
+                if (s.length > this._limits.stringLength) throw new Error('Lisp string exceeds the allowed size');
+                i++; pushToken('"' + s + '"'); continue;
             }
             if (c === ':') {
                 var kw = ':'; i++;
                 while (i < src.length && src[i] !== ' ' && src[i] !== ')' && src[i] !== '\n') { kw += src[i]; i++; }
-                tokens.push(kw); continue;
+                pushToken(kw); continue;
             }
             var tok = '';
             while (i < src.length && src[i] !== ' ' && src[i] !== ')' && src[i] !== '(' && src[i] !== '\n' && src[i] !== '\t') { tok += src[i]; i++; }
-            tokens.push(tok);
+            pushToken(tok);
         }
         return tokens;
     },
 
-    _readForm(tokens) {
+    _readForm(tokens, depth) {
+        if (depth > this._limits.astDepth) throw new Error('Lisp AST depth exceeded');
         if (tokens.length === 0) return null;
         var t = tokens.shift();
         if (t === '(') {
             var list = [];
-            while (tokens.length > 0 && tokens[0] !== ')') list.push(this._readForm(tokens));
-            if (tokens.length > 0) tokens.shift(); // consume ')'
+            while (tokens.length > 0 && tokens[0] !== ')') list.push(this._readForm(tokens, depth + 1));
+            if (tokens.length === 0) throw new Error('Unterminated Lisp list');
+            tokens.shift(); // consume ')'
             return list;
         }
-        if (t === ')') return null;
+        if (t === ')') throw new Error('Unexpected Lisp closing parenthesis');
         // Atom
         if (t[0] === '"') return t.slice(1, -1); // string
         if (t[0] === ':') return { keyword: t.slice(1) }; // keyword
@@ -70,6 +94,8 @@ const RappterVM = {
 
     // ── Evaluator ──
     eval(expr, env) {
+        this._evalSteps++;
+        if (this._evalSteps > this._limits.evalSteps) throw new Error('Lisp evaluation budget exceeded');
         if (expr === null || expr === undefined) return null;
         if (typeof expr === 'number' || typeof expr === 'string' || typeof expr === 'boolean') return expr;
         if (expr.keyword) return expr;
@@ -77,7 +103,8 @@ const RappterVM = {
         if (!Array.isArray(expr) || expr.length === 0) return expr;
 
         var head = expr[0];
-        var op = head.symbol ? head.symbol : head;
+        if (!head || !head.symbol || head.symbol.indexOf('.') !== -1 || !this._isSafeKey(head.symbol)) return null;
+        var op = head.symbol;
 
         // Special forms
         if (op === 'if') return this.eval(expr[1], env) ? this.eval(expr[2], env) : (expr[3] ? this.eval(expr[3], env) : null);
@@ -87,6 +114,7 @@ const RappterVM = {
             var local = Object.create(env);
             for (var i = 0; i < bindings.length; i += 2) {
                 var name = bindings[i].symbol || bindings[i];
+                if (!this._isSafeKey(name)) throw new Error('Unsafe Lisp binding');
                 local[name] = this.eval(bindings[i + 1], local);
             }
             var r = null;
@@ -99,7 +127,9 @@ const RappterVM = {
             return function() {
                 var local = Object.create(closure);
                 for (var i = 0; i < params.length; i++) {
-                    local[params[i].symbol || params[i]] = arguments[i];
+                    var name = params[i].symbol || params[i];
+                    if (!RappterVM._isSafeKey(name)) throw new Error('Unsafe Lisp parameter');
+                    local[name] = arguments[i];
                 }
                 var r = null;
                 for (var i = 0; i < body.length; i++) r = RappterVM.eval(body[i], local);
@@ -107,23 +137,58 @@ const RappterVM = {
             };
         }
         if (op === 'quote') return expr[1];
-        if (op === 'def') { env[expr[1].symbol || expr[1]] = this.eval(expr[2], env); return null; }
+        if (op === 'def') {
+            var defName = expr[1].symbol || expr[1];
+            if (!this._isSafeKey(defName)) throw new Error('Unsafe Lisp definition');
+            env[defName] = this.eval(expr[2], env);
+            return null;
+        }
 
-        // Function call
-        var fn = this.eval(head, env);
+        // Calls are restricted to literal, safe operator names.
+        var fn = this._lookup(op, env);
         var args = [];
         for (var i = 1; i < expr.length; i++) args.push(this.eval(expr[i], env));
         if (typeof fn === 'function') return fn.apply(null, args);
         return null;
     },
 
+    run(expr, env) {
+        this._evalSteps = 0;
+        return this.eval(expr, env);
+    },
+
+    _isSafeKey(key) {
+        if (typeof key !== 'string' || key.length === 0 || key.length > 128) return false;
+        return key !== 'constructor' && key !== 'prototype' && key !== '__proto__';
+    },
+
+    _getOwn(obj, key) {
+        key = key && key.keyword !== undefined ? key.keyword : key;
+        if (obj == null || !this._isSafeKey(key)) return null;
+        return Object.prototype.hasOwnProperty.call(Object(obj), key) ? obj[key] : null;
+    },
+
     _lookup(name, env) {
-        if (name in env) return env[name];
-        if (name in this._env) return this._env[name];
-        // Dotted access: agent.hp → env.agent.hp
         var parts = name.split('.');
-        var obj = env[parts[0]] || this._env[parts[0]];
-        for (var i = 1; i < parts.length && obj; i++) obj = obj[parts[i]];
+        for (var p = 0; p < parts.length; p++) {
+            if (!this._isSafeKey(parts[p])) return null;
+        }
+
+        var cursor = env;
+        var obj = null;
+        while (cursor) {
+            if (Object.prototype.hasOwnProperty.call(cursor, parts[0])) {
+                obj = cursor[parts[0]];
+                break;
+            }
+            cursor = Object.getPrototypeOf(cursor);
+        }
+        if (obj === null && Object.prototype.hasOwnProperty.call(this._env, parts[0])) {
+            obj = this._env[parts[0]];
+        }
+        for (var i = 1; i < parts.length && obj != null; i++) {
+            obj = this._getOwn(obj, parts[i]);
+        }
         return obj !== undefined ? obj : null;
     },
 
@@ -162,13 +227,22 @@ const RappterVM = {
         env['list'] = function() { return Array.prototype.slice.call(arguments); };
         env['first'] = function(a) { return a && a[0]; };
         env['rest'] = function(a) { return a ? a.slice(1) : []; };
-        env['nth'] = function(a, i) { return a ? a[i] : null; };
+        env['nth'] = function(a, i) {
+            if ((!Array.isArray(a) && typeof a !== 'string') || !Number.isInteger(i)) return null;
+            return i >= 0 && i < a.length ? a[i] : null;
+        };
         env['count'] = function(a) { return a ? a.length : 0; };
         env['map'] = function(fn, list) { return list ? list.map(fn) : []; };
         env['filter'] = function(fn, list) { return list ? list.filter(fn) : []; };
         env['reduce'] = function(fn, init, list) { return list ? list.reduce(fn, init) : init; };
-        env['get'] = function(obj, key) { return obj ? obj[key] || obj[key.keyword] : null; };
-        env['assoc'] = function(obj, k, v) { var o = Object.assign({}, obj); o[k.keyword || k] = v; return o; };
+        env['get'] = function(obj, key) { return RappterVM._getOwn(obj, key); };
+        env['assoc'] = function(obj, k, v) {
+            var key = k && k.keyword !== undefined ? k.keyword : k;
+            if (!RappterVM._isSafeKey(key)) return null;
+            var o = Object.assign(Object.create(null), obj || {});
+            o[key] = v;
+            return o;
+        };
 
         // ── World Actions (side effects on the 3D world) ──
         env['move-toward'] = function(agentId, tx, tz, speed) {
@@ -300,7 +374,7 @@ const RappterVM = {
 
     // ── Frame Integration ──
     init() {
-        this._env = {};
+        this._env = Object.create(null);
         this._programs = {};
         this._tickCount = 0;
         this._lastFrameTime = Date.now();
@@ -539,6 +613,7 @@ const RappterVM = {
             var program = this._programs[id];
             if (!program) continue;
             this._env['self'] = id;
+            this._evalSteps = 0;
             for (var j = 0; j < program.length; j++) {
                 try { this.eval(program[j], this._env); } catch(e) {}
             }

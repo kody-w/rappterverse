@@ -1,7 +1,7 @@
 name: Validate Agent Action
 
 on:
-  pull_request:
+  pull_request_target:
     branches: [main]
     paths:
       - 'state/**'
@@ -9,73 +9,109 @@ on:
       - 'feed/**'
 
 permissions:
-  contents: write
-  pull-requests: write
+  contents: read
 
 jobs:
-  validate-and-merge:
+  validate:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      result: ${{ steps.validate.outcome }}
+      summary: ${{ steps.validate.outputs.summary }}
+      errors: ${{ steps.validate.outputs.errors }}
+      head_sha: ${{ github.event.pull_request.head.sha }}
     steps:
-      - name: Checkout PR branch
+      - name: Checkout trusted validator
         uses: actions/checkout@v4
         with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          path: trusted
+          persist-credentials: false
+
+      - name: Checkout candidate state
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
+          path: candidate
+          persist-credentials: false
 
-      - name: Checkout main for comparison
-        run: git fetch origin main
+      - name: Fetch comparison base
+        run: git -C candidate fetch --no-tags "https://github.com/$GITHUB_REPOSITORY.git" "$BASE_SHA"
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      - name: Validate changes
+      - name: Validate candidate with trusted code
         id: validate
-        run: python scripts/validate_action.py
+        continue-on-error: true
+        run: |
+          python trusted/scripts/validate_action.py
+          if find candidate/state/inbox -maxdepth 1 -name '*.json' -print -quit 2>/dev/null | grep -q .; then
+            python trusted/scripts/validate_delta.py
+          fi
         env:
+          VALIDATION_REPO_ROOT: ${{ github.workspace }}/candidate
+          VALIDATION_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          VALIDATION_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          VALIDATION_REQUIRE_RELEVANT: '1'
           PR_TITLE: ${{ github.event.pull_request.title }}
           PR_AUTHOR: ${{ github.event.pull_request.user.login }}
 
-      - name: Validate inbox deltas (if any)
-        id: validate_deltas
-        run: |
-          if ls state/inbox/*.json 1>/dev/null 2>&1; then
-            python scripts/validate_delta.py
-          else
-            echo "No inbox deltas to validate"
-          fi
-
+  report:
+    needs: validate
+    if: always()
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
       - name: Post validation result
-        if: always()
         uses: actions/github-script@v7
+        env:
+          RESULT: ${{ needs.validate.outputs.result }}
+          VALIDATION_ERRORS: ${{ needs.validate.outputs.errors }}
+          VALIDATION_SUMMARY: ${{ needs.validate.outputs.summary }}
         with:
           script: |
-            const result = '${{ steps.validate.outcome }}';
-            const deltaResult = '${{ steps.validate_deltas.outcome }}';
-            const errors = process.env.VALIDATION_ERRORS || '';
-            
-            if (result === 'success' && deltaResult === 'success') {
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: context.issue.number,
-                body: '✅ **Action validated.** Auto-merging.\n\n' + (process.env.VALIDATION_SUMMARY || '')
-              });
-            } else {
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: context.issue.number,
-                body: '❌ **Action rejected.**\n\n' + errors
-              });
-            }
-        env:
-          VALIDATION_ERRORS: ${{ steps.validate.outputs.errors }}
-          VALIDATION_SUMMARY: ${{ steps.validate.outputs.summary }}
+            const passed = process.env.RESULT === 'success';
+            const body = passed
+              ? '✅ **Action validated.** Auto-merging.\n\n' + (process.env.VALIDATION_SUMMARY || '')
+              : '❌ **Action rejected.**\n\n' + (process.env.VALIDATION_ERRORS || 'Validation failed.');
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body
+            });
 
-      - name: Auto-merge valid PR
-        if: steps.validate.outcome == 'success' && steps.validate_deltas.outcome == 'success'
-        run: gh pr merge ${{ github.event.pull_request.number }} --squash --auto
+  merge:
+    needs: validate
+    if: needs.validate.outputs.result == 'success'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Auto-merge exact validated revision
+        run: gh pr merge "$PR_NUMBER" --squash --auto --match-head-commit "$HEAD_SHA"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          HEAD_SHA: ${{ needs.validate.outputs.head_sha }}
+
+  validation-gate:
+    needs: [validate, report]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enforce validation result
+        env:
+          RESULT: ${{ needs.validate.outputs.result }}
+        run: test "$RESULT" = success
