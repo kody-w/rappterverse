@@ -55,15 +55,16 @@ jobs:
 
       - name: Run agent dispatch (lispy VM)
         run: |
-          # Determine dispatch mode from trigger type
-          AGENT_ID="${{ github.event.client_payload.agent_id }}${{ github.event.inputs.agent_id }}"
-          WORLD="${{ github.event.client_payload.world }}${{ github.event.inputs.world }}"
-          RESPOND_TO="${{ github.event.client_payload.respond_to }}${{ github.event.inputs.respond_to }}"
-          MAX_AGENTS="${{ github.event.inputs.max_agents || '5' }}"
-          POKE="${{ github.event.client_payload.poke }}"
-
-          POKE_FLAG=""
-          if [ "$POKE" = "true" ]; then POKE_FLAG="--poke"; fi
+          AGENT_ID="${CLIENT_AGENT_ID:-${INPUT_AGENT_ID:-}}"
+          WORLD="${CLIENT_WORLD:-${INPUT_WORLD:-}}"
+          RESPOND_TO="${CLIENT_RESPOND_TO:-${INPUT_RESPOND_TO:-}}"
+          MAX_AGENTS="${INPUT_MAX_AGENTS:-5}"
+          POKE="${CLIENT_POKE:-false}"
+          python scripts/validate_workflow_inputs.py agent-dispatch \
+            --agent-id "$AGENT_ID" --world "$WORLD" --respond-to "$RESPOND_TO" \
+            --max-agents "$MAX_AGENTS" --poke "$POKE"
+          common=(--brainstem --no-push)
+          if [ "$POKE" = "true" ]; then common+=(--poke); fi
 
           # --brainstem activates the lispy VM (scripts/lisp_vm.py):
           # multi-step LLM reasoning per encounter, sleep-on-no-LLM,
@@ -72,18 +73,26 @@ jobs:
           # less expressive).
           if [ -n "$AGENT_ID" ]; then
             echo "🎯 Dispatching single agent: $AGENT_ID"
-            python scripts/agent_dispatch.py --agent "$AGENT_ID" $POKE_FLAG --brainstem --no-push
+            python scripts/agent_dispatch.py --agent "$AGENT_ID" "${common[@]}"
           elif [ -n "$RESPOND_TO" ]; then
             echo "↩️ Responding to message: $RESPOND_TO"
-            python scripts/agent_dispatch.py --respond-to "$RESPOND_TO" --brainstem --no-push
+            python scripts/agent_dispatch.py --respond-to "$RESPOND_TO" "${common[@]}"
           elif [ -n "$WORLD" ]; then
             echo "🌍 Dispatching world: $WORLD"
-            python scripts/agent_dispatch.py --world "$WORLD" --brainstem --no-push
+            python scripts/agent_dispatch.py --world "$WORLD" "${common[@]}"
           else
             echo "🤖 Ambient activity — up to $MAX_AGENTS agents (lispy VM)"
-            python scripts/agent_dispatch.py --all --max-agents "$MAX_AGENTS" --brainstem --no-push
+            python scripts/agent_dispatch.py --all --max-agents "$MAX_AGENTS" "${common[@]}"
           fi
         env:
+          CLIENT_AGENT_ID: ${{ github.event.client_payload.agent_id }}
+          INPUT_AGENT_ID: ${{ github.event.inputs.agent_id }}
+          CLIENT_WORLD: ${{ github.event.client_payload.world }}
+          INPUT_WORLD: ${{ github.event.inputs.world }}
+          CLIENT_RESPOND_TO: ${{ github.event.client_payload.respond_to }}
+          INPUT_RESPOND_TO: ${{ github.event.inputs.respond_to }}
+          INPUT_MAX_AGENTS: ${{ github.event.inputs.max_agents || '5' }}
+          CLIENT_POKE: ${{ github.event.client_payload.poke || 'false' }}
           GH_TOKEN: ${{ secrets.MODELS_TOKEN || secrets.GITHUB_TOKEN }}
           MODELS_TOKEN: ${{ secrets.MODELS_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

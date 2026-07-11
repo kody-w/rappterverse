@@ -12,6 +12,12 @@ import sys
 import tempfile
 from pathlib import Path
 
+from action_protocol import (
+    ActionProtocolError,
+    is_action_v1,
+    materialize_action_v1,
+)
+
 BASE_DIR = Path(__file__).parent.parent.resolve()
 STATE_PREFIXES = ("state/", "worlds/", "feed/")
 REQUIRED_CHECKS = {"state-consensus", "pii-scan", "test"}
@@ -266,6 +272,16 @@ class StateReconciler:
                 f"{base_sha}...{head_sha}", "--",
             ], cwd=candidate).splitlines()
             preflight_candidate(candidate, changed_paths)
+            action_v1_paths = []
+            for filepath in changed_paths:
+                full_path = candidate / filepath
+                if not filepath.startswith("state/inbox/") or not full_path.is_file():
+                    continue
+                try:
+                    if is_action_v1(json.loads(full_path.read_text(encoding="utf-8"))):
+                        action_v1_paths.append(full_path)
+                except (json.JSONDecodeError, OSError):
+                    continue
             env = os.environ.copy()
             env.update({
                 "VALIDATION_REPO_ROOT": str(candidate),
@@ -293,6 +309,33 @@ class StateReconciler:
                 base_sha,
                 head_sha,
             ], env=env)
+
+            if action_v1_paths:
+                if len(action_v1_paths) != 1:
+                    raise ValidationRejected("ActionV1 requires exactly one envelope")
+                source = {
+                    "pr": number,
+                    "headSha": head_sha,
+                    "author": author,
+                    "baseSha": base_sha,
+                    "policySha": self.policy_sha,
+                    "acceptedAt": pr.get("createdAt"),
+                    "trustedAutomation": [self.owner, "github-actions[bot]"],
+                }
+                try:
+                    materialize_action_v1(candidate, action_v1_paths[0], source)
+                except ActionProtocolError as exc:
+                    raise ValidationRejected(f"{exc.code}: {exc}") from exc
+                run_validation([
+                    sys.executable,
+                    str(BASE_DIR / "scripts" / "pii_scan.py"),
+                    "--repo-root",
+                    str(candidate),
+                    "--paths",
+                    "state/actions.json",
+                    "state/protocol",
+                ], env=env)
+
             run_validation([
                 sys.executable,
                 str(BASE_DIR / "scripts" / "test_state_integrity.py"),
@@ -303,6 +346,7 @@ class StateReconciler:
                 "TestStateJSON",
                 "TestWorldObjectIntegrity",
             ], env=env)
+            run_command(["git", "add", "-A", "--", "state", "worlds", "feed"], cwd=candidate)
 
             tree_sha = run_command(["git", "write-tree"], cwd=candidate)
             commit_env = env.copy()

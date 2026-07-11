@@ -1,6 +1,6 @@
 // World Combat — Creep Waves, Tower Attacks, Momentum, Player Combat
 const COMBAT_CONFIG = {
-    warmupTime: 120000,  // 2 minutes before first wave
+    warmupTime: 0,       // Arena practice starts on the first update
     waveInterval: 25000,
     creepsPerWave: 3,
     creepSpeed: 10,

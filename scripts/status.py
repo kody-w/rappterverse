@@ -38,7 +38,7 @@ def time_ago(iso_str):
 
 
 def run(cmd):
-    r = subprocess.run(cmd, capture_output=True, text=True, shell=True, timeout=15)
+    r = subprocess.run(cmd, capture_output=True, text=True, timeout=15)
     return r.stdout.strip()
 
 
@@ -57,7 +57,10 @@ def main():
     }
     for wf, label in workflows.items():
         try:
-            out = run(f"gh run list --workflow='{wf}' --limit 5 --json status,conclusion,createdAt,event 2>/dev/null")
+            out = run([
+                "gh", "run", "list", f"--workflow={wf}", "--limit", "5",
+                "--json", "status,conclusion,createdAt,event",
+            ])
             runs = json.loads(out) if out else []
             if not runs:
                 print(f"  {label}: ⚠️  No runs found")

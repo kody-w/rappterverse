@@ -1065,6 +1065,16 @@ def main():
             "State action PRs may only modify state/, worlds/, or feed/: "
             + ", ".join(unexpected_files)
         )
+    reserved_protocol_files = [
+        filepath
+        for filepath in changed_files
+        if filepath == "state/protocol" or filepath.startswith("state/protocol/")
+    ]
+    if reserved_protocol_files:
+        error(
+            "state/protocol is publisher-owned and cannot be modified by pull requests: "
+            + ", ".join(reserved_protocol_files)
+        )
 
     if not rappterverse_files:
         if os.environ.get("VALIDATION_REQUIRE_RELEVANT") == "1":
@@ -1073,6 +1083,23 @@ def main():
             info("No rappterverse files changed")
             set_output("summary", "No rappterverse state files modified.")
             sys.exit(0)
+
+    action_v1_files = []
+    for filepath in rappterverse_files:
+        if not filepath.startswith("state/inbox/") or not filepath.endswith(".json"):
+            continue
+        try:
+            with (BASE_DIR / filepath).open(encoding="utf-8") as stream:
+                if json.load(stream).get("schema") == "rappterverse.action/v1":
+                    action_v1_files.append(filepath)
+        except (FileNotFoundError, json.JSONDecodeError, OSError):
+            continue
+    if action_v1_files and (
+        len(action_v1_files) != 1
+        or len(rappterverse_files) != 1
+        or len(changed_files) != 1
+    ):
+        error("ActionV1 PRs must add exactly one inbox envelope and no other files")
 
     info(f"Changed files: {', '.join(rappterverse_files)}")
 

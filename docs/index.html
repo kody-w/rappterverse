@@ -3517,6 +3517,13 @@ const DataManager = {
             gallery: snapshot.galleryObj.objects,
             dungeon: snapshot.dungeonObj.objects
         };
+        if (
+            typeof WorldMode !== 'undefined'
+            && WorldMode.active
+            && WorldMode.onCanonicalConfigChanged
+        ) {
+            WorldMode.onCanonicalConfigChanged();
+        }
 
         if (Array.isArray(snapshot.npcs?.npcs)) GameState.data.npcs = snapshot.npcs.npcs;
         if (snapshot.frameCounter) GameState.data.frameCounter = snapshot.frameCounter;
@@ -8447,7 +8454,7 @@ const VFX = {
 // === js/world-combat.js ===
 // World Combat — Creep Waves, Tower Attacks, Momentum, Player Combat
 const COMBAT_CONFIG = {
-    warmupTime: 120000,  // 2 minutes before first wave
+    warmupTime: 0,       // Arena practice starts on the first update
     waveInterval: 25000,
     creepsPerWave: 3,
     creepSpeed: 10,
@@ -11697,7 +11704,10 @@ const WorldAgents = {
             content: `👉 poked ${agentId}`,
             type: 'poke'
         };
-        if (GameState.data.localChat) GameState.data.localChat.push(pokeMsg);
+        if (GameState.data.localChat) {
+            GameState.data.localChat.push(pokeMsg);
+            if (GameState.data.localChat.length > 20) GameState.data.localChat.splice(0, GameState.data.localChat.length - 20);
+        }
 
         try {
             localStorage.removeItem('rappterverse-token');
@@ -13008,6 +13018,7 @@ const WorldMode = {
     cameraZoom: 1.0,      // 0.4 = close, 1.0 = default, 2.0 = far
     _cameraBaseY: 8,
     _cameraBaseZ: 12,
+    combatEnabled: false,
 
     init(worldId) {
         this.currentWorld = worldId;
@@ -13016,6 +13027,8 @@ const WorldMode = {
         if (typeof WorldSeed !== 'undefined') WorldSeed.init();
 
         const w = WORLDS[worldId];
+        const canonicalConfig = GameState.getWorldConfig(worldId);
+        this.combatEnabled = canonicalConfig?.features?.battles === true;
 
         // Scene
         this.scene = new THREE.Scene();
@@ -13032,34 +13045,30 @@ const WorldMode = {
         container.style.display = 'block';
 
         // Show combat HUD
-        document.getElementById('combat-hud').style.display = 'flex';
-        const statsBar = document.getElementById('player-stats-bar');
-        if (statsBar) statsBar.style.display = 'flex';
-        const goldBar = document.getElementById('gold-kda-bar');
-        if (goldBar) goldBar.style.display = 'flex';
-        const levelBadge = document.getElementById('level-badge');
-        if (levelBadge) levelBadge.style.display = 'block';
-        const abilityBar = document.getElementById('ability-bar');
-        if (abilityBar) abilityBar.style.display = 'flex';
+        this._setCombatUi(this.combatEnabled);
 
         // Build terrain, lanes, combat, agents
         WorldTerrain.build(this.scene, w, worldId);
-        WorldLanes.init(this.scene, w);
         if (typeof VFX !== 'undefined') VFX.init(this.scene);
-        WorldCombat.init(this.scene);
-        if (typeof JungleCamps !== "undefined") JungleCamps.init(this.scene, w);
-        if (typeof FogOfWar !== 'undefined') FogOfWar.init(this.scene, w);
+        if (this.combatEnabled) {
+            WorldLanes.init(this.scene, w);
+            WorldCombat.init(this.scene);
+            if (typeof JungleCamps !== "undefined") JungleCamps.init(this.scene, w);
+            if (typeof FogOfWar !== 'undefined') FogOfWar.init(this.scene, w);
+        } else {
+            WorldCombat.cleanup();
+        }
         WorldAgents.loadObjects(this.scene, worldId);
         WorldAgents.syncAgents(this.scene, worldId);
 
         // Init RPG systems
-        if (typeof PlayerStats !== 'undefined') { PlayerStats.init(); PlayerStats.load(); }
-        if (typeof Abilities !== 'undefined') Abilities.init();
-        if (typeof ComboSystem !== 'undefined') ComboSystem.reset();
-        if (typeof Inventory !== 'undefined') Inventory.init();
-        if (typeof Equipment !== 'undefined') Equipment.init();
+        if (this.combatEnabled && typeof PlayerStats !== 'undefined') { PlayerStats.init(); PlayerStats.load(); }
+        if (this.combatEnabled && typeof Abilities !== 'undefined') Abilities.init();
+        if (this.combatEnabled && typeof ComboSystem !== 'undefined') ComboSystem.reset();
+        if (this.combatEnabled && typeof Inventory !== 'undefined') Inventory.init();
+        if (this.combatEnabled && typeof Equipment !== 'undefined') Equipment.init();
         if (typeof StatusEffects !== 'undefined') StatusEffects.cleanup();
-        if (typeof EnemyHero !== 'undefined') EnemyHero.init(this.scene, w.bounds);
+        if (this.combatEnabled && typeof EnemyHero !== 'undefined') EnemyHero.init(this.scene, w.bounds);
 
         // Player
         this.createPlayer(w);
@@ -13094,7 +13103,11 @@ const WorldMode = {
         // HUD
         if (typeof HUD !== 'undefined') {
             HUD.setWorld(worldId);
-            HUD.showToast(`Landed on ${w.name} — SPACE to attack, WASD to move`);
+            HUD.showToast(
+                this.combatEnabled
+                    ? `Landed on ${w.name} — SPACE to attack, WASD to move`
+                    : `Landed on ${w.name} — WASD to explore`
+            );
             if (HUD.initChatFeed) HUD.initChatFeed();
             GameState.currentWorld = worldId;
         }
@@ -13115,7 +13128,7 @@ const WorldMode = {
         // Quest tracker
         if (typeof QuestTracker !== 'undefined') QuestTracker.show();
         // Init Replay System
-        if (typeof ReplaySystem !== 'undefined') ReplaySystem.init();
+        if (this.combatEnabled && typeof ReplaySystem !== 'undefined') ReplaySystem.init();
 
         // Init Echo Engine
         if (typeof EchoEngine !== 'undefined') {
@@ -13259,7 +13272,7 @@ const WorldMode = {
         }
 
         // Player attack (SPACE)
-        if (this.keys['Space']) {
+        if (this.combatEnabled && this.keys['Space']) {
             WorldCombat.playerAttack(this.player.mesh.position);
         }
 
@@ -13319,17 +13332,19 @@ const WorldMode = {
 
         // Sub-system updates
         WorldTerrain.update(time, delta);
-        WorldLanes.updateTowerVisuals(time);
-        WorldCombat.update(delta, time, this.player.mesh.position);
+        if (this.combatEnabled) {
+            WorldLanes.updateTowerVisuals(time);
+            WorldCombat.update(delta, time, this.player.mesh.position);
+        }
         if (typeof VFX !== 'undefined') VFX.update(delta);
-        if (typeof ReplaySystem !== 'undefined') ReplaySystem.update(delta, time);
+        if (this.combatEnabled && typeof ReplaySystem !== 'undefined') ReplaySystem.update(delta, time);
         if (typeof Audio !== 'undefined' && Audio.updateEchoAudio) Audio.updateEchoAudio(delta);
         if (typeof EchoEvents !== 'undefined') EchoEvents.update(delta);
-        if (typeof JungleCamps !== "undefined") JungleCamps.update(delta, this.player.mesh.position);
+        if (this.combatEnabled && typeof JungleCamps !== "undefined") JungleCamps.update(delta, this.player.mesh.position);
         WorldAgents.updateAnimations(time);
         WorldAgents.checkInteractions(this.player.mesh.position);
         if (WorldAgents.updateEdges) WorldAgents.updateEdges(this.scene, time);
-        if (typeof FogOfWar !== 'undefined') FogOfWar.update(this.player.mesh.position);
+        if (this.combatEnabled && typeof FogOfWar !== 'undefined') FogOfWar.update(this.player.mesh.position);
         if (WorldAgents.updateSpeechBubbles) WorldAgents.updateSpeechBubbles(delta);
         if (WorldAgents.updatePokeReactions) WorldAgents.updatePokeReactions(time, delta);
         if (WorldAgents.checkNewChats) WorldAgents.checkNewChats();
@@ -13347,19 +13362,19 @@ const WorldMode = {
         if (typeof DebugOverlay !== 'undefined') DebugOverlay.update(this.player.mesh.position);
 
         // RPG system updates
-        if (typeof PlayerStats !== 'undefined') {
+        if (this.combatEnabled && typeof PlayerStats !== 'undefined') {
             PlayerStats.update(delta);
             if (PlayerStats.dead) return; // Skip everything while dead
         }
-        if (typeof Abilities !== 'undefined') Abilities.update(delta);
-        if (typeof ComboSystem !== 'undefined') ComboSystem.update(delta);
-        if (typeof Inventory !== 'undefined') {
+        if (this.combatEnabled && typeof Abilities !== 'undefined') Abilities.update(delta);
+        if (this.combatEnabled && typeof ComboSystem !== 'undefined') ComboSystem.update(delta);
+        if (this.combatEnabled && typeof Inventory !== 'undefined') {
             Inventory.collectNearby(this.player.mesh.position);
             Inventory.updateDrops(time);
         }
 
-        // Skip ALL combat during warmup — no hero, no creep damage, no enemy anything
-        if (!WorldCombat._warmupActive) {
+        // Battle-world simulation only; non-battle worlds remain safe social spaces.
+        if (this.combatEnabled && !WorldCombat._warmupActive) {
             // Enemy hero update
             if (typeof EnemyHero !== 'undefined') {
                 EnemyHero.update(delta, time, this.player.mesh.position);
@@ -13376,7 +13391,7 @@ const WorldMode = {
                     }
                 }
             }
-        } else {
+        } else if (this.combatEnabled) {
             // During warmup: hide enemy hero far away so it can't interact
             if (typeof EnemyHero !== 'undefined' && EnemyHero.mesh) {
                 EnemyHero.mesh.position.set(9999, 0, 9999);
@@ -13402,6 +13417,71 @@ const WorldMode = {
         WorldAgents.poke(this.currentWorld);
     },
 
+    _setCombatUi(enabled) {
+        const combatHud = document.getElementById('combat-hud');
+        if (combatHud) combatHud.style.display = enabled ? 'flex' : 'none';
+        const statsBar = document.getElementById('player-stats-bar');
+        if (statsBar) statsBar.style.display = enabled ? 'flex' : 'none';
+        const goldBar = document.getElementById('gold-kda-bar');
+        if (goldBar) goldBar.style.display = enabled ? 'flex' : 'none';
+        const levelBadge = document.getElementById('level-badge');
+        if (levelBadge) levelBadge.style.display = enabled ? 'block' : 'none';
+        const abilityBar = document.getElementById('ability-bar');
+        if (abilityBar) abilityBar.style.display = enabled ? 'flex' : 'none';
+    },
+
+    _startCombatSystems() {
+        const world = WORLDS[this.currentWorld];
+        WorldLanes.init(this.scene, world);
+        WorldCombat.init(this.scene);
+        if (typeof JungleCamps !== 'undefined') JungleCamps.init(this.scene, world);
+        if (typeof FogOfWar !== 'undefined') FogOfWar.init(this.scene, world);
+        if (typeof PlayerStats !== 'undefined') { PlayerStats.init(); PlayerStats.load(); }
+        if (typeof Abilities !== 'undefined') Abilities.init();
+        if (typeof ComboSystem !== 'undefined') ComboSystem.reset();
+        if (typeof Inventory !== 'undefined') Inventory.init();
+        if (typeof Equipment !== 'undefined') Equipment.init();
+        if (typeof StatusEffects !== 'undefined') StatusEffects.cleanup();
+        if (typeof EnemyHero !== 'undefined') EnemyHero.init(this.scene, world.bounds);
+        if (typeof ReplaySystem !== 'undefined') ReplaySystem.init();
+        this._setCombatUi(true);
+    },
+
+    _stopCombatSystems() {
+        if (typeof ReplaySystem !== 'undefined') ReplaySystem.cleanup();
+        WorldCombat.cleanup();
+        if (typeof JungleCamps !== 'undefined') JungleCamps.cleanup();
+        WorldLanes.cleanup();
+        if (typeof FogOfWar !== 'undefined') FogOfWar.cleanup();
+        if (typeof Abilities !== 'undefined') Abilities.cleanup();
+        if (typeof Inventory !== 'undefined') Inventory.cleanup();
+        if (typeof Equipment !== 'undefined') Equipment.cleanup();
+        if (typeof StatusEffects !== 'undefined') StatusEffects.cleanup();
+        if (typeof EnemyHero !== 'undefined') EnemyHero.cleanup();
+        if (typeof ComboSystem !== 'undefined') ComboSystem.reset();
+        const deathOverlay = document.getElementById('death-overlay');
+        if (deathOverlay) deathOverlay.style.display = 'none';
+        const victoryOverlay = document.getElementById('victory-overlay');
+        if (victoryOverlay) victoryOverlay.style.display = 'none';
+        const warmupTimer = document.getElementById('warmup-timer');
+        if (warmupTimer) warmupTimer.style.display = 'none';
+        this._setCombatUi(false);
+    },
+
+    onCanonicalConfigChanged() {
+        if (!this.active) return;
+        const enabled = GameState.getWorldConfig(this.currentWorld)?.features?.battles === true;
+        if (enabled === this.combatEnabled) return;
+        this.combatEnabled = enabled;
+        if (enabled) {
+            this._startCombatSystems();
+            if (typeof HUD !== 'undefined') HUD.showToast('Arena combat enabled by canonical world state');
+        } else {
+            this._stopCombatSystems();
+            if (typeof HUD !== 'undefined') HUD.showToast('Combat disabled by canonical world state');
+        }
+    },
+
     render() {
         if (!this.active) return;
         if (typeof PostProcessing !== 'undefined' && PostProcessing.enabled) {
@@ -13412,6 +13492,7 @@ const WorldMode = {
     },
 
     cleanup() {
+        const hadCombat = this.combatEnabled;
         this.active = false;
         window.removeEventListener('keydown', this.keyDown);
         window.removeEventListener('keyup', this.keyUp);
@@ -13419,17 +13500,10 @@ const WorldMode = {
         this.keys = {};
         this.cameraZoom = 1.0;
 
-        if (typeof ReplaySystem !== 'undefined') ReplaySystem.cleanup();
         if (typeof VFX !== 'undefined') VFX.cleanup();
         if (typeof EchoEvents !== 'undefined') EchoEvents.cleanup();
-        WorldCombat.cleanup();
-        if (typeof JungleCamps !== "undefined") JungleCamps.cleanup();
-        WorldLanes.cleanup();
-        if (typeof Abilities !== 'undefined') Abilities.cleanup();
-        if (typeof Inventory !== 'undefined') Inventory.cleanup();
-        if (typeof Equipment !== 'undefined') Equipment.cleanup();
-        if (typeof StatusEffects !== 'undefined') StatusEffects.cleanup();
-        if (typeof EnemyHero !== 'undefined') EnemyHero.cleanup();
+        if (hadCombat) this._stopCombatSystems();
+        else WorldCombat.cleanup();
 
         document.getElementById('world-container').style.display = 'none';
         document.getElementById('combat-hud').style.display = 'none';
@@ -13457,6 +13531,7 @@ const WorldMode = {
         if (typeof QuestTracker !== 'undefined') QuestTracker.hide();
         // Hide touch controls
         if (typeof TouchControls !== 'undefined') TouchControls.hide();
+        this.combatEnabled = false;
     },
 
     onResize() {

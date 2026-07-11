@@ -12,6 +12,13 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
+from action_protocol import (
+    find_exact_receipt,
+    is_action_v1,
+    request_index_shard,
+    validate_envelope,
+)
+
 BASE_DIR = Path(
     os.environ.get("VALIDATION_REPO_ROOT", Path(__file__).parent.parent)
 ).resolve()
@@ -40,10 +47,10 @@ def _trusted_automation_authors() -> set[str]:
     }
 
 
-def _load_base_agents() -> dict | None:
+def _load_base_json(path: str) -> dict | None:
     base_ref = os.environ.get("VALIDATION_BASE_SHA", "origin/main")
     result = subprocess.run(
-        ["git", "show", f"{base_ref}:state/agents.json"],
+        ["git", "show", f"{base_ref}:{path}"],
         capture_output=True,
         text=True,
         cwd=BASE_DIR,
@@ -51,8 +58,14 @@ def _load_base_agents() -> dict | None:
     if result.returncode != 0:
         return None
     try:
-        data = json.loads(result.stdout)
+        return json.loads(result.stdout)
     except json.JSONDecodeError:
+        return None
+
+
+def _load_base_agents() -> dict | None:
+    data = _load_base_json("state/agents.json")
+    if data is None:
         return None
     return {agent["id"]: agent for agent in data.get("agents", []) if "id" in agent}
 
@@ -158,6 +171,33 @@ def validate_delta(path: Path):
         error(f"`{path.name}`: Invalid JSON — {e}")
         return
 
+    if is_action_v1(delta):
+        agents = _load_base_agents()
+        if agents is None:
+            error(f"`{path.name}`: Unable to load trusted base agents")
+        else:
+            cursors = _load_base_json("state/protocol/action_cursors.json") or {}
+            receipts = _load_base_json("state/protocol/action_receipts.json") or {}
+            request_id = str(delta.get("requestId", ""))
+            request_index = _load_base_json(
+                f"state/protocol/request_index/{request_index_shard(request_id)}.json"
+            ) or {}
+            exact_replay = find_exact_receipt(
+                delta,
+                cursors,
+                receipts,
+                request_index,
+            )
+            errors.extend(validate_envelope(
+                delta,
+                agents,
+                os.environ.get("PR_AUTHOR", ""),
+                _trusted_automation_authors(),
+                check_world=not bool(exact_replay),
+            ))
+        print(f"  ✓ Validated ActionV1 envelope {path.name}")
+        return
+
     # Required fields
     if "agent_id" not in delta:
         error(f"`{path.name}`: Missing `agent_id`")
@@ -241,8 +281,17 @@ def main():
 
     print(f"Validating {len(delta_files)} delta file(s):\n")
 
+    action_v1_files = []
     for df in delta_files:
+        try:
+            if is_action_v1(json.loads(df.read_text(encoding="utf-8"))):
+                action_v1_files.append(df)
+        except (json.JSONDecodeError, OSError):
+            pass
         validate_delta(df)
+
+    if action_v1_files and (len(action_v1_files) != 1 or len(delta_files) != 1):
+        error("ActionV1 requires exactly one inbox envelope per PR")
 
     if errors:
         print(f"\n❌ Delta validation failed with {len(errors)} error(s):")

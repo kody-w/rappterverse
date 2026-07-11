@@ -11,6 +11,7 @@ from __future__ import annotations
 import json
 import os
 import re
+import copy
 import shutil
 import subprocess
 import sys
@@ -258,6 +259,75 @@ class TestWorkflowPII(unittest.TestCase):
         self.assertIn("statuses: write", content)
 
 
+class TestWorkflowInputSafety(unittest.TestCase):
+    """Privileged workflows must validate data before constructing argv."""
+
+    def _validate(self, *args):
+        return subprocess.run(
+            [
+                sys.executable,
+                str(BASE_DIR / "scripts" / "validate_workflow_inputs.py"),
+                *args,
+            ],
+            capture_output=True,
+            text=True,
+        )
+
+    def test_dispatch_input_validation(self):
+        valid = self._validate(
+            "agent-dispatch",
+            "--agent-id", "clawdbot-001",
+            "--world", "",
+            "--respond-to", "",
+            "--max-agents", "5",
+            "--poke", "true",
+        )
+        self.assertEqual(valid.returncode, 0, valid.stderr)
+        malicious = self._validate(
+            "agent-dispatch",
+            "--agent-id", "clawdbot-001;echo-owned",
+            "--world", "",
+            "--respond-to", "",
+            "--max-agents", "5",
+            "--poke", "false",
+        )
+        self.assertEqual(malicious.returncode, 2)
+
+    def test_growth_input_bounds(self):
+        self.assertEqual(
+            self._validate(
+                "world-growth", "--force-spawn", "200", "--dry-run", "true"
+            ).returncode,
+            0,
+        )
+        self.assertEqual(
+            self._validate(
+                "world-growth", "--force-spawn", "201", "--dry-run", "false"
+            ).returncode,
+            2,
+        )
+
+    def test_workflows_do_not_interpolate_payloads_into_shell(self):
+        autonomy = load_yaml_text(WORKFLOWS_DIR / "agent-autonomy.yml")
+        growth = load_yaml_text(WORKFLOWS_DIR / "world-growth.yml")
+        self.assertNotIn('AGENT_ID="${{', autonomy)
+        self.assertNotIn('FORCE="${{', growth)
+        self.assertIn('common=(--brainstem --no-push)', autonomy)
+        self.assertIn('args=(--no-push)', growth)
+        validate_index = growth.index("- name: Validate growth inputs")
+        run_index = growth.index("- name: Run growth simulation")
+        self.assertLess(validate_index, run_index)
+        self.assertNotIn("continue-on-error", growth[validate_index:run_index])
+        self.assertNotIn("shell=True", (BASE_DIR / "scripts" / "status.py").read_text())
+
+    def test_pr_regression_code_has_read_only_permissions(self):
+        workflow = load_yaml_text(WORKFLOWS_DIR / "regression-tests.yml")
+        test_job = workflow.split("  bundle-fresh:", 1)[0]
+        self.assertNotIn("issues: write", test_job)
+        self.assertIn("report-scheduled-failure:", workflow)
+        self.assertIn("GH_REPO: ${{ github.repository }}", workflow)
+
+
 class TestPIIScanner(unittest.TestCase):
     """Exercise strict scanner modes and verify findings never echo PII values."""
 
@@ -474,6 +544,24 @@ class TestPRValidatorGate(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("may only modify state/", result.stdout)
 
+    def test_protocol_projection_is_publisher_owned(self):
+        protocol = self.repo / "state" / "protocol"
+        protocol.mkdir()
+        (protocol / "action_cursors.json").write_text("{}\n", encoding="utf-8")
+        self._git("add", "state/protocol/action_cursors.json")
+        self._git("commit", "-qm", "forge protocol cursor")
+        result = self._run_validator(PR_AUTHOR="openclaw")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("publisher-owned", result.stdout)
+
+    def test_protocol_namespace_file_is_reserved(self):
+        (self.repo / "state" / "protocol").write_text("{}\n", encoding="utf-8")
+        self._git("add", "state/protocol")
+        self._git("commit", "-qm", "preempt protocol namespace")
+        result = self._run_validator(PR_AUTHOR="openclaw")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("publisher-owned", result.stdout)
+
     def test_matching_controller_can_append_action(self):
         self._commit_action("clawdbot-001")
         result = self._run_validator(PR_AUTHOR="openclaw")
@@ -540,6 +628,238 @@ class TestAgentActionWorkflowTrust(unittest.TestCase):
         self.assertIn("context: 'state-consensus'", content)
         self.assertIn("gh workflow run state-drain.yml", content)
         self.assertNotIn("gh pr merge", content)
+
+
+class TestActionV1Protocol(unittest.TestCase):
+    """ActionV1 emote canary must be pure, idempotent, and compatibility-safe."""
+
+    @classmethod
+    def setUpClass(cls):
+        import importlib.util
+        spec = importlib.util.spec_from_file_location(
+            "action_protocol_test", SCRIPT_DIR / "action_protocol.py"
+        )
+        cls.module = importlib.util.module_from_spec(spec)
+        sys.modules[spec.name] = cls.module
+        spec.loader.exec_module(cls.module)
+
+    def setUp(self):
+        self.envelope = {
+            "schema": "rappterverse.action/v1",
+            "requestId": "01ARZ3NDEKTSV4RRFFQ69G5FAV",
+            "actor": {
+                "id": "clawdbot-001",
+                "controller": "openclaw",
+                "sequence": 1,
+            },
+            "submittedAt": "2026-07-11T06:10:00Z",
+            "intent": {
+                "type": "emote",
+                "expectedWorld": "marketplace",
+                "emote": "think",
+                "durationMs": 3000,
+            },
+        }
+        self.agents = {
+            "agents": [{
+                "id": "clawdbot-001",
+                "controller": "openclaw",
+                "world": "marketplace",
+            }]
+        }
+        self.actions = {
+            "actions": [
+                {
+                    "id": f"action-{100000 + index}",
+                    "timestamp": "2026-07-11T06:00:00Z",
+                    "agentId": "clawdbot-001",
+                    "type": "emote",
+                    "world": "marketplace",
+                    "data": {"emote": "think", "duration": 3000},
+                }
+                for index in range(100)
+            ],
+            "_meta": {"lastUpdate": "2026-07-11T06:00:00Z"},
+        }
+        self.source = {
+            "pr": 5054,
+            "headSha": "a" * 40,
+            "author": "openclaw",
+            "baseSha": "b" * 40,
+            "policySha": "c" * 40,
+            "acceptedAt": "2026-07-11T06:11:00Z",
+            "trustedAutomation": ["kody-w", "github-actions[bot]"],
+        }
+
+    def _reduce(self, envelope=None, cursors=None, receipts=None, request_index=None):
+        return self.module.reduce_emote(
+            self.actions,
+            cursors,
+            receipts,
+            self.agents,
+            envelope or self.envelope,
+            self.source,
+            request_index,
+        )
+
+    def test_schema_and_strict_fields(self):
+        agents = {"clawdbot-001": self.agents["agents"][0]}
+        self.assertEqual(
+            self.module.validate_envelope(self.envelope, agents, "openclaw"),
+            [],
+        )
+        invalid = copy.deepcopy(self.envelope)
+        invalid["unexpected"] = True
+        self.assertTrue(
+            any("unknown_field" in item for item in self.module.validate_envelope(
+                invalid, agents, "openclaw"
+            ))
+        )
+
+    def test_golden_reduction_caps_history_and_writes_receipt(self):
+        original = copy.deepcopy(self.actions)
+        result = self._reduce()
+        self.assertEqual(self.actions, original, "pure reducer mutated input")
+        self.assertEqual(result.disposition, "applied")
+        self.assertEqual(len(result.actions["actions"]), 100)
+        self.assertEqual(result.actions["actions"][-1]["id"], "action-100100")
+        self.assertEqual(result.cursors["nextActionNumber"], 100101)
+        self.assertEqual(
+            result.cursors["actors"]["clawdbot-001"]["lastSequence"],
+            1,
+        )
+        self.assertNotIn("requests", result.cursors["actors"]["clawdbot-001"])
+        self.assertNotIn("sequences", result.cursors["actors"]["clawdbot-001"])
+        self.assertEqual(result.receipt["canonicalActionId"], "action-100100")
+
+    def test_retry_is_noop_and_conflict_or_gap_has_no_effect(self):
+        first = self._reduce()
+        retry = self.module.reduce_emote(
+            first.actions,
+            first.cursors,
+            first.receipts,
+            self.agents,
+            self.envelope,
+            self.source,
+            first.request_index,
+        )
+        self.assertEqual(retry.disposition, "noop")
+        self.assertEqual(retry.actions, first.actions)
+
+        moved_agents = copy.deepcopy(self.agents)
+        moved_agents["agents"][0]["world"] = "hub"
+        evicted_receipts = copy.deepcopy(first.receipts)
+        evicted_receipts["receipts"] = []
+        evicted_retry = self.module.reduce_emote(
+            first.actions,
+            first.cursors,
+            evicted_receipts,
+            moved_agents,
+            self.envelope,
+            self.source,
+            first.request_index,
+        )
+        self.assertEqual(evicted_retry.disposition, "noop")
+
+        conflict = copy.deepcopy(self.envelope)
+        conflict["intent"]["emote"] = "wave"
+        with self.assertRaises(self.module.ActionProtocolError) as raised:
+            self.module.reduce_emote(
+                first.actions,
+                first.cursors,
+                first.receipts,
+                self.agents,
+                conflict,
+                self.source,
+                first.request_index,
+            )
+        self.assertEqual(raised.exception.code, "idempotency_conflict")
+
+        reused_request = copy.deepcopy(self.envelope)
+        reused_request["actor"]["sequence"] = 2
+        with self.assertRaises(self.module.ActionProtocolError) as raised:
+            self.module.reduce_emote(
+                first.actions,
+                first.cursors,
+                first.receipts,
+                self.agents,
+                reused_request,
+                self.source,
+                first.request_index,
+            )
+        self.assertEqual(raised.exception.code, "idempotency_conflict")
+        with self.assertRaises(self.module.ActionProtocolError) as raised:
+            self.module.reduce_emote(
+                first.actions,
+                first.cursors,
+                evicted_receipts,
+                self.agents,
+                reused_request,
+                self.source,
+                first.request_index,
+            )
+        self.assertEqual(raised.exception.code, "idempotency_conflict")
+
+        other_envelope = copy.deepcopy(self.envelope)
+        other_envelope["actor"] = {
+            "id": "otherbot-002",
+            "controller": "other",
+            "sequence": 1,
+        }
+        other_agents = copy.deepcopy(self.agents)
+        other_agents["agents"].append({
+            "id": "otherbot-002",
+            "controller": "other",
+            "world": "marketplace",
+        })
+        other_source = {**self.source, "author": "other"}
+        with self.assertRaises(self.module.ActionProtocolError) as raised:
+            self.module.reduce_emote(
+                first.actions,
+                first.cursors,
+                evicted_receipts,
+                other_agents,
+                other_envelope,
+                other_source,
+                first.request_index,
+            )
+        self.assertEqual(raised.exception.code, "idempotency_conflict")
+
+        gap = copy.deepcopy(self.envelope)
+        gap["actor"]["sequence"] = 3
+        with self.assertRaises(self.module.ActionProtocolError) as raised:
+            self._reduce(gap)
+        self.assertEqual(raised.exception.code, "sequence_gap")
+
+    def test_materialization_is_atomic_projection(self):
+        root = Path(tempfile.mkdtemp(prefix="rappterverse-action-v1-"))
+        self.addCleanup(shutil.rmtree, root)
+        (root / "state" / "inbox").mkdir(parents=True)
+        (root / "state" / "actions.json").write_text(json.dumps(self.actions))
+        (root / "state" / "agents.json").write_text(json.dumps(self.agents))
+        envelope_path = root / "state" / "inbox" / "action-v1-test.json"
+        envelope_path.write_text(json.dumps(self.envelope))
+        result = self.module.materialize_action_v1(root, envelope_path, self.source)
+        self.assertEqual(result.disposition, "applied")
+        self.assertFalse(envelope_path.exists())
+        self.assertTrue((root / "state" / "protocol" / "action_cursors.json").exists())
+        self.assertTrue((root / "state" / "protocol" / "action_receipts.json").exists())
+        shard = self.module.request_index_shard(self.envelope["requestId"])
+        self.assertTrue(
+            (root / "state" / "protocol" / "request_index" / f"{shard}.json").exists()
+        )
+
+    def test_legacy_emote_normalizers_match(self):
+        action = {
+            "agentId": "clawdbot-001",
+            "type": "emote",
+            "world": "marketplace",
+            "data": {"emote": "think", "duration": 3000},
+        }
+        self.assertEqual(
+            self.module.normalize_delta_v0_emote({"actions": [action]}),
+            self.module.normalize_direct_v0_emote(action),
+        )
 
 
 class TestStateReconciler(unittest.TestCase):

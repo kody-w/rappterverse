@@ -301,6 +301,47 @@ function testLocalPracticeBoundary() {
     assert(shop.includes('LOCAL PRACTICE SHOP'), 'shop authority is ambiguous');
     assert(stats.includes('Practice Gold'), 'local currency is still presented as canonical gold');
     assert(quests.includes('GameState.data.localChat'), 'local poke cannot progress local guide quest');
+    assert(agents.includes('GameState.data.localChat.length > 20'), 'local chat overlay is unbounded');
+}
+
+function testArenaCapabilityGate() {
+    const worldCore = fs.readFileSync('src/js/world-core.js', 'utf8');
+    const dataSource = fs.readFileSync('src/js/data.js', 'utf8');
+    assert(
+        worldCore.includes('canonicalConfig?.features?.battles === true'),
+        'combat does not fail closed on canonical battle capability'
+    );
+    assert(
+        worldCore.includes("if (this.combatEnabled && this.keys['Space'])"),
+        'non-battle worlds still accept attacks'
+    );
+    assert(
+        worldCore.includes('onCanonicalConfigChanged()') &&
+        dataSource.includes('WorldMode.onCanonicalConfigChanged()'),
+        'live canonical battle capability changes are not reconciled'
+    );
+    assert(
+        worldCore.includes("FogOfWar !== 'undefined') FogOfWar.cleanup()"),
+        'battle capability teardown leaks fog resources'
+    );
+
+    let now = 1000;
+    const context = vm.createContext({
+        console,
+        Math,
+        performance: { now: () => now },
+        document: { getElementById() { return null; } }
+    });
+    const combat = loadObject('src/js/world-combat.js', 'WorldCombat', context);
+    combat.spawnWave = function() { this.spawned = (this.spawned || 0) + 1; };
+    combat.updateCreeps = function() {};
+    combat.updateTowers = function() {};
+    combat.updateProjectiles = function() {};
+    combat.updateCombatHUD = function() {};
+    combat.init({});
+    combat.update(1 / 60, 0, { x: 0, y: 0, z: 0 });
+    assert.strictEqual(combat.waveNumber, 1, 'Arena did not start wave one on first update');
+    assert.strictEqual(combat.spawned, 1, 'Arena spawned an unexpected number of first waves');
 }
 
 async function main() {
@@ -310,6 +351,7 @@ async function main() {
     testCapabilitySafePostProcessing();
     testDashboardTrustBoundary();
     testLocalPracticeBoundary();
+    testArenaCapabilityGate();
     console.log('Frontend trust and polling tests passed');
 }
 

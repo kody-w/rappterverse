@@ -137,6 +137,13 @@ const DataManager = {
             gallery: snapshot.galleryObj.objects,
             dungeon: snapshot.dungeonObj.objects
         };
+        if (
+            typeof WorldMode !== 'undefined'
+            && WorldMode.active
+            && WorldMode.onCanonicalConfigChanged
+        ) {
+            WorldMode.onCanonicalConfigChanged();
+        }
 
         if (Array.isArray(snapshot.npcs?.npcs)) GameState.data.npcs = snapshot.npcs.npcs;
         if (snapshot.frameCounter) GameState.data.frameCounter = snapshot.frameCounter;

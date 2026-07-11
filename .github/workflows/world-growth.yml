@@ -37,21 +37,30 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: Validate growth inputs
+        run: >-
+          python scripts/validate_workflow_inputs.py world-growth
+          --force-spawn "$FORCE" --dry-run "$DRY_RUN"
+        env:
+          FORCE: ${{ github.event.inputs.force_spawn || '0' }}
+          DRY_RUN: ${{ github.event.inputs.dry_run || 'false' }}
+
       - name: Run growth simulation
         id: growth
         continue-on-error: true
         run: |
           cp -r state/ .state-snapshot-growth/
-          ARGS="--no-push"
-          FORCE="${{ github.event.inputs.force_spawn || '0' }}"
-          DRY_RUN="${{ github.event.inputs.dry_run || 'false' }}"
+          args=(--no-push)
           if [ "$FORCE" != "0" ]; then
-            ARGS="$ARGS --force-spawn $FORCE"
+            args+=(--force-spawn "$FORCE")
           fi
           if [ "$DRY_RUN" = "true" ]; then
-            ARGS="$ARGS --dry-run"
+            args+=(--dry-run)
           fi
-          python scripts/world_growth.py $ARGS
+          python scripts/world_growth.py "${args[@]}"
+        env:
+          FORCE: ${{ github.event.inputs.force_spawn || '0' }}
+          DRY_RUN: ${{ github.event.inputs.dry_run || 'false' }}
 
       - name: Rollback growth on failure
         if: steps.growth.outcome == 'failure'

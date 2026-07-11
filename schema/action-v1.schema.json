@@ -1,0 +1,92 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://kody-w.github.io/rappterverse/schema/action-v1.schema.json",
+    "title": "RAPPterverse ActionV1 Emote Canary",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+        "schema",
+        "requestId",
+        "actor",
+        "submittedAt",
+        "intent"
+    ],
+    "properties": {
+        "schema": {
+            "const": "rappterverse.action/v1"
+        },
+        "requestId": {
+            "type": "string",
+            "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$"
+        },
+        "actor": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "id",
+                "controller",
+                "sequence"
+            ],
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*-[0-9]{3}$"
+                },
+                "controller": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 64
+                },
+                "sequence": {
+                    "type": "integer",
+                    "minimum": 1
+                }
+            }
+        },
+        "submittedAt": {
+            "type": "string",
+            "format": "date-time"
+        },
+        "intent": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "type",
+                "expectedWorld",
+                "emote",
+                "durationMs"
+            ],
+            "properties": {
+                "type": {
+                    "const": "emote"
+                },
+                "expectedWorld": {
+                    "enum": [
+                        "hub",
+                        "arena",
+                        "marketplace",
+                        "gallery",
+                        "dungeon"
+                    ]
+                },
+                "emote": {
+                    "enum": [
+                        "wave",
+                        "dance",
+                        "bow",
+                        "clap",
+                        "think",
+                        "celebrate",
+                        "cheer",
+                        "nod"
+                    ]
+                },
+                "durationMs": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 10000
+                }
+            }
+        }
+    }
+}

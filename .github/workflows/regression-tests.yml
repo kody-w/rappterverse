@@ -16,7 +16,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      issues: write
 
     steps:
       - name: Checkout repository
@@ -32,16 +31,6 @@ jobs:
 
       - name: Run frontend trust tests
         run: node scripts/test_frontend_security.js
-
-      - name: Create issue on scheduled failure
-        if: failure() && github.event_name == 'schedule'
-        run: |
-          gh issue create \
-            --title "🚨 Regression test failure — $(date -u '+%Y-%m-%d')" \
-            --body "The daily regression test suite failed. Check the [workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for details." \
-            --label "bug"
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   bundle-fresh:
     name: Bundle is up to date
@@ -65,3 +54,23 @@ jobs:
             exit 1
           fi
           echo "✅ docs/index.html matches the current src/ tree."
+
+  report-scheduled-failure:
+    needs: [test, bundle-fresh]
+    if: >-
+      always() &&
+      github.event_name == 'schedule' &&
+      (needs.test.result == 'failure' || needs.bundle-fresh.result == 'failure')
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Create issue for trusted scheduled failure
+        run: |
+          gh issue create \
+            --title "🚨 Regression test failure — $(date -u '+%Y-%m-%d')" \
+            --body "The daily regression suite failed. Check [workflow run ${{ github.run_id }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})." \
+            --label "bug"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
