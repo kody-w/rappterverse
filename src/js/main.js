@@ -8,11 +8,11 @@
 
         switch(GameState.mode) {
             case 'galaxy':
-                Galaxy.update(delta, time);
+                if (!GameState.inputLocked) Galaxy.update(delta, time);
                 Galaxy.render();
                 break;
             case 'world':
-                WorldMode.update(delta, time);
+                if (!GameState.inputLocked) WorldMode.update(delta, time);
                 WorldMode.render();
                 break;
             // approach and landing handle their own rendering
@@ -40,6 +40,10 @@
     document.addEventListener('keydown', (e) => {
         // Track keys for debug overlay
         if (typeof DebugOverlay !== 'undefined') DebugOverlay.recordKey(e.code);
+        if (GameState.inputLocked) {
+            e.stopPropagation();
+            return;
+        }
 
         // Replay system input intercept
         if (typeof ReplaySystem !== 'undefined' && ReplaySystem.playing) {
@@ -390,7 +394,8 @@
         const urlParams = new URLSearchParams(window.location.search);
         GameState.deepLink = {
             agent: urlParams.get('agent'),
-            world: urlParams.get('world')
+            world: urlParams.get('world'),
+            chronicle: urlParams.get('chronicle')
         };
 
         // Init renderer
@@ -406,6 +411,7 @@
 
         // Init optional systems
         if (typeof Settings !== 'undefined') Settings.init();
+        if (typeof Chronicle !== 'undefined') Chronicle.init();
         if (typeof VoiceControls !== 'undefined') VoiceControls.init();
         if (typeof PostProcessing !== 'undefined') PostProcessing.init(GameState.renderer);
 

@@ -29,6 +29,7 @@ CSS_FILES=(
     src/css/stats.css
     src/css/equipment.css
     src/css/replay.css
+    src/css/chronicle.css
     src/css/echo-dashboard.css
 )
 
@@ -37,6 +38,7 @@ JS_FILES=(
     src/js/config.js
     src/js/state.js
     src/js/data.js
+    src/js/chronicle.js
     src/js/audio.js
     src/js/player-stats.js
     src/js/status-effects.js

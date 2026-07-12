@@ -84,7 +84,7 @@ const Boot = {
             DataManager.startPolling();
 
             // Deep link: skip galaxy, jump to agent's world
-            if (GameState.deepLink?.agent || GameState.deepLink?.world) {
+            if ((GameState.deepLink?.agent || GameState.deepLink?.world) && !GameState.deepLink?.chronicle) {
                 setTimeout(() => {
                     let targetWorld = GameState.deepLink.world || 'hub';
                     if (GameState.deepLink.agent) {

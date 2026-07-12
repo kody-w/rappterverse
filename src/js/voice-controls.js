@@ -94,6 +94,7 @@ const VoiceControls = {
     },
 
     _processCommand(text) {
+        if (GameState.inputLocked) return;
         // Debounce — ignore if same command within 1s
         const now = Date.now();
         if (text === this.lastCommand && now - this.lastCommandTime < 1000) return;

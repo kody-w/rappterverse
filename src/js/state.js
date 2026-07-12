@@ -5,6 +5,7 @@ const GameState = {
     currentWorld: 'hub',
     selectedPlanet: null,
     bridgeOpen: false,
+    inputLocked: false,
     minimapVisible: true,
     debug: false,
 
@@ -21,6 +22,7 @@ const GameState = {
         gameState: {},
         frameCounter: {},
         brainstem: {},      // agentId → {template, hp, team, ...} from compiled lispy programs
+        chronicles: {},
         worldConfigs: {},
         worldObjects: {}
     },

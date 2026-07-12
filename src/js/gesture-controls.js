@@ -258,6 +258,14 @@ const GestureControls = {
         if (GameState.mode !== 'world' || typeof WorldMode === 'undefined') return;
         const keys = WorldMode.keys;
         if (!keys) return;
+        if (GameState.inputLocked) {
+            keys['KeyW'] = false;
+            keys['KeyS'] = false;
+            keys['KeyA'] = false;
+            keys['KeyD'] = false;
+            keys['Space'] = false;
+            return;
+        }
 
         // Update gesture label
         const labelEl = document.getElementById('gesture-label');
