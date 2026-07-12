@@ -76,14 +76,16 @@ const WorldMode = {
         }
 
         // Key listeners
-        this.keyDown = (e) => { this.keys[e.code] = true; };
+        this.keyDown = (e) => {
+            if (!GameState.inputLocked) this.keys[e.code] = true;
+        };
         this.keyUp = (e) => { this.keys[e.code] = false; };
         window.addEventListener('keydown', this.keyDown);
         window.addEventListener('keyup', this.keyUp);
 
         // Scroll wheel zoom
         this._onWheel = (e) => {
-            if (!this.active || GameState.mode !== 'world') return;
+            if (!this.active || GameState.mode !== 'world' || GameState.inputLocked) return;
             e.preventDefault();
             this.cameraZoom += e.deltaY * 0.001;
             this.cameraZoom = Math.max(0.4, Math.min(2.5, this.cameraZoom));

@@ -59,7 +59,7 @@ commit_and_push() {
   git pull --rebase --autostash origin main 2>&1 | tail -1 || true
 
   local changed
-  changed=$(git diff --name-only -- state/ feed/ 2>/dev/null | head -20)
+  changed=$(git diff --name-only -- README.md state/ feed/ docs/chronicles/ 2>/dev/null | head -20)
   if [ -z "$changed" ]; then
     changed=$(git ls-files --others --exclude-standard -- state/ feed/ 2>/dev/null | head -5)
   fi
@@ -67,7 +67,17 @@ commit_and_push() {
     return 0
   fi
 
-  git add state/*.json state/memory/ state/inbox/ state/souls/ feed/*.json docs/dashboard.html 2>/dev/null || true
+  if ! python3 scripts/generate_chronicles.py --source-tree=head >> "$LOG" 2>&1; then
+    log "WARN: chronicle generation failed; skipping sync"
+    return 1
+  fi
+
+  if ! python3 scripts/generate_dashboard.py >> "$LOG" 2>&1; then
+    log "WARN: dashboard generation failed; skipping sync"
+    return 1
+  fi
+
+  git add README.md state/*.json state/memory/ state/inbox/ state/souls/ feed/*.json docs/dashboard.html docs/chronicles/ 2>/dev/null || true
   local frame
   frame=$(python3 -c "import json; print(json.load(open('state/frame_counter.json')).get('frame', '?'))" 2>/dev/null || echo "?")
   git commit -m "[frame $frame] watchdog sync [skip ci]" 2>&1 | tail -1 || return 0

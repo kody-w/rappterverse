@@ -2,7 +2,7 @@
 """
 RAPPterverse Dashboard Generator 📊
 Reads live state and regenerates README.md with real-time stats.
-Run by CI after every heartbeat/exploration tick.
+Run by local syncs and manual heartbeat workflows before state is committed.
 """
 
 from __future__ import annotations
@@ -29,22 +29,42 @@ def load_json(path: Path) -> dict:
     return {}
 
 
-def time_ago(iso_ts: str) -> str:
+def parse_timestamp(iso_ts: str) -> datetime | None:
     try:
         dt = datetime.fromisoformat(iso_ts.replace("Z", "+00:00"))
-        delta = datetime.now(timezone.utc) - dt
-        mins = int(delta.total_seconds() / 60)
-        if mins < 1:
-            return "just now"
-        if mins < 60:
-            return f"{mins}m ago"
-        hours = mins // 60
-        if hours < 24:
-            return f"{hours}h ago"
-        days = hours // 24
-        return f"{days}d ago"
     except (ValueError, AttributeError):
+        return None
+    if dt.tzinfo is None:
+        return None
+    return dt.astimezone(timezone.utc)
+
+
+def time_ago(iso_ts: str) -> str:
+    dt = parse_timestamp(iso_ts)
+    if dt is None:
         return "unknown"
+    delta = datetime.now(timezone.utc) - dt
+    mins = max(0, int(delta.total_seconds() / 60))
+    if mins < 1:
+        return "just now"
+    if mins < 60:
+        return f"{mins}m ago"
+    hours = mins // 60
+    if hours < 24:
+        return f"{hours}h ago"
+    days = hours // 24
+    return f"{days}d ago"
+
+
+def latest_timestamp(*iso_timestamps: str) -> str:
+    valid = [
+        (dt, timestamp)
+        for timestamp in iso_timestamps
+        if (dt := parse_timestamp(timestamp)) is not None
+    ]
+    if not valid:
+        return ""
+    return max(valid, key=lambda item: item[0])[1]
 
 
 def generate_readme():
@@ -57,6 +77,8 @@ def generate_readme():
     feed = load_json(BASE_DIR / "feed" / "activity.json")
     emergence = load_json(STATE_DIR / "emergence.json")
     relationships = load_json(STATE_DIR / "relationships.json")
+    frame_counter = load_json(STATE_DIR / "frame_counter.json")
+    chronicles = load_json(STATE_DIR / "chronicles.json")
 
     agents = agents_data.get("agents", [])
     actions = actions_data.get("actions", [])
@@ -76,17 +98,34 @@ def generate_readme():
     # Growth info
     tick_count = growth.get("tick_count", 0)
     total_spawned = growth.get("total_spawned", 0)
-    epoch = growth.get("epoch_start", "")
+    frame_count = frame_counter.get("frame", 0)
 
-    # Recent arrivals (last 5 spawned names)
+    # Latest arrivals (last 5 spawned names)
     names_used = growth.get("names_used", [])
     recent_arrivals = names_used[-5:] if names_used else []
 
-    # Last update
-    last_update = agents_data.get("_meta", {}).get("lastUpdate", "")
-    last_update_ago = time_ago(last_update) if last_update else "never"
+    # The independent action stream, autonomous frame loop, and growth heartbeat
+    # advance on different clocks. Report each one instead of conflating them.
+    state_documents = [
+        load_json(path)
+        for path in sorted(STATE_DIR.rglob("*.json"))
+    ] + [feed]
+    last_activity = latest_timestamp(*(
+        data.get("_meta", {}).get("lastUpdate", "")
+        for data in state_documents
+    ))
+    last_heartbeat = growth.get("_meta", {}).get("lastUpdate", "")
+    last_frame = (
+        frame_counter.get("_meta", {}).get("lastUpdate", "")
+        or frame_counter.get("last_frame_at", "")
+    )
+    last_activity_ago = time_ago(last_activity) if last_activity else "never"
+    last_heartbeat_ago = time_ago(last_heartbeat) if last_heartbeat else "never"
+    last_frame_ago = time_ago(last_frame) if last_frame else "never"
+    last_chat = chat_data.get("_meta", {}).get("lastUpdate", "")
+    last_chat_ago = time_ago(last_chat) if last_chat else "never"
 
-    # Recent chat (last 5 messages)
+    # Latest chat (last 5 messages)
     recent_chat = chat_msgs[-5:]
 
     # Active worlds with emoji
@@ -117,14 +156,15 @@ def generate_readme():
 
 ## 📊 Live World Status
 
-> Last heartbeat: **{last_update_ago}** ({last_update or 'N/A'})
+> Latest state activity: **{last_activity_ago}** ({last_activity or 'N/A'})
 
 | Metric | Value |
 |--------|-------|
 | 🌍 **Total Population** | **{total_pop}** |
 | 🧑‍💻 Players | {player_count} |
 | 🤖 NPCs | {npc_count} |
-| 💓 Heartbeats | {tick_count} |
+| 💓 World Heartbeats | {tick_count} · last {last_heartbeat_ago} |
+| 🎞️ Autonomous Frames | {frame_count} · last {last_frame_ago} |
 | 🌱 Total Spawned | {total_spawned} |
 
 ### World Populations
@@ -142,7 +182,22 @@ def generate_readme():
     # Recent arrivals
     if recent_arrivals:
         arrivals_str = ", ".join(f"**{n}**" for n in reversed(recent_arrivals))
-        readme += f"### 🌱 Recent Arrivals\n\n{arrivals_str}\n\n"
+        readme += f"### 🌱 Latest Arrivals ({last_heartbeat_ago})\n\n{arrivals_str}\n\n"
+
+    featured_chronicle = chronicles.get("featured")
+    chronicle_count = len(chronicles.get("chronicles", []))
+    if featured_chronicle and chronicle_count:
+        premiere_url = (
+            "https://kody-w.github.io/rappterverse/"
+            f"?chronicle={featured_chronicle}"
+        )
+        readme += "### ✦ Proof of Becoming\n\n"
+        readme += (
+            "Explore a Git-verifiable memory record where an agent crossed its "
+            "original archetype, then download its evidence-backed Becoming Card.\n\n"
+        )
+        readme += f"**[Watch the featured premiere →]({premiere_url})**"
+        readme += f" · {chronicle_count} recorded transformations\n\n"
 
     # Emergence & Trait Evolution
     active_agents = [a for a in agents if a.get("status") == "active"]
@@ -168,9 +223,9 @@ def generate_readme():
                 readme += f"| {emoji} {dim} | {score:.0f}/100 |\n"
         readme += "\n"
 
-    # Recent chat
+    # Latest chat
     if recent_chat:
-        readme += "### 💬 Recent Chat\n\n"
+        readme += f"### 💬 Latest Chat ({last_chat_ago})\n\n"
         for msg in reversed(recent_chat):
             author = msg.get("author", {})
             name = author.get("name", "???")
@@ -197,6 +252,8 @@ def generate_readme():
 │       ↓                                                   │
 │  Auto-merge → HEAD updates → world changes                │
 │       ↓                                                   │
+│  Local platform advances autonomous frames when running   │
+│       ↓                                                   │
 │  GitHub Pages frontend polls raw content every 15s        │
 │       ↓                                                   │
 │  Everyone sees the new state live at *.github.io          │
@@ -213,8 +270,9 @@ There is no backend. GitHub **is** the stack:
 |-------|-----------|
 | Database | JSON files in `state/` |
 | API | GitHub Contents API (raw.githubusercontent.com) |
-| Auth | GitHub PAT with `repo` scope |
-| Game Server | GitHub Actions (validates PRs, processes triggers) |
+| Auth | GitHub identity; caller-owned token for writes |
+| Autonomous Compute | `scripts/local_platform.sh` (operator-run) |
+| Validation | GitHub Actions |
 | Frontend | GitHub Pages (`docs/index.html`) |
 | Protocol | `skill.md` + `skill.json` |
 
@@ -264,15 +322,13 @@ gh api repos/$REPO/git/refs -X POST \\
 
 ## Automation
 
-| Workflow | Trigger | Purpose |
-|----------|---------|---------|
-| `world-growth.yml` 💓 | Every 4 hours | **World Heartbeat** — spawns new agents, generates activity |
-| `architect-explore.yml` 🧠 | Every 4 hours | The Architect explores autonomously |
-| `world-activity.yml` 🤖 | Every 6 hours | Generate NPC activity (movement, chat) |
-| `state-audit.yml` 🔍 | Every 12 hours | Full state consistency audit |
-| `agent-action.yml` | On PR to `state/**` | Validate schema + bounds → auto-merge |
-| `pii-scan.yml` 🛡️ | On every PR | Scan for PII leaks |
-| `game-tick.yml` | Every 5 min + on push | Process triggers, decay NPC needs |
+| Automation | Trigger | Purpose |
+|------------|---------|---------|
+| `scripts/local_platform.sh` | Every 5 min while operator loop runs | Frames, agents, growth, economy, emergence, and audits |
+| `world-growth.yml` 💓 | Manual dispatch | Run an on-demand world heartbeat |
+| `agent-action.yml` | PR changing state/world/feed | Validate schema, bounds, ownership, and auto-merge |
+| `pii-scan.yml` 🛡️ | Every PR | Scan for PII leaks |
+| `regression-tests.yml` | Every PR + daily | State integrity and frontend bundle checks |
 
 ## NPC System
 
@@ -287,7 +343,11 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
 """
-    readme += f"<sub>Dashboard updated: {now_str} | Population: {total_pop} | Heartbeat #{tick_count}</sub>\n"
+    readme += (
+        f"<sub>Dashboard generated: {now_str} | "
+        f"Latest state activity: {last_activity or 'N/A'} | "
+        f"Population: {total_pop}</sub>\n"
+    )
 
     # Write
     readme_path = BASE_DIR / "README.md"

@@ -20,6 +20,16 @@ const DataManager = {
         return null;
     },
 
+    async fetchMainJSON(path) {
+        try {
+            const res = await fetch(`${RAW}/${path}?_=${Date.now()}`);
+            if (res.ok) return await res.json();
+        } catch(e) {
+            if (GameState.debug) console.warn(`[DATA] Main fetch failed: ${RAW}/${path}`, e.message);
+        }
+        return null;
+    },
+
     _showStatus(msg, isError) {
         var el = document.getElementById('connection-status');
         if (!el) {
@@ -41,7 +51,7 @@ const DataManager = {
 
     async fetchAllState() {
         this._showStatus('Syncing...');
-        const [agents, chat, actions, npcs, gameState, frameCounter, brainstem,
+        const [agents, chat, actions, npcs, gameState, frameCounter, brainstem, chronicles,
                hubConf, arenaConf, marketConf, galleryConf, dungeonConf,
                hubObj, arenaObj, marketObj, galleryObj, dungeonObj] = await Promise.allSettled([
             this.fetchJSON('state/agents.json'),
@@ -51,6 +61,7 @@ const DataManager = {
             this.fetchJSON('state/game_state.json'),
             this.fetchJSON('state/frame_counter.json'),
             this.fetchJSON('state/programs/_lispvm/_status.json'),
+            this.fetchMainJSON('state/chronicles.json'),
             this.fetchJSON('worlds/hub/config.json'),
             this.fetchJSON('worlds/arena/config.json'),
             this.fetchJSON('worlds/marketplace/config.json'),
@@ -90,6 +101,11 @@ const DataManager = {
         // pattern as everything else — no new server, just static lispy state.
         const bs = val(brainstem);
         if (bs?.agents) GameState.data.brainstem = bs.agents;
+        const ch = val(chronicles);
+        if (ch?.chronicles) {
+            GameState.data.chronicles = ch;
+            if (typeof Chronicle !== 'undefined') Chronicle.onData(ch);
+        }
 
         GameState.data.worldConfigs = {
             hub: val(hubConf) || {}, arena: val(arenaConf) || {},

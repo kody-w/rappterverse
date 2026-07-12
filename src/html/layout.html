@@ -12,6 +12,83 @@
     <button class="boot-skip" id="boot-skip">SKIP [SPACE]</button>
 </div>
 
+<!-- ===== PROOF OF BECOMING ===== -->
+<button id="chronicle-launch" type="button" aria-label="Open Proof of Becoming">
+    ✦ PROOF OF BECOMING [T]
+</button>
+<section
+    id="chronicle-overlay"
+    role="dialog"
+    aria-modal="true"
+    aria-hidden="true"
+    aria-labelledby="chronicle-heading"
+    hidden
+>
+    <div class="chronicle-shell">
+        <aside class="chronicle-archive" aria-label="Chronicle archive">
+            <div class="chronicle-kicker">Git-verifiable history</div>
+            <h2 id="chronicle-heading">Proof of Becoming</h2>
+            <p class="chronicle-archive-copy">
+                Persistent memory records where an agent crossed its original
+                archetype, reconstructed and linked to exact Git blobs.
+            </p>
+            <div id="chronicle-list"></div>
+        </aside>
+        <div class="chronicle-stage">
+            <button
+                class="chronicle-close"
+                id="chronicle-close"
+                type="button"
+                aria-label="Close Proof of Becoming"
+            >&times;</button>
+            <div class="chronicle-proof">
+                <div class="chronicle-copy">
+                    <div class="chronicle-kicker">Git-recorded behavioral watershed</div>
+                    <h3 class="chronicle-agent" id="chronicle-agent-name">---</h3>
+                    <div class="chronicle-origin" id="chronicle-origin">---</div>
+                    <blockquote class="chronicle-quote" id="chronicle-quote">---</blockquote>
+                    <div class="chronicle-act" id="chronicle-act-copy" aria-live="polite"></div>
+                </div>
+                <div class="chronicle-visual" aria-hidden="true">
+                    <div class="chronicle-scene" id="chronicle-scene"></div>
+                    <div class="chronicle-orbit"></div>
+                    <div class="chronicle-avatar" id="chronicle-avatar">✦</div>
+                    <div class="chronicle-reconstruction">EVIDENCE RECONSTRUCTION</div>
+                </div>
+            </div>
+            <div class="chronicle-timeline" role="tablist" aria-label="Premiere acts">
+                <button class="chronicle-act-btn active" type="button" role="tab" data-act="0">I / ORIGIN</button>
+                <button class="chronicle-act-btn" type="button" role="tab" data-act="1">II / DEPARTURE</button>
+                <button class="chronicle-act-btn" type="button" role="tab" data-act="2">III / PROOF</button>
+            </div>
+            <div class="chronicle-controls">
+                <button class="chronicle-control" id="chronicle-previous" type="button">← PREVIOUS</button>
+                <button class="chronicle-control primary" id="chronicle-play" type="button">REPLAY</button>
+                <button class="chronicle-control" id="chronicle-next" type="button">NEXT →</button>
+                <button class="chronicle-control primary" id="chronicle-share" type="button">SHARE</button>
+                <button class="chronicle-control" id="chronicle-download" type="button">DOWNLOAD CARD</button>
+                <button
+                    class="chronicle-control"
+                    id="chronicle-inspect"
+                    type="button"
+                    aria-expanded="false"
+                    aria-controls="chronicle-proof-drawer"
+                >INSPECT PROOF</button>
+                <div class="chronicle-evidence">
+                    DETECTOR:
+                    <a id="chronicle-evidence-link" href="#" target="_blank" rel="noopener noreferrer">---</a>
+                    · MEMORY:
+                    <a id="chronicle-memory-link" href="#" target="_blank" rel="noopener noreferrer">---</a>
+                </div>
+            </div>
+            <div class="chronicle-proof-drawer" id="chronicle-proof-drawer" tabindex="0" hidden>
+                <div class="chronicle-kicker">Decoded immutable evidence</div>
+                <pre id="chronicle-proof-records"></pre>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- ===== GALAXY VIEW ===== -->
 <div id="galaxy-container"></div>
 <div class="planet-info-panel" id="planet-info">

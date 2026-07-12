@@ -11,6 +11,7 @@ from __future__ import annotations
 import json
 import os
 import re
+import subprocess
 import sys
 import unittest
 from pathlib import Path
@@ -88,6 +89,19 @@ def load_json(path: Path) -> dict | None:
             return json.load(f)
     except (json.JSONDecodeError, FileNotFoundError):
         return None
+
+
+def load_git_blob_json(blob_sha: str) -> dict | None:
+    if not re.fullmatch(r"[a-f0-9]{40}", blob_sha):
+        return None
+    result = subprocess.run(
+        ["git", "-C", str(BASE_DIR), "cat-file", "blob", blob_sha],
+        capture_output=True,
+        text=True,
+    )
+    if result.returncode != 0:
+        return None
+    return json.loads(result.stdout)
 
 
 def load_yaml_text(path: Path) -> str:
@@ -243,6 +257,179 @@ class TestWorkflowPII(unittest.TestCase):
             violations, [],
             f"Real email addresses found in workflows: {violations}"
         )
+
+
+class TestDashboardFreshness(unittest.TestCase):
+    """Keep generated README updates coupled to every local state sync."""
+
+    @staticmethod
+    def _shell_function(script_name: str, function_name: str) -> str:
+        content = (SCRIPT_DIR / script_name).read_text()
+        match = re.search(
+            rf"^{re.escape(function_name)}\(\) \{{(.*?)^\}}",
+            content,
+            re.MULTILINE | re.DOTALL,
+        )
+        if match is None:
+            raise AssertionError(f"{function_name} not found in {script_name}")
+        return match.group(1)
+
+    def test_local_platform_regenerates_and_stages_readme(self):
+        sync = self._shell_function("local_platform.sh", "job_git_sync")
+        self.assertIn(
+            "if ! python3 scripts/generate_chronicles.py --source-tree=head",
+            sync,
+        )
+        self.assertIn("if ! python3 scripts/generate_dashboard.py", sync)
+        self.assertRegex(sync, r"git diff --name-only -- README\.md ")
+        self.assertRegex(sync, r"git add README\.md")
+        self.assertGreater(
+            sync.index("python3 scripts/generate_dashboard.py"),
+            sync.index("return 0"),
+        )
+
+    def test_watchdog_regenerates_and_stages_readme(self):
+        sync = self._shell_function("watchdog.sh", "commit_and_push")
+        self.assertIn(
+            "if ! python3 scripts/generate_chronicles.py --source-tree=head",
+            sync,
+        )
+        self.assertIn("if ! python3 scripts/generate_dashboard.py", sync)
+        self.assertRegex(sync, r"git diff --name-only -- README\.md ")
+        self.assertRegex(sync, r"git add README\.md")
+        self.assertGreater(
+            sync.index("python3 scripts/generate_dashboard.py"),
+            sync.index("return 0"),
+        )
+
+
+class TestChronicleIntegrity(unittest.TestCase):
+    """Verify Proof of Becoming remains deterministic and source-backed."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.data = load_json(STATE_DIR / "chronicles.json")
+        cls.agent_ids = {
+            agent["id"]
+            for agent in load_json(STATE_DIR / "agents.json").get("agents", [])
+        }
+
+    def test_manifest_matches_generator(self):
+        from generate_chronicles import ASSET_DIR, assets_current, build_bundle
+
+        manifest, assets = build_bundle()
+        self.assertEqual(self.data, manifest)
+        head_manifest, _ = build_bundle("head")
+        self.assertEqual(self.data, head_manifest)
+        self.assertTrue(assets_current(ASSET_DIR, assets))
+
+    def test_meta_and_featured_are_consistent(self):
+        self.assertIsNotNone(self.data)
+        chronicles = self.data.get("chronicles", [])
+        meta = self.data.get("_meta", {})
+        self.assertEqual(meta.get("count"), len(chronicles))
+        self.assertTrue(_is_iso_utc_timestamp(meta.get("lastUpdate")))
+        self.assertIn(self.data.get("featured"), {item.get("id") for item in chronicles})
+        source = meta.get("source", {})
+        self.assertRegex(source.get("blob", ""), r"^[a-f0-9]{40}$")
+        self.assertEqual(source.get("path"), "state/watershed.json")
+
+    def test_chronicles_resolve_to_source_records(self):
+        seen_ids = set()
+        for chronicle in self.data.get("chronicles", []):
+            chronicle_id = chronicle.get("id")
+            self.assertNotIn(chronicle_id, seen_ids)
+            seen_ids.add(chronicle_id)
+            self.assertIn(chronicle.get("agentId"), self.agent_ids)
+            self.assertTrue(_is_iso_utc_timestamp(
+                chronicle.get("moment", {}).get("timestamp")
+            ))
+            self.assertTrue(chronicle.get("eulogy"))
+            self.assertLess(
+                chronicle.get("priorExperienceCount", -1),
+                chronicle.get("experienceCount", 0),
+            )
+
+            evidence = chronicle.get("evidence", {})
+            self.assertEqual(evidence.get("kind"), "git-recorded-memory")
+            detector = evidence.get("detector", {})
+            pointer = detector.get("jsonPointer", "")
+            match = re.fullmatch(r"/watersheds/(\d+)", pointer)
+            self.assertIsNotNone(match, f"Invalid evidence pointer: {pointer}")
+            source_record = detector.get("record")
+            self.assertIsInstance(source_record, dict)
+            detector_blob = load_git_blob_json(detector.get("sourceBlob", ""))
+            if detector_blob is not None:
+                self.assertEqual(
+                    source_record,
+                    detector_blob["watersheds"][int(match.group(1))],
+                )
+            self.assertEqual(chronicle.get("agentId"), source_record.get("agentId"))
+            self.assertEqual(chronicle.get("eulogy"), source_record.get("eulogy"))
+            self.assertEqual(
+                chronicle.get("moment", {}).get("timestamp"),
+                source_record.get("watershed", {}).get("timestamp"),
+            )
+
+            event_evidence = evidence.get("event", {})
+            event_pointer = re.fullmatch(
+                r"/experiences/(\d+)",
+                event_evidence.get("jsonPointer", ""),
+            )
+            self.assertIsNotNone(event_pointer)
+            memory_record = event_evidence.get("record")
+            self.assertIsInstance(memory_record, dict)
+            from generate_chronicles import record_digest
+            self.assertEqual(
+                event_evidence.get("recordDigest"),
+                record_digest(memory_record),
+            )
+            memory_blob = load_git_blob_json(event_evidence.get("sourceBlob", ""))
+            if memory_blob is not None:
+                self.assertEqual(
+                    memory_record,
+                    memory_blob["experiences"][int(event_pointer.group(1))],
+                )
+
+            for confirmation in chronicle.get("confirmations", []):
+                confirmation_evidence = confirmation.get("evidence", {})
+                confirmation_pointer = re.fullmatch(
+                    r"/experiences/(\d+)",
+                    confirmation_evidence.get("jsonPointer", ""),
+                )
+                self.assertIsNotNone(confirmation_pointer)
+                confirmation_record = confirmation_evidence.get("record")
+                self.assertIsInstance(confirmation_record, dict)
+                self.assertEqual(
+                    confirmation_evidence.get("recordDigest"),
+                    record_digest(confirmation_record),
+                )
+                confirmation_blob = load_git_blob_json(
+                    confirmation_evidence.get("sourceBlob", "")
+                )
+                if confirmation_blob is not None:
+                    self.assertEqual(
+                        confirmation_record,
+                        confirmation_blob["experiences"][
+                            int(confirmation_pointer.group(1))
+                        ],
+                    )
+
+            artifact = chronicle.get("artifact", {})
+            self.assertEqual(artifact.get("format"), "becoming-card/svg-v1")
+            self.assertIn(artifact.get("accentHue"), range(360))
+            self.assertEqual(artifact.get("permalink"), f"?chronicle={chronicle_id}")
+            artifact_path = BASE_DIR / "docs" / artifact.get("path", "")
+            self.assertTrue(artifact_path.is_file())
+            import hashlib
+            self.assertEqual(
+                artifact.get("sha256"),
+                hashlib.sha256(artifact_path.read_bytes()).hexdigest(),
+            )
+            self.assertIn(
+                '<metadata id="provenance">',
+                artifact_path.read_text(encoding="utf-8"),
+            )
 
 
 # ═════════════════════════════════════════════

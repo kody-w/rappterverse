@@ -190,9 +190,6 @@ job_world_growth() {
     failed=1
   fi
 
-  log "  [heartbeat] Dashboard..."
-  python3 scripts/generate_dashboard.py 2>&1 || true
-
   log "  [heartbeat] Validate state..."
   python3 scripts/validate_action.py --audit 2>&1 || true
 
@@ -229,9 +226,9 @@ job_git_sync() {
   # Pull with rebase
   git pull --rebase --autostash origin main 2>&1 | tail -2 || true
 
-  # Check for changes in state/feed/docs
+  # Check for changes in generated artifacts/state/feed.
   local changed
-  changed=$(git diff --name-only -- state/ feed/ docs/dashboard.html 2>/dev/null | head -20)
+  changed=$(git diff --name-only -- README.md state/ feed/ docs/dashboard.html docs/chronicles/ 2>/dev/null | head -20)
   if [ -z "$changed" ]; then
     changed=$(git ls-files --others --exclude-standard -- state/ feed/ 2>/dev/null | head -5)
   fi
@@ -240,12 +237,25 @@ job_git_sync() {
     return 0
   fi
 
-  # Stage only state/feed/docs files (never src/ or docs/index.html)
+  if ! python3 scripts/generate_chronicles.py --source-tree=head 2>&1; then
+    err "Chronicle generation failed; refusing to publish stale artifacts"
+    return 1
+  fi
+
+  # Render the README from the final state of this frame.
+  if ! python3 scripts/generate_dashboard.py 2>&1; then
+    err "Dashboard generation failed; refusing to publish stale artifacts"
+    return 1
+  fi
+
+  # Stage only generated dashboard/state/feed files (never src/ or docs/index.html)
+  git add README.md 2>/dev/null || true
   git add state/*.json 2>/dev/null || true
   git add state/memory/ 2>/dev/null || true
   git add state/inbox/ 2>/dev/null || true
   git add feed/*.json 2>/dev/null || true
   git add docs/dashboard.html 2>/dev/null || true
+  git add docs/chronicles/ 2>/dev/null || true
 
   # Get current frame for commit message
   local frame
