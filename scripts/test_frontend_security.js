@@ -113,6 +113,7 @@ function responseFor(path) {
     if (path === 'state/game_state.json') return { _meta: {}, worlds: {} };
     if (path === 'state/frame_counter.json') return { frame: 1 };
     if (path === 'state/programs/_lispvm/_status.json') return { agents: {} };
+    if (path === 'state/chronicles.json') return { chronicles: [] };
     if (path.endsWith('/config.json')) return { id: path.split('/')[1] };
     if (path.endsWith('/objects.json')) return { objects: [] };
     throw new Error(`unexpected path: ${path}`);
@@ -168,7 +169,11 @@ async function testCanonicalStagedPolling() {
     assert.strictEqual(first, duplicate, 'concurrent callers must share one poll');
     const firstResult = await first;
     assert.strictEqual(firstResult.ok, true);
-    assert.strictEqual(urls.length, 17, 'one poll should fetch each resource once');
+    assert.strictEqual(
+        urls.length,
+        manager._resources.length,
+        'one poll should fetch each declared resource once'
+    );
     assert(urls.every(url => url.includes('/main/')), 'polling used a non-canonical branch');
 
     const lastKnownAgents = GameState.data.agents;
