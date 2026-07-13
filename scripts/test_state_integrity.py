@@ -251,7 +251,13 @@ class TestWorkflowPushSafety(unittest.TestCase):
         self.assertIn("ALLOW_DERIVED_STATE_DRIFT", regression)
         self.assertIn("fetch-depth: 0", regression)
         self.assertIn("if: env.ALLOW_DERIVED_STATE_DRIFT != '1'", regression)
-        self.assertEqual(regression.count("runs-on: ubuntu-latest"), 1)
+        self.assertEqual(regression.count("runs-on: ubuntu-latest"), 2)
+        self.assertIn(
+            "python -m unittest discover -s tests "
+            "-p 'test_world_pack_compiler.py' -v",
+            regression,
+        )
+        self.assertIn("needs: [test]", regression)
 
 
 class TestWorkflowPII(unittest.TestCase):

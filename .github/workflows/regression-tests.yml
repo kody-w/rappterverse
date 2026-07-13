@@ -16,13 +16,13 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      issues: write
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          persist-credentials: false
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -43,6 +43,9 @@ jobs:
       - name: Run regression tests
         run: python scripts/test_state_integrity.py -v
 
+      - name: Run deterministic world-pack compiler tests
+        run: python -m unittest discover -s tests -p 'test_world_pack_compiler.py' -v
+
       - name: Run frontend trust tests
         run: node scripts/test_frontend_security.js
 
@@ -52,12 +55,22 @@ jobs:
           bash scripts/bundle.sh
           git diff --exit-code -- docs/index.html
 
-      - name: Create issue on scheduled failure
-        if: failure() && github.event_name == 'schedule'
+  report-scheduled-failure:
+    name: Report scheduled failure
+    needs: [test]
+    if: >-
+      always() &&
+      github.event_name == 'schedule' &&
+      needs.test.result == 'failure'
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Create issue
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh issue create \
             --title "🚨 Regression test failure — $(date -u '+%Y-%m-%d')" \
             --body "The daily regression test suite failed. Check the [workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for details." \
             --label "bug"
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

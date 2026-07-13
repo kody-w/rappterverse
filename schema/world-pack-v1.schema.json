@@ -1,0 +1,217 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://rappterverse.dev/schema/world-pack-v1.schema.json",
+    "title": "Immutable RAPPterverse world-pack manifest v1",
+    "description": "Closed manifest for compiled payload files. The outer pack tree root is deliberately external.",
+    "oneOf": [
+        {
+            "$ref": "#/$defs/ReleasePack"
+        },
+        {
+            "$ref": "#/$defs/LegacyPack"
+        }
+    ],
+    "$defs": {
+        "PrefixedSha256": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "PayloadFile": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "path",
+                "mode",
+                "bytes",
+                "sha256",
+                "leafSha256"
+            ],
+            "properties": {
+                "path": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 512,
+                    "pattern": "^(?!/)(?!.*//)(?!.*\\\\)(?!.*(?:^|/)\\.{1,2}(?:/|$))[A-Za-z0-9._-]+(?:/[A-Za-z0-9._-]+)*$"
+                },
+                "mode": {
+                    "const": "100644"
+                },
+                "bytes": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 1000000
+                },
+                "sha256": {
+                    "$ref": "#/$defs/PrefixedSha256"
+                },
+                "leafSha256": {
+                    "$ref": "#/$defs/PrefixedSha256"
+                }
+            }
+        },
+        "Compiler": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "implementationSha256",
+                "version"
+            ],
+            "properties": {
+                "implementationSha256": {
+                    "$ref": "#/$defs/PrefixedSha256"
+                },
+                "version": {
+                    "const": "rappterverse-world-pack-compiler/v1"
+                }
+            }
+        },
+        "Profile": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "profileId",
+                "profileSha256",
+                "version"
+            ],
+            "properties": {
+                "profileId": {
+                    "const": "rappterverse-v1"
+                },
+                "profileSha256": {
+                    "$ref": "#/$defs/PrefixedSha256"
+                },
+                "version": {
+                    "const": "v1"
+                }
+            }
+        },
+        "Release": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "dataCommit",
+                "releaseId",
+                "sourceClosureSha256"
+            ],
+            "properties": {
+                "dataCommit": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{40}$"
+                },
+                "releaseId": {
+                    "type": "string",
+                    "pattern": "^release-[0-9]{4}-[0-9]{2}-[0-9]{2}-[a-z0-9][a-z0-9.-]{0,63}$"
+                },
+                "sourceClosureSha256": {
+                    "$ref": "#/$defs/PrefixedSha256"
+                }
+            }
+        },
+        "LegacySource": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "commit",
+                "lockSha256",
+                "tree"
+            ],
+            "properties": {
+                "commit": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{40}$"
+                },
+                "lockSha256": {
+                    "$ref": "#/$defs/PrefixedSha256"
+                },
+                "tree": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{40}$"
+                }
+            }
+        },
+        "ReleasePack": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "canonicalization",
+                "compiler",
+                "packId",
+                "payloadFiles",
+                "profile",
+                "release",
+                "schemaVersion"
+            ],
+            "properties": {
+                "canonicalization": {
+                    "const": "rappterverse-canonical-json/v2"
+                },
+                "compiler": {
+                    "$ref": "#/$defs/Compiler"
+                },
+                "packId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 256
+                },
+                "payloadFiles": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 4095,
+                    "items": {
+                        "$ref": "#/$defs/PayloadFile"
+                    }
+                },
+                "profile": {
+                    "$ref": "#/$defs/Profile"
+                },
+                "release": {
+                    "$ref": "#/$defs/Release"
+                },
+                "schemaVersion": {
+                    "const": "rappterverse.world-pack/v1"
+                }
+            }
+        },
+        "LegacyPack": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "canonicalization",
+                "compiler",
+                "legacySource",
+                "packId",
+                "payloadFiles",
+                "profile",
+                "schemaVersion"
+            ],
+            "properties": {
+                "canonicalization": {
+                    "const": "rappterverse-canonical-json/v2"
+                },
+                "compiler": {
+                    "$ref": "#/$defs/Compiler"
+                },
+                "legacySource": {
+                    "$ref": "#/$defs/LegacySource"
+                },
+                "packId": {
+                    "const": "legacy-v1"
+                },
+                "payloadFiles": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 4095,
+                    "items": {
+                        "$ref": "#/$defs/PayloadFile"
+                    }
+                },
+                "profile": {
+                    "$ref": "#/$defs/Profile"
+                },
+                "schemaVersion": {
+                    "const": "rappterverse.world-pack/v1"
+                }
+            }
+        }
+    }
+}
