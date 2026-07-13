@@ -1,0 +1,32 @@
+{
+    "schema": "rappterverse.legacy-source-lock/v1",
+    "repository": "kody-w/rappterverse",
+    "sources": {
+        "main": {
+            "commit": "676fdda8d3881a284bdb0c09174ee76acc0c9219",
+            "tree": "9790c8f85a183f5541c59a86082f65da5a5aa3c2",
+            "role": "current-main-state"
+        },
+        "frames": {
+            "commit": "6dbc372d476f8a7992782e092792d0aca7826999",
+            "tree": "069bfcd35f50b6be32f52e7627fa3c1c227f322e",
+            "role": "historical-pump-lineage"
+        },
+        "evolution": {
+            "commit": "4d3550bf2d60ad9623c345f22812e1170cc96036",
+            "tree": "f4cdd58fb8efe4e4ed7a5960e46577dfae851c5d",
+            "role": "reviewed-prerequisite-source"
+        }
+    },
+    "reconciliation": {
+        "mergeBranches": false,
+        "preserveLineages": true,
+        "naturalKeys": {
+            "actions": "id",
+            "messages": "id"
+        },
+        "duplicatePolicy": "coalesce-identical-content",
+        "collisionPolicy": "preserve-both-with-lineage-namespace-and-emit-collision-record",
+        "canonicalRuntimeBranch": "main"
+    }
+}
