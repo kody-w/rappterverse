@@ -406,6 +406,23 @@ function testLocalPracticeBoundary() {
     );
 }
 
+function testAbilityOwnedResourceDisposal() {
+    const source = fs.readFileSync('src/js/abilities.js', 'utf8');
+    assert(source.includes('_disposeOwnedMesh(mesh)'), 'ability disposal helper missing');
+    assert(
+        source.includes('this._disposeOwnedMesh(p.mesh)'),
+        'expired projectiles are not disposed'
+    );
+    assert(
+        source.includes('this._disposeOwnedMesh(e.mesh)'),
+        'expired ability effects are not disposed'
+    );
+    assert(
+        source.includes('clearInterval(this._novaShakeTimer)'),
+        'Nova timer survives cleanup'
+    );
+}
+
 function testSnapshotManifestParity() {
     const source = fs.readFileSync('src/js/data.js', 'utf8');
     const declared = [...source.matchAll(/\['[^']+', '([^']+\.json)', true\]/g)]
@@ -433,6 +450,7 @@ async function main() {
     testDashboardTrustBoundary();
     testLocalPracticeBoundary();
     testSnapshotManifestParity();
+    testAbilityOwnedResourceDisposal();
     console.log('Frontend trust and polling tests passed');
 }
 

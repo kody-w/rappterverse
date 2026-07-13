@@ -17,6 +17,7 @@ Usage:
 """
 
 import json
+import os
 import random
 import subprocess
 import sys
@@ -37,9 +38,11 @@ AGENT_ID = "evolve-001"
 
 # LLM backend — uses github_llm.py with 3-tier fallback
 try:
-    from github_llm import generate as _llm_generate
+    import github_llm as _github_llm
+    _llm_generate = _github_llm.generate
     HAS_LLM_MODULE = True
 except ImportError:
+    _github_llm = None
     HAS_LLM_MODULE = False
 MODEL = "gpt-4o"
 API_URL = "https://models.inference.ai.azure.com/chat/completions"
@@ -65,6 +68,10 @@ def now_iso():
 
 
 def get_token():
+    for variable in ("MODELS_TOKEN", "GH_TOKEN", "GITHUB_TOKEN"):
+        token = os.environ.get(variable, "").strip()
+        if token:
+            return token
     try:
         r = subprocess.run(
             ["gh", "auth", "token"], capture_output=True, text=True, timeout=10
@@ -78,6 +85,8 @@ def call_llm(token, system, user, max_tokens=600):
     """Call LLM with Copilot-first fallback chain."""
     if HAS_LLM_MODULE:
         try:
+            os.environ["GITHUB_TOKEN"] = token
+            _github_llm.GITHUB_TOKEN = token
             return _llm_generate(
                 system=system, user=user,
                 max_tokens=max_tokens, temperature=0.7,
@@ -508,14 +517,14 @@ def main():
     if not token:
         print("\n  ⚠ No GitHub token — LLM required for self-reflection")
         print("  To run: gh auth login, then retry")
-        sys.exit(0)
+        sys.exit(2)
 
     # ── REFLECT ──
     print("\n🪞 Phase 2: REFLECT")
     reflection = reflect(token, obs)
     if not reflection:
         print("  ⚠ Reflection failed — no valid analysis from LLM")
-        sys.exit(0)
+        sys.exit(1)
 
     patterns = reflection.get("patterns_noticed", [])
     problems = reflection.get("problems_identified", [])

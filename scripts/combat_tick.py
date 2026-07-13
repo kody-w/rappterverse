@@ -119,17 +119,25 @@ def _next_action_id(existing_ids: set) -> str:
 
 def _bump_bond(rel_doc: dict, a: str, b: str, delta: int) -> None:
     edges = rel_doc.setdefault("edges", [])
-    pair = {a, b}
-    for e in edges:
-        if {e.get("a"), e.get("b")} == pair:
-            e["score"] = max(-100, min(100, int(e.get("score", 0)) + delta))
+    if not a or not b or a == b:
+        return
+    left, right = sorted((a, b))
+    for index, e in enumerate(edges):
+        if e.get("a") == left and e.get("b") == right:
+            score = max(0, min(100, int(e.get("score", 0)) + delta))
+            if score == 0:
+                edges.pop(index)
+                return
+            e["score"] = score
             e["lastInteraction"] = now_iso()
             return
-    edges.append({
-        "a": a, "b": b,
-        "score": max(-100, min(100, delta)),
-        "lastInteraction": now_iso(),
-    })
+    if delta > 0:
+        edges.append({
+            "a": left,
+            "b": right,
+            "score": min(100, delta),
+            "lastInteraction": now_iso(),
+        })
 
 
 def resolve_challenge(action: dict,

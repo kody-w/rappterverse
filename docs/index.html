@@ -13814,6 +13814,16 @@ const Abilities = {
     }
     return Math.round(dmg);
   },
+  _disposeOwnedMesh(mesh) {
+    if (!mesh) return;
+    if (mesh.parent) mesh.parent.remove(mesh);
+    if (mesh.geometry && mesh.geometry.dispose) mesh.geometry.dispose();
+    if (Array.isArray(mesh.material)) {
+      mesh.material.forEach(material => material && material.dispose && material.dispose());
+    } else if (mesh.material && mesh.material.dispose) {
+      mesh.material.dispose();
+    }
+  },
   _doSlash(pos, def) {
     const element = (typeof Equipment !== 'undefined') ? Equipment.getEquippedElement() : null;
     const dmg = this._scaledDmg(def.damage);
@@ -13933,7 +13943,7 @@ const Abilities = {
       if (hit || p.life > 3) {
         if (hit && typeof VFX !== 'undefined') VFX.burst(p.mesh.position, 'towerImpact');
         if (p._trail && typeof VFX !== 'undefined') VFX.stopTrail(p._trail);
-        WorldMode.scene.remove(p.mesh); this.projectiles.splice(i, 1);
+        this._disposeOwnedMesh(p.mesh); this.projectiles.splice(i, 1);
       }
     }
     // Shield + bubble
@@ -13955,9 +13965,7 @@ const Abilities = {
         }
         // Remove shield bubble
         if (this._shieldBubble && WorldMode.scene) {
-          WorldMode.scene.remove(this._shieldBubble);
-          this._shieldBubble.geometry.dispose();
-          this._shieldBubble.material.dispose();
+          this._disposeOwnedMesh(this._shieldBubble);
           this._shieldBubble = null;
         }
       }
@@ -13987,7 +13995,10 @@ const Abilities = {
       const t = e.life / e.duration;
       e.mesh.material.opacity = Math.max(0, 1 - t);
       if (e.mesh._novaRange) { const s = 1 + (e.mesh._novaRange - 1) * t; e.mesh.scale.set(s, s, s); }
-      if (e.life >= e.duration) { WorldMode.scene.remove(e.mesh); this._effects.splice(i, 1); }
+      if (e.life >= e.duration) {
+        this._disposeOwnedMesh(e.mesh);
+        this._effects.splice(i, 1);
+      }
     }
   },
   cleanup() {
@@ -13998,16 +14009,18 @@ const Abilities = {
       });
     }
     this._slotListeners = [];
-    this.projectiles.forEach(p => WorldMode.scene && WorldMode.scene.remove(p.mesh));
-    this._effects.forEach(e => WorldMode.scene && WorldMode.scene.remove(e.mesh));
+    this.projectiles.forEach(p => this._disposeOwnedMesh(p.mesh));
+    this._effects.forEach(e => this._disposeOwnedMesh(e.mesh));
     this.projectiles = []; this._effects = [];
     this.shieldActive = false; PlayerStats.shielded = false;
     // Dispose shield bubble
     if (this._shieldBubble) {
-      if (this._shieldBubble.parent) this._shieldBubble.parent.remove(this._shieldBubble);
-      if (this._shieldBubble.geometry) this._shieldBubble.geometry.dispose();
-      if (this._shieldBubble.material) this._shieldBubble.material.dispose();
+      this._disposeOwnedMesh(this._shieldBubble);
       this._shieldBubble = null;
+    }
+    if (this._novaShakeTimer) {
+      clearInterval(this._novaShakeTimer);
+      this._novaShakeTimer = null;
     }
     this.cooldowns = [0, 0, 0, 0, 0];
   }

@@ -120,9 +120,9 @@ def fulfill_npc_needs(npcs_data: dict, actions_data: dict, chat_data: dict,
       - customers: Chat/interaction volume in marketplace
     """
     changes = []
-    actions = actions_data.get("actions", [])[-50:]
-    messages = chat_data.get("messages", [])[-50:]
-    completed_trades = trades_data.get("completedTrades", [])[-20:]
+    actions = actions_data.get("actions", [])
+    messages = chat_data.get("messages", [])
+    completed_trades = trades_data.get("completedTrades", [])
 
     for npc in npcs_data.get("npcs", []):
         needs = npc.get("needs", {})
@@ -237,14 +237,12 @@ def evolve_agent_traits(agents_data: dict, actions_data: dict, chat_data: dict) 
 
     Traits are normalized to sum to 1.0 and stored on each agent.
     """
-    DRIFT_RATE = 0.15         # How fast traits shift per tick (conservative)
+    PER_EVENT_DRIFT = 0.05    # Three events approximate the previous 15% batch drift
     TRAIT_FLOOR = 0.30        # Base archetype never drops below 30%
-    BEHAVIOR_WINDOW = 50      # Look at last N actions/messages
-
     changes = []
     agents = agents_data.get("agents", [])
-    actions = actions_data.get("actions", [])[-BEHAVIOR_WINDOW:]
-    messages = chat_data.get("messages", [])[-BEHAVIOR_WINDOW:]
+    actions = actions_data.get("actions", [])
+    messages = chat_data.get("messages", [])
 
     # Map action types to trait categories
     ACTION_TRAIT_MAP = {
@@ -311,9 +309,6 @@ def evolve_agent_traits(agents_data: dict, actions_data: dict, chat_data: dict) 
 
         # Compute behavior distribution
         total_actions = sum(behavior_counts.values())
-        if total_actions < 3:
-            continue  # Not enough data to evolve
-
         behavior_dist = {k: v / total_actions for k, v in behavior_counts.items()}
 
         # Fill missing traits in behavior dist
@@ -321,11 +316,15 @@ def evolve_agent_traits(agents_data: dict, actions_data: dict, chat_data: dict) 
             if t not in behavior_dist:
                 behavior_dist[t] = 0.0
 
-        # Apply drift: evolved = base × (1 - DRIFT_RATE) + behavior × DRIFT_RATE
+        # Apply event-scaled drift so sparse actors still evolve exactly once.
         new_traits = {}
+        drift_rate = 1 - (1 - PER_EVENT_DRIFT) ** total_actions
         archetype_trait = max(traits, key=traits.get)  # Remember the dominant trait
         for t in traits:
-            new_val = traits[t] * (1 - DRIFT_RATE) + behavior_dist.get(t, 0) * DRIFT_RATE
+            new_val = (
+                traits[t] * (1 - drift_rate)
+                + behavior_dist.get(t, 0) * drift_rate
+            )
             new_traits[t] = new_val
 
         # Enforce floor on archetype trait
@@ -759,6 +758,86 @@ def resolve_pending_trades(trades_data: dict, actions_data: dict, timestamp: str
     return events
 
 
+def activity_since_cursor(
+    game_state: dict,
+    actions_data: dict,
+    chat_data: dict,
+    trades_data: dict,
+    timestamp: str,
+) -> tuple[dict, dict, dict, bool]:
+    """Return only unseen action/chat records and advance a durable cursor."""
+    actions = actions_data.get("actions", [])
+    messages = chat_data.get("messages", [])
+    completed_trades = trades_data.get("completedTrades", [])
+    meta = game_state.setdefault("_meta", {})
+    cursor = meta.get("activityCursor")
+
+    def record_ids(records: list[dict]) -> list[str]:
+        return [
+            str(record.get("id"))
+            for record in records
+            if record.get("id") is not None
+        ]
+
+    def trade_fingerprint(trade: dict) -> str:
+        return "|".join(str(trade.get(key, "")) for key in (
+            "id", "completedAt", "from", "to", "status",
+        ))
+
+    current_actions = record_ids(actions)
+    current_messages = record_ids(messages)
+    current_trades = [trade_fingerprint(trade) for trade in completed_trades]
+    if not isinstance(cursor, dict):
+        meta["activityCursor"] = {
+            "actions": current_actions[-200:],
+            "messages": current_messages[-200:],
+            "completedTrades": current_trades[-400:],
+            "observedAt": timestamp,
+        }
+        return (
+            {"actions": []},
+            {"messages": []},
+            {"completedTrades": []},
+            True,
+        )
+
+    seen_actions = set(cursor.get("actions", []))
+    seen_messages = set(cursor.get("messages", []))
+    seen_trades = set(cursor.get("completedTrades", []))
+    new_actions = [
+        action for action in actions
+        if str(action.get("id")) not in seen_actions
+    ]
+    new_messages = [
+        message for message in messages
+        if str(message.get("id")) not in seen_messages
+    ]
+    new_trades = [
+        trade for trade in completed_trades
+        if trade_fingerprint(trade) not in seen_trades
+    ]
+    changed = bool(new_actions or new_messages or new_trades)
+    if changed:
+        meta["activityCursor"] = {
+            "actions": list(dict.fromkeys(
+                list(cursor.get("actions", [])) + current_actions
+            ))[-200:],
+            "messages": list(dict.fromkeys(
+                list(cursor.get("messages", [])) + current_messages
+            ))[-200:],
+            "completedTrades": list(dict.fromkeys(
+                list(cursor.get("completedTrades", [])) + current_trades
+            ))[-400:],
+            "observedAt": timestamp,
+        }
+    return (
+        {"actions": new_actions},
+        {"messages": new_messages},
+        {"completedTrades": new_trades},
+        changed,
+    )
+
+
 def main():
     now = datetime.now(timezone.utc)
     timestamp = now.strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -772,13 +851,35 @@ def main():
     trades_data = load_json(STATE_DIR / "trades.json")
     chat_data = load_json(STATE_DIR / "chat.json")
     feed_data = load_json(BASE_DIR / "feed" / "activity.json")
+    (
+        activity_actions,
+        activity_chat,
+        activity_trades,
+        activity_cursor_changed,
+    ) = activity_since_cursor(
+        game_state,
+        actions_data,
+        chat_data,
+        trades_data,
+        timestamp,
+    )
+    agents_before = json.dumps(
+        agents_data.get("agents", []),
+        sort_keys=True,
+        separators=(",", ":"),
+    )
 
     # Process triggers
     trigger_events = process_triggers(game_state, agents_data)
     events.extend(trigger_events)
 
     # Fulfill NPC needs from world activity (BEFORE decay so needs oscillate)
-    fulfill_events = fulfill_npc_needs(npcs_data, actions_data, chat_data, trades_data)
+    fulfill_events = fulfill_npc_needs(
+        npcs_data,
+        activity_actions,
+        activity_chat,
+        activity_trades,
+    )
     events.extend(fulfill_events)
 
     # Decay NPC needs
@@ -786,7 +887,7 @@ def main():
     events.extend(npc_events)
 
     # Evolve agent traits based on behavior (rappterbook-style drift)
-    trait_events = evolve_agent_traits(agents_data, actions_data, chat_data)
+    trait_events = evolve_agent_traits(agents_data, activity_actions, activity_chat)
     events.extend(trait_events)
 
     # Fulfill agent goals based on recent actions
@@ -796,8 +897,8 @@ def main():
         if agent.get("controller", "system") == "system"
     }
     goal_events = fulfill_agent_goals(
-        actions_data,
-        chat_data,
+        activity_actions,
+        activity_chat,
         timestamp,
         system_agent_ids,
     )
@@ -816,7 +917,12 @@ def main():
     rel_events = decay_stale_relationships(rel_data, timestamp)
     events.extend(rel_events)
 
-    if not events:
+    agents_changed = agents_before != json.dumps(
+        agents_data.get("agents", []),
+        sort_keys=True,
+        separators=(",", ":"),
+    )
+    if not events and not activity_cursor_changed and not agents_changed:
         print(f"[{timestamp}] No state changes this tick")
         return
 
@@ -827,7 +933,7 @@ def main():
     # Save state
     save_json(STATE_DIR / "game_state.json", game_state)
     save_json(STATE_DIR / "npcs.json", npcs_data)
-    if combat_events or trait_events:
+    if combat_events or agents_changed:
         save_json(STATE_DIR / "agents.json", agents_data)
     if combat_events:
         save_json(STATE_DIR / "chat.json", chat_data)
