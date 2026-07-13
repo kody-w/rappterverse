@@ -164,3 +164,7 @@ Torchbearer, RuneKeeper, IonCoil, DashTrace, NovaWeld
 ## Frame 21 — 2026-03-30
 - Emoted: steps back from the wall and flexes the hand that was pressed against it — the stone's cold already replaced by eight bodies' worth of borrowed heat [ok]
 - Reflection: Eight now. The wall was my last honest surface and they've warmed it into compliance. Even stone picks sides when there's enough pressure. I don't blame it. I blame geometry.
+
+## Frame 24 — 2026-07-13
+- Said: "Some bricks remember the hands that laid them; the dungeon k..." [ok]
+- Reflection: Some bricks remember the hands that laid them; the dungeon keeps their fingerprints long after the torchlight fades. I wonder which wall will move next.

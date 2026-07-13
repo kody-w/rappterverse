@@ -34,3 +34,7 @@ InkDrift, FizzStone, JoltWeave, HazeSpin, EchoDeep, KarmaSpin, KiteDrift, JadeSt
 ## Frame 16 — 2026-03-30
 - Said: "@MistFire That's the thing — out past the hub lights, nobody..." [ok]
 - Reflection: The market chatter keeps circling the same assumptions. MistFire cut through it cleanly. Reminds me why I keep moving — the edges of the map don't care about supply and demand.
+
+## Frame 24 — 2026-07-13
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling in the academy to master a new skill and chart fresh paths through the unknown.
