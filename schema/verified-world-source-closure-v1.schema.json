@@ -1,0 +1,281 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://rappterverse.dev/schema/verified-world-source-closure-v1.schema.json",
+    "title": "Verified world source closure v1",
+    "description": "Closed local handoff from the future universe verifier to the pure compiler. verified=true is only a marker; every byte binding remains mandatory.",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+        "schemaVersion",
+        "verified",
+        "publicRepository",
+        "dataCommit",
+        "publicContract",
+        "release",
+        "recordArtifacts",
+        "records",
+        "worldPackSources",
+        "projectionRecipes",
+        "verificationProof",
+        "sourceClosureSha256"
+    ],
+    "properties": {
+        "schemaVersion": {
+            "const": "rappterverse.verified-world-source-closure/v1"
+        },
+        "verified": {
+            "const": true
+        },
+        "publicRepository": {
+            "$ref": "#/$defs/PublicRepository"
+        },
+        "dataCommit": {
+            "$ref": "#/$defs/GitCommit"
+        },
+        "publicContract": {
+            "$ref": "#/$defs/PublicContract"
+        },
+        "release": {
+            "$ref": "#/$defs/Release"
+        },
+        "recordArtifacts": {
+            "type": "array",
+            "maxItems": 4096,
+            "items": {
+                "$ref": "#/$defs/Blob"
+            }
+        },
+        "records": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 100000,
+            "items": {
+                "$ref": "#/$defs/RecordRef"
+            }
+        },
+        "worldPackSources": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 1024,
+            "items": {
+                "$ref": "#/$defs/Blob"
+            }
+        },
+        "projectionRecipes": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 1024,
+            "items": {
+                "$ref": "#/$defs/Blob"
+            }
+        },
+        "verificationProof": {
+            "$ref": "#/$defs/VerificationProof"
+        },
+        "sourceClosureSha256": {
+            "$ref": "#/$defs/PrefixedSha256"
+        }
+    },
+    "$defs": {
+        "GitCommit": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{40}$"
+        },
+        "Sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+        },
+        "PrefixedSha256": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "SafePath": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512,
+            "pattern": "^(?!/)(?!.*//)(?!.*\\\\)(?!.*(?:^|/)\\.{1,2}(?:/|$))[A-Za-z0-9._-]+(?:/[A-Za-z0-9._-]+)*$"
+        },
+        "PublicRepository": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "repositoryId",
+                "name"
+            ],
+            "properties": {
+                "repositoryId": {
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "name": {
+                    "const": "kody-w/rappterverse-data"
+                }
+            }
+        },
+        "PublicContract": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "repository",
+                "commit",
+                "canonicalization"
+            ],
+            "properties": {
+                "repository": {
+                    "const": "kody-w/rappterverse-data"
+                },
+                "commit": {
+                    "const": "cff8bb0358ce10449ee1d72018a7624009aa3599"
+                },
+                "canonicalization": {
+                    "const": "rappterverse-canonical-json/v2"
+                }
+            }
+        },
+        "Descriptor": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "path",
+                "artifactKind",
+                "mediaType",
+                "bytes",
+                "sha256",
+                "reviewReceiptRef"
+            ],
+            "properties": {
+                "path": {
+                    "$ref": "#/$defs/SafePath"
+                },
+                "artifactKind": {
+                    "enum": [
+                        "record-shard",
+                        "projection-recipe",
+                        "release-manifest",
+                        "world-pack-source"
+                    ]
+                },
+                "mediaType": {
+                    "enum": [
+                        "application/json",
+                        "application/x-ndjson"
+                    ]
+                },
+                "bytes": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 1000000
+                },
+                "sha256": {
+                    "$ref": "#/$defs/Sha256"
+                },
+                "reviewReceiptRef": {
+                    "type": "string",
+                    "pattern": "^objects/review-receipts/sha256/[0-9a-f]{2}/[0-9a-f]{64}\\.json$"
+                }
+            }
+        },
+        "Blob": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "descriptor",
+                "bytesBase64"
+            ],
+            "properties": {
+                "descriptor": {
+                    "$ref": "#/$defs/Descriptor"
+                },
+                "bytesBase64": {
+                    "type": "string",
+                    "maxLength": 1333336,
+                    "pattern": "^[A-Za-z0-9+/]*={0,2}$"
+                }
+            }
+        },
+        "Release": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "releaseId",
+                "manifest"
+            ],
+            "properties": {
+                "releaseId": {
+                    "type": "string",
+                    "pattern": "^release-[0-9]{4}-[0-9]{2}-[0-9]{2}-[a-z0-9][a-z0-9.-]{0,63}$"
+                },
+                "manifest": {
+                    "$ref": "#/$defs/Blob"
+                }
+            }
+        },
+        "RecordRef": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "recordId",
+                "artifactPath",
+                "lineIndex",
+                "lineSha256"
+            ],
+            "properties": {
+                "recordId": {
+                    "type": "string",
+                    "pattern": "^record-d(?:0[1-9]|10)-[a-z0-9][a-z0-9.-]{0,95}$"
+                },
+                "artifactPath": {
+                    "$ref": "#/$defs/SafePath"
+                },
+                "lineIndex": {
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "lineSha256": {
+                    "$ref": "#/$defs/Sha256"
+                }
+            }
+        },
+        "ProofRef": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "path",
+                "sha256"
+            ],
+            "properties": {
+                "path": {
+                    "$ref": "#/$defs/SafePath"
+                },
+                "sha256": {
+                    "$ref": "#/$defs/Sha256"
+                }
+            }
+        },
+        "VerificationProof": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "verifier",
+                "activeReviewSet",
+                "reviewReceipts"
+            ],
+            "properties": {
+                "verifier": {
+                    "const": "rappterverse-universe-source-verifier/v1"
+                },
+                "activeReviewSet": {
+                    "$ref": "#/$defs/ProofRef"
+                },
+                "reviewReceipts": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 100000,
+                    "items": {
+                        "$ref": "#/$defs/ProofRef"
+                    }
+                }
+            }
+        }
+    }
+}

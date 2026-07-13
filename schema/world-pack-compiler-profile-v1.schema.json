@@ -1,0 +1,664 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://rappterverse.dev/schema/world-pack-compiler-profile-v1.schema.json",
+    "title": "Trusted world-pack compiler profile v1",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+        "schemaVersion",
+        "profileId",
+        "version",
+        "transformationVersion",
+        "publicContract",
+        "identity",
+        "outputLayout",
+        "entityKinds",
+        "datasetRecipes",
+        "overlayProtection",
+        "seedDerivation",
+        "placementPolicy",
+        "legacyAliases",
+        "limits"
+    ],
+    "properties": {
+        "schemaVersion": {
+            "const": "rappterverse.world-pack-compiler-profile/v1"
+        },
+        "profileId": {
+            "const": "rappterverse-v1"
+        },
+        "version": {
+            "const": "v1"
+        },
+        "transformationVersion": {
+            "const": "rappterverse-world-pack-projection/v1"
+        },
+        "publicContract": {
+            "$ref": "#/$defs/PublicContract"
+        },
+        "identity": {
+            "$ref": "#/$defs/Identity"
+        },
+        "outputLayout": {
+            "$ref": "#/$defs/OutputLayout"
+        },
+        "entityKinds": {
+            "$ref": "#/$defs/EntityKinds"
+        },
+        "datasetRecipes": {
+            "$ref": "#/$defs/DatasetRecipes"
+        },
+        "overlayProtection": {
+            "$ref": "#/$defs/OverlayProtection"
+        },
+        "seedDerivation": {
+            "$ref": "#/$defs/SeedDerivation"
+        },
+        "placementPolicy": {
+            "$ref": "#/$defs/PlacementPolicy"
+        },
+        "legacyAliases": {
+            "type": "array",
+            "items": {
+                "$ref": "#/$defs/LegacyAliasGroup"
+            }
+        },
+        "limits": {
+            "$ref": "#/$defs/Limits"
+        }
+    },
+    "$defs": {
+        "PublicContract": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "repositoryId",
+                "repositoryName",
+                "commit",
+                "canonicalization"
+            ],
+            "properties": {
+                "repositoryId": {
+                    "const": 1298777302
+                },
+                "repositoryName": {
+                    "const": "kody-w/rappterverse-data"
+                },
+                "commit": {
+                    "const": "cff8bb0358ce10449ee1d72018a7624009aa3599"
+                },
+                "canonicalization": {
+                    "const": "rappterverse-canonical-json/v2"
+                }
+            }
+        },
+        "Identity": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "domain",
+                "namespace",
+                "digest",
+                "encoding",
+                "displayLength",
+                "identityRecordAttribute",
+                "stableIdInputAttribute"
+            ],
+            "properties": {
+                "domain": {
+                    "const": "rappterverse-stable-entity-id/v1"
+                },
+                "namespace": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                },
+                "digest": {
+                    "const": "sha256"
+                },
+                "encoding": {
+                    "const": "base32-lower"
+                },
+                "displayLength": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 52
+                },
+                "identityRecordAttribute": {
+                    "const": "identityRecordId"
+                },
+                "stableIdInputAttribute": {
+                    "const": "stableIdInput"
+                }
+            }
+        },
+        "OutputLayout": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "manifest",
+                "worldsIndex",
+                "worldConfig",
+                "worldObjects",
+                "worldNpcs",
+                "agentBlueprints",
+                "quests",
+                "economy",
+                "governance",
+                "incidents",
+                "lineages",
+                "provenance",
+                "legacyCompatibility"
+            ],
+            "properties": {
+                "manifest": {
+                    "const": "pack-manifest.json"
+                },
+                "worldsIndex": {
+                    "const": "worlds.json"
+                },
+                "worldConfig": {
+                    "const": "worlds/{worldId}/config.json"
+                },
+                "worldObjects": {
+                    "const": "worlds/{worldId}/objects.json"
+                },
+                "worldNpcs": {
+                    "const": "worlds/{worldId}/npcs.json"
+                },
+                "agentBlueprints": {
+                    "const": "agent-blueprints.json"
+                },
+                "quests": {
+                    "const": "quests.json"
+                },
+                "economy": {
+                    "const": "economy.json"
+                },
+                "governance": {
+                    "const": "governance.json"
+                },
+                "incidents": {
+                    "const": "incidents.json"
+                },
+                "lineages": {
+                    "const": "lineages.json"
+                },
+                "provenance": {
+                    "const": "provenance.jsonl"
+                },
+                "legacyCompatibility": {
+                    "const": "legacy-compatibility.json"
+                }
+            }
+        },
+        "StringArray": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+            }
+        },
+        "KindArray": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+                "enum": [
+                    "world",
+                    "portal",
+                    "agent-blueprint",
+                    "npc-blueprint",
+                    "quest",
+                    "object",
+                    "item",
+                    "currency",
+                    "governance",
+                    "incident",
+                    "lineage"
+                ]
+            }
+        },
+        "Relations": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "in-world": {
+                    "$ref": "#/$defs/KindArray"
+                },
+                "portal-target": {
+                    "$ref": "#/$defs/KindArray"
+                },
+                "home-world": {
+                    "$ref": "#/$defs/KindArray"
+                },
+                "uses-item": {
+                    "$ref": "#/$defs/KindArray"
+                },
+                "uses-currency": {
+                    "$ref": "#/$defs/KindArray"
+                },
+                "governance-role": {
+                    "$ref": "#/$defs/KindArray"
+                },
+                "lineage": {
+                    "$ref": "#/$defs/KindArray"
+                },
+                "depends-on": {
+                    "$ref": "#/$defs/KindArray"
+                },
+                "reward-item": {
+                    "$ref": "#/$defs/KindArray"
+                },
+                "reward-currency": {
+                    "$ref": "#/$defs/KindArray"
+                },
+                "jurisdiction": {
+                    "$ref": "#/$defs/KindArray"
+                },
+                "recovery-target": {
+                    "$ref": "#/$defs/KindArray"
+                },
+                "parent": {
+                    "$ref": "#/$defs/KindArray"
+                }
+            }
+        },
+        "KindPolicy": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "prefix",
+                "output",
+                "allowedAttributes",
+                "allowedRelations",
+                "requiredRelations"
+            ],
+            "properties": {
+                "prefix": {
+                    "type": "string",
+                    "pattern": "^[a-z][a-z0-9-]{0,23}$"
+                },
+                "output": {
+                    "enum": [
+                        "worlds",
+                        "worldObjects",
+                        "worldNpcs",
+                        "agentBlueprints",
+                        "quests",
+                        "economy",
+                        "governance",
+                        "incidents",
+                        "lineages"
+                    ]
+                },
+                "allowedAttributes": {
+                    "$ref": "#/$defs/StringArray"
+                },
+                "allowedRelations": {
+                    "$ref": "#/$defs/Relations"
+                },
+                "requiredRelations": {
+                    "$ref": "#/$defs/StringArray"
+                }
+            }
+        },
+        "EntityKinds": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "world",
+                "portal",
+                "agent-blueprint",
+                "npc-blueprint",
+                "quest",
+                "object",
+                "item",
+                "currency",
+                "governance",
+                "incident",
+                "lineage"
+            ],
+            "properties": {
+                "world": {
+                    "$ref": "#/$defs/KindPolicy"
+                },
+                "portal": {
+                    "$ref": "#/$defs/KindPolicy"
+                },
+                "agent-blueprint": {
+                    "$ref": "#/$defs/KindPolicy"
+                },
+                "npc-blueprint": {
+                    "$ref": "#/$defs/KindPolicy"
+                },
+                "quest": {
+                    "$ref": "#/$defs/KindPolicy"
+                },
+                "object": {
+                    "$ref": "#/$defs/KindPolicy"
+                },
+                "item": {
+                    "$ref": "#/$defs/KindPolicy"
+                },
+                "currency": {
+                    "$ref": "#/$defs/KindPolicy"
+                },
+                "governance": {
+                    "$ref": "#/$defs/KindPolicy"
+                },
+                "incident": {
+                    "$ref": "#/$defs/KindPolicy"
+                },
+                "lineage": {
+                    "$ref": "#/$defs/KindPolicy"
+                }
+            }
+        },
+        "RecipeArray": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+                "type": "string",
+                "pattern": "^recipe-[a-z0-9][a-z0-9.-]{0,119}$"
+            }
+        },
+        "DatasetRecipes": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "d01-civilization-ledger",
+                "d02-counterfactual-multiverse",
+                "d03-human-judgment",
+                "d04-work-trajectories",
+                "d05-agent-lifetimes",
+                "d06-social-causality",
+                "d07-market-tape",
+                "d08-governance-precedent",
+                "d09-failure-recovery",
+                "d10-agent-lineage"
+            ],
+            "properties": {
+                "d01-civilization-ledger": {
+                    "$ref": "#/$defs/RecipeArray"
+                },
+                "d02-counterfactual-multiverse": {
+                    "$ref": "#/$defs/RecipeArray"
+                },
+                "d03-human-judgment": {
+                    "$ref": "#/$defs/RecipeArray"
+                },
+                "d04-work-trajectories": {
+                    "$ref": "#/$defs/RecipeArray"
+                },
+                "d05-agent-lifetimes": {
+                    "$ref": "#/$defs/RecipeArray"
+                },
+                "d06-social-causality": {
+                    "$ref": "#/$defs/RecipeArray"
+                },
+                "d07-market-tape": {
+                    "$ref": "#/$defs/RecipeArray"
+                },
+                "d08-governance-precedent": {
+                    "$ref": "#/$defs/RecipeArray"
+                },
+                "d09-failure-recovery": {
+                    "$ref": "#/$defs/RecipeArray"
+                },
+                "d10-agent-lineage": {
+                    "$ref": "#/$defs/RecipeArray"
+                }
+            }
+        },
+        "OverlayProtection": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "publicPreservedFields",
+                "denylist",
+                "recursive"
+            ],
+            "properties": {
+                "publicPreservedFields": {
+                    "$ref": "#/$defs/StringArray"
+                },
+                "denylist": {
+                    "$ref": "#/$defs/StringArray"
+                },
+                "recursive": {
+                    "const": true
+                }
+            }
+        },
+        "SeedDerivation": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "algorithm",
+                "channels",
+                "drawAddress",
+                "boundedInteger"
+            ],
+            "properties": {
+                "algorithm": {
+                    "const": "hkdf-hmac-sha256/v1"
+                },
+                "channels": {
+                    "type": "array",
+                    "prefixItems": [
+                        {
+                            "const": "immutable-layout"
+                        },
+                        {
+                            "const": "frames"
+                        },
+                        {
+                            "const": "engines"
+                        },
+                        {
+                            "const": "visuals"
+                        },
+                        {
+                            "const": "audio"
+                        },
+                        {
+                            "const": "narrative"
+                        },
+                        {
+                            "const": "economy"
+                        },
+                        {
+                            "const": "governance"
+                        }
+                    ],
+                    "items": false,
+                    "minItems": 8,
+                    "maxItems": 8
+                },
+                "drawAddress": {
+                    "const": "entityId/purpose/index"
+                },
+                "boundedInteger": {
+                    "const": "sha256-rejection-sampling"
+                }
+            }
+        },
+        "Bounds": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "x",
+                "z"
+            ],
+            "properties": {
+                "x": {
+                    "$ref": "#/$defs/IntegerPair"
+                },
+                "z": {
+                    "$ref": "#/$defs/IntegerPair"
+                }
+            }
+        },
+        "IntegerPair": {
+            "type": "array",
+            "prefixItems": [
+                {
+                    "type": "integer"
+                },
+                {
+                    "type": "integer"
+                }
+            ],
+            "items": false,
+            "minItems": 2,
+            "maxItems": 2
+        },
+        "PlacementPolicy": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "channel",
+                "attribute",
+                "defaultBounds",
+                "rendererUnitsPerSimulationUnit"
+            ],
+            "properties": {
+                "channel": {
+                    "const": "immutable-layout"
+                },
+                "attribute": {
+                    "const": "placement"
+                },
+                "defaultBounds": {
+                    "$ref": "#/$defs/Bounds"
+                },
+                "rendererUnitsPerSimulationUnit": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 1000
+                }
+            }
+        },
+        "LegacyAliasEntities": {
+            "type": "object",
+            "additionalProperties": false,
+            "minProperties": 1,
+            "properties": {
+                "world": {
+                    "$ref": "#/$defs/StringArray"
+                },
+                "portal": {
+                    "$ref": "#/$defs/StringArray"
+                },
+                "agent-blueprint": {
+                    "$ref": "#/$defs/StringArray"
+                },
+                "npc-blueprint": {
+                    "$ref": "#/$defs/StringArray"
+                },
+                "quest": {
+                    "$ref": "#/$defs/StringArray"
+                },
+                "object": {
+                    "$ref": "#/$defs/StringArray"
+                },
+                "item": {
+                    "$ref": "#/$defs/StringArray"
+                },
+                "currency": {
+                    "$ref": "#/$defs/StringArray"
+                },
+                "governance": {
+                    "$ref": "#/$defs/StringArray"
+                },
+                "incident": {
+                    "$ref": "#/$defs/StringArray"
+                },
+                "lineage": {
+                    "$ref": "#/$defs/StringArray"
+                }
+            }
+        },
+        "LegacyAliasGroup": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "scope",
+                "entities"
+            ],
+            "properties": {
+                "scope": {
+                    "type": "string",
+                    "pattern": "^[a-z][a-z0-9._-]{0,127}$"
+                },
+                "entities": {
+                    "$ref": "#/$defs/LegacyAliasEntities"
+                }
+            }
+        },
+        "Limits": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "maxClosureBytes",
+                "maxBlobBytes",
+                "maxRecordArtifacts",
+                "maxRecords",
+                "maxWorldPackSources",
+                "maxEntities",
+                "maxReferencesPerEntity",
+                "maxOutputFiles",
+                "maxOutputFileBytes",
+                "maxWarnings"
+            ],
+            "properties": {
+                "maxClosureBytes": {
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "maxBlobBytes": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 1000000
+                },
+                "maxRecordArtifacts": {
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "maxRecords": {
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "maxWorldPackSources": {
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "maxEntities": {
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "maxReferencesPerEntity": {
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "maxOutputFiles": {
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "maxOutputFileBytes": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 1000000
+                },
+                "maxWarnings": {
+                    "type": "integer",
+                    "minimum": 1
+                }
+            }
+        }
+    }
+}

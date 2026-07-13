@@ -148,6 +148,15 @@ STATE_MUTATING_WORKFLOWS = {
 # WORKFLOW INFRASTRUCTURE TESTS
 # ═════════════════════════════════════════════
 
+class TestCompilerCIScope(unittest.TestCase):
+    """Keep immutable compiler inputs outside mutable-world CI scope."""
+
+    def test_trusted_profile_is_code_owned(self):
+        profile = BASE_DIR / "compiler" / "profiles" / "rappterverse-v1.json"
+        self.assertTrue(profile.is_file())
+        self.assertFalse((WORLDS_DIR / "recipes").exists())
+
+
 class TestWorkflowConcurrency(unittest.TestCase):
     """Verify all state-mutating workflows have the global concurrency group."""
 
@@ -251,7 +260,13 @@ class TestWorkflowPushSafety(unittest.TestCase):
         self.assertIn("ALLOW_DERIVED_STATE_DRIFT", regression)
         self.assertIn("fetch-depth: 0", regression)
         self.assertIn("if: env.ALLOW_DERIVED_STATE_DRIFT != '1'", regression)
-        self.assertEqual(regression.count("runs-on: ubuntu-latest"), 1)
+        self.assertEqual(regression.count("runs-on: ubuntu-latest"), 2)
+        self.assertIn(
+            "python -m unittest discover -s tests "
+            "-p 'test_world_pack_compiler.py' -v",
+            regression,
+        )
+        self.assertIn("needs: [test]", regression)
 
 
 class TestWorkflowPII(unittest.TestCase):

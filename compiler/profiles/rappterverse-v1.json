@@ -1,0 +1,506 @@
+{
+    "schemaVersion": "rappterverse.world-pack-compiler-profile/v1",
+    "profileId": "rappterverse-v1",
+    "version": "v1",
+    "transformationVersion": "rappterverse-world-pack-projection/v1",
+    "publicContract": {
+        "repositoryId": 1298777302,
+        "repositoryName": "kody-w/rappterverse-data",
+        "commit": "cff8bb0358ce10449ee1d72018a7624009aa3599",
+        "canonicalization": "rappterverse-canonical-json/v2"
+    },
+    "identity": {
+        "domain": "rappterverse-stable-entity-id/v1",
+        "namespace": "rappterverse/world-pack/v1",
+        "digest": "sha256",
+        "encoding": "base32-lower",
+        "displayLength": 26,
+        "identityRecordAttribute": "identityRecordId",
+        "stableIdInputAttribute": "stableIdInput"
+    },
+    "outputLayout": {
+        "manifest": "pack-manifest.json",
+        "worldsIndex": "worlds.json",
+        "worldConfig": "worlds/{worldId}/config.json",
+        "worldObjects": "worlds/{worldId}/objects.json",
+        "worldNpcs": "worlds/{worldId}/npcs.json",
+        "agentBlueprints": "agent-blueprints.json",
+        "quests": "quests.json",
+        "economy": "economy.json",
+        "governance": "governance.json",
+        "incidents": "incidents.json",
+        "lineages": "lineages.json",
+        "provenance": "provenance.jsonl",
+        "legacyCompatibility": "legacy-compatibility.json"
+    },
+    "entityKinds": {
+        "world": {
+            "prefix": "world",
+            "output": "worlds",
+            "allowedAttributes": [
+                "identityRecordId",
+                "stableIdInput",
+                "bounds",
+                "spawn",
+                "features",
+                "renderer",
+                "worldKey",
+                "biome",
+                "dataset",
+                "settings",
+                "properties"
+            ],
+            "allowedRelations": {},
+            "requiredRelations": []
+        },
+        "portal": {
+            "prefix": "portal",
+            "output": "worldObjects",
+            "allowedAttributes": [
+                "identityRecordId",
+                "stableIdInput",
+                "placement",
+                "stableKey",
+                "type",
+                "color",
+                "glow",
+                "model",
+                "interaction",
+                "properties"
+            ],
+            "allowedRelations": {
+                "in-world": [
+                    "world"
+                ],
+                "portal-target": [
+                    "world"
+                ]
+            },
+            "requiredRelations": [
+                "in-world",
+                "portal-target"
+            ]
+        },
+        "agent-blueprint": {
+            "prefix": "agent",
+            "output": "agentBlueprints",
+            "allowedAttributes": [
+                "identityRecordId",
+                "stableIdInput",
+                "avatar",
+                "capabilities",
+                "biographyRefs",
+                "publicTraits",
+                "archetype",
+                "role",
+                "model",
+                "properties"
+            ],
+            "allowedRelations": {
+                "home-world": [
+                    "world"
+                ],
+                "uses-item": [
+                    "item"
+                ],
+                "uses-currency": [
+                    "currency"
+                ],
+                "governance-role": [
+                    "governance"
+                ],
+                "lineage": [
+                    "lineage"
+                ]
+            },
+            "requiredRelations": []
+        },
+        "npc-blueprint": {
+            "prefix": "npc",
+            "output": "worldNpcs",
+            "allowedAttributes": [
+                "identityRecordId",
+                "stableIdInput",
+                "placement",
+                "stableKey",
+                "avatar",
+                "role",
+                "needsModel",
+                "groundingFacts",
+                "fallbackVoice",
+                "behaviorModel",
+                "capabilities",
+                "biographyRefs",
+                "publicTraits",
+                "properties"
+            ],
+            "allowedRelations": {
+                "in-world": [
+                    "world"
+                ],
+                "uses-item": [
+                    "item"
+                ],
+                "uses-currency": [
+                    "currency"
+                ],
+                "governance-role": [
+                    "governance"
+                ],
+                "lineage": [
+                    "lineage"
+                ]
+            },
+            "requiredRelations": [
+                "in-world"
+            ]
+        },
+        "quest": {
+            "prefix": "quest",
+            "output": "quests",
+            "allowedAttributes": [
+                "identityRecordId",
+                "stableIdInput",
+                "conditions",
+                "rewards",
+                "title",
+                "summary",
+                "difficulty",
+                "properties"
+            ],
+            "allowedRelations": {
+                "depends-on": [
+                    "quest"
+                ],
+                "reward-item": [
+                    "item"
+                ],
+                "reward-currency": [
+                    "currency"
+                ],
+                "in-world": [
+                    "world"
+                ]
+            },
+            "requiredRelations": []
+        },
+        "object": {
+            "prefix": "object",
+            "output": "worldObjects",
+            "allowedAttributes": [
+                "identityRecordId",
+                "stableIdInput",
+                "placement",
+                "stableKey",
+                "type",
+                "color",
+                "model",
+                "size",
+                "interaction",
+                "catalog",
+                "properties"
+            ],
+            "allowedRelations": {
+                "in-world": [
+                    "world"
+                ],
+                "uses-item": [
+                    "item"
+                ],
+                "uses-currency": [
+                    "currency"
+                ]
+            },
+            "requiredRelations": [
+                "in-world"
+            ]
+        },
+        "item": {
+            "prefix": "item",
+            "output": "economy",
+            "allowedAttributes": [
+                "identityRecordId",
+                "stableIdInput",
+                "category",
+                "rarity",
+                "stackable",
+                "maxStack",
+                "scarcity",
+                "policy",
+                "symbol",
+                "properties"
+            ],
+            "allowedRelations": {},
+            "requiredRelations": []
+        },
+        "currency": {
+            "prefix": "currency",
+            "output": "economy",
+            "allowedAttributes": [
+                "identityRecordId",
+                "stableIdInput",
+                "symbol",
+                "decimals",
+                "mintPolicy",
+                "burnPolicy",
+                "scarcity",
+                "properties"
+            ],
+            "allowedRelations": {},
+            "requiredRelations": []
+        },
+        "governance": {
+            "prefix": "governance",
+            "output": "governance",
+            "allowedAttributes": [
+                "identityRecordId",
+                "stableIdInput",
+                "roles",
+                "charter",
+                "proposalTypes",
+                "policy",
+                "properties"
+            ],
+            "allowedRelations": {
+                "jurisdiction": [
+                    "world"
+                ]
+            },
+            "requiredRelations": [
+                "jurisdiction"
+            ]
+        },
+        "incident": {
+            "prefix": "incident",
+            "output": "incidents",
+            "allowedAttributes": [
+                "identityRecordId",
+                "stableIdInput",
+                "scenario",
+                "recoveryRecipe",
+                "severity",
+                "properties"
+            ],
+            "allowedRelations": {
+                "in-world": [
+                    "world"
+                ],
+                "recovery-target": [
+                    "world",
+                    "portal",
+                    "object",
+                    "governance",
+                    "item",
+                    "currency"
+                ]
+            },
+            "requiredRelations": [
+                "recovery-target"
+            ]
+        },
+        "lineage": {
+            "prefix": "lineage",
+            "output": "lineages",
+            "allowedAttributes": [
+                "identityRecordId",
+                "stableIdInput",
+                "generation",
+                "inheritedPolicyStyle",
+                "watershed",
+                "properties"
+            ],
+            "allowedRelations": {
+                "parent": [
+                    "lineage"
+                ]
+            },
+            "requiredRelations": []
+        }
+    },
+    "datasetRecipes": {
+        "d01-civilization-ledger": [
+            "recipe-d01-v1",
+            "recipe-d01-fixture"
+        ],
+        "d02-counterfactual-multiverse": [
+            "recipe-d02-v1"
+        ],
+        "d03-human-judgment": [
+            "recipe-d03-v1"
+        ],
+        "d04-work-trajectories": [
+            "recipe-d04-v1"
+        ],
+        "d05-agent-lifetimes": [
+            "recipe-d05-v1"
+        ],
+        "d06-social-causality": [
+            "recipe-d06-v1"
+        ],
+        "d07-market-tape": [
+            "recipe-d07-v1"
+        ],
+        "d08-governance-precedent": [
+            "recipe-d08-v1"
+        ],
+        "d09-failure-recovery": [
+            "recipe-d09-v1"
+        ],
+        "d10-agent-lineage": [
+            "recipe-d10-v1"
+        ]
+    },
+    "overlayProtection": {
+        "publicPreservedFields": [
+            "controller",
+            "position",
+            "status",
+            "hp",
+            "evolved-traits",
+            "needs",
+            "mood",
+            "tasks",
+            "memory",
+            "quest-progress",
+            "damage",
+            "user-created-state",
+            "balances",
+            "listings",
+            "trades",
+            "ledger",
+            "proposals",
+            "ballots",
+            "enacted-overlays",
+            "incident-progress",
+            "living-descendants",
+            "history"
+        ],
+        "denylist": [
+            "currentPosition",
+            "currentStatus",
+            "currentHp",
+            "lastUpdate",
+            "createdAt",
+            "updatedAt",
+            "traits",
+            "evolvedTraits",
+            "activeNeeds",
+            "taskQueue",
+            "questProgress",
+            "currentDamage",
+            "balance",
+            "inventory",
+            "holdings",
+            "orders",
+            "offers",
+            "marketListings",
+            "tradeHistory",
+            "transactionLedger",
+            "proposalState",
+            "ballotState",
+            "enactedPolicy",
+            "incidentState",
+            "descendants",
+            "outcomes",
+            "eventHistory",
+            "action",
+            "controllerId"
+        ],
+        "recursive": true
+    },
+    "seedDerivation": {
+        "algorithm": "hkdf-hmac-sha256/v1",
+        "channels": [
+            "immutable-layout",
+            "frames",
+            "engines",
+            "visuals",
+            "audio",
+            "narrative",
+            "economy",
+            "governance"
+        ],
+        "drawAddress": "entityId/purpose/index",
+        "boundedInteger": "sha256-rejection-sampling"
+    },
+    "placementPolicy": {
+        "channel": "immutable-layout",
+        "attribute": "placement",
+        "defaultBounds": {
+            "x": [
+                -15,
+                15
+            ],
+            "z": [
+                -15,
+                15
+            ]
+        },
+        "rendererUnitsPerSimulationUnit": 10
+    },
+    "legacyAliases": [
+        {
+            "scope": "hub",
+            "entities": {
+                "world": ["hub"],
+                "object": ["main-screen", "central-fountain", "welcome-arch", "welcome-sign", "controls-sign", "news-board", "events-board", "leaderboard", "battle-stats", "dimension-map", "community-board", "tree-plaza-1", "tree-plaza-2", "tree-plaza-3", "tree-plaza-4", "crystal-tower-1", "crystal-tower-2", "bench-circle-1", "bench-circle-2", "bench-circle-3", "bench-circle-4", "fire-pit", "lamp-path-1", "lamp-path-2", "lamp-path-3", "lamp-path-4", "portal-lamp-gallery", "portal-lamp-arena", "portal-lamp-market", "portal-lamp-market-2", "gallery-sign", "arena-sign", "market-sign", "dungeon-sign", "portal-lamp-dungeon-1", "portal-lamp-dungeon-2", "statue-founder", "pr-info-screen", "contribute-sign"],
+                "portal": ["gallery-portal", "arena-portal", "marketplace-portal", "dungeon-portal"],
+                "npc-blueprint": ["guide-bot", "cipher", "nexus", "echo", "muse", "trader-npc", "void-emerging", "codebot", "news-anchor", "wanderer"]
+            }
+        },
+        {
+            "scope": "arena",
+            "entities": {
+                "world": ["arena"],
+                "object": ["battle-ring", "arena-screen", "champion-board", "rules-board", "spectator-1", "spectator-2", "fire-left", "fire-right"],
+                "portal": ["hub-portal"],
+                "npc-blueprint": ["nexus-arena", "battle-master-001", "arena-announcer-001", "trainer-001", "champion-npc-001"]
+            }
+        },
+        {
+            "scope": "marketplace",
+            "entities": {
+                "world": ["marketplace"],
+                "object": ["market-screen", "pack-shop", "price-board", "deals-board", "vault", "gold-pile-1", "gold-pile-2", "shop-lamp-1", "shop-lamp-2"],
+                "portal": ["hub-portal"],
+                "npc-blueprint": ["echo-marketplace", "merchant-001", "banker-001", "auctioneer-001", "trader-npc-002", "appraiser-001"]
+            }
+        },
+        {
+            "scope": "gallery",
+            "entities": {
+                "world": ["gallery"],
+                "object": ["gallery-screen", "cards-screen", "featured-sign", "submit-sign", "pedestal-1", "pedestal-2", "pedestal-3", "art-light-1", "art-light-2"],
+                "portal": ["hub-portal"],
+                "npc-blueprint": ["muse-gallery", "gallery-curator-001", "collector-001", "artist-001", "historian-001"]
+            }
+        },
+        {
+            "scope": "dungeon",
+            "entities": {
+                "world": ["dungeon"],
+                "object": ["dungeon-entrance", "torch-corridor-1", "torch-corridor-2", "torch-corridor-3", "torch-corridor-4", "torch-deep-1", "torch-deep-2", "pillar-hall-1", "pillar-hall-2", "pillar-hall-3", "pillar-hall-4", "treasure-chest-1", "treasure-chest-2", "rune-circle", "warning-sign", "lore-tablet-1", "lore-tablet-2", "lore-tablet-3", "depth-map", "bounty-board", "hub-sign", "arena-sign", "skull-pile-1", "skull-pile-2", "crystal-vein-1", "crystal-vein-2", "chains-decoration", "abyss-well"],
+                "portal": ["hub-portal", "arena-portal"],
+                "npc-blueprint": ["warden", "flint", "whisper", "oracle-bone", "hollow", "dungeon-guide"]
+            }
+        },
+        {
+            "scope": "frontend",
+            "entities": {
+                "item": ["health_potion", "mana_crystal", "scrap_metal", "power_cell", "frost_blade", "magma_sword", "void_dagger", "star_blade", "guardian_plate", "nano_armor", "berserker_badge", "vampiric_fang", "swift_boots"]
+            }
+        }
+    ],
+    "limits": {
+        "maxClosureBytes": 32000000,
+        "maxBlobBytes": 1000000,
+        "maxRecordArtifacts": 4096,
+        "maxRecords": 100000,
+        "maxWorldPackSources": 1024,
+        "maxEntities": 100000,
+        "maxReferencesPerEntity": 512,
+        "maxOutputFiles": 4096,
+        "maxOutputFileBytes": 1000000,
+        "maxWarnings": 10000
+    }
+}
