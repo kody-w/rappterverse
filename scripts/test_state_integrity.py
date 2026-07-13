@@ -2270,7 +2270,8 @@ class TestDeltaValidator(unittest.TestCase):
         # We need to reload to reset the errors list
         spec.loader.exec_module(mod)
         mod.errors = []
-        mod.validate_delta(path)
+        with mock.patch.dict(os.environ, {"VALIDATION_REQUIRE_AUTH": "0"}):
+            mod.validate_delta(path)
         return len(mod.errors) == 0
 
     def _authorize(self, content: dict, agents: dict, author: str) -> list[str]:
