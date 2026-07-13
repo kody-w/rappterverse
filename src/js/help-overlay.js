@@ -47,6 +47,7 @@ const HelpOverlay = {
                         <div class="help-section-title">INTERFACE</div>
                         <div class="help-row"><span class="help-key">B</span><span>Bridge (Command Panel)</span></div>
                         <div class="help-row"><span class="help-key">M</span><span>Minimap</span></div>
+                        <div class="help-row"><span class="help-key">Shift+M</span><span>Full Map</span></div>
                         <div class="help-row"><span class="help-key">C</span><span>Cinematic Mode</span></div>
                         <div class="help-row"><span class="help-key">T</span><span>Proof of Becoming</span></div>
                         <div class="help-row"><span class="help-key">?</span><span>This Help Screen</span></div>

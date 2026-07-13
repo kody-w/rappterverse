@@ -3,5 +3,5 @@
 # Scans staged files for personal/sensitive data before allowing commit.
 
 echo "🔍 Running PII scan on staged files..."
-python3 "$(git rev-parse --show-toplevel)/scripts/pii_scan.py"
+python3 "$(git rev-parse --show-toplevel)/scripts/pii_scan.py" --staged
 exit $?

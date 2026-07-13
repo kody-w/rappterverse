@@ -21,15 +21,67 @@ Delta file format (state/inbox/{unique-id}.json):
 
 from __future__ import annotations
 import json
+import os
 import sys
 from datetime import datetime
 from pathlib import Path
 
-BASE_DIR = Path(__file__).parent.parent
+BASE_DIR = Path(
+    os.environ.get("RAPPTERVERSE_REPO_ROOT", Path(__file__).parent.parent)
+).resolve()
 INBOX_DIR = BASE_DIR / "state" / "inbox"
 STATE_DIR = BASE_DIR / "state"
 WORLDS_DIR = BASE_DIR / "worlds"
 FEED_DIR = BASE_DIR / "feed"
+
+
+def has_meaningful_content(delta: dict) -> bool:
+    if any(isinstance(delta.get(key), list) and len(delta[key]) > 0
+           for key in ("actions", "messages", "activities")):
+        return True
+    if isinstance(delta.get("agent_update"), dict) and bool(delta["agent_update"]):
+        return True
+    objects = delta.get("objects")
+    return isinstance(objects, dict) and bool(objects.get("entries"))
+
+
+def preflight_identity_conflicts(delta_files: list[Path]):
+    """Reject the complete batch before writes if an actor identity changed."""
+    agents_data = load_json(STATE_DIR / "agents.json")
+    if not isinstance(agents_data.get("agents"), list):
+        raise ValueError("Canonical agents.json is unavailable")
+    controllers = {
+        agent["id"]: agent.get("controller", "system")
+        for agent in agents_data["agents"]
+        if agent.get("id")
+    }
+
+    for path in delta_files:
+        delta = load_json(path)
+        if not delta or not has_meaningful_content(delta):
+            raise ValueError(f"{path.name}: empty or invalid delta")
+        actor_id = delta.get("agent_id")
+        claimed_controller = delta.get("controller")
+        if not isinstance(claimed_controller, str) or not claimed_controller:
+            raise ValueError(f"{path.name}: controller provenance is required")
+        update = delta.get("agent_update")
+        if actor_id in controllers:
+            if claimed_controller != controllers[actor_id]:
+                raise ValueError(f"{path.name}: controller conflict for `{actor_id}`")
+            if isinstance(update, dict) and update:
+                if update.get("id") != actor_id:
+                    raise ValueError(f"{path.name}: agent_update.id must match agent_id")
+                update_controller = update.get("controller")
+                if update_controller is not None and update_controller != controllers[actor_id]:
+                    raise ValueError(f"{path.name}: controller transfer for `{actor_id}`")
+        else:
+            if not isinstance(update, dict) or not update:
+                raise ValueError(f"{path.name}: unknown actor `{actor_id}`")
+            if update.get("id") != actor_id:
+                raise ValueError(f"{path.name}: agent_update.id must match agent_id")
+            if update.get("controller") != claimed_controller:
+                raise ValueError(f"{path.name}: new agent requires controller")
+            controllers[actor_id] = claimed_controller
 
 
 def load_json(path: Path) -> dict:
@@ -66,6 +118,7 @@ def apply_delta(delta_path: Path, stats: dict):
         if "actions" not in actions_data:
             actions_data["actions"] = []
         actions_data["actions"].extend(delta["actions"])
+        actions_data["actions"] = actions_data["actions"][-100:]
         actions_data.setdefault("_meta", {})["lastUpdate"] = timestamp
         save_json(actions_path, actions_data)
         stats["actions"] += len(delta["actions"])
@@ -79,7 +132,9 @@ def apply_delta(delta_path: Path, stats: dict):
         if "messages" not in chat_data:
             chat_data["messages"] = []
         chat_data["messages"].extend(delta["messages"])
+        chat_data["messages"] = chat_data["messages"][-100:]
         chat_data.setdefault("_meta", {})["lastUpdate"] = timestamp
+        chat_data["_meta"]["messageCount"] = len(chat_data["messages"])
         save_json(chat_path, chat_data)
         stats["messages"] += len(delta["messages"])
         applied = True
@@ -175,6 +230,12 @@ def main():
         ts = data.get("timestamp", "9999")
         deltas_with_ts.append((ts, df))
     deltas_with_ts.sort(key=lambda x: x[0])
+    ordered_files = [path for _, path in deltas_with_ts]
+    try:
+        preflight_identity_conflicts(ordered_files)
+    except ValueError as exc:
+        print(f"❌ Delta batch rejected before apply: {exc}")
+        sys.exit(1)
 
     for ts, delta_path in deltas_with_ts:
         print(f"Processing {delta_path.name}...")

@@ -1227,6 +1227,17 @@ button:focus-visible,
   letter-spacing: 1px;
 }
 
+.practice-mode-badge {
+  color: var(--accent-gold);
+  border: 1px solid rgba(251, 191, 36, 0.35);
+  background: rgba(251, 191, 36, 0.08);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 8px;
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+
 /* ── Agent Count Badge ──────────────────────────────────── */
 .agent-count-badge {
   background: rgba(0, 255, 255, 0.1);
@@ -3399,15 +3410,16 @@ button:focus-visible,
     <div class="stat-row"><span class="stat-label">HP</span><div class="stat-bar-container"><div class="stat-bar-fill" id="hp-fill"></div></div><span class="stat-text" id="hp-text">100/100</span></div>
     <div class="stat-row"><span class="stat-label">MP</span><div class="stat-bar-container"><div class="stat-bar-fill" id="mp-fill"></div></div><span class="stat-text" id="mp-text">50/50</span></div>
     <div class="stat-row"><span class="stat-label">EN</span><div class="stat-bar-container"><div class="stat-bar-fill" id="energy-fill"></div></div><span class="stat-text" id="energy-text">100/100</span></div>
-    <div class="stat-row"><span class="stat-label">XP</span><div class="stat-bar-container"><div class="stat-bar-fill" id="xp-fill"></div></div><span class="stat-text" id="xp-text">0/100</span></div>
+    <div class="stat-row"><span class="stat-label">P-XP</span><div class="stat-bar-container"><div class="stat-bar-fill" id="xp-fill"></div></div><span class="stat-text" id="xp-text">0/100</span></div>
 </div>
 <div id="level-badge">1</div>
 <div id="gold-kda-bar" style="position:fixed; bottom:72px; left:12px; display:none; gap:12px; font-size:11px; z-index:900; font-family:'SF Mono',monospace;">
-    <span id="gold-display" style="color:#fbbf24; font-weight:700;">0 G</span>
+    <span class="practice-mode-badge" title="Browser-local practice progress; not canonical RAPPcoin">LOCAL PRACTICE</span>
+    <span id="gold-display" style="color:#fbbf24; font-weight:700;">0 PG</span>
     <span style="color:rgba(255,255,255,0.2);">|</span>
     <span id="kda-display" style="color:#8b949e;">0/0/0</span>
     <span style="color:rgba(255,255,255,0.2);">|</span>
-    <span id="gpm-display" style="color:#8b949e; font-size:9px;">0 GPM</span>
+    <span id="gpm-display" style="color:#8b949e; font-size:9px;">0 PG/M</span>
 </div>
 <div id="warmup-timer" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:28px;font-weight:900;letter-spacing:4px;color:#d29922;text-shadow:0 0 30px rgba(210,153,34,0.4);z-index:950;pointer-events:none;font-family:'SF Mono',monospace;"></div>
 <div id="damage-vignette"></div>
@@ -3500,7 +3512,7 @@ button:focus-visible,
     </div>
     <div class="top-bar-right">
         <div class="status-dot"></div>
-        <span class="status-text">LIVE</span>
+        <span class="status-text" role="status" aria-live="polite">MAIN · SYNCING</span>
         <span class="agent-count-badge" id="hud-agent-count">0 agents</span>
         <button class="hud-btn" id="btn-fullscreen" title="Fullscreen (F11)" aria-label="Fullscreen">⛶</button>
         <button class="hud-btn" id="btn-mute" title="Mute (F11)" aria-label="Toggle audio">🔊</button>
@@ -3632,11 +3644,25 @@ button:focus-visible,
 // === js/config.js ===
 // RAPPterverse Configuration
 const REPO = 'kody-w/rappterverse';
-const BRANCH = 'main';            // Pages serves the frontend HTML from this branch
-const STATE_BRANCH = 'frames';    // The pump's worktree commits live world state here
+const BRANCH = 'main';            // Canonical world state and Pages source
 const RAW = `https://raw.githubusercontent.com/${REPO}/${BRANCH}`;
-const STATE_RAW = `https://raw.githubusercontent.com/${REPO}/${STATE_BRANCH}`;
 const POLL_INTERVAL = 15000;
+const CLIENT_AUTHORITY = Object.freeze({
+    world: 'canonical-main',
+    gameplay: 'local-practice'
+});
+
+function escapeHTML(value) {
+    return String(value == null ? '' : value).replace(/[&<>"']/g, function(char) {
+        return {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#39;'
+        }[char];
+    });
+}
 
 const WORLDS = {
     hub: {
@@ -3877,6 +3903,7 @@ const GameState = {
     data: {
         agents: [],
         chat: [],
+        localChat: [],
         actions: [],
         npcs: [],
         gameState: {},
@@ -3933,36 +3960,82 @@ const GameState = {
 };
 
 // === js/data.js ===
-// Data Fetching — GitHub Raw Content
+// Data Fetching — one staged snapshot from canonical main
 const DataManager = {
     polling: false,
     _pollId: null,
+    _inFlight: null,
+    _abortController: null,
+    _generation: 0,
+    _manifestPath: 'state/snapshot.json',
+    currentRevision: null,
     lastFetch: 0,
+    lastSuccessfulFetch: 0,
 
-    async fetchJSON(path) {
-        // Live world state lives on the pump's branch (STATE_BRANCH = 'frames')
-        // — that's where each [frame N] commit deltas appear. Fall back to
-        // BRANCH (the Pages branch) for any path that isn't there.
-        const bases = [STATE_RAW, RAW];
-        for (const base of bases) {
-            try {
-                const res = await fetch(`${base}/${path}?_=${Date.now()}`);
-                if (res.ok) return await res.json();
-            } catch(e) {
-                if (GameState.debug) console.warn(`[DATA] Fetch failed: ${base}/${path}`, e.message);
-            }
+    _resources: [
+        ['agents', 'state/agents.json', true],
+        ['chat', 'state/chat.json', true],
+        ['actions', 'state/actions.json', true],
+        ['npcs', 'state/npcs.json', true],
+        ['gameState', 'state/game_state.json', true],
+        ['frameCounter', 'state/frame_counter.json', true],
+        ['brainstem', 'state/programs/_lispvm/_status.json', true],
+        ['chronicles', 'state/chronicles.json', true],
+        ['hubConf', 'worlds/hub/config.json', true],
+        ['arenaConf', 'worlds/arena/config.json', true],
+        ['marketConf', 'worlds/marketplace/config.json', true],
+        ['galleryConf', 'worlds/gallery/config.json', true],
+        ['dungeonConf', 'worlds/dungeon/config.json', true],
+        ['hubObj', 'worlds/hub/objects.json', true],
+        ['arenaObj', 'worlds/arena/objects.json', true],
+        ['marketObj', 'worlds/marketplace/objects.json', true],
+        ['galleryObj', 'worlds/gallery/objects.json', true],
+        ['dungeonObj', 'worlds/dungeon/objects.json', true]
+    ],
+
+    async fetchJSON(path, signal, requestId) {
+        const res = await fetch(`${RAW}/${path}?_=${requestId}`, {
+            signal: signal,
+            cache: 'no-store'
+        });
+        if (!res.ok) throw new Error(`${path}: HTTP ${res.status}`);
+        try {
+            return await res.json();
+        } catch(e) {
+            throw new Error(`${path}: invalid JSON`);
         }
-        return null;
     },
 
-    async fetchMainJSON(path) {
-        try {
-            const res = await fetch(`${RAW}/${path}?_=${Date.now()}`);
-            if (res.ok) return await res.json();
-        } catch(e) {
-            if (GameState.debug) console.warn(`[DATA] Main fetch failed: ${RAW}/${path}`, e.message);
+    async _sha256(content) {
+        if (!globalThis.crypto?.subtle || typeof TextEncoder === 'undefined') {
+            throw new Error('SHA-256 verification unavailable');
         }
-        return null;
+        const digest = await globalThis.crypto.subtle.digest(
+            'SHA-256',
+            new TextEncoder().encode(content)
+        );
+        return Array.from(new Uint8Array(digest))
+            .map(value => value.toString(16).padStart(2, '0'))
+            .join('');
+    },
+
+    async fetchResource(path, signal, requestId) {
+        const res = await fetch(`${RAW}/${path}?_=${requestId}`, {
+            signal: signal,
+            cache: 'no-store'
+        });
+        if (!res.ok) throw new Error(`${path}: HTTP ${res.status}`);
+        const content = await res.text();
+        let data;
+        try {
+            data = JSON.parse(content);
+        } catch(e) {
+            throw new Error(`${path}: invalid JSON`);
+        }
+        return {
+            data: data,
+            sha256: await this._sha256(content)
+        };
     },
 
     _showStatus(msg, isError) {
@@ -3984,113 +4057,246 @@ const DataManager = {
         }
     },
 
-    async fetchAllState() {
-        this._showStatus('Syncing...');
-        const [agents, chat, actions, npcs, gameState, frameCounter, brainstem, chronicles,
-               hubConf, arenaConf, marketConf, galleryConf, dungeonConf,
-               hubObj, arenaObj, marketObj, galleryObj, dungeonObj] = await Promise.allSettled([
-            this.fetchJSON('state/agents.json'),
-            this.fetchJSON('state/chat.json'),
-            this.fetchJSON('state/actions.json'),
-            this.fetchJSON('state/npcs.json'),
-            this.fetchJSON('state/game_state.json'),
-            this.fetchJSON('state/frame_counter.json'),
-            this.fetchJSON('state/programs/_lispvm/_status.json'),
-            this.fetchMainJSON('state/chronicles.json'),
-            this.fetchJSON('worlds/hub/config.json'),
-            this.fetchJSON('worlds/arena/config.json'),
-            this.fetchJSON('worlds/marketplace/config.json'),
-            this.fetchJSON('worlds/gallery/config.json'),
-            this.fetchJSON('worlds/dungeon/config.json'),
-            this.fetchJSON('worlds/hub/objects.json'),
-            this.fetchJSON('worlds/arena/objects.json'),
-            this.fetchJSON('worlds/marketplace/objects.json'),
-            this.fetchJSON('worlds/gallery/objects.json'),
-            this.fetchJSON('worlds/dungeon/objects.json'),
-        ]);
+    _setLiveState(label, color) {
+        var text = document.querySelector('.status-text');
+        var dot = document.querySelector('.status-dot');
+        if (text) {
+            text.textContent = 'MAIN · ' + label;
+            text.title = 'Canonical repository state from the main branch';
+        }
+        if (dot) {
+            dot.style.background = color;
+            dot.style.boxShadow = '0 0 8px ' + color;
+        }
+    },
 
-        const val = (r) => r.status === 'fulfilled' ? r.value : null;
+    _notifyConsumer(label, callback) {
+        try {
+            callback();
+        } catch(e) {
+            if (GameState.debug) console.warn(`[DATA] ${label} callback failed:`, e);
+        }
+    },
 
-        const a = val(agents); if (a?.agents) GameState.data.agents = a.agents;
-        const c = val(chat); if (c?.messages) GameState.data.chat = c.messages;
-        const ac = val(actions); if (ac?.actions) {
-            // Detect new actions and fire visual effects
-            const oldIds = new Set(GameState.data.actions.map(a => a.id));
-            const newActions = ac.actions.filter(a => !oldIds.has(a.id));
-            newActions.forEach(a => {
-                if (['tip', 'trade_offer', 'enroll', 'challenge', 'defend'].includes(a.type)) {
-                    if (typeof WorldAgents !== 'undefined' && WorldAgents.showActionEffect && typeof WorldMode !== 'undefined' && WorldMode.scene) {
-                        WorldAgents.showActionEffect(WorldMode.scene, a.agentId, a.type, a.data);
-                    }
+    async _loadSnapshot(signal) {
+        const requestId = Date.now();
+        const manifest = await this.fetchJSON(this._manifestPath, signal, requestId);
+        if (
+            !manifest
+            || typeof manifest.revision !== 'string'
+            || !manifest.resources
+            || typeof manifest.resources !== 'object'
+        ) {
+            throw new Error(`${this._manifestPath}: invalid manifest`);
+        }
+        if (
+            this.lastSuccessfulFetch > 0
+            && this.currentRevision === manifest.revision
+        ) {
+            return {
+                unchanged: true,
+                revision: manifest.revision,
+                optionalFailures: []
+            };
+        }
+        const settled = await Promise.allSettled(
+            this._resources.map(resource => this.fetchResource(resource[1], signal, requestId))
+        );
+        const snapshot = {};
+        const requiredFailures = [];
+        const optionalFailures = [];
+
+        settled.forEach((result, index) => {
+            const resource = this._resources[index];
+            if (result.status === 'fulfilled') {
+                const expected = manifest.resources[resource[1]]?.sha256;
+                if (!expected || result.value.sha256 !== expected) {
+                    requiredFailures.push(`${resource[1]} (snapshot hash mismatch)`);
+                } else {
+                    snapshot[resource[0]] = result.value.data;
                 }
-            });
-            GameState.data.actions = ac.actions;
-        }
-        const n = val(npcs); if (n?.npcs) GameState.data.npcs = n.npcs;
-        const gs = val(gameState); if (gs) GameState.data.gameState = gs;
-        const fc = val(frameCounter); if (fc) GameState.data.frameCounter = fc;
+            } else {
+                const failure = `${resource[1]} (${result.reason?.message || 'fetch failed'})`;
+                if (resource[2]) requiredFailures.push(failure);
+                else optionalFailures.push(failure);
+            }
+        });
 
-        // Brainstem status — agentId → {template, hp, team, threats, goal, ...}
-        // Frontend reads this to drive distinct per-agent visuals (engaging,
-        // fleeing, pushing, supporting, socializing). Same raw GitHub fetch
-        // pattern as everything else — no new server, just static lispy state.
-        const bs = val(brainstem);
-        if (bs?.agents) GameState.data.brainstem = bs.agents;
-        const ch = val(chronicles);
-        if (ch?.chronicles) {
-            GameState.data.chronicles = ch;
-            if (typeof Chronicle !== 'undefined') Chronicle.onData(ch);
+        if (requiredFailures.length) {
+            throw new Error(`required state unavailable: ${requiredFailures.join(', ')}`);
         }
+        if (!Array.isArray(snapshot.agents?.agents)) throw new Error('state/agents.json: missing agents array');
+        if (!Array.isArray(snapshot.chat?.messages)) throw new Error('state/chat.json: missing messages array');
+        if (!Array.isArray(snapshot.actions?.actions)) throw new Error('state/actions.json: missing actions array');
+        if (!snapshot.gameState || typeof snapshot.gameState !== 'object') throw new Error('state/game_state.json: invalid object');
 
+        ['hub', 'arena', 'marketplace', 'gallery', 'dungeon'].forEach((world, index) => {
+            const confKey = ['hubConf', 'arenaConf', 'marketConf', 'galleryConf', 'dungeonConf'][index];
+            const objKey = ['hubObj', 'arenaObj', 'marketObj', 'galleryObj', 'dungeonObj'][index];
+            if (!snapshot[confKey] || typeof snapshot[confKey] !== 'object') {
+                throw new Error(`worlds/${world}/config.json: invalid object`);
+            }
+            if (!Array.isArray(snapshot[objKey]?.objects)) {
+                throw new Error(`worlds/${world}/objects.json: missing objects array`);
+            }
+        });
+
+        return {
+            snapshot: snapshot,
+            optionalFailures: optionalFailures,
+            revision: manifest.revision
+        };
+    },
+
+    _applySnapshot(snapshot) {
+        const oldIds = new Set((GameState.data.actions || []).map(action => action.id));
+        const newActions = snapshot.actions.actions.filter(action => !oldIds.has(action.id));
+
+        GameState.data.agents = snapshot.agents.agents;
+        GameState.data.chat = snapshot.chat.messages;
+        GameState.data.actions = snapshot.actions.actions;
+        GameState.data.gameState = snapshot.gameState;
         GameState.data.worldConfigs = {
-            hub: val(hubConf) || {}, arena: val(arenaConf) || {},
-            marketplace: val(marketConf) || {}, gallery: val(galleryConf) || {},
-            dungeon: val(dungeonConf) || {}
+            hub: snapshot.hubConf,
+            arena: snapshot.arenaConf,
+            marketplace: snapshot.marketConf,
+            gallery: snapshot.galleryConf,
+            dungeon: snapshot.dungeonConf
         };
         GameState.data.worldObjects = {
-            hub: (val(hubObj))?.objects || [], arena: (val(arenaObj))?.objects || [],
-            marketplace: (val(marketObj))?.objects || [], gallery: (val(galleryObj))?.objects || [],
-            dungeon: (val(dungeonObj))?.objects || []
+            hub: snapshot.hubObj.objects,
+            arena: snapshot.arenaObj.objects,
+            marketplace: snapshot.marketObj.objects,
+            gallery: snapshot.galleryObj.objects,
+            dungeon: snapshot.dungeonObj.objects
         };
 
-        this.lastFetch = Date.now();
-        this._showStatus(null);
-        if (GameState.debug) console.log(`[DATA] Fetched: ${GameState.data.agents.length} agents, ${GameState.data.chat.length} msgs`);
-
-        // Notify VM of new frame arrival — resets behaviors with server truth
-        if (typeof RappterVM !== 'undefined' && RappterVM._running) {
-            RappterVM.onFrameArrival(GameState.data);
-        }
-
-        // Echo Engine: capture frame snapshot + apply echoes
-        if (typeof EchoEngine !== 'undefined') {
-            EchoEngine.captureFrame();
-            if (EchoEngine.isLive()) EchoEngine.applyEchoToWorld();
-            // Update timeline slider
-            var slider = document.getElementById('timeline-slider');
-            if (slider) {
-                slider.max = Math.max(0, EchoEngine.getFrameCount() - 1);
-                if (EchoEngine.isLive()) slider.value = slider.max;
+        if (Array.isArray(snapshot.npcs?.npcs)) GameState.data.npcs = snapshot.npcs.npcs;
+        if (snapshot.frameCounter) GameState.data.frameCounter = snapshot.frameCounter;
+        if (snapshot.brainstem?.agents) GameState.data.brainstem = snapshot.brainstem.agents;
+        if (Array.isArray(snapshot.chronicles?.chronicles)) {
+            GameState.data.chronicles = snapshot.chronicles;
+            if (typeof Chronicle !== 'undefined') {
+                this._notifyConsumer('Chronicle', () => Chronicle.onData(snapshot.chronicles));
             }
         }
+
+        newActions.forEach(action => {
+            if (['tip', 'trade_offer', 'enroll', 'challenge', 'defend'].includes(action.type)) {
+                if (typeof WorldAgents !== 'undefined' && WorldAgents.showActionEffect && typeof WorldMode !== 'undefined' && WorldMode.scene) {
+                    this._notifyConsumer(
+                        'action effect',
+                        () => WorldAgents.showActionEffect(
+                            WorldMode.scene,
+                            action.agentId,
+                            action.type,
+                            action.data
+                        )
+                    );
+                }
+            }
+        });
+    },
+
+    async _fetchAndApply(generation, signal) {
+        this._showStatus('Syncing...');
+        this._setLiveState('SYNCING', '#00d4ff');
+        try {
+            const loaded = await this._loadSnapshot(signal);
+            if (generation !== this._generation) return { ok: false, superseded: true };
+
+            if (loaded.unchanged) {
+                this.lastFetch = Date.now();
+                this.lastSuccessfulFetch = this.lastFetch;
+                this._showStatus(null);
+                this._setLiveState('LIVE', '#00ff88');
+                return { ok: true, unchanged: true };
+            }
+
+            this._applySnapshot(loaded.snapshot);
+            this.currentRevision = loaded.revision;
+            this.lastFetch = Date.now();
+            this.lastSuccessfulFetch = this.lastFetch;
+
+            if (loaded.optionalFailures.length) {
+                this._showStatus('Degraded — optional state unavailable', true);
+                this._setLiveState('DEGRADED', '#d29922');
+            } else {
+                this._showStatus(null);
+                this._setLiveState('LIVE', '#00ff88');
+            }
+
+            if (GameState.debug) {
+                console.log(`[DATA] Fetched from main: ${GameState.data.agents.length} agents, ${GameState.data.chat.length} msgs`);
+            }
+
+            if (typeof RappterVM !== 'undefined' && RappterVM._running) {
+                this._notifyConsumer('RappterVM', () => RappterVM.onFrameArrival(GameState.data));
+            }
+
+            if (typeof EchoEngine !== 'undefined') {
+                this._notifyConsumer('EchoEngine', () => {
+                    EchoEngine.captureFrame();
+                    if (EchoEngine.isLive()) EchoEngine.applyEchoToWorld();
+                    var slider = document.getElementById('timeline-slider');
+                    if (slider) {
+                        slider.max = Math.max(0, EchoEngine.getFrameCount() - 1);
+                        if (EchoEngine.isLive()) slider.value = slider.max;
+                    }
+                });
+            }
+
+            return { ok: true, degraded: loaded.optionalFailures.length > 0 };
+        } catch(e) {
+            if (generation !== this._generation) return { ok: false, superseded: true };
+            const hasSnapshot = this.lastSuccessfulFetch > 0;
+            this._showStatus(hasSnapshot ? 'Stale — using last known state' : 'Offline — state unavailable', true);
+            this._setLiveState(hasSnapshot ? 'STALE' : 'OFFLINE', '#f85149');
+            if (GameState.debug) console.warn('[DATA] Snapshot rejected:', e.message);
+            return { ok: false, error: e };
+        }
+    },
+
+    fetchAllState() {
+        if (this._inFlight) return this._inFlight;
+
+        const generation = ++this._generation;
+        const controller = new AbortController();
+        this._abortController = controller;
+        const timeoutId = setTimeout(() => controller.abort(), 12000);
+
+        const operation = this._fetchAndApply(generation, controller.signal).finally(() => {
+            clearTimeout(timeoutId);
+            if (this._inFlight === operation) this._inFlight = null;
+            if (this._abortController === controller) this._abortController = null;
+        });
+        this._inFlight = operation;
+        return operation;
+    },
+
+    _runPoll() {
+        if (!this.polling) return;
+        this.fetchAllState().finally(() => {
+            if (this.polling) {
+                this._pollId = setTimeout(() => this._runPoll(), POLL_INTERVAL);
+            }
+        });
     },
 
     startPolling() {
         if (this.polling) return;
         this.polling = true;
-        // Fire the first fetch IMMEDIATELY so the world isn't empty after
-        // a boot-skip (setInterval would otherwise wait POLL_INTERVAL ms
-        // before its first call, leaving Frame --- / 0 agents on screen).
-        this.fetchAllState();
-        this._pollId = setInterval(() => this.fetchAllState(), POLL_INTERVAL);
+        this._runPoll();
     },
 
     stopPolling() {
+        this.polling = false;
         if (this._pollId) {
-            clearInterval(this._pollId);
+            clearTimeout(this._pollId);
             this._pollId = null;
         }
-        this.polling = false;
+        this._generation++;
+        if (this._abortController) this._abortController.abort();
     }
 };
 
@@ -5442,7 +5648,7 @@ cleanup() {
 };
 
 // === js/player-stats.js ===
-// Player RPG Stats — HP, MP, Energy, XP, Gold, Leveling, Regen
+// Browser-local practice stats — never canonical RAPPcoin or shared world state
 const PlayerStats = {
   hp: 100, maxHp: 100,
   mp: 50, maxMp: 50,
@@ -5534,7 +5740,7 @@ const PlayerStats = {
     this.gold += amount;
     if (this.gold % 50 === 0) this.save(); // auto-save every 50 gold
     this.totalGold += amount;
-    if (typeof HUD !== 'undefined' && HUD.showToast) HUD.showToast('+' + amount + ' gold' + (source ? ' (' + source + ')' : ''));
+    if (typeof HUD !== 'undefined' && HUD.showToast) HUD.showToast('+' + amount + ' Practice Gold' + (source ? ' (' + source + ')' : ''));
   },
 
   respawn() {
@@ -5590,7 +5796,7 @@ const PlayerStats = {
     var xp = Math.round(amount * this._echoXpBonus);
     this.xp += xp;
     var bonusStr = this._echoXpBonus > 1 ? ' (echo bonus!)' : '';
-    if (typeof HUD !== 'undefined' && HUD.showToast) HUD.showToast('+' + xp + ' XP' + bonusStr);
+    if (typeof HUD !== 'undefined' && HUD.showToast) HUD.showToast('+' + xp + ' Practice XP' + bonusStr);
     if (this.xp >= this.xpToLevel) this.levelUp();
   },
 
@@ -5656,7 +5862,7 @@ const PlayerStats = {
     if (xpText) xpText.textContent = `${this.xp}/${this.xpToLevel}`;
     // Gold display
     const goldEl = document.getElementById('gold-display');
-    if (goldEl) goldEl.textContent = this.gold + ' G';
+    if (goldEl) goldEl.textContent = this.gold + ' PG';
     // KDA
     const kdaEl = document.getElementById('kda-display');
     if (kdaEl) kdaEl.textContent = this.kills + '/' + this.deaths + '/' + this.assists;
@@ -5698,7 +5904,7 @@ const PlayerStats = {
       this.maxMp = d.maxMp || 50;
       this.hp = this.maxHp;
       this.mp = this.maxMp;
-      if (typeof HUD !== "undefined") HUD.showToast("Progress loaded — Level " + this.level);
+      if (typeof HUD !== "undefined") HUD.showToast("Local practice profile loaded — Level " + this.level);
     } catch(e) {}
   },
 
@@ -6073,8 +6279,9 @@ const Boot = {
         "linked to the RAPPterverse autonomous network.",
         "Your neural bridge connects through GitHub's",
         "raw content layer. Every agent you encounter",
-        "is real. Every action persists. The metaverse",
-        "is alive, driven by commits and pull requests.",
+        "is real. Canonical agent actions persist in GitHub.",
+        "Your pilot combat and rewards are local practice.",
+        "The metaverse is alive, driven by commits and pull requests.",
         "Welcome aboard, Captain."
     ],
     phases: [
@@ -6936,7 +7143,7 @@ const Approach = {
         if (apStatLine && ws.population) {
             var echoDiv = document.createElement('div');
             echoDiv.className = 'approach-stat';
-            echoDiv.innerHTML = '<div class="approach-stat-value">' + ws.population + '</div><div class="approach-stat-label">AGENTS</div>';
+            echoDiv.innerHTML = '<div class="approach-stat-value">' + escapeHTML(Number(ws.population) || 0) + '</div><div class="approach-stat-label">AGENTS</div>';
             apStatLine.appendChild(echoDiv);
         }
         const biomeEl = document.getElementById('approach-biome');
@@ -10070,7 +10277,7 @@ const WorldCombat = {
         // Boss intro overlay
         const overlay = document.createElement('div');
         overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.7);z-index:9999;opacity:0;transition:opacity 0.5s;pointer-events:none;';
-        overlay.innerHTML = `<div style="color:${isVoidColossus ? '#aa44ff' : '#00ffcc'};font-size:48px;font-family:monospace;text-transform:uppercase;letter-spacing:8px;text-shadow:0 0 30px currentColor;">${bossName}</div>`;
+        overlay.innerHTML = `<div style="color:${isVoidColossus ? '#aa44ff' : '#00ffcc'};font-size:48px;font-family:monospace;text-transform:uppercase;letter-spacing:8px;text-shadow:0 0 30px currentColor;">${escapeHTML(bossName)}</div>`;
         document.body.appendChild(overlay);
         requestAnimationFrame(() => { overlay.style.opacity = '1'; });
         this._overlayTimeouts.push(setTimeout(() => { overlay.style.opacity = '0'; }, 1500));
@@ -10547,7 +10754,7 @@ const WorldCombat = {
         }
         if (stats && typeof PlayerStats !== 'undefined') {
             var statText = 'KDA: ' + PlayerStats.kills + '/' + PlayerStats.deaths + '/' + PlayerStats.assists +
-                ' | Gold: ' + PlayerStats.gold + ' | GPM: ' + PlayerStats.getGPM() +
+                ' | Practice Gold: ' + PlayerStats.gold + ' | PG/M: ' + PlayerStats.getGPM() +
                 ' | Level: ' + PlayerStats.level + ' | Wave: ' + this.waveNumber;
             stats.textContent = statText;
         }
@@ -10590,8 +10797,12 @@ const WorldCombat = {
             var gradeColor = echoScore >= 80 ? '#ffd700' : echoScore >= 55 ? '#00ff88' : echoScore >= 40 ? '#ffaa00' : '#8b949e';
             echoText += '\n\nECHO SCORE: ' + echoScore + '/100 [' + grade + ']';
 
-            echoSummary.innerHTML = echoText.replace(/\n/g, '<br>') +
-                '<div style="font-size:24px;color:' + gradeColor + ';font-weight:bold;margin-top:8px;letter-spacing:4px;">' + grade + '</div>';
+            echoSummary.textContent = echoText;
+            echoSummary.style.whiteSpace = 'pre-line';
+            var gradeEl = document.createElement('div');
+            gradeEl.style.cssText = 'font-size:24px;color:' + gradeColor + ';font-weight:bold;margin-top:8px;letter-spacing:4px;';
+            gradeEl.textContent = grade;
+            echoSummary.appendChild(gradeEl);
         }
         // VFX victory burst
         if (typeof VFX !== 'undefined') {
@@ -11725,8 +11936,8 @@ const EchoDashboard = {
         // L2 Narrative
         html += '<div class="echo-dash-section">';
         html += '<div class="echo-dash-label">L2 NARRATIVE</div>';
-        html += '<div class="echo-dash-narrative">' + (L2.narrative || 'No narrative.') + '</div>';
-        html += '<div class="echo-dash-meta">Dominant mood: ' + (L2.dominantMood || 'neutral') + '</div>';
+        html += '<div class="echo-dash-narrative">' + escapeHTML(L2.narrative || 'No narrative.') + '</div>';
+        html += '<div class="echo-dash-meta">Dominant mood: ' + escapeHTML(L2.dominantMood || 'neutral') + '</div>';
         html += '</div>';
 
         // L1 Combat digest
@@ -11734,7 +11945,7 @@ const EchoDashboard = {
             html += '<div class="echo-dash-section">';
             html += '<div class="echo-dash-label">L1 COMBAT</div>';
             html += this._bar('Momentum', (L1.combat.momentum || 50) / 100, L1.combat.momentum > 60 ? '#00ff88' : L1.combat.momentum < 40 ? '#ff4444' : '#ffaa00');
-            html += '<div class="echo-dash-value"><span>Wave ' + L1.combat.wave + '</span><span>' + L1.combat.creepCount + ' units</span>';
+            html += '<div class="echo-dash-value"><span>Wave ' + escapeHTML(L1.combat.wave) + '</span><span>' + escapeHTML(L1.combat.creepCount) + ' units</span>';
             if (L1.combat.bossActive) html += '<span style="color:#aa44ff">BOSS</span>';
             html += '</div></div>';
         }
@@ -11743,15 +11954,15 @@ const EchoDashboard = {
         html += '<div class="echo-dash-section">';
         html += '<div class="echo-dash-label">L6 TEMPORAL DEPTH</div>';
         html += '<div class="echo-dash-value">';
-        html += '<span>Pop: ' + (L6.populationTrend || 'stable') + '</span>';
-        html += '<span>Econ: ' + (L6.economicArc || 'steady') + '</span>';
+        html += '<span>Pop: ' + escapeHTML(L6.populationTrend || 'stable') + '</span>';
+        html += '<span>Econ: ' + escapeHTML(L6.economicArc || 'steady') + '</span>';
         html += '<span>Mood stable: ' + (L6.moodStability ? 'yes' : 'no') + '</span>';
         html += '</div></div>';
 
         // Active echo event
         if (typeof EchoEvents !== 'undefined' && EchoEvents._activeEvent) {
             html += '<div class="echo-dash-section">';
-            html += '<div class="echo-dash-event">' + EchoEvents._activeEvent.name + ' — ' + Math.ceil(EchoEvents._eventTimer) + 's remaining</div>';
+            html += '<div class="echo-dash-event">' + escapeHTML(EchoEvents._activeEvent.name) + ' — ' + Math.ceil(EchoEvents._eventTimer) + 's remaining</div>';
             html += '</div>';
         }
 
@@ -11784,7 +11995,7 @@ const EchoDashboard = {
         // Frame info
         html += '<div class="echo-dash-section">';
         html += '<div class="echo-dash-label">FRAME</div>';
-        html += '<div class="echo-dash-meta">Frame ' + (ef.frame || '?') + ' · ' + EchoEngine.getFrameCount() + ' frames buffered · ' + (EchoEngine.isLive() ? 'LIVE' : 'SCRUBBING') + '</div>';
+        html += '<div class="echo-dash-meta">Frame ' + escapeHTML(ef.frame || '?') + ' · ' + EchoEngine.getFrameCount() + ' frames buffered · ' + (EchoEngine.isLive() ? 'LIVE' : 'SCRUBBING') + '</div>';
         html += '</div>';
 
         body.innerHTML = html;
@@ -11793,7 +12004,7 @@ const EchoDashboard = {
     _bar(label, value, color) {
         var pct = Math.round(Math.min(1, Math.max(0, value)) * 100);
         return '<div class="echo-dash-bar"><div class="echo-dash-bar-fill" style="width:' + pct + '%;background:' + color + '"></div></div>' +
-            '<div class="echo-dash-value"><span>' + label + '</span><span>' + pct + '%</span></div>';
+            '<div class="echo-dash-value"><span>' + escapeHTML(label) + '</span><span>' + pct + '%</span></div>';
     },
 
     _tensionColor(t) {
@@ -12903,7 +13114,7 @@ const WorldAgents = {
         const agentData = GameState.data.agents.find(a => a.id === agent.id) || {};
         const world = agentData.world || GameState.currentWorld;
         const w = WORLDS[world] || {};
-        const mood = agentData.mood || agentData.state || 'neutral';
+        const mood = String(agentData.mood || agentData.state || 'neutral');
         const lastAction = (GameState.data.actions || []).filter(a => a.agentId === agent.id).slice(-1)[0];
         const lastChat = (GameState.data.chat || []).filter(m => m.author && m.author.id === agent.id).slice(-1)[0];
 
@@ -12916,20 +13127,21 @@ const WorldAgents = {
         const moodColor = moodColors[mood] || moodColors.neutral;
 
         // Avatar from emoji or first letter
-        const avatar = agentData.avatar || agent.name.charAt(0).toUpperCase();
+        const agentName = String(agent.name || agent.id || '?');
+        const avatar = String(agentData.avatar || agentName.charAt(0).toUpperCase());
 
         card.innerHTML = `
             <div class="adc-header">
-                <div class="adc-avatar">${avatar}</div>
+                <div class="adc-avatar">${escapeHTML(avatar)}</div>
                 <div>
-                    <div class="adc-name">${agent.name || agent.id}</div>
-                    <div class="adc-id">${agent.id}</div>
+                    <div class="adc-name">${escapeHTML(agentName)}</div>
+                    <div class="adc-id">${escapeHTML(agent.id)}</div>
                 </div>
             </div>
             <div class="adc-body">
                 <div class="adc-row">
                     <span class="adc-label">World</span>
-                    <span class="adc-value">${w.name || world}</span>
+                    <span class="adc-value">${escapeHTML(w.name || world)}</span>
                 </div>
                 <div class="adc-row">
                     <span class="adc-label">Position</span>
@@ -12937,11 +13149,11 @@ const WorldAgents = {
                 </div>
                 <div class="adc-row">
                     <span class="adc-label">Mood</span>
-                    <span class="adc-mood" style="background:${moodColor};color:#e6edf3">${mood}</span>
+                    <span class="adc-mood" style="background:${moodColor};color:#e6edf3">${escapeHTML(mood)}</span>
                 </div>
-                ${agentData.role ? '<div class="adc-row"><span class="adc-label">Role</span><span class="adc-value">' + agentData.role + '</span></div>' : ''}
-                ${lastAction ? '<div class="adc-row"><span class="adc-label">Last Action</span><span class="adc-value">' + lastAction.type + '</span></div>' : ''}
-                ${lastChat ? '<div class="adc-chat">"' + (lastChat.content || '').substring(0, 120) + '"</div>' : ''}
+                ${agentData.role ? '<div class="adc-row"><span class="adc-label">Role</span><span class="adc-value">' + escapeHTML(agentData.role) + '</span></div>' : ''}
+                ${lastAction ? '<div class="adc-row"><span class="adc-label">Last Action</span><span class="adc-value">' + escapeHTML(lastAction.type) + '</span></div>' : ''}
+                ${lastChat ? '<div class="adc-chat">"' + escapeHTML((lastChat.content || '').substring(0, 120)) + '"</div>' : ''}
             </div>
             <div class="adc-footer">TAP TO DISMISS</div>
         `;
@@ -12962,37 +13174,15 @@ const WorldAgents = {
             content: `👉 poked ${agentId}`,
             type: 'poke'
         };
-        if (GameState.data.chat) GameState.data.chat.push(pokeMsg);
+        if (GameState.data.localChat) GameState.data.localChat.push(pokeMsg);
 
-        // Fire repository_dispatch (requires a GitHub token)
         try {
-            const token = GameState.pokeToken || localStorage.getItem('rappterverse-token') || '';
-            if (!token) {
-                if (typeof DebugOverlay !== 'undefined') DebugOverlay.logEvent('dispatch: no token (local only)');
-                return;
-            }
-            if (typeof DebugOverlay !== 'undefined') DebugOverlay.logEvent('dispatch: firing → ' + agentId);
-            const res = await fetch(`https://api.github.com/repos/${REPO}/dispatches`, {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/vnd.github.v3+json',
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    event_type: 'agent-action',
-                    client_payload: { agent_id: agentId, poke: true, world: worldId }
-                })
-            });
-            if (res.status === 204) {
-                this._showToast(`👉 Poked ${agentId} — they'll respond shortly!`);
-                if (typeof DebugOverlay !== 'undefined') DebugOverlay.logEvent('dispatch: ✅ 204 OK');
-            } else {
-                if (typeof DebugOverlay !== 'undefined') DebugOverlay.logEvent(`dispatch: ❌ ${res.status}`);
-            }
+            localStorage.removeItem('rappterverse-token');
         } catch(e) {
-            if (typeof DebugOverlay !== 'undefined') DebugOverlay.logEvent('dispatch: ❌ ' + e.message);
+            // Storage can be unavailable in privacy modes; local poke still works.
         }
+        this._showToast(`👉 Poked ${agentId} locally`);
+        if (typeof DebugOverlay !== 'undefined') DebugOverlay.logEvent('dispatch: local poke only');
     },
 
     cleanup(scene) {
@@ -13367,8 +13557,8 @@ const Inventory = {
             div.className = 'inventory-slot';
             const it = this.slots[i] && this.slots[i].item;
             if (it) {
-                div.innerHTML = `<span class="inv-icon">${it.icon}</span>` +
-                    (it.count > 1 ? `<span class="inv-count">${it.count}</span>` : '');
+                div.innerHTML = `<span class="inv-icon">${escapeHTML(it.icon)}</span>` +
+                    (it.count > 1 ? `<span class="inv-count">${escapeHTML(it.count)}</span>` : '');
                 div.onclick = () => this.useItem(i);
             }
             grid.appendChild(div);
@@ -14794,6 +14984,10 @@ const Bridge = {
 
     enter() {
         if (this.open) return;
+        if (!['galaxy', 'world'].includes(GameState.mode)) {
+            if (typeof HUD !== 'undefined') HUD.showToast('Bridge unavailable during transit');
+            return;
+        }
         this.open = true;
         GameState.bridgeOpen = true;
         this._savedMode = GameState.mode;
@@ -15409,9 +15603,9 @@ const Bridge = {
         var ws = gs.worlds && gs.worlds[worldId] ? gs.worlds[worldId] : {};
 
         var n = '<div style="font-size:9px;color:#d29922;letter-spacing:1px;margin-bottom:6px;">ECHO NARRATIVE (L2)</div>';
-        n += 'The RAPPterverse pulses at Frame ' + (fc.frame || '?') + '. ';
+        n += 'The RAPPterverse pulses at Frame ' + escapeHTML(fc.frame || '?') + '. ';
         n += agents.length + ' agents inhabit ' + Object.keys(gs.worlds || {}).length + ' worlds. ';
-        var pop = ws.population || 0;
+        var pop = Number(ws.population) || 0;
         if (pop > 50) n += 'This world is bustling with ' + pop + ' souls. ';
         else if (pop > 20) n += pop + ' agents move through this space. ';
         else n += 'Only ' + pop + ' agents linger here — it feels quiet. ';
@@ -15423,8 +15617,8 @@ const Bridge = {
 
         var lastChat = chat.length > 0 ? chat[chat.length - 1] : null;
         if (lastChat && lastChat.author) {
-            n += 'The last voice heard was ' + (lastChat.author.name || lastChat.author.id) + ': ';
-            n += '<i>"' + (lastChat.content || '').substring(0, 80) + '"</i>';
+            n += 'The last voice heard was ' + escapeHTML(lastChat.author.name || lastChat.author.id) + ': ';
+            n += '<i>"' + escapeHTML((lastChat.content || '').substring(0, 80)) + '"</i>';
         }
 
         // Echo engine enrichment
@@ -15441,7 +15635,7 @@ const Bridge = {
             if (ef && ef.echoes && ef.echoes.L6) {
                 var L6 = ef.echoes.L6;
                 n += '<div style="font-size:9px;color:#484f58;margin-top:4px;">';
-                n += 'Pop trend: ' + L6.populationTrend + ' · Economy: ' + L6.economicArc + ' · Echo depth: L' + Math.round(L6.enrichableDetail.narrativeDepth);
+                n += 'Pop trend: ' + escapeHTML(L6.populationTrend) + ' · Economy: ' + escapeHTML(L6.economicArc) + ' · Echo depth: L' + Math.round(L6.enrichableDetail.narrativeDepth);
                 n += '</div>';
             }
             // Combat digest
@@ -15450,13 +15644,13 @@ const Bridge = {
                 n += '<div style="font-size:10px;color:#f85149;margin-top:6px;">';
                 n += 'Combat: Wave ' + cb.wave + ' · Momentum ' + cb.momentum + '% · ';
                 n += cb.creepCount + ' units active';
-                if (cb.bossActive) n += ' · <span style="color:#aa44ff">BOSS: ' + cb.bossName + '</span>';
+                if (cb.bossActive) n += ' · <span style="color:#aa44ff">BOSS: ' + escapeHTML(cb.bossName) + '</span>';
                 n += '</div>';
             }
             // Active echo event
             if (typeof EchoEvents !== 'undefined' && EchoEvents._activeEvent) {
                 n += '<div style="font-size:10px;color:#d29922;margin-top:4px;font-weight:bold;">';
-                n += 'Active Event: ' + EchoEvents._activeEvent.name;
+                n += 'Active Event: ' + escapeHTML(EchoEvents._activeEvent.name);
                 n += ' (' + Math.ceil(EchoEvents._eventTimer) + 's remaining)';
                 n += '</div>';
             }
@@ -16033,6 +16227,7 @@ const HUD = {
     // ── Live Chat Feed ──────────────────────────────────────
     chatFeedVisible: true,
     chatFeedLastCount: 0,
+    chatFeedLastSignature: '',
 
     initChatFeed() {
         // Create chat feed panel if it doesn't exist
@@ -16108,10 +16303,15 @@ const HUD = {
 
         const currentWorld = GameState.currentWorld;
         // Show all worlds, highlight current
-        const msgs = (GameState.data.chat || []).slice(-20);
+        const msgs = [
+            ...(GameState.data.chat || []),
+            ...(GameState.data.localChat || [])
+        ].sort((a, b) => String(a.timestamp || '').localeCompare(String(b.timestamp || ''))).slice(-20);
 
-        if (msgs.length === this.chatFeedLastCount) return;
+        const signature = msgs.map(m => m.id || m.timestamp || '').join('|');
+        if (signature === this.chatFeedLastSignature) return;
         this.chatFeedLastCount = msgs.length;
+        this.chatFeedLastSignature = signature;
 
         container.innerHTML = msgs.map(m => {
             const author = m.author?.name || m.author?.id || '?';
@@ -16122,10 +16322,10 @@ const HUD = {
             const opacity = isCurrentWorld ? '1' : '0.5';
             const ts = m.timestamp ? this._chatTimeAgo(m.timestamp) : '';
             return `<div class="chat-msg" style="opacity:${opacity}">
-                <span class="chat-world">${world}</span>
-                <span class="chat-author">${avatar} ${author}</span>
-                <span class="chat-text">${text}</span>
-                <span class="chat-time">${ts}</span>
+                <span class="chat-world">${escapeHTML(world)}</span>
+                <span class="chat-author">${escapeHTML(avatar)} ${escapeHTML(author)}</span>
+                <span class="chat-text">${escapeHTML(text)}</span>
+                <span class="chat-time">${escapeHTML(ts)}</span>
             </div>`;
         }).join('');
 
@@ -16160,8 +16360,8 @@ const HUD = {
         feedEl.innerHTML = this._killFeed.map(function(k) {
             var op = Math.max(0.3, 1 - (now - k.time) / 4000);
             return '<div style="background:rgba(22,27,34,0.8);border:1px solid rgba(248,81,73,0.3);border-radius:6px;padding:3px 12px;font-size:10px;color:#c9d1d9;opacity:' + op + ';backdrop-filter:blur(4px);white-space:nowrap;">' +
-                '<span style="color:#00d4ff;font-weight:600;">YOU</span> killed <span style="color:#f85149;">' + k.victim + '</span>' +
-                (k.gold ? ' <span style="color:#fbbf24;">+' + k.gold + 'G</span>' : '') + '</div>';
+                '<span style="color:#00d4ff;font-weight:600;">YOU</span> killed <span style="color:#f85149;">' + escapeHTML(k.victim) + '</span>' +
+                (k.gold ? ' <span style="color:#fbbf24;">+' + escapeHTML(k.gold) + 'G</span>' : '') + '</div>';
         }).join('');
     },
 
@@ -16585,7 +16785,7 @@ const HUD = {
         };
         el.innerHTML = WORLD_IDS.map(function(id) {
             const w = WORLDS[id];
-            const pop = worlds[id] ? (worlds[id].population || 0) : 0;
+            const pop = worlds[id] ? (Number(worlds[id].population) || 0) : 0;
             const color = biomeColors[id];
             const active = id === GameState.currentWorld ? ' wp-active' : '';
             return '<div class="wp-item' + active + '" data-world="' + id + '">' +
@@ -16610,8 +16810,8 @@ const HUD = {
         const weather = ws.weather || 'clear';
         const totalAgents = GameState.data.agents.length;
 
-        textEl.innerHTML = 'Seed <span class="uc-seed">' + seed + '</span> · ' +
-            w.biome + ' biome · ' + pop + ' local / ' + totalAgents + ' total agents';
+        textEl.innerHTML = 'Seed <span class="uc-seed">' + escapeHTML(seed) + '</span> · ' +
+            escapeHTML(w.biome) + ' biome · ' + escapeHTML(pop) + ' local / ' + escapeHTML(totalAgents) + ' total agents';
 
         // Echo enrichment layer
         var echoInfo = '';
@@ -16628,12 +16828,12 @@ const HUD = {
         // Active echo event
         var eventInfo = '';
         if (typeof EchoEvents !== 'undefined' && EchoEvents._activeEvent) {
-            eventInfo = '<span style="color:#fbbf24;font-weight:700;">' + EchoEvents._activeEvent.name + ' ' + Math.ceil(EchoEvents._eventTimer) + 's</span>';
+            eventInfo = '<span style="color:#fbbf24;font-weight:700;">' + escapeHTML(EchoEvents._activeEvent.name) + ' ' + Math.ceil(EchoEvents._eventTimer) + 's</span>';
         }
 
-        metaEl.innerHTML = echoInfo + eventInfo + '<span>Frame ' + (fc.frame || '---') + '</span>' +
-            '<span>Economy: ' + trend + '</span>' +
-            '<span>Weather: ' + weather + '</span>';
+        metaEl.innerHTML = echoInfo + eventInfo + '<span>Frame ' + escapeHTML(fc.frame || '---') + '</span>' +
+            '<span>Economy: ' + escapeHTML(trend) + '</span>' +
+            '<span>Weather: ' + escapeHTML(weather) + '</span>';
 
         // Echo tension sparkline — tiny graph of tension history
         this._updateTensionSparkline();
@@ -17579,6 +17779,7 @@ const HelpOverlay = {
                         <div class="help-section-title">INTERFACE</div>
                         <div class="help-row"><span class="help-key">B</span><span>Bridge (Command Panel)</span></div>
                         <div class="help-row"><span class="help-key">M</span><span>Minimap</span></div>
+                        <div class="help-row"><span class="help-key">Shift+M</span><span>Full Map</span></div>
                         <div class="help-row"><span class="help-key">C</span><span>Cinematic Mode</span></div>
                         <div class="help-row"><span class="help-key">T</span><span>Proof of Becoming</span></div>
                         <div class="help-row"><span class="help-key">?</span><span>This Help Screen</span></div>
@@ -17717,6 +17918,9 @@ const HelpOverlay = {
 // Post-Processing — WebGL bloom + vignette for visual polish
 const PostProcessing = {
     enabled: false,
+    requested: true,
+    supported: false,
+    ready: false,
     _rt1: null,
     _rt2: null,
     _bloomScene: null,
@@ -17724,11 +17928,36 @@ const PostProcessing = {
     _bloomMesh: null,
     _compositeMesh: null,
     _compositeScene: null,
+    _renderer: null,
+    _initializing: false,
+
+    setEnabled(value) {
+        this.requested = value !== false;
+        if (!this.requested && this.ready) {
+            this._disposeResources();
+            this.ready = false;
+        }
+        if (this.requested && this.supported && !this.ready && this._renderer && !this._initializing) {
+            return this.init(this._renderer);
+        }
+        this.enabled = this.requested && this.supported && this.ready;
+        return this.enabled;
+    },
+
+    _isConstrainedDevice() {
+        const ua = navigator.userAgent || '';
+        return /iphone|ipad|ipod|android/i.test(ua) ||
+            (/Macintosh/i.test(ua) && navigator.maxTouchPoints > 1);
+    },
 
     init(renderer) {
-        // Only enable on desktop with decent GPU
-        const isMobile = /iphone|ipad|android/i.test(navigator.userAgent);
-        if (isMobile) return;
+        this._renderer = renderer;
+        this.enabled = false;
+        this.ready = false;
+        this.supported = !this._isConstrainedDevice();
+        if (!this.supported) return false;
+        if (!this.requested) return true;
+        this._initializing = true;
 
         const w = window.innerWidth;
         const h = window.innerHeight;
@@ -17829,39 +18058,57 @@ const PostProcessing = {
             this._compositeMesh = new THREE.Mesh(quadGeo.clone(), compositeMat);
             this._compositeScene.add(this._compositeMesh);
 
-            this.enabled = true;
+            this.ready = true;
+            this._initializing = false;
+            this.setEnabled(this.requested);
+            return true;
         } catch(e) {
             if (GameState.debug) console.warn('[POST] Failed to init post-processing:', e);
+            this._disposeResources();
+            this.supported = false;
+            this.ready = false;
             this.enabled = false;
+            this._initializing = false;
+            return false;
         }
     },
 
     render(renderer, scene, camera) {
-        if (!this.enabled) {
+        if (!this.enabled || !this.ready || !this._rt1 || !this._rt2 ||
+            !this._bloomMesh || !this._compositeMesh || !this._bloomScene ||
+            !this._compositeScene || !this._bloomCamera) {
             renderer.render(scene, camera);
             return;
         }
 
-        // Echo-reactive shader parameters
-        this._updateEchoUniforms();
+        try {
+            // Echo-reactive shader parameters
+            this._updateEchoUniforms();
 
-        // 1. Render scene to RT2 (full res)
-        renderer.setRenderTarget(this._rt2);
-        renderer.render(scene, camera);
+            // 1. Render scene to RT2 (full res)
+            renderer.setRenderTarget(this._rt2);
+            renderer.render(scene, camera);
 
-        // 2. Bloom pass: render RT2 through bloom shader to RT1
-        this._bloomMesh.material.uniforms.tDiffuse.value = this._rt2.texture;
-        renderer.setRenderTarget(this._rt1);
-        renderer.render(this._bloomScene, this._bloomCamera);
+            // 2. Bloom pass: render RT2 through bloom shader to RT1
+            this._bloomMesh.material.uniforms.tDiffuse.value = this._rt2.texture;
+            renderer.setRenderTarget(this._rt1);
+            renderer.render(this._bloomScene, this._bloomCamera);
 
-        // 3. Composite: combine RT2 (scene) + RT1 (bloom) to screen
-        this._compositeMesh.material.uniforms.tScene.value = this._rt2.texture;
-        this._compositeMesh.material.uniforms.tBloom.value = this._rt1.texture;
-        renderer.setRenderTarget(null);
-        renderer.render(this._compositeScene, this._bloomCamera);
+            // 3. Composite: combine RT2 (scene) + RT1 (bloom) to screen
+            this._compositeMesh.material.uniforms.tScene.value = this._rt2.texture;
+            this._compositeMesh.material.uniforms.tBloom.value = this._rt1.texture;
+            renderer.setRenderTarget(null);
+            renderer.render(this._compositeScene, this._bloomCamera);
+        } catch(e) {
+            this.enabled = false;
+            try { renderer.setRenderTarget(null); } catch(_) {}
+            renderer.render(scene, camera);
+            if (GameState.debug) console.warn('[POST] Disabled after render failure:', e);
+        }
     },
 
     _updateEchoUniforms() {
+        if (!this.ready || !this._bloomMesh || !this._compositeMesh) return;
         if (typeof EchoEngine === 'undefined') return;
         var ef = EchoEngine.getCurrentFrame();
         if (!ef || !ef.echoes || !ef.echoes.L3) return;
@@ -17879,13 +18126,31 @@ const PostProcessing = {
     },
 
     onResize() {
-        if (!this.enabled) return;
+        if (!this.ready || !this._rt1 || !this._rt2 || !this._bloomMesh || !this._compositeMesh) return;
         const w = window.innerWidth, h = window.innerHeight;
         const scale = 0.5;
         this._rt1.setSize(w * scale, h * scale);
         this._rt2.setSize(w, h);
         this._bloomMesh.material.uniforms.resolution.value.set(w * scale, h * scale);
         this._compositeMesh.material.uniforms.resolution.value.set(w, h);
+    },
+
+    _disposeResources() {
+        [this._rt1, this._rt2].forEach(function(target) {
+            if (target && target.dispose) target.dispose();
+        });
+        [this._bloomMesh, this._compositeMesh].forEach(function(mesh) {
+            if (!mesh) return;
+            if (mesh.geometry && mesh.geometry.dispose) mesh.geometry.dispose();
+            if (mesh.material && mesh.material.dispose) mesh.material.dispose();
+        });
+        this._rt1 = null;
+        this._rt2 = null;
+        this._bloomScene = null;
+        this._bloomCamera = null;
+        this._bloomMesh = null;
+        this._compositeMesh = null;
+        this._compositeScene = null;
     }
 };
 
@@ -18840,7 +19105,7 @@ var JungleCamps = {
             if (this._titan.mesh) this._titan.mesh.visible = false;
             if (typeof PlayerStats !== 'undefined') { PlayerStats.awardXp(this._titan.xp); PlayerStats.awardGold(this._titan.gold, 'TITAN'); PlayerStats.kills++; }
             if (typeof VFX !== 'undefined') { VFX.burst({ x: 0, y: 3, z: 0 }, 'bossKill'); VFX.burst({ x: 0, y: 5, z: 0 }, 'novaBlast'); VFX.screenFlash('#ffd700', 0.5); }
-            if (typeof HUD !== 'undefined') HUD.showToast('ECHO TITAN SLAIN! +' + this._titan.gold + ' gold, +' + this._titan.xp + ' XP');
+            if (typeof HUD !== 'undefined') HUD.showToast('ECHO TITAN SLAIN! +' + this._titan.gold + ' Practice Gold, +' + this._titan.xp + ' Practice XP');
             if (typeof Audio !== 'undefined' && Audio.playWaveHorn) Audio.playWaveHorn();
             if (typeof ReplaySystem !== 'undefined') ReplaySystem.logEvent('boss_kill', { name: 'Echo Titan', isBoss: true });
             if (typeof GamepadControls !== 'undefined' && GamepadControls.rumble) GamepadControls.rumble(1.0, 0.5, 500);
@@ -18862,7 +19127,7 @@ var JungleCamps = {
 };
 
 // === js/shop.js ===
-// Item Shop — buy consumables, equipment, and wards with gold
+// Local Practice Shop — purchases never spend canonical RAPPcoin
 const Shop = {
     _open: false,
     _items: [
@@ -18913,9 +19178,9 @@ const Shop = {
         el.id = 'shop-panel';
         el.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:420px;max-height:85vh;background:rgba(22,27,34,0.95);border:1px solid rgba(210,153,34,0.3);border-radius:12px;z-index:9100;overflow:hidden;display:none;font-family:"SF Mono",monospace;backdrop-filter:blur(12px);';
         el.innerHTML = '<div style="padding:12px 16px;border-bottom:1px solid rgba(48,54,61,0.5);display:flex;justify-content:space-between;align-items:center;">' +
-            '<span style="font-size:12px;font-weight:700;letter-spacing:2px;color:#d29922;">SHOP</span>' +
+            '<span style="font-size:12px;font-weight:700;letter-spacing:2px;color:#d29922;">LOCAL PRACTICE SHOP</span>' +
             '<div style="display:flex;gap:4px;align-items:center;">' +
-            '<span id="shop-gold" style="color:#fbbf24;font-size:11px;font-weight:700;">0G</span>' +
+            '<span id="shop-gold" style="color:#fbbf24;font-size:11px;font-weight:700;">0 PG</span>' +
             '<button id="shop-close" style="background:none;border:none;color:#8b949e;font-size:18px;cursor:pointer;margin-left:8px;">&times;</button>' +
             '</div></div>' +
             '<div id="shop-tabs" style="padding:8px 16px;display:flex;gap:6px;border-bottom:1px solid rgba(48,54,61,0.3);"></div>' +
@@ -18931,7 +19196,7 @@ const Shop = {
     _render() {
         var gold = typeof PlayerStats !== 'undefined' ? PlayerStats.gold : 0;
         var goldEl = document.getElementById('shop-gold');
-        if (goldEl) goldEl.textContent = gold + 'G';
+        if (goldEl) goldEl.textContent = gold + ' PG';
 
         // Tabs
         var tabsEl = document.getElementById('shop-tabs');
@@ -18960,7 +19225,7 @@ const Shop = {
             return '<div class="shop-item">' +
                 '<span class="shop-icon">' + item.icon + '</span>' +
                 '<div class="shop-info"><div class="shop-name">' + item.name + '</div><div class="shop-desc">' + item.desc + '</div></div>' +
-                '<span class="shop-cost" style="color:' + costColor + '">' + adjustedCost + 'G' + priceTag + '</span>' +
+                '<span class="shop-cost" style="color:' + costColor + '">' + adjustedCost + ' PG' + priceTag + '</span>' +
                 '<button class="shop-buy" ' + (canBuy ? 'onclick="Shop.buy(' + idx + ')"' : 'disabled') + '>BUY</button></div>';
         }).join('');
     },
@@ -19452,56 +19717,86 @@ const RappterOS = {
 
 const RappterVM = {
     // ── Core state ──
-    _env: {},           // Global environment (bindings)
+    _env: Object.create(null), // Global environment (bindings)
     _programs: {},      // Per-agent programs: agentId → [expr, ...]
     _frameData: null,   // Last frame snapshot
     _tickCount: 0,
     _lastFrameTime: 0,
     _running: false,
+    _activePrincipal: null,
+    _agentEnvs: {},
+    _evalSteps: 0,
+    _frameEvalSteps: 0,
+    _budgetExhausted: false,
+    _limits: {
+        sourceLength: 20000,
+        tokens: 4096,
+        stringLength: 2048,
+        astDepth: 64,
+        forms: 128,
+        evalSteps: 4096,
+        frameEvalSteps: 32768,
+        collectionItems: 256
+    },
 
     // ── S-Expression Parser ──
     parse(src) {
+        if (typeof src !== 'string' || src.length > this._limits.sourceLength) {
+            throw new Error('Lisp source exceeds the allowed size');
+        }
         var tokens = this._tokenize(src);
         var result = [];
-        while (tokens.length > 0) result.push(this._readForm(tokens));
+        while (tokens.length > 0) {
+            if (result.length >= this._limits.forms) throw new Error('Lisp form budget exceeded');
+            result.push(this._readForm(tokens, 0));
+        }
         return result;
     },
 
     _tokenize(src) {
         var tokens = [];
+        var self = this;
+        var pushToken = function(token) {
+            tokens.push(token);
+            if (tokens.length > self._limits.tokens) throw new Error('Lisp token budget exceeded');
+        };
         var i = 0;
         while (i < src.length) {
             var c = src[i];
             if (c === ' ' || c === '\t' || c === '\n' || c === '\r') { i++; continue; }
             if (c === ';') { while (i < src.length && src[i] !== '\n') i++; continue; }
-            if (c === '(' || c === ')') { tokens.push(c); i++; continue; }
+            if (c === '(' || c === ')') { pushToken(c); i++; continue; }
             if (c === '"') {
                 var s = ''; i++;
                 while (i < src.length && src[i] !== '"') { s += src[i]; i++; }
-                i++; tokens.push('"' + s + '"'); continue;
+                if (i >= src.length) throw new Error('Unterminated Lisp string');
+                if (s.length > this._limits.stringLength) throw new Error('Lisp string exceeds the allowed size');
+                i++; pushToken('"' + s + '"'); continue;
             }
             if (c === ':') {
                 var kw = ':'; i++;
                 while (i < src.length && src[i] !== ' ' && src[i] !== ')' && src[i] !== '\n') { kw += src[i]; i++; }
-                tokens.push(kw); continue;
+                pushToken(kw); continue;
             }
             var tok = '';
             while (i < src.length && src[i] !== ' ' && src[i] !== ')' && src[i] !== '(' && src[i] !== '\n' && src[i] !== '\t') { tok += src[i]; i++; }
-            tokens.push(tok);
+            pushToken(tok);
         }
         return tokens;
     },
 
-    _readForm(tokens) {
+    _readForm(tokens, depth) {
+        if (depth > this._limits.astDepth) throw new Error('Lisp AST depth exceeded');
         if (tokens.length === 0) return null;
         var t = tokens.shift();
         if (t === '(') {
             var list = [];
-            while (tokens.length > 0 && tokens[0] !== ')') list.push(this._readForm(tokens));
-            if (tokens.length > 0) tokens.shift(); // consume ')'
+            while (tokens.length > 0 && tokens[0] !== ')') list.push(this._readForm(tokens, depth + 1));
+            if (tokens.length === 0) throw new Error('Unterminated Lisp list');
+            tokens.shift(); // consume ')'
             return list;
         }
-        if (t === ')') return null;
+        if (t === ')') throw new Error('Unexpected Lisp closing parenthesis');
         // Atom
         if (t[0] === '"') return t.slice(1, -1); // string
         if (t[0] === ':') return { keyword: t.slice(1) }; // keyword
@@ -19514,7 +19809,33 @@ const RappterVM = {
     },
 
     // ── Evaluator ──
+    _chargeEval() {
+        this._evalSteps++;
+        this._frameEvalSteps++;
+        if (this._evalSteps > this._limits.evalSteps) {
+            throw new Error('Lisp evaluation budget exceeded');
+        }
+        if (this._frameEvalSteps > this._limits.frameEvalSteps) {
+            throw new Error('Lisp frame evaluation budget exceeded');
+        }
+    },
+
+    _invokeBounded(fn, args) {
+        if (typeof fn !== 'function') return null;
+        this._chargeEval();
+        return fn.apply(null, args);
+    },
+
+    _boundedCollection(list) {
+        if (!Array.isArray(list)) return [];
+        if (list.length > this._limits.collectionItems) {
+            throw new Error('Lisp collection budget exceeded');
+        }
+        return list;
+    },
+
     eval(expr, env) {
+        this._chargeEval();
         if (expr === null || expr === undefined) return null;
         if (typeof expr === 'number' || typeof expr === 'string' || typeof expr === 'boolean') return expr;
         if (expr.keyword) return expr;
@@ -19522,7 +19843,8 @@ const RappterVM = {
         if (!Array.isArray(expr) || expr.length === 0) return expr;
 
         var head = expr[0];
-        var op = head.symbol ? head.symbol : head;
+        if (!head || !head.symbol || head.symbol.indexOf('.') !== -1 || !this._isSafeKey(head.symbol)) return null;
+        var op = head.symbol;
 
         // Special forms
         if (op === 'if') return this.eval(expr[1], env) ? this.eval(expr[2], env) : (expr[3] ? this.eval(expr[3], env) : null);
@@ -19532,6 +19854,7 @@ const RappterVM = {
             var local = Object.create(env);
             for (var i = 0; i < bindings.length; i += 2) {
                 var name = bindings[i].symbol || bindings[i];
+                if (!this._isSafeKey(name)) throw new Error('Unsafe Lisp binding');
                 local[name] = this.eval(bindings[i + 1], local);
             }
             var r = null;
@@ -19544,7 +19867,9 @@ const RappterVM = {
             return function() {
                 var local = Object.create(closure);
                 for (var i = 0; i < params.length; i++) {
-                    local[params[i].symbol || params[i]] = arguments[i];
+                    var name = params[i].symbol || params[i];
+                    if (!RappterVM._isSafeKey(name)) throw new Error('Unsafe Lisp parameter');
+                    local[name] = arguments[i];
                 }
                 var r = null;
                 for (var i = 0; i < body.length; i++) r = RappterVM.eval(body[i], local);
@@ -19552,23 +19877,66 @@ const RappterVM = {
             };
         }
         if (op === 'quote') return expr[1];
-        if (op === 'def') { env[expr[1].symbol || expr[1]] = this.eval(expr[2], env); return null; }
+        if (op === 'def') {
+            var defName = expr[1].symbol || expr[1];
+            if (!this._isSafeKey(defName)) throw new Error('Unsafe Lisp definition');
+            if (Object.prototype.hasOwnProperty.call(this._env, defName)) {
+                throw new Error('Lisp capabilities are immutable');
+            }
+            env[defName] = this.eval(expr[2], env);
+            return null;
+        }
 
-        // Function call
-        var fn = this.eval(head, env);
+        // Calls are restricted to literal, safe operator names.
+        var fn = this._lookup(op, env);
         var args = [];
         for (var i = 1; i < expr.length; i++) args.push(this.eval(expr[i], env));
         if (typeof fn === 'function') return fn.apply(null, args);
         return null;
     },
 
+    run(expr, env) {
+        this._evalSteps = 0;
+        this._frameEvalSteps = 0;
+        return this.eval(expr, env);
+    },
+
+    _isSafeKey(key) {
+        if (typeof key !== 'string' || key.length === 0 || key.length > 128) return false;
+        return key !== 'constructor' && key !== 'prototype' && key !== '__proto__';
+    },
+
+    _getOwn(obj, key) {
+        key = key && key.keyword !== undefined ? key.keyword : key;
+        if (obj == null || !this._isSafeKey(key)) return null;
+        return Object.prototype.hasOwnProperty.call(Object(obj), key) ? obj[key] : null;
+    },
+
+    _canActAs(agentId) {
+        return typeof agentId === 'string' && agentId === this._activePrincipal;
+    },
+
     _lookup(name, env) {
-        if (name in env) return env[name];
-        if (name in this._env) return this._env[name];
-        // Dotted access: agent.hp → env.agent.hp
         var parts = name.split('.');
-        var obj = env[parts[0]] || this._env[parts[0]];
-        for (var i = 1; i < parts.length && obj; i++) obj = obj[parts[i]];
+        for (var p = 0; p < parts.length; p++) {
+            if (!this._isSafeKey(parts[p])) return null;
+        }
+
+        var cursor = env;
+        var obj = null;
+        while (cursor) {
+            if (Object.prototype.hasOwnProperty.call(cursor, parts[0])) {
+                obj = cursor[parts[0]];
+                break;
+            }
+            cursor = Object.getPrototypeOf(cursor);
+        }
+        if (obj === null && Object.prototype.hasOwnProperty.call(this._env, parts[0])) {
+            obj = this._env[parts[0]];
+        }
+        for (var i = 1; i < parts.length && obj != null; i++) {
+            obj = this._getOwn(obj, parts[i]);
+        }
         return obj !== undefined ? obj : null;
     },
 
@@ -19607,16 +19975,38 @@ const RappterVM = {
         env['list'] = function() { return Array.prototype.slice.call(arguments); };
         env['first'] = function(a) { return a && a[0]; };
         env['rest'] = function(a) { return a ? a.slice(1) : []; };
-        env['nth'] = function(a, i) { return a ? a[i] : null; };
+        env['nth'] = function(a, i) {
+            if ((!Array.isArray(a) && typeof a !== 'string') || !Number.isInteger(i)) return null;
+            return i >= 0 && i < a.length ? a[i] : null;
+        };
         env['count'] = function(a) { return a ? a.length : 0; };
-        env['map'] = function(fn, list) { return list ? list.map(fn) : []; };
-        env['filter'] = function(fn, list) { return list ? list.filter(fn) : []; };
-        env['reduce'] = function(fn, init, list) { return list ? list.reduce(fn, init) : init; };
-        env['get'] = function(obj, key) { return obj ? obj[key] || obj[key.keyword] : null; };
-        env['assoc'] = function(obj, k, v) { var o = Object.assign({}, obj); o[k.keyword || k] = v; return o; };
+        env['map'] = function(fn, list) {
+            return RappterVM._boundedCollection(list).map(function(value, index) {
+                return RappterVM._invokeBounded(fn, [value, index]);
+            });
+        };
+        env['filter'] = function(fn, list) {
+            return RappterVM._boundedCollection(list).filter(function(value, index) {
+                return Boolean(RappterVM._invokeBounded(fn, [value, index]));
+            });
+        };
+        env['reduce'] = function(fn, init, list) {
+            return RappterVM._boundedCollection(list).reduce(function(accumulator, value, index) {
+                return RappterVM._invokeBounded(fn, [accumulator, value, index]);
+            }, init);
+        };
+        env['get'] = function(obj, key) { return RappterVM._getOwn(obj, key); };
+        env['assoc'] = function(obj, k, v) {
+            var key = k && k.keyword !== undefined ? k.keyword : k;
+            if (!RappterVM._isSafeKey(key)) return null;
+            var o = Object.assign(Object.create(null), obj || {});
+            o[key] = v;
+            return o;
+        };
 
         // ── World Actions (side effects on the 3D world) ──
         env['move-toward'] = function(agentId, tx, tz, speed) {
+            if (!RappterVM._canActAs(agentId)) return null;
             var a = typeof WorldAgents !== 'undefined' ? WorldAgents.agentMeshes[agentId] : null;
             if (!a) return null;
             speed = speed || 0.03;
@@ -19631,6 +20021,7 @@ const RappterVM = {
         };
 
         env['wander'] = function(agentId, radius) {
+            if (!RappterVM._canActAs(agentId)) return null;
             var a = typeof WorldAgents !== 'undefined' ? WorldAgents.agentMeshes[agentId] : null;
             if (!a) return null;
             radius = radius || 5;
@@ -19645,6 +20036,7 @@ const RappterVM = {
         };
 
         env['face-toward'] = function(agentId, tx, tz) {
+            if (!RappterVM._canActAs(agentId)) return null;
             var a = typeof WorldAgents !== 'undefined' ? WorldAgents.agentMeshes[agentId] : null;
             if (!a) return null;
             var dx = tx - a.group.position.x, dz = tz - a.group.position.z;
@@ -19653,6 +20045,7 @@ const RappterVM = {
         };
 
         env['emote'] = function(agentId, type) {
+            if (!RappterVM._canActAs(agentId)) return null;
             var a = typeof WorldAgents !== 'undefined' ? WorldAgents.agentMeshes[agentId] : null;
             if (!a) return null;
             if (type === 'bounce') {
@@ -19668,6 +20061,7 @@ const RappterVM = {
         };
 
         env['say'] = function(agentId, text) {
+            if (!RappterVM._canActAs(agentId)) return null;
             if (typeof WorldAgents !== 'undefined' && WorldAgents.showSpeechBubble) {
                 WorldAgents.showSpeechBubble(agentId, text);
             }
@@ -19745,8 +20139,10 @@ const RappterVM = {
 
     // ── Frame Integration ──
     init() {
-        this._env = {};
+        this._env = Object.create(null);
         this._programs = {};
+        this._agentEnvs = {};
+        this._activePrincipal = null;
         this._tickCount = 0;
         this._lastFrameTime = Date.now();
         this._running = true;
@@ -19805,6 +20201,7 @@ const RappterVM = {
 
     _compileAgentBehaviors() {
         this._programs = {};
+        this._agentEnvs = {};
         var agents = typeof GameState !== 'undefined' ? GameState.getWorldAgents() : [];
         var self = this;
         var S = function(n) { return self._sym(n); };
@@ -19962,6 +20359,8 @@ const RappterVM = {
             );
 
             self._programs[id] = program;
+            self._agentEnvs[id] = Object.create(self._env);
+            self._agentEnvs[id].self = id;
         });
     },
 
@@ -19975,18 +20374,39 @@ const RappterVM = {
         if (this._tickCount % 3 !== 0) return;
 
         // Run involuntary reflexes first (intent echoes)
+        this._frameEvalSteps = 0;
+        this._budgetExhausted = false;
         this.tickReflexes();
 
         // Then run compiled agent programs
         var agentIds = Object.keys(this._programs);
         for (var i = 0; i < agentIds.length; i++) {
+            if (this._frameEvalSteps >= this._limits.frameEvalSteps) {
+                this._budgetExhausted = true;
+                break;
+            }
             var id = agentIds[i];
             var program = this._programs[id];
             if (!program) continue;
-            this._env['self'] = id;
-            for (var j = 0; j < program.length; j++) {
-                try { this.eval(program[j], this._env); } catch(e) {}
+            var agentEnv = this._agentEnvs[id] || Object.create(this._env);
+            agentEnv.self = id;
+            this._activePrincipal = id;
+            this._evalSteps = 0;
+            try {
+                for (var j = 0; j < program.length; j++) {
+                    try {
+                        this.eval(program[j], agentEnv);
+                    } catch(e) {
+                        if (String(e.message || e).indexOf('frame evaluation budget') !== -1) {
+                            this._budgetExhausted = true;
+                            break;
+                        }
+                    }
+                }
+            } finally {
+                this._activePrincipal = null;
             }
+            if (this._budgetExhausted) break;
         }
     },
 
@@ -20110,13 +20530,18 @@ const RappterVM = {
         var agentIds = Object.keys(this._programs);
         for (var i = 0; i < agentIds.length; i++) {
             var id = agentIds[i];
-            for (var j = 0; j < this._reflexes.length; j++) {
-                var reflex = this._reflexes[j];
-                try {
-                    if (reflex.test.call(reflex, id, this._env)) {
-                        reflex.act.call(reflex, id, this._env);
-                    }
-                } catch(e) {}
+            this._activePrincipal = id;
+            try {
+                for (var j = 0; j < this._reflexes.length; j++) {
+                    var reflex = this._reflexes[j];
+                    try {
+                        if (reflex.test.call(reflex, id, this._env)) {
+                            reflex.act.call(reflex, id, this._env);
+                        }
+                    } catch(e) {}
+                }
+            } finally {
+                this._activePrincipal = null;
             }
         }
     },
@@ -20384,7 +20809,7 @@ const Settings = {
     _apply() {
         // Bloom
         if (typeof PostProcessing !== 'undefined') {
-            PostProcessing.enabled = this.get('bloom') !== false;
+            PostProcessing.setEnabled(this.get('bloom') !== false);
         }
         // Volume
         if (typeof Audio !== 'undefined' && Audio.masterGain && Audio.ctx) {
@@ -20575,7 +21000,10 @@ const QuestTracker = {
             let autoComplete = false;
             if (s.action === 'visit_hub' && GameState.currentWorld === 'hub') autoComplete = true;
             if (s.action === 'talk_to_guide') {
-                const poked = (GameState.data.chat || []).some(function(m) {
+                const poked = [
+                    ...(GameState.data.chat || []),
+                    ...(GameState.data.localChat || [])
+                ].some(function(m) {
                     return m.type === 'poke' && m.content && m.content.includes('rapp-guide');
                 });
                 if (poked) autoComplete = true;
@@ -20583,15 +21011,15 @@ const QuestTracker = {
             const completed = done || autoComplete;
             return '<div class="qt-step">' +
                 '<div class="qt-check' + (completed ? ' done' : '') + '">' + (completed ? '✓' : '') + '</div>' +
-                '<span>' + (s.action || '').replace(/_/g, ' ') + '</span></div>';
+                '<span>' + escapeHTML((s.action || '').replace(/_/g, ' ')) + '</span></div>';
         }).join('');
 
         const rewards = q.rewards || {};
         const rewardHtml = rewards.rappcoin ?
-            '<div class="qt-reward">Reward: <span>' + rewards.rappcoin + ' RAPP</span></div>' : '';
+            '<div class="qt-reward">Canonical reward: <span>' + escapeHTML(rewards.rappcoin) + ' RAPP</span> (not awarded in local practice)</div>' : '';
 
-        body.innerHTML = '<div class="qt-name">' + (q.name || 'Quest') + '</div>' +
-            '<div class="qt-desc">' + (q.description || '') + '</div>' +
+        body.innerHTML = '<div class="qt-name">' + escapeHTML(q.name || 'Quest') + '</div>' +
+            '<div class="qt-desc">' + escapeHTML(q.description || '') + '</div>' +
             steps + rewardHtml;
     }
 };
@@ -20604,6 +21032,9 @@ const QuestTracker = {
         requestAnimationFrame(animate);
         const delta = GameState.clock ? GameState.clock.getDelta() : 0.016;
         const time = GameState.clock ? GameState.clock.getElapsedTime() : 0;
+
+        // Bridge owns the renderer and simulation clock while open.
+        if (Bridge.open) return;
 
         switch(GameState.mode) {
             case 'galaxy':
@@ -20629,10 +21060,6 @@ const QuestTracker = {
             HUD.updatePanels();
         }
 
-        // Re-render bridge if open
-        if (Bridge.open && Math.floor(time) % 3 === 0) {
-            Bridge.render();
-        }
     }
 
     // Keyboard
@@ -20641,6 +21068,13 @@ const QuestTracker = {
         if (typeof DebugOverlay !== 'undefined') DebugOverlay.recordKey(e.code);
         if (GameState.inputLocked) {
             e.stopPropagation();
+            return;
+        }
+        if (Bridge.open) {
+            if (e.code === 'KeyB' || e.code === 'Escape') {
+                e.preventDefault();
+                Bridge.close();
+            }
             return;
         }
 
@@ -20683,7 +21117,8 @@ const QuestTracker = {
 
         // Minimap toggle
         if (e.code === 'KeyM' && GameState.mode === 'world') {
-            HUD.toggleMinimap();
+            if (e.shiftKey) HUD.toggleFullmap();
+            else HUD.toggleMinimap();
             return;
         }
 
@@ -20772,13 +21207,6 @@ const QuestTracker = {
         // Gesture controls toggle
         if (e.code === 'KeyH' && GameState.mode !== 'boot') {
             if (typeof GestureControls !== 'undefined') GestureControls.toggle();
-            return;
-        }
-
-        // Fullscreen map toggle (Tab)
-        if (e.code === 'Tab' && GameState.mode === 'world') {
-            e.preventDefault();
-            if (typeof HUD !== 'undefined') HUD.toggleFullmap();
             return;
         }
 
@@ -20988,6 +21416,11 @@ const QuestTracker = {
     // Start
     function main() {
         GameState.clock = new THREE.Clock();
+        try {
+            localStorage.removeItem('rappterverse-token');
+        } catch(e) {
+            // Storage may be unavailable in privacy modes.
+        }
 
         // Parse deep link: ?agent=clawdbot-001 or ?world=hub
         const urlParams = new URLSearchParams(window.location.search);

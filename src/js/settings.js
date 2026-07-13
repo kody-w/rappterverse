@@ -31,7 +31,7 @@ const Settings = {
     _apply() {
         // Bloom
         if (typeof PostProcessing !== 'undefined') {
-            PostProcessing.enabled = this.get('bloom') !== false;
+            PostProcessing.setEnabled(this.get('bloom') !== false);
         }
         // Volume
         if (typeof Audio !== 'undefined' && Audio.masterGain && Audio.ctx) {

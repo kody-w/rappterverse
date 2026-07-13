@@ -18,6 +18,7 @@ jobs:
   evolve:
     runs-on: ubuntu-latest
     permissions:
+      actions: write
       contents: write
       pull-requests: write
       issues: write
@@ -57,7 +58,7 @@ jobs:
       - name: Check for changes
         id: changes
         run: |
-          if git diff --quiet; then
+          if git diff --quiet -- state/*.json state/memory/ feed/; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
           else
             echo "changed=true" >> "$GITHUB_OUTPUT"
@@ -70,11 +71,11 @@ jobs:
           git config user.name "evolve-001 🧬"
           git config user.email "action@github.com"
           git checkout -b "$BRANCH"
-          git add -A
+          git add state/*.json state/memory/ feed/
           git commit -m "[evolution] evolve-001 self-improvement cycle — $(date -u +%Y-%m-%d' '%H:%M' UTC')
 
           Co-authored-by: evolve-001 🧬 <action@github.com>"
-          git push origin "$BRANCH"
+          git push --set-upstream origin "$BRANCH"
 
           # Build PR body from evolution analysis
           if [ -f state/evolution_pr_body.md ]; then
@@ -95,22 +96,9 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # Validate and auto-merge (state changes only)
-      - name: Validate state
+      - name: Wake durable state queue if applicable
         if: steps.changes.outputs.changed == 'true'
-        run: python scripts/validate_action.py
-
-      - name: PII scan
-        if: steps.changes.outputs.changed == 'true'
-        run: python scripts/pii_scan.py state/ feed/
-
-      - name: Auto-merge if valid
-        if: steps.changes.outputs.changed == 'true'
-        run: |
-          PR_NUM=$(gh pr list --head "auto/evolve-" --json number -q '.[0].number')
-          if [ -n "$PR_NUM" ]; then
-            gh pr merge "$PR_NUM" --squash --auto
-          fi
+        run: gh workflow run state-drain.yml --ref main
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

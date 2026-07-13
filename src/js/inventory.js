@@ -247,8 +247,8 @@ const Inventory = {
             div.className = 'inventory-slot';
             const it = this.slots[i] && this.slots[i].item;
             if (it) {
-                div.innerHTML = `<span class="inv-icon">${it.icon}</span>` +
-                    (it.count > 1 ? `<span class="inv-count">${it.count}</span>` : '');
+                div.innerHTML = `<span class="inv-icon">${escapeHTML(it.icon)}</span>` +
+                    (it.count > 1 ? `<span class="inv-count">${escapeHTML(it.count)}</span>` : '');
                 div.onclick = () => this.useItem(i);
             }
             grid.appendChild(div);

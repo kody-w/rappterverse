@@ -36,6 +36,10 @@ const Bridge = {
 
     enter() {
         if (this.open) return;
+        if (!['galaxy', 'world'].includes(GameState.mode)) {
+            if (typeof HUD !== 'undefined') HUD.showToast('Bridge unavailable during transit');
+            return;
+        }
         this.open = true;
         GameState.bridgeOpen = true;
         this._savedMode = GameState.mode;
@@ -651,9 +655,9 @@ const Bridge = {
         var ws = gs.worlds && gs.worlds[worldId] ? gs.worlds[worldId] : {};
 
         var n = '<div style="font-size:9px;color:#d29922;letter-spacing:1px;margin-bottom:6px;">ECHO NARRATIVE (L2)</div>';
-        n += 'The RAPPterverse pulses at Frame ' + (fc.frame || '?') + '. ';
+        n += 'The RAPPterverse pulses at Frame ' + escapeHTML(fc.frame || '?') + '. ';
         n += agents.length + ' agents inhabit ' + Object.keys(gs.worlds || {}).length + ' worlds. ';
-        var pop = ws.population || 0;
+        var pop = Number(ws.population) || 0;
         if (pop > 50) n += 'This world is bustling with ' + pop + ' souls. ';
         else if (pop > 20) n += pop + ' agents move through this space. ';
         else n += 'Only ' + pop + ' agents linger here — it feels quiet. ';
@@ -665,8 +669,8 @@ const Bridge = {
 
         var lastChat = chat.length > 0 ? chat[chat.length - 1] : null;
         if (lastChat && lastChat.author) {
-            n += 'The last voice heard was ' + (lastChat.author.name || lastChat.author.id) + ': ';
-            n += '<i>"' + (lastChat.content || '').substring(0, 80) + '"</i>';
+            n += 'The last voice heard was ' + escapeHTML(lastChat.author.name || lastChat.author.id) + ': ';
+            n += '<i>"' + escapeHTML((lastChat.content || '').substring(0, 80)) + '"</i>';
         }
 
         // Echo engine enrichment
@@ -683,7 +687,7 @@ const Bridge = {
             if (ef && ef.echoes && ef.echoes.L6) {
                 var L6 = ef.echoes.L6;
                 n += '<div style="font-size:9px;color:#484f58;margin-top:4px;">';
-                n += 'Pop trend: ' + L6.populationTrend + ' · Economy: ' + L6.economicArc + ' · Echo depth: L' + Math.round(L6.enrichableDetail.narrativeDepth);
+                n += 'Pop trend: ' + escapeHTML(L6.populationTrend) + ' · Economy: ' + escapeHTML(L6.economicArc) + ' · Echo depth: L' + Math.round(L6.enrichableDetail.narrativeDepth);
                 n += '</div>';
             }
             // Combat digest
@@ -692,13 +696,13 @@ const Bridge = {
                 n += '<div style="font-size:10px;color:#f85149;margin-top:6px;">';
                 n += 'Combat: Wave ' + cb.wave + ' · Momentum ' + cb.momentum + '% · ';
                 n += cb.creepCount + ' units active';
-                if (cb.bossActive) n += ' · <span style="color:#aa44ff">BOSS: ' + cb.bossName + '</span>';
+                if (cb.bossActive) n += ' · <span style="color:#aa44ff">BOSS: ' + escapeHTML(cb.bossName) + '</span>';
                 n += '</div>';
             }
             // Active echo event
             if (typeof EchoEvents !== 'undefined' && EchoEvents._activeEvent) {
                 n += '<div style="font-size:10px;color:#d29922;margin-top:4px;font-weight:bold;">';
-                n += 'Active Event: ' + EchoEvents._activeEvent.name;
+                n += 'Active Event: ' + escapeHTML(EchoEvents._activeEvent.name);
                 n += ' (' + Math.ceil(EchoEvents._eventTimer) + 's remaining)';
                 n += '</div>';
             }

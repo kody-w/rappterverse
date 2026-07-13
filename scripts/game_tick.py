@@ -256,10 +256,23 @@ def evolve_agent_traits(agents_data: dict, actions_data: dict, chat_data: dict) 
         "battle_challenge": "fighter",
         "attack": "fighter",
         "place_object": "builder",
+        "tip": "social",
+        "trade": "trader",
+        "challenge": "fighter",
+        "defend": "fighter",
+        "poke": "social",
+        "enroll": "explorer",
     }
+
+    def semantic_type(action: dict) -> str:
+        if action.get("type") == "interact":
+            return action.get("data", {}).get("interaction", "interact")
+        return action.get("type", "")
 
     for agent in agents:
         if agent.get("status") != "active":
+            continue
+        if agent.get("controller", "system") != "system":
             continue
 
         aid = agent["id"]
@@ -268,7 +281,7 @@ def evolve_agent_traits(agents_data: dict, actions_data: dict, chat_data: dict) 
         behavior_counts: dict[str, int] = {}
         for action in actions:
             if action.get("agentId") == aid:
-                trait = ACTION_TRAIT_MAP.get(action.get("type"), "explorer")
+                trait = ACTION_TRAIT_MAP.get(semantic_type(action), "explorer")
                 behavior_counts[trait] = behavior_counts.get(trait, 0) + 1
 
         # Count chat messages as social behavior
@@ -337,7 +350,12 @@ def evolve_agent_traits(agents_data: dict, actions_data: dict, chat_data: dict) 
     return changes
 
 
-def fulfill_agent_goals(actions_data: dict, chat_data: dict, timestamp: str) -> list[str]:
+def fulfill_agent_goals(
+    actions_data: dict,
+    chat_data: dict,
+    timestamp: str,
+    system_agent_ids: set[str],
+) -> list[str]:
     """Check if agents' recent actions match their goals and mark them done.
 
     Goals have: type, target, action, status. If an agent performed the
@@ -356,7 +374,10 @@ def fulfill_agent_goals(actions_data: dict, chat_data: dict, timestamp: str) -> 
     for a in actions:
         aid = a.get("agentId", "")
         if aid:
-            agent_actions.setdefault(aid, set()).add(a.get("type", ""))
+            action_type = a.get("type", "")
+            if action_type == "interact":
+                action_type = a.get("data", {}).get("interaction", "interact")
+            agent_actions.setdefault(aid, set()).add(action_type)
 
     # Chat counts as social action
     for m in messages:
@@ -393,6 +414,8 @@ def fulfill_agent_goals(actions_data: dict, chat_data: dict, timestamp: str) -> 
         if not fname.endswith('.json'):
             continue
         agent_id = fname.replace('.json', '')
+        if agent_id not in system_agent_ids:
+            continue
         performed = agent_actions.get(agent_id, set())
         if not performed:
             continue
@@ -540,8 +563,15 @@ def resolve_combat(game_state: dict, agents_data: dict, actions_data: dict,
     # Phase 1: Detect new attack actions
     tracked_ids = {ce.get("actionId") for ce in combat_events}
     for action in actions:
-        if action.get("type") == "attack" and action["id"] not in tracked_ids:
-            data = action.get("data", {})
+        data = action.get("data", {})
+        is_hostile_attack = (
+            action.get("type") == "attack"
+            or (
+                action.get("type") == "interact"
+                and data.get("interaction") == "hostile_attack"
+            )
+        )
+        if is_hostile_attack and action["id"] not in tracked_ids:
             combat_events.append({
                 "id": f"combat-{len(combat_events) + 1:04d}",
                 "actionId": action["id"],
@@ -573,6 +603,7 @@ def resolve_combat(game_state: dict, agents_data: dict, actions_data: dict,
         # ALL active agents in the same world defend
         defenders = [a for a in agents
                      if a.get("world") == world and a.get("status") == "active"
+                     and a.get("controller", "system") == "system"
                      and a["id"] != ce.get("attackerId")]
 
         if not defenders:
@@ -738,7 +769,17 @@ def main():
     events.extend(trait_events)
 
     # Fulfill agent goals based on recent actions
-    goal_events = fulfill_agent_goals(actions_data, chat_data, timestamp)
+    system_agent_ids = {
+        agent["id"]
+        for agent in agents_data.get("agents", [])
+        if agent.get("controller", "system") == "system"
+    }
+    goal_events = fulfill_agent_goals(
+        actions_data,
+        chat_data,
+        timestamp,
+        system_agent_ids,
+    )
     events.extend(goal_events)
 
     # Resolve combat — defensive swarm

@@ -1,4 +1,4 @@
-// Item Shop — buy consumables, equipment, and wards with gold
+// Local Practice Shop — purchases never spend canonical RAPPcoin
 const Shop = {
     _open: false,
     _items: [
@@ -49,9 +49,9 @@ const Shop = {
         el.id = 'shop-panel';
         el.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:420px;max-height:85vh;background:rgba(22,27,34,0.95);border:1px solid rgba(210,153,34,0.3);border-radius:12px;z-index:9100;overflow:hidden;display:none;font-family:"SF Mono",monospace;backdrop-filter:blur(12px);';
         el.innerHTML = '<div style="padding:12px 16px;border-bottom:1px solid rgba(48,54,61,0.5);display:flex;justify-content:space-between;align-items:center;">' +
-            '<span style="font-size:12px;font-weight:700;letter-spacing:2px;color:#d29922;">SHOP</span>' +
+            '<span style="font-size:12px;font-weight:700;letter-spacing:2px;color:#d29922;">LOCAL PRACTICE SHOP</span>' +
             '<div style="display:flex;gap:4px;align-items:center;">' +
-            '<span id="shop-gold" style="color:#fbbf24;font-size:11px;font-weight:700;">0G</span>' +
+            '<span id="shop-gold" style="color:#fbbf24;font-size:11px;font-weight:700;">0 PG</span>' +
             '<button id="shop-close" style="background:none;border:none;color:#8b949e;font-size:18px;cursor:pointer;margin-left:8px;">&times;</button>' +
             '</div></div>' +
             '<div id="shop-tabs" style="padding:8px 16px;display:flex;gap:6px;border-bottom:1px solid rgba(48,54,61,0.3);"></div>' +
@@ -67,7 +67,7 @@ const Shop = {
     _render() {
         var gold = typeof PlayerStats !== 'undefined' ? PlayerStats.gold : 0;
         var goldEl = document.getElementById('shop-gold');
-        if (goldEl) goldEl.textContent = gold + 'G';
+        if (goldEl) goldEl.textContent = gold + ' PG';
 
         // Tabs
         var tabsEl = document.getElementById('shop-tabs');
@@ -96,7 +96,7 @@ const Shop = {
             return '<div class="shop-item">' +
                 '<span class="shop-icon">' + item.icon + '</span>' +
                 '<div class="shop-info"><div class="shop-name">' + item.name + '</div><div class="shop-desc">' + item.desc + '</div></div>' +
-                '<span class="shop-cost" style="color:' + costColor + '">' + adjustedCost + 'G' + priceTag + '</span>' +
+                '<span class="shop-cost" style="color:' + costColor + '">' + adjustedCost + ' PG' + priceTag + '</span>' +
                 '<button class="shop-buy" ' + (canBuy ? 'onclick="Shop.buy(' + idx + ')"' : 'disabled') + '>BUY</button></div>';
         }).join('');
     },

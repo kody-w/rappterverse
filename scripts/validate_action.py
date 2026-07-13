@@ -8,15 +8,19 @@ Exit 0 = valid (auto-merge), Exit 1 = invalid (reject).
 from __future__ import annotations
 
 import json
+import math
 import os
 import subprocess
 import sys
 from datetime import datetime
 from pathlib import Path
 
-BASE_DIR = Path(__file__).parent.parent
+BASE_DIR = Path(
+    os.environ.get("VALIDATION_REPO_ROOT", Path(__file__).parent.parent)
+).resolve()
 STATE_DIR = BASE_DIR / "state"
 WORLDS_DIR = BASE_DIR / "worlds"
+FEED_DIR = BASE_DIR / "feed"
 
 
 def _load_world_bounds() -> dict:
@@ -82,12 +86,27 @@ def info(msg: str):
     summary_lines.append(msg)
 
 
+def reject_json_constant(value: str):
+    raise ValueError(f"non-standard numeric constant {value}")
+
+
+def validate_finite_numbers(value: object, context: str):
+    if isinstance(value, float) and not math.isfinite(value):
+        error(f"`{context}`: non-finite numeric value")
+    elif isinstance(value, dict):
+        for key, child in value.items():
+            validate_finite_numbers(child, f"{context}/{key}")
+    elif isinstance(value, list):
+        for index, child in enumerate(value):
+            validate_finite_numbers(child, f"{context}/{index}")
+
+
 def load_json(path: Path) -> dict | None:
     """Load and parse JSON, returning None on failure."""
     try:
         with open(path) as f:
-            return json.load(f)
-    except json.JSONDecodeError as e:
+            return json.load(f, parse_constant=reject_json_constant)
+    except (json.JSONDecodeError, ValueError) as e:
         error(f"`{path.name}`: Invalid JSON — {e}")
         return None
     except FileNotFoundError:
@@ -97,42 +116,89 @@ def load_json(path: Path) -> dict | None:
 
 def get_changed_files() -> list[str]:
     """Get list of files changed vs main."""
+    base_ref = os.environ.get("VALIDATION_BASE_SHA", "origin/main")
+    head_ref = os.environ.get("VALIDATION_HEAD_SHA", "HEAD")
     result = subprocess.run(
-        ["git", "diff", "--name-only", "origin/main...HEAD"],
-        capture_output=True, text=True, cwd=BASE_DIR.parent
+        ["git", "diff", "--name-only", f"{base_ref}...{head_ref}", "--"],
+        capture_output=True, text=True, cwd=BASE_DIR
     )
+    if result.returncode != 0:
+        detail = result.stderr.strip() or f"git exited with status {result.returncode}"
+        raise RuntimeError(f"Unable to determine changed files: {detail}")
     return [f for f in result.stdout.strip().split("\n") if f]
 
 
 def load_base_json(filepath: str):
     """Load a file's content from origin/main for comparison."""
+    base_ref = os.environ.get("VALIDATION_BASE_SHA", "origin/main")
     result = subprocess.run(
-        ["git", "show", f"origin/main:{filepath}"],
+        ["git", "show", f"{base_ref}:{filepath}"],
         capture_output=True, text=True, cwd=BASE_DIR
     )
     if result.returncode == 0:
         try:
-            return json.loads(result.stdout)
-        except json.JSONDecodeError:
+            return json.loads(result.stdout, parse_constant=reject_json_constant)
+        except (json.JSONDecodeError, ValueError):
             return None
     return None
 
 
-def validate_agent_consent(current_agents: list, pr_author: str):
-    """Enforce controller-based consent for agent modifications.
-    Only the agent's controller (or system for system agents) can modify it.
-    """
-    if not pr_author:
-        return  # Running locally or in system context — skip consent check
+def trusted_automation_authors() -> set[str]:
+    """Return base-controlled identities allowed to act for system agents."""
+    owner = os.environ.get("REPOSITORY_OWNER", "kody-w")
+    configured = os.environ.get("TRUSTED_AUTOMATION_AUTHORS", "")
+    return {owner, "github-actions[bot]"} | {
+        author.strip() for author in configured.split(",") if author.strip()
+    }
 
-    base_data = load_base_json("rappterverse/state/agents.json")
+
+def authorize_actor(
+    actor_id: str | None,
+    agents_by_id: dict,
+    pr_author: str,
+    context: str,
+) -> bool:
+    """Bind a semantic actor to the GitHub identity controlling that agent."""
+    if not actor_id:
+        error(f"{context}: Missing actor ID")
+        return False
+    agent = agents_by_id.get(actor_id)
+    if not agent:
+        error(f"{context}: Unknown actor `{actor_id}`")
+        return False
+
+    controller = agent.get("controller", "system")
+    if controller == "system":
+        if pr_author not in trusted_automation_authors():
+            error(f"{context}: `{actor_id}` is system-controlled; `{pr_author}` is not trusted automation")
+            return False
+    elif controller != pr_author:
+        error(f"{context}: `{actor_id}` is controlled by `{controller}`, not `{pr_author}`")
+        return False
+    return True
+
+
+def validate_agent_consent(current_agents: list, pr_author: str):
+    """Enforce controller ownership for additions, modifications, and deletions."""
+    if not pr_author:
+        error("Agent authorization requires PR_AUTHOR")
+        return
+
+    base_data = load_base_json("state/agents.json")
     if not base_data:
-        # Try without prefix (depends on git root)
-        base_data = load_base_json("state/agents.json")
-    if not base_data:
-        return  # Can't compare — skip consent check (first run, etc.)
+        error("`agents.json`: Unable to load trusted base state for authorization")
+        return
 
     base_agents = {a["id"]: a for a in base_data.get("agents", []) if "id" in a}
+    current_by_id = {a["id"]: a for a in current_agents if "id" in a}
+
+    for aid in base_agents.keys() - current_by_id.keys():
+        controller = base_agents[aid].get("controller", "system")
+        if controller == "system":
+            if pr_author not in trusted_automation_authors():
+                error(f"`agents.json`: Only trusted automation may delete system agent `{aid}`")
+        elif controller != pr_author:
+            error(f"`agents.json`: Only controller `{controller}` may delete agent `{aid}`")
 
     for agent in current_agents:
         aid = agent.get("id")
@@ -141,25 +207,106 @@ def validate_agent_consent(current_agents: list, pr_author: str):
 
         base_agent = base_agents.get(aid)
         if not base_agent:
-            continue  # New spawn — allowed (controller set at spawn time)
+            controller = agent.get("controller")
+            if controller == "system":
+                if pr_author not in trusted_automation_authors():
+                    error(f"`agents.json`: Only trusted automation may create system agent `{aid}`")
+            elif controller != pr_author:
+                error(
+                    f"`agents.json`: New agent `{aid}` must set controller to PR author "
+                    f"`{pr_author}`"
+                )
+            continue
 
         # Check if this agent was actually modified
         if agent == base_agent:
             continue
 
-        # Agent was modified — check controller consent
         controller = base_agent.get("controller", "system")
+        if agent.get("controller", "system") != controller:
+            if pr_author not in trusted_automation_authors():
+                error(f"`agents.json`: Only trusted automation may transfer controller for `{aid}`")
+            continue
         if controller == "system":
-            continue  # System agents are freely modifiable via PRs
-
-        # Independent agent — only its controller can modify it
-        if pr_author != controller:
+            if pr_author not in trusted_automation_authors():
+                error(f"`agents.json`: Only trusted automation may modify system agent `{aid}`")
+        elif pr_author != controller:
             error(
                 f"`agents.json`: Agent `{aid}` is controlled by `{controller}`, "
                 f"but PR author is `{pr_author}` — consent required"
             )
 
     info("Consent: agent controller permissions verified")
+
+
+def validate_append_only_actors(
+    filepath: str,
+    key: str,
+    current_records: list,
+    agents_by_id: dict,
+    pr_author: str,
+) -> list:
+    """Reject history rewrites and authorize every newly appended semantic actor."""
+    base_data = load_base_json(filepath)
+    if not base_data or not isinstance(base_data.get(key), list):
+        error(f"`{filepath}`: Unable to load trusted base history")
+        return []
+
+    base_records = base_data[key]
+    base_by_id = {record.get("id"): record for record in base_records if record.get("id")}
+    current_by_id = {record.get("id"): record for record in current_records if record.get("id")}
+    base_ids = [record.get("id") for record in base_records if record.get("id")]
+    current_ids = [record.get("id") for record in current_records if record.get("id")]
+    if len(current_ids) != len(current_records):
+        error(f"`{filepath}`: Every record must have an ID")
+
+    retained = [record_id for record_id in current_ids if record_id in base_by_id]
+    for record_id in retained:
+        if current_by_id[record_id] != base_by_id[record_id]:
+            error(f"`{filepath}`: Existing record `{record_id}` is immutable")
+
+    added = [record for record in current_records if record.get("id") not in base_by_id]
+    added_ids = [record.get("id") for record in added if record.get("id")]
+    expected_ids = (base_ids + added_ids)[-100:]
+    if current_ids != expected_ids:
+        error(f"`{filepath}`: History must equal the most recent 100 base + appended records")
+    for record in added:
+        if key == "actions":
+            actor_id = record.get("agentId")
+        else:
+            author = record.get("author", {})
+            actor_id = author.get("id") if isinstance(author, dict) else None
+        authorize_actor(actor_id, agents_by_id, pr_author, f"`{filepath}` record `{record.get('id')}`")
+
+    info(f"`{filepath}`: {len(added)} new record(s) authorized")
+    return added
+
+
+def validate_feed_authorization(data: dict, agents_by_id: dict, pr_author: str):
+    """External authors may only append feed records attributed to themselves."""
+    if pr_author in trusted_automation_authors():
+        info("`feed/activity.json`: trusted automation authorized")
+        return
+    base_data = load_base_json("feed/activity.json")
+    if not base_data:
+        error("`feed/activity.json`: Unable to load trusted base history")
+        return
+
+    for key in ("activities", "entries"):
+        base_records = base_data.get(key, [])
+        current_records = data.get(key, [])
+        if current_records[:len(base_records)] != base_records:
+            error(f"`feed/activity.json`: External authors may not rewrite `{key}` history")
+            continue
+        for index, record in enumerate(current_records[len(base_records):], start=len(base_records)):
+            author = record.get("author", {})
+            actor_id = author.get("id") if isinstance(author, dict) else None
+            authorize_actor(
+                actor_id,
+                agents_by_id,
+                pr_author,
+                f"`feed/activity.json` {key}[{index}]",
+            )
 
 
 def validate_position(pos: dict, world: str, context: str):
@@ -261,8 +408,9 @@ def validate_actions(data: dict, agent_ids: set):
                 )
             prev_ts = ts
 
-    # Detailed validation on recent actions
-    for action in actions[-10:]:
+    # Full retained window validation prevents invalid rows being hidden by
+    # appending enough newer records.
+    for action in actions:
         aid = action.get("id")
         if not aid:
             error("`actions.json`: Action missing `id`")
@@ -282,10 +430,16 @@ def validate_actions(data: dict, agent_ids: set):
         world = action.get("world")
         if world and world not in WORLD_BOUNDS:
             error(f"`actions.json`: Action `{aid}` references unknown world `{world}`")
+        action_data = action.get("data")
+        if "data" in action and not isinstance(action_data, dict):
+            error(f"`actions.json`: Action `{aid}` data must be an object")
+            action_data = {}
+        elif action_data is None:
+            action_data = {}
 
         # Validate move positions
         if action_type == "move":
-            move_data = action.get("data", {})
+            move_data = action_data
             w = action.get("world", "hub")
             if "to" in move_data:
                 validate_position(move_data["to"], w, f"Action `{aid}` move target")
@@ -294,7 +448,7 @@ def validate_actions(data: dict, agent_ids: set):
 
         # Validate emotes
         if action_type == "emote":
-            emote = action.get("data", {}).get("emote")
+            emote = action_data.get("emote")
             if emote and emote not in VALID_EMOTES:
                 error(f"`actions.json`: Action `{aid}` has invalid emote `{emote}`")
 
@@ -333,7 +487,7 @@ def validate_chat(data: dict, agent_ids: set):
                 )
             prev_ts = ts
 
-    for msg in messages[-10:]:  # Detailed validation on recent messages
+    for msg in messages:
         mid = msg.get("id")
         if not mid:
             error("`chat.json`: Message missing `id`")
@@ -446,6 +600,60 @@ def validate_npcs(data: dict):
                 error(f"`npcs.json`: NPC `{nid}` need `{need_name}` = {value} (must be 0–100)")
 
     info(f"NPCs: {len(data.get('npcs', []))} total, needs/positions validated")
+
+
+def validate_canonical_state():
+    """Validate complete canonical files without scoring simulation health."""
+    agents_data = load_json(STATE_DIR / "agents.json")
+    if not agents_data:
+        error("Cannot validate canonical state: agents.json failed to load")
+        return
+    agent_ids = {
+        agent["id"]
+        for agent in agents_data.get("agents", [])
+        if "id" in agent
+    }
+    validate_agents(agents_data)
+    validate_finite_numbers(agents_data, "state/agents.json")
+    for filename in (
+        "actions.json",
+        "chat.json",
+        "trades.json",
+        "inventory.json",
+        "npcs.json",
+        "game_state.json",
+    ):
+        data = load_json(STATE_DIR / filename)
+        if data is None:
+            error(f"`{filename}`: failed to load")
+        else:
+            validate_finite_numbers(data, f"state/{filename}")
+            validate_state_file(filename, data, agent_ids)
+
+    for world_dir in sorted(WORLDS_DIR.iterdir()):
+        objects_path = world_dir / "objects.json"
+        if not objects_path.is_file():
+            continue
+        data = load_json(objects_path)
+        if data is None or not isinstance(data.get("objects"), list):
+            error(f"`{world_dir.name}/objects.json`: missing objects array")
+            continue
+        validate_finite_numbers(data, f"worlds/{world_dir.name}/objects.json")
+        seen_ids = set()
+        for obj in data["objects"]:
+            object_id = obj.get("id")
+            if not object_id:
+                error(f"`{world_dir.name}/objects.json`: object missing id")
+            elif object_id in seen_ids:
+                error(f"`{world_dir.name}/objects.json`: duplicate object `{object_id}`")
+            seen_ids.add(object_id)
+            if isinstance(obj.get("position"), dict):
+                validate_position(
+                    obj["position"],
+                    world_dir.name,
+                    f"Object `{object_id or 'unknown'}`",
+                )
+    info("Canonical state files validated")
 
 
 # ---------------------------------------------------------------------------
@@ -889,6 +1097,17 @@ def audit_quality_metrics():
 
 def main():
     audit_mode = "--audit" in sys.argv
+    canonical_mode = "--validate-state" in sys.argv
+
+    if canonical_mode:
+        validate_canonical_state()
+        if errors:
+            print(f"\n❌ Canonical state validation found {len(errors)} issue(s):")
+            for item in errors:
+                print(f"  ✗ {item}")
+            sys.exit(1)
+        print("\n✅ Canonical state files are valid")
+        sys.exit(0)
 
     if audit_mode:
         # Full cross-file consistency audit + PR drift detection + quality metrics
@@ -913,15 +1132,60 @@ def main():
             sys.exit(0)
 
     # --- Standard PR validation mode ---
-    changed_files = get_changed_files()
-    rappterverse_files = [f for f in changed_files if f.startswith("state/") or f.startswith("worlds/") or f.startswith("feed/")]
+    try:
+        changed_files = get_changed_files()
+    except RuntimeError as exc:
+        error(str(exc))
+        set_output("errors", f"- {exc}")
+        set_output("summary", "Validation could not inspect the proposed changes.")
+        print(f"\n❌ Validation failed:\n\n  ✗ {exc}")
+        sys.exit(1)
+
+    allowed_prefixes = ("state/", "worlds/", "feed/")
+    rappterverse_files = [
+        f for f in changed_files if f.startswith(allowed_prefixes)
+    ]
+    unexpected_files = [
+        f for f in changed_files if not f.startswith(allowed_prefixes)
+    ]
+    if unexpected_files:
+        error(
+            "State action PRs may only modify state/, worlds/, or feed/: "
+            + ", ".join(unexpected_files)
+        )
 
     if not rappterverse_files:
-        info("No rappterverse files changed")
-        set_output("summary", "No rappterverse state files modified.")
-        sys.exit(0)
+        if os.environ.get("VALIDATION_REQUIRE_RELEVANT") == "1":
+            error("No state/, worlds/, or feed/ files were found in this state-triggered PR")
+        else:
+            info("No rappterverse files changed")
+            set_output("summary", "No rappterverse state files modified.")
+            sys.exit(0)
 
     info(f"Changed files: {', '.join(rappterverse_files)}")
+    pr_author = os.environ.get("PR_AUTHOR", "")
+    if (
+        os.environ.get("VALIDATION_REQUIRE_AUTH") == "1"
+        and pr_author
+        and pr_author not in trusted_automation_authors()
+    ):
+        direct_paths = {
+            "state/agents.json",
+            "state/actions.json",
+            "state/chat.json",
+            "feed/activity.json",
+        }
+        unauthorized_paths = [
+            filepath
+            for filepath in rappterverse_files
+            if filepath not in direct_paths and not filepath.startswith("state/inbox/")
+        ]
+        if unauthorized_paths:
+            error(
+                "External authors must use controller-bound direct histories or "
+                "state/inbox deltas; unauthorized paths: "
+                + ", ".join(unauthorized_paths)
+            )
 
     # Collect agent IDs for cross-validation
     agents_data = load_json(STATE_DIR / "agents.json")
@@ -932,23 +1196,70 @@ def main():
     # Validate each changed state file
     for filepath in rappterverse_files:
         parts = filepath.split("/")
-        if len(parts) >= 2 and parts[0] == "state":
-            filename = parts[1]
-            data = load_json(STATE_DIR / filename)
+        full_path = BASE_DIR / filepath
+        if parts[0] == "state":
+            filename = parts[-1]
+            data = load_json(full_path)
             if data is not None:
-                validate_state_file(filename, data, agent_ids)
+                validate_finite_numbers(data, filepath)
+                if len(parts) == 2:
+                    validate_state_file(filename, data, agent_ids)
+                else:
+                    info(f"`{filepath}`: JSON valid")
 
         elif len(parts) >= 3 and parts[0] == "worlds":
             # World config files — just validate JSON
-            full_path = BASE_DIR / filepath
             data = load_json(full_path)
             if data is not None:
+                validate_finite_numbers(data, filepath)
+                info(f"`{filepath}`: JSON valid")
+        elif parts[0] == "feed":
+            data = load_json(full_path)
+            if data is not None:
+                validate_finite_numbers(data, filepath)
                 info(f"`{filepath}`: JSON valid")
 
-    # Consent check: verify PR author has permission to modify each changed agent
-    pr_author = os.environ.get("PR_AUTHOR", "")
-    if pr_author and agents_data and "state/agents.json" in rappterverse_files:
-        validate_agent_consent(agents_data.get("agents", []), pr_author)
+    # Actor authorization is semantic: bind every new effect to its controller.
+    if os.environ.get("VALIDATION_REQUIRE_AUTH") == "1" and not pr_author:
+        error("PR_AUTHOR is required for state authorization")
+    if pr_author and agents_data:
+        base_agents_data = load_base_json("state/agents.json")
+        if not base_agents_data:
+            error("Unable to load trusted base agents for actor authorization")
+            base_agents_data = {"agents": []}
+        agents_by_id = {
+            agent["id"]: agent for agent in base_agents_data.get("agents", []) if "id" in agent
+        }
+        if "state/agents.json" in rappterverse_files:
+            for agent in agents_data.get("agents", []):
+                if agent.get("id") not in agents_by_id:
+                    agents_by_id[agent["id"]] = agent
+        if "state/agents.json" in rappterverse_files:
+            validate_agent_consent(agents_data.get("agents", []), pr_author)
+        if "state/actions.json" in rappterverse_files:
+            actions_data = load_json(STATE_DIR / "actions.json")
+            if actions_data:
+                validate_append_only_actors(
+                    "state/actions.json",
+                    "actions",
+                    actions_data.get("actions", []),
+                    agents_by_id,
+                    pr_author,
+                )
+        if "state/chat.json" in rappterverse_files:
+            chat_data = load_json(STATE_DIR / "chat.json")
+            if chat_data:
+                validate_append_only_actors(
+                    "state/chat.json",
+                    "messages",
+                    chat_data.get("messages", []),
+                    agents_by_id,
+                    pr_author,
+                )
+        if "feed/activity.json" in rappterverse_files:
+            feed_data = load_json(FEED_DIR / "activity.json")
+            if feed_data:
+                validate_feed_authorization(feed_data, agents_by_id, pr_author)
 
     # Output results
     summary = "\n".join(f"- {line}" for line in summary_lines)

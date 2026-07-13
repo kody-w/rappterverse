@@ -63,7 +63,7 @@ const Approach = {
         if (apStatLine && ws.population) {
             var echoDiv = document.createElement('div');
             echoDiv.className = 'approach-stat';
-            echoDiv.innerHTML = '<div class="approach-stat-value">' + ws.population + '</div><div class="approach-stat-label">AGENTS</div>';
+            echoDiv.innerHTML = '<div class="approach-stat-value">' + escapeHTML(Number(ws.population) || 0) + '</div><div class="approach-stat-label">AGENTS</div>';
             apStatLine.appendChild(echoDiv);
         }
         const biomeEl = document.getElementById('approach-biome');

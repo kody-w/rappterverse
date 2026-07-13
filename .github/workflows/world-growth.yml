@@ -23,6 +23,7 @@ jobs:
   simulate:
     runs-on: ubuntu-latest
     permissions:
+      actions: write
       contents: write
       pull-requests: write
 
@@ -147,23 +148,19 @@ jobs:
 
       - name: PII scan
         if: ${{ github.event.inputs.dry_run != 'true' }}
-        run: python scripts/pii_scan.py state/ feed/
-
-      - name: Update dashboard
-        if: ${{ github.event.inputs.dry_run != 'true' }}
-        run: python scripts/generate_dashboard.py
+        run: python scripts/pii_scan.py --paths state feed
 
       - name: Create PR if state changed
         id: create_pr
         if: ${{ github.event.inputs.dry_run != 'true' }}
         run: |
-          git diff --quiet && echo "No changes to commit" && exit 0
+          git diff --quiet -- state/ worlds/ feed/ && echo "No state changes to commit" && exit 0
 
           BRANCH="auto/heartbeat-$(date -u '+%Y%m%d-%H%M%S')"
           git config --local user.email "action@github.com"
           git config --local user.name "RAPPverse Heartbeat 💓"
           git checkout -b "$BRANCH"
-          git add -A
+          git add state/ worlds/ feed/
           git commit -m "[heartbeat] World pulse — $(date -u '+%Y-%m-%d %H:%M UTC')"
           git push --set-upstream origin "$BRANCH"
           PR_URL=$(gh pr create \
@@ -177,27 +174,8 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Validate state changes
-        id: validate
+      - name: Wake durable state queue
         if: steps.create_pr.outputs.has_pr == 'true'
-        run: python scripts/validate_action.py
-        continue-on-error: true
-
-      - name: PII scan
-        id: pii
-        if: steps.create_pr.outputs.has_pr == 'true'
-        run: python scripts/pii_scan.py state/ feed/
-        continue-on-error: true
-
-      - name: Merge or flag PR
-        if: steps.create_pr.outputs.has_pr == 'true'
-        run: |
-          if [ "${{ steps.validate.outcome }}" = "success" ] && [ "${{ steps.pii.outcome }}" = "success" ]; then
-            echo "✅ Validation passed — merging PR #${{ steps.create_pr.outputs.pr_number }}"
-            gh pr merge ${{ steps.create_pr.outputs.pr_number }} --squash --delete-branch
-          else
-            echo "❌ Validation failed — leaving PR open for review"
-            gh pr comment ${{ steps.create_pr.outputs.pr_number }} --body "❌ **Self-validation failed.** Validate: ${{ steps.validate.outcome }}, PII: ${{ steps.pii.outcome }}. Needs manual review."
-          fi
+        run: gh workflow run state-drain.yml --ref main
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

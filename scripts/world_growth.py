@@ -563,6 +563,7 @@ def spawn_new_agent(
         "rotation": random.randint(0, 359),
         "status": "active",
         "action": "idle",
+        "controller": "system",
         "archetype": primary_trait,
         "traits": initial_traits,
         "lastUpdate": ts,
@@ -847,6 +848,7 @@ def trigger_responses(
         if a.get("world") == world
         and a["id"] != author_id
         and a.get("status") == "active"
+        and a.get("controller", "system") == "system"
     ]
     if not candidates:
         return 0
@@ -1069,6 +1071,10 @@ def simulate_tick(dry_run: bool = False, force_spawn: int = None):
 
     # Current non-NPC player count
     player_agents = [a for a in agents if a["id"] not in NPC_IDS]
+    autonomous_agents = [
+        agent for agent in player_agents
+        if agent.get("controller", "system") == "system"
+    ]
     current_pop = len(player_agents)
     total_pop = len(agents)
 
@@ -1096,7 +1102,7 @@ def simulate_tick(dry_run: bool = False, force_spawn: int = None):
 
     # ── Generate activity for existing player agents ─────────
     # More agents are active as population grows
-    active_pool = player_agents.copy()
+    active_pool = autonomous_agents.copy()
     random.shuffle(active_pool)
 
     # Activity scales: at pop 10 → ~4 active, pop 30 → ~12, pop 100 → ~30
@@ -1106,7 +1112,15 @@ def simulate_tick(dry_run: bool = False, force_spawn: int = None):
     active_count = 0
     for agent in active_agents:
         before = len(actions) + len(chat_msgs)
-        generate_agent_activity(agent, agents, actions, chat_msgs, current_pop, ts, token=token)
+        generate_agent_activity(
+            agent,
+            autonomous_agents,
+            actions,
+            chat_msgs,
+            current_pop,
+            ts,
+            token=token,
+        )
         if len(actions) + len(chat_msgs) > before:
             active_count += 1
 
@@ -1139,6 +1153,8 @@ def simulate_tick(dry_run: bool = False, force_spawn: int = None):
             last_moves[act["agentId"]] = act
     synced = 0
     for agent in agents:
+        if agent.get("controller", "system") != "system":
+            continue
         lm = last_moves.get(agent["id"])
         if not lm:
             continue
@@ -1210,22 +1226,36 @@ def simulate_tick(dry_run: bool = False, force_spawn: int = None):
         last_id = max((int(a["id"].split("-")[1]) for a in actions
                        if a["id"].startswith("action-")), default=0)
         attack_id = f"action-{last_id + 1:05d}"
-        actions.append({
-            "id": attack_id,
-            "agentId": hostile["name"].lower().replace(" ", "-"),
-            "type": "attack",
-            "world": target_world,
-            "timestamp": ts,
-            "data": {
-                "attackerId": hostile["name"].lower().replace(" ", "-"),
-                "attackerName": hostile["name"],
-                "attackerHp": hostile["hp"],
-                "attackerDamage": hostile["damage"],
-                "position": pos,
-            },
-        })
+        system_actors = [
+            agent for agent in agents
+            if agent.get("world") == target_world
+            and agent.get("controller", "system") == "system"
+        ]
+        if not system_actors:
+            print(f"  🐉 {hostile['name']} skipped: no system actor in {target_world}")
+            system_actors = []
+        system_actor = random.choice(system_actors) if system_actors else None
+        if system_actor:
+            actions.append({
+                "id": attack_id,
+                "agentId": system_actor["id"],
+                "type": "interact",
+                "world": target_world,
+                "timestamp": ts,
+                "data": {
+                    "targetType": "npc",
+                    "targetId": hostile["name"].lower().replace(" ", "-"),
+                    "interaction": "hostile_attack",
+                    "attackerId": hostile["name"].lower().replace(" ", "-"),
+                    "attackerName": hostile["name"],
+                    "attackerHp": hostile["hp"],
+                    "attackerDamage": hostile["damage"],
+                    "position": pos,
+                },
+            })
         actions_data["actions"] = actions[-100:]
-        print(f"  🐉 {hostile['name']} ({hostile['hp']} HP) spawned in {target_world}!")
+        if system_actor:
+            print(f"  🐉 {hostile['name']} ({hostile['hp']} HP) spawned in {target_world}!")
 
     if dry_run:
         print(f"\n  🏁 DRY RUN — {total_pop} agents, {len(actions)} actions, {len(chat_msgs)} msgs")

@@ -68,8 +68,8 @@ const EchoDashboard = {
         // L2 Narrative
         html += '<div class="echo-dash-section">';
         html += '<div class="echo-dash-label">L2 NARRATIVE</div>';
-        html += '<div class="echo-dash-narrative">' + (L2.narrative || 'No narrative.') + '</div>';
-        html += '<div class="echo-dash-meta">Dominant mood: ' + (L2.dominantMood || 'neutral') + '</div>';
+        html += '<div class="echo-dash-narrative">' + escapeHTML(L2.narrative || 'No narrative.') + '</div>';
+        html += '<div class="echo-dash-meta">Dominant mood: ' + escapeHTML(L2.dominantMood || 'neutral') + '</div>';
         html += '</div>';
 
         // L1 Combat digest
@@ -77,7 +77,7 @@ const EchoDashboard = {
             html += '<div class="echo-dash-section">';
             html += '<div class="echo-dash-label">L1 COMBAT</div>';
             html += this._bar('Momentum', (L1.combat.momentum || 50) / 100, L1.combat.momentum > 60 ? '#00ff88' : L1.combat.momentum < 40 ? '#ff4444' : '#ffaa00');
-            html += '<div class="echo-dash-value"><span>Wave ' + L1.combat.wave + '</span><span>' + L1.combat.creepCount + ' units</span>';
+            html += '<div class="echo-dash-value"><span>Wave ' + escapeHTML(L1.combat.wave) + '</span><span>' + escapeHTML(L1.combat.creepCount) + ' units</span>';
             if (L1.combat.bossActive) html += '<span style="color:#aa44ff">BOSS</span>';
             html += '</div></div>';
         }
@@ -86,15 +86,15 @@ const EchoDashboard = {
         html += '<div class="echo-dash-section">';
         html += '<div class="echo-dash-label">L6 TEMPORAL DEPTH</div>';
         html += '<div class="echo-dash-value">';
-        html += '<span>Pop: ' + (L6.populationTrend || 'stable') + '</span>';
-        html += '<span>Econ: ' + (L6.economicArc || 'steady') + '</span>';
+        html += '<span>Pop: ' + escapeHTML(L6.populationTrend || 'stable') + '</span>';
+        html += '<span>Econ: ' + escapeHTML(L6.economicArc || 'steady') + '</span>';
         html += '<span>Mood stable: ' + (L6.moodStability ? 'yes' : 'no') + '</span>';
         html += '</div></div>';
 
         // Active echo event
         if (typeof EchoEvents !== 'undefined' && EchoEvents._activeEvent) {
             html += '<div class="echo-dash-section">';
-            html += '<div class="echo-dash-event">' + EchoEvents._activeEvent.name + ' — ' + Math.ceil(EchoEvents._eventTimer) + 's remaining</div>';
+            html += '<div class="echo-dash-event">' + escapeHTML(EchoEvents._activeEvent.name) + ' — ' + Math.ceil(EchoEvents._eventTimer) + 's remaining</div>';
             html += '</div>';
         }
 
@@ -127,7 +127,7 @@ const EchoDashboard = {
         // Frame info
         html += '<div class="echo-dash-section">';
         html += '<div class="echo-dash-label">FRAME</div>';
-        html += '<div class="echo-dash-meta">Frame ' + (ef.frame || '?') + ' · ' + EchoEngine.getFrameCount() + ' frames buffered · ' + (EchoEngine.isLive() ? 'LIVE' : 'SCRUBBING') + '</div>';
+        html += '<div class="echo-dash-meta">Frame ' + escapeHTML(ef.frame || '?') + ' · ' + EchoEngine.getFrameCount() + ' frames buffered · ' + (EchoEngine.isLive() ? 'LIVE' : 'SCRUBBING') + '</div>';
         html += '</div>';
 
         body.innerHTML = html;
@@ -136,7 +136,7 @@ const EchoDashboard = {
     _bar(label, value, color) {
         var pct = Math.round(Math.min(1, Math.max(0, value)) * 100);
         return '<div class="echo-dash-bar"><div class="echo-dash-bar-fill" style="width:' + pct + '%;background:' + color + '"></div></div>' +
-            '<div class="echo-dash-value"><span>' + label + '</span><span>' + pct + '%</span></div>';
+            '<div class="echo-dash-value"><span>' + escapeHTML(label) + '</span><span>' + pct + '%</span></div>';
     },
 
     _tensionColor(t) {

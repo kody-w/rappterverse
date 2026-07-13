@@ -6,6 +6,9 @@
         const delta = GameState.clock ? GameState.clock.getDelta() : 0.016;
         const time = GameState.clock ? GameState.clock.getElapsedTime() : 0;
 
+        // Bridge owns the renderer and simulation clock while open.
+        if (Bridge.open) return;
+
         switch(GameState.mode) {
             case 'galaxy':
                 if (!GameState.inputLocked) Galaxy.update(delta, time);
@@ -30,10 +33,6 @@
             HUD.updatePanels();
         }
 
-        // Re-render bridge if open
-        if (Bridge.open && Math.floor(time) % 3 === 0) {
-            Bridge.render();
-        }
     }
 
     // Keyboard
@@ -42,6 +41,13 @@
         if (typeof DebugOverlay !== 'undefined') DebugOverlay.recordKey(e.code);
         if (GameState.inputLocked) {
             e.stopPropagation();
+            return;
+        }
+        if (Bridge.open) {
+            if (e.code === 'KeyB' || e.code === 'Escape') {
+                e.preventDefault();
+                Bridge.close();
+            }
             return;
         }
 
@@ -84,7 +90,8 @@
 
         // Minimap toggle
         if (e.code === 'KeyM' && GameState.mode === 'world') {
-            HUD.toggleMinimap();
+            if (e.shiftKey) HUD.toggleFullmap();
+            else HUD.toggleMinimap();
             return;
         }
 
@@ -173,13 +180,6 @@
         // Gesture controls toggle
         if (e.code === 'KeyH' && GameState.mode !== 'boot') {
             if (typeof GestureControls !== 'undefined') GestureControls.toggle();
-            return;
-        }
-
-        // Fullscreen map toggle (Tab)
-        if (e.code === 'Tab' && GameState.mode === 'world') {
-            e.preventDefault();
-            if (typeof HUD !== 'undefined') HUD.toggleFullmap();
             return;
         }
 
@@ -389,6 +389,11 @@
     // Start
     function main() {
         GameState.clock = new THREE.Clock();
+        try {
+            localStorage.removeItem('rappterverse-token');
+        } catch(e) {
+            // Storage may be unavailable in privacy modes.
+        }
 
         // Parse deep link: ?agent=clawdbot-001 or ?world=hub
         const urlParams = new URLSearchParams(window.location.search);

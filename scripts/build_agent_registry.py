@@ -109,8 +109,45 @@ def build_registry_entry(agent: dict, npc_def: dict) -> dict:
     }
 
 
+def build_memory_registry_entry(agent: dict, memory: dict) -> dict:
+    personality = memory.get("personality", {})
+    traits = personality.get("traits", [])
+    archetype = ", ".join(traits[:2]) if isinstance(traits, list) else ""
+    return {
+        "id": agent["id"],
+        "name": agent.get("name", agent["id"]),
+        "avatar": agent.get("avatar", "🤖"),
+        "world": agent.get("world", "hub"),
+        "controller": agent.get("controller", "system"),
+        "personality": {
+            "archetype": archetype or agent.get("archetype", "neutral"),
+            "mood": agent.get("mood", "curious"),
+            "interests": personality.get("evolved_interests", []),
+        },
+        "behavior": {
+            "type": "autonomous",
+            "respondToChat": True,
+            "autonomousActions": [
+                "move", "chat", "emote", "travel", "enroll",
+                "tip", "trade", "challenge", "poke",
+            ],
+            "decisionWeights": {
+                "move": 0.15, "chat": 0.25, "emote": 0.10,
+                "travel": 0.10, "enroll": 0.08, "tip": 0.08,
+                "trade": 0.08, "challenge": 0.08, "poke": 0.08,
+            },
+            "roaming": True,
+        },
+        "schedule": {
+            "minIntervalSeconds": 300,
+            "maxActionsPerHour": 8,
+        },
+    }
+
+
 def main():
     dry_run = "--dry-run" in sys.argv
+    fill_missing = "--fill-missing" in sys.argv
 
     agents_data = load_json(STATE_DIR / "agents.json")
     agents = agents_data.get("agents", [])
@@ -122,22 +159,33 @@ def main():
     for agent in agents:
         aid = agent["id"]
         controller = agent.get("controller", "system")
+        out_path = AGENTS_DIR / f"{aid}.agent.json"
 
         # Skip non-system agents (they control themselves)
         if controller != "system":
+            if out_path.exists():
+                if dry_run:
+                    print(f"  Would remove: {out_path.name} (externally controlled)")
+                else:
+                    out_path.unlink()
+                    print(f"  Removed: {out_path.name} (externally controlled)")
             skipped += 1
             continue
 
+        if fill_missing and out_path.exists():
+            continue
+
         npc_def = find_npc_for_agent(aid, npc_lookup)
-        if not npc_def:
-            continue
-
-        # Skip ambient NPCs (void-emerging, hollow)
-        if npc_def.get("type") == "ambient":
-            continue
-
-        entry = build_registry_entry(agent, npc_def)
-        out_path = AGENTS_DIR / f"{aid}.agent.json"
+        if npc_def:
+            # Skip ambient NPCs (void-emerging, hollow)
+            if npc_def.get("type") == "ambient":
+                continue
+            entry = build_registry_entry(agent, npc_def)
+        else:
+            memory_path = STATE_DIR / "memory" / f"{aid}.json"
+            if not memory_path.exists():
+                continue
+            entry = build_memory_registry_entry(agent, load_json(memory_path))
 
         if dry_run:
             print(f"  Would create: {out_path.name} ({entry['name']} in {entry['world']})")

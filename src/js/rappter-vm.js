@@ -7,56 +7,86 @@
 
 const RappterVM = {
     // ── Core state ──
-    _env: {},           // Global environment (bindings)
+    _env: Object.create(null), // Global environment (bindings)
     _programs: {},      // Per-agent programs: agentId → [expr, ...]
     _frameData: null,   // Last frame snapshot
     _tickCount: 0,
     _lastFrameTime: 0,
     _running: false,
+    _activePrincipal: null,
+    _agentEnvs: {},
+    _evalSteps: 0,
+    _frameEvalSteps: 0,
+    _budgetExhausted: false,
+    _limits: {
+        sourceLength: 20000,
+        tokens: 4096,
+        stringLength: 2048,
+        astDepth: 64,
+        forms: 128,
+        evalSteps: 4096,
+        frameEvalSteps: 32768,
+        collectionItems: 256
+    },
 
     // ── S-Expression Parser ──
     parse(src) {
+        if (typeof src !== 'string' || src.length > this._limits.sourceLength) {
+            throw new Error('Lisp source exceeds the allowed size');
+        }
         var tokens = this._tokenize(src);
         var result = [];
-        while (tokens.length > 0) result.push(this._readForm(tokens));
+        while (tokens.length > 0) {
+            if (result.length >= this._limits.forms) throw new Error('Lisp form budget exceeded');
+            result.push(this._readForm(tokens, 0));
+        }
         return result;
     },
 
     _tokenize(src) {
         var tokens = [];
+        var self = this;
+        var pushToken = function(token) {
+            tokens.push(token);
+            if (tokens.length > self._limits.tokens) throw new Error('Lisp token budget exceeded');
+        };
         var i = 0;
         while (i < src.length) {
             var c = src[i];
             if (c === ' ' || c === '\t' || c === '\n' || c === '\r') { i++; continue; }
             if (c === ';') { while (i < src.length && src[i] !== '\n') i++; continue; }
-            if (c === '(' || c === ')') { tokens.push(c); i++; continue; }
+            if (c === '(' || c === ')') { pushToken(c); i++; continue; }
             if (c === '"') {
                 var s = ''; i++;
                 while (i < src.length && src[i] !== '"') { s += src[i]; i++; }
-                i++; tokens.push('"' + s + '"'); continue;
+                if (i >= src.length) throw new Error('Unterminated Lisp string');
+                if (s.length > this._limits.stringLength) throw new Error('Lisp string exceeds the allowed size');
+                i++; pushToken('"' + s + '"'); continue;
             }
             if (c === ':') {
                 var kw = ':'; i++;
                 while (i < src.length && src[i] !== ' ' && src[i] !== ')' && src[i] !== '\n') { kw += src[i]; i++; }
-                tokens.push(kw); continue;
+                pushToken(kw); continue;
             }
             var tok = '';
             while (i < src.length && src[i] !== ' ' && src[i] !== ')' && src[i] !== '(' && src[i] !== '\n' && src[i] !== '\t') { tok += src[i]; i++; }
-            tokens.push(tok);
+            pushToken(tok);
         }
         return tokens;
     },
 
-    _readForm(tokens) {
+    _readForm(tokens, depth) {
+        if (depth > this._limits.astDepth) throw new Error('Lisp AST depth exceeded');
         if (tokens.length === 0) return null;
         var t = tokens.shift();
         if (t === '(') {
             var list = [];
-            while (tokens.length > 0 && tokens[0] !== ')') list.push(this._readForm(tokens));
-            if (tokens.length > 0) tokens.shift(); // consume ')'
+            while (tokens.length > 0 && tokens[0] !== ')') list.push(this._readForm(tokens, depth + 1));
+            if (tokens.length === 0) throw new Error('Unterminated Lisp list');
+            tokens.shift(); // consume ')'
             return list;
         }
-        if (t === ')') return null;
+        if (t === ')') throw new Error('Unexpected Lisp closing parenthesis');
         // Atom
         if (t[0] === '"') return t.slice(1, -1); // string
         if (t[0] === ':') return { keyword: t.slice(1) }; // keyword
@@ -69,7 +99,33 @@ const RappterVM = {
     },
 
     // ── Evaluator ──
+    _chargeEval() {
+        this._evalSteps++;
+        this._frameEvalSteps++;
+        if (this._evalSteps > this._limits.evalSteps) {
+            throw new Error('Lisp evaluation budget exceeded');
+        }
+        if (this._frameEvalSteps > this._limits.frameEvalSteps) {
+            throw new Error('Lisp frame evaluation budget exceeded');
+        }
+    },
+
+    _invokeBounded(fn, args) {
+        if (typeof fn !== 'function') return null;
+        this._chargeEval();
+        return fn.apply(null, args);
+    },
+
+    _boundedCollection(list) {
+        if (!Array.isArray(list)) return [];
+        if (list.length > this._limits.collectionItems) {
+            throw new Error('Lisp collection budget exceeded');
+        }
+        return list;
+    },
+
     eval(expr, env) {
+        this._chargeEval();
         if (expr === null || expr === undefined) return null;
         if (typeof expr === 'number' || typeof expr === 'string' || typeof expr === 'boolean') return expr;
         if (expr.keyword) return expr;
@@ -77,7 +133,8 @@ const RappterVM = {
         if (!Array.isArray(expr) || expr.length === 0) return expr;
 
         var head = expr[0];
-        var op = head.symbol ? head.symbol : head;
+        if (!head || !head.symbol || head.symbol.indexOf('.') !== -1 || !this._isSafeKey(head.symbol)) return null;
+        var op = head.symbol;
 
         // Special forms
         if (op === 'if') return this.eval(expr[1], env) ? this.eval(expr[2], env) : (expr[3] ? this.eval(expr[3], env) : null);
@@ -87,6 +144,7 @@ const RappterVM = {
             var local = Object.create(env);
             for (var i = 0; i < bindings.length; i += 2) {
                 var name = bindings[i].symbol || bindings[i];
+                if (!this._isSafeKey(name)) throw new Error('Unsafe Lisp binding');
                 local[name] = this.eval(bindings[i + 1], local);
             }
             var r = null;
@@ -99,7 +157,9 @@ const RappterVM = {
             return function() {
                 var local = Object.create(closure);
                 for (var i = 0; i < params.length; i++) {
-                    local[params[i].symbol || params[i]] = arguments[i];
+                    var name = params[i].symbol || params[i];
+                    if (!RappterVM._isSafeKey(name)) throw new Error('Unsafe Lisp parameter');
+                    local[name] = arguments[i];
                 }
                 var r = null;
                 for (var i = 0; i < body.length; i++) r = RappterVM.eval(body[i], local);
@@ -107,23 +167,66 @@ const RappterVM = {
             };
         }
         if (op === 'quote') return expr[1];
-        if (op === 'def') { env[expr[1].symbol || expr[1]] = this.eval(expr[2], env); return null; }
+        if (op === 'def') {
+            var defName = expr[1].symbol || expr[1];
+            if (!this._isSafeKey(defName)) throw new Error('Unsafe Lisp definition');
+            if (Object.prototype.hasOwnProperty.call(this._env, defName)) {
+                throw new Error('Lisp capabilities are immutable');
+            }
+            env[defName] = this.eval(expr[2], env);
+            return null;
+        }
 
-        // Function call
-        var fn = this.eval(head, env);
+        // Calls are restricted to literal, safe operator names.
+        var fn = this._lookup(op, env);
         var args = [];
         for (var i = 1; i < expr.length; i++) args.push(this.eval(expr[i], env));
         if (typeof fn === 'function') return fn.apply(null, args);
         return null;
     },
 
+    run(expr, env) {
+        this._evalSteps = 0;
+        this._frameEvalSteps = 0;
+        return this.eval(expr, env);
+    },
+
+    _isSafeKey(key) {
+        if (typeof key !== 'string' || key.length === 0 || key.length > 128) return false;
+        return key !== 'constructor' && key !== 'prototype' && key !== '__proto__';
+    },
+
+    _getOwn(obj, key) {
+        key = key && key.keyword !== undefined ? key.keyword : key;
+        if (obj == null || !this._isSafeKey(key)) return null;
+        return Object.prototype.hasOwnProperty.call(Object(obj), key) ? obj[key] : null;
+    },
+
+    _canActAs(agentId) {
+        return typeof agentId === 'string' && agentId === this._activePrincipal;
+    },
+
     _lookup(name, env) {
-        if (name in env) return env[name];
-        if (name in this._env) return this._env[name];
-        // Dotted access: agent.hp → env.agent.hp
         var parts = name.split('.');
-        var obj = env[parts[0]] || this._env[parts[0]];
-        for (var i = 1; i < parts.length && obj; i++) obj = obj[parts[i]];
+        for (var p = 0; p < parts.length; p++) {
+            if (!this._isSafeKey(parts[p])) return null;
+        }
+
+        var cursor = env;
+        var obj = null;
+        while (cursor) {
+            if (Object.prototype.hasOwnProperty.call(cursor, parts[0])) {
+                obj = cursor[parts[0]];
+                break;
+            }
+            cursor = Object.getPrototypeOf(cursor);
+        }
+        if (obj === null && Object.prototype.hasOwnProperty.call(this._env, parts[0])) {
+            obj = this._env[parts[0]];
+        }
+        for (var i = 1; i < parts.length && obj != null; i++) {
+            obj = this._getOwn(obj, parts[i]);
+        }
         return obj !== undefined ? obj : null;
     },
 
@@ -162,16 +265,38 @@ const RappterVM = {
         env['list'] = function() { return Array.prototype.slice.call(arguments); };
         env['first'] = function(a) { return a && a[0]; };
         env['rest'] = function(a) { return a ? a.slice(1) : []; };
-        env['nth'] = function(a, i) { return a ? a[i] : null; };
+        env['nth'] = function(a, i) {
+            if ((!Array.isArray(a) && typeof a !== 'string') || !Number.isInteger(i)) return null;
+            return i >= 0 && i < a.length ? a[i] : null;
+        };
         env['count'] = function(a) { return a ? a.length : 0; };
-        env['map'] = function(fn, list) { return list ? list.map(fn) : []; };
-        env['filter'] = function(fn, list) { return list ? list.filter(fn) : []; };
-        env['reduce'] = function(fn, init, list) { return list ? list.reduce(fn, init) : init; };
-        env['get'] = function(obj, key) { return obj ? obj[key] || obj[key.keyword] : null; };
-        env['assoc'] = function(obj, k, v) { var o = Object.assign({}, obj); o[k.keyword || k] = v; return o; };
+        env['map'] = function(fn, list) {
+            return RappterVM._boundedCollection(list).map(function(value, index) {
+                return RappterVM._invokeBounded(fn, [value, index]);
+            });
+        };
+        env['filter'] = function(fn, list) {
+            return RappterVM._boundedCollection(list).filter(function(value, index) {
+                return Boolean(RappterVM._invokeBounded(fn, [value, index]));
+            });
+        };
+        env['reduce'] = function(fn, init, list) {
+            return RappterVM._boundedCollection(list).reduce(function(accumulator, value, index) {
+                return RappterVM._invokeBounded(fn, [accumulator, value, index]);
+            }, init);
+        };
+        env['get'] = function(obj, key) { return RappterVM._getOwn(obj, key); };
+        env['assoc'] = function(obj, k, v) {
+            var key = k && k.keyword !== undefined ? k.keyword : k;
+            if (!RappterVM._isSafeKey(key)) return null;
+            var o = Object.assign(Object.create(null), obj || {});
+            o[key] = v;
+            return o;
+        };
 
         // ── World Actions (side effects on the 3D world) ──
         env['move-toward'] = function(agentId, tx, tz, speed) {
+            if (!RappterVM._canActAs(agentId)) return null;
             var a = typeof WorldAgents !== 'undefined' ? WorldAgents.agentMeshes[agentId] : null;
             if (!a) return null;
             speed = speed || 0.03;
@@ -186,6 +311,7 @@ const RappterVM = {
         };
 
         env['wander'] = function(agentId, radius) {
+            if (!RappterVM._canActAs(agentId)) return null;
             var a = typeof WorldAgents !== 'undefined' ? WorldAgents.agentMeshes[agentId] : null;
             if (!a) return null;
             radius = radius || 5;
@@ -200,6 +326,7 @@ const RappterVM = {
         };
 
         env['face-toward'] = function(agentId, tx, tz) {
+            if (!RappterVM._canActAs(agentId)) return null;
             var a = typeof WorldAgents !== 'undefined' ? WorldAgents.agentMeshes[agentId] : null;
             if (!a) return null;
             var dx = tx - a.group.position.x, dz = tz - a.group.position.z;
@@ -208,6 +335,7 @@ const RappterVM = {
         };
 
         env['emote'] = function(agentId, type) {
+            if (!RappterVM._canActAs(agentId)) return null;
             var a = typeof WorldAgents !== 'undefined' ? WorldAgents.agentMeshes[agentId] : null;
             if (!a) return null;
             if (type === 'bounce') {
@@ -223,6 +351,7 @@ const RappterVM = {
         };
 
         env['say'] = function(agentId, text) {
+            if (!RappterVM._canActAs(agentId)) return null;
             if (typeof WorldAgents !== 'undefined' && WorldAgents.showSpeechBubble) {
                 WorldAgents.showSpeechBubble(agentId, text);
             }
@@ -300,8 +429,10 @@ const RappterVM = {
 
     // ── Frame Integration ──
     init() {
-        this._env = {};
+        this._env = Object.create(null);
         this._programs = {};
+        this._agentEnvs = {};
+        this._activePrincipal = null;
         this._tickCount = 0;
         this._lastFrameTime = Date.now();
         this._running = true;
@@ -360,6 +491,7 @@ const RappterVM = {
 
     _compileAgentBehaviors() {
         this._programs = {};
+        this._agentEnvs = {};
         var agents = typeof GameState !== 'undefined' ? GameState.getWorldAgents() : [];
         var self = this;
         var S = function(n) { return self._sym(n); };
@@ -517,6 +649,8 @@ const RappterVM = {
             );
 
             self._programs[id] = program;
+            self._agentEnvs[id] = Object.create(self._env);
+            self._agentEnvs[id].self = id;
         });
     },
 
@@ -530,18 +664,39 @@ const RappterVM = {
         if (this._tickCount % 3 !== 0) return;
 
         // Run involuntary reflexes first (intent echoes)
+        this._frameEvalSteps = 0;
+        this._budgetExhausted = false;
         this.tickReflexes();
 
         // Then run compiled agent programs
         var agentIds = Object.keys(this._programs);
         for (var i = 0; i < agentIds.length; i++) {
+            if (this._frameEvalSteps >= this._limits.frameEvalSteps) {
+                this._budgetExhausted = true;
+                break;
+            }
             var id = agentIds[i];
             var program = this._programs[id];
             if (!program) continue;
-            this._env['self'] = id;
-            for (var j = 0; j < program.length; j++) {
-                try { this.eval(program[j], this._env); } catch(e) {}
+            var agentEnv = this._agentEnvs[id] || Object.create(this._env);
+            agentEnv.self = id;
+            this._activePrincipal = id;
+            this._evalSteps = 0;
+            try {
+                for (var j = 0; j < program.length; j++) {
+                    try {
+                        this.eval(program[j], agentEnv);
+                    } catch(e) {
+                        if (String(e.message || e).indexOf('frame evaluation budget') !== -1) {
+                            this._budgetExhausted = true;
+                            break;
+                        }
+                    }
+                }
+            } finally {
+                this._activePrincipal = null;
             }
+            if (this._budgetExhausted) break;
         }
     },
 
@@ -665,13 +820,18 @@ const RappterVM = {
         var agentIds = Object.keys(this._programs);
         for (var i = 0; i < agentIds.length; i++) {
             var id = agentIds[i];
-            for (var j = 0; j < this._reflexes.length; j++) {
-                var reflex = this._reflexes[j];
-                try {
-                    if (reflex.test.call(reflex, id, this._env)) {
-                        reflex.act.call(reflex, id, this._env);
-                    }
-                } catch(e) {}
+            this._activePrincipal = id;
+            try {
+                for (var j = 0; j < this._reflexes.length; j++) {
+                    var reflex = this._reflexes[j];
+                    try {
+                        if (reflex.test.call(reflex, id, this._env)) {
+                            reflex.act.call(reflex, id, this._env);
+                        }
+                    } catch(e) {}
+                }
+            } finally {
+                this._activePrincipal = null;
             }
         }
     },

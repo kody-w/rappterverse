@@ -1,40 +1,117 @@
 name: PII Scan
 
 on:
-  pull_request:
+  pull_request_target:
     branches: [main]
+  schedule:
+    - cron: '0 7 * * *'
+  workflow_dispatch:
 
 permissions:
   contents: read
-  pull-requests: write
 
 jobs:
-  pii-scan:
+  pr-scan:
+    if: github.event_name == 'pull_request_target'
+    name: pii-scan
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      result: ${{ steps.scan.outcome }}
+      findings: ${{ steps.scan.outputs.pii_findings }}
     steps:
-      - name: Checkout
+      - name: Checkout trusted scanner
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          path: trusted
+          persist-credentials: false
+
+      - name: Checkout candidate
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          path: candidate
+          persist-credentials: false
+
+      - name: Fetch comparison base
+        run: git -C candidate fetch --no-tags "https://github.com/$GITHUB_REPOSITORY.git" "$BASE_SHA"
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      - name: Run PII scan
+      - name: Scan exact candidate diff with trusted code
         id: scan
-        run: python scripts/pii_scan.py --ci
+        continue-on-error: true
+        run: >-
+          python trusted/scripts/pii_scan.py
+          --repo-root candidate
+          --diff "$BASE_SHA" "$HEAD_SHA"
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
 
-      - name: Comment on PR if PII found
-        if: failure()
+      - name: Enforce scan result
+        if: always()
+        env:
+          RESULT: ${{ steps.scan.outcome }}
+        run: test "$RESULT" = success
+
+  report:
+    needs: pr-scan
+    if: always() && github.event_name == 'pull_request_target'
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      statuses: write
+    steps:
+      - name: Publish head status and redacted findings
         uses: actions/github-script@v7
+        env:
+          RESULT: ${{ needs.pr-scan.result }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          PII_FINDINGS: ${{ needs.pr-scan.outputs.findings }}
         with:
           script: |
-            const findings = process.env.PII_FINDINGS || 'See workflow logs for details.';
-            await github.rest.issues.createComment({
+            const passed = process.env.RESULT === 'success';
+            await github.rest.repos.createCommitStatus({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: context.issue.number,
-              body: '🚨 **PII Scan Failed**\n\nPersonal or sensitive data detected in this PR:\n\n```\n' + findings + '\n```\n\nPlease remove the flagged content before merging.'
+              sha: process.env.HEAD_SHA,
+              state: passed ? 'success' : 'failure',
+              context: 'pii-scan',
+              description: passed ? 'Trusted PII scan passed' : 'Trusted PII scan failed',
+              target_url: `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
             });
-        env:
-          PII_FINDINGS: ${{ steps.scan.outputs.pii_findings }}
+            if (!passed) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: '🚨 **PII Scan Failed**\n\n' +
+                  (process.env.PII_FINDINGS || 'The trusted scanner could not complete.') +
+                  '\n\nFindings are redacted. Remove the flagged content before merging.'
+              });
+            }
+
+  full-scan:
+    if: github.event_name != 'pull_request_target'
+    name: pii-full-scan
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python scripts/pii_scan.py --all-tracked

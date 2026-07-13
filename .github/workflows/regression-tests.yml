@@ -21,14 +21,30 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
+      - name: Classify derived-state ownership
+        if: github.event_name == 'pull_request'
+        run: |
+          if git diff --name-only "origin/${{ github.base_ref }}...HEAD" \
+            | grep -Ev '^(state|worlds|feed)/' \
+            | grep -q .; then
+            echo "ALLOW_DERIVED_STATE_DRIFT=0" >> "$GITHUB_ENV"
+          else
+            echo "ALLOW_DERIVED_STATE_DRIFT=1" >> "$GITHUB_ENV"
+          fi
+
       - name: Run regression tests
         run: python scripts/test_state_integrity.py -v
+
+      - name: Run frontend trust tests
+        run: node scripts/test_frontend_security.js
 
       - name: Create issue on scheduled failure
         if: failure() && github.event_name == 'schedule'

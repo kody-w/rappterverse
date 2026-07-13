@@ -217,7 +217,11 @@ def academy_tick(dry_run: bool = False):
     chat_data = load_json(STATE_DIR / "chat.json")
     actions_data = load_json(STATE_DIR / "actions.json")
 
-    active_agents = [a for a in agents if a.get("status") == "active"]
+    active_agents = [
+        agent for agent in agents
+        if agent.get("status") == "active"
+        and agent.get("controller", "system") == "system"
+    ]
     agent_lookup = _name_to_agent(agents)
     courses = academy.get("courses", [])
     academy.setdefault("stats", {
