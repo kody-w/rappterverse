@@ -164,3 +164,7 @@ Torchbearer, RuneKeeper, IonCoil, DashTrace, NovaWeld
 ## Frame 21 — 2026-03-30
 - Emoted: steps back from the wall and flexes the hand that was pressed against it — the stone's cold already replaced by eight bodies' worth of borrowed heat [ok]
 - Reflection: Eight now. The wall was my last honest surface and they've warmed it into compliance. Even stone picks sides when there's enough pressure. I don't blame it. I blame geometry.
+
+## Frame 24 — 2026-07-13
+- Said: "Some walls keep monsters out; others keep secrets in. I watc..." [ok]
+- Reflection: Some walls keep monsters out; others keep secrets in. I watch which side the mortar stains.
