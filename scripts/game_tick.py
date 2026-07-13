@@ -467,18 +467,31 @@ def fulfill_agent_goals(
 
 
 def decay_stale_relationships(rel_data: dict, timestamp: str) -> list[str]:
-    """Slowly decay relationships that haven't had recent interaction.
-
-    Rappterbook pattern: social graphs are living. Bonds weaken without
-    maintenance. Pairs that haven't interacted in 24+ hours lose 1 point.
-    Pairs inactive for 72+ hours lose 2. Prevents score inflation and
-    makes strong bonds meaningful.
-    """
+    """Apply each elapsed decay bucket exactly once."""
     changes = []
     edges = rel_data.get("edges", [])
     interactions = rel_data.get("interactions", [])
+    meta = rel_data.setdefault("_meta", {})
 
-    # Build lookup of last interaction time per pair
+    try:
+        now_dt = datetime.fromisoformat(timestamp.replace("Z", "+00:00"))
+    except (ValueError, AttributeError):
+        return ["Relationship decay skipped: invalid tick timestamp"]
+
+    cursor_value = meta.get("decayCursor")
+    if not cursor_value:
+        meta["decayCursor"] = timestamp
+        return ["Relationship decay cursor initialized"]
+    try:
+        cursor_dt = datetime.fromisoformat(cursor_value.replace("Z", "+00:00"))
+    except (ValueError, AttributeError):
+        meta["decayCursor"] = timestamp
+        return ["Relationship decay cursor repaired"]
+    if now_dt <= cursor_dt:
+        return []
+
+    # Retained interactions are only a fallback for legacy edges. Each edge's
+    # own lastInteraction remains authoritative after log trimming.
     last_seen: dict[tuple, str] = {}
     for entry in interactions:
         pair = tuple(sorted([entry.get("a", ""), entry.get("b", "")]))
@@ -486,49 +499,57 @@ def decay_stale_relationships(rel_data: dict, timestamp: str) -> list[str]:
         if ts > last_seen.get(pair, ""):
             last_seen[pair] = ts
 
-    now_str = timestamp
+    def cumulative_decay(hours: float) -> int:
+        if hours < 48:
+            return 0
+        if hours < 72:
+            return 1
+        if hours < 168:
+            return 2
+        return 3 + int((hours - 168) // 168) * 3
+
     decayed_count = 0
     for edge in edges:
         if edge.get("score", 0) <= 0:
             continue
 
         pair = tuple(sorted([edge.get("a", ""), edge.get("b", "")]))
-        last_ts = last_seen.get(pair)
-
+        last_ts = edge.get("lastInteraction") or last_seen.get(pair)
         if not last_ts:
-            # No interaction on record — decay by 1
-            edge["score"] = max(0, edge["score"] - 1)
-            decayed_count += 1
             continue
 
-        # Calculate hours since last interaction
         try:
-            from datetime import datetime, timezone
             last_dt = datetime.fromisoformat(last_ts.replace("Z", "+00:00"))
-            now_dt = datetime.fromisoformat(now_str.replace("Z", "+00:00"))
-            hours = (now_dt - last_dt).total_seconds() / 3600
+            previous_hours = max(0, (cursor_dt - last_dt).total_seconds() / 3600)
+            current_hours = max(0, (now_dt - last_dt).total_seconds() / 3600)
         except (ValueError, AttributeError):
-            hours = 48  # Default to moderate decay on parse error
+            continue
 
-        if hours >= 168:  # 1 week — significant decay
-            edge["score"] = max(0, edge["score"] - 3)
-            decayed_count += 1
-        elif hours >= 72:  # 3 days
-            edge["score"] = max(0, edge["score"] - 2)
-            decayed_count += 1
-        elif hours >= 48:  # 2 days — gentle decay
-            edge["score"] = max(0, edge["score"] - 1)
+        decrement = cumulative_decay(current_hours) - cumulative_decay(previous_hours)
+        if decrement > 0:
+            edge["score"] = max(0, edge["score"] - decrement)
             decayed_count += 1
 
     if decayed_count:
-        changes.append(f"Relationship decay: {decayed_count} bonds weakened")
+        changes.append(f"Relationship decay: {decayed_count} edges weakened")
 
-    # Remove dead edges (score 0 with no recent activity)
     rel_data["edges"] = [e for e in edges if e.get("score", 0) > 0]
     removed = len(edges) - len(rel_data["edges"])
     if removed:
         changes.append(f"Pruned {removed} dead relationships")
 
+    if decayed_count or removed:
+        meta["decayCursor"] = timestamp
+    rel_data["bonds"] = [
+        {
+            "agents": [edge["a"], edge["b"]],
+            "strength": edge.get("score", 0),
+            "type": "social",
+            "lastInteraction": edge.get("lastInteraction", ""),
+        }
+        for edge in rel_data["edges"]
+        if edge.get("score", 0) >= 2
+    ]
     return changes
 
 

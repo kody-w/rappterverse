@@ -116,12 +116,18 @@ try:
     with open(path) as f: data = json.load(f)
 except:
     data = {}
-data['$job'] = {
+now = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
+entry = data.get('$job', {})
+entry.update({
     'status': '$status',
     'elapsed_s': int('$elapsed'),
-    'last_run': datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
-}
-data['_last_cycle'] = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
+    'last_attempt': now,
+    'last_run': now,
+})
+if '$status' == 'ok':
+    entry['last_success'] = now
+data['$job'] = entry
+data['_last_cycle'] = now
 data['_cycle_count'] = data.get('_cycle_count', 0) + (1 if '$job' == 'job_git_sync' else 0)
 with open(path, 'w') as f:
     json.dump(data, f, indent=2)
@@ -138,14 +144,14 @@ try:
     job_state = data.get('$job', {})
     if job_state.get('status') != 'ok':
         sys.exit(0)
-    last = job_state.get('last_run', '')
+    last = job_state.get('last_success') or job_state.get('last_run', '')
     if not last:
         sys.exit(0)
     last_dt = datetime.fromisoformat(last.replace('Z', '+00:00'))
     if datetime.now(timezone.utc) - last_dt > timedelta(minutes=$interval_minutes):
         sys.exit(0)
     sys.exit(1)
-except:
+except (OSError, json.JSONDecodeError, ValueError, TypeError):
     sys.exit(0)
 " 2>/dev/null
 }
@@ -227,6 +233,10 @@ job_world_growth() {
   fi
 
   log "  [heartbeat] Validate state..."
+  if ! python3 scripts/reconcile_derived_state.py 2>&1; then
+    err "  Derived-state reconciliation failed"
+    failed=1
+  fi
   if ! python3 scripts/validate_action.py --validate-state 2>&1; then
     err "  Canonical state validation failed"
     failed=1
@@ -245,7 +255,6 @@ job_self_improve() {
   # evolve-001 self-improvement cycle
   # Original: self-improve.yml every 6 hours
   python3 scripts/build_agent_registry.py 2>&1 || return $?
-  python3 scripts/agent_dispatch.py --agent evolve-001 --no-push 2>&1 || return $?
   python3 scripts/self_improve.py --no-push 2>&1 || return $?
   rm -f state/evolution_pr_body.md
 }
@@ -352,6 +361,12 @@ job_git_sync() {
   if [ -z "$changed" ]; then
     echo "  No state changes to push"
     return 0
+  fi
+
+  if ! python3 scripts/reconcile_derived_state.py 2>&1; then
+    touch "$PUBLICATION_BLOCK"
+    err "  Publication blocked: derived-state reconciliation failed"
+    return 1
   fi
 
   if ! python3 scripts/validate_action.py --validate-state 2>&1; then
@@ -781,7 +796,9 @@ for job, info in sorted(data.items()):
     if job.startswith('_'):
         continue
     status = 'OK' if info.get('status') == 'ok' else 'FAIL'
-    print(f'  {status:4s}  {job:25s} {info.get(\"last_run\",\"never\"):>20s} ({info.get(\"elapsed_s\",0)}s)')
+    print(f'  {status:4s}  {job:25s} '
+          f'{info.get(\"last_success\", \"never\"):>20s} '
+          f'(attempt {info.get(\"last_attempt\", \"never\")}, {info.get(\"elapsed_s\",0)}s)')
 print('-' * 55)
 print(f'Cycles: {data.get(\"_cycle_count\", 0)}')
 print(f'Last:   {data.get(\"_last_cycle\", \"never\")}')

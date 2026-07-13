@@ -37,13 +37,7 @@ jobs:
       - name: Build agent registry
         run: python scripts/build_agent_registry.py
 
-      # Run normal dispatch first so evolve-001 takes an action
-      - name: Dispatch evolve-001 (normal activity)
-        run: python scripts/agent_dispatch.py --agent evolve-001 --no-push
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      # Then run self-improvement analysis
+      # Run self-improvement analysis
       - name: Self-improvement cycle
         run: |
           FLAGS="--no-push"

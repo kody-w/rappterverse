@@ -307,18 +307,59 @@ def main():
     rels = load_json(STATE_DIR / "relationships.json")
     economy = load_json(STATE_DIR / "economy.json")
     agents = load_json(STATE_DIR / "agents.json").get("agents", [])
+    computed_at = datetime.now(timezone.utc)
+    cutoff = computed_at.timestamp() - 7 * 24 * 3600
+
+    def recent(record):
+        try:
+            timestamp = datetime.fromisoformat(
+                record.get("timestamp", "").replace("Z", "+00:00")
+            )
+        except (ValueError, AttributeError):
+            return False
+        return cutoff <= timestamp.timestamp() <= computed_at.timestamp() + 300
+
+    recent_actions = [action for action in actions if recent(action)]
+    recent_chat = [message for message in chat if recent(message)]
+    active_agent_ids = {
+        agent["id"]
+        for agent in agents
+        if agent.get("status") == "active" and agent.get("id")
+    }
+    participating_agents = {
+        action.get("agentId")
+        for action in recent_actions
+        if action.get("agentId") in active_agent_ids
+    }
+    participating_agents.update(
+        message.get("author", {}).get("id")
+        for message in recent_chat
+        if isinstance(message.get("author"), dict)
+        and message["author"].get("id") in active_agent_ids
+    )
+    actor_coverage = len(participating_agents) / max(1, len(active_agent_ids))
+    observed_timestamps = [
+        record.get("timestamp", "")
+        for record in recent_actions + recent_chat
+        if record.get("timestamp")
+    ]
+    observed_through = max(observed_timestamps, default=None)
+    source_fresh = False
+    if observed_through:
+        observed_dt = datetime.fromisoformat(observed_through.replace("Z", "+00:00"))
+        source_fresh = (computed_at - observed_dt).total_seconds() <= 12 * 3600
     
     print("\n" + "=" * 60)
     print("  🧬 RAPPterverse Emergence Report")
     print("=" * 60)
     
     dimensions = [
-        ("🎯 Action Diversity", action_diversity_score(actions)),
+        ("🎯 Action Diversity", action_diversity_score(recent_actions)),
         ("🤝 Social Depth", social_depth_score(rels)),
         ("🎯 Goal Completion", goal_completion_score()),
         ("💰 Economic Agency", economic_agency_score(economy)),
-        ("🌀 Migration Patterns", migration_score(actions, agents)),
-        ("💬 Conversation Quality", conversation_quality_score(chat)),
+        ("🌀 Migration Patterns", migration_score(recent_actions, agents)),
+        ("💬 Conversation Quality", conversation_quality_score(recent_chat)),
     ]
     
     total_score = 0
@@ -334,8 +375,18 @@ def main():
     
     overall = total_score / len(dimensions)
     print(f"\n{'=' * 60}")
-    verdict = "🌟 THRIVING" if overall >= 60 else "🌱 GROWING" if overall >= 30 else "💤 DORMANT"
-    print(f"  OVERALL EMERGENCE: {verdict} — {overall:.0f}/100")
+    gradeable = source_fresh and actor_coverage >= 0.1
+    verdict = (
+        "⚪ INSUFFICIENT"
+        if not gradeable
+        else "🌟 THRIVING" if overall >= 60
+        else "🌱 GROWING" if overall >= 30
+        else "💤 DORMANT"
+    )
+    print(
+        f"  OVERALL EMERGENCE: {verdict} — {overall:.0f}/100 "
+        f"({len(participating_agents)}/{len(active_agent_ids)} active actors)"
+    )
     
     if overall < 30:
         print(f"\n  🔧 The metaverse is mostly noise right now.")
@@ -352,10 +403,20 @@ def main():
     
     # Save metrics to state for historical tracking
     metrics = {
-        "timestamp": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "timestamp": computed_at.strftime("%Y-%m-%dT%H:%M:%SZ"),
         "overall": round(overall, 1),
         "dimensions": {name.split(" ", 1)[1]: round(score, 1)
                        for name, (score, _) in dimensions},
+        "window": {
+            "days": 7,
+            "sampleCount": len(recent_actions) + len(recent_chat),
+            "activeActors": len(participating_agents),
+            "activePopulation": len(active_agent_ids),
+            "actorCoverage": round(actor_coverage, 4),
+            "observedThrough": observed_through,
+            "sourceFresh": source_fresh,
+            "gradeable": gradeable,
+        },
     }
     
     metrics_path = STATE_DIR / "emergence.json"

@@ -135,6 +135,12 @@ def selected_files(args: argparse.Namespace) -> tuple[list[str], str]:
         label = "staged diff"
     elif args.mode == "all-tracked":
         files = run_git(args.repo_root, "ls-files", "-z", nul=True)
+        deleted = set(run_git(
+            args.repo_root,
+            "ls-files", "--deleted", "-z",
+            nul=True,
+        ))
+        files = [filepath for filepath in files if filepath not in deleted]
         label = "all tracked files"
     elif args.mode == "diff":
         base, head = args.diff

@@ -1565,7 +1565,7 @@ def main():
                     edges.append(new_edge)
                     edge_map[pair] = new_edge
             rel_data["edges"] = list(edge_map.values())
-            rel_data["_meta"] = {"lastUpdate": timestamp}
+            rel_data.setdefault("_meta", {})["lastUpdate"] = timestamp
             # Populate bonds array from edges with score >= 2
             rel_data["bonds"] = [
                 {"agents": [e["a"], e["b"]], "strength": e.get("score", 0), "type": "social", "lastInteraction": e.get("lastInteraction", "")}
