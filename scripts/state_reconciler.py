@@ -168,7 +168,7 @@ def has_pending_required_checks(checks: list[dict]) -> bool:
     return False
 
 
-def reconciler_state(checks: list[dict]) -> str | None:
+def reconciler_state(checks: list[dict], policy_sha: str | None = None) -> str | None:
     for check in checks:
         if check_name(check) != "state-reconciler":
             continue
@@ -177,6 +177,9 @@ def reconciler_state(checks: list[dict]) -> str | None:
         if normalized == "SUCCESS":
             return MERGED
         if normalized in {"FAILURE", "ERROR"}:
+            description = str(check.get("description") or "")
+            if policy_sha and f"policy {policy_sha[:12]}" not in description:
+                return None
             return REJECTED
     return None
 
@@ -231,6 +234,13 @@ class StateReconciler:
             "-f", f"context={context}",
             "-f", f"description={description[:140]}",
         ])
+
+    def current_reconciler_state(self, head_sha: str) -> str | None:
+        statuses = gh_json([
+            "api",
+            f"repos/{self.repo}/commits/{head_sha}/statuses?per_page=100",
+        ])
+        return reconciler_state(statuses or [], self.policy_sha)
 
     def published_commit(self, number: int, head_sha: str) -> str | None:
         output = run_command([
@@ -295,11 +305,20 @@ class StateReconciler:
             run_command(["git", "worktree", "add", "--detach", str(candidate), base_sha])
             try:
                 run_command(
-                    ["git", "merge", "--no-commit", "--no-ff", head_sha],
+                    [
+                        "git",
+                        "-c", "user.name=rappterverse-reconciler",
+                        "-c",
+                        "user.email=41898282+github-actions[bot]@users.noreply.github.com",
+                        "merge", "--no-commit", "--no-ff", head_sha,
+                    ],
                     cwd=candidate,
                 )
             except ReconcileError as exc:
-                raise ValidationRejected(f"synthetic merge conflict: {exc}") from exc
+                detail = str(exc).lower()
+                if "conflict" in detail or "automatic merge failed" in detail:
+                    raise ValidationRejected(f"synthetic merge conflict: {exc}") from exc
+                raise
             changed_paths = candidate_changed_paths(base_sha, head_sha, candidate)
             preflight_candidate(candidate, changed_paths)
             env = os.environ.copy()
@@ -434,13 +453,13 @@ class StateReconciler:
             return SKIPPED
         if details.get("headRefOid") != pr.get("headRefOid"):
             return BLOCKED
-        terminal = reconciler_state(details.get("statusCheckRollup") or [])
         head_sha = str(pr["headRefOid"])
         published = self.published_commit(number, head_sha)
         if published:
             if not self.dry_run:
                 self.finalize_applied_pr(number, head_sha, published)
             return SKIPPED
+        terminal = self.current_reconciler_state(head_sha)
         if terminal == REJECTED:
             return REJECTED
         if has_pending_required_checks(details.get("statusCheckRollup") or []):
@@ -500,7 +519,11 @@ class StateReconciler:
             return MERGED
         except ValidationRejected as exc:
             if not self.dry_run:
-                self.set_status(head_sha, "failure", str(exc))
+                self.set_status(
+                    head_sha,
+                    "failure",
+                    f"policy {self.policy_sha[:12]} rejected: {exc}",
+                )
             print(f"Rejected PR #{number}: {exc}", file=sys.stderr)
             return REJECTED
         except ReconcileError as exc:

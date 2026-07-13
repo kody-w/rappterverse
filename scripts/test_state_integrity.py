@@ -982,9 +982,22 @@ class TestStateReconciler(unittest.TestCase):
     def test_terminal_reconciler_status_dead_letters_head(self):
         self.assertEqual(
             self.module.reconciler_state([
-                {"context": "state-reconciler", "state": "FAILURE"}
-            ]),
+                {
+                    "context": "state-reconciler",
+                    "state": "FAILURE",
+                    "description": "policy abcdef123456 rejected",
+                }
+            ], "abcdef1234567890"),
             self.module.REJECTED,
+        )
+        self.assertIsNone(
+            self.module.reconciler_state([
+                {
+                    "context": "state-reconciler",
+                    "state": "FAILURE",
+                    "description": "old infrastructure failure",
+                }
+            ], "abcdef1234567890")
         )
         self.assertEqual(
             self.module.reconciler_state([
@@ -992,6 +1005,23 @@ class TestStateReconciler(unittest.TestCase):
             ]),
             self.module.MERGED,
         )
+
+    def test_reconciler_reads_status_description_from_rest(self):
+        reconciler = self.module.StateReconciler("owner/repo", dry_run=True)
+        policy = reconciler.policy_sha
+        with mock.patch.object(
+            self.module,
+            "gh_json",
+            return_value=[{
+                "context": "state-reconciler",
+                "state": "failure",
+                "description": f"policy {policy[:12]} rejected: invalid",
+            }],
+        ):
+            self.assertEqual(
+                reconciler.current_reconciler_state("head-sha"),
+                self.module.REJECTED,
+            )
 
     def test_only_state_paths_enter_queue(self):
         self.assertTrue(self.module.is_state_only([
@@ -1087,10 +1117,53 @@ class TestStateReconciler(unittest.TestCase):
         with self.assertRaises(self.module.ValidationRejected):
             self.module.candidate_changed_paths(base, head, repo)
 
+    def test_synthetic_merge_supplies_identity_without_mutating_config(self):
+        repo = Path(tempfile.mkdtemp(prefix="rappterverse-merge-id-"))
+        self.addCleanup(shutil.rmtree, repo)
+        subprocess.run(["git", "init", "-q"], cwd=repo, check=True)
+        (repo / "state").mkdir()
+        (repo / "state" / "value.json").write_text("{}\n", encoding="utf-8")
+        subprocess.run(["git", "add", "."], cwd=repo, check=True)
+        subprocess.run([
+            "git", "-c", "user.name=Fixture", "-c",
+            "user.email=fixture@users.noreply.github.com",
+            "commit", "-qm", "base",
+        ], cwd=repo, check=True)
+        base_branch = subprocess.check_output(
+            ["git", "branch", "--show-current"],
+            cwd=repo,
+            text=True,
+        ).strip()
+        subprocess.run(["git", "switch", "-qc", "candidate"], cwd=repo, check=True)
+        (repo / "state" / "value.json").write_text('{"value":1}\n', encoding="utf-8")
+        subprocess.run(["git", "add", "."], cwd=repo, check=True)
+        subprocess.run([
+            "git", "-c", "user.name=Fixture", "-c",
+            "user.email=fixture@users.noreply.github.com",
+            "commit", "-qm", "candidate",
+        ], cwd=repo, check=True)
+        head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=repo, text=True).strip()
+        subprocess.run(["git", "switch", "-q", base_branch], cwd=repo, check=True)
+        self.module.run_command([
+            "git",
+            "-c", "user.name=rappterverse-reconciler",
+            "-c", "user.email=41898282+github-actions[bot]@users.noreply.github.com",
+            "merge", "--no-commit", "--no-ff", head,
+        ], cwd=repo)
+        name = subprocess.run(
+            ["git", "config", "--local", "--get", "user.name"],
+            cwd=repo,
+            capture_output=True,
+            text=True,
+        )
+        self.assertNotEqual(name.returncode, 0)
+
     def test_reconciler_validates_synthetic_merge_on_main(self):
         source = (SCRIPT_DIR / "state_reconciler.py").read_text()
         self.assertIn('"--base", "main"', source)
         self.assertIn('"worktree", "add", "--detach", str(candidate), base_sha', source)
+        self.assertIn('"user.name=rappterverse-reconciler"', source)
+        self.assertIn('"user.email=41898282+github-actions[bot]@users.noreply.github.com"', source)
         self.assertIn('"merge", "--no-commit", "--no-ff", head_sha', source)
         self.assertIn('"commit-tree", tree_sha', source)
         self.assertNotIn('"-p", head_sha', source)
@@ -1099,6 +1172,8 @@ class TestStateReconciler(unittest.TestCase):
         self.assertIn('branch.startswith("auto/")', source)
         self.assertIn('"app/github-actions"', source)
         self.assertIn('"--method", "DELETE"', source)
+        self.assertIn("if terminal == REJECTED", source)
+        self.assertIn("self.policy_sha", source)
         self.assertIn('f"Source-Head: {head_sha}"', source)
         self.assertIn('candidate / "scripts" / "test_state_integrity.py"', source)
         self.assertIn('generate_state_snapshot.py', source)
@@ -1169,6 +1244,34 @@ class TestDispatchProtocolParity(unittest.TestCase):
         growth = (SCRIPT_DIR / "world_growth.py").read_text()
         self.assertNotIn('"type": "attack"', growth)
         self.assertIn('"interaction": "hostile_attack"', growth)
+
+
+class TestSelfImproveReliability(unittest.TestCase):
+    """Self-improvement must use configured tokens and fail honestly."""
+
+    def test_environment_token_precedes_cli_fallback(self):
+        import importlib.util
+        spec = importlib.util.spec_from_file_location(
+            "self_improve_reliability",
+            SCRIPT_DIR / "self_improve.py",
+        )
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        with mock.patch.dict(os.environ, {"MODELS_TOKEN": "configured-token"}):
+            self.assertEqual(module.get_token(), "configured-token")
+        if module.HAS_LLM_MODULE:
+            original_generate = module._llm_generate
+            module._llm_generate = lambda **kwargs: module._github_llm.GITHUB_TOKEN
+            try:
+                self.assertEqual(
+                    module.call_llm("selected-token", "system", "user"),
+                    "selected-token",
+                )
+            finally:
+                module._llm_generate = original_generate
+        source = (SCRIPT_DIR / "self_improve.py").read_text()
+        self.assertIn("sys.exit(2)", source)
+        self.assertIn("sys.exit(1)", source)
 
 
 # ═════════════════════════════════════════════
@@ -1429,6 +1532,31 @@ class TestAutomationSovereignty(unittest.TestCase):
         self.assertGreater(system["traits"]["trader"], 0.4)
         self.assertLess(system["traits"]["explorer"], 0.15)
 
+    def test_single_unseen_event_produces_bounded_drift(self):
+        system = {
+            "id": "system-001",
+            "status": "active",
+            "archetype": "explorer",
+            "traits": {
+                "explorer": 0.6,
+                "social": 0.1,
+                "trader": 0.1,
+                "fighter": 0.1,
+                "builder": 0.1,
+            },
+        }
+        self.game_tick.evolve_agent_traits(
+            {"agents": [system]},
+            {"actions": [{
+                "agentId": "system-001",
+                "type": "interact",
+                "data": {"interaction": "trade"},
+            }]},
+            {"messages": []},
+        )
+        self.assertGreater(system["traits"]["trader"], 0.1)
+        self.assertGreater(system["traits"]["explorer"], 0.5)
+
     def test_defensive_swarm_skips_external_agent(self):
         external = {
             "id": "external-001",
@@ -1598,6 +1726,130 @@ class TestRelationshipDecay(unittest.TestCase):
             enforce_bonds=True,
         )
         self.assertTrue(any("derived exactly" in error for error in module.errors))
+
+    def test_combat_bonds_stay_canonical_and_nonnegative(self):
+        import importlib.util
+        spec = importlib.util.spec_from_file_location(
+            "combat_relationships",
+            SCRIPT_DIR / "combat_tick.py",
+        )
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        relationships = {"edges": []}
+        module._bump_bond(relationships, "zeta-001", "alpha-001", 2)
+        self.assertEqual(
+            relationships["edges"][0]["a"],
+            "alpha-001",
+        )
+        module._bump_bond(relationships, "zeta-001", "alpha-001", -3)
+        self.assertEqual(relationships["edges"], [])
+        module._bump_bond(relationships, "zeta-001", "alpha-001", -1)
+        self.assertEqual(relationships["edges"], [])
+
+
+class TestGameTickActivityCursor(unittest.TestCase):
+    """Retained action/chat windows must be consumed exactly once."""
+
+    @classmethod
+    def setUpClass(cls):
+        import importlib.util
+        spec = importlib.util.spec_from_file_location(
+            "game_tick_cursor",
+            SCRIPT_DIR / "game_tick.py",
+        )
+        cls.game_tick = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(cls.game_tick)
+
+    def test_seed_replay_and_append(self):
+        game_state = {"_meta": {}}
+        actions = {"actions": [{"id": "action-100"}]}
+        chat = {"messages": [{"id": "msg-50"}]}
+        trades = {"completedTrades": [{"id": "trade-1", "status": "completed"}]}
+        first_actions, first_chat, first_trades, seeded = self.game_tick.activity_since_cursor(
+            game_state,
+            actions,
+            chat,
+            trades,
+            "2026-01-01T00:00:00Z",
+        )
+        self.assertTrue(seeded)
+        self.assertEqual(first_actions["actions"], [])
+        self.assertEqual(first_chat["messages"], [])
+        self.assertEqual(first_trades["completedTrades"], [])
+
+        _, _, _, replay_changed = self.game_tick.activity_since_cursor(
+            game_state,
+            actions,
+            chat,
+            trades,
+            "2026-01-01T00:05:00Z",
+        )
+        self.assertFalse(replay_changed)
+
+        actions["actions"].append({"id": "action-101"})
+        chat["messages"].append({"id": "msg-51"})
+        trades["completedTrades"].append({
+            "id": "trade-2",
+            "status": "completed",
+            "completedAt": "2026-01-01T00:10:00Z",
+        })
+        next_actions, next_chat, next_trades, changed = self.game_tick.activity_since_cursor(
+            game_state,
+            actions,
+            chat,
+            trades,
+            "2026-01-01T00:10:00Z",
+        )
+        self.assertTrue(changed)
+        self.assertEqual([item["id"] for item in next_actions["actions"]], ["action-101"])
+        self.assertEqual([item["id"] for item in next_chat["messages"]], ["msg-51"])
+        self.assertEqual([item["id"] for item in next_trades["completedTrades"]], ["trade-2"])
+
+    def test_nonmonotonic_and_uuid_ids_are_not_skipped(self):
+        game_state = {
+            "_meta": {
+                "activityCursor": {
+                    "actions": ["action-100"],
+                    "messages": ["msg-17404"],
+                    "completedTrades": [],
+                    "observedAt": "2026-01-01T00:00:00Z",
+                }
+            }
+        }
+        actions, messages, _, changed = self.game_tick.activity_since_cursor(
+            game_state,
+            {"actions": [{"id": "action-105"}]},
+            {"messages": [{"id": "msg-17000"}, {"id": "msg-uuid"}]},
+            {"completedTrades": []},
+            "2026-01-01T01:00:00Z",
+        )
+        self.assertTrue(changed)
+        self.assertEqual(actions["actions"][0]["id"], "action-105")
+        self.assertEqual(
+            [message["id"] for message in messages["messages"]],
+            ["msg-17000", "msg-uuid"],
+        )
+
+    def test_large_unseen_burst_is_returned_in_full(self):
+        game_state = {
+            "_meta": {
+                "activityCursor": {
+                    "actions": [],
+                    "messages": [],
+                    "completedTrades": [],
+                }
+            }
+        }
+        unseen = [{"id": f"action-{index}"} for index in range(60)]
+        actions, _, _, changed = self.game_tick.activity_since_cursor(
+            game_state,
+            {"actions": unseen},
+            {"messages": []},
+            {"completedTrades": []},
+            "2026-01-01T01:00:00Z",
+        )
+        self.assertTrue(changed)
+        self.assertEqual(len(actions["actions"]), 60)
 
 
 class TestActionIntegrity(unittest.TestCase):
