@@ -12,7 +12,7 @@ import math
 import os
 import subprocess
 import sys
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 BASE_DIR = Path(
@@ -528,6 +528,8 @@ def validate_state_file(filename: str, data: dict, agent_ids: set):
         validate_inventory(data, agent_ids)
     elif filename == "npcs.json":
         validate_npcs(data)
+    elif filename == "relationships.json":
+        validate_relationships(data, agent_ids)
     elif filename == "game_state.json":
         if "_meta" not in data:
             error(f"`{filename}`: Missing `_meta`")
@@ -602,6 +604,49 @@ def validate_npcs(data: dict):
     info(f"NPCs: {len(data.get('npcs', []))} total, needs/positions validated")
 
 
+def validate_relationships(
+    data: dict,
+    agent_ids: set,
+    *,
+    enforce_bonds: bool = False,
+):
+    edges = data.get("edges")
+    if not isinstance(edges, list):
+        error("`relationships.json`: Missing `edges` array")
+        return
+    seen = set()
+    expected_bonds = []
+    for edge in edges:
+        a = edge.get("a")
+        b = edge.get("b")
+        pair = (a, b)
+        if a not in agent_ids or b not in agent_ids:
+            error(f"`relationships.json`: Unknown endpoint in `{a}` ↔ `{b}`")
+        if not a or not b or a >= b:
+            error(f"`relationships.json`: Non-canonical pair `{a}` ↔ `{b}`")
+        if pair in seen:
+            error(f"`relationships.json`: Duplicate pair `{a}` ↔ `{b}`")
+        seen.add(pair)
+        score = edge.get("score")
+        if not isinstance(score, (int, float)) or not 0 <= score <= 100:
+            error(f"`relationships.json`: Invalid score for `{a}` ↔ `{b}`")
+        if parse_timestamp(edge.get("lastInteraction", "")) is None:
+            error(f"`relationships.json`: Invalid lastInteraction for `{a}` ↔ `{b}`")
+        if isinstance(score, (int, float)) and score >= 2:
+            expected_bonds.append({
+                "agents": [a, b],
+                "strength": score,
+                "type": "social",
+                "lastInteraction": edge.get("lastInteraction", ""),
+            })
+    if enforce_bonds and data.get("bonds", []) != expected_bonds:
+        error("`relationships.json`: `bonds` must be derived exactly from `edges`")
+    cursor = data.get("_meta", {}).get("decayCursor")
+    if cursor is not None and parse_timestamp(cursor) is None:
+        error("`relationships.json`: Invalid `_meta.decayCursor`")
+    info(f"Relationships: {len(edges)} canonical edges")
+
+
 def validate_canonical_state():
     """Validate complete canonical files without scoring simulation health."""
     agents_data = load_json(STATE_DIR / "agents.json")
@@ -622,13 +667,17 @@ def validate_canonical_state():
         "inventory.json",
         "npcs.json",
         "game_state.json",
+        "relationships.json",
     ):
         data = load_json(STATE_DIR / filename)
         if data is None:
             error(f"`{filename}`: failed to load")
         else:
             validate_finite_numbers(data, f"state/{filename}")
-            validate_state_file(filename, data, agent_ids)
+            if filename == "relationships.json":
+                validate_relationships(data, agent_ids, enforce_bonds=True)
+            else:
+                validate_state_file(filename, data, agent_ids)
 
     for world_dir in sorted(WORLDS_DIR.iterdir()):
         objects_path = world_dir / "objects.json"
@@ -994,7 +1043,7 @@ def audit_quality_metrics():
     max_score += 20
     if edges:
         avg_score = sum(e.get("score", 0) for e in edges) / len(edges)
-        strong_bonds = sum(1 for e in edges if e.get("score", 0) >= 5)
+        strong_bonds = sum(1 for e in edges if e.get("score", 0) >= 51)
         bond_pct = strong_bonds / max(1, len(edges)) * 100
 
         depth_score = min(20, int(avg_score * 2 + bond_pct * 0.1))
@@ -1005,18 +1054,32 @@ def audit_quality_metrics():
 
     # ── 2. Author Diversity — Gini coefficient (0-20 points) ──
     max_score += 20
-    action_counts: dict[str, int] = {}
-    for a in actions:
+    now_utc = datetime.now(timezone.utc)
+    recent_cutoff = now_utc.timestamp() - 7 * 24 * 3600
+
+    def is_recent(record: dict) -> bool:
+        parsed = parse_timestamp(record.get("timestamp", ""))
+        return bool(
+            parsed
+            and recent_cutoff <= parsed.timestamp() <= now_utc.timestamp() + 300
+        )
+
+    active_ids = {agent["id"] for agent in active if agent.get("id")}
+    gini = 1.0
+    action_counts: dict[str, int] = {agent_id: 0 for agent_id in active_ids}
+    recent_action_records = [action for action in actions if is_recent(action)]
+    recent_message_records = [message for message in messages if is_recent(message)]
+    for a in recent_action_records:
         aid = a.get("agentId", "")
-        if aid:
+        if aid in action_counts:
             action_counts[aid] = action_counts.get(aid, 0) + 1
-    for m in messages:
+    for m in recent_message_records:
         author = m.get("author", {})
         aid = author.get("id", "") if isinstance(author, dict) else str(author)
-        if aid:
+        if aid in action_counts:
             action_counts[aid] = action_counts.get(aid, 0) + 1
 
-    if len(action_counts) > 1:
+    if len(action_counts) > 1 and sum(action_counts.values()) > 0:
         values = sorted(action_counts.values())
         n = len(values)
         mean = sum(values) / n
@@ -1027,7 +1090,12 @@ def audit_quality_metrics():
         # Gini 0 = perfect equality, 1 = total inequality
         diversity_score = max(0, int(20 * (1 - gini)))
         score += diversity_score
-        info(f"Author diversity: Gini={gini:.3f}, active authors={len(action_counts)} → {diversity_score}/20")
+        participating = sum(1 for value in values if value > 0)
+        info(
+            f"Author diversity: Gini={gini:.3f}, "
+            f"participating authors={participating}/{len(active_ids)} "
+            f"→ {diversity_score}/20"
+        )
         if gini > 0.4:
             error(f"High inequality: Gini={gini:.3f} — activity dominated by few agents")
     else:
@@ -1059,40 +1127,77 @@ def audit_quality_metrics():
 
     # ── 4. Engagement Velocity (0-20 points) ──
     max_score += 20
-    recent_actions = len(actions[-50:]) if actions else 0
-    recent_messages = len(messages[-50:]) if messages else 0
+    recent_actions = len(recent_action_records)
+    recent_messages = len(recent_message_records)
     velocity = recent_actions + recent_messages
 
-    # Scale: 20 actions+messages = 10pts, 50+ = 20pts
-    velocity_score = min(20, int(velocity * 0.4))
+    participating = sum(1 for value in action_counts.values() if value > 0)
+    actor_coverage = participating / max(1, len(active_ids))
+    velocity_score = min(20, int(velocity * 0.4 * actor_coverage))
     score += velocity_score
-    info(f"Engagement velocity: {recent_actions} actions + {recent_messages} messages = {velocity} → {velocity_score}/20")
+    info(
+        f"Engagement velocity (7d): {recent_actions} actions + "
+        f"{recent_messages} messages, {participating}/{len(active_ids)} actors "
+        f"→ {velocity_score}/20"
+    )
 
     # ── 5. Trait Evolution Health (0-20 points) ──
     max_score += 20
     agents_with_traits = sum(1 for a in active if a.get("traits"))
     if active:
         trait_pct = agents_with_traits / len(active) * 100
-        # Check for actual drift (not just initialized)
         drifted = 0
+        comparable = 0
+        trait_names = {"explorer", "social", "trader", "fighter", "builder"}
         for a in active:
             traits = a.get("traits", {})
-            if traits:
-                values = list(traits.values())
-                if len(values) > 1 and max(values) < 0.80:  # Not just initialized
+            archetype = a.get("archetype")
+            if traits and archetype in trait_names:
+                comparable += 1
+                if any(
+                    abs(
+                        traits.get(trait, 0)
+                        - (0.6 if trait == archetype else 0.1)
+                    ) > 0.05
+                    for trait in trait_names
+                ):
                     drifted += 1
 
-        drift_pct = drifted / max(1, len(active)) * 100
+        drift_pct = drifted / max(1, comparable) * 100
         trait_score = min(20, int(trait_pct * 0.1 + drift_pct * 0.1))
         score += trait_score
-        info(f"Trait evolution: {agents_with_traits}/{len(active)} have traits ({trait_pct:.0f}%), {drifted} drifted ({drift_pct:.0f}%) → {trait_score}/20")
+        info(
+            f"Trait evolution: {agents_with_traits}/{len(active)} have traits "
+            f"({trait_pct:.0f}%), {drifted}/{comparable} comparable agents "
+            f"drifted ({drift_pct:.0f}%) → {trait_score}/20"
+        )
     else:
         info("Trait evolution: no active agents → 0/20")
 
     # ── Summary ──
-    grade = "A" if score >= 80 else "B" if score >= 60 else "C" if score >= 40 else "D" if score >= 20 else "F"
+    gradeable = actor_coverage >= 0.1 and gini <= 0.6
+    grade = (
+        "INSUFFICIENT"
+        if not gradeable
+        else "A" if score >= 80
+        else "B" if score >= 60
+        else "C" if score >= 40
+        else "D" if score >= 20
+        else "F"
+    )
     info(f"\n  SIMULATION QUALITY SCORE: {score}/{max_score} ({grade})")
-    info(f"  {'Healthy' if score >= 60 else 'Needs attention' if score >= 30 else 'Critical — simulation may be stale'}")
+    info(
+        "  "
+        + (
+            "Insufficient actor coverage for a health grade"
+            if not gradeable
+            else "Healthy"
+            if score >= 60
+            else "Needs attention"
+            if score >= 30
+            else "Critical — simulation may be stale"
+        )
+    )
 
 
 def main():

@@ -3,7 +3,7 @@ name: State Queue Reconciler
 on:
   workflow_dispatch:
   schedule:
-    - cron: '*/5 * * * *'
+    - cron: '17 * * * *'  # hourly recovery sweep; producers dispatch immediately
 
 concurrency:
   group: state-writer

@@ -10,6 +10,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import urllib.parse
 from pathlib import Path
 
 BASE_DIR = Path(__file__).parent.parent.resolve()
@@ -211,7 +212,9 @@ class StateReconciler:
     def details(self, number: int) -> dict:
         return gh_json([
             "pr", "view", str(number), "--repo", self.repo,
-            "--json", "files,statusCheckRollup,isDraft,headRefOid,baseRefName,author,state",
+            "--json",
+            "files,statusCheckRollup,isDraft,headRefOid,headRefName,"
+            "baseRefName,author,state,isCrossRepository",
         ])
 
     def set_status(
@@ -256,6 +259,23 @@ class StateReconciler:
                     "gh", "pr", "close", str(number), "--repo", self.repo,
                     "--comment", f"Applied atomically to main as `{commit_sha}`.",
                 ])
+                branch = str(latest.get("headRefName") or "")
+                author = str((latest.get("author") or {}).get("login") or "")
+                trusted_branch_authors = {
+                    self.owner,
+                    "github-actions",
+                    "app/github-actions",
+                }
+                if (
+                    branch.startswith("auto/")
+                    and author in trusted_branch_authors
+                    and not latest.get("isCrossRepository")
+                ):
+                    encoded_branch = urllib.parse.quote(branch, safe="")
+                    run_command([
+                        "gh", "api", "--method", "DELETE",
+                        f"repos/{self.repo}/git/refs/heads/{encoded_branch}",
+                    ])
         except ReconcileError as exc:
             print(f"Could not close applied PR #{number}: {exc}", file=sys.stderr)
 
@@ -313,6 +333,17 @@ class StateReconciler:
                     ["git", "add", "-A", "state", "worlds", "feed"],
                     cwd=candidate,
                 )
+
+            run_validation([
+                sys.executable,
+                str(BASE_DIR / "scripts" / "reconcile_derived_state.py"),
+                "--repo-root",
+                str(candidate),
+            ], env=env, cwd=candidate)
+            run_command(
+                ["git", "add", "-A", "state", "worlds"],
+                cwd=candidate,
+            )
 
             run_validation([
                 sys.executable,

@@ -39,23 +39,6 @@ def parse_timestamp(iso_ts: str) -> datetime | None:
     return dt.astimezone(timezone.utc)
 
 
-def time_ago(iso_ts: str) -> str:
-    dt = parse_timestamp(iso_ts)
-    if dt is None:
-        return "unknown"
-    delta = datetime.now(timezone.utc) - dt
-    mins = max(0, int(delta.total_seconds() / 60))
-    if mins < 1:
-        return "just now"
-    if mins < 60:
-        return f"{mins}m ago"
-    hours = mins // 60
-    if hours < 24:
-        return f"{hours}h ago"
-    days = hours // 24
-    return f"{days}d ago"
-
-
 def latest_timestamp(*iso_timestamps: str) -> str:
     valid = [
         (dt, timestamp)
@@ -119,11 +102,10 @@ def generate_readme():
         frame_counter.get("_meta", {}).get("lastUpdate", "")
         or frame_counter.get("last_frame_at", "")
     )
-    last_activity_ago = time_ago(last_activity) if last_activity else "never"
-    last_heartbeat_ago = time_ago(last_heartbeat) if last_heartbeat else "never"
-    last_frame_ago = time_ago(last_frame) if last_frame else "never"
-    last_chat = chat_data.get("_meta", {}).get("lastUpdate", "")
-    last_chat_ago = time_ago(last_chat) if last_chat else "never"
+    last_chat = latest_timestamp(*(
+        message.get("timestamp", "")
+        for message in chat_msgs
+    ))
 
     # Latest chat (last 5 messages)
     recent_chat = chat_msgs[-5:]
@@ -143,7 +125,8 @@ def generate_readme():
 
     # ── Build README ─────────────────────────────────────────
 
-    now_str = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+    generated_at = datetime.now(timezone.utc)
+    now_str = generated_at.strftime("%Y-%m-%d %H:%M UTC")
 
     readme = f"""# RAPPterverse
 
@@ -156,15 +139,15 @@ def generate_readme():
 
 ## 📊 Live World Status
 
-> Latest state activity: **{last_activity_ago}** ({last_activity or 'N/A'})
+> Latest state activity: **{last_activity or 'N/A'}** · dashboard generated {now_str}
 
 | Metric | Value |
 |--------|-------|
 | 🌍 **Total Population** | **{total_pop}** |
 | 🧑‍💻 Players | {player_count} |
 | 🤖 NPCs | {npc_count} |
-| 💓 World Heartbeats | {tick_count} · last {last_heartbeat_ago} |
-| 🎞️ Autonomous Frames | {frame_count} · last {last_frame_ago} |
+| 💓 World Heartbeats | {tick_count} · last {last_heartbeat or 'N/A'} |
+| 🎞️ Autonomous Frames | {frame_count} · last {last_frame or 'N/A'} |
 | 🌱 Total Spawned | {total_spawned} |
 
 ### World Populations
@@ -182,7 +165,10 @@ def generate_readme():
     # Recent arrivals
     if recent_arrivals:
         arrivals_str = ", ".join(f"**{n}**" for n in reversed(recent_arrivals))
-        readme += f"### 🌱 Latest Arrivals ({last_heartbeat_ago})\n\n{arrivals_str}\n\n"
+        readme += (
+            f"### 🌱 Latest Arrivals (heartbeat {last_heartbeat or 'N/A'})\n\n"
+            f"{arrivals_str}\n\n"
+        )
 
     featured_chronicle = chronicles.get("featured")
     chronicle_count = len(chronicles.get("chronicles", []))
@@ -202,30 +188,71 @@ def generate_readme():
     # Emergence & Trait Evolution
     active_agents = [a for a in agents if a.get("status") == "active"]
     agents_with_traits = sum(1 for a in active_agents if a.get("traits"))
-    evolved = sum(1 for a in active_agents if a.get("traits") and max(a["traits"].values()) < 0.55)
+    trait_names = {"explorer", "social", "trader", "fighter", "builder"}
+    comparable_agents = [
+        agent for agent in active_agents
+        if agent.get("traits") and agent.get("archetype") in trait_names
+    ]
+    evolved = sum(
+        1
+        for agent in comparable_agents
+        if any(
+            abs(
+                agent["traits"].get(trait, 0)
+                - (0.6 if trait == agent["archetype"] else 0.1)
+            ) > 0.05
+            for trait in trait_names
+        )
+    )
     edges = relationships.get("edges", [])
-    strong_bonds = sum(1 for e in edges if e.get("score", 0) >= 10)
+    strong_bonds = sum(1 for e in edges if e.get("score", 0) >= 51)
     latest_emergence = emergence.get("latest", {})
     em_score = latest_emergence.get("overall", 0)
     em_dims = latest_emergence.get("dimensions", {})
+    emergence_timestamp = (
+        latest_emergence.get("timestamp")
+        or emergence.get("_meta", {}).get("lastUpdate", "")
+    )
+    emergence_dt = parse_timestamp(emergence_timestamp)
+    emergence_window = latest_emergence.get("window", {})
+    emergence_fresh = bool(
+        emergence_dt
+        and -300 <= (generated_at - emergence_dt).total_seconds() <= 12 * 3600
+        and emergence_window.get("gradeable") is True
+    )
 
     if agents_with_traits or em_score:
         readme += "### 🧬 Simulation Health\n\n"
         readme += "| Metric | Value |\n|--------|-------|\n"
         if em_score:
-            grade = "THRIVING" if em_score >= 60 else "GROWING" if em_score >= 30 else "DORMANT"
-            readme += f"| 🧬 **Emergence** | **{em_score:.0f}/100** ({grade}) |\n"
-        readme += f"| 🧠 Trait Evolution | {agents_with_traits}/{len(active_agents)} agents ({evolved} drifted) |\n"
-        readme += f"| 🤝 Relationships | {len(edges)} bonds ({strong_bonds} strong) |\n"
+            if emergence_fresh:
+                grade = "THRIVING" if em_score >= 60 else "GROWING" if em_score >= 30 else "DORMANT"
+                readme += f"| 🧬 **Emergence** | **{em_score:.0f}/100** ({grade}) |\n"
+            else:
+                readme += (
+                    "| ⚪ **Emergence** | **STALE — grade withheld** "
+                    f"(computed {emergence_timestamp or 'N/A'}) |\n"
+                )
+        readme += (
+            f"| 🧠 Trait Evolution | {agents_with_traits}/{len(active_agents)} agents "
+            f"({evolved}/{len(comparable_agents)} comparable agents drifted) |\n"
+        )
+        readme += (
+            f"| 🤝 Relationships | {len(edges)} edges "
+            f"({strong_bonds} strong at score 51+) |\n"
+        )
         if em_dims:
             for dim, score in em_dims.items():
-                emoji = "🟢" if score >= 60 else "🟡" if score >= 30 else "🔴"
-                readme += f"| {emoji} {dim} | {score:.0f}/100 |\n"
+                if emergence_fresh:
+                    emoji = "🟢" if score >= 60 else "🟡" if score >= 30 else "🔴"
+                    readme += f"| {emoji} {dim} | {score:.0f}/100 |\n"
+                else:
+                    readme += f"| ⚪ {dim} | {score:.0f}/100 historical |\n"
         readme += "\n"
 
     # Latest chat
     if recent_chat:
-        readme += f"### 💬 Latest Chat ({last_chat_ago})\n\n"
+        readme += f"### 💬 Latest Chat (newest message {last_chat or 'N/A'})\n\n"
         for msg in reversed(recent_chat):
             author = msg.get("author", {})
             name = author.get("name", "???")

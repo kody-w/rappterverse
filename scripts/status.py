@@ -37,9 +37,30 @@ def time_ago(iso_str):
         return "?"
 
 
+def age_hours(iso_str):
+    try:
+        value = datetime.fromisoformat(iso_str.replace("Z", "+00:00"))
+        return (datetime.now(timezone.utc) - value).total_seconds() / 3600
+    except (ValueError, AttributeError):
+        return None
+
+
 def run(cmd):
-    r = subprocess.run(cmd, capture_output=True, text=True, shell=True, timeout=15)
+    r = subprocess.run(cmd, capture_output=True, text=True, timeout=15)
     return r.stdout.strip()
+
+
+def load_world_bounds():
+    bounds = {}
+    for config_path in sorted((BASE_DIR / "worlds").glob("*/config.json")):
+        config = load_json(config_path)
+        world_bounds = config.get("bounds", {})
+        if world_bounds.get("x") and world_bounds.get("z"):
+            bounds[config_path.parent.name] = {
+                "x": tuple(world_bounds["x"]),
+                "z": tuple(world_bounds["z"]),
+            }
+    return bounds
 
 
 def main():
@@ -51,25 +72,39 @@ def main():
     print("\n📊 WORKFLOW HEALTH")
     print("-" * 40)
     workflows = {
-        "agent-autonomy.yml": "Agent Autonomy (30 min)",
-        "game-tick.yml": "Game Tick (5 min)",
-        "world-growth.yml": "World Growth (4 hours)",
+        "agent-autonomy.yml": ("Agent Autonomy", 30),
+        "game-tick.yml": ("Game Tick", 5),
+        "world-growth.yml": ("World Growth", 240),
     }
-    for wf, label in workflows.items():
+    for wf, (label, cadence_minutes) in workflows.items():
         try:
-            out = run(f"gh run list --workflow='{wf}' --limit 5 --json status,conclusion,createdAt,event 2>/dev/null")
+            out = run([
+                "gh", "run", "list",
+                f"--workflow={wf}",
+                "--limit", "5",
+                "--json", "status,conclusion,createdAt,event",
+            ])
             runs = json.loads(out) if out else []
             if not runs:
                 print(f"  {label}: ⚠️  No runs found")
                 continue
             latest = runs[0]
             status = latest.get("conclusion", latest.get("status", "?"))
-            icon = "✅" if status == "success" else "❌" if status == "failure" else "🔄"
             age = time_ago(latest.get("createdAt", ""))
+            hours = age_hours(latest.get("createdAt", ""))
+            stale = hours is None or hours * 60 > cadence_minutes * 2
+            manual = latest.get("event") == "workflow_dispatch"
+            icon = (
+                "⚪" if stale or manual
+                else "✅" if status == "success"
+                else "❌" if status == "failure"
+                else "🔄"
+            )
+            health = "historical/manual" if manual else "stale" if stale else status
             # Count recent success rate
             recent = runs[:5]
             successes = sum(1 for r in recent if r.get("conclusion") == "success")
-            print(f"  {icon} {label}: {status} ({age}) — {successes}/5 recent passes")
+            print(f"  {icon} {label}: {health} ({age}) — {successes}/5 retained passes")
         except Exception as e:
             print(f"  ⚠️  {label}: error checking ({e})")
 
@@ -155,12 +190,15 @@ def main():
     issues = []
 
     # Check for out-of-bounds agents
-    bounds_map = {"hub": 15, "arena": 12, "marketplace": 15, "gallery": 12, "dungeon": 12}
+    bounds_map = load_world_bounds()
     for a in agents.get("agents", []):
         w = a.get("world", "hub")
-        b = bounds_map.get(w, 15)
+        bounds = bounds_map.get(w)
         pos = a.get("position", {})
-        if abs(pos.get("x", 0)) > b or abs(pos.get("z", 0)) > b:
+        if bounds and not (
+            bounds["x"][0] <= pos.get("x", 0) <= bounds["x"][1]
+            and bounds["z"][0] <= pos.get("z", 0) <= bounds["z"][1]
+        ):
             issues.append(f"Out of bounds: {a['id']} in {w} ({pos.get('x')}, {pos.get('z')})")
 
     # Check stale state
@@ -182,7 +220,7 @@ def main():
     print(f"  Total agents: {len(agents.get('agents', []))} | "
           f"Total actions: {len(actions.get('actions', []))} | "
           f"Total messages: {len(chat.get('messages', []))}")
-    print(f"  Live site: https://kodywildfeuer.github.io/rappterverse/")
+    print(f"  Live site: https://kody-w.github.io/rappterverse/")
     print("=" * 60 + "\n")
 
 

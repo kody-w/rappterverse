@@ -246,9 +246,12 @@ class TestWorkflowPushSafety(unittest.TestCase):
         self_improve = load_yaml_text(WORKFLOWS_DIR / "self-improve.yml")
         self.assertNotIn("git add -A", self_improve)
         self.assertIn("git add state/*.json state/memory/ feed/", self_improve)
+        self.assertNotIn("agent_dispatch.py --agent evolve-001", self_improve)
         regression = load_yaml_text(WORKFLOWS_DIR / "regression-tests.yml")
         self.assertIn("ALLOW_DERIVED_STATE_DRIFT", regression)
         self.assertIn("fetch-depth: 0", regression)
+        self.assertIn("if: env.ALLOW_DERIVED_STATE_DRIFT != '1'", regression)
+        self.assertEqual(regression.count("runs-on: ubuntu-latest"), 1)
 
 
 class TestWorkflowPII(unittest.TestCase):
@@ -360,6 +363,11 @@ class TestPIIScanner(unittest.TestCase):
         self.assertEqual(result.returncode, 1)
         self.assertIn("state/mémoire.txt:1 — Email", result.stdout)
 
+    def test_all_tracked_ignores_worktree_deletions(self):
+        (self.repo / "state" / "note.txt").unlink()
+        result = self._scan("--all-tracked")
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
     def test_diff_mode_scans_exact_candidate_change(self):
         email = "contact" + "@" + "private.invalid"
         (self.repo / "state" / "note.txt").write_text(
@@ -430,6 +438,7 @@ class TestDashboardFreshness(unittest.TestCase):
 
     def test_reconciler_owns_generated_artifacts(self):
         reconciler = (SCRIPT_DIR / "state_reconciler.py").read_text()
+        self.assertIn("reconcile_derived_state.py", reconciler)
         self.assertIn("generate_chronicles.py", reconciler)
         self.assertIn("generate_state_snapshot.py", reconciler)
         self.assertIn("generate_dashboard.py", reconciler)
@@ -442,6 +451,48 @@ class TestDashboardFreshness(unittest.TestCase):
         self.assertNotIn("git commit", watchdog)
         self.assertNotIn("git push", watchdog)
         self.assertNotIn("agent_dispatch.py", watchdog)
+
+    def test_readme_withholds_stale_health_grades(self):
+        readme = (BASE_DIR / "README.md").read_text()
+        self.assertIn("STALE — grade withheld", readme)
+        self.assertNotIn("(GROWING)", readme)
+        self.assertIn("strong at score 51+", readme)
+        chat = load_json(STATE_DIR / "chat.json")
+        newest = max(
+            message.get("timestamp", "")
+            for message in chat.get("messages", [])
+        )
+        self.assertIn(f"newest message {newest}", readme)
+
+
+class TestStatusTruth(unittest.TestCase):
+    """CLI status must use canonical bounds and avoid false-green history."""
+
+    def test_status_uses_config_bounds_and_safe_commands(self):
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("status_truth", SCRIPT_DIR / "status.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        bounds = module.load_world_bounds()
+        self.assertEqual(bounds["gallery"]["z"], (-12, 15))
+        source = (SCRIPT_DIR / "status.py").read_text()
+        self.assertNotIn("shell=True", source)
+        self.assertIn("historical/manual", source)
+        self.assertIn("https://kody-w.github.io/rappterverse/", source)
+
+    def test_quality_metrics_are_time_and_actor_aware(self):
+        source = (SCRIPT_DIR / "validate_action.py").read_text()
+        self.assertIn("Engagement velocity (7d)", source)
+        self.assertIn("actor_coverage", source)
+        self.assertIn("participating authors=", source)
+        self.assertIn('e.get("score", 0) >= 51', source)
+        self.assertNotIn("len(actions[-50:])", source)
+        self.assertIn("Insufficient actor coverage for a health grade", source)
+        emergence = (SCRIPT_DIR / "emergence.py").read_text()
+        dashboard = (SCRIPT_DIR / "generate_dashboard.py").read_text()
+        self.assertIn('"actorCoverage"', emergence)
+        self.assertIn('"gradeable"', emergence)
+        self.assertIn('emergence_window.get("gradeable") is True', dashboard)
 
 
 class TestChronicleIntegrity(unittest.TestCase):
@@ -599,6 +650,82 @@ class TestStateSnapshotManifest(unittest.TestCase):
         for resource in snapshot["resources"].values():
             self.assertRegex(resource.get("sha256", ""), r"^[a-f0-9]{64}$")
             self.assertGreater(resource.get("bytes", 0), 0)
+
+
+class TestDerivedStateReconciler(unittest.TestCase):
+    """Duplicated counters must converge deterministically."""
+
+    def test_reconciliation_is_complete_and_idempotent(self):
+        import importlib.util
+        root = Path(tempfile.mkdtemp(prefix="rappterverse-derived-"))
+        self.addCleanup(shutil.rmtree, root)
+        (root / "state").mkdir()
+        (root / "worlds").mkdir()
+        for filename in (
+            "agents.json",
+            "actions.json",
+            "economy.json",
+            "frame_counter.json",
+            "game_state.json",
+            "relationships.json",
+        ):
+            shutil.copy2(STATE_DIR / filename, root / "state" / filename)
+        for source in WORLDS_DIR.glob("*/objects.json"):
+            target = root / "worlds" / source.parent.name
+            target.mkdir()
+            shutil.copy2(source, target / "objects.json")
+
+        game_path = root / "state" / "game_state.json"
+        game = load_json(game_path)
+        game["worlds"]["hub"]["population"] = -1
+        game["economy"]["total_rappcoin_circulation"] = -1
+        game["_meta"]["frame"] = -1
+        game_path.write_text(json.dumps(game, indent=4) + "\n", encoding="utf-8")
+        relationships_path = root / "state" / "relationships.json"
+        relationships = load_json(relationships_path)
+        relationships["bonds"] = []
+        relationships_path.write_text(
+            json.dumps(relationships, indent=4) + "\n",
+            encoding="utf-8",
+        )
+
+        spec = importlib.util.spec_from_file_location(
+            "derived_state_test",
+            SCRIPT_DIR / "reconcile_derived_state.py",
+        )
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        first = module.reconcile(root)
+        second = module.reconcile(root)
+        self.assertTrue(first)
+        self.assertEqual(second, [])
+
+        reconciled = load_json(game_path)
+        agents = load_json(root / "state" / "agents.json")["agents"]
+        hub_count = sum(1 for agent in agents if agent.get("world") == "hub")
+        self.assertEqual(reconciled["worlds"]["hub"]["population"], hub_count)
+        balances = load_json(root / "state" / "economy.json")["balances"]
+        self.assertEqual(
+            reconciled["economy"]["total_rappcoin_circulation"],
+            sum(balances.values()),
+        )
+        frame = load_json(root / "state" / "frame_counter.json")["frame"]
+        self.assertEqual(reconciled["_meta"]["frame"], frame)
+        relevant_timestamps = [
+            load_json(root / "state" / filename)["_meta"]["lastUpdate"]
+            for filename in ("agents.json", "economy.json", "frame_counter.json")
+        ]
+        self.assertEqual(reconciled["_meta"]["lastUpdate"], max(relevant_timestamps))
+        reconciled_relationships = load_json(relationships_path)
+        expected_bond_count = sum(
+            1
+            for edge in reconciled_relationships["edges"]
+            if edge.get("score", 0) >= 2
+        )
+        self.assertEqual(
+            len(reconciled_relationships["bonds"]),
+            expected_bond_count,
+        )
 
 
 class TestPRValidatorGate(unittest.TestCase):
@@ -969,12 +1096,16 @@ class TestStateReconciler(unittest.TestCase):
         self.assertNotIn('"-p", head_sha', source)
         self.assertIn('f"{merge_commit}:refs/heads/main"', source)
         self.assertIn('"pr", "close"', source)
+        self.assertIn('branch.startswith("auto/")', source)
+        self.assertIn('"app/github-actions"', source)
+        self.assertIn('"--method", "DELETE"', source)
         self.assertIn('f"Source-Head: {head_sha}"', source)
         self.assertIn('candidate / "scripts" / "test_state_integrity.py"', source)
         self.assertIn('generate_state_snapshot.py', source)
         self.assertIn('apply_deltas.py', source)
         workflow = load_yaml_text(WORKFLOWS_DIR / "state-drain.yml")
         self.assertIn('git worktree add --detach "$policy_root" origin/main', workflow)
+        self.assertIn("cron: '17 * * * *'", workflow)
         delta_workflow = load_yaml_text(WORKFLOWS_DIR / "apply-deltas.yml")
         self.assertNotIn("git push", delta_workflow)
         self.assertIn("state-drain.yml", delta_workflow)
@@ -992,6 +1123,7 @@ class TestLocalPlatformSafety(unittest.TestCase):
         self.assertIn("Publication blocked: canonical state validation failed", content)
         self.assertIn("Publication blocked: PII scan failed", content)
         self.assertIn("Publication skipped because this cycle failed", content)
+        self.assertIn("reconcile_derived_state.py", content)
         self.assertIn("if ! run_cycle; then", content)
         self.assertIn("worktree add --detach", content)
         self.assertIn("discard_failed_cycle", content)
@@ -1012,8 +1144,13 @@ class TestLocalPlatformSafety(unittest.TestCase):
         self.assertIn("local status=$?", run_job)
         self.assertNotIn('"$@" 2>&1 | tail', run_job)
         self_improve = content.split("job_self_improve() {", 1)[1].split("\n}", 1)[0]
-        self.assertGreaterEqual(self_improve.count("|| return $?"), 3)
+        self.assertGreaterEqual(self_improve.count("|| return $?"), 2)
+        self.assertNotIn("agent_dispatch.py --agent evolve-001", self_improve)
         self.assertIn("Unable to query pending local-platform proposals", content)
+        should_run = content.split("should_run() {", 1)[1].split("\n}", 1)[0]
+        self.assertNotIn("except:", should_run)
+        self.assertIn("last_success", should_run)
+        self.assertIn("except (OSError, json.JSONDecodeError, ValueError, TypeError)", should_run)
 
 
 class TestDispatchProtocolParity(unittest.TestCase):
@@ -1360,6 +1497,107 @@ class TestAutomationSovereignty(unittest.TestCase):
                 source,
                 f"{script_name} includes externally controlled actors",
             )
+
+
+class TestRelationshipDecay(unittest.TestCase):
+    """Relationship decay must be replay-safe and log-independent."""
+
+    @classmethod
+    def setUpClass(cls):
+        import importlib.util
+        spec = importlib.util.spec_from_file_location(
+            "game_tick_relationships",
+            SCRIPT_DIR / "game_tick.py",
+        )
+        cls.game_tick = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(cls.game_tick)
+
+    @staticmethod
+    def state(score=20, cursor="2026-01-01T00:00:00Z", last="2026-01-01T00:00:00Z"):
+        return {
+            "_meta": {"decayCursor": cursor},
+            "edges": [{
+                "a": "alpha-001",
+                "b": "beta-001",
+                "score": score,
+                "lastInteraction": last,
+            }],
+            "interactions": [],
+            "bonds": [],
+        }
+
+    def test_same_timestamp_replay_is_noop(self):
+        state = self.state()
+        self.game_tick.decay_stale_relationships(state, "2026-01-10T00:00:00Z")
+        first = json.loads(json.dumps(state))
+        self.game_tick.decay_stale_relationships(state, "2026-01-10T00:00:00Z")
+        self.assertEqual(state, first)
+
+    def test_catch_up_matches_incremental_decay(self):
+        catch_up = self.state()
+        incremental = self.state()
+        self.game_tick.decay_stale_relationships(
+            catch_up,
+            "2026-01-20T00:00:00Z",
+        )
+        for day in range(2, 21):
+            self.game_tick.decay_stale_relationships(
+                incremental,
+                f"2026-01-{day:02d}T00:00:00Z",
+            )
+        self.assertEqual(
+            catch_up["edges"][0]["score"],
+            incremental["edges"][0]["score"],
+        )
+
+    def test_edge_timestamp_survives_log_truncation(self):
+        state = self.state(
+            score=5,
+            cursor="2026-01-19T00:00:00Z",
+            last="2026-01-19T00:00:00Z",
+        )
+        self.game_tick.decay_stale_relationships(
+            state,
+            "2026-01-20T00:00:00Z",
+        )
+        self.assertEqual(state["edges"][0]["score"], 5)
+
+    def test_relationship_writers_preserve_decay_cursor(self):
+        dispatch = (SCRIPT_DIR / "agent_dispatch.py").read_text()
+        interaction = (SCRIPT_DIR / "interaction_engine.py").read_text()
+        combat = (SCRIPT_DIR / "combat_tick.py").read_text()
+        self.assertIn('rel_data.setdefault("_meta", {})["lastUpdate"]', dispatch)
+        self.assertNotIn('rel_data["_meta"] = {"lastUpdate"', dispatch)
+        self.assertIn('data["_meta"]["lastUpdate"]', interaction)
+        self.assertIn('rel_doc["_meta"] = rel_doc.get("_meta", {})', combat)
+
+    def test_bond_parity_is_enforced_after_reconciliation_only(self):
+        import importlib.util
+        spec = importlib.util.spec_from_file_location(
+            "relationship_validation",
+            SCRIPT_DIR / "validate_action.py",
+        )
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        data = {
+            "edges": [{
+                "a": "alpha-001",
+                "b": "beta-001",
+                "score": 2,
+                "lastInteraction": "2026-01-01T00:00:00Z",
+            }],
+            "bonds": [],
+            "_meta": {},
+        }
+        module.errors = []
+        module.validate_relationships(data, {"alpha-001", "beta-001"})
+        self.assertEqual(module.errors, [])
+        module.validate_relationships(
+            data,
+            {"alpha-001", "beta-001"},
+            enforce_bonds=True,
+        )
+        self.assertTrue(any("derived exactly" in error for error in module.errors))
 
 
 class TestActionIntegrity(unittest.TestCase):
@@ -2118,6 +2356,38 @@ class TestBundleSourceFiles(unittest.TestCase):
         """bundle.sh inlines src/html/layout.html — must be present."""
         layout = BASE_DIR / "src" / "html" / "layout.html"
         self.assertTrue(layout.exists(), f"bundle.sh expects {layout.relative_to(BASE_DIR)} but it's missing")
+
+    def test_legacy_builder_delegates_to_canonical_bundle(self):
+        source = (SCRIPT_DIR / "build.py").read_text()
+        self.assertIn('scripts" / "bundle.sh', source)
+        self.assertNotIn("CSS_FILES", source)
+        self.assertNotIn("JS_FILES", source)
+
+
+class TestRepositoryHygiene(unittest.TestCase):
+    """Large inert exports and generated machine files must stay untracked."""
+
+    def test_known_junk_is_absent(self):
+        forbidden = {
+            "downloaded.html",
+            "fix_bundle.py",
+            ".DS_Store",
+            "docs/.DS_Store",
+            "scripts/__pycache__/agent_brain.cpython-311.pyc",
+        }
+        tracked = set(subprocess.check_output(
+            ["git", "-C", str(BASE_DIR), "ls-files"],
+            text=True,
+        ).splitlines())
+        deleted = set(subprocess.check_output(
+            ["git", "-C", str(BASE_DIR), "ls-files", "--deleted"],
+            text=True,
+        ).splitlines())
+        tracked -= deleted
+        self.assertEqual(
+            sorted(forbidden & tracked),
+            [],
+        )
 
 
 if __name__ == "__main__":
