@@ -1,0 +1,39 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://rappterverse.dev/schema/universe-lock-v2.schema.json",
+    "title": "Inert universe lock v2",
+    "description": "A safety sentinel only; this document is not an activation mechanism.",
+    "type": "object",
+    "additionalProperties": false,
+    "minProperties": 5,
+    "maxProperties": 5,
+    "required": [
+        "schemaVersion",
+        "mode",
+        "generation",
+        "reason",
+        "activation"
+    ],
+    "properties": {
+        "schemaVersion": {
+            "type": "string",
+            "const": "rappterverse.universe-lock/v2"
+        },
+        "mode": {
+            "type": "string",
+            "const": "disabled"
+        },
+        "generation": {
+            "type": "integer",
+            "const": 0
+        },
+        "reason": {
+            "type": "string",
+            "const": "awaiting-signed-approval"
+        },
+        "activation": {
+            "type": "null",
+            "const": null
+        }
+    }
+}
