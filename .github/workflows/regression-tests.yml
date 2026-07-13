@@ -46,6 +46,9 @@ jobs:
       - name: Run deterministic world-pack compiler tests
         run: python -m unittest discover -s tests -p 'test_world_pack_compiler.py' -v
 
+      - name: Validate inert universe-lock sentinel
+        run: python -m unittest discover -s tests -p 'test_universe_lock_v2.py' -v
+
       - name: Run frontend trust tests
         run: node scripts/test_frontend_security.js
 

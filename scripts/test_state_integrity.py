@@ -156,6 +156,44 @@ class TestCompilerCIScope(unittest.TestCase):
         self.assertTrue(profile.is_file())
         self.assertFalse((WORLDS_DIR / "recipes").exists())
 
+    def test_universe_lock_fence_is_code_owned(self):
+        self.assertTrue((BASE_DIR / "universe.lock.json").is_file())
+        self.assertTrue(
+            (
+                BASE_DIR / "schema" / "universe-lock-v2.schema.json"
+            ).is_file()
+        )
+        self.assertTrue(
+            (BASE_DIR / "tests" / "test_universe_lock_v2.py").is_file()
+        )
+        for mutable_root in (STATE_DIR, WORLDS_DIR, FEED_DIR):
+            self.assertFalse(
+                (mutable_root / "universe.lock.json").exists(),
+                str(mutable_root),
+            )
+
+    def test_universe_lock_regression_is_read_only_and_not_an_action(self):
+        command = (
+            "python -m unittest discover -s tests "
+            "-p 'test_universe_lock_v2.py' -v"
+        )
+        regression = load_yaml_text(WORKFLOWS_DIR / "regression-tests.yml")
+        self.assertEqual(1, regression.count(command))
+        test_job = regression.split("\n  report-scheduled-failure:", 1)[0]
+        self.assertIn("permissions:\n      contents: read", test_job)
+        self.assertIn("persist-credentials: false", test_job)
+        self.assertIsNone(
+            re.search(r"(?m)^\s+[a-z-]+:\s+write\s*$", test_job)
+        )
+
+        action = load_yaml_text(WORKFLOWS_DIR / "agent-action.yml")
+        trigger = action.split("\npermissions:", 1)[0]
+        self.assertEqual(
+            ["state/**", "worlds/**", "feed/**"],
+            re.findall(r"(?m)^\s+- ['\"]([^'\"]+)['\"]\s*$", trigger),
+        )
+        self.assertNotIn("universe", trigger.lower())
+
 
 class TestWorkflowConcurrency(unittest.TestCase):
     """Verify all state-mutating workflows have the global concurrency group."""
