@@ -111,7 +111,7 @@ def scan_content(content: str, filepath: str, sensitive_terms: list[str]) -> lis
     return findings
 
 
-def run_git(repo_root: Path, *args: str) -> list[str]:
+def run_git(repo_root: Path, *args: str, nul: bool = False) -> list[str]:
     result = subprocess.run(
         ["git", *args],
         cwd=repo_root,
@@ -121,15 +121,20 @@ def run_git(repo_root: Path, *args: str) -> list[str]:
     if result.returncode != 0:
         detail = result.stderr.strip() or f"git exited with status {result.returncode}"
         raise ScanError(detail)
-    return [line for line in result.stdout.splitlines() if line]
+    separator = "\0" if nul else "\n"
+    return [item for item in result.stdout.split(separator) if item]
 
 
 def selected_files(args: argparse.Namespace) -> tuple[list[str], str]:
     if args.mode == "staged":
-        files = run_git(args.repo_root, "diff", "--cached", "--name-only", "--diff-filter=ACMRT")
+        files = run_git(
+            args.repo_root,
+            "diff", "--cached", "--name-only", "--diff-filter=ACMRT", "-z",
+            nul=True,
+        )
         label = "staged diff"
     elif args.mode == "all-tracked":
-        files = run_git(args.repo_root, "ls-files")
+        files = run_git(args.repo_root, "ls-files", "-z", nul=True)
         label = "all tracked files"
     elif args.mode == "diff":
         base, head = args.diff
@@ -138,8 +143,10 @@ def selected_files(args: argparse.Namespace) -> tuple[list[str], str]:
             "diff",
             "--name-only",
             "--diff-filter=ACMRT",
+            "-z",
             f"{base}...{head}",
             "--",
+            nul=True,
         )
         label = f"diff {base[:12]}...{head[:12]}"
     else:
@@ -149,19 +156,50 @@ def selected_files(args: argparse.Namespace) -> tuple[list[str], str]:
             "--cached",
             "--others",
             "--exclude-standard",
+            "-z",
             "--",
             *args.paths,
+            nul=True,
         )
         label = "paths " + ", ".join(args.paths)
     return sorted(set(files)), label
 
 
-def read_scannable_file(repo_root: Path, filepath: str) -> str | None:
+def read_scannable_file(
+    repo_root: Path,
+    filepath: str,
+    *,
+    source: str = "working",
+) -> str | None:
     relative = Path(filepath)
     if relative.is_absolute() or ".." in relative.parts:
         raise ScanError(f"{filepath}: path escapes repository")
     if relative.suffix.lower() not in SCANNABLE_EXTENSIONS:
         return None
+
+    if source == "index":
+        entry = run_git(
+            repo_root,
+            "ls-files", "--stage", "-z", "--", filepath,
+            nul=True,
+        )
+        if not entry:
+            raise ScanError(f"{filepath}: staged file is missing or unreadable")
+        mode = entry[0].split(maxsplit=1)[0]
+        if mode == "120000":
+            raise ScanError(f"{filepath}: symlinks are not scannable")
+        result = subprocess.run(
+            ["git", "show", f":{filepath}"],
+            cwd=repo_root,
+            capture_output=True,
+        )
+        if result.returncode != 0:
+            detail = result.stderr.decode("utf-8", errors="replace").strip()
+            raise ScanError(f"{filepath}: {detail or 'unable to read staged content'}")
+        try:
+            return result.stdout.decode("utf-8")
+        except UnicodeError as exc:
+            raise ScanError(f"{filepath}: staged file is unreadable") from exc
 
     full_path = repo_root / relative
     if full_path.is_symlink():
@@ -194,7 +232,11 @@ def main(argv: list[str] | None = None) -> int:
         findings: list[str] = []
         scanned = 0
         for filepath in files:
-            content = read_scannable_file(args.repo_root, filepath)
+            content = read_scannable_file(
+                args.repo_root,
+                filepath,
+                source="index" if args.mode == "staged" else "working",
+            )
             if content is None:
                 continue
             scanned += 1

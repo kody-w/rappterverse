@@ -21,11 +21,14 @@ Delta file format (state/inbox/{unique-id}.json):
 
 from __future__ import annotations
 import json
+import os
 import sys
 from datetime import datetime
 from pathlib import Path
 
-BASE_DIR = Path(__file__).parent.parent
+BASE_DIR = Path(
+    os.environ.get("RAPPTERVERSE_REPO_ROOT", Path(__file__).parent.parent)
+).resolve()
 INBOX_DIR = BASE_DIR / "state" / "inbox"
 STATE_DIR = BASE_DIR / "state"
 WORLDS_DIR = BASE_DIR / "worlds"

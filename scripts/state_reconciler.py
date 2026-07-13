@@ -53,12 +53,13 @@ def run_validation(
     args: list[str],
     *,
     env: dict[str, str],
+    cwd: Path = BASE_DIR,
     rejection_codes: tuple[int, ...] = (1,),
 ):
     try:
         result = subprocess.run(
             args,
-            cwd=BASE_DIR,
+            cwd=cwd,
             env=env,
             capture_output=True,
             text=True,
@@ -92,6 +93,24 @@ def preflight_candidate(candidate: Path, changed_paths: list[str]):
             raise ValidationRejected(f"{filepath}: changed path is not a regular file")
         if full_path.stat().st_size > MAX_CANDIDATE_FILE_BYTES:
             raise ValidationRejected(f"{filepath}: changed file exceeds size limit")
+
+
+def candidate_changed_paths(base_sha: str, head_sha: str, candidate: Path) -> list[str]:
+    output = run_command([
+        "git", "diff", "--name-status", "--no-renames",
+        f"{base_sha}...{head_sha}", "--",
+    ], cwd=candidate)
+    paths = []
+    for line in output.splitlines():
+        status, separator, filepath = line.partition("\t")
+        if not separator or not filepath:
+            raise ValidationRejected(f"Unparseable changed-path record: {line}")
+        if status == "D":
+            raise ValidationRejected(f"{filepath}: state PRs may not delete files")
+        if not filepath.startswith(STATE_PREFIXES):
+            raise ValidationRejected(f"{filepath}: path is outside canonical state")
+        paths.append(filepath)
+    return paths
 
 
 def gh_json(args: list[str]) -> object:
@@ -261,10 +280,7 @@ class StateReconciler:
                 )
             except ReconcileError as exc:
                 raise ValidationRejected(f"synthetic merge conflict: {exc}") from exc
-            changed_paths = run_command([
-                "git", "diff", "--name-only", "--diff-filter=ACMRT",
-                f"{base_sha}...{head_sha}", "--",
-            ], cwd=candidate).splitlines()
+            changed_paths = candidate_changed_paths(base_sha, head_sha, candidate)
             preflight_candidate(candidate, changed_paths)
             env = os.environ.copy()
             env.update({
@@ -284,25 +300,71 @@ class StateReconciler:
                 [sys.executable, str(BASE_DIR / "scripts" / "validate_delta.py")],
                 env=env,
             )
+
+            if list((candidate / "state" / "inbox").glob("*.json")):
+                materialize_env = env.copy()
+                materialize_env["RAPPTERVERSE_REPO_ROOT"] = str(candidate)
+                run_validation(
+                    [sys.executable, str(BASE_DIR / "scripts" / "apply_deltas.py")],
+                    env=materialize_env,
+                    cwd=candidate,
+                )
+                run_command(
+                    ["git", "add", "-A", "state", "worlds", "feed"],
+                    cwd=candidate,
+                )
+
+            run_validation([
+                sys.executable,
+                str(candidate / "scripts" / "generate_chronicles.py"),
+            ], env=env, cwd=candidate)
+            run_validation([
+                sys.executable,
+                str(candidate / "scripts" / "build_agent_registry.py"),
+                "--fill-missing",
+            ], env=env, cwd=candidate)
+            run_validation([
+                sys.executable,
+                str(BASE_DIR / "scripts" / "generate_state_snapshot.py"),
+                "--repo-root",
+                str(candidate),
+            ], env=env, cwd=candidate)
+            run_validation([
+                sys.executable,
+                str(candidate / "scripts" / "generate_dashboard.py"),
+            ], env=env, cwd=candidate)
+            run_command([
+                "git", "add",
+                "README.md",
+                "state/chronicles.json",
+                "state/snapshot.json",
+                "docs/chronicles",
+                "agents",
+            ], cwd=candidate)
+
+            run_validation([
+                sys.executable,
+                str(BASE_DIR / "scripts" / "validate_action.py"),
+                "--validate-state",
+            ], env=env, cwd=candidate)
+
             run_validation([
                 sys.executable,
                 str(BASE_DIR / "scripts" / "pii_scan.py"),
                 "--repo-root",
                 str(candidate),
-                "--diff",
-                base_sha,
-                head_sha,
+                "--paths",
+                "README.md",
+                "state",
+                "worlds",
+                "feed",
+                "docs/chronicles",
+                "agents",
             ], env=env)
             run_validation([
                 sys.executable,
-                str(BASE_DIR / "scripts" / "test_state_integrity.py"),
-                "TestAgentIntegrity",
-                "TestActionIntegrity",
-                "TestChatIntegrity",
-                "TestReferentialIntegrity",
-                "TestStateJSON",
-                "TestWorldObjectIntegrity",
-            ], env=env)
+                str(candidate / "scripts" / "test_state_integrity.py"),
+            ], env=env, cwd=candidate)
 
             tree_sha = run_command(["git", "write-tree"], cwd=candidate)
             commit_env = env.copy()
@@ -404,16 +466,6 @@ class StateReconciler:
             ])
             print(f"Merged state PR #{number} at {head_sha[:12]}")
             self.finalize_applied_pr(number, head_sha, merge_commit)
-            try:
-                run_command([
-                    "gh", "workflow", "run", "apply-deltas.yml",
-                    "--repo", self.repo, "--ref", "main",
-                ])
-            except ReconcileError as exc:
-                print(
-                    f"PR #{number} merged; delta wake-up failed and will be retried: {exc}",
-                    file=sys.stderr,
-                )
             return MERGED
         except ValidationRejected as exc:
             if not self.dry_run:
@@ -429,15 +481,6 @@ class StateReconciler:
     def drain(self, max_items: int) -> int:
         if not self.dry_run and self.current_main_sha() != self.policy_sha:
             raise ReconcileError("main advanced beyond the loaded reconciliation policy")
-        if list((BASE_DIR / "state" / "inbox").glob("*.json")):
-            if not self.dry_run:
-                run_command([
-                    "gh", "workflow", "run", "apply-deltas.yml",
-                    "--repo", self.repo, "--ref", "main",
-                ])
-            print("State queue paused until the durable inbox is materialized")
-            return 0
-
         processed = 0
         for pr in self.queue():
             if processed >= max_items:

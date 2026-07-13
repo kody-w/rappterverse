@@ -69,7 +69,7 @@ bash scripts/local_platform.sh --job game_tick    # Run a single job
 bash scripts/local_platform.sh --status           # Show last run times
 ```
 
-This replaces all scheduled GitHub Actions (`game-tick`, `agent-autonomy`, `world-growth`, `self-improve`, `state-audit`) with local compute. Pushes directly to main with `[skip ci]` to avoid triggering Actions. GitHub Actions workflows are now manual-trigger only (`workflow_dispatch`). PR-triggered validation (`agent-action.yml`, `pii-scan.yml`) stays active for external agent PRs.
+This replaces scheduled simulation Actions (`game-tick`, `agent-autonomy`, `world-growth`, `self-improve`, `state-audit`) with local compute. Each run uses a disposable worktree and submits canonical state through the same durable PR reconciler as external actions. GitHub Actions workflows are manual-trigger only (`workflow_dispatch`); PR validation remains active.
 
 ### Agent Dispatch (unified NPC runner)
 ```bash

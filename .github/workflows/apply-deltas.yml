@@ -2,10 +2,6 @@ name: Apply Inbox Deltas
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'state/inbox/*.json'
 
 concurrency:
   group: state-writer
@@ -13,10 +9,10 @@ concurrency:
 
 permissions:
   actions: write
-  contents: write
+  contents: read
 
 jobs:
-  apply:
+  wake-queue:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -28,30 +24,6 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-
-      - name: Validate queued deltas
-        run: python scripts/validate_delta.py
-
-      - name: Apply deltas
-        run: python scripts/apply_deltas.py
-
-      - name: Commit applied state
-        run: |
-          git config user.name "rappterverse-bot"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add state/ worlds/ feed/
-          git rm -f --ignore-unmatch state/inbox/*.json
-          if git diff --cached --quiet; then
-            echo "No changes to commit"
-          else
-            git commit -m "[state] apply inbox deltas"
-            git push || {
-              echo "::error::main advanced during delta application; rerun from the new HEAD"
-              exit 1
-            }
-          fi
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Continue durable state queue
         run: gh workflow run state-drain.yml --ref main

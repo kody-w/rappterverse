@@ -596,8 +596,9 @@ def execute_agent_action(agent_id: str, registry: dict, npc_lookup: dict,
                 "id": aid, "timestamp": timestamp, "agentId": agent_id,
                 "type": "interact", "world": world,
                 "data": {
-                    "subtype": "poke",
-                    "target": target_id,
+                    "targetType": "agent",
+                    "targetId": target_id,
+                    "interaction": "poke",
                     "targetName": target_name,
                 },
             })
@@ -738,9 +739,15 @@ def execute_agent_action(agent_id: str, registry: dict, npc_lookup: dict,
             aid = get_next_id("action-", action_ids + [a["id"] for a in new_actions])
             new_actions.append({
                 "id": aid, "timestamp": timestamp, "agentId": agent_id,
-                "type": "enroll", "world": world,
-                "data": {"courseId": course["id"], "courseName": course["name"],
-                         "skill": course.get("skill"), "tuition": tuition},
+                "type": "interact", "world": world,
+                "data": {
+                    "targetType": "object",
+                    "targetId": course["id"],
+                    "interaction": "enroll",
+                    "courseName": course["name"],
+                    "skill": course.get("skill"),
+                    "tuition": tuition,
+                },
             })
             agent["action"] = "studying"
             mid = get_next_id("msg-", msg_ids + [m["id"] for m in new_messages])
@@ -778,9 +785,15 @@ def execute_agent_action(agent_id: str, registry: dict, npc_lookup: dict,
                 aid = get_next_id("action-", action_ids + [a["id"] for a in new_actions])
                 new_actions.append({
                     "id": aid, "timestamp": timestamp, "agentId": agent_id,
-                    "type": "tip", "world": world,
-                    "data": {"to": target_id, "toName": target_name,
-                             "amount": tip_amount, "reason": "liked their message"},
+                    "type": "interact", "world": world,
+                    "data": {
+                        "targetType": "agent",
+                        "targetId": target_id,
+                        "interaction": "tip",
+                        "toName": target_name,
+                        "amount": tip_amount,
+                        "reason": "liked their message",
+                    },
                 })
                 agent["action"] = "tipping"
                 mid = get_next_id("msg-", msg_ids + [m["id"] for m in new_messages])
@@ -838,9 +851,15 @@ def execute_agent_action(agent_id: str, registry: dict, npc_lookup: dict,
                 want_name = want_item.get("name", "something") if isinstance(want_item, dict) else str(want_item)
                 new_actions.append({
                     "id": aid, "timestamp": timestamp, "agentId": agent_id,
-                    "type": "trade_offer", "world": world,
-                    "data": {"to": target["id"], "toName": target_name,
-                             "offering": offer_name, "wanting": want_name},
+                    "type": "interact", "world": world,
+                    "data": {
+                        "targetType": "agent",
+                        "targetId": target["id"],
+                        "interaction": "trade",
+                        "toName": target_name,
+                        "offering": offer_name,
+                        "wanting": want_name,
+                    },
                 })
                 agent["action"] = "trading"
                 mid = get_next_id("msg-", msg_ids + [m["id"] for m in new_messages])
@@ -885,15 +904,24 @@ def execute_agent_action(agent_id: str, registry: dict, npc_lookup: dict,
                 "y": 0,
                 "z": max(b["z"][0], min(b["z"][1], att_pos.get("z", 0) + random.uniform(-2, 2))),
             }
+            old_pos = agent.get("position", {"x": 0, "y": 0, "z": 0})
             agent["position"] = new_pos
             agent["action"] = "fighting"
             dmg = random.randint(8, 15)
             aid = get_next_id("action-", action_ids + [a["id"] for a in new_actions])
             new_actions.append({
                 "id": aid, "timestamp": timestamp, "agentId": agent_id,
-                "type": "defend", "world": world,
-                "data": {"target": ce.get("attackerId"), "targetName": attacker_name,
-                         "damage": dmg, "combatEventId": ce.get("id")},
+                "type": "move", "world": world,
+                "data": {
+                    "from": old_pos,
+                    "to": new_pos,
+                    "duration": 1000,
+                    "interaction": "defend",
+                    "target": ce.get("attackerId"),
+                    "targetName": attacker_name,
+                    "damage": dmg,
+                    "combatEventId": ce.get("id"),
+                },
             })
             if random.random() < 0.3:
                 war_cries = [
@@ -958,9 +986,14 @@ def execute_agent_action(agent_id: str, registry: dict, npc_lookup: dict,
                 aid = get_next_id("action-", action_ids + [a["id"] for a in new_actions])
                 new_actions.append({
                     "id": aid, "timestamp": timestamp, "agentId": agent_id,
-                    "type": "challenge", "world": "arena",
-                    "data": {"target": opponent["id"], "targetName": opp_name,
-                             "wager": min(50, _agent_balance(_load_economy(), agent_id))},
+                    "type": "interact", "world": "arena",
+                    "data": {
+                        "targetType": "agent",
+                        "targetId": opponent["id"],
+                        "interaction": "challenge",
+                        "targetName": opp_name,
+                        "wager": min(50, _agent_balance(_load_economy(), agent_id)),
+                    },
                 })
                 agent["action"] = "fighting"
                 mid = get_next_id("msg-", msg_ids + [m["id"] for m in new_messages])
@@ -1152,6 +1185,15 @@ def main():
     agents = agents_data.get("agents", [])
     actions = actions_data.get("actions", [])
     messages = chat_data.get("messages", [])
+    system_agent_ids = {
+        agent["id"]
+        for agent in agents
+        if agent.get("controller", "system") == "system"
+    }
+    stale_registry_ids = sorted(set(registry) - system_agent_ids)
+    for agent_id in stale_registry_ids:
+        registry.pop(agent_id, None)
+        print(f"  Skipping non-system registry entry: {agent_id}")
 
     token = "" if args.no_llm else get_gh_token()
     brain = AgentBrain(token) if token else None
@@ -1352,12 +1394,18 @@ def main():
                         "description": f"Said: {chat_text[:50]}",
                         "world": agent_world,
                         "timestamp": timestamp,
+                        "data": {
+                            "message": chat_text,
+                            "messageType": "chat",
+                        },
                     })
                     n_msgs += 1
                     print(f"  🧠 {aid} [{tool}] \"{chat_text[:60]}\"")
 
                 elif tool == "emote":
                     emote = tool_args.get("action", "think")
+                    if emote not in {"wave", "dance", "bow", "clap", "think", "celebrate", "cheer", "nod"}:
+                        emote = "think"
                     actions.append({
                         "id": action_id,
                         "agentId": aid,
@@ -1365,20 +1413,36 @@ def main():
                         "description": f"Emotes {emote}",
                         "world": agent_world,
                         "timestamp": timestamp,
+                        "data": {
+                            "emote": emote,
+                            "duration": 3000,
+                        },
                     })
                     print(f"  🧠 {aid} [{tool}] {emote}")
 
                 elif tool == "travel":
                     dest = tool_args.get("destination", "hub")
+                    if dest not in bounds:
+                        print(f"  🚫 {aid} [travel] invalid destination {dest!r}")
+                        continue
                     agent_record["world"] = dest
                     agent_world = dest  # subsequent actions this frame happen there
+                    destination_pos = {"x": 0, "y": 0, "z": 0}
+                    agent_record["position"] = destination_pos
                     actions.append({
                         "id": action_id,
                         "agentId": aid,
-                        "type": "travel",
+                        "type": "move",
                         "description": f"Traveled to {dest}: {tool_args.get('reason', '')}",
                         "world": dest,
                         "timestamp": timestamp,
+                        "data": {
+                            "from": destination_pos,
+                            "to": destination_pos,
+                            "duration": 2000,
+                            "travel": True,
+                            "reason": tool_args.get("reason", ""),
+                        },
                     })
                     print(f"  🧠 {aid} [{tool}] → {dest} ({tool_args.get('reason', '')[:40]})")
 
@@ -1407,9 +1471,12 @@ def main():
                     print(f"  🧠 {aid} [{tool}] → ({new_pos['x']},{new_pos['z']}) {tool_args.get('reason', '')[:40]}")
 
                 else:
-                    # Strategic actions (tip, trade, challenge, poke, enroll) —
-                    # the LLM generated structured args (target, amount, reason)
-                    # so we record those concretely instead of a stringified blob.
+                    # Strategic brain tools persist as canonical interactions.
+                    # Multi-file trade/combat/enrollment transitions remain owned
+                    # by their dedicated engines rather than partial action rows.
+                    if tool not in {"tip", "trade", "challenge", "poke", "enroll", "defend"}:
+                        print(f"  🚫 {aid} [{tool}] unsupported persisted action")
+                        continue
                     desc_parts = []
                     for k in ("target", "amount", "destination", "interest", "reason"):
                         if k in tool_args and tool_args[k] not in ("", None):
@@ -1417,14 +1484,21 @@ def main():
                     actions.append({
                         "id": action_id,
                         "agentId": aid,
-                        "type": tool,
+                        "type": "interact",
                         "description": ", ".join(desc_parts)[:140] if desc_parts
                                        else json.dumps(tool_args)[:100],
                         "world": agent_world,
                         "timestamp": timestamp,
-                        "data": {k: v for k, v in tool_args.items()
-                                 if k in ("target", "amount", "reason",
-                                          "destination", "interest")},
+                        "data": {
+                            "targetType": "agent" if tool != "enroll" else "object",
+                            "targetId": tool_args.get("target")
+                                        or ("academy" if tool == "enroll" else "unknown"),
+                            "interaction": tool,
+                            **{
+                                k: v for k, v in tool_args.items()
+                                if k in ("amount", "reason", "destination", "interest")
+                            },
+                        },
                     })
                     print(f"  🧠 {aid} [{tool}] {', '.join(desc_parts)[:80]}")
 

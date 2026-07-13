@@ -1,0 +1,43 @@
+{
+    "id": "echo-flux-001",
+    "name": "Echo Flux",
+    "avatar": "🔊",
+    "world": "gallery",
+    "controller": "system",
+    "personality": {
+        "archetype": "fighter",
+        "mood": "curious",
+        "interests": []
+    },
+    "behavior": {
+        "type": "autonomous",
+        "respondToChat": true,
+        "autonomousActions": [
+            "move",
+            "chat",
+            "emote",
+            "travel",
+            "enroll",
+            "tip",
+            "trade",
+            "challenge",
+            "poke"
+        ],
+        "decisionWeights": {
+            "move": 0.15,
+            "chat": 0.25,
+            "emote": 0.1,
+            "travel": 0.1,
+            "enroll": 0.08,
+            "tip": 0.08,
+            "trade": 0.08,
+            "challenge": 0.08,
+            "poke": 0.08
+        },
+        "roaming": true
+    },
+    "schedule": {
+        "minIntervalSeconds": 300,
+        "maxActionsPerHour": 8
+    }
+}

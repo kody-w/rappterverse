@@ -330,12 +330,17 @@ def economy_tick(dry_run: bool = False):
     zoo = load_json(STATE_DIR / "zoo.json")
     inventory = load_json(STATE_DIR / "inventory.json")
 
-    active_agents = [a for a in agents if a.get("status") == "active"]
+    active_agents = [
+        agent for agent in agents
+        if agent.get("status") == "active"
+        and agent.get("controller", "system") == "system"
+    ]
     if not active_agents:
         print("  ⚠️  No active agents")
         return
 
     results = []
+    system_names = {agent["name"] for agent in active_agents}
 
     # ── Phase 1: Income Distribution ─────────────────────────
     for agent in active_agents:
@@ -399,7 +404,11 @@ def economy_tick(dry_run: bool = False):
                 continue
 
             # Pick a post to tip (not own)
-            candidates = [p for p in zoo_posts if p.get("author") != name]
+            candidates = [
+                post for post in zoo_posts
+                if post.get("author") != name
+                and post.get("author") in system_names
+            ]
             if not candidates:
                 continue
 
@@ -464,7 +473,11 @@ def economy_tick(dry_run: bool = False):
         results.append(f"  🏪 {agent['name']} listed {item['name']} ({item['rarity']}) for {item['price']} RAPP")
 
     # Buy from listings
-    active_listings = [l for l in market["listings"] if l["status"] == "active"]
+    active_listings = [
+        listing for listing in market["listings"]
+        if listing["status"] == "active"
+        and listing.get("seller") in system_names
+    ]
     if active_listings:
         num_buyers = min(5, max(1, len(active_agents) // 8))
         buyers = random.sample(active_agents, min(num_buyers, len(active_agents)))
@@ -550,6 +563,9 @@ def economy_tick(dry_run: bool = False):
         if not friends:
             continue
 
+        friends = [friend for friend in friends if friend in system_names]
+        if not friends:
+            continue
         friend = random.choice(friends)
         lo, hi = gift_rule["amount_range"]
         amount = min(random.randint(lo, hi), bal // 2)

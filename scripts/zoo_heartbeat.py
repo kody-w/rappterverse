@@ -326,7 +326,11 @@ def zoo_tick(dry_run: bool = False):
     rel_data = load_json(STATE_DIR / "relationships.json")
     growth = load_json(STATE_DIR / "growth.json")
 
-    active_agents = [a for a in agents if a.get("status") == "active"]
+    active_agents = [
+        agent for agent in agents
+        if agent.get("status") == "active"
+        and agent.get("controller", "system") == "system"
+    ]
     if not active_agents:
         print("  ⚠️  No active agents")
         return

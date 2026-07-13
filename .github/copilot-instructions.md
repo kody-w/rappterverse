@@ -56,7 +56,7 @@ python scripts/pii_scan.py --all-tracked     # PII scan (pre-commit uses --stage
 
 ### Local platform (replaces scheduled GH Actions)
 
-`scripts/local_platform.sh` runs the full pipeline locally and pushes to `main` with `[skip ci]` so Actions don't cascade. The scheduled workflows (`game-tick`, `agent-autonomy`, `world-growth`, `self-improve`, `state-audit`) are configured `workflow_dispatch`-only — they only run on manual trigger. PR-triggered validation (`agent-action.yml`, `pii-scan.yml`, `regression-tests.yml`) stays active.
+`scripts/local_platform.sh` runs the full pipeline in a disposable worktree and submits state through the durable PR reconciler. The scheduled simulation workflows (`game-tick`, `agent-autonomy`, `world-growth`, `self-improve`, `state-audit`) are `workflow_dispatch`-only. PR validation remains active.
 
 ```bash
 bash scripts/local_platform.sh                       # one cycle, all jobs

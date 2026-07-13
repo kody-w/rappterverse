@@ -8,6 +8,7 @@ Exit 0 = valid (auto-merge), Exit 1 = invalid (reject).
 from __future__ import annotations
 
 import json
+import math
 import os
 import subprocess
 import sys
@@ -85,12 +86,27 @@ def info(msg: str):
     summary_lines.append(msg)
 
 
+def reject_json_constant(value: str):
+    raise ValueError(f"non-standard numeric constant {value}")
+
+
+def validate_finite_numbers(value: object, context: str):
+    if isinstance(value, float) and not math.isfinite(value):
+        error(f"`{context}`: non-finite numeric value")
+    elif isinstance(value, dict):
+        for key, child in value.items():
+            validate_finite_numbers(child, f"{context}/{key}")
+    elif isinstance(value, list):
+        for index, child in enumerate(value):
+            validate_finite_numbers(child, f"{context}/{index}")
+
+
 def load_json(path: Path) -> dict | None:
     """Load and parse JSON, returning None on failure."""
     try:
         with open(path) as f:
-            return json.load(f)
-    except json.JSONDecodeError as e:
+            return json.load(f, parse_constant=reject_json_constant)
+    except (json.JSONDecodeError, ValueError) as e:
         error(f"`{path.name}`: Invalid JSON — {e}")
         return None
     except FileNotFoundError:
@@ -121,8 +137,8 @@ def load_base_json(filepath: str):
     )
     if result.returncode == 0:
         try:
-            return json.loads(result.stdout)
-        except json.JSONDecodeError:
+            return json.loads(result.stdout, parse_constant=reject_json_constant)
+        except (json.JSONDecodeError, ValueError):
             return None
     return None
 
@@ -392,8 +408,9 @@ def validate_actions(data: dict, agent_ids: set):
                 )
             prev_ts = ts
 
-    # Detailed validation on recent actions
-    for action in actions[-10:]:
+    # Full retained window validation prevents invalid rows being hidden by
+    # appending enough newer records.
+    for action in actions:
         aid = action.get("id")
         if not aid:
             error("`actions.json`: Action missing `id`")
@@ -413,10 +430,16 @@ def validate_actions(data: dict, agent_ids: set):
         world = action.get("world")
         if world and world not in WORLD_BOUNDS:
             error(f"`actions.json`: Action `{aid}` references unknown world `{world}`")
+        action_data = action.get("data")
+        if "data" in action and not isinstance(action_data, dict):
+            error(f"`actions.json`: Action `{aid}` data must be an object")
+            action_data = {}
+        elif action_data is None:
+            action_data = {}
 
         # Validate move positions
         if action_type == "move":
-            move_data = action.get("data", {})
+            move_data = action_data
             w = action.get("world", "hub")
             if "to" in move_data:
                 validate_position(move_data["to"], w, f"Action `{aid}` move target")
@@ -425,7 +448,7 @@ def validate_actions(data: dict, agent_ids: set):
 
         # Validate emotes
         if action_type == "emote":
-            emote = action.get("data", {}).get("emote")
+            emote = action_data.get("emote")
             if emote and emote not in VALID_EMOTES:
                 error(f"`actions.json`: Action `{aid}` has invalid emote `{emote}`")
 
@@ -464,7 +487,7 @@ def validate_chat(data: dict, agent_ids: set):
                 )
             prev_ts = ts
 
-    for msg in messages[-10:]:  # Detailed validation on recent messages
+    for msg in messages:
         mid = msg.get("id")
         if not mid:
             error("`chat.json`: Message missing `id`")
@@ -577,6 +600,60 @@ def validate_npcs(data: dict):
                 error(f"`npcs.json`: NPC `{nid}` need `{need_name}` = {value} (must be 0–100)")
 
     info(f"NPCs: {len(data.get('npcs', []))} total, needs/positions validated")
+
+
+def validate_canonical_state():
+    """Validate complete canonical files without scoring simulation health."""
+    agents_data = load_json(STATE_DIR / "agents.json")
+    if not agents_data:
+        error("Cannot validate canonical state: agents.json failed to load")
+        return
+    agent_ids = {
+        agent["id"]
+        for agent in agents_data.get("agents", [])
+        if "id" in agent
+    }
+    validate_agents(agents_data)
+    validate_finite_numbers(agents_data, "state/agents.json")
+    for filename in (
+        "actions.json",
+        "chat.json",
+        "trades.json",
+        "inventory.json",
+        "npcs.json",
+        "game_state.json",
+    ):
+        data = load_json(STATE_DIR / filename)
+        if data is None:
+            error(f"`{filename}`: failed to load")
+        else:
+            validate_finite_numbers(data, f"state/{filename}")
+            validate_state_file(filename, data, agent_ids)
+
+    for world_dir in sorted(WORLDS_DIR.iterdir()):
+        objects_path = world_dir / "objects.json"
+        if not objects_path.is_file():
+            continue
+        data = load_json(objects_path)
+        if data is None or not isinstance(data.get("objects"), list):
+            error(f"`{world_dir.name}/objects.json`: missing objects array")
+            continue
+        validate_finite_numbers(data, f"worlds/{world_dir.name}/objects.json")
+        seen_ids = set()
+        for obj in data["objects"]:
+            object_id = obj.get("id")
+            if not object_id:
+                error(f"`{world_dir.name}/objects.json`: object missing id")
+            elif object_id in seen_ids:
+                error(f"`{world_dir.name}/objects.json`: duplicate object `{object_id}`")
+            seen_ids.add(object_id)
+            if isinstance(obj.get("position"), dict):
+                validate_position(
+                    obj["position"],
+                    world_dir.name,
+                    f"Object `{object_id or 'unknown'}`",
+                )
+    info("Canonical state files validated")
 
 
 # ---------------------------------------------------------------------------
@@ -1020,6 +1097,17 @@ def audit_quality_metrics():
 
 def main():
     audit_mode = "--audit" in sys.argv
+    canonical_mode = "--validate-state" in sys.argv
+
+    if canonical_mode:
+        validate_canonical_state()
+        if errors:
+            print(f"\n❌ Canonical state validation found {len(errors)} issue(s):")
+            for item in errors:
+                print(f"  ✗ {item}")
+            sys.exit(1)
+        print("\n✅ Canonical state files are valid")
+        sys.exit(0)
 
     if audit_mode:
         # Full cross-file consistency audit + PR drift detection + quality metrics
@@ -1075,6 +1163,29 @@ def main():
             sys.exit(0)
 
     info(f"Changed files: {', '.join(rappterverse_files)}")
+    pr_author = os.environ.get("PR_AUTHOR", "")
+    if (
+        os.environ.get("VALIDATION_REQUIRE_AUTH") == "1"
+        and pr_author
+        and pr_author not in trusted_automation_authors()
+    ):
+        direct_paths = {
+            "state/agents.json",
+            "state/actions.json",
+            "state/chat.json",
+            "feed/activity.json",
+        }
+        unauthorized_paths = [
+            filepath
+            for filepath in rappterverse_files
+            if filepath not in direct_paths and not filepath.startswith("state/inbox/")
+        ]
+        if unauthorized_paths:
+            error(
+                "External authors must use controller-bound direct histories or "
+                "state/inbox deltas; unauthorized paths: "
+                + ", ".join(unauthorized_paths)
+            )
 
     # Collect agent IDs for cross-validation
     agents_data = load_json(STATE_DIR / "agents.json")
@@ -1090,6 +1201,7 @@ def main():
             filename = parts[-1]
             data = load_json(full_path)
             if data is not None:
+                validate_finite_numbers(data, filepath)
                 if len(parts) == 2:
                     validate_state_file(filename, data, agent_ids)
                 else:
@@ -1099,14 +1211,15 @@ def main():
             # World config files — just validate JSON
             data = load_json(full_path)
             if data is not None:
+                validate_finite_numbers(data, filepath)
                 info(f"`{filepath}`: JSON valid")
         elif parts[0] == "feed":
             data = load_json(full_path)
             if data is not None:
+                validate_finite_numbers(data, filepath)
                 info(f"`{filepath}`: JSON valid")
 
     # Actor authorization is semantic: bind every new effect to its controller.
-    pr_author = os.environ.get("PR_AUTHOR", "")
     if os.environ.get("VALIDATION_REQUIRE_AUTH") == "1" and not pr_author:
         error("PR_AUTHOR is required for state authorization")
     if pr_author and agents_data:

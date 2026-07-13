@@ -3,8 +3,8 @@
 #
 # Runs the entire RAPPterverse pipeline locally on a schedule. When running,
 # this script replaces all cron-based GitHub Actions: game-tick, agent-autonomy,
-# world-growth, self-improve, state-audit. Pushes directly to main with [skip ci]
-# so Actions don't cascade.
+# world-growth, self-improve, state-audit. Every run is isolated in a disposable
+# worktree and publishes through the durable state-PR reconciler.
 #
 # Usage:
 #   bash scripts/local_platform.sh                    # run once (all jobs)
@@ -19,15 +19,35 @@
 #   world_growth     — every 4 hours (was: world-growth.yml every 4 hours)
 #   self_improve     — every 6 hours (was: self-improve.yml every 6 hours)
 #   state_audit      — every 12 hrs  (was: state-audit.yml every 12 hours)
-#   git_sync         — every cycle   (pull + push with [skip ci])
+#   git_sync         — every cycle   (validated PR + durable reconciliation)
 
 set -euo pipefail
 
 REPO="$(cd "$(dirname "$0")/.." && pwd)"
+
+if [ -z "${RAPPTERVERSE_ISOLATED:-}" ] && [ "${1:-}" != "--status" ]; then
+  WORKTREE="$(mktemp -d /tmp/rappterverse-platform.XXXXXX)"
+  rmdir "$WORKTREE"
+  cleanup_worktree() {
+    git -C "$REPO" worktree remove --force "$WORKTREE" >/dev/null 2>&1 || true
+  }
+  trap cleanup_worktree EXIT INT TERM
+  git -C "$REPO" fetch --no-tags origin main
+  git -C "$REPO" worktree add --detach "$WORKTREE" origin/main
+  set +e
+  RAPPTERVERSE_ISOLATED=1 \
+  RAPPTERVERSE_SHARED_REPO="$REPO" \
+  RAPPTERVERSE_LOG_DIR="$REPO/logs" \
+    bash "$WORKTREE/scripts/local_platform.sh" "$@"
+  status=$?
+  set -e
+  exit "$status"
+fi
+
 cd "$REPO"
 
 STATE_DIR="state"
-LOG_DIR="$REPO/logs"
+LOG_DIR="${RAPPTERVERSE_LOG_DIR:-$REPO/logs}"
 STATUS_FILE="$LOG_DIR/local_platform_status.json"
 PUBLICATION_BLOCK="$LOG_DIR/publication-blocked"
 INTERVAL="${INTERVAL:-300}"  # 5 minutes default
@@ -63,16 +83,25 @@ err() { echo "[$(date '+%H:%M:%S')] ERROR: $*" >&2; send_alert "$*"; }
 run_job() {
   local job="$1"
   local start=$(date +%s)
+  local output_file
+  output_file=$(mktemp)
   log "Running: $job"
-  if "$@" 2>&1 | tail -5; then
+  set +e
+  ( set -e; "$@" ) >"$output_file" 2>&1
+  local status=$?
+  set -e
+  tail -5 "$output_file"
+  rm -f "$output_file"
+  if [ "$status" -eq 0 ]; then
     local elapsed=$(( $(date +%s) - start ))
     log "  Done: $job (${elapsed}s)"
     update_status "$job" "ok" "$elapsed"
+    return 0
   else
     err "  Failed: $job"
     update_status "$job" "failed" "0"
     touch "$PUBLICATION_BLOCK"
-    return 1
+    return "$status"
   fi
   return 0
 }
@@ -106,7 +135,10 @@ import json, sys
 from datetime import datetime, timezone, timedelta
 try:
     with open('$STATUS_FILE') as f: data = json.load(f)
-    last = data.get('$job', {}).get('last_run', '')
+    job_state = data.get('$job', {})
+    if job_state.get('status') != 'ok':
+        sys.exit(0)
+    last = job_state.get('last_run', '')
     if not last:
         sys.exit(0)
     last_dt = datetime.fromisoformat(last.replace('Z', '+00:00'))
@@ -129,7 +161,7 @@ job_game_tick() {
 job_agent_dispatch() {
   # Ambient agent activity — ALL agents, via the GitHub Copilot CLI
   # Original: agent-autonomy.yml every 30 min (was capped at 10)
-  python3 scripts/build_agent_registry.py 2>&1
+  python3 scripts/build_agent_registry.py 2>&1 || return $?
   python3 scripts/agent_dispatch.py --all --max-agents 50 --no-push --brainstem 2>&1
 }
 
@@ -195,8 +227,8 @@ job_world_growth() {
   fi
 
   log "  [heartbeat] Validate state..."
-  if ! python3 scripts/validate_action.py --audit 2>&1; then
-    err "  State audit failed"
+  if ! python3 scripts/validate_action.py --validate-state 2>&1; then
+    err "  Canonical state validation failed"
     failed=1
   fi
 
@@ -212,92 +244,170 @@ job_world_growth() {
 job_self_improve() {
   # evolve-001 self-improvement cycle
   # Original: self-improve.yml every 6 hours
-  python3 scripts/build_agent_registry.py 2>&1
-  python3 scripts/agent_dispatch.py --agent evolve-001 --no-push 2>&1
-  python3 scripts/self_improve.py --no-push 2>&1
+  python3 scripts/build_agent_registry.py 2>&1 || return $?
+  python3 scripts/agent_dispatch.py --agent evolve-001 --no-push 2>&1 || return $?
+  python3 scripts/self_improve.py --no-push 2>&1 || return $?
   rm -f state/evolution_pr_body.md
 }
 
 job_state_audit() {
-  # Full state consistency check
+  # Publication-safe structural state check
   # Original: state-audit.yml every 12 hours
-  python3 scripts/validate_action.py --audit 2>&1
+  python3 scripts/validate_action.py --validate-state 2>&1
 }
 
 job_emergence() {
   # Emergence detection
-  python3 scripts/emergence.py --no-push 2>&1 || true
+  python3 scripts/emergence.py --no-push 2>&1
+}
+
+wait_for_reconciliation() {
+  local head_sha="$1"
+  local pr_url="$2"
+  local attempts=0
+  while true; do
+    local status
+    if ! status=$(gh api "repos/${GH_REPO:-kody-w/rappterverse}/commits/$head_sha/status" \
+      --jq '[.statuses[] | select(.context == "state-reconciler")][0].state // ""'); then
+      err "  Unable to query reconciliation status: $pr_url"
+      return 1
+    fi
+    if [ "$status" = "success" ]; then
+      return 0
+    fi
+    if [ "$status" = "failure" ] || [ "$status" = "error" ]; then
+      err "  Reconciler rejected proposal: $pr_url"
+      return 1
+    fi
+    local pr_state
+    if ! pr_state=$(gh pr view "$pr_url" \
+      --repo "${GH_REPO:-kody-w/rappterverse}" \
+      --json state \
+      --jq .state); then
+      err "  Unable to query proposal state: $pr_url"
+      return 1
+    fi
+    if [ "$pr_state" != "OPEN" ]; then
+      err "  Proposal closed without successful reconciliation: $pr_url"
+      return 1
+    fi
+    attempts=$((attempts + 1))
+    if [ $((attempts % 12)) -eq 0 ]; then
+      log "  Still waiting for durable reconciliation: $pr_url"
+      gh workflow run state-drain.yml --repo "${GH_REPO:-kody-w/rappterverse}" --ref main || true
+    fi
+    sleep 5
+  done
+}
+
+resume_pending_local_proposals() {
+  local pending
+  if ! pending=$(REPOSITORY_OWNER="${REPOSITORY_OWNER:-kody-w}" gh pr list \
+    --repo "${GH_REPO:-kody-w/rappterverse}" \
+    --state open \
+    --limit 100 \
+    --json number,author,baseRefName,headRefName,headRefOid,isCrossRepository,isDraft,url \
+    --jq '.[] |
+      select(.headRefName | startswith("auto/local-frame-")) |
+      select(.baseRefName == "main" and .isDraft == false and .isCrossRepository == false) |
+      select(.author.login == env.REPOSITORY_OWNER) |
+      [.number,.headRefName,.headRefOid,.url] | @tsv'); then
+    err "Unable to query pending local-platform proposals"
+    return 1
+  fi
+  [ -z "$pending" ] && return 0
+
+  log "Resuming pending local-platform proposal before advancing"
+  gh workflow run state-drain.yml --repo "${GH_REPO:-kody-w/rappterverse}" --ref main || true
+  while IFS=$'\t' read -r number branch head_sha pr_url; do
+    [ -z "$head_sha" ] && continue
+    local files_ok
+    if ! files_ok=$(gh pr view "$number" \
+      --repo "${GH_REPO:-kody-w/rappterverse}" \
+      --json files \
+      --jq 'all(.files[]; .path as $p |
+        (($p | startswith("state/")) or ($p | startswith("worlds/")) or ($p | startswith("feed/"))))'); then
+      err "Unable to inspect pending proposal #$number"
+      return 1
+    fi
+    [ "$files_ok" = "true" ] || continue
+    if ! wait_for_reconciliation "$head_sha" "$pr_url"; then
+      return 1
+    fi
+    git push origin --delete "$branch" >/dev/null 2>&1 || true
+  done <<< "$pending"
 }
 
 job_git_sync() {
-  # Pull latest, commit state changes, push with [skip ci]
+  # Publish state through the same durable PR consensus path as external actors.
   cd "$REPO"
 
-  # Pull with rebase
-  git pull --rebase --autostash origin main 2>&1 | tail -2 || true
-
-  # Check for changes in generated artifacts/state/feed.
+  # Check for canonical state changes only. Trusted reconciliation regenerates
+  # README, snapshots, and chronicle artifacts from the accepted state.
   local changed
-  changed=$(git diff --name-only -- README.md state/ feed/ docs/dashboard.html docs/chronicles/ 2>/dev/null | head -20)
+  changed=$(git diff --name-only -- state/ worlds/ feed/ 2>/dev/null | head -20)
   if [ -z "$changed" ]; then
-    changed=$(git ls-files --others --exclude-standard -- state/ feed/ 2>/dev/null | head -5)
+    changed=$(git ls-files --others --exclude-standard -- state/ worlds/ feed/ 2>/dev/null | head -5)
   fi
   if [ -z "$changed" ]; then
     echo "  No state changes to push"
     return 0
   fi
 
-  if ! python3 scripts/generate_chronicles.py --source-tree=head 2>&1; then
+  if ! python3 scripts/validate_action.py --validate-state 2>&1; then
     touch "$PUBLICATION_BLOCK"
-    err "Chronicle generation failed; refusing to publish stale artifacts"
+    err "  Publication blocked: canonical state validation failed"
     return 1
   fi
-
-  # Render the README from the final state of this frame.
-  if ! python3 scripts/generate_dashboard.py 2>&1; then
-    touch "$PUBLICATION_BLOCK"
-    err "Dashboard generation failed; refusing to publish stale artifacts"
-    return 1
-  fi
-
-  if ! python3 scripts/validate_action.py --audit 2>&1; then
-    touch "$PUBLICATION_BLOCK"
-    err "  Publication blocked: state audit failed"
-    return 1
-  fi
-  if ! python3 scripts/pii_scan.py --paths README.md state feed docs/dashboard.html docs/chronicles 2>&1; then
+  if ! python3 scripts/pii_scan.py --paths state worlds feed 2>&1; then
     touch "$PUBLICATION_BLOCK"
     err "  Publication blocked: PII scan failed"
     return 1
   fi
-  rm -f "$PUBLICATION_BLOCK"
 
-  # Stage only generated dashboard/state/feed files (never src/ or docs/index.html)
-  git add README.md 2>/dev/null || true
+  # Stage only canonical state. The reconciler owns generated presentation files.
   git add state/*.json 2>/dev/null || true
   git add state/memory/ 2>/dev/null || true
   git add state/inbox/ 2>/dev/null || true
+  git add state/programs/ 2>/dev/null || true
+  git add state/souls/ 2>/dev/null || true
+  git add worlds/*/*.json 2>/dev/null || true
   git add feed/*.json 2>/dev/null || true
-  git add docs/dashboard.html 2>/dev/null || true
-  git add docs/chronicles/ 2>/dev/null || true
+  if git diff --cached --quiet; then
+    echo "  No canonical state changes to queue"
+    return 0
+  fi
 
-  # Get current frame for commit message
   local frame
   frame=$(python3 -c "import json; print(json.load(open('state/frame_counter.json')).get('frame', '?'))" 2>/dev/null || echo "?")
-
-  # Commit with [skip ci] to prevent Actions cascade
-  local msg="[frame $frame] world tick [skip ci]"
-  git commit -m "$msg" 2>&1 | tail -1 || {
-    echo "  Nothing to commit"
-    return 0
-  }
-
-  # Push
-  git push origin main 2>&1 | tail -2 || {
-    err "  Push failed — will retry next cycle"
+  local branch="auto/local-frame-${frame}-$(date -u +%Y%m%d-%H%M%S)-$$"
+  git config user.name "rappterverse-local-platform" || return $?
+  git config user.email "41898282+github-actions[bot]@users.noreply.github.com" || return $?
+  git switch -c "$branch" || return $?
+  git commit -m "[frame $frame] local platform proposal" || return $?
+  local head_sha
+  head_sha=$(git rev-parse HEAD)
+  git push --set-upstream origin "$branch" || return $?
+  local pr_url
+  if ! pr_url=$(gh pr create \
+    --repo "${GH_REPO:-kody-w/rappterverse}" \
+    --base main \
+    --head "$branch" \
+    --title "[frame $frame] Local platform proposal" \
+    --body "Isolated local-platform frame. Publication is owned by the durable state reconciler."); then
     return 1
-  }
-  echo "  Pushed frame $frame"
+  fi
+  gh workflow run state-drain.yml --repo "${GH_REPO:-kody-w/rappterverse}" --ref main || return $?
+
+  if ! wait_for_reconciliation "$head_sha" "$pr_url"; then
+    return 1
+  fi
+  git fetch --no-tags origin main || return $?
+  git switch --detach origin/main || return $?
+  git push origin --delete "$branch" >/dev/null 2>&1 || true
+  rm -f "$PUBLICATION_BLOCK"
+  echo "  Reconciled frame $frame via $pr_url"
+  return 0
 }
 
 # ── Frame Counter ─────────────────────────────────────────────────────────────
@@ -553,16 +663,41 @@ else:
 
 # ── Single Frame ──────────────────────────────────────────────────────────────
 
+discard_failed_cycle() {
+  git reset --hard HEAD >/dev/null
+  git clean -fd -- state worlds feed agents >/dev/null
+  git fetch --no-tags origin main >/dev/null 2>&1 || true
+  git switch --detach origin/main >/dev/null 2>&1 || true
+  rm -f "$PUBLICATION_BLOCK"
+}
+
 run_cycle() {
   CYCLE=$((CYCLE + 1))
   local cycle_failed=0
 
-  # Advance frame counter
+  # ── Phase 1: SYNC CLEAN ISOLATED BASE ──
+  if ! git fetch --no-tags origin main; then
+    err "Unable to fetch canonical main"
+    return 1
+  fi
+  if ! resume_pending_local_proposals; then
+    err "A prior local-platform proposal requires intervention"
+    return 1
+  fi
+  git fetch --no-tags origin main
+  if ! git switch --detach origin/main >/dev/null; then
+    err "Unable to reset isolated frame worktree"
+    return 1
+  fi
+  if [ -n "$(git status --porcelain -- state worlds feed agents)" ]; then
+    err "Isolated frame worktree is dirty before the cycle"
+    discard_failed_cycle
+    return 1
+  fi
+
+  # Advance only after synchronization succeeds.
   FRAME=$(advance_frame)
   log "=== $FRAME ==="
-
-  # ── Phase 1: PULL (sync from remote) ──
-  git pull --rebase --autostash origin main 2>&1 | tail -1 || true
 
   # ── Phase 2: TICK (game mechanics) ──
   if ! run_job job_game_tick; then cycle_failed=1; fi
@@ -599,11 +734,15 @@ run_cycle() {
     if ! run_job job_state_audit; then cycle_failed=1; fi
   fi
 
-  # ── Phase 9: PUSH (commit + push frame) ──
+  # ── Phase 9: PUBLISH (queue validated frame PR) ──
   if [ "$cycle_failed" -eq 0 ]; then
     if ! run_job job_git_sync; then cycle_failed=1; fi
   else
     err "  Publication skipped because this cycle failed"
+  fi
+
+  if [ "$cycle_failed" -ne 0 ]; then
+    discard_failed_cycle
   fi
 
   # Status line
@@ -658,6 +797,7 @@ case "${1:-}" in
   --job)
     job="${2:?Usage: --job JOB_NAME (e.g. game_tick, agent_dispatch, world_growth)}"
     run_job "job_$job"
+    run_job job_git_sync
     ;;
   --loop)
     if [ "${2:-}" = "--interval" ]; then

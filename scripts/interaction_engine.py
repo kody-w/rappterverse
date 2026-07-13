@@ -761,7 +761,12 @@ def interaction_tick(dry_run: bool = False):
     chat_msgs = chat_data.get("messages", [])
 
     # Only player agents interact (NPCs handled by their own scripts)
-    players = [a for a in agents if a["id"] not in NPC_IDS and a.get("status") == "active"]
+    players = [
+        agent for agent in agents
+        if agent["id"] not in NPC_IDS
+        and agent.get("status") == "active"
+        and agent.get("controller", "system") == "system"
+    ]
     if len(players) < 2:
         print("  ⏸️  Not enough players for interactions")
         return

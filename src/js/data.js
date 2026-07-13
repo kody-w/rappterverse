@@ -5,6 +5,8 @@ const DataManager = {
     _inFlight: null,
     _abortController: null,
     _generation: 0,
+    _manifestPath: 'state/snapshot.json',
+    currentRevision: null,
     lastFetch: 0,
     lastSuccessfulFetch: 0,
 
@@ -12,11 +14,11 @@ const DataManager = {
         ['agents', 'state/agents.json', true],
         ['chat', 'state/chat.json', true],
         ['actions', 'state/actions.json', true],
-        ['npcs', 'state/npcs.json', false],
+        ['npcs', 'state/npcs.json', true],
         ['gameState', 'state/game_state.json', true],
-        ['frameCounter', 'state/frame_counter.json', false],
-        ['brainstem', 'state/programs/_lispvm/_status.json', false],
-        ['chronicles', 'state/chronicles.json', false],
+        ['frameCounter', 'state/frame_counter.json', true],
+        ['brainstem', 'state/programs/_lispvm/_status.json', true],
+        ['chronicles', 'state/chronicles.json', true],
         ['hubConf', 'worlds/hub/config.json', true],
         ['arenaConf', 'worlds/arena/config.json', true],
         ['marketConf', 'worlds/marketplace/config.json', true],
@@ -40,6 +42,38 @@ const DataManager = {
         } catch(e) {
             throw new Error(`${path}: invalid JSON`);
         }
+    },
+
+    async _sha256(content) {
+        if (!globalThis.crypto?.subtle || typeof TextEncoder === 'undefined') {
+            throw new Error('SHA-256 verification unavailable');
+        }
+        const digest = await globalThis.crypto.subtle.digest(
+            'SHA-256',
+            new TextEncoder().encode(content)
+        );
+        return Array.from(new Uint8Array(digest))
+            .map(value => value.toString(16).padStart(2, '0'))
+            .join('');
+    },
+
+    async fetchResource(path, signal, requestId) {
+        const res = await fetch(`${RAW}/${path}?_=${requestId}`, {
+            signal: signal,
+            cache: 'no-store'
+        });
+        if (!res.ok) throw new Error(`${path}: HTTP ${res.status}`);
+        const content = await res.text();
+        let data;
+        try {
+            data = JSON.parse(content);
+        } catch(e) {
+            throw new Error(`${path}: invalid JSON`);
+        }
+        return {
+            data: data,
+            sha256: await this._sha256(content)
+        };
     },
 
     _showStatus(msg, isError) {
@@ -74,10 +108,37 @@ const DataManager = {
         }
     },
 
+    _notifyConsumer(label, callback) {
+        try {
+            callback();
+        } catch(e) {
+            if (GameState.debug) console.warn(`[DATA] ${label} callback failed:`, e);
+        }
+    },
+
     async _loadSnapshot(signal) {
         const requestId = Date.now();
+        const manifest = await this.fetchJSON(this._manifestPath, signal, requestId);
+        if (
+            !manifest
+            || typeof manifest.revision !== 'string'
+            || !manifest.resources
+            || typeof manifest.resources !== 'object'
+        ) {
+            throw new Error(`${this._manifestPath}: invalid manifest`);
+        }
+        if (
+            this.lastSuccessfulFetch > 0
+            && this.currentRevision === manifest.revision
+        ) {
+            return {
+                unchanged: true,
+                revision: manifest.revision,
+                optionalFailures: []
+            };
+        }
         const settled = await Promise.allSettled(
-            this._resources.map(resource => this.fetchJSON(resource[1], signal, requestId))
+            this._resources.map(resource => this.fetchResource(resource[1], signal, requestId))
         );
         const snapshot = {};
         const requiredFailures = [];
@@ -86,7 +147,12 @@ const DataManager = {
         settled.forEach((result, index) => {
             const resource = this._resources[index];
             if (result.status === 'fulfilled') {
-                snapshot[resource[0]] = result.value;
+                const expected = manifest.resources[resource[1]]?.sha256;
+                if (!expected || result.value.sha256 !== expected) {
+                    requiredFailures.push(`${resource[1]} (snapshot hash mismatch)`);
+                } else {
+                    snapshot[resource[0]] = result.value.data;
+                }
             } else {
                 const failure = `${resource[1]} (${result.reason?.message || 'fetch failed'})`;
                 if (resource[2]) requiredFailures.push(failure);
@@ -113,7 +179,11 @@ const DataManager = {
             }
         });
 
-        return { snapshot: snapshot, optionalFailures: optionalFailures };
+        return {
+            snapshot: snapshot,
+            optionalFailures: optionalFailures,
+            revision: manifest.revision
+        };
     },
 
     _applySnapshot(snapshot) {
@@ -144,13 +214,23 @@ const DataManager = {
         if (snapshot.brainstem?.agents) GameState.data.brainstem = snapshot.brainstem.agents;
         if (Array.isArray(snapshot.chronicles?.chronicles)) {
             GameState.data.chronicles = snapshot.chronicles;
-            if (typeof Chronicle !== 'undefined') Chronicle.onData(snapshot.chronicles);
+            if (typeof Chronicle !== 'undefined') {
+                this._notifyConsumer('Chronicle', () => Chronicle.onData(snapshot.chronicles));
+            }
         }
 
         newActions.forEach(action => {
             if (['tip', 'trade_offer', 'enroll', 'challenge', 'defend'].includes(action.type)) {
                 if (typeof WorldAgents !== 'undefined' && WorldAgents.showActionEffect && typeof WorldMode !== 'undefined' && WorldMode.scene) {
-                    WorldAgents.showActionEffect(WorldMode.scene, action.agentId, action.type, action.data);
+                    this._notifyConsumer(
+                        'action effect',
+                        () => WorldAgents.showActionEffect(
+                            WorldMode.scene,
+                            action.agentId,
+                            action.type,
+                            action.data
+                        )
+                    );
                 }
             }
         });
@@ -163,7 +243,16 @@ const DataManager = {
             const loaded = await this._loadSnapshot(signal);
             if (generation !== this._generation) return { ok: false, superseded: true };
 
+            if (loaded.unchanged) {
+                this.lastFetch = Date.now();
+                this.lastSuccessfulFetch = this.lastFetch;
+                this._showStatus(null);
+                this._setLiveState('LIVE', '#00ff88');
+                return { ok: true, unchanged: true };
+            }
+
             this._applySnapshot(loaded.snapshot);
+            this.currentRevision = loaded.revision;
             this.lastFetch = Date.now();
             this.lastSuccessfulFetch = this.lastFetch;
 
@@ -180,17 +269,19 @@ const DataManager = {
             }
 
             if (typeof RappterVM !== 'undefined' && RappterVM._running) {
-                RappterVM.onFrameArrival(GameState.data);
+                this._notifyConsumer('RappterVM', () => RappterVM.onFrameArrival(GameState.data));
             }
 
             if (typeof EchoEngine !== 'undefined') {
-                EchoEngine.captureFrame();
-                if (EchoEngine.isLive()) EchoEngine.applyEchoToWorld();
-                var slider = document.getElementById('timeline-slider');
-                if (slider) {
-                    slider.max = Math.max(0, EchoEngine.getFrameCount() - 1);
-                    if (EchoEngine.isLive()) slider.value = slider.max;
-                }
+                this._notifyConsumer('EchoEngine', () => {
+                    EchoEngine.captureFrame();
+                    if (EchoEngine.isLive()) EchoEngine.applyEchoToWorld();
+                    var slider = document.getElementById('timeline-slider');
+                    if (slider) {
+                        slider.max = Math.max(0, EchoEngine.getFrameCount() - 1);
+                        if (EchoEngine.isLive()) slider.value = slider.max;
+                    }
+                });
             }
 
             return { ok: true, degraded: loaded.optionalFailures.length > 0 };

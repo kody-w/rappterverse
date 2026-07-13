@@ -36,6 +36,10 @@ const Bridge = {
 
     enter() {
         if (this.open) return;
+        if (!['galaxy', 'world'].includes(GameState.mode)) {
+            if (typeof HUD !== 'undefined') HUD.showToast('Bridge unavailable during transit');
+            return;
+        }
         this.open = true;
         GameState.bridgeOpen = true;
         this._savedMode = GameState.mode;

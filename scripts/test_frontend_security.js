@@ -2,6 +2,7 @@
 'use strict';
 
 const assert = require('assert');
+const crypto = require('crypto');
 const fs = require('fs');
 const vm = require('vm');
 
@@ -61,7 +62,9 @@ function testLispSandbox() {
         }
     };
 
-    const canary = machine.parse('(((get + "constructor") "globalThis.__vmPwned = true"))');
+    const canary = machine.parse(
+        '(let (ctor (get + "constructor")) (ctor "globalThis.__vmPwned = true"))'
+    );
     canary.forEach(form => machine.run(form, machine._env));
     assert.strictEqual(context.__vmPwned, undefined, 'constructor chain escaped the evaluator');
 
@@ -103,6 +106,39 @@ function testLispSandbox() {
         () => machine.parse('1 '.repeat(129)),
         /form budget/
     );
+
+    const oversized = '(map (fn (x) x) (quote (' + '1 '.repeat(257) + ')))';
+    assert.throws(
+        () => machine.run(machine.parse(oversized)[0], machine._env),
+        /collection budget/
+    );
+
+    const hundred = '1 '.repeat(100);
+    const nested = '(map (fn (x) (map + (quote (' + hundred + ')))) '
+        + '(quote (' + hundred + ')))';
+    assert.throws(
+        () => machine.run(machine.parse(nested)[0], machine._env),
+        /evaluation budget/
+    );
+
+    const frameProgram = machine.parse(
+        '(map + (quote (' + '1 '.repeat(250) + ')))'
+    );
+    machine._programs = {};
+    machine._agentEnvs = {};
+    for (let index = 0; index < 140; index++) {
+        const id = `budget-${index}`;
+        machine._programs[id] = frameProgram;
+        machine._agentEnvs[id] = Object.create(machine._env);
+    }
+    machine._running = true;
+    machine._tickCount = 2;
+    machine.tick();
+    assert.strictEqual(machine._budgetExhausted, true, 'global frame budget was not enforced');
+    assert(
+        machine._frameEvalSteps <= machine._limits.frameEvalSteps + 1,
+        'frame budget substantially overran its cap'
+    );
 }
 
 function responseFor(path) {
@@ -122,6 +158,8 @@ function responseFor(path) {
 async function testCanonicalStagedPolling() {
     const urls = [];
     let failedPath = null;
+    let tamperedPath = null;
+    let manager = null;
     const document = {
         body: { appendChild() {} },
         getElementById() { return null; },
@@ -138,6 +176,7 @@ async function testCanonicalStagedPolling() {
             gameState: {},
             frameCounter: {},
             brainstem: {},
+            chronicles: {},
             worldConfigs: {},
             worldObjects: {}
         }
@@ -149,20 +188,48 @@ async function testCanonicalStagedPolling() {
         Promise,
         Set,
         AbortController,
+        TextEncoder,
+        crypto: crypto.webcrypto,
         setTimeout,
         clearTimeout,
         document,
         GameState,
+        Chronicle: { onData() { throw new Error('consumer failure'); } },
         RAW: 'https://raw.githubusercontent.com/kody-w/rappterverse/main',
         POLL_INTERVAL: 15000,
         fetch: async url => {
             urls.push(url);
             const path = url.split('/main/')[1].split('?')[0];
             if (path === failedPath) return { ok: false, status: 503 };
-            return { ok: true, status: 200, json: async () => responseFor(path) };
+            let content;
+            if (path === 'state/snapshot.json') {
+                const resources = {};
+                for (const resource of manager._resources) {
+                    const payload = JSON.stringify(responseFor(resource[1]));
+                    resources[resource[1]] = {
+                        sha256: crypto.createHash('sha256').update(payload).digest('hex'),
+                        bytes: Buffer.byteLength(payload)
+                    };
+                }
+                content = JSON.stringify({
+                    _meta: {lastUpdate: '2026-01-01T00:00:00Z', version: 1},
+                    revision: 'a'.repeat(64),
+                    resources
+                });
+            } else {
+                const payload = responseFor(path);
+                if (path === tamperedPath) payload._tampered = true;
+                content = JSON.stringify(payload);
+            }
+            return {
+                ok: true,
+                status: 200,
+                json: async () => JSON.parse(content),
+                text: async () => content
+            };
         }
     });
-    const manager = loadObject('src/js/data.js', 'DataManager', context);
+    manager = loadObject('src/js/data.js', 'DataManager', context);
 
     const first = manager.fetchAllState();
     const duplicate = manager.fetchAllState();
@@ -171,12 +238,22 @@ async function testCanonicalStagedPolling() {
     assert.strictEqual(firstResult.ok, true);
     assert.strictEqual(
         urls.length,
-        manager._resources.length,
-        'one poll should fetch each declared resource once'
+        manager._resources.length + 1,
+        'one poll should fetch the manifest and each declared resource once'
     );
     assert(urls.every(url => url.includes('/main/')), 'polling used a non-canonical branch');
 
     const lastKnownAgents = GameState.data.agents;
+    const requestsAfterFirst = urls.length;
+    const unchangedResult = await manager.fetchAllState();
+    assert.strictEqual(unchangedResult.unchanged, true);
+    assert.strictEqual(
+        urls.length - requestsAfterFirst,
+        1,
+        'unchanged snapshot fetched more than the manifest'
+    );
+
+    manager.currentRevision = null;
     failedPath = 'state/agents.json';
     const failedResult = await manager.fetchAllState();
     assert.strictEqual(failedResult.ok, false);
@@ -184,6 +261,17 @@ async function testCanonicalStagedPolling() {
         GameState.data.agents,
         lastKnownAgents,
         'failed snapshot replaced last-known-good state'
+    );
+
+    failedPath = null;
+    manager.currentRevision = null;
+    tamperedPath = 'state/actions.json';
+    const tamperedResult = await manager.fetchAllState();
+    assert.strictEqual(tamperedResult.ok, false, 'hash mismatch was accepted');
+    assert.strictEqual(
+        GameState.data.agents,
+        lastKnownAgents,
+        'hash mismatch partially replaced last-known-good state'
     );
 }
 
@@ -306,6 +394,34 @@ function testLocalPracticeBoundary() {
     assert(shop.includes('LOCAL PRACTICE SHOP'), 'shop authority is ambiguous');
     assert(stats.includes('Practice Gold'), 'local currency is still presented as canonical gold');
     assert(quests.includes('GameState.data.localChat'), 'local poke cannot progress local guide quest');
+    const main = fs.readFileSync('src/js/main.js', 'utf8');
+    const bridge = fs.readFileSync('src/js/bridge.js', 'utf8');
+    assert(main.includes('if (Bridge.open) return;'), 'main loop renders behind Bridge');
+    assert(!main.includes("e.code === 'Tab' && GameState.mode === 'world'"), 'Tab still hijacks focus');
+    assert(main.includes('if (e.shiftKey) HUD.toggleFullmap()'), 'full map lost keyboard access');
+    assert(!main.includes('Math.floor(time) % 3'), 'main loop still redraws Bridge screens');
+    assert(
+        bridge.includes("!['galaxy', 'world'].includes(GameState.mode)"),
+        'Bridge can still open during transition render loops'
+    );
+}
+
+function testSnapshotManifestParity() {
+    const source = fs.readFileSync('src/js/data.js', 'utf8');
+    const declared = [...source.matchAll(/\['[^']+', '([^']+\.json)', true\]/g)]
+        .map(match => match[1])
+        .sort();
+    const snapshot = JSON.parse(fs.readFileSync('state/snapshot.json', 'utf8'));
+    const manifested = Object.keys(snapshot.resources).sort();
+    assert.deepStrictEqual(manifested, declared, 'frontend resources drifted from snapshot manifest');
+    for (const resourcePath of manifested) {
+        const content = fs.readFileSync(resourcePath);
+        assert.strictEqual(
+            snapshot.resources[resourcePath].sha256,
+            crypto.createHash('sha256').update(content).digest('hex'),
+            `${resourcePath} hash drifted from snapshot manifest`
+        );
+    }
 }
 
 async function main() {
@@ -315,6 +431,7 @@ async function main() {
     testCapabilitySafePostProcessing();
     testDashboardTrustBoundary();
     testLocalPracticeBoundary();
+    testSnapshotManifestParity();
     console.log('Frontend trust and polling tests passed');
 }
 

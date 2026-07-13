@@ -32,6 +32,14 @@ def error(msg: str):
     errors.append(msg)
 
 
+def valid_timestamp(value: object) -> bool:
+    try:
+        datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+        return isinstance(value, str)
+    except ValueError:
+        return False
+
+
 def _trusted_automation_authors() -> set[str]:
     owner = os.environ.get("REPOSITORY_OWNER", "kody-w")
     configured = os.environ.get("TRUSTED_AUTOMATION_AUTHORS", "")
@@ -87,6 +95,9 @@ def validate_delta_authorization(delta: dict, path: Path):
         ):
             error(f"`{path.name}`: New actor must spawn itself with controller `{pr_author}`")
             return
+        for field in ("name", "world", "position", "status"):
+            if field not in update:
+                error(f"`{path.name}`: New actor is missing `{field}`")
     else:
         controller = actor.get("controller", "system")
         if claimed_controller != controller:
@@ -182,12 +193,20 @@ def validate_delta(path: Path):
             error(f"`{path.name}`: `actions` must be an array")
         else:
             for action in delta["actions"]:
-                if "id" not in action:
-                    error(f"`{path.name}`: Action missing `id`")
-                if "type" not in action:
-                    error(f"`{path.name}`: Action missing `type`")
-                elif action["type"] not in VALID_ACTION_TYPES:
-                    error(f"`{path.name}`: Invalid action type `{action['type']}`")
+                if not isinstance(action, dict):
+                    error(f"`{path.name}`: Action entries must be objects")
+                    continue
+                for field in ("id", "timestamp", "agentId", "type", "world", "data"):
+                    if field not in action:
+                        error(f"`{path.name}`: Action missing `{field}`")
+                if action.get("type") not in VALID_ACTION_TYPES:
+                    error(f"`{path.name}`: Invalid action type `{action.get('type')}`")
+                if action.get("world") not in VALID_WORLDS:
+                    error(f"`{path.name}`: Invalid action world `{action.get('world')}`")
+                if "data" in action and not isinstance(action["data"], dict):
+                    error(f"`{path.name}`: Action `data` must be an object")
+                if "timestamp" in action and not valid_timestamp(action["timestamp"]):
+                    error(f"`{path.name}`: Invalid action timestamp")
 
     # Validate messages entries
     if "messages" in delta:
@@ -195,10 +214,23 @@ def validate_delta(path: Path):
             error(f"`{path.name}`: `messages` must be an array")
         else:
             for msg in delta["messages"]:
-                if "id" not in msg:
-                    error(f"`{path.name}`: Message missing `id`")
-                if "content" not in msg:
-                    error(f"`{path.name}`: Message missing `content`")
+                if not isinstance(msg, dict):
+                    error(f"`{path.name}`: Message entries must be objects")
+                    continue
+                for field in ("id", "timestamp", "author", "content", "world"):
+                    if field not in msg:
+                        error(f"`{path.name}`: Message missing `{field}`")
+                if msg.get("world") not in VALID_WORLDS:
+                    error(f"`{path.name}`: Invalid message world `{msg.get('world')}`")
+                if not isinstance(msg.get("content"), str):
+                    error(f"`{path.name}`: Message content must be a string")
+                elif len(msg["content"]) > 500:
+                    error(f"`{path.name}`: Message content exceeds 500 characters")
+                author = msg.get("author")
+                if not isinstance(author, dict) or not author.get("id") or not author.get("name"):
+                    error(f"`{path.name}`: Message author requires `id` and `name`")
+                if "timestamp" in msg and not valid_timestamp(msg["timestamp"]):
+                    error(f"`{path.name}`: Invalid message timestamp")
 
     # Validate agent_update
     if "agent_update" in delta:

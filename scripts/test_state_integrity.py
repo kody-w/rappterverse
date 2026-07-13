@@ -137,6 +137,7 @@ STATE_MUTATING_WORKFLOWS = {
     "architect-explore.yml",
     "agent-autonomy.yml",
     "apply-deltas.yml",
+    "self-improve.yml",
     "npc-conversationalist.yml",
     "world-activity.yml",
     "state-drain.yml",
@@ -217,30 +218,37 @@ class TestWorkflowPushSafety(unittest.TestCase):
             f"Workflows pushing directly to main without PR: {direct_pushers}"
         )
 
-    def test_pr_creating_workflows_self_merge(self):
-        """Workflows that create PRs must also validate + merge them (GITHUB_TOKEN limitation)."""
-        must_self_merge = {
-            "game-tick.yml", "world-growth.yml", "architect-explore.yml", "agent-autonomy.yml"
-        }
-        missing_merge = []
-        missing_validate = []
+    def test_pr_creating_workflows_use_reconciler(self):
+        """State producers must queue PRs instead of merging around consensus."""
+        missing_queue = []
+        self_merging = []
         for wf_path in get_workflow_files():
-            if wf_path.name not in must_self_merge:
+            if wf_path.name not in STATE_MUTATING_WORKFLOWS:
                 continue
             content = load_yaml_text(wf_path)
             if "gh pr create" in content:
-                if "gh pr merge" not in content:
-                    missing_merge.append(wf_path.name)
-                if "validate_action.py" not in content:
-                    missing_validate.append(wf_path.name)
+                if "state-drain.yml" not in content:
+                    missing_queue.append(wf_path.name)
+                if "gh pr merge" in content:
+                    self_merging.append(wf_path.name)
         self.assertEqual(
-            missing_merge, [],
-            f"Workflows creating PRs without self-merge: {missing_merge}"
+            missing_queue, [],
+            f"State PR producers not waking the reconciler: {missing_queue}"
         )
         self.assertEqual(
-            missing_validate, [],
-            f"Workflows creating PRs without self-validation: {missing_validate}"
+            self_merging, [],
+            f"State PR producers bypassing the reconciler: {self_merging}"
         )
+        for name in ("agent-autonomy.yml", "game-tick.yml", "world-growth.yml"):
+            content = load_yaml_text(WORKFLOWS_DIR / name)
+            self.assertNotIn("git add -A", content, f"{name} stages non-state files")
+            self.assertIn("git add state/ worlds/ feed/", content)
+        self_improve = load_yaml_text(WORKFLOWS_DIR / "self-improve.yml")
+        self.assertNotIn("git add -A", self_improve)
+        self.assertIn("git add state/*.json state/memory/ feed/", self_improve)
+        regression = load_yaml_text(WORKFLOWS_DIR / "regression-tests.yml")
+        self.assertIn("ALLOW_DERIVED_STATE_DRIFT", regression)
+        self.assertIn("fetch-depth: 0", regression)
 
 
 class TestWorkflowPII(unittest.TestCase):
@@ -327,6 +335,31 @@ class TestPIIScanner(unittest.TestCase):
         self.assertEqual(result.returncode, 1)
         self.assertIn("state/new.txt:1 — Email", result.stdout)
 
+    def test_staged_mode_reads_index_not_worktree(self):
+        email = "staged" + "@" + "private.invalid"
+        note = self.repo / "state" / "note.txt"
+        note.write_text(email + "\n", encoding="utf-8")
+        self._git("add", "state/note.txt")
+        note.write_text("safe working tree\n", encoding="utf-8")
+        result = self._scan("--staged")
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("state/note.txt:1 — Email", result.stdout)
+        self.assertNotIn(email, result.stdout)
+
+    def test_unicode_filename_is_scanned_in_every_git_mode(self):
+        email = "unicode" + "@" + "private.invalid"
+        path = self.repo / "state" / "mémoire.txt"
+        path.write_text(email + "\n", encoding="utf-8")
+        self._git("add", "state/mémoire.txt")
+        for mode in (("--staged",), ("--all-tracked",)):
+            result = self._scan(*mode)
+            self.assertEqual(result.returncode, 1)
+            self.assertIn("state/mémoire.txt:1 — Email", result.stdout)
+        self._git("commit", "-qm", "unicode candidate")
+        result = self._scan("--diff", "origin/main", "HEAD")
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("state/mémoire.txt:1 — Email", result.stdout)
+
     def test_diff_mode_scans_exact_candidate_change(self):
         email = "contact" + "@" + "private.invalid"
         (self.repo / "state" / "note.txt").write_text(
@@ -374,7 +407,7 @@ class TestPIIScanner(unittest.TestCase):
 
 
 class TestDashboardFreshness(unittest.TestCase):
-    """Keep generated README updates coupled to every local state sync."""
+    """Keep generated artifacts inside trusted reconciliation."""
 
     @staticmethod
     def _shell_function(script_name: str, function_name: str) -> str:
@@ -388,33 +421,27 @@ class TestDashboardFreshness(unittest.TestCase):
             raise AssertionError(f"{function_name} not found in {script_name}")
         return match.group(1)
 
-    def test_local_platform_regenerates_and_stages_readme(self):
+    def test_local_platform_queues_canonical_state(self):
         sync = self._shell_function("local_platform.sh", "job_git_sync")
-        self.assertIn(
-            "if ! python3 scripts/generate_chronicles.py --source-tree=head",
-            sync,
-        )
-        self.assertIn("if ! python3 scripts/generate_dashboard.py", sync)
-        self.assertRegex(sync, r"git diff --name-only -- README\.md ")
-        self.assertRegex(sync, r"git add README\.md")
-        self.assertGreater(
-            sync.index("python3 scripts/generate_dashboard.py"),
-            sync.index("return 0"),
-        )
+        self.assertIn("gh pr create", sync)
+        self.assertIn("gh workflow run state-drain.yml", sync)
+        self.assertNotIn("git push origin main", sync)
+        self.assertIn("git add state/souls/", sync)
 
-    def test_watchdog_regenerates_and_stages_readme(self):
-        sync = self._shell_function("watchdog.sh", "commit_and_push")
-        self.assertIn(
-            "if ! python3 scripts/generate_chronicles.py --source-tree=head",
-            sync,
-        )
-        self.assertIn("if ! python3 scripts/generate_dashboard.py", sync)
-        self.assertRegex(sync, r"git diff --name-only -- README\.md ")
-        self.assertRegex(sync, r"git add README\.md")
-        self.assertGreater(
-            sync.index("python3 scripts/generate_dashboard.py"),
-            sync.index("return 0"),
-        )
+    def test_reconciler_owns_generated_artifacts(self):
+        reconciler = (SCRIPT_DIR / "state_reconciler.py").read_text()
+        self.assertIn("generate_chronicles.py", reconciler)
+        self.assertIn("generate_state_snapshot.py", reconciler)
+        self.assertIn("generate_dashboard.py", reconciler)
+        self.assertIn('"README.md"', reconciler)
+        self.assertIn('"docs/chronicles"', reconciler)
+
+    def test_watchdog_only_supervises_the_isolated_loop(self):
+        watchdog = (SCRIPT_DIR / "watchdog.sh").read_text()
+        self.assertIn("local_platform.sh", watchdog)
+        self.assertNotIn("git commit", watchdog)
+        self.assertNotIn("git push", watchdog)
+        self.assertNotIn("agent_dispatch.py", watchdog)
 
 
 class TestChronicleIntegrity(unittest.TestCase):
@@ -431,10 +458,21 @@ class TestChronicleIntegrity(unittest.TestCase):
     def test_manifest_matches_generator(self):
         from generate_chronicles import ASSET_DIR, assets_current, build_bundle
 
+        if os.environ.get("ALLOW_DERIVED_STATE_DRIFT") == "1":
+            return
         manifest, assets = build_bundle()
         self.assertEqual(self.data, manifest)
-        head_manifest, _ = build_bundle("head")
-        self.assertEqual(self.data, head_manifest)
+        source_diff = subprocess.run(
+            [
+                "git", "-C", str(BASE_DIR), "diff", "--quiet", "HEAD", "--",
+                "state/agents.json", "state/watershed.json", "state/memory",
+            ],
+            capture_output=True,
+        )
+        self.assertIn(source_diff.returncode, (0, 1))
+        if source_diff.returncode == 0:
+            head_manifest, _ = build_bundle("head")
+            self.assertEqual(self.data, head_manifest)
         self.assertTrue(assets_current(ASSET_DIR, assets))
 
     def test_meta_and_featured_are_consistent(self):
@@ -546,6 +584,23 @@ class TestChronicleIntegrity(unittest.TestCase):
             )
 
 
+class TestStateSnapshotManifest(unittest.TestCase):
+    """Keep the frontend's atomic resource manifest byte-accurate."""
+
+    def test_snapshot_matches_canonical_resources(self):
+        from generate_state_snapshot import RESOURCE_PATHS, build_manifest
+
+        snapshot = load_json(STATE_DIR / "snapshot.json")
+        if os.environ.get("ALLOW_DERIVED_STATE_DRIFT") != "1":
+            self.assertEqual(snapshot, build_manifest(BASE_DIR))
+        self.assertEqual(snapshot["_meta"]["count"], len(RESOURCE_PATHS))
+        self.assertEqual(set(snapshot["resources"]), set(RESOURCE_PATHS))
+        self.assertRegex(snapshot.get("revision", ""), r"^[a-f0-9]{64}$")
+        for resource in snapshot["resources"].values():
+            self.assertRegex(resource.get("sha256", ""), r"^[a-f0-9]{64}$")
+            self.assertGreater(resource.get("bytes", 0), 0)
+
+
 class TestPRValidatorGate(unittest.TestCase):
     """Exercise the real validator CLI in an Actions-shaped Git repository."""
 
@@ -555,6 +610,7 @@ class TestPRValidatorGate(unittest.TestCase):
         (self.repo / "state").mkdir()
         shutil.copy2(STATE_DIR / "agents.json", self.repo / "state" / "agents.json")
         shutil.copy2(STATE_DIR / "actions.json", self.repo / "state" / "actions.json")
+        shutil.copy2(STATE_DIR / "economy.json", self.repo / "state" / "economy.json")
         self._git("init", "-q")
         self._git("config", "user.name", "Validator Test")
         self._git("config", "user.email", "validator@users.noreply.github.com")
@@ -700,6 +756,30 @@ class TestPRValidatorGate(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("most recent 100", result.stdout)
 
+    def test_non_standard_numeric_values_fail_closed(self):
+        self._commit_action("clawdbot-001")
+        actions_path = self.repo / "state" / "actions.json"
+        data = json.loads(actions_path.read_text(encoding="utf-8"))
+        data["actions"][-1]["data"]["amount"] = float("nan")
+        actions_path.write_text(json.dumps(data, indent=4) + "\n", encoding="utf-8")
+        self._git("add", "state/actions.json")
+        self._git("commit", "--amend", "-qm", "non-standard number")
+        result = self._run_validator(PR_AUTHOR="openclaw")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("non-standard numeric constant", result.stdout)
+
+    def test_action_data_must_be_an_object(self):
+        self._commit_action("clawdbot-001")
+        actions_path = self.repo / "state" / "actions.json"
+        data = json.loads(actions_path.read_text(encoding="utf-8"))
+        data["actions"][-1]["data"] = []
+        actions_path.write_text(json.dumps(data, indent=4) + "\n", encoding="utf-8")
+        self._git("add", "state/actions.json")
+        self._git("commit", "--amend", "-qm", "invalid action data")
+        result = self._run_validator(PR_AUTHOR="openclaw")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("data must be an object", result.stdout)
+
     def test_trusted_automation_can_transfer_controller(self):
         self._commit_controller_transfer("clawdbot-001", "kody-w")
         result = self._run_validator(PR_AUTHOR="kody-w")
@@ -710,6 +790,18 @@ class TestPRValidatorGate(unittest.TestCase):
         result = self._run_validator(PR_AUTHOR="openclaw")
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("Only trusted automation may transfer", result.stdout)
+
+    def test_untrusted_author_cannot_rewrite_unbound_state(self):
+        economy_path = self.repo / "state" / "economy.json"
+        economy_path.write_text(
+            economy_path.read_text(encoding="utf-8") + " ",
+            encoding="utf-8",
+        )
+        self._git("add", "state/economy.json")
+        self._git("commit", "-qm", "rewrite economy")
+        result = self._run_validator(PR_AUTHOR="openclaw")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("unauthorized paths: state/economy.json", result.stdout)
 
 
 class TestAgentActionWorkflowTrust(unittest.TestCase):
@@ -842,6 +934,32 @@ class TestStateReconciler(unittest.TestCase):
         with self.assertRaises(self.module.ValidationRejected):
             self.module.preflight_candidate(candidate, ["state/agents.json"])
 
+    def test_candidate_diff_rejects_cross_prefix_rename(self):
+        repo = Path(tempfile.mkdtemp(prefix="rappterverse-rename-"))
+        self.addCleanup(shutil.rmtree, repo)
+        (repo / "docs").mkdir()
+        (repo / "state").mkdir()
+        (repo / "docs" / "outside.json").write_text("{}\n", encoding="utf-8")
+        subprocess.run(["git", "init", "-q"], cwd=repo, check=True)
+        subprocess.run(["git", "config", "user.name", "Rename Test"], cwd=repo, check=True)
+        subprocess.run(
+            ["git", "config", "user.email", "rename@users.noreply.github.com"],
+            cwd=repo,
+            check=True,
+        )
+        subprocess.run(["git", "add", "."], cwd=repo, check=True)
+        subprocess.run(["git", "commit", "-qm", "base"], cwd=repo, check=True)
+        base = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=repo, text=True).strip()
+        subprocess.run(
+            ["git", "mv", "docs/outside.json", "state/inside.json"],
+            cwd=repo,
+            check=True,
+        )
+        subprocess.run(["git", "commit", "-qam", "rename"], cwd=repo, check=True)
+        head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=repo, text=True).strip()
+        with self.assertRaises(self.module.ValidationRejected):
+            self.module.candidate_changed_paths(base, head, repo)
+
     def test_reconciler_validates_synthetic_merge_on_main(self):
         source = (SCRIPT_DIR / "state_reconciler.py").read_text()
         self.assertIn('"--base", "main"', source)
@@ -852,8 +970,14 @@ class TestStateReconciler(unittest.TestCase):
         self.assertIn('f"{merge_commit}:refs/heads/main"', source)
         self.assertIn('"pr", "close"', source)
         self.assertIn('f"Source-Head: {head_sha}"', source)
+        self.assertIn('candidate / "scripts" / "test_state_integrity.py"', source)
+        self.assertIn('generate_state_snapshot.py', source)
+        self.assertIn('apply_deltas.py', source)
         workflow = load_yaml_text(WORKFLOWS_DIR / "state-drain.yml")
         self.assertIn('git worktree add --detach "$policy_root" origin/main', workflow)
+        delta_workflow = load_yaml_text(WORKFLOWS_DIR / "apply-deltas.yml")
+        self.assertNotIn("git push", delta_workflow)
+        self.assertIn("state-drain.yml", delta_workflow)
 
 
 class TestLocalPlatformSafety(unittest.TestCase):
@@ -862,13 +986,52 @@ class TestLocalPlatformSafety(unittest.TestCase):
     def test_failed_job_propagates_before_git_sync(self):
         content = (BASE_DIR / "scripts" / "local_platform.sh").read_text()
         failed_branch = content.split('err "  Failed: $job"', 1)[1].split("fi", 1)[0]
-        self.assertIn("return 1", failed_branch)
+        self.assertIn('return "$status"', failed_branch)
         self.assertNotIn("pii_scan.py --paths state feed 2>&1 || true", content)
         self.assertIn("PUBLICATION_BLOCK", content)
-        self.assertIn("Publication blocked: state audit failed", content)
+        self.assertIn("Publication blocked: canonical state validation failed", content)
         self.assertIn("Publication blocked: PII scan failed", content)
         self.assertIn("Publication skipped because this cycle failed", content)
         self.assertIn("if ! run_cycle; then", content)
+        self.assertIn("worktree add --detach", content)
+        self.assertIn("discard_failed_cycle", content)
+        self.assertIn("git switch --detach origin/main", content)
+        self.assertIn("gh pr create", content)
+        self.assertIn("gh workflow run state-drain.yml", content)
+        self.assertNotIn("git push origin main", content)
+        self.assertIn("resume_pending_local_proposals", content)
+        self.assertIn(".isCrossRepository == false", content)
+        self.assertIn(".author.login == env.REPOSITORY_OWNER", content)
+        self.assertIn("all(.files[];", content)
+        self.assertIn("while true; do", content.split("wait_for_reconciliation()", 1)[1])
+        self.assertNotIn("Timed out waiting for frame reconciliation", content)
+        job_entrypoint = content.split("--job)", 1)[1].split(";;", 1)[0]
+        self.assertIn("run_job job_git_sync", job_entrypoint)
+        run_job = content.split("run_job() {", 1)[1].split("\n}", 1)[0]
+        self.assertIn('( set -e; "$@" ) >"$output_file" 2>&1', run_job)
+        self.assertIn("local status=$?", run_job)
+        self.assertNotIn('"$@" 2>&1 | tail', run_job)
+        self_improve = content.split("job_self_improve() {", 1)[1].split("\n}", 1)[0]
+        self.assertGreaterEqual(self_improve.count("|| return $?"), 3)
+        self.assertIn("Unable to query pending local-platform proposals", content)
+
+
+class TestDispatchProtocolParity(unittest.TestCase):
+    """Brain tools must normalize into the persisted action contract."""
+
+    def test_dispatch_does_not_persist_internal_tool_names(self):
+        source = (SCRIPT_DIR / "agent_dispatch.py").read_text()
+        for internal_type in ("travel", "enroll", "tip", "defend", "challenge"):
+            self.assertNotIn(f'"type": "{internal_type}"', source)
+        self.assertNotIn('"type": tool', source)
+        self.assertIn('"type": "interact"', source)
+        self.assertIn('"messageType": "chat"', source)
+        self.assertIn('"duration": 3000', source)
+        self.assertNotIn('"subtype": "poke"', source)
+        self.assertIn('"interaction": "poke"', source)
+        growth = (SCRIPT_DIR / "world_growth.py").read_text()
+        self.assertNotIn('"type": "attack"', growth)
+        self.assertIn('"interaction": "hostile_attack"', growth)
 
 
 # ═════════════════════════════════════════════
@@ -1037,6 +1200,165 @@ class TestAgentIntegrity(unittest.TestCase):
             self.assertTrue(
                 diff <= 5,
                 f"_meta.agentCount ({count}) diverged too far from actual ({len(self.agents)})"
+            )
+
+    def test_system_agents_have_dispatch_registry(self):
+        if os.environ.get("ALLOW_DERIVED_STATE_DRIFT") == "1":
+            return
+        missing = [
+            agent["id"]
+            for agent in self.agents
+            if agent.get("controller", "system") == "system"
+            and not (BASE_DIR / "agents" / f"{agent['id']}.agent.json").is_file()
+        ]
+        self.assertEqual(missing, [], f"System agents missing dispatch registry: {missing}")
+
+    def test_external_agents_have_no_dispatch_registry(self):
+        if os.environ.get("ALLOW_DERIVED_STATE_DRIFT") == "1":
+            return
+        stale = [
+            agent["id"]
+            for agent in self.agents
+            if agent.get("controller", "system") != "system"
+            and (BASE_DIR / "agents" / f"{agent['id']}.agent.json").exists()
+        ]
+        self.assertEqual(stale, [], f"External agents have stale registry: {stale}")
+
+
+class TestAutomationSovereignty(unittest.TestCase):
+    """Autonomous mechanics must not mutate externally controlled agents."""
+
+    @classmethod
+    def setUpClass(cls):
+        import importlib.util
+        spec = importlib.util.spec_from_file_location(
+            "game_tick_sovereignty",
+            SCRIPT_DIR / "game_tick.py",
+        )
+        cls.game_tick = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(cls.game_tick)
+
+    def test_trait_evolution_skips_external_agent(self):
+        external = {
+            "id": "external-001",
+            "controller": "owner",
+            "status": "active",
+            "traits": {
+                "explorer": 0.6,
+                "social": 0.1,
+                "trader": 0.1,
+                "fighter": 0.1,
+                "builder": 0.1,
+            },
+        }
+        before = json.loads(json.dumps(external))
+        actions = {
+            "actions": [
+                {"agentId": "external-001", "type": "chat"}
+                for _ in range(5)
+            ]
+        }
+        self.game_tick.evolve_agent_traits(
+            {"agents": [external]},
+            actions,
+            {"messages": []},
+        )
+        self.assertEqual(external, before)
+
+    def test_canonical_interaction_drives_intended_trait(self):
+        system = {
+            "id": "system-001",
+            "status": "active",
+            "traits": {
+                "explorer": 0.15,
+                "social": 0.15,
+                "trader": 0.4,
+                "fighter": 0.15,
+                "builder": 0.15,
+            },
+        }
+        actions = {
+            "actions": [{
+                "agentId": "system-001",
+                "type": "interact",
+                "data": {"interaction": "trade"},
+            } for _ in range(3)]
+        }
+        self.game_tick.evolve_agent_traits(
+            {"agents": [system]},
+            actions,
+            {"messages": []},
+        )
+        self.assertGreater(system["traits"]["trader"], 0.4)
+        self.assertLess(system["traits"]["explorer"], 0.15)
+
+    def test_defensive_swarm_skips_external_agent(self):
+        external = {
+            "id": "external-001",
+            "name": "External",
+            "controller": "owner",
+            "status": "active",
+            "world": "arena",
+            "position": {"x": 5, "y": 0, "z": 5},
+            "hp": 100,
+        }
+        system = {
+            "id": "system-001",
+            "name": "System",
+            "status": "active",
+            "world": "arena",
+            "position": {"x": 0, "y": 0, "z": 0},
+            "hp": 100,
+        }
+        before = json.loads(json.dumps(external))
+        game_state = {
+            "combatEvents": [{
+                "id": "combat-1",
+                "actionId": "attack-1",
+                "attackerId": "enemy",
+                "attackerName": "Enemy",
+                "attackerHp": 1000,
+                "attackerDamage": 5,
+                "world": "arena",
+                "position": {"x": 0, "y": 0, "z": 0},
+                "status": "active",
+                "defenders": [],
+                "damageLog": [],
+            }]
+        }
+        self.game_tick.resolve_combat(
+            game_state,
+            {"agents": [external, system]},
+            {"actions": []},
+            {"messages": []},
+            "2026-01-01T00:00:00Z",
+        )
+        self.assertEqual(external, before)
+        self.assertIn("system-001", game_state["combatEvents"][0]["defenders"])
+        self.assertNotIn("external-001", game_state["combatEvents"][0]["defenders"])
+
+    def test_growth_and_interactions_filter_external_agents(self):
+        growth = (SCRIPT_DIR / "world_growth.py").read_text()
+        interactions = (SCRIPT_DIR / "interaction_engine.py").read_text()
+        self.assertGreaterEqual(
+            growth.count('get("controller", "system") == "system"'),
+            3,
+        )
+        self.assertIn('"controller": "system"', growth)
+        self.assertIn(
+            'agent.get("controller", "system") == "system"',
+            interactions,
+        )
+        for script_name in (
+            "academy_engine.py",
+            "economy_engine.py",
+            "zoo_heartbeat.py",
+        ):
+            source = (SCRIPT_DIR / script_name).read_text()
+            self.assertIn(
+                'agent.get("controller", "system") == "system"',
+                source,
+                f"{script_name} includes externally controlled actors",
             )
 
 
@@ -1480,19 +1802,26 @@ class TestDeltaValidator(unittest.TestCase):
         self.assertTrue(self._write_and_validate("good.json", {
             "agent_id": "test-001",
             "timestamp": "2026-02-11T20:00:00Z",
-            "actions": [{"id": "action-001", "type": "chat"}]
+            "actions": [{
+                "id": "action-001",
+                "timestamp": "2026-02-11T20:00:00Z",
+                "agentId": "test-001",
+                "type": "chat",
+                "world": "hub",
+                "data": {"message": "hello"},
+            }]
         }))
 
     def test_missing_agent_id_fails(self):
         self.assertFalse(self._write_and_validate("bad.json", {
             "timestamp": "2026-02-11T20:00:00Z",
-            "actions": [{"id": "action-001", "type": "chat"}]
+            "actions": []
         }))
 
     def test_missing_timestamp_fails(self):
         self.assertFalse(self._write_and_validate("bad.json", {
             "agent_id": "test-001",
-            "actions": [{"id": "action-001", "type": "chat"}]
+            "actions": []
         }))
 
     def test_no_delta_content_fails(self):
@@ -1512,7 +1841,34 @@ class TestDeltaValidator(unittest.TestCase):
         self.assertFalse(self._write_and_validate("bad.json", {
             "agent_id": "test-001",
             "timestamp": "2026-02-11T20:00:00Z",
-            "actions": [{"id": "action-001", "type": "hack_the_mainframe"}]
+            "actions": [{
+                "id": "action-001",
+                "timestamp": "2026-02-11T20:00:00Z",
+                "agentId": "test-001",
+                "type": "hack_the_mainframe",
+                "world": "hub",
+                "data": {},
+            }]
+        }))
+
+    def test_under_specified_action_fails(self):
+        self.assertFalse(self._write_and_validate("bad.json", {
+            "agent_id": "test-001",
+            "timestamp": "2026-02-11T20:00:00Z",
+            "actions": [{"id": "action-001", "type": "emote"}],
+        }))
+
+    def test_oversized_message_fails(self):
+        self.assertFalse(self._write_and_validate("bad.json", {
+            "agent_id": "test-001",
+            "timestamp": "2026-02-11T20:00:00Z",
+            "messages": [{
+                "id": "msg-001",
+                "timestamp": "2026-02-11T20:00:00Z",
+                "author": {"id": "test-001", "name": "Test"},
+                "content": "x" * 501,
+                "world": "hub",
+            }],
         }))
 
     def test_invalid_world_in_objects_fails(self):

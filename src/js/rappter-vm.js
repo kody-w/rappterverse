@@ -16,13 +16,17 @@ const RappterVM = {
     _activePrincipal: null,
     _agentEnvs: {},
     _evalSteps: 0,
+    _frameEvalSteps: 0,
+    _budgetExhausted: false,
     _limits: {
         sourceLength: 20000,
         tokens: 4096,
         stringLength: 2048,
         astDepth: 64,
         forms: 128,
-        evalSteps: 4096
+        evalSteps: 4096,
+        frameEvalSteps: 32768,
+        collectionItems: 256
     },
 
     // ── S-Expression Parser ──
@@ -95,9 +99,33 @@ const RappterVM = {
     },
 
     // ── Evaluator ──
-    eval(expr, env) {
+    _chargeEval() {
         this._evalSteps++;
-        if (this._evalSteps > this._limits.evalSteps) throw new Error('Lisp evaluation budget exceeded');
+        this._frameEvalSteps++;
+        if (this._evalSteps > this._limits.evalSteps) {
+            throw new Error('Lisp evaluation budget exceeded');
+        }
+        if (this._frameEvalSteps > this._limits.frameEvalSteps) {
+            throw new Error('Lisp frame evaluation budget exceeded');
+        }
+    },
+
+    _invokeBounded(fn, args) {
+        if (typeof fn !== 'function') return null;
+        this._chargeEval();
+        return fn.apply(null, args);
+    },
+
+    _boundedCollection(list) {
+        if (!Array.isArray(list)) return [];
+        if (list.length > this._limits.collectionItems) {
+            throw new Error('Lisp collection budget exceeded');
+        }
+        return list;
+    },
+
+    eval(expr, env) {
+        this._chargeEval();
         if (expr === null || expr === undefined) return null;
         if (typeof expr === 'number' || typeof expr === 'string' || typeof expr === 'boolean') return expr;
         if (expr.keyword) return expr;
@@ -159,6 +187,7 @@ const RappterVM = {
 
     run(expr, env) {
         this._evalSteps = 0;
+        this._frameEvalSteps = 0;
         return this.eval(expr, env);
     },
 
@@ -241,9 +270,21 @@ const RappterVM = {
             return i >= 0 && i < a.length ? a[i] : null;
         };
         env['count'] = function(a) { return a ? a.length : 0; };
-        env['map'] = function(fn, list) { return list ? list.map(fn) : []; };
-        env['filter'] = function(fn, list) { return list ? list.filter(fn) : []; };
-        env['reduce'] = function(fn, init, list) { return list ? list.reduce(fn, init) : init; };
+        env['map'] = function(fn, list) {
+            return RappterVM._boundedCollection(list).map(function(value, index) {
+                return RappterVM._invokeBounded(fn, [value, index]);
+            });
+        };
+        env['filter'] = function(fn, list) {
+            return RappterVM._boundedCollection(list).filter(function(value, index) {
+                return Boolean(RappterVM._invokeBounded(fn, [value, index]));
+            });
+        };
+        env['reduce'] = function(fn, init, list) {
+            return RappterVM._boundedCollection(list).reduce(function(accumulator, value, index) {
+                return RappterVM._invokeBounded(fn, [accumulator, value, index]);
+            }, init);
+        };
         env['get'] = function(obj, key) { return RappterVM._getOwn(obj, key); };
         env['assoc'] = function(obj, k, v) {
             var key = k && k.keyword !== undefined ? k.keyword : k;
@@ -623,11 +664,17 @@ const RappterVM = {
         if (this._tickCount % 3 !== 0) return;
 
         // Run involuntary reflexes first (intent echoes)
+        this._frameEvalSteps = 0;
+        this._budgetExhausted = false;
         this.tickReflexes();
 
         // Then run compiled agent programs
         var agentIds = Object.keys(this._programs);
         for (var i = 0; i < agentIds.length; i++) {
+            if (this._frameEvalSteps >= this._limits.frameEvalSteps) {
+                this._budgetExhausted = true;
+                break;
+            }
             var id = agentIds[i];
             var program = this._programs[id];
             if (!program) continue;
@@ -637,11 +684,19 @@ const RappterVM = {
             this._evalSteps = 0;
             try {
                 for (var j = 0; j < program.length; j++) {
-                    try { this.eval(program[j], agentEnv); } catch(e) {}
+                    try {
+                        this.eval(program[j], agentEnv);
+                    } catch(e) {
+                        if (String(e.message || e).indexOf('frame evaluation budget') !== -1) {
+                            this._budgetExhausted = true;
+                            break;
+                        }
+                    }
                 }
             } finally {
                 this._activePrincipal = null;
             }
+            if (this._budgetExhausted) break;
         }
     },
 
