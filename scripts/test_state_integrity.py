@@ -148,6 +148,15 @@ STATE_MUTATING_WORKFLOWS = {
 # WORKFLOW INFRASTRUCTURE TESTS
 # ═════════════════════════════════════════════
 
+class TestCompilerCIScope(unittest.TestCase):
+    """Keep immutable compiler inputs outside mutable-world CI scope."""
+
+    def test_trusted_profile_is_code_owned(self):
+        profile = BASE_DIR / "compiler" / "profiles" / "rappterverse-v1.json"
+        self.assertTrue(profile.is_file())
+        self.assertFalse((WORLDS_DIR / "recipes").exists())
+
+
 class TestWorkflowConcurrency(unittest.TestCase):
     """Verify all state-mutating workflows have the global concurrency group."""
 

@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from typing import Tuple
 
-TRUSTED_PROFILE_PATH = "worlds/recipes/rappterverse-v1.json"
+TRUSTED_PROFILE_PATH = "compiler/profiles/rappterverse-v1.json"
 TRUSTED_PROFILE_RAW_SHA256 = (
     "b3ccc178a4a6bdabf0e5989b66a3caf407e258147fcf0460d00cc0372fdfdae5"
 )

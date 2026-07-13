@@ -72,6 +72,7 @@ from world_pack_compiler.trust import (  # noqa: E402
     LEGACY_MAIN_COMMIT,
     LEGACY_MAIN_TREE,
     LEGACY_REQUIRED_SOURCE_DESCRIPTORS,
+    TRUSTED_PROFILE_PATH,
     TRUSTED_PROFILE_RAW_SHA256,
 )
 from legacy_semantic_fixture import (  # noqa: E402
@@ -1262,8 +1263,8 @@ class ReproducibilityAndCLITests(unittest.TestCase):
 class ImplementationAndSchemaTests(unittest.TestCase):
     def test_compiler_implementation_digest_uses_closed_actual_sources(self):
         self.assertEqual(
-            "sha256:ae8f4a00dfb0ba3c69b6a4e88db72db"
-            "fcb443745fb3ae8d55a1f1a8f6b6e2567",
+            "sha256:20facd2f04e20f78e132938b766b918b"
+            "a07c1798460654c99c588c1cd7d67dca",
             COMPILER_IMPLEMENTATION_SHA256,
         )
         source_files = tuple(
@@ -1419,9 +1420,12 @@ class ImplementationAndSchemaTests(unittest.TestCase):
         )
 
     def test_engine_owned_profile_and_legacy_sources_match_raw_pins(self):
-        profile_bytes = (
-            ROOT / "worlds" / "recipes" / "rappterverse-v1.json"
-        ).read_bytes()
+        self.assertEqual(
+            "compiler/profiles/rappterverse-v1.json",
+            TRUSTED_PROFILE_PATH,
+        )
+        self.assertFalse((ROOT / "worlds" / "recipes").exists())
+        profile_bytes = (ROOT / TRUSTED_PROFILE_PATH).read_bytes()
         lock_bytes = (
             ROOT / "bootstrap" / "legacy-source-lock.json"
         ).read_bytes()

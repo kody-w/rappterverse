@@ -35,7 +35,7 @@ _CATALOG_ALIASES = {
     "status": "statusDefinition",
 }
 LEGACY_PACK_ROOT = (
-    "sha256:25faaf7a626fd3d0abc40ac9eabd73cdb57068f63bd4e40e807b240e81d95cf1"
+    "sha256:813c41f3848d221c10988b2b3f12767ceb18c5699bb794c82f929b2d6f1a5a8f"
 )
 LEGACY_SEMANTIC_GOLDEN = {
     "abilities": {
@@ -279,7 +279,7 @@ def build_expected_domains(root: Path) -> Dict[str, Any]:
         for path in STATIC_PATHS + FRONTEND_PATHS
     }
     profile = json.loads(
-        (root / "worlds" / "recipes" / "rappterverse-v1.json").read_text(
+        (root / "compiler" / "profiles" / "rappterverse-v1.json").read_text(
             encoding="utf-8"
         )
     )
