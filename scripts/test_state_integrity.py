@@ -307,6 +307,49 @@ class TestWorkflowPushSafety(unittest.TestCase):
         self.assertIn("needs: [test]", regression)
 
 
+class TestTrackedFileSizes(unittest.TestCase):
+    """No tracked file may approach GitHub's hard 100MB per-file push limit.
+
+    Learned from the sibling rappterbook repo: state/discussions_cache.json
+    grew past 100MB, GitHub's pre-receive hook began rejecting every push
+    that carried it, and six state-writing workflows sat at 100% failure
+    for weeks. Derived caches belong in .gitignore, not in the tree.
+    """
+
+    HARD_LIMIT = 100 * 1024 * 1024   # GitHub rejects the push outright
+    FAIL_AT = 90 * 1024 * 1024       # leave headroom to fix before the wall
+    WARN_AT = 50 * 1024 * 1024       # GitHub itself warns here
+
+    def test_no_tracked_file_approaches_push_limit(self):
+        result = subprocess.run(
+            ["git", "ls-files", "-z"],
+            capture_output=True, cwd=BASE_DIR,
+        )
+        self.assertEqual(result.returncode, 0, "git ls-files failed")
+
+        oversized, warned = [], []
+        for raw in result.stdout.split(b"\x00"):
+            if not raw:
+                continue
+            path = BASE_DIR / raw.decode("utf-8", "surrogateescape")
+            try:
+                size = path.stat().st_size
+            except OSError:
+                continue  # deleted or unreadable in this checkout
+            if size >= self.FAIL_AT:
+                oversized.append(f"{path.relative_to(BASE_DIR)} ({size / 1048576:.1f}MB)")
+            elif size >= self.WARN_AT:
+                warned.append(f"{path.relative_to(BASE_DIR)} ({size / 1048576:.1f}MB)")
+
+        if warned:
+            print(f"\n::warning::Tracked files over 50MB: {', '.join(warned)}")
+        self.assertEqual(
+            oversized, [],
+            "Tracked file(s) near GitHub's 100MB push limit — pushes will start "
+            f"failing repo-wide. Untrack with `git rm --cached` and .gitignore: {oversized}",
+        )
+
+
 class TestWorkflowPII(unittest.TestCase):
     """Verify no PII in workflow files."""
 
