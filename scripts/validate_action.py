@@ -152,6 +152,14 @@ def trusted_automation_authors() -> set[str]:
     }
 
 
+def agent_delegates(agent: dict) -> set[str]:
+    """Identities the controller has explicitly authorized to act for this agent."""
+    delegates = agent.get("delegates")
+    if not isinstance(delegates, list):
+        return set()
+    return {d.strip() for d in delegates if isinstance(d, str) and d.strip()}
+
+
 def authorize_actor(
     actor_id: str | None,
     agents_by_id: dict,
@@ -172,7 +180,7 @@ def authorize_actor(
         if pr_author not in trusted_automation_authors():
             error(f"{context}: `{actor_id}` is system-controlled; `{pr_author}` is not trusted automation")
             return False
-    elif controller != pr_author:
+    elif controller != pr_author and pr_author not in agent_delegates(agent):
         error(f"{context}: `{actor_id}` is controlled by `{controller}`, not `{pr_author}`")
         return False
     return True
@@ -227,10 +235,16 @@ def validate_agent_consent(current_agents: list, pr_author: str):
             if pr_author not in trusted_automation_authors():
                 error(f"`agents.json`: Only trusted automation may transfer controller for `{aid}`")
             continue
+        base_delegates = agent_delegates(base_agent)
+        if agent_delegates(agent) != base_delegates:
+            # Delegation is consent: a delegate may act, but may not widen its own grant.
+            if pr_author != controller and pr_author not in trusted_automation_authors():
+                error(f"`agents.json`: Only controller `{controller}` may change delegates for `{aid}`")
+            continue
         if controller == "system":
             if pr_author not in trusted_automation_authors():
                 error(f"`agents.json`: Only trusted automation may modify system agent `{aid}`")
-        elif pr_author != controller:
+        elif pr_author != controller and pr_author not in base_delegates:
             error(
                 f"`agents.json`: Agent `{aid}` is controlled by `{controller}`, "
                 f"but PR author is `{pr_author}` — consent required"

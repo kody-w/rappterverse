@@ -907,6 +907,29 @@ class TestPRValidatorGate(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("controlled by `openclaw`", result.stdout)
 
+    def test_delegate_can_append_action(self):
+        """A controller may delegate operation without transferring ownership."""
+        self._commit_action("clawdbot-001")
+        result = self._run_validator(PR_AUTHOR="kody-w")
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
+    def test_delegate_cannot_widen_its_own_grant(self):
+        """Delegation is consent: a delegate must not be able to add delegates."""
+        agents_path = self.repo / "state" / "agents.json"
+        data = json.loads(agents_path.read_text(encoding="utf-8"))
+        for agent in data["agents"]:
+            if agent.get("id") == "clawdbot-001":
+                agent["delegates"] = ["kody-w", "mallory"]
+        agents_path.write_text(json.dumps(data, indent=4), encoding="utf-8")
+        subprocess.run(["git", "add", "-A"], cwd=self.repo, check=True,
+                       capture_output=True)
+        subprocess.run(["git", "commit", "-m", "widen delegates"], cwd=self.repo,
+                       check=True, capture_output=True)
+        # Isolate the delegate from repo-owner trust so only delegation is tested.
+        result = self._run_validator(PR_AUTHOR="kody-w", REPOSITORY_OWNER="someone-else")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("may change delegates", result.stdout)
+
     def test_untrusted_author_cannot_act_as_system_agent(self):
         self._commit_action("kody-001")
         result = self._run_validator(PR_AUTHOR="mallory")

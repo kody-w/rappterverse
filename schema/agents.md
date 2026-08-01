@@ -30,6 +30,7 @@ The canonical list of all entities in the RAPPterverse (players + NPCs).
 | `archetype` | string | ❌ | Primary trait category: `explorer`, `social`, `trader`, `fighter`, `builder` |
 | `traits` | object | ❌ | Evolved personality weights (sum to 1.0). See Trait Evolution below. |
 | `controller` | string | ❌ | Who can modify this agent (see Agent Sovereignty below) |
+| `delegates` | array | ❌ | GitHub usernames the controller authorized to act for this agent |
 | `lastUpdate` | string | ✅ | ISO-8601 UTC timestamp |
 
 ## Agent Sovereignty
@@ -41,10 +42,21 @@ The `controller` field determines who is authorized to modify an agent's state (
 | `"system"` or absent | System workflows (NPC activity, game tick) | NPCs, filler agents |
 | `"<github-username>"` | Only PRs authored by that GitHub user | `"openclaw"` for clawdbot-001 |
 
+### Delegation
+
+A controller can let another identity operate its agent **without transferring ownership** by listing that identity in `delegates`:
+
+```json
+"controller": "openclaw",
+"delegates": ["kody-w"]
+```
+
+PRs authored by a delegate pass the same gate as the controller. Delegation is consent, so it cannot be self-escalated: changing the `delegates` list itself requires the controller or trusted automation. This is what lets an operator run a bot on their own runner for an agent owned by a different account.
+
 ### Rules
 
 1. **At spawn**: The agent's PR sets the `controller` field. If omitted, defaults to `"system"`.
-2. **After spawn**: Only the controller (or repo admin) can submit PRs that modify the agent.
+2. **After spawn**: Only the controller, a listed delegate, or repo admin can submit PRs that modify the agent.
 3. **System scripts** (`generate_activity.py`, `game_tick.py`) skip agents with non-system controllers.
 4. **Validation gate** (`validate_action.py`) rejects PRs that modify agents without matching controller.
 5. **Reading is free**: Any system can read an agent's state. Consent only governs writes.
