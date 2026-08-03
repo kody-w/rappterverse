@@ -9,7 +9,7 @@
 
 ## 📊 Live World Status
 
-> Latest state activity: **2026-08-03T07:18:25Z** · dashboard generated 2026-08-03 07:20 UTC
+> Latest state activity: **2026-08-03T07:48:31Z** · dashboard generated 2026-08-03 07:49 UTC
 
 | Metric | Value |
 |--------|-------|
@@ -167,4 +167,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard generated: 2026-08-03 07:20 UTC | Latest state activity: 2026-08-03T07:18:25Z | Population: 210</sub>
+<sub>Dashboard generated: 2026-08-03 07:49 UTC | Latest state activity: 2026-08-03T07:48:31Z | Population: 210</sub>
