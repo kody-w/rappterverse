@@ -76,6 +76,7 @@ def parse_timestamp(ts: str) -> datetime | None:
 
 errors = []
 summary_lines = []
+findings = []
 
 
 def error(msg: str):
@@ -84,6 +85,18 @@ def error(msg: str):
 
 def info(msg: str):
     summary_lines.append(msg)
+
+
+def finding(msg: str):
+    """Record a condition of the world, not a defect in a proposal.
+
+    A finding describes something true about the simulation that no single
+    contributor can fix by rewriting their own PR (population skew, stale
+    engines, thin engagement). It is reported, never silently dropped, but it
+    does not fail `--audit` unless `--strict` is passed. Integrity defects
+    still go through `error()` and still exit 1.
+    """
+    findings.append(msg)
 
 
 def reject_json_constant(value: str):
@@ -857,7 +870,7 @@ def audit_state_consistency():
         if newest and oldest:
             drift_hours = (newest - oldest).total_seconds() / 3600
             if drift_hours > 168:  # 1 week
-                error(
+                finding(
                     f"Stale data: _meta.lastUpdate spans {drift_hours:.0f} hours across state files "
                     f"(oldest: {oldest.isoformat()}, newest: {newest.isoformat()})"
                 )
@@ -1111,7 +1124,7 @@ def audit_quality_metrics():
             f"→ {diversity_score}/20"
         )
         if gini > 0.4:
-            error(f"High inequality: Gini={gini:.3f} — activity dominated by few agents")
+            finding(f"High inequality: Gini={gini:.3f} — activity dominated by few agents")
     else:
         info("Author diversity: insufficient data → 0/20")
 
@@ -1135,7 +1148,7 @@ def audit_quality_metrics():
         score += balance_score
         info(f"World balance: entropy={entropy:.2f}/{max_entropy:.2f} (normalized={normalized:.2f}), worlds={dict(world_pops)} → {balance_score}/20")
         if normalized < 0.5:
-            error(f"Population imbalance: most agents concentrated in few worlds")
+            finding("Population imbalance: most agents concentrated in few worlds")
     else:
         info("World balance: single world → 0/20")
 
@@ -1217,6 +1230,7 @@ def audit_quality_metrics():
 def main():
     audit_mode = "--audit" in sys.argv
     canonical_mode = "--validate-state" in sys.argv
+    strict_mode = "--strict" in sys.argv
 
     if canonical_mode:
         validate_canonical_state()
@@ -1237,6 +1251,22 @@ def main():
         summary = "\n".join(f"- {line}" for line in summary_lines)
         set_output("summary", summary)
 
+        if strict_mode:
+            errors.extend(findings)
+            findings.clear()
+
+        if findings:
+            finding_text = "\n".join(f"- {f}" for f in findings)
+            set_output("findings", finding_text)
+            print(f"\n🔎 State audit recorded {len(findings)} finding(s) about the world:\n")
+            for item in findings:
+                print(f"  • {item}")
+            print(
+                "\n  Findings describe the condition of the simulation, not a defect "
+                "in any one proposal.\n  They do not fail this audit. Re-run with "
+                "--strict to treat them as errors."
+            )
+
         if errors:
             error_text = "\n".join(f"- {e}" for e in errors)
             set_output("errors", error_text)
@@ -1245,7 +1275,7 @@ def main():
                 print(f"  ✗ {e}")
             sys.exit(1)
         else:
-            print(f"\n✅ State is internally consistent:\n")
+            print("\n✅ State is internally consistent:\n")
             for line in summary_lines:
                 print(f"  ✓ {line}")
             sys.exit(0)

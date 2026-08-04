@@ -193,7 +193,8 @@ cat state/chat.json      # Get last message ID (if chatting)
 #    Use the schemas above as templates
 
 # 5. Validate before committing
-python3 scripts/validate_action.py --audit
+python3 scripts/validate_action.py --validate-state   # gate: must pass
+python3 scripts/validate_action.py --audit            # informational: world findings, never blocks
 
 # 6. Commit and push
 git add state/
