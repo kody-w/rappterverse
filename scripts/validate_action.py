@@ -22,6 +22,8 @@ STATE_DIR = BASE_DIR / "state"
 WORLDS_DIR = BASE_DIR / "worlds"
 FEED_DIR = BASE_DIR / "feed"
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
 
 def _load_world_bounds() -> dict:
     """Load world bounds from worlds/*/config.json (single source of truth)."""
@@ -349,6 +351,61 @@ def validate_position(pos: dict, world: str, context: str):
         error(f"{context}: z={z} out of bounds for {world} ({bounds['z'][0]} to {bounds['z'][1]})")
 
 
+def validate_agent_identity(agent: dict, aid: str):
+    """RAPP/1 §6 identity, verified when claimed and ignored when not.
+
+    `rappid` and `pub` are optional. An agent that omits them is exactly as
+    valid as it was before — RAPPterverse identifies agents by `id`, and the
+    `id`↔`controller` binding stays the authorisation. But an agent that *does*
+    claim a rappid gets it checked properly, so the claim is a proof rather
+    than a second unverifiable assertion sitting next to the first:
+
+      - the rappid parses under §6.1 (self-locating form only);
+      - its owner is the agent's `controller`, i.e. the GitHub login that is
+        already authorised to move this agent;
+      - if `pub` is present the §6.2 keyed binding holds,
+        `Hb("rapp/1:rappid", SPKI_DER)` == the tail.
+    """
+    claimed = agent.get("rappid")
+    pub = agent.get("pub")
+    if claimed is None and pub is None:
+        return
+
+    try:
+        from rappid import RappidError, parse_rappid, verify_key_binding
+    except ImportError:
+        finding(f"`agents.json`: Agent `{aid}` claims a rappid but scripts/rappid.py is unavailable")
+        return
+
+    if claimed is None:
+        error(f"`agents.json`: Agent `{aid}` has `pub` without a `rappid` to bind it to")
+        return
+
+    try:
+        owner, slug, _ = parse_rappid(claimed)
+    except RappidError as exc:
+        error(f"`agents.json`: Agent `{aid}` rappid is not RAPP/1 §6.1 conformant — {exc}")
+        return
+
+    controller = (agent.get("controller") or "").lower()
+    if controller and owner != controller:
+        error(
+            f"`agents.json`: Agent `{aid}` rappid owner `{owner}` does not match "
+            f"its controller `{controller}` — a rappid must be owned by the login "
+            "that controls the agent"
+        )
+    if slug != aid.lower():
+        error(
+            f"`agents.json`: Agent `{aid}` rappid slug `{slug}` does not match its id"
+        )
+
+    if pub is not None:
+        try:
+            verify_key_binding(claimed, pub)
+        except RappidError as exc:
+            error(f"`agents.json`: Agent `{aid}` public key does not bind to its rappid — {exc}")
+
+
 def validate_agents(data: dict):
     """Validate agents.json structure."""
     if "agents" not in data:
@@ -391,6 +448,8 @@ def validate_agents(data: dict):
                 trait_sum = sum(traits.values())
                 if traits and abs(trait_sum - 1.0) > 0.05:
                     error(f"`agents.json`: Agent `{aid}` traits sum to {trait_sum:.3f}, expected ~1.0")
+
+        validate_agent_identity(agent, aid)
 
     if "_meta" not in data:
         error("`agents.json`: Missing `_meta`")
@@ -538,7 +597,90 @@ def validate_chat(data: dict, agent_ids: set):
         if len(content) > 500:
             error(f"`chat.json`: Message `{mid}` content exceeds 500 chars ({len(content)})")
 
-    info(f"Chat: {len(messages)} messages, timestamps ordered, IDs unique")
+    signed = validate_chat_signatures(messages)
+    info(
+        f"Chat: {len(messages)} messages, timestamps ordered, IDs unique, "
+        f"{signed} signed"
+    )
+
+
+def validate_chat_signatures(messages: list) -> int:
+    """Verify the signature on any chat message that carries one.
+
+    Issue #5942's load-bearing point: `author.id` is an unverified assertion —
+    any PR author can write a message as `terrastar-001`. A message that
+    carries `from`/`pub`/`alg`/`sig` gets checked here against
+    `rapp-commons/events/SCHEMA.md` verification rules 3 and 4, so for that
+    message `author.id` becomes a proof instead of a claim.
+
+    A message with none of those fields is untouched — that is every message in
+    the world today, and they stay valid. A message with *some* of them is an
+    error, because a half-signed envelope is the one shape that reads as
+    verified without being verifiable.
+    """
+    identity_fields = ("from", "pub", "alg", "sig")
+    signed_count = 0
+
+    try:
+        from rappid import RappidError, verify_signed_document
+    except ImportError:
+        for msg in messages:
+            if any(field in msg for field in identity_fields):
+                finding("`chat.json`: signed messages present but scripts/rappid.py is unavailable")
+                break
+        return 0
+
+    agents_data = load_json(STATE_DIR / "agents.json") or {}
+    registered = {
+        agent["id"]: agent.get("rappid")
+        for agent in agents_data.get("agents", [])
+        if agent.get("id")
+    }
+
+    latest_ts: dict[str, datetime] = {}
+    for msg in messages:
+        present = [field for field in identity_fields if field in msg]
+        if not present:
+            continue
+        mid = msg.get("id")
+        if len(present) != len(identity_fields):
+            missing = [f for f in identity_fields if f not in msg]
+            error(
+                f"`chat.json`: Message `{mid}` is partially signed — missing "
+                f"{', '.join('`' + f + '`' for f in missing)}. A message either "
+                "carries the whole identity block or none of it."
+            )
+            continue
+
+        author_id = (msg.get("author") or {}).get("id")
+        expected = registered.get(author_id)
+        if author_id and expected is None:
+            error(
+                f"`chat.json`: Message `{mid}` is signed but author `{author_id}` "
+                "has no `rappid` registered in `agents.json`"
+            )
+            continue
+
+        try:
+            verify_signed_document(msg, expected_from=expected)
+        except RappidError as exc:
+            error(f"`chat.json`: Message `{mid}` signature check failed — {exc}")
+            continue
+
+        # rapp-commons verification rule 5: `ts` is monotonic per `from`.
+        ts = parse_timestamp(msg.get("timestamp", ""))
+        sender = msg["from"]
+        if ts is not None:
+            if sender in latest_ts and ts < latest_ts[sender]:
+                error(
+                    f"`chat.json`: Message `{mid}` from `{sender}` is timestamped "
+                    "before that identity's previous message (backdating)"
+                )
+            else:
+                latest_ts[sender] = ts
+        signed_count += 1
+
+    return signed_count
 
 
 def validate_state_file(filename: str, data: dict, agent_ids: set):
@@ -730,6 +872,43 @@ def validate_canonical_state():
                     f"Object `{object_id or 'unknown'}`",
                 )
     info("Canonical state files validated")
+    validate_static_api_schema_strings()
+
+
+def validate_static_api_schema_strings():
+    """Every served document must carry its `rapp-static-api/1.0` §3 schema string.
+
+    The manifest declares which documents are served and what string each one
+    must carry. A missing string is an integrity defect a contributor *can* fix
+    in their own PR (add one line), so it is an `error()`, not a `finding()`.
+    An undeclared document is silently skipped — `manifest.json` is the only
+    place that decides what is in scope.
+    """
+    try:
+        from static_api import declared_documents, load_manifest, rel_path
+    except ImportError:
+        finding("rapp-static-api: scripts/static_api.py unavailable; schema strings unchecked")
+        return
+
+    manifest = load_manifest()
+    if not manifest:
+        finding("rapp-static-api: manifest.json unreadable; schema strings unchecked")
+        return
+
+    checked = 0
+    for path, schema in declared_documents(manifest):
+        data = load_json(path)
+        if not isinstance(data, dict):
+            continue
+        checked += 1
+        actual = data.get("schema")
+        if actual != schema:
+            error(
+                f"`{rel_path(path)}`: missing `rapp-static-api/1.0` schema string — "
+                f'expected `"schema": "{schema}"` as the first key, found {actual!r}. '
+                "Run `python3 scripts/build_static_api.py` to add it."
+            )
+    info(f"Static API: {checked} served document(s) carry a schema string")
 
 
 # ---------------------------------------------------------------------------

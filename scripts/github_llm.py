@@ -19,6 +19,7 @@ Usage:
     )
 """
 import json
+import sys
 import os
 import subprocess
 import time
@@ -81,6 +82,11 @@ _resolved_model = None
 
 
 # ── Azure OpenAI backend ─────────────────────────────────────────────
+
+# rapp-static-api/1.0 §3: a state write must preserve the document's schema string.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from static_api import stamp_mapping
+
 
 def _generate_azure(
     system: str,
@@ -649,7 +655,7 @@ def _increment_budget() -> None:
     usage["calls"] += 1
     usage_path.parent.mkdir(parents=True, exist_ok=True)
     with open(usage_path, "w") as f:
-        json.dump(usage, f, indent=2)
+        json.dump(stamp_mapping(usage, usage_path), f, indent=2)
         f.write("\n")
 
 

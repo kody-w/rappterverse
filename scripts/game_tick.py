@@ -6,6 +6,7 @@ Runs every 5 minutes via GitHub Actions or on state changes.
 """
 
 import json
+import sys
 import os
 import random
 from datetime import datetime, timezone
@@ -16,6 +17,11 @@ STATE_DIR = BASE_DIR / "state"
 MEMORY_DIR = STATE_DIR / "memory"
 
 
+# rapp-static-api/1.0 §3: a state write must preserve the document's schema string.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from static_api import stamp_mapping
+
+
 def load_json(path: Path) -> dict:
     if path.exists():
         with open(path) as f:
@@ -24,6 +30,7 @@ def load_json(path: Path) -> dict:
 
 
 def save_json(path: Path, data: dict):
+    data = stamp_mapping(data, path)
     with open(path, "w") as f:
         json.dump(data, f, indent=4)
 
@@ -457,7 +464,7 @@ def fulfill_agent_goals(
             done_goals = [g for g in goals if g.get("status") == "done"]
             mem["goals"] = done_goals[-3:] + active_goals[-10:]  # Preserve a few completed for visibility
             with open(mem_path, 'w') as f:
-                json.dump(mem, f, indent=4, ensure_ascii=False)
+                json.dump(stamp_mapping(mem, mem_path), f, indent=4, ensure_ascii=False)
 
     if completed_total:
         changes.append(f"Goal fulfillment: {completed_total} goals completed across agents")

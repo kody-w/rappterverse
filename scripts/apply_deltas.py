@@ -35,6 +35,11 @@ WORLDS_DIR = BASE_DIR / "worlds"
 FEED_DIR = BASE_DIR / "feed"
 
 
+# rapp-static-api/1.0 §3: a state write must preserve the document's schema string.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from static_api import stamp_mapping
+
+
 def has_meaningful_content(delta: dict) -> bool:
     if any(isinstance(delta.get(key), list) and len(delta[key]) > 0
            for key in ("actions", "messages", "activities")):
@@ -95,6 +100,7 @@ def load_json(path: Path) -> dict:
 
 def save_json(path: Path, data: dict):
     """Save JSON file with consistent formatting."""
+    data = stamp_mapping(data, path)
     with open(path, "w") as f:
         json.dump(data, f, indent=4, ensure_ascii=False)
         f.write("\n")

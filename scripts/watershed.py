@@ -86,6 +86,11 @@ SOCIAL_TO_TOOL = {
 }
 
 
+# rapp-static-api/1.0 §3: a state write must preserve the document's schema string.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from static_api import stamp_mapping
+
+
 def classify_experience(exp: dict) -> str:
     """Map an experience record to a canonical tool name (in toolbelt vocab)."""
     et = (exp.get("type") or "").lower()
@@ -433,7 +438,7 @@ def main(argv=None):
         print("(dry run — not writing watershed.json)")
         return 0
 
-    OUT_PATH.write_text(json.dumps(out, indent=4, ensure_ascii=False) + "\n")
+    OUT_PATH.write_text(json.dumps(stamp_mapping(out, OUT_PATH), indent=4, ensure_ascii=False) + "\n")
     print(f"  ✓ Wrote {OUT_PATH.relative_to(BASE_DIR)}")
     return 0
 

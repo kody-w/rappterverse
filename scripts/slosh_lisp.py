@@ -13,12 +13,19 @@ The world goes on with what it has from the last slosh.
 """
 
 import json
+import sys
+from pathlib import Path
 import glob
 import os
 from datetime import datetime, timezone
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 STATE = os.path.join(BASE, "state")
+
+
+# rapp-static-api/1.0 §3: a state write must preserve the document's schema string.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from static_api import stamp_mapping
 
 
 def q(s):
@@ -228,8 +235,9 @@ def main():
         game["_meta"] = game.get("_meta", {})
         game["_meta"]["lastUpdate"] = now
         game["_meta"]["frame"] = frame_num
-        with open(os.path.join(STATE, "game_state.json"), "w") as f:
-            json.dump(game, f, indent=4)
+        game_path = os.path.join(STATE, "game_state.json")
+        with open(game_path, "w") as f:
+            json.dump(stamp_mapping(game, game_path), f, indent=4)
             f.write("\n")
         routine_count = sum(len(w.get("routines", [])) for w in game.get("worlds", {}).values())
         print(f"  Sloshed: pops synced, time cycled, {routine_count} Lisp routines compiled (frame {frame_num})")

@@ -14,6 +14,7 @@ Run:  python scripts/emergence.py
 """
 
 import json
+import sys
 import os
 import math
 from collections import Counter
@@ -23,6 +24,11 @@ from pathlib import Path
 BASE_DIR = Path(__file__).parent.parent
 STATE_DIR = BASE_DIR / "state"
 MEMORY_DIR = STATE_DIR / "memory"
+
+
+# rapp-static-api/1.0 §3: a state write must preserve the document's schema string.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from static_api import stamp_mapping
 
 
 def load_json(path):
@@ -427,7 +433,7 @@ def main():
     history["latest"] = metrics
     
     with open(metrics_path, "w") as f:
-        json.dump(history, f, indent=4)
+        json.dump(stamp_mapping(history, metrics_path), f, indent=4)
         f.write("\n")
 
 

@@ -44,6 +44,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 import random
 from datetime import datetime, timezone
 from pathlib import Path
@@ -63,6 +64,11 @@ FIGHTER_BONUS = 6           # fighters/aggressives hit +6 above base
 LOW_HP_TARGET_BONUS = 8     # finisher bonus when target HP < 30
 FRIENDLY_FIRE_FACTOR = 0.5  # same-team challenges hit at half strength
 SAME_TEAM_BOND_PENALTY = 1  # bond decrement per friendly fire incident
+
+
+# rapp-static-api/1.0 §3: a state write must preserve the document's schema string.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from static_api import stamp_mapping
 
 
 def now_iso() -> str:
@@ -335,15 +341,15 @@ def main(argv=None) -> int:
     actions_doc["_meta"]["lastUpdate"] = now_iso()
     if actions:
         actions_doc["_meta"]["lastProcessedId"] = actions[-1].get("id")
-    ACTIONS_PATH.write_text(json.dumps(actions_doc, indent=4, ensure_ascii=False) + "\n")
+    ACTIONS_PATH.write_text(json.dumps(stamp_mapping(actions_doc, ACTIONS_PATH), indent=4, ensure_ascii=False) + "\n")
 
     agents_doc["_meta"] = agents_doc.get("_meta", {})
     agents_doc["_meta"]["lastUpdate"] = now_iso()
-    AGENTS_PATH.write_text(json.dumps(agents_doc, indent=4, ensure_ascii=False) + "\n")
+    AGENTS_PATH.write_text(json.dumps(stamp_mapping(agents_doc, AGENTS_PATH), indent=4, ensure_ascii=False) + "\n")
 
     rel_doc["_meta"] = rel_doc.get("_meta", {})
     rel_doc["_meta"]["lastUpdate"] = now_iso()
-    RELATIONSHIPS_PATH.write_text(json.dumps(rel_doc, indent=4, ensure_ascii=False) + "\n")
+    RELATIONSHIPS_PATH.write_text(json.dumps(stamp_mapping(rel_doc, RELATIONSHIPS_PATH), indent=4, ensure_ascii=False) + "\n")
 
     last_action_id = actions[-1].get("id") if actions else last_resolved
     CURSOR_PATH.write_text(json.dumps({

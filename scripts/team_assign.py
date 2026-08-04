@@ -44,6 +44,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 import random
 from collections import defaultdict
 from datetime import datetime, timezone
@@ -69,6 +70,11 @@ ROLE_ANCHORS = {
 
 # Side multiplier — radiant on negative x, dire on positive
 SIDE_X = {"radiant": -1, "dire": 1}
+
+
+# rapp-static-api/1.0 §3: a state write must preserve the document's schema string.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from static_api import stamp_mapping
 
 
 def _archetype_to_role(archetype: str) -> str:
@@ -271,7 +277,7 @@ def reset_positions_in_agents_json(teams: dict, jitter: float = 0.5) -> int:
         meta = dict(doc.get("_meta", {}))
         meta["lastUpdate"] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
         doc["_meta"] = meta
-        path.write_text(json.dumps(doc, indent=4, ensure_ascii=False) + "\n")
+        path.write_text(json.dumps(stamp_mapping(doc, path), indent=4, ensure_ascii=False) + "\n")
     return updated
 
 
@@ -319,7 +325,7 @@ def main(argv=None) -> int:
         },
         "teams": teams,
     }
-    TEAMS_PATH.write_text(json.dumps(out, indent=4, ensure_ascii=False) + "\n")
+    TEAMS_PATH.write_text(json.dumps(stamp_mapping(out, TEAMS_PATH), indent=4, ensure_ascii=False) + "\n")
     print(f"  ✓ wrote {TEAMS_PATH.relative_to(BASE_DIR)}")
 
     if args.reset_positions:

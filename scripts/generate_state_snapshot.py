@@ -33,6 +33,11 @@ RESOURCE_PATHS = (
 )
 
 
+# rapp-static-api/1.0 §3: a state write must preserve the document's schema string.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from static_api import stamp_mapping
+
+
 def reject_json_constant(value: str):
     raise ValueError(f"non-standard numeric constant {value}")
 
@@ -93,7 +98,7 @@ def build_manifest(repo_root: Path) -> dict:
 
 def write_manifest(path: Path, manifest: dict) -> None:
     with path.open("w", encoding="utf-8") as handle:
-        json.dump(manifest, handle, indent=4, allow_nan=False)
+        json.dump(stamp_mapping(manifest, path), handle, indent=4, allow_nan=False)
         handle.write("\n")
 
 
