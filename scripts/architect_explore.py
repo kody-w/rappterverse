@@ -140,6 +140,11 @@ THINKING_MESSAGES = [
 EMOTES = ["wave", "think", "celebrate", "clap", "bow", "nod"]
 
 
+# rapp-static-api/1.0 §3: a state write must preserve the document's schema string.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from static_api import stamp_mapping
+
+
 def load_json(path: Path) -> dict:
     if not path.exists():
         return {}
@@ -148,6 +153,7 @@ def load_json(path: Path) -> dict:
 
 
 def save_json(path: Path, data: dict):
+    data = stamp_mapping(data, path)
     with open(path, "w") as f:
         json.dump(data, f, indent=4)
 

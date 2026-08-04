@@ -15,6 +15,7 @@ Walking back through commits = scrubbing the timeline.
 from __future__ import annotations
 
 import json
+import sys
 import re
 import subprocess
 from datetime import datetime, timezone
@@ -25,6 +26,11 @@ STATE_DIR = REPO_ROOT / "state"
 FRAME_COUNTER_PATH = STATE_DIR / "frame_counter.json"
 
 _FRAME_RE = re.compile(r"^\[frame\s+(\d+)\]")
+
+
+# rapp-static-api/1.0 §3: a state write must preserve the document's schema string.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from static_api import stamp_mapping
 
 
 def _git_log_frame_subjects(limit: int = 5000) -> list[tuple[str, int]]:
@@ -108,7 +114,7 @@ def sync_frame_counter() -> int:
     raw["_meta"] = meta
 
     FRAME_COUNTER_PATH.parent.mkdir(parents=True, exist_ok=True)
-    FRAME_COUNTER_PATH.write_text(json.dumps(raw, indent=4) + "\n")
+    FRAME_COUNTER_PATH.write_text(json.dumps(stamp_mapping(raw, FRAME_COUNTER_PATH), indent=4) + "\n")
     return frame
 
 

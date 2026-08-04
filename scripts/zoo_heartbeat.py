@@ -263,6 +263,11 @@ REASONS = [
 # Engine
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
+# rapp-static-api/1.0 §3: a state write must preserve the document's schema string.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from static_api import stamp_mapping
+
+
 def load_json(p: Path) -> dict:
     if not p.exists():
         return {}
@@ -271,6 +276,7 @@ def load_json(p: Path) -> dict:
 
 
 def save_json(p: Path, d: dict):
+    d = stamp_mapping(d, p)
     with open(p, "w") as f:
         json.dump(d, f, indent=4)
 

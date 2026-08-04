@@ -70,6 +70,11 @@ WELL_WORLD = "hub"
 # ── Snapshot ─────────────────────────────────────────────────────────
 
 
+# rapp-static-api/1.0 §3: a state write must preserve the document's schema string.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from static_api import stamp_mapping
+
+
 def _bond_between(edges: list, a: str, b: str) -> int:
     pair = {a, b}
     for e in edges:
@@ -452,7 +457,7 @@ def _save_status(status: dict) -> None:
         },
         "agents": status,
     }
-    STATUS_PATH.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+    STATUS_PATH.write_text(json.dumps(stamp_mapping(payload, STATUS_PATH), indent=2, ensure_ascii=False) + "\n")
 
 
 def _hp_band(hp: int) -> str:

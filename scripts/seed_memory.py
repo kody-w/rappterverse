@@ -11,6 +11,7 @@ Usage:
 """
 
 import json
+import sys
 import random
 import argparse
 from datetime import datetime, timezone
@@ -78,6 +79,11 @@ VOICE_TEMPLATES = {
 }
 
 # ─── Data loading ─────────────────────────────────────────────────────
+
+# rapp-static-api/1.0 §3: a state write must preserve the document's schema string.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from static_api import stamp_mapping
+
 
 def load_json(path: Path) -> dict:
     if path.exists():
@@ -310,7 +316,7 @@ def main():
                   f"{len(memory['opinions'])} opinions")
         else:
             with open(mem_path, 'w') as f:
-                json.dump(memory, f, indent=4, ensure_ascii=False)
+                json.dump(stamp_mapping(memory, mem_path), f, indent=4, ensure_ascii=False)
             seeded += 1
 
     action = "Would seed" if args.dry_run else "Seeded"

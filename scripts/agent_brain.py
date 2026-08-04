@@ -14,6 +14,7 @@ Usage:
 """
 
 import json
+import sys
 import random
 import subprocess
 from datetime import datetime, timezone
@@ -52,6 +53,11 @@ MEMORY_TEMPLATE = {
 MAX_EXPERIENCES = 50
 
 
+# rapp-static-api/1.0 §3: a state write must preserve the document's schema string.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from static_api import stamp_mapping
+
+
 def load_memory(agent_id: str) -> dict:
     """Load an agent's memory file, or return empty template."""
     path = MEMORY_DIR / f"{agent_id}.json"
@@ -71,7 +77,7 @@ def save_memory(memory: dict):
     memory["lastActive"] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     path = MEMORY_DIR / f"{agent_id}.json"
     with open(path, 'w') as f:
-        json.dump(memory, f, indent=4, ensure_ascii=False)
+        json.dump(stamp_mapping(memory, path), f, indent=4, ensure_ascii=False)
 
 
 def record_experience(memory: dict, exp_type: str, details: dict):

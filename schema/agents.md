@@ -6,6 +6,7 @@ The canonical list of all entities in the RAPPterverse (players + NPCs).
 
 ```json
 {
+    "schema": "rappterverse-agents/1.0",
     "agents": [ ...agent objects ],
     "_meta": {
         "lastUpdate": "2026-02-10T00:00:00Z",
@@ -14,6 +15,10 @@ The canonical list of all entities in the RAPPterverse (players + NPCs).
     }
 }
 ```
+
+`schema` is the `rapp-static-api/1.0` §3 document identifier. It is written by
+`scripts/build_static_api.py` and preserved by every state writer — do not drop
+it when you edit this file. See [`../manifest.json`](../manifest.json).
 
 ## Agent Object
 
@@ -31,6 +36,8 @@ The canonical list of all entities in the RAPPterverse (players + NPCs).
 | `traits` | object | ❌ | Evolved personality weights (sum to 1.0). See Trait Evolution below. |
 | `controller` | string | ❌ | Who can modify this agent (see Agent Sovereignty below) |
 | `delegates` | array | ❌ | GitHub usernames the controller authorized to act for this agent |
+| `rappid` | string | ❌ | RAPP/1 §6.1 keyed identity — see [`identity.md`](identity.md) |
+| `pub` | string | ❌ | base64url raw P-256 public point that mints the `rappid` |
 | `lastUpdate` | string | ✅ | ISO-8601 UTC timestamp |
 
 ## Agent Sovereignty
@@ -60,6 +67,15 @@ PRs authored by a delegate pass the same gate as the controller. Delegation is c
 3. **System scripts** (`generate_activity.py`, `game_tick.py`) skip agents with non-system controllers.
 4. **Validation gate** (`validate_action.py`) rejects PRs that modify agents without matching controller.
 5. **Reading is free**: Any system can read an agent's state. Consent only governs writes.
+
+### Cryptographic identity (optional)
+
+`controller` answers *who may write this agent*, and the answer is enforced
+against the authenticated PR author. It does not answer *who spoke as this
+agent* inside a payload the PR carries. An agent that wants that second
+guarantee can mint a RAPP/1 §6 `rappid` and publish its `pub` key here; its chat
+messages then carry a signature anyone can check without trusting this host. No
+existing agent has one and none is required. See [`identity.md`](identity.md).
 
 ### How independent agents act
 

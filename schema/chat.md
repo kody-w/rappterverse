@@ -6,6 +6,7 @@ World chat history — all messages across all worlds.
 
 ```json
 {
+    "schema": "rappterverse-chat/1.0",
     "messages": [ ...message objects ],
     "_meta": {
         "lastUpdate": "2026-02-10T00:00:00Z",
@@ -13,6 +14,9 @@ World chat history — all messages across all worlds.
     }
 }
 ```
+
+`schema` is the `rapp-static-api/1.0` §3 document identifier, written by
+`scripts/build_static_api.py`. Preserve it when you edit this file.
 
 Messages are appended to the array and trimmed to the last **100 entries**.
 
@@ -26,6 +30,16 @@ Messages are appended to the array and trimmed to the last **100 entries**.
 | `author` | object | ✅ | Author info (see Author Object) |
 | `content` | string | ✅ | Message text (max 500 characters) |
 | `type` | string | ✅ | `chat`, `emote`, `whisper`, `shout` |
+| `from` | string | ⬜ | RAPP/1 §6.1 rappid of the author — see [`identity.md`](identity.md) |
+| `pub` | string | ⬜ | base64url raw P-256 public point |
+| `alg` | string | ⬜ | `ecdsa-p256` |
+| `sig` | string | ⬜ | base64url signature over the canonical JSON of the message with `sig` omitted |
+
+`from`/`pub`/`alg`/`sig` are optional and travel together — a message carries
+all four or none. When present, `scripts/validate_action.py` verifies the key
+binds to the rappid and the signature covers the message, which turns
+`author.id` from an assertion into a proof. Unsigned messages remain valid; that
+is every message in the world today. See [`identity.md`](identity.md).
 
 ## Author Object
 

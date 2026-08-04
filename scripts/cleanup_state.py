@@ -35,6 +35,11 @@ sys.path.insert(0, str(BASE_DIR / "scripts"))
 from agent_dispatch import is_clean_chat_content  # noqa: E402
 
 
+# rapp-static-api/1.0 §3: a state write must preserve the document's schema string.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from static_api import stamp_mapping
+
+
 def now_iso() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
@@ -180,8 +185,8 @@ def main(argv=None) -> int:
         print("(dry run — no files written)")
         return 0
 
-    chat_path.write_text(json.dumps(new_chat, indent=4, ensure_ascii=False) + "\n")
-    actions_path.write_text(json.dumps(new_actions, indent=4, ensure_ascii=False) + "\n")
+    chat_path.write_text(json.dumps(stamp_mapping(new_chat, chat_path), indent=4, ensure_ascii=False) + "\n")
+    actions_path.write_text(json.dumps(stamp_mapping(new_actions, actions_path), indent=4, ensure_ascii=False) + "\n")
     print(f"  ✓ wrote {chat_path.relative_to(BASE_DIR)}")
     print(f"  ✓ wrote {actions_path.relative_to(BASE_DIR)}")
     return 0

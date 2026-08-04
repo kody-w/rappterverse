@@ -5,8 +5,14 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from collections import Counter
 from pathlib import Path
+
+
+# rapp-static-api/1.0 §3: a state write must preserve the document's schema string.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from static_api import stamp_mapping
 
 
 def load_json(path: Path) -> dict:
@@ -15,6 +21,7 @@ def load_json(path: Path) -> dict:
 
 
 def save_json(path: Path, data: dict):
+    data = stamp_mapping(data, path)
     with path.open("w", encoding="utf-8") as handle:
         json.dump(data, handle, indent=4, ensure_ascii=False, allow_nan=False)
         handle.write("\n")

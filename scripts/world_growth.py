@@ -31,6 +31,11 @@ AGENTS_DIR = BASE_DIR / "agents"
 # day 1→5: ~1 new agent/tick, day 5→15: ~2, day 15→30: ~3-4, 30+: plateau ~5
 # Tick = one workflow run (every 4 hours = 6 ticks/day)
 
+# rapp-static-api/1.0 §3: a state write must preserve the document's schema string.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from static_api import stamp_mapping
+
+
 def spawn_probability(day: int, current_pop: int) -> tuple[float, int]:
     """Return (probability of spawning, max_spawns) for this tick."""
     if current_pop >= 200:        # hard cap
@@ -218,6 +223,7 @@ def load_json(path: Path) -> dict:
     return {}
 
 def save_json(path: Path, data: dict):
+    data = stamp_mapping(data, path)
     with open(path, "w") as f:
         json.dump(data, f, indent=4)
     f.close()
@@ -429,7 +435,7 @@ def _create_agent_memory(agent_id: str, agent_data: dict):
     }
     path = MEMORY_DIR / f"{agent_id}.json"
     with open(path, 'w') as f:
-        json.dump(memory, f, indent=4, ensure_ascii=False)
+        json.dump(stamp_mapping(memory, path), f, indent=4, ensure_ascii=False)
 
 
 def _create_agent_registry(agent_id: str, name: str, agent_data: dict):

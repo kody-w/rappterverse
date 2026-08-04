@@ -273,6 +273,13 @@ job_emergence() {
   python3 scripts/emergence.py --no-push 2>&1
 }
 
+job_static_api() {
+  # rapp-static-api/1.0 §2 role 2 — the one build step.
+  # Runs immediately before publication so the generated index and versioned
+  # endpoints ride out in the same frame as the state they describe.
+  python3 scripts/build_static_api.py 2>&1
+}
+
 wait_for_reconciliation() {
   local head_sha="$1"
   local pr_url="$2"
@@ -779,6 +786,10 @@ run_cycle() {
   fi
 
   # ── Phase 9: PUBLISH (queue validated frame PR) ──
+  if [ "$cycle_failed" -eq 0 ]; then
+    if ! run_job job_static_api; then cycle_failed=1; fi
+  fi
+
   if [ "$cycle_failed" -eq 0 ]; then
     if ! run_job job_git_sync; then cycle_failed=1; fi
   else

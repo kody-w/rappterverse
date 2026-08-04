@@ -22,6 +22,11 @@ ASSET_DIR = BASE_DIR / "docs" / "chronicles"
 SOURCE_REF = "main"
 
 
+# rapp-static-api/1.0 §3: a state write must preserve the document's schema string.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from static_api import stamp_mapping
+
+
 def load_json(path: Path) -> dict:
     with path.open(encoding="utf-8") as handle:
         return json.load(handle)
@@ -431,7 +436,7 @@ def build_manifest(source_tree: str = "working") -> dict:
 def write_manifest(path: Path, manifest: dict) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8") as handle:
-        json.dump(manifest, handle, indent=4, ensure_ascii=False)
+        json.dump(stamp_mapping(manifest, path), handle, indent=4, ensure_ascii=False)
         handle.write("\n")
 
 

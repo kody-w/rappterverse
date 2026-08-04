@@ -50,6 +50,11 @@ API_URL = "https://models.inference.ai.azure.com/chat/completions"
 
 # ─── Helpers ───────────────────────────────────────────────────────────
 
+# rapp-static-api/1.0 §3: a state write must preserve the document's schema string.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from static_api import stamp_mapping
+
+
 def load_json(path):
     """Load JSON file, return None if missing."""
     if path.exists():
@@ -59,6 +64,7 @@ def load_json(path):
 
 def save_json(path, data):
     """Write JSON file with 4-space indent."""
+    data = stamp_mapping(data, path)
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(data, indent=4) + "\n")
 
