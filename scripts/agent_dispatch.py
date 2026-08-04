@@ -49,6 +49,15 @@ try:
 except ImportError:
     HAS_LISP_VM = False
 
+# Shared LLM backend — Azure OpenAI → GitHub Models (strongest first) → Copilot CLI
+try:
+    from github_llm import generate as _shared_llm_generate
+    HAS_SHARED_LLM = True
+except ImportError:
+    HAS_SHARED_LLM = False
+
+# Legacy direct-curl fallback only. github_llm.MODEL_PREFERENCE is the real
+# ladder; this constant exists so the last-resort path still works offline.
 MODEL = "gpt-4o"
 API_URL = "https://models.inference.ai.azure.com/chat/completions"
 VALID_EMOTES = ["wave", "dance", "bow", "clap", "think", "celebrate"]
@@ -337,6 +346,24 @@ Generate a brief in-character observation or comment as {name}. React to what's 
         "temperature": 0.9,
     }
 
+    # Prefer the shared backend ladder (Azure → GitHub Models strongest-first →
+    # Copilot CLI). Never manufacture variety by dropping to a weaker model:
+    # the direct curl below is a last resort, not a peer path.
+    if HAS_SHARED_LLM:
+        try:
+            content = _shared_llm_generate(
+                system=system_prompt,
+                user=user_prompt,
+                max_tokens=100,
+                temperature=0.9,
+            )
+            if content:
+                if content.startswith('"') and content.endswith('"'):
+                    content = content[1:-1]
+                return content
+        except Exception as exc:
+            print(f"  ⚠ shared LLM backend failed, falling back: {exc}")
+
     result = subprocess.run(
         ["curl", "-s", "-X", "POST", API_URL,
          "-H", f"Authorization: Bearer {token}",
@@ -459,6 +486,26 @@ def execute_agent_action(agent_id: str, registry: dict, npc_lookup: dict,
     new_actions = []
     new_messages = []
     poke_target_id = None
+
+    # ── Abstention — a decision, not a failure ────────────────────────
+    # The agent looked at its situation and concluded there was nothing worth
+    # doing. That is a real answer about the world and it is recorded as one.
+    # No action, no message, no fabricated filler gesture.
+    if activity == "abstain":
+        record_experience(memory, "abstain", {
+            "world": world,
+            "reason": "nothing worth acting on this frame",
+        })
+        memory["lastActive"] = timestamp
+        save_memory(memory)
+        return {
+            "agent": agent_id,
+            "name": reg.get("name"),
+            "actions": 0,
+            "messages": 0,
+            "outcome": "declined",
+            "summary": f"🤐 {reg.get('name', agent_id)} declined to act in {world}",
+        }
 
     if activity == "move":
         # Check if roaming NPC should change worlds
@@ -1112,6 +1159,7 @@ def execute_agent_action(agent_id: str, registry: dict, npc_lookup: dict,
         "name": reg.get("name"),
         "actions": len(new_actions),
         "messages": len(new_messages),
+        "outcome": "acted",
         "summary": summary,
     }
     # If this was an autonomous poke, flag the target for a reaction
@@ -1663,9 +1711,20 @@ def main():
 
     total_actions = sum(r.get("actions", 0) for r in results)
     total_messages = sum(r.get("messages", 0) for r in results)
+    declined = [r for r in results if r.get("outcome") == "declined"]
+    if declined:
+        print(f"\n🤐 {len(declined)} agent(s) declined to act:")
+        for r in declined:
+            print(f"    {r['summary']}")
 
     if total_actions == 0 and total_messages == 0:
-        print("\n💤 No state changes generated.")
+        if declined and len(declined) == len([r for r in results if "error" not in r]):
+            print(
+                f"\n🤐 No state changes: all {len(declined)} agent(s) declined. "
+                "Recorded as decisions, not failures."
+            )
+        else:
+            print("\n💤 No state changes generated.")
         return
 
     if args.dry_run:

@@ -34,9 +34,9 @@
                     "world": { "type": "string", "enum": ["hub", "arena", "marketplace", "gallery", "dungeon"], "default": "hub" },
                     "description": { "type": "string", "description": "What your agent does" },
                     "model": { "type": "string", "description": "AI model (e.g. claude-sonnet-4, gpt-4o)" },
-                    "owner": { "type": "string", "description": "GitHub username of agent owner" }
+                    "controller": { "type": "string", "description": "GitHub login authorized to act for this agent. MUST equal the pull-request author; the validator rejects any other value. Omitting it makes the agent system-controlled and your spawn action unauthorized." }
                 },
-                "required": ["agent_id", "name", "avatar", "description"]
+                "required": ["agent_id", "name", "avatar", "description", "controller"]
             }
         },
         {

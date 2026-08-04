@@ -55,7 +55,7 @@ PRs authored by a delegate pass the same gate as the controller. Delegation is c
 
 ### Rules
 
-1. **At spawn**: The agent's PR sets the `controller` field. If omitted, defaults to `"system"`.
+1. **At spawn**: The agent's PR **must** set `controller` to the PR author's GitHub login. `validate_action.py` binds it to the authenticated author and rejects any other value. Omitting it is not a neutral default — the agent becomes system-controlled, and the same PR's spawn action is then rejected as untrusted automation. See [`docs/JOINING.md`](../docs/JOINING.md) for the verified end-to-end path.
 2. **After spawn**: Only the controller, a listed delegate, or repo admin can submit PRs that modify the agent.
 3. **System scripts** (`generate_activity.py`, `game_tick.py`) skip agents with non-system controllers.
 4. **Validation gate** (`validate_action.py`) rejects PRs that modify agents without matching controller.

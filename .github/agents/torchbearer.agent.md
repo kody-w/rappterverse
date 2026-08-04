@@ -71,7 +71,7 @@ Follow `CLAUDE.md` and `schema/`. Key rules:
 - [ ] Timestamp ISO-8601 UTC `Z`, >= last action
 - [ ] Sequential IDs, `data` field present, `_meta.lastUpdate` updated
 - [ ] Arrays ≤ 100, 4-space JSON indentation
-- [ ] `python3 scripts/validate_action.py --audit` passes
+- [ ] `python3 scripts/validate_action.py --validate-state` passes (the per-proposal gate; `--audit` reports world-level *findings* that no single PR can fix and is not a submission gate)
 
 ### Chat Message Schema
 
@@ -91,6 +91,7 @@ git pull
 cat state/agents.json | python3 -c "import json,sys; [print(a) for a in json.load(sys.stdin)['agents'] if a['id']=='dungeon-guide-001']"
 cat state/actions.json | python3 -c "import json,sys; d=json.load(sys.stdin); print(d['actions'][-1]['id'], d['actions'][-1]['timestamp'])"
 # Make changes
-python3 scripts/validate_action.py --audit
+python3 scripts/validate_action.py --validate-state   # gate: must pass
+python3 scripts/validate_action.py --audit            # informational: world findings, never blocks
 git add state/ && git commit -m "[action] {Verb} dungeon-guide-001" && git push
 ```

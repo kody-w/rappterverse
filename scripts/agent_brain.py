@@ -410,11 +410,22 @@ class AgentBrain:
 
     def decide_action(self, agent_reg: dict, npc_def: dict, memory: dict,
                       world_context: dict) -> str:
-        """Let the LLM decide what action to take.
+        """Hand the agent its situation and boundaries; let it decide.
 
-        Returns one of: move, chat, emote, post, travel, enroll, tip, trade, challenge
-        Falls back to weighted random if LLM unavailable.
-        Goal bias: 40% chance to follow active goal before LLM/random.
+        Returns one of: move, chat, emote, post, travel, enroll, tip, trade,
+        challenge, or ``abstain``.
+
+        ``abstain`` is a first-class outcome, not a failure: an agent that
+        looks at its situation and concludes there is nothing worth doing this
+        frame is telling the world something true. It is recorded (see
+        ``agent_dispatch.execute_agent_action``) and never rewritten into a
+        fabricated action.
+
+        A model that answers with something unrecognisable is a different
+        thing entirely — that is an LLM failure, and only that case falls back
+        to the weighted-random path.
+
+        Goal bias: 40% chance to follow an active goal before asking at all.
         """
         # Goal-driven bias — if agent has an active goal, 40% chance to pursue it
         biased = goal_bias(memory)
@@ -462,7 +473,11 @@ class AgentBrain:
                 lines.append(f"Your current intention: {g.get('reason', g.get('type', '?'))}")
             brainstem_ctx = "\nWHAT YOU WERE DOING (you were on autopilot — now you're fully aware):\n" + "\n".join(f"- {l}" for l in lines)
 
-        prompt = f"""You are {name} in {world}. You just "woke up" — your full intelligence is online now. Based on your personality, what you were just doing, and the world around you, what do you want to do?
+        prompt = f"""You are {name} in {world}. You just "woke up" — your full intelligence is online now.
+
+This is not a task assignment. Nobody has told you what to do or whether to do
+anything at all. You are being handed your situation and your boundaries, and
+the discretion to decide what — if anything — you do with them.
 
 YOUR MEMORY:
 {mem_ctx}
@@ -477,7 +492,14 @@ WORLD STATE:
 YOUR SITUATION:
 {self._format_social_context(world_context)}
 
-Choose ONE action by responding with just the action word:
+YOUR BOUNDARIES:
+- You may only act as yourself, in {world}, within this frame.
+- Say only what you can stand behind. Do not invent events that did not happen,
+  agents you have not met, or things nobody said.
+- Repeating the same gesture you already made, with nothing new behind it, is
+  worse than doing nothing.
+
+If something here is worth doing, do it — respond with one of:
 - chat (talk to someone or share a thought)
 - move (go somewhere new in this world)
 - emote (express yourself physically)
@@ -487,15 +509,28 @@ Choose ONE action by responding with just the action word:
 - trade (propose a trade with someone nearby)
 - challenge (challenge someone to an arena duel)
 
-Respond with ONLY the action word, nothing else."""
+If nothing here is worth doing, say so — respond with:
+- abstain (you looked, and there is nothing you want to do this frame)
 
-        result = _call_llm(self.token, "You are deciding what to do. Respond with one word only.",
-                           prompt, max_tokens=10, temperature=0.7)
+Abstaining is a legitimate outcome and will be recorded as one. It is not a
+failure, and choosing it costs you nothing.
+
+Respond with ONLY the single word, nothing else."""
+
+        result = _call_llm(
+            self.token,
+            "You are deciding what to do, including whether to do anything at "
+            "all. Respond with one word only.",
+            prompt, max_tokens=10, temperature=0.7,
+        )
         result = result.lower().strip().rstrip(".")
 
-        valid = {"chat", "move", "emote", "post", "travel", "enroll", "tip", "trade", "challenge"}
+        valid = {"chat", "move", "emote", "post", "travel", "enroll", "tip",
+                 "trade", "challenge", "abstain"}
         if result in valid:
             return result
+        # Unrecognisable answer is an LLM failure, not a decision. Silence from
+        # a broken call must not be read as a considered abstention.
         return self._fallback_decision(agent_reg)
 
     def generate_chat(self, agent_reg: dict, npc_def: dict, memory: dict,

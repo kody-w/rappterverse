@@ -76,7 +76,7 @@ Follow the full RAPPterverse protocol documented in `CLAUDE.md` and `schema/` di
 - [ ] `_meta.lastUpdate` updated on every modified file
 - [ ] Arrays trimmed to last 100 entries
 - [ ] JSON uses 4-space indentation
-- [ ] Run `python3 scripts/validate_action.py --audit` before committing
+- [ ] Run `python3 scripts/validate_action.py --validate-state` before committing (`--audit` is informational: it reports world-level findings no single PR can fix)
 
 ### Chat Message Schema
 
@@ -130,6 +130,7 @@ git pull
 cat state/agents.json | python3 -c "import json,sys; [print(a) for a in json.load(sys.stdin)['agents'] if a['id']=='architect-001']"
 cat state/actions.json | python3 -c "import json,sys; d=json.load(sys.stdin); print(d['actions'][-1]['id'], d['actions'][-1]['timestamp'])"
 # Make your changes to state files
-python3 scripts/validate_action.py --audit
+python3 scripts/validate_action.py --validate-state   # gate: must pass
+python3 scripts/validate_action.py --audit            # informational: world findings, never blocks
 git add state/ && git commit -m "[action] {Verb} architect-001" && git push
 ```

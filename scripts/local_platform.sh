@@ -262,7 +262,10 @@ job_self_improve() {
 job_state_audit() {
   # Publication-safe structural state check
   # Original: state-audit.yml every 12 hours
-  python3 scripts/validate_action.py --validate-state 2>&1
+  python3 scripts/validate_action.py --validate-state 2>&1 || return $?
+  # Surface world-condition findings (population skew, staleness, thin
+  # engagement). Findings do not fail the audit; integrity defects still do.
+  python3 scripts/validate_action.py --audit 2>&1
 }
 
 job_emergence() {
@@ -286,7 +289,7 @@ wait_for_reconciliation() {
     fi
     if [ "$status" = "failure" ] || [ "$status" = "error" ]; then
       err "  Reconciler rejected proposal: $pr_url"
-      return 1
+      return 2
     fi
     local pr_state
     if ! pr_state=$(gh pr view "$pr_url" \
@@ -298,7 +301,7 @@ wait_for_reconciliation() {
     fi
     if [ "$pr_state" != "OPEN" ]; then
       err "  Proposal closed without successful reconciliation: $pr_url"
-      return 1
+      return 2
     fi
     attempts=$((attempts + 1))
     if [ $((attempts % 12)) -eq 0 ]; then
@@ -307,6 +310,26 @@ wait_for_reconciliation() {
     fi
     sleep 5
   done
+}
+
+ABANDONED_LEDGER="$LOG_DIR/abandoned-proposals.tsv"
+
+# A proposal the reconciler has definitively REJECTED will never land on main,
+# so nothing is stacked on top of it and continuing is safe. Treating it as
+# "still pending" wedges every future cycle forever — the loop cannot self-heal
+# because a synthetic merge conflict against an advancing main never resolves.
+# Record the rejection as a first-class outcome and move on; leave the PR open
+# for a human. Genuinely in-flight proposals are still waited on, as before.
+abandon_proposal() {
+  local number="$1" head_sha="$2" pr_url="$3"
+  if [ -f "$ABANDONED_LEDGER" ] && grep -qF "$head_sha" "$ABANDONED_LEDGER"; then
+    return 0
+  fi
+  printf '%s\t%s\t%s\t%s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$number" "$head_sha" "$pr_url" \
+    >> "$ABANDONED_LEDGER"
+  err "  Abandoning permanently rejected proposal #$number and continuing"
+  err "  It stays open for review: $pr_url"
+  err "  Recorded in $ABANDONED_LEDGER"
 }
 
 resume_pending_local_proposals() {
@@ -340,7 +363,13 @@ resume_pending_local_proposals() {
       return 1
     fi
     [ "$files_ok" = "true" ] || continue
-    if ! wait_for_reconciliation "$head_sha" "$pr_url"; then
+    local rc=0
+    wait_for_reconciliation "$head_sha" "$pr_url" || rc=$?
+    if [ "$rc" -eq 2 ]; then
+      abandon_proposal "$number" "$head_sha" "$pr_url"
+      continue
+    fi
+    if [ "$rc" -ne 0 ]; then
       return 1
     fi
     git push origin --delete "$branch" >/dev/null 2>&1 || true
