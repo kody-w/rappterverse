@@ -1142,6 +1142,77 @@ class TestStateReconciler(unittest.TestCase):
                 self.module.REJECTED,
             )
 
+    def test_capped_status_write_does_not_wedge_the_queue(self):
+        """GitHub caps a commit at 1000 statuses per context.
+
+        ordered_queue reconciles the OLDEST open PR first, so a long-lived
+        item is re-examined every run and its head reaches that cap before
+        any other. On 2026-08-11 PR #5135 did exactly that, POST /statuses
+        began returning 422 permanently, and the unguarded progress write
+        escaped process() and drain(): the sweep exited 1 and no state
+        merged for over three hours. An advisory status is telemetry about
+        a decision, not the decision.
+        """
+        reconciler = self.module.StateReconciler("owner/repo", dry_run=True)
+        capped = self.module.ReconcileError(
+            "gh: Validation failed: This SHA and context has reached the "
+            "maximum number of statuses. (Validation Failed)"
+        )
+        with mock.patch.object(reconciler, "set_status", side_effect=capped):
+            reconciler.note_status("head-sha", "pending", "reconciling")
+            reconciler.note_status("head-sha", "failure", "policy rejected")
+
+    def test_capped_head_still_yields_to_the_next_item(self):
+        """The queue must keep draining past a head it can no longer annotate."""
+        reconciler = self.module.StateReconciler("owner/repo", dry_run=True)
+        queue = [{"number": 5135}, {"number": 6272}]
+        called = []
+        capped = self.module.ReconcileError(
+            "This SHA and context has reached the maximum number of statuses."
+        )
+
+        def process(pr):
+            called.append(pr["number"])
+            if pr["number"] == 5135:
+                with mock.patch.object(reconciler, "set_status",
+                                       side_effect=capped):
+                    reconciler.note_status("head-sha", "failure", "rejected")
+                return self.module.REJECTED
+            return self.module.MERGED
+
+        reconciler.queue = lambda: queue
+        reconciler.process = process
+        self.assertEqual(reconciler.drain(1), 1)
+        self.assertEqual(called, [5135, 6272])
+
+    def test_trusted_attestations_still_fail_closed(self):
+        """Advisory notes may be dropped; gate evidence may not.
+
+        state-consensus, pii-scan and test are the trusted checks
+        checks_state() reads to authorize a merge. If those writes cannot
+        land the PR must stay BLOCKED, so they keep using the raising
+        set_status rather than the swallowing note_status.
+        """
+        import ast
+        tree = ast.parse((SCRIPT_DIR / "state_reconciler.py").read_text())
+        writers = {}
+        for node in ast.walk(tree):
+            if not isinstance(node, ast.Call):
+                continue
+            func = node.func
+            if not isinstance(func, ast.Attribute) or func.attr not in {
+                "set_status", "note_status"
+            }:
+                continue
+            for kw in node.keywords:
+                if kw.arg == "context" and isinstance(kw.value, ast.Constant):
+                    writers[kw.value.value] = func.attr
+        for context in ("state-consensus", "pii-scan", "test"):
+            self.assertEqual(
+                writers.get(context), "set_status",
+                f"{context} attestation must fail closed, not be advisory",
+            )
+
     def test_only_state_paths_enter_queue(self):
         self.assertTrue(self.module.is_state_only([
             {"path": "state/actions.json"},
