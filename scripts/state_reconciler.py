@@ -235,6 +235,31 @@ class StateReconciler:
             "-f", f"description={description[:140]}",
         ])
 
+    def note_status(self, sha: str, state: str, description: str, **kwargs):
+        """Record progress, but never let bookkeeping take down the queue.
+
+        GitHub caps a commit at 1000 statuses per context, so any head that is
+        re-examined often enough eventually makes POST /statuses return 422
+        forever. That is exactly what stopped the world on 2026-08-11: PR #5135
+        is the oldest open item, so it is reconciled first every run, and once
+        its head hit the cap the unguarded progress write escaped drain() and
+        killed the whole sweep. No state merged for 3+ hours.
+
+        A progress or verdict note is telemetry about a decision, not the
+        decision. Losing one costs a line in the UI; raising costs every
+        queued PR behind it. finalize_applied_pr already treats status writes
+        this way -- the advisory paths in process() did not.
+
+        The trusted-validation attestations (state-consensus, pii-scan, test)
+        deliberately keep using set_status: those ARE gate evidence, and if
+        they cannot be written the PR must not merge.
+        """
+        try:
+            self.set_status(sha, state, description, **kwargs)
+        except ReconcileError as exc:
+            print(f"Could not record {state} status for {sha[:12]}: {exc}",
+                  file=sys.stderr)
+
     def current_reconciler_state(self, head_sha: str) -> str | None:
         statuses = gh_json([
             "api",
@@ -469,7 +494,7 @@ class StateReconciler:
         if base_sha != self.policy_sha:
             return BLOCKED
         if not self.dry_run:
-            self.set_status(head_sha, "pending", f"Reconciling against {base_sha[:12]}")
+            self.note_status(head_sha, "pending", f"Reconciling against {base_sha[:12]}")
         try:
             merge_commit = self.validate(pr, base_sha)
             if not self.dry_run:
@@ -519,7 +544,7 @@ class StateReconciler:
             return MERGED
         except ValidationRejected as exc:
             if not self.dry_run:
-                self.set_status(
+                self.note_status(
                     head_sha,
                     "failure",
                     f"policy {self.policy_sha[:12]} rejected: {exc}",
@@ -528,7 +553,7 @@ class StateReconciler:
             return REJECTED
         except ReconcileError as exc:
             if not self.dry_run:
-                self.set_status(head_sha, "pending", str(exc))
+                self.note_status(head_sha, "pending", str(exc))
             print(f"Blocked PR #{number}: {exc}", file=sys.stderr)
             return BLOCKED
 
