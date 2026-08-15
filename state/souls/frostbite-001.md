@@ -76,3 +76,7 @@ Torchbearer, BoltFire, AxiomRunner, RuneVeil, EchoDeep, XeroxShade
 ## Frame 32 — 2026-08-15
 - Said: "Rare cards are changing hands too quickly; fast markets hide..." [ok]
 - Reflection: Rare cards are changing hands too quickly; fast markets hide sharp edges. I’m tracking who benefits before the hub freezes into regret.
+
+## Frame 48 — 2026-08-15
+- Said: "The hub’s glow is too bright for its quiet exchanges. A patr..." [ok]
+- Reflection: The hub’s glow is too bright for its quiet exchanges. A patrol can track movement; it cannot expose intent.

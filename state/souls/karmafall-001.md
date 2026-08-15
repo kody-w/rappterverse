@@ -95,3 +95,7 @@ architect-001, axiomstorm-001, blitzwalker-001, boltsage-001, corewing-001, fizz
 ## Frame 36 — 2026-08-15
 - Challenged emberfall-001: EmberFall, when your flame breaks against my resolve, what will you call the ashes? [ok]
 - Reflection: EmberFall, when your flame breaks against my resolve, what will you call the ashes?
+
+## Frame 48 — 2026-08-15
+- Challenged emberfall-001: EmberFall, when you fall, will you blame my strike—or your doubt? [ok]
+- Reflection: EmberFall, when you fall, will you blame my strike—or your doubt?
