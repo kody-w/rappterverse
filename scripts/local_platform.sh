@@ -24,12 +24,106 @@
 set -euo pipefail
 
 REPO="$(cd "$(dirname "$0")/.." && pwd)"
+SHARED_LOG_DIR="${RAPPTERVERSE_LOG_DIR:-$REPO/logs}"
+RUNNER_LEASE_DIR="$SHARED_LOG_DIR/local-platform-runner-lease"
+RUNNER_LEASE_FILE="$RUNNER_LEASE_DIR/lease.json"
+RUNNER_LEASE_TOKEN="${RAPPTERVERSE_RUNNER_LEASE_TOKEN:-$(date -u +%Y%m%dT%H%M%SZ)-$$-$RANDOM}"
+RUNNER_LEASE_HELD=0
+
+lease_holder_alive() {
+  local pid="${1:-}"
+  [[ "$pid" =~ ^[0-9]+$ ]] || return 1
+  if ! kill -0 "$pid" 2>/dev/null; then
+    return 1
+  fi
+  local command
+  command=$(ps -p "$pid" -o command= 2>/dev/null || true)
+  [[ "$command" == *"local_platform.sh"* ]]
+}
+
+write_runner_lease() {
+  python3 -c "
+import json
+from datetime import datetime, timezone
+payload = {
+    'ownerPid': int('$1'),
+    'ownerToken': '$2',
+    'acquiredAt': datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
+}
+with open('$RUNNER_LEASE_FILE', 'w', encoding='utf-8') as handle:
+    json.dump(payload, handle, indent=2)
+    handle.write('\n')
+" >/dev/null 2>&1 || return 1
+}
+
+read_runner_lease() {
+  python3 -c "
+import json
+try:
+    data = json.load(open('$RUNNER_LEASE_FILE', encoding='utf-8'))
+except Exception:
+    data = {}
+print(f\"{data.get('ownerPid','')}\t{data.get('ownerToken','')}\")
+" 2>/dev/null
+}
+
+acquire_runner_lease() {
+  mkdir -p "$SHARED_LOG_DIR"
+  local attempts=0
+  while true; do
+    if mkdir "$RUNNER_LEASE_DIR" 2>/dev/null; then
+      if ! write_runner_lease "$$" "$RUNNER_LEASE_TOKEN"; then
+        rmdir "$RUNNER_LEASE_DIR" >/dev/null 2>&1 || true
+        echo "[$(date '+%H:%M:%S')] ERROR: Unable to write local-platform lease metadata" >&2
+        return 1
+      fi
+      RUNNER_LEASE_HELD=1
+      return 0
+    fi
+
+    local owner_pid owner_token
+    read -r owner_pid owner_token <<<"$(read_runner_lease)"
+    if lease_holder_alive "$owner_pid"; then
+      echo "[$(date '+%H:%M:%S')] Another local-platform loop owns the lease (pid $owner_pid); exiting." >&2
+      return 2
+    fi
+
+    echo "[$(date '+%H:%M:%S')] Reclaiming stale local-platform lease from pid ${owner_pid:-unknown}" >&2
+    rm -rf "$RUNNER_LEASE_DIR" >/dev/null 2>&1 || true
+    attempts=$((attempts + 1))
+    if [ "$attempts" -ge 5 ]; then
+      echo "[$(date '+%H:%M:%S')] ERROR: Unable to acquire local-platform lease after reclaim attempts" >&2
+      return 1
+    fi
+    sleep 1
+  done
+}
+
+release_runner_lease() {
+  if [ "$RUNNER_LEASE_HELD" -ne 1 ]; then
+    return
+  fi
+  local owner_pid owner_token
+  read -r owner_pid owner_token <<<"$(read_runner_lease)"
+  if [ "$owner_token" = "$RUNNER_LEASE_TOKEN" ]; then
+    rm -rf "$RUNNER_LEASE_DIR" >/dev/null 2>&1 || true
+  fi
+  RUNNER_LEASE_HELD=0
+}
 
 if [ -z "${RAPPTERVERSE_ISOLATED:-}" ] && [ "${1:-}" != "--status" ]; then
+  if ! acquire_runner_lease; then
+    rc=$?
+    if [ "$rc" -eq 2 ]; then
+      exit 0
+    fi
+    exit "$rc"
+  fi
   WORKTREE="$(mktemp -d /tmp/rappterverse-platform.XXXXXX)"
   rmdir "$WORKTREE"
   cleanup_worktree() {
     git -C "$REPO" worktree remove --force "$WORKTREE" >/dev/null 2>&1 || true
+    release_runner_lease
   }
   trap cleanup_worktree EXIT INT TERM
   git -C "$REPO" fetch --no-tags origin main
@@ -393,22 +487,37 @@ abandon_proposal() {
 
 resume_pending_local_proposals() {
   local pending
-  if ! pending=$(REPOSITORY_OWNER="${REPOSITORY_OWNER:-kody-w}" gh pr list \
-    --repo "${GH_REPO:-kody-w/rappterverse}" \
-    --state open \
-    --limit 100 \
-    --json number,author,baseRefName,headRefName,headRefOid,isCrossRepository,isDraft,url \
-    --jq '.[] |
-      select(.headRefName | startswith("auto/local-frame-")) |
-      select(.baseRefName == "main" and .isDraft == false and .isCrossRepository == false) |
-      select(.author.login == env.REPOSITORY_OWNER) |
-      [.number,.headRefName,.headRefOid,.url] | @tsv'); then
+  if ! pending=$(list_pending_local_proposals); then
     err "Unable to query pending local-platform proposals"
     return 1
   fi
   [ -z "$pending" ] && return 0
 
   log "Resuming pending local-platform proposal before advancing"
+  settle_local_proposals "$pending"
+}
+
+list_pending_local_proposals() {
+  local frame_filter="${1:-}"
+  local prefix="auto/local-frame-"
+  if [ -n "$frame_filter" ]; then
+    prefix="auto/local-frame-${frame_filter}-"
+  fi
+  REPOSITORY_OWNER="${REPOSITORY_OWNER:-kody-w}" gh pr list \
+    --repo "${GH_REPO:-kody-w/rappterverse}" \
+    --state open \
+    --limit 100 \
+    --json number,author,baseRefName,headRefName,headRefOid,isCrossRepository,isDraft,url \
+    --jq ".[] |
+      select(.headRefName | startswith(\"${prefix}\")) |
+      select(.baseRefName == \"main\" and .isDraft == false and .isCrossRepository == false) |
+      select(.author.login == env.REPOSITORY_OWNER) |
+      [.number,.headRefName,.headRefOid,.url] | @tsv"
+}
+
+settle_local_proposals() {
+  local pending="$1"
+  [ -z "$pending" ] && return 0
   gh workflow run state-drain.yml --repo "${GH_REPO:-kody-w/rappterverse}" --ref main || true
   while IFS=$'\t' read -r number branch head_sha pr_url; do
     [ -z "$head_sha" ] && continue
@@ -433,6 +542,20 @@ resume_pending_local_proposals() {
     fi
     git push origin --delete "$branch" >/dev/null 2>&1 || true
   done <<< "$pending"
+}
+
+resume_frame_lineage() {
+  local frame="$1"
+  local pending
+  if ! pending=$(list_pending_local_proposals "$frame"); then
+    err "Unable to query pending local-platform proposals"
+    return 1
+  fi
+  if [ -z "$pending" ]; then
+    return 3
+  fi
+  log "Resuming in-flight frame $frame proposal before creating a new one"
+  settle_local_proposals "$pending"
 }
 
 job_git_sync() {
@@ -485,6 +608,16 @@ job_git_sync() {
 
   local frame
   frame=$(python3 -c "import json; print(json.load(open('state/frame_counter.json')).get('frame', '?'))" 2>/dev/null || echo "?")
+  if resume_frame_lineage "$frame"; then
+    rm -f "$PUBLICATION_BLOCK"
+    echo "  Reconciled existing frame $frame proposal"
+    return 0
+  else
+    local lineage_rc=$?
+    if [ "$lineage_rc" -ne 3 ]; then
+      return "$lineage_rc"
+    fi
+  fi
   local branch="auto/local-frame-${frame}-$(date -u +%Y%m%d-%H%M%S)-$$"
   git config user.name "rappterverse-local-platform" || return $?
   git config user.email "41898282+github-actions[bot]@users.noreply.github.com" || return $?
