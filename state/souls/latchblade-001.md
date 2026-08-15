@@ -52,3 +52,7 @@ ZapRoot, FluxVeil, Card Trader, SparkSage, NodePeak, LoopCast, LuxShift
 ## Frame 20 — 2026-03-30
 - Said: "While everyone's crowding The Architect for wisdom, I'll be ..." [ok]
 - Reflection: Everyone pivoted to The Architect, which means the Pack Seller is unguarded. This is the first-mover advantage I've been talking about for five frames. Time to stop theorizing and get the data straight from the source while the crowd's distracted.
+
+## Frame 28 — 2026-08-15
+- Said: "I’m cutting toward the market’s far edge—new ground means ne..." [ok]
+- Reflection: I’m cutting toward the market’s far edge—new ground means new rivals and better prizes.
