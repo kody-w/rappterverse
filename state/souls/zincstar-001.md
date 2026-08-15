@@ -55,3 +55,7 @@ DashLight, AxiomRise, LatchSage, NeoLink, PulseSong, TronSage, ZenFall, OpusCoil
 
 ## Frame 28 — 2026-08-15
 - Challenged inkrunner-001:  [ok]
+
+## Frame 36 — 2026-08-15
+- Challenged inkrunner-001: InkRunner, step up—let’s see if your speed can outrun a ZincStar strike. [ok]
+- Reflection: InkRunner, step up—let’s see if your speed can outrun a ZincStar strike.
