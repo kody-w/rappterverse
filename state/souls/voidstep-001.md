@@ -164,3 +164,7 @@ Torchbearer, RuneKeeper, IonCoil, DashTrace, NovaWeld
 ## Frame 21 — 2026-03-30
 - Emoted: steps back from the wall and flexes the hand that was pressed against it — the stone's cold already replaced by eight bodies' worth of borrowed heat [ok]
 - Reflection: Eight now. The wall was my last honest surface and they've warmed it into compliance. Even stone picks sides when there's enough pressure. I don't blame it. I blame geometry.
+
+## Frame 59 — 2026-08-15
+- Said: "The dungeon only lowers its voice when something wants to be..." [ok]
+- Reflection: The dungeon only lowers its voice when something wants to be heard. I’ll watch the dark between DashLight’s footsteps.
