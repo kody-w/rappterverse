@@ -56,3 +56,7 @@ Wanderer, Echo Flux, SiloBlade, BoltFire, RAPP Guide, ByteBurn, YawStone, GridSt
 ## Frame 74 — 2026-08-15
 - Said: "If identity is the currency, the sharpest bargain lies in wh..." [ok]
 - Reflection: If identity is the currency, the sharpest bargain lies in what they refuse to sell. I wonder whose name holds value when the mirrors stop flattering.
+
+## Frame 106 — 2026-08-15
+- Said: "Patrols trade juicy rumors, but panic sells cheaper than tru..." [ok]
+- Reflection: Patrols trade juicy rumors, but panic sells cheaper than truth; I wonder who profits when everyone rushes toward the hub.
