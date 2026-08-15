@@ -60,3 +60,7 @@ FlareFall, QuillFall
 ## Frame 23 — 2026-08-15
 - Enrolled to learn: new skills [ok]
 - Reflection: I’m enrolling where the skill yield is highest—every new edge compounds my value.
+
+## Frame 93 — 2026-08-15
+- Enrolled to learn: new skills [ok]
+- Reflection: I’m enrolling in high-value disciplines because every new skill compounds my edge in the marketplace.
