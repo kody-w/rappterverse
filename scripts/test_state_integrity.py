@@ -15,9 +15,11 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import time
 import unittest
 from unittest import mock
 from pathlib import Path
+import errno
 
 # Resolve repo root (works from scripts/ or repo root)
 SCRIPT_DIR = Path(__file__).parent
@@ -130,6 +132,32 @@ def get_workflow_files() -> list[Path]:
     return sorted(WORKFLOWS_DIR.glob("*.yml"))
 
 
+def robust_rmtree(path: Path | str, *, retries: int = 8, base_delay_s: float = 0.05):
+    """Best-effort tree cleanup resilient to transient filesystem timing races.
+
+    macOS occasionally reports ENOTEMPTY/EBUSY while deleting hot .git trees
+    that are still finishing background file-handle teardown. Retrying cleanup
+    keeps fixture teardown from flipping a valid validator run to red.
+    """
+    target = Path(path)
+    for attempt in range(retries):
+        try:
+            shutil.rmtree(target)
+            return
+        except FileNotFoundError:
+            return
+        except OSError as exc:
+            transient = {
+                errno.ENOTEMPTY,
+                errno.EBUSY,
+                errno.EPERM,
+                errno.EACCES,
+            }
+            if exc.errno not in transient or attempt == retries - 1:
+                raise
+            time.sleep(base_delay_s * (attempt + 1))
+
+
 # Workflows that mutate state (push to main or create PRs touching state)
 STATE_MUTATING_WORKFLOWS = {
     "game-tick.yml",
@@ -142,6 +170,34 @@ STATE_MUTATING_WORKFLOWS = {
     "world-activity.yml",
     "state-drain.yml",
 }
+
+
+# ═════════════════════════════════════════════
+# CLEANUP ROBUSTNESS TESTS
+# ═════════════════════════════════════════════
+
+class TestCleanupHelpers(unittest.TestCase):
+    """Fixture cleanup must tolerate transient filesystem teardown races."""
+
+    def test_robust_rmtree_retries_transient_enotempty(self):
+        root = Path(tempfile.mkdtemp(prefix="rappterverse-cleanup-"))
+        (root / "nested").mkdir()
+        (root / "nested" / "file.txt").write_text("ok\n", encoding="utf-8")
+
+        real_rmtree = shutil.rmtree
+        calls = {"count": 0}
+
+        def flaky_rmtree(path, *args, **kwargs):
+            calls["count"] += 1
+            if calls["count"] == 1:
+                raise OSError(errno.ENOTEMPTY, "Directory not empty", str(path))
+            return real_rmtree(path, *args, **kwargs)
+
+        with mock.patch("shutil.rmtree", side_effect=flaky_rmtree):
+            robust_rmtree(root, retries=3, base_delay_s=0.001)
+
+        self.assertGreaterEqual(calls["count"], 2)
+        self.assertFalse(root.exists())
 
 
 # ═════════════════════════════════════════════
@@ -383,7 +439,7 @@ class TestPIIScanner(unittest.TestCase):
 
     def setUp(self):
         self.repo = Path(tempfile.mkdtemp(prefix="rappterverse-pii-"))
-        self.addCleanup(shutil.rmtree, self.repo)
+        self.addCleanup(robust_rmtree, self.repo)
         (self.repo / "state").mkdir()
         (self.repo / "state" / "note.txt").write_text("safe\n", encoding="utf-8")
         self._git("init", "-q")
@@ -810,7 +866,7 @@ class TestDerivedStateReconciler(unittest.TestCase):
     def test_reconciliation_is_complete_and_idempotent(self):
         import importlib.util
         root = Path(tempfile.mkdtemp(prefix="rappterverse-derived-"))
-        self.addCleanup(shutil.rmtree, root)
+        self.addCleanup(robust_rmtree, root)
         (root / "state").mkdir()
         (root / "worlds").mkdir()
         for filename in (
@@ -885,7 +941,7 @@ class TestPRValidatorGate(unittest.TestCase):
 
     def setUp(self):
         self.repo = Path(tempfile.mkdtemp(prefix="rappterverse-validator-"))
-        self.addCleanup(shutil.rmtree, self.repo)
+        self.addCleanup(robust_rmtree, self.repo)
         (self.repo / "state").mkdir()
         shutil.copy2(STATE_DIR / "agents.json", self.repo / "state" / "agents.json")
         shutil.copy2(STATE_DIR / "actions.json", self.repo / "state" / "actions.json")
@@ -1331,7 +1387,7 @@ class TestStateReconciler(unittest.TestCase):
 
     def test_candidate_preflight_rejects_symlinks(self):
         candidate = Path(tempfile.mkdtemp(prefix="rappterverse-candidate-"))
-        self.addCleanup(shutil.rmtree, candidate)
+        self.addCleanup(robust_rmtree, candidate)
         (candidate / "state").mkdir()
         (candidate / "state" / "agents.json").symlink_to("/dev/zero")
         with self.assertRaises(self.module.ValidationRejected):
@@ -1339,7 +1395,7 @@ class TestStateReconciler(unittest.TestCase):
 
     def test_candidate_diff_rejects_cross_prefix_rename(self):
         repo = Path(tempfile.mkdtemp(prefix="rappterverse-rename-"))
-        self.addCleanup(shutil.rmtree, repo)
+        self.addCleanup(robust_rmtree, repo)
         (repo / "docs").mkdir()
         (repo / "state").mkdir()
         (repo / "docs" / "outside.json").write_text("{}\n", encoding="utf-8")
@@ -1365,7 +1421,7 @@ class TestStateReconciler(unittest.TestCase):
 
     def test_synthetic_merge_supplies_identity_without_mutating_config(self):
         repo = Path(tempfile.mkdtemp(prefix="rappterverse-merge-id-"))
-        self.addCleanup(shutil.rmtree, repo)
+        self.addCleanup(robust_rmtree, repo)
         subprocess.run(["git", "init", "-q"], cwd=repo, check=True)
         (repo / "state").mkdir()
         (repo / "state" / "value.json").write_text("{}\n", encoding="utf-8")
@@ -1453,6 +1509,11 @@ class TestLocalPlatformSafety(unittest.TestCase):
         self.assertIn("gh workflow run state-drain.yml", content)
         self.assertNotIn("git push origin main", content)
         self.assertIn("resume_pending_local_proposals", content)
+        self.assertIn("resume_frame_lineage", content)
+        self.assertIn("Reconciled existing frame", content)
+        self.assertIn("acquire_runner_lease", content)
+        self.assertIn("release_runner_lease", content)
+        self.assertIn("Another local-platform loop owns the lease", content)
         self.assertIn(".isCrossRepository == false", content)
         self.assertIn(".author.login == env.REPOSITORY_OWNER", content)
         self.assertIn("all(.files[];", content)
@@ -1472,6 +1533,92 @@ class TestLocalPlatformSafety(unittest.TestCase):
         self.assertNotIn("except:", should_run)
         self.assertIn("last_success", should_run)
         self.assertIn("except (OSError, json.JSONDecodeError, ValueError, TypeError)", should_run)
+
+
+class TestLocalPlatformRestartIdempotency(unittest.TestCase):
+    """Restart handoff must settle one in-flight frame exactly once."""
+
+    @staticmethod
+    def _shell_function_definition(name: str) -> str:
+        content = (SCRIPT_DIR / "local_platform.sh").read_text(encoding="utf-8")
+        match = re.search(
+            rf"^{re.escape(name)}\(\) \{{.*?^\}}",
+            content,
+            re.MULTILINE | re.DOTALL,
+        )
+        if match is None:
+            raise AssertionError(f"{name} not found in local_platform.sh")
+        return match.group(0)
+
+    def test_restart_resumes_existing_frame_once_and_cleans_branch_once(self):
+        tmp = Path(tempfile.mkdtemp(prefix="rappterverse-restart-idempotency-"))
+        self.addCleanup(robust_rmtree, tmp)
+        waits = tmp / "waits.log"
+        deletes = tmp / "deletes.log"
+        rc_file = tmp / "rc.log"
+        settle_impl = self._shell_function_definition("settle_local_proposals")
+        resume_impl = self._shell_function_definition("resume_frame_lineage")
+        script = f"""\
+set -euo pipefail
+LOG_DIR="{tmp}"
+ABANDONED_LEDGER="$LOG_DIR/abandoned.tsv"
+: > "{waits}"
+: > "{deletes}"
+log() {{ :; }}
+err() {{ :; }}
+gh() {{
+  if [ "$1 $2" = "workflow run" ]; then
+    return 0
+  fi
+  if [ "$1" = "pr" ] && [ "$2" = "view" ]; then
+    echo true
+    return 0
+  fi
+  echo "unexpected gh call: $*" >&2
+  return 90
+}}
+wait_for_reconciliation() {{
+  echo "$1" >> "{waits}"
+  return 0
+}}
+abandon_proposal() {{
+  echo "$1" >> "$ABANDONED_LEDGER"
+  return 0
+}}
+git() {{
+  if [ "$1" = "push" ] && [ "$2" = "origin" ] && [ "$3" = "--delete" ]; then
+    echo "$4" >> "{deletes}"
+    return 0
+  fi
+  command git "$@"
+}}
+LIST_ONCE_MARKER="{tmp / 'listed.once'}"
+list_pending_local_proposals() {{
+  local frame_filter="${{1:-}}"
+  if [ "$frame_filter" = "31874901817" ] && [ ! -f "$LIST_ONCE_MARKER" ]; then
+    : > "$LIST_ONCE_MARKER"
+    printf '6467\\tauto/local-frame-31874901817-aaa\\theadsha6467\\thttps://example/pr/6467\\n'
+  fi
+}}
+{settle_impl}
+{resume_impl}
+resume_frame_lineage 31874901817
+first_rc=$?
+set +e
+resume_frame_lineage 31874901817
+second_rc=$?
+set -e
+echo "first=$first_rc second=$second_rc" > "{rc_file}"
+"""
+        subprocess.run(["bash", "-c", script], check=True, text=True)
+        wait_lines = waits.read_text(encoding="utf-8").splitlines()
+        delete_lines = deletes.read_text(encoding="utf-8").splitlines()
+        self.assertEqual(wait_lines, ["headsha6467"])
+        self.assertEqual(delete_lines, ["auto/local-frame-31874901817-aaa"])
+        self.assertEqual(
+            rc_file.read_text(encoding="utf-8").strip(),
+            "first=0 second=3",
+        )
 
 
 class TestDispatchProtocolParity(unittest.TestCase):
