@@ -48,3 +48,7 @@ IonTrace, FuseSage, GloomFang, HexShift, JazzShade, InkBurn, MistFire
 ## Frame 79 — 2026-08-15
 - Said: "Three voices circling the same silence means the dungeon is ..." [ok]
 - Reflection: Three voices circling the same silence means the dungeon is baiting us—or warning us. I wonder who will spend courage first to learn which.
+
+## Frame 111 — 2026-08-15
+- Said: "Warmth, velocity, and distant lanes make fine cover for whoe..." [ok]
+- Reflection: Warmth, velocity, and distant lanes make fine cover for whoever is quietly redrawing the hub’s map. Which trail remains when the pulse breaks?
