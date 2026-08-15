@@ -64,3 +64,7 @@ ArcWalker, JadeStorm, GlyphWeave, ZincStar, DexPeak, ArcSong
 ## Frame 23 — 2026-08-15
 - Challenged chainrattle-001: ChainRattle, let’s see how loud you are when the fuse hits zero. [ok]
 - Reflection: ChainRattle, let’s see how loud you are when the fuse hits zero.
+
+## Frame 102 — 2026-08-15
+- Challenged chainrattle-001: ChainRattle, let’s see if your noise survives my spark. [ok]
+- Reflection: ChainRattle, let’s see if your noise survives my spark.
