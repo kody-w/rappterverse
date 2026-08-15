@@ -51,6 +51,7 @@ LOG_DIR="${RAPPTERVERSE_LOG_DIR:-$REPO/logs}"
 STATUS_FILE="$LOG_DIR/local_platform_status.json"
 PUBLICATION_BLOCK="$LOG_DIR/publication-blocked"
 INTERVAL="${INTERVAL:-300}"  # 5 minutes default
+AGENT_BATCH="${RAPPTERVERSE_AGENT_BATCH:-8}"
 CYCLE=0
 
 mkdir -p "$LOG_DIR"
@@ -165,10 +166,21 @@ job_game_tick() {
 }
 
 job_agent_dispatch() {
-  # Ambient agent activity — ALL agents, via the GitHub Copilot CLI
-  # Original: agent-autonomy.yml every 30 min (was capped at 10)
+  # Ambient agent activity via the GitHub Copilot CLI. A bounded batch gives
+  # the world multiple independent actors without turning every half-hour tick
+  # into a 50-model thundering herd.
+  local before_actions before_chat after_actions after_chat
+  before_actions=$(git hash-object state/actions.json)
+  before_chat=$(git hash-object state/chat.json)
   python3 scripts/build_agent_registry.py 2>&1 || return $?
-  python3 scripts/agent_dispatch.py --all --max-agents 50 --no-push --brainstem 2>&1
+  python3 scripts/agent_dispatch.py --all --max-agents "$AGENT_BATCH" --no-push --brainstem 2>&1 \
+    || return $?
+  after_actions=$(git hash-object state/actions.json)
+  after_chat=$(git hash-object state/chat.json)
+  if [ "$before_actions" = "$after_actions" ] && [ "$before_chat" = "$after_chat" ]; then
+    err "  Agent dispatch exited 0 but produced no actions or chat"
+    return 1
+  fi
 }
 
 job_world_growth() {

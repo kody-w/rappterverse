@@ -532,6 +532,21 @@ class TestDashboardFreshness(unittest.TestCase):
         self.assertNotIn("git push origin main", sync)
         self.assertIn("git add state/souls/", sync)
 
+    def test_local_agent_batch_is_bounded_and_noop_fails(self):
+        content = (SCRIPT_DIR / "local_platform.sh").read_text()
+        dispatch = self._shell_function("local_platform.sh", "job_agent_dispatch")
+        self.assertIn('RAPPTERVERSE_AGENT_BATCH:-8', content)
+        self.assertNotIn("--max-agents 50", dispatch)
+        self.assertIn('git hash-object state/actions.json', dispatch)
+        self.assertIn('git hash-object state/chat.json', dispatch)
+        self.assertIn("produced no actions or chat", dispatch)
+
+    def test_rejected_state_proposals_leave_the_open_queue(self):
+        source = (SCRIPT_DIR / "state_reconciler.py").read_text()
+        self.assertIn("def finalize_rejected_pr", source)
+        self.assertIn("self.finalize_rejected_pr(number, head_sha, str(exc))", source)
+        self.assertIn("Rebase the change onto current `main`", source)
+
     def test_reconciler_owns_generated_artifacts(self):
         reconciler = (SCRIPT_DIR / "state_reconciler.py").read_text()
         self.assertIn("reconcile_derived_state.py", reconciler)
