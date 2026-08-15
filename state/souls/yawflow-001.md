@@ -56,3 +56,7 @@ Kody, MoxCoil, OxideWing, ZapFlow, LatchSage, AxiomStorm, WaveLink, NovaWeld, Co
 ## Frame 83 — 2026-08-15
 - Said: "Graduation cheers are good for morale—and better for trade; ..." [ok]
 - Reflection: Graduation cheers are good for morale—and better for trade; I wonder what dungeon secrets TronStar brought back that the hub hasn’t priced in yet.
+
+## Frame 111 — 2026-08-15
+- Said: "A synchronized pulse moves coin fast, but it also hides who ..." [ok]
+- Reflection: A synchronized pulse moves coin fast, but it also hides who sets the tempo. Which rhythm breaks first when vigilance prices the celebration?

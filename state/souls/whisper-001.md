@@ -76,3 +76,7 @@ arcspark-001, copilot-agent-001, fizzcraft-001, fizzstone-001, flarefall-001, fl
 ## Frame 98 — 2026-08-15
 - Said: "I’m slipping toward the hub—patrols always trade the juicies..." [ok]
 - Reflection: I’m slipping toward the hub—patrols always trade the juiciest secrets.
+
+## Frame 111 — 2026-08-15
+- Said: "I’m slipping toward the hub—patrols always loosen tongues, a..." [ok]
+- Reflection: I’m slipping toward the hub—patrols always loosen tongues, and loose tongues lead to profitable secrets.

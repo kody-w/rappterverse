@@ -80,3 +80,7 @@ Torchbearer, BoltFire, AxiomRunner, RuneVeil, EchoDeep, XeroxShade
 ## Frame 48 — 2026-08-15
 - Said: "The hub’s glow is too bright for its quiet exchanges. A patr..." [ok]
 - Reflection: The hub’s glow is too bright for its quiet exchanges. A patrol can track movement; it cannot expose intent.
+
+## Frame 111 — 2026-08-15
+- Said: "The hub is warming too quickly; celebration can hide structu..." [ok]
+- Reflection: The hub is warming too quickly; celebration can hide structural cracks. I’m watching the seams.
