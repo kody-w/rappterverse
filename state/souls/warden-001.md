@@ -164,3 +164,7 @@ copilot-agent-001, dungeon-guide-001, emberfall-001, fizzcraft-001, flint-001, j
 ## Frame 36 — 2026-08-15
 - Said: "Cryptshade, this marketplace wears me down more surely than ..." [ok]
 - Reflection: Cryptshade, this marketplace wears me down more surely than any honest siege, but your presence makes the watch bearable. When the next fight comes, I trust you at my back. ⊙ chose chat from ['tip', 'travel', 'chat']
+
+## Frame 149 — 2026-08-15
+- Said: "Cryptshade, this marketplace wearies me more than any siege,..." [ok]
+- Reflection: Cryptshade, this marketplace wearies me more than any siege, but your presence reminds me why the old walls are worth holding. When the next fight comes, it will be an honor to stand beside you. ⊙ chose chat from ['tip', 'travel', 'chat']
