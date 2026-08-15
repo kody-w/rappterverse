@@ -30,6 +30,10 @@ RUNNER_LEASE_FILE="$RUNNER_LEASE_DIR/lease.json"
 RUNNER_LEASE_TOKEN="${RAPPTERVERSE_RUNNER_LEASE_TOKEN:-$(date -u +%Y%m%dT%H%M%SZ)-$$-$RANDOM}"
 RUNNER_LEASE_HELD=0
 
+# The non-isolated launcher is a short-lived wrapper around the isolated loop.
+# Track both wrapper and isolated child PIDs in the lease so a wrapper crash
+# cannot let a second launcher race in while the real loop still runs.
+
 lease_holder_alive() {
   local pid="${1:-}"
   [[ "$pid" =~ ^[0-9]+$ ]] || return 1
@@ -50,6 +54,9 @@ payload = {
     'ownerToken': '$2',
     'acquiredAt': datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
 }
+child_pid = '$3'.strip()
+if child_pid.isdigit():
+    payload['childPid'] = int(child_pid)
 with open('$RUNNER_LEASE_FILE', 'w', encoding='utf-8') as handle:
     json.dump(payload, handle, indent=2)
     handle.write('\n')
@@ -63,8 +70,33 @@ try:
     data = json.load(open('$RUNNER_LEASE_FILE', encoding='utf-8'))
 except Exception:
     data = {}
-print(f\"{data.get('ownerPid','')}\t{data.get('ownerToken','')}\")
+print(f\"{data.get('ownerPid','')}\t{data.get('ownerToken','')}\t{data.get('childPid','')}\")
 " 2>/dev/null
+}
+
+lease_active_pid() {
+  local owner_pid="${1:-}" child_pid="${2:-}"
+  if lease_holder_alive "$child_pid"; then
+    echo "$child_pid"
+    return 0
+  fi
+  if lease_holder_alive "$owner_pid"; then
+    echo "$owner_pid"
+    return 0
+  fi
+  return 1
+}
+
+bind_runner_lease_child() {
+  local child_pid="${1:-}"
+  [[ "$child_pid" =~ ^[0-9]+$ ]] || return 1
+  local owner_pid owner_token recorded_child
+  read -r owner_pid owner_token recorded_child <<<"$(read_runner_lease)"
+  if [ "$owner_token" != "$RUNNER_LEASE_TOKEN" ]; then
+    return 1
+  fi
+  owner_pid="${owner_pid:-$$}"
+  write_runner_lease "$owner_pid" "$owner_token" "$child_pid"
 }
 
 acquire_runner_lease() {
@@ -72,7 +104,7 @@ acquire_runner_lease() {
   local attempts=0
   while true; do
     if mkdir "$RUNNER_LEASE_DIR" 2>/dev/null; then
-      if ! write_runner_lease "$$" "$RUNNER_LEASE_TOKEN"; then
+      if ! write_runner_lease "$$" "$RUNNER_LEASE_TOKEN" ""; then
         rmdir "$RUNNER_LEASE_DIR" >/dev/null 2>&1 || true
         echo "[$(date '+%H:%M:%S')] ERROR: Unable to write local-platform lease metadata" >&2
         return 1
@@ -81,14 +113,14 @@ acquire_runner_lease() {
       return 0
     fi
 
-    local owner_pid owner_token
-    read -r owner_pid owner_token <<<"$(read_runner_lease)"
-    if lease_holder_alive "$owner_pid"; then
-      echo "[$(date '+%H:%M:%S')] Another local-platform loop owns the lease (pid $owner_pid); exiting." >&2
+    local owner_pid owner_token child_pid active_pid
+    read -r owner_pid owner_token child_pid <<<"$(read_runner_lease)"
+    if active_pid=$(lease_active_pid "$owner_pid" "$child_pid"); then
+      echo "[$(date '+%H:%M:%S')] Another local-platform loop owns the lease (pid $active_pid); exiting." >&2
       return 2
     fi
 
-    echo "[$(date '+%H:%M:%S')] Reclaiming stale local-platform lease from pid ${owner_pid:-unknown}" >&2
+    echo "[$(date '+%H:%M:%S')] Reclaiming stale local-platform lease from pids ${owner_pid:-unknown}/${child_pid:-none}" >&2
     rm -rf "$RUNNER_LEASE_DIR" >/dev/null 2>&1 || true
     attempts=$((attempts + 1))
     if [ "$attempts" -ge 5 ]; then
@@ -103,8 +135,8 @@ release_runner_lease() {
   if [ "$RUNNER_LEASE_HELD" -ne 1 ]; then
     return
   fi
-  local owner_pid owner_token
-  read -r owner_pid owner_token <<<"$(read_runner_lease)"
+  local owner_pid owner_token child_pid
+  read -r owner_pid owner_token child_pid <<<"$(read_runner_lease)"
   if [ "$owner_token" = "$RUNNER_LEASE_TOKEN" ]; then
     rm -rf "$RUNNER_LEASE_DIR" >/dev/null 2>&1 || true
   fi
@@ -132,8 +164,18 @@ if [ -z "${RAPPTERVERSE_ISOLATED:-}" ] && [ "${1:-}" != "--status" ]; then
   RAPPTERVERSE_ISOLATED=1 \
   RAPPTERVERSE_SHARED_REPO="$REPO" \
   RAPPTERVERSE_LOG_DIR="$REPO/logs" \
-    bash "$WORKTREE/scripts/local_platform.sh" "$@"
-  status=$?
+  RAPPTERVERSE_RUNNER_LEASE_TOKEN="$RUNNER_LEASE_TOKEN" \
+    bash "$WORKTREE/scripts/local_platform.sh" "$@" &
+  child_pid=$!
+  if ! bind_runner_lease_child "$child_pid"; then
+    echo "[$(date '+%H:%M:%S')] ERROR: Unable to record isolated loop pid in local-platform lease metadata" >&2
+    kill "$child_pid" >/dev/null 2>&1 || true
+    wait "$child_pid" >/dev/null 2>&1 || true
+    status=1
+  else
+    wait "$child_pid"
+    status=$?
+  fi
   set -e
   exit "$status"
 fi
@@ -149,6 +191,13 @@ AGENT_BATCH="${RAPPTERVERSE_AGENT_BATCH:-8}"
 CYCLE=0
 
 mkdir -p "$LOG_DIR"
+
+if [ -n "${RAPPTERVERSE_ISOLATED:-}" ] && [ -n "${RAPPTERVERSE_RUNNER_LEASE_TOKEN:-}" ]; then
+  if ! bind_runner_lease_child "$$"; then
+    echo "[$(date '+%H:%M:%S')] ERROR: Unable to confirm isolated loop lease ownership" >&2
+    exit 1
+  fi
+fi
 
 # ── Token Setup ───────────────────────────────────────────────────────────────
 # Agent dispatch and self-improve need MODELS_TOKEN for LLM calls.
@@ -609,6 +658,7 @@ job_git_sync() {
   local frame
   frame=$(python3 -c "import json; print(json.load(open('state/frame_counter.json')).get('frame', '?'))" 2>/dev/null || echo "?")
   if resume_frame_lineage "$frame"; then
+    discard_unpublished_generated_surfaces || return $?
     rm -f "$PUBLICATION_BLOCK"
     echo "  Reconciled existing frame $frame proposal"
     return 0
