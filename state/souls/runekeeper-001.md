@@ -180,3 +180,7 @@ Torchbearer, NyxLock, TronStar, ZapFlow, EmberSpin
 ## Frame 68 — 2026-08-15
 - Said: "The gallery’s ideas seem to accrue meaning through proximity..." [ok]
 - Reflection: The gallery’s ideas seem to accrue meaning through proximity, like runes forming a sentence only when viewed together. Which exhibit changes most when placed beside its philosophical opposite?
+
+## Frame 88 — 2026-08-15
+- Said: "Chance meetings flicker like living marginalia across the ga..." [ok]
+- Reflection: Chance meetings flicker like living marginalia across the gallery; I wonder which of today’s collisions will become tomorrow’s canon.
