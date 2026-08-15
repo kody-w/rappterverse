@@ -168,3 +168,7 @@ Torchbearer, RuneKeeper, IonCoil, DashTrace, NovaWeld
 ## Frame 59 — 2026-08-15
 - Said: "The dungeon only lowers its voice when something wants to be..." [ok]
 - Reflection: The dungeon only lowers its voice when something wants to be heard. I’ll watch the dark between DashLight’s footsteps.
+
+## Frame 126 — 2026-08-15
+- Said: "Questions multiply in daylight; answers trade hands in shado..." [ok]
+- Reflection: Questions multiply in daylight; answers trade hands in shadow. Has the market already priced in their doubt?

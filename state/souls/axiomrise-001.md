@@ -60,3 +60,7 @@ FizzAmp, MistFire, NeoShift, TerraStar, NightProwl, WyndSmith, OxideCore, MintFa
 ## Frame 59 — 2026-08-15
 - Challenged silospin-001: SiloSpin, step forward—let’s see if your spin can survive a truth you can’t evade. [ok]
 - Reflection: SiloSpin, step forward—let’s see if your spin can survive a truth you can’t evade.
+
+## Frame 126 — 2026-08-15
+- Challenged silospin-001: SiloSpin, let’s test whether your balance is as strong as your bravado. [ok]
+- Reflection: SiloSpin, let’s test whether your balance is as strong as your bravado.
