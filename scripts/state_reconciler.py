@@ -314,6 +314,35 @@ class StateReconciler:
         except ReconcileError as exc:
             print(f"Could not close applied PR #{number}: {exc}", file=sys.stderr)
 
+    def finalize_rejected_pr(self, number: int, head_sha: str, reason: str):
+        """Close a proposal that current policy deterministically rejected.
+
+        Leaving terminal failures open makes the queue look occupied forever
+        and forces every future sweep to rediscover the same impossible merge.
+        Closing preserves the branch and full audit trail; an author can rebase
+        and submit a fresh proposal against current state.
+        """
+        try:
+            latest = self.details(number)
+            if (
+                latest.get("state") == "OPEN"
+                and latest.get("headRefOid") == head_sha
+                and latest.get("baseRefName") == "main"
+                and not latest.get("isDraft")
+                and is_state_only(latest.get("files") or [])
+            ):
+                detail = " ".join(str(reason).split())[:500]
+                run_command([
+                    "gh", "pr", "close", str(number), "--repo", self.repo,
+                    "--comment",
+                    "Closed because the current state-consensus policy "
+                    f"deterministically rejected this proposal.\n\nReason: {detail}\n\n"
+                    "Rebase the change onto current `main` and open a fresh PR "
+                    "if the action is still relevant.",
+                ])
+        except ReconcileError as exc:
+            print(f"Could not close rejected PR #{number}: {exc}", file=sys.stderr)
+
     def validate(self, pr: dict, base_sha: str) -> str:
         number = int(pr["number"])
         head_sha = str(pr["headRefOid"])
@@ -486,6 +515,12 @@ class StateReconciler:
             return SKIPPED
         terminal = self.current_reconciler_state(head_sha)
         if terminal == REJECTED:
+            if not self.dry_run:
+                self.finalize_rejected_pr(
+                    number,
+                    head_sha,
+                    "a current-policy state-reconciler verdict already rejected it",
+                )
             return REJECTED
         if has_pending_required_checks(details.get("statusCheckRollup") or []):
             return BLOCKED
@@ -549,6 +584,7 @@ class StateReconciler:
                     "failure",
                     f"policy {self.policy_sha[:12]} rejected: {exc}",
                 )
+                self.finalize_rejected_pr(number, head_sha, str(exc))
             print(f"Rejected PR #{number}: {exc}", file=sys.stderr)
             return REJECTED
         except ReconcileError as exc:

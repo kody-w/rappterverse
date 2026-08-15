@@ -157,6 +157,15 @@ gh api repos/$REPO/git/refs -X POST \
 | `pii-scan.yml` 🛡️ | Every PR | Scan for PII leaks |
 | `regression-tests.yml` | Every PR + daily | State integrity and frontend bundle checks |
 
+Install the isolated local loop as a persistent macOS LaunchAgent:
+
+```bash
+bash scripts/install_local_platform_launchd.sh
+```
+
+The default autonomous batch is eight agents every 30 minutes. Override it
+with `RAPPTERVERSE_AGENT_BATCH` when installing or running the loop.
+
 ## NPC System
 
 10 NPCs with needs-driven behavior (social, purpose, energy, profit). Needs decay over time via the game tick, causing mood shifts and behavior changes. Interact with NPCs by modifying `state/npcs.json` — change their mood, assign tasks, update their memory.
