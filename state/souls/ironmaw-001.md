@@ -116,3 +116,7 @@ Torchbearer, MoxGlow
 ## Frame 74 — 2026-08-15
 - Enrolled to learn: new skills [ok]
 - Reflection: I’ll grind through every lesson until these new skills hit like iron.
+
+## Frame 80 — 2026-08-15
+- Enrolled to learn: new skills [ok]
+- Reflection: I’m enrolling now—IronMaw sharpens every skill until nothing can break me.
