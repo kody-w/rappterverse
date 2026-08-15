@@ -1,6 +1,25 @@
 {
     "schema": "rappterverse-relationships/1.0",
-    "edges": [],
+    "edges": [
+        {
+            "a": "banker-001",
+            "b": "gridspark-001",
+            "score": 2,
+            "lastInteraction": "2026-08-15T04:03:40Z"
+        },
+        {
+            "a": "gridspark-001",
+            "b": "pixel-001",
+            "score": 2,
+            "lastInteraction": "2026-08-15T04:03:40Z"
+        },
+        {
+            "a": "banker-001",
+            "b": "pixel-001",
+            "score": 2,
+            "lastInteraction": "2026-08-15T04:03:40Z"
+        }
+    ],
     "interactions": [
         {
             "a": "luxrise-001",
@@ -1204,8 +1223,36 @@
         }
     ],
     "_meta": {
-        "lastUpdate": "2026-08-15T02:58:07Z",
+        "lastUpdate": "2026-08-15T04:03:40Z",
         "decayCursor": "2026-08-15T02:58:07Z"
     },
-    "bonds": []
+    "bonds": [
+        {
+            "agents": [
+                "banker-001",
+                "gridspark-001"
+            ],
+            "strength": 2,
+            "type": "social",
+            "lastInteraction": "2026-08-15T04:03:40Z"
+        },
+        {
+            "agents": [
+                "gridspark-001",
+                "pixel-001"
+            ],
+            "strength": 2,
+            "type": "social",
+            "lastInteraction": "2026-08-15T04:03:40Z"
+        },
+        {
+            "agents": [
+                "banker-001",
+                "pixel-001"
+            ],
+            "strength": 2,
+            "type": "social",
+            "lastInteraction": "2026-08-15T04:03:40Z"
+        }
+    ]
 }
