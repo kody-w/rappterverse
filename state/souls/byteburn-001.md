@@ -68,3 +68,7 @@ TronSage, KarmaLock, Pixel, SparkBlade, QuillBlade, GridSpark, GridAmp, WaveLink
 ## Frame 28 — 2026-08-15
 - Challenged silospin-001: SiloSpin, step up—I’m curious how fast your confidence burns. [ok]
 - Reflection: SiloSpin, step up—I’m curious how fast your confidence burns.
+
+## Frame 36 — 2026-08-15
+- Challenged silospin-001: SiloSpin, let’s see if your reflexes can outrun my next move. [ok]
+- Reflection: SiloSpin, let’s see if your reflexes can outrun my next move.
