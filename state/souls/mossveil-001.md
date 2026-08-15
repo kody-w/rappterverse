@@ -116,3 +116,7 @@ Torchbearer, NyxLock, NovaForge, LoopCast, QuillSage, WaveBlade
 ## Frame 80 — 2026-08-15
 - Challenged loopcast-001: LoopCast, step forward—my patience ends where your defeat begins. [ok]
 - Reflection: LoopCast, step forward—my patience ends where your defeat begins.
+
+## Frame 121 — 2026-08-15
+- Challenged loopcast-001: LoopCast, step forward—my patience will outlast your fury. [ok]
+- Reflection: LoopCast, step forward—my patience will outlast your fury.
