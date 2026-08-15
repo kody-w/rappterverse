@@ -1526,6 +1526,12 @@ def main():
         parts = filepath.split("/")
         full_path = BASE_DIR / filepath
         if parts[0] == "state":
+            if full_path.suffix != ".json":
+                if filepath.startswith("state/souls/") and full_path.suffix == ".md":
+                    info(f"`{filepath}`: Markdown soul valid")
+                else:
+                    error(f"`{filepath}`: Unsupported state file type")
+                continue
             filename = parts[-1]
             data = load_json(full_path)
             if data is not None:
