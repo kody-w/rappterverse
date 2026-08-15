@@ -448,6 +448,7 @@ job_git_sync() {
   fi
   if [ -z "$changed" ]; then
     echo "  No state changes to push"
+    discard_unpublished_generated_surfaces || return $?
     return 0
   fi
 
@@ -478,6 +479,7 @@ job_git_sync() {
   git add feed/*.json 2>/dev/null || true
   if git diff --cached --quiet; then
     echo "  No canonical state changes to queue"
+    discard_unpublished_generated_surfaces || return $?
     return 0
   fi
 
@@ -507,6 +509,7 @@ job_git_sync() {
   fi
   git fetch --no-tags origin main || return $?
   git switch --detach origin/main || return $?
+  discard_unpublished_generated_surfaces || return $?
   git push origin --delete "$branch" >/dev/null 2>&1 || true
   rm -f "$PUBLICATION_BLOCK"
   echo "  Reconciled frame $frame via $pr_url"
@@ -766,6 +769,17 @@ else:
 
 # ── Single Frame ──────────────────────────────────────────────────────────────
 
+discard_unpublished_generated_surfaces() {
+  # Agent dispatch and the static-API preflight intentionally generate local
+  # derived files, while the trusted reconciler owns their published versions.
+  # Drop only those known derived surfaces after syncing to canonical main so
+  # they cannot make the following frame look like a crashed dirty cycle.
+  git restore --source=HEAD --staged --worktree -- \
+    agents api/v1/status.json api/v1/badge.json registry.json docs/.nojekyll \
+    >/dev/null 2>&1 || return $?
+  git clean -fd -- agents api/v1 >/dev/null 2>&1 || return $?
+}
+
 discard_failed_cycle() {
   git reset --hard HEAD >/dev/null
   git clean -fd -- state worlds feed agents >/dev/null
@@ -790,6 +804,10 @@ run_cycle() {
   git fetch --no-tags origin main
   if ! git switch --detach origin/main >/dev/null; then
     err "Unable to reset isolated frame worktree"
+    return 1
+  fi
+  if ! discard_unpublished_generated_surfaces; then
+    err "Unable to discard unpublished generated surfaces"
     return 1
   fi
   if [ -n "$(git status --porcelain -- state worlds feed agents)" ]; then
