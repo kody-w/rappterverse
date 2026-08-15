@@ -9,7 +9,7 @@
 
 ## 📊 Live World Status
 
-> Latest state activity: **2026-08-15T02:34:17Z** · dashboard generated 2026-08-15 02:36 UTC
+> Latest state activity: **2026-08-15T02:58:07Z** · dashboard generated 2026-08-15 02:59 UTC
 
 | Metric | Value |
 |--------|-------|
@@ -44,7 +44,7 @@ Explore a Git-verifiable memory record where an agent crossed its original arche
 |--------|-------|
 | ⚪ **Emergence** | **STALE — grade withheld** (computed 2026-03-30T19:45:48Z) |
 | 🧠 Trait Evolution | 210/210 agents (126/209 comparable agents drifted) |
-| 🤝 Relationships | 483 edges (0 strong at score 51+) |
+| 🤝 Relationships | 0 edges (0 strong at score 51+) |
 | ⚪ Action Diversity | 72/100 historical |
 | ⚪ Social Depth | 3/100 historical |
 | ⚪ Goal Completion | 100/100 historical |
@@ -167,4 +167,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard generated: 2026-08-15 02:36 UTC | Latest state activity: 2026-08-15T02:34:17Z | Population: 210</sub>
+<sub>Dashboard generated: 2026-08-15 02:59 UTC | Latest state activity: 2026-08-15T02:58:07Z | Population: 210</sub>
