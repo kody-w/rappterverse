@@ -1511,9 +1511,6 @@ class TestLocalPlatformSafety(unittest.TestCase):
         self.assertIn("resume_pending_local_proposals", content)
         self.assertIn("resume_frame_lineage", content)
         self.assertIn("Reconciled existing frame", content)
-        self.assertIn("acquire_runner_lease", content)
-        self.assertIn("release_runner_lease", content)
-        self.assertIn("Another local-platform loop owns the lease", content)
         self.assertIn(".isCrossRepository == false", content)
         self.assertIn(".author.login == env.REPOSITORY_OWNER", content)
         self.assertIn("all(.files[];", content)
@@ -1542,13 +1539,13 @@ class TestLocalPlatformRestartIdempotency(unittest.TestCase):
     def _shell_function_definition(name: str) -> str:
         content = (SCRIPT_DIR / "local_platform.sh").read_text(encoding="utf-8")
         match = re.search(
-            rf"^{re.escape(name)}\(\) \{{.*?^\}}",
+            rf"^{re.escape(name)}\(\) \{{.*?^\}}\n(?=\n)",
             content,
             re.MULTILINE | re.DOTALL,
         )
         if match is None:
             raise AssertionError(f"{name} not found in local_platform.sh")
-        return match.group(0)
+        return match.group(0).rstrip()
 
     def test_restart_resumes_existing_frame_once_and_cleans_branch_once(self):
         tmp = Path(tempfile.mkdtemp(prefix="rappterverse-restart-idempotency-"))
@@ -1619,6 +1616,254 @@ echo "first=$first_rc second=$second_rc" > "{rc_file}"
             rc_file.read_text(encoding="utf-8").strip(),
             "first=0 second=3",
         )
+
+
+class TestLocalPlatformLeaseBehavior(unittest.TestCase):
+    """Lease ownership must block split-brain and self-heal stale wrappers."""
+
+    @staticmethod
+    def _shell_function_definition(name: str) -> str:
+        content = (SCRIPT_DIR / "local_platform.sh").read_text(encoding="utf-8")
+        match = re.search(
+            rf"^{re.escape(name)}\(\) \{{.*?^\}}\n(?=\n)",
+            content,
+            re.MULTILINE | re.DOTALL,
+        )
+        if match is None:
+            raise AssertionError(f"{name} not found in local_platform.sh")
+        return match.group(0).rstrip()
+
+    @staticmethod
+    def _stop_process(process: subprocess.Popen):
+        if process.poll() is not None:
+            return
+        process.terminate()
+        try:
+            process.wait(timeout=5)
+        except subprocess.TimeoutExpired:
+            process.kill()
+            process.wait(timeout=5)
+
+    def _run_acquire_runner_lease(
+        self,
+        root: Path,
+        lease_payload: dict,
+        *,
+        token: str = "claim-token",
+    ) -> subprocess.CompletedProcess:
+        payload_json = json.dumps(lease_payload, indent=2)
+        script = f"""\
+set -euo pipefail
+SHARED_LOG_DIR="{root}"
+RUNNER_LEASE_DIR="$SHARED_LOG_DIR/local-platform-runner-lease"
+RUNNER_LEASE_FILE="$RUNNER_LEASE_DIR/lease.json"
+RUNNER_LEASE_TOKEN="{token}"
+RUNNER_LEASE_HELD=0
+{self._shell_function_definition("lease_holder_alive")}
+{self._shell_function_definition("write_runner_lease")}
+{self._shell_function_definition("read_runner_lease")}
+{self._shell_function_definition("lease_active_pid")}
+{self._shell_function_definition("acquire_runner_lease")}
+mkdir -p "$SHARED_LOG_DIR"
+mkdir "$RUNNER_LEASE_DIR"
+cat > "$RUNNER_LEASE_FILE" <<'JSON'
+{payload_json}
+JSON
+set +e
+acquire_runner_lease
+rc=$?
+set -e
+echo "rc=$rc"
+read_runner_lease
+exit "$rc"
+"""
+        return subprocess.run(
+            ["bash", "-c", script],
+            text=True,
+            capture_output=True,
+        )
+
+    def test_live_owner_contention_rejects_second_owner(self):
+        root = Path(tempfile.mkdtemp(prefix="rappterverse-lease-contention-"))
+        self.addCleanup(robust_rmtree, root)
+        incumbent = subprocess.Popen(
+            [
+                sys.executable,
+                "-c",
+                "import time; time.sleep(120)",
+                "local_platform.sh",
+            ]
+        )
+        self.addCleanup(self._stop_process, incumbent)
+        result = self._run_acquire_runner_lease(
+            root,
+            {
+                "ownerPid": incumbent.pid,
+                "ownerToken": "incumbent-token",
+            },
+        )
+        self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
+        self.assertIn("owns the lease", result.stderr)
+        lease = json.loads(
+            (root / "local-platform-runner-lease" / "lease.json").read_text(encoding="utf-8")
+        )
+        self.assertEqual(lease.get("ownerToken"), "incumbent-token")
+
+    def test_stale_lease_is_reclaimed_after_owner_death(self):
+        root = Path(tempfile.mkdtemp(prefix="rappterverse-lease-reclaim-"))
+        self.addCleanup(robust_rmtree, root)
+        result = self._run_acquire_runner_lease(
+            root,
+            {
+                "ownerPid": 999999,
+                "ownerToken": "stale-token",
+            },
+            token="fresh-token",
+        )
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertIn("Reclaiming stale local-platform lease", result.stderr)
+        lease = json.loads(
+            (root / "local-platform-runner-lease" / "lease.json").read_text(encoding="utf-8")
+        )
+        self.assertEqual(lease.get("ownerToken"), "fresh-token")
+        self.assertIsInstance(lease.get("ownerPid"), int)
+        self.assertNotIn("childPid", lease)
+
+    def test_parent_death_child_alive_does_not_split_brain(self):
+        root = Path(tempfile.mkdtemp(prefix="rappterverse-lease-child-live-"))
+        self.addCleanup(robust_rmtree, root)
+        child = subprocess.Popen(
+            [
+                sys.executable,
+                "-c",
+                "import time; time.sleep(120)",
+                "local_platform.sh",
+            ]
+        )
+        self.addCleanup(self._stop_process, child)
+        result = self._run_acquire_runner_lease(
+            root,
+            {
+                "ownerPid": 999999,
+                "ownerToken": "incumbent-token",
+                "childPid": child.pid,
+            },
+        )
+        self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
+        self.assertIn(f"pid {child.pid}", result.stderr)
+        self.assertNotIn("Reclaiming stale", result.stderr)
+
+    def test_lineage_resume_cleans_generated_surfaces(self):
+        repo = Path(tempfile.mkdtemp(prefix="rappterverse-lineage-cleanup-"))
+        self.addCleanup(robust_rmtree, repo)
+        (repo / "state").mkdir(parents=True, exist_ok=True)
+        (repo / "worlds" / "hub").mkdir(parents=True, exist_ok=True)
+        (repo / "feed").mkdir(parents=True, exist_ok=True)
+        (repo / "agents").mkdir(parents=True, exist_ok=True)
+        (repo / "api" / "v1").mkdir(parents=True, exist_ok=True)
+        (repo / "docs").mkdir(parents=True, exist_ok=True)
+        (repo / "state" / "frame_counter.json").write_text(
+            json.dumps({"frame": 42}, indent=2) + "\n",
+            encoding="utf-8",
+        )
+        (repo / "state" / "example.json").write_text(
+            json.dumps({"value": 1}, indent=2) + "\n",
+            encoding="utf-8",
+        )
+        (repo / "worlds" / "hub" / "config.json").write_text(
+            json.dumps({"bounds": {"x": [-1, 1], "z": [-1, 1]}}, indent=2) + "\n",
+            encoding="utf-8",
+        )
+        (repo / "feed" / "activity.json").write_text(
+            json.dumps({"events": []}, indent=2) + "\n",
+            encoding="utf-8",
+        )
+        (repo / "agents" / ".keep").write_text("tracked\n", encoding="utf-8")
+        (repo / "api" / "v1" / "status.json").write_text("baseline-status\n", encoding="utf-8")
+        (repo / "api" / "v1" / "badge.json").write_text("baseline-badge\n", encoding="utf-8")
+        (repo / "registry.json").write_text("baseline-registry\n", encoding="utf-8")
+        (repo / "docs" / ".nojekyll").write_text("baseline-nojekyll\n", encoding="utf-8")
+
+        subprocess.run(["git", "init", "-q"], cwd=repo, check=True)
+        subprocess.run(["git", "config", "user.name", "tester"], cwd=repo, check=True)
+        subprocess.run(
+            ["git", "config", "user.email", "tester@example.com"],
+            cwd=repo,
+            check=True,
+        )
+        subprocess.run(["git", "add", "-A"], cwd=repo, check=True)
+        subprocess.run(["git", "commit", "-qm", "baseline"], cwd=repo, check=True)
+
+        (repo / "state" / "example.json").write_text(
+            json.dumps({"value": 2}, indent=2) + "\n",
+            encoding="utf-8",
+        )
+        (repo / "api" / "v1" / "status.json").write_text("dirty-status\n", encoding="utf-8")
+        (repo / "api" / "v1" / "badge.json").write_text("dirty-badge\n", encoding="utf-8")
+        (repo / "registry.json").write_text("dirty-registry\n", encoding="utf-8")
+        (repo / "docs" / ".nojekyll").write_text("dirty-nojekyll\n", encoding="utf-8")
+        (repo / "agents" / "draft.json").write_text("unpublished\n", encoding="utf-8")
+        (repo / "api" / "v1" / "draft.json").write_text("unpublished\n", encoding="utf-8")
+
+        script = f"""\
+set -euo pipefail
+REPO="{repo}"
+PUBLICATION_BLOCK="$REPO/publication-blocked"
+touch "$PUBLICATION_BLOCK"
+resume_frame_lineage() {{ return 0; }}
+err() {{ echo "$*" >&2; }}
+python3() {{
+  case "${{1:-}}" in
+    scripts/reconcile_derived_state.py|scripts/validate_action.py|scripts/pii_scan.py)
+      return 0
+      ;;
+    *)
+      command python3 "$@"
+      ;;
+  esac
+}}
+{self._shell_function_definition("discard_unpublished_generated_surfaces")}
+{self._shell_function_definition("job_git_sync")}
+job_git_sync
+"""
+        result = subprocess.run(
+            ["bash", "-c", script],
+            text=True,
+            capture_output=True,
+        )
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertFalse((repo / "publication-blocked").exists())
+        self.assertEqual(
+            (repo / "api" / "v1" / "status.json").read_text(encoding="utf-8"),
+            "baseline-status\n",
+        )
+        self.assertEqual(
+            (repo / "api" / "v1" / "badge.json").read_text(encoding="utf-8"),
+            "baseline-badge\n",
+        )
+        self.assertEqual(
+            (repo / "registry.json").read_text(encoding="utf-8"),
+            "baseline-registry\n",
+        )
+        self.assertEqual(
+            (repo / "docs" / ".nojekyll").read_text(encoding="utf-8"),
+            "baseline-nojekyll\n",
+        )
+        self.assertFalse((repo / "agents" / "draft.json").exists())
+        self.assertFalse((repo / "api" / "v1" / "draft.json").exists())
+        status = subprocess.run(
+            ["git", "status", "--porcelain"],
+            cwd=repo,
+            text=True,
+            capture_output=True,
+            check=True,
+        ).stdout
+        self.assertIn("state/example.json", status)
+        self.assertNotIn("api/v1/status.json", status)
+        self.assertNotIn("api/v1/badge.json", status)
+        self.assertNotIn("registry.json", status)
+        self.assertNotIn("docs/.nojekyll", status)
+        self.assertNotIn("agents/draft.json", status)
 
 
 class TestDispatchProtocolParity(unittest.TestCase):
