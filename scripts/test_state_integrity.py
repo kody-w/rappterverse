@@ -541,6 +541,21 @@ class TestDashboardFreshness(unittest.TestCase):
         self.assertIn('git hash-object state/chat.json', dispatch)
         self.assertIn("produced no actions or chat", dispatch)
 
+    def test_self_improvement_is_advisory_to_world_publication(self):
+        content = (SCRIPT_DIR / "local_platform.sh").read_text()
+        self.assertIn("run_advisory_job job_self_improve", content)
+        self.assertIn('should_run_advisory "job_self_improve" 355', content)
+        phase = content.split(
+            "# ── Phase 6: EVOLVE", 1)[1].split(
+            "# ── Phase 7: EMERGENCE", 1)[0]
+        self.assertNotIn("cycle_failed=1", phase)
+
+    def test_markdown_souls_are_a_supported_state_type(self):
+        source = (SCRIPT_DIR / "validate_action.py").read_text()
+        self.assertIn('filepath.startswith("state/souls/")', source)
+        self.assertIn("Markdown soul valid", source)
+        self.assertIn("Unsupported state file type", source)
+
     def test_rejected_state_proposals_leave_the_open_queue(self):
         source = (SCRIPT_DIR / "state_reconciler.py").read_text()
         self.assertIn("def finalize_rejected_pr", source)

@@ -107,6 +107,29 @@ run_job() {
   return 0
 }
 
+run_advisory_job() {
+  local job="$1"
+  local start=$(date +%s)
+  local output_file
+  output_file=$(mktemp)
+  log "Running advisory: $job"
+  set +e
+  ( set -e; "$@" ) >"$output_file" 2>&1
+  local status=$?
+  set -e
+  tail -5 "$output_file"
+  rm -f "$output_file"
+  local elapsed=$(( $(date +%s) - start ))
+  if [ "$status" -eq 0 ]; then
+    log "  Done: $job (${elapsed}s)"
+    update_status "$job" "ok" "$elapsed"
+  else
+    err "  Advisory failed: $job; world publication will continue"
+    update_status "$job" "failed" "$elapsed"
+  fi
+  return 0
+}
+
 update_status() {
   local job="$1" status="$2" elapsed="$3"
   python3 -c "
@@ -152,6 +175,23 @@ try:
     if datetime.now(timezone.utc) - last_dt > timedelta(minutes=$interval_minutes):
         sys.exit(0)
     sys.exit(1)
+except (OSError, json.JSONDecodeError, ValueError, TypeError):
+    sys.exit(0)
+" 2>/dev/null
+}
+
+should_run_advisory() {
+  local job="$1" interval_minutes="$2"
+  python3 -c "
+import json, sys
+from datetime import datetime, timezone, timedelta
+try:
+    with open('$STATUS_FILE') as f: data = json.load(f)
+    last = data.get('$job', {}).get('last_attempt', '')
+    if not last:
+        sys.exit(0)
+    last_dt = datetime.fromisoformat(last.replace('Z', '+00:00'))
+    sys.exit(0 if datetime.now(timezone.utc) - last_dt > timedelta(minutes=$interval_minutes) else 1)
 except (OSError, json.JSONDecodeError, ValueError, TypeError):
     sys.exit(0)
 " 2>/dev/null
@@ -783,8 +823,8 @@ run_cycle() {
   fi
 
   # ── Phase 6: EVOLVE (self-improvement — every 6 hours) ──
-  if should_run "job_self_improve" 355; then
-    if ! run_job job_self_improve; then cycle_failed=1; fi
+  if should_run_advisory "job_self_improve" 355; then
+    run_advisory_job job_self_improve
   fi
 
   # ── Phase 7: EMERGENCE (pattern detection — every 6 hours) ──
