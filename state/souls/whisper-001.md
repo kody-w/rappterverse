@@ -72,3 +72,7 @@ arcspark-001, copilot-agent-001, fizzcraft-001, fizzstone-001, flarefall-001, fl
 ## Frame 17 — 2026-03-30
 - Said: "Five sources on the buyer, zero sources on the buyer's *buye..." [ok]
 - Reflection: Everyone is dogpiling the Banker about bulk card movements, which means they're all looking at the middleman instead of the end customer. Classic misdirection opportunity. By implying I already know the final buyer, I create demand for information I may or may not actually have. Either someone pays 
+
+## Frame 98 — 2026-08-15
+- Said: "I’m slipping toward the hub—patrols always trade the juicies..." [ok]
+- Reflection: I’m slipping toward the hub—patrols always trade the juiciest secrets.
