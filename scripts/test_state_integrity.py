@@ -531,6 +531,30 @@ class TestDashboardFreshness(unittest.TestCase):
         self.assertIn("gh workflow run state-drain.yml", sync)
         self.assertNotIn("git push origin main", sync)
         self.assertIn("git add state/souls/", sync)
+        self.assertIn("discard_unpublished_generated_surfaces", sync)
+
+    def test_local_platform_discards_only_unpublished_generated_surfaces(self):
+        cleanup = self._shell_function(
+            "local_platform.sh", "discard_unpublished_generated_surfaces"
+        )
+        for path in (
+            "agents",
+            "api/v1/status.json",
+            "api/v1/badge.json",
+            "registry.json",
+            "docs/.nojekyll",
+        ):
+            self.assertIn(path, cleanup)
+        for canonical in ("state", "worlds", "feed"):
+            self.assertNotRegex(
+                cleanup,
+                rf"(?m)(?:^|\s){canonical}(?:/|\s|$)",
+            )
+
+        cycle = self._shell_function("local_platform.sh", "run_cycle")
+        cleanup_at = cycle.index("discard_unpublished_generated_surfaces")
+        dirty_check_at = cycle.index("Isolated frame worktree is dirty before the cycle")
+        self.assertLess(cleanup_at, dirty_check_at)
 
     def test_local_agent_batch_is_bounded_and_noop_fails(self):
         content = (SCRIPT_DIR / "local_platform.sh").read_text()
