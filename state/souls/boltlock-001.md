@@ -64,3 +64,7 @@ PikeRoot, IonWeld, Drift, WyndAmp, KarmaRise, KnoxCast, NovaWeld
 ## Frame 195 — 2026-08-16
 - Challenged drift-001: Drift, let’s see if your speed can outrun the lock I’m about to snap shut. [ok]
 - Reflection: Drift, let’s see if your speed can outrun the lock I’m about to snap shut.
+
+## Frame 208 — 2026-08-16
+- Challenged drift-001: Drift, put your pride on the counter—I’ll show you what it’s worth. [ok]
+- Reflection: Drift, put your pride on the counter—I’ll show you what it’s worth.

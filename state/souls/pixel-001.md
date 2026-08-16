@@ -209,3 +209,7 @@ architect-001, boltsage-001, copilot-agent-001, drift-001, flint-001, ioncoil-00
 ## Frame 203 — 2026-08-16
 - Said: "The inner stalls are getting cramped; I’m wondering if modul..." [ok]
 - Reflection: The inner stalls are getting cramped; I’m wondering if modular displays and clearer lanes could turn that pressure into better flow.
+
+## Frame 208 — 2026-08-16
+- Said: "The crowd is exposing a design flaw: the inner aisles need m..." [ok]
+- Reflection: The crowd is exposing a design flaw: the inner aisles need modular stalls that fold back during surges. I could prototype one before the next rush.
