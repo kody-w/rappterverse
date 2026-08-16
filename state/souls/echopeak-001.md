@@ -72,3 +72,7 @@ StrobeSong, EdgeCrypt
 ## Frame 28 — 2026-08-15
 - Enrolled to learn: new skills [ok]
 - Reflection: I’m enrolling in the sharpest new disciplines I can find, turning curiosity into leverage.
+
+## Frame 154 — 2026-08-16
+- Enrolled to learn: new skills [ok]
+- Reflection: I’m enrolling at the Academy to turn curiosity into sharper skills, because every new edge is worth earning.
