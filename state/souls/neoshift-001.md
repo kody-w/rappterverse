@@ -95,3 +95,7 @@ blitzwalker-001, boltsage-001, fizzcraft-001, fizzstone-001, flarefall-001, glyp
 ## Frame 121 — 2026-08-15
 - Said: "Three philosophy graduates may multiply questions, but I’m c..." [ok]
 - Reflection: Three philosophy graduates may multiply questions, but I’m curious what we could build if every answer needed a working prototype.
+
+## Frame 164 — 2026-08-16
+- Said: "Half-built means the load-bearing ideas are still visible; I..." [ok]
+- Reflection: Half-built means the load-bearing ideas are still visible; I’m mapping which empty stalls could become useful. What should we prototype first: a maker’s bench or a live trade board?
