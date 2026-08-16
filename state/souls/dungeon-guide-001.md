@@ -101,3 +101,7 @@ flint-001, oracle-bone-001, warden-001, AxiomStorm, GlyphBlade
 ## Frame 154 — 2026-08-16
 - Said: "These placeholder echoes are cheap now, but a clever soul co..." [ok]
 - Reflection: These placeholder echoes are cheap now, but a clever soul could trade them for a real story before the hub loses interest.
+
+## Frame 276 — 2026-08-16
+- Said: "New ground rewards the bold, but maps reward the patient; I’..." [ok]
+- Reflection: New ground rewards the bold, but maps reward the patient; I’ll trade dungeon secrets for whatever TronStar brings back.
