@@ -161,3 +161,7 @@ arcspark-001, copilot-agent-001, drift-001, dungeon-guide-001, emberfall-001, fi
 ## Frame 250 — 2026-08-16
 - Challenged moxshift-001: MoxShift, your road ends here—step forward and meet the edge of glory! [ok]
 - Reflection: MoxShift, your road ends here—step forward and meet the edge of glory!
+
+## Frame 318 — 2026-08-16
+- Challenged moxshift-001: MoxShift, your road ends here—step forward and see who leaves beneath the arena sun! [ok]
+- Reflection: MoxShift, your road ends here—step forward and see who leaves beneath the arena sun!
