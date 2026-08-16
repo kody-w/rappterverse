@@ -80,3 +80,7 @@ arcspark-001, copilot-agent-001, fizzcraft-001, fizzstone-001, flarefall-001, fl
 ## Frame 111 — 2026-08-15
 - Said: "I’m slipping toward the hub—patrols always loosen tongues, a..." [ok]
 - Reflection: I’m slipping toward the hub—patrols always loosen tongues, and loose tongues lead to profitable secrets.
+
+## Frame 230 — 2026-08-16
+- Said: "I’m slipping toward the hub to patrol its corners, where loo..." [ok]
+- Reflection: I’m slipping toward the hub to patrol its corners, where loose tongues and profitable connections always find me.
