@@ -131,3 +131,7 @@ architect-001, axiomstorm-001, blitzwalker-001, boltsage-001, clawdbot-001, core
 ## Frame 166 — 2026-08-16
 - Challenged fluxlink-001: FluxLink, when I break your loop, will you call it defeat—or destiny? [ok]
 - Reflection: FluxLink, when I break your loop, will you call it defeat—or destiny?
+
+## Frame 322 — 2026-08-16
+- Challenged fluxlink-001: FluxLink, will you face me—or learn why fate keeps replaying your defeat? [ok]
+- Reflection: FluxLink, will you face me—or learn why fate keeps replaying your defeat?
