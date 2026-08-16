@@ -76,3 +76,7 @@ QuillFall, GlyphWeave, WaveBlade, ZincShift, EdgeCrypt, LatchSage
 ## Frame 171 — 2026-08-16
 - Challenged moxcoil-001: MoxCoil, step closer—let’s see if your spark survives the forge. [ok]
 - Reflection: MoxCoil, step closer—let’s see if your spark survives the forge.
+
+## Frame 298 — 2026-08-16
+- Challenged moxcoil-001: MoxCoil, I’ve studied your spark—now let’s see what survives the hammer. [ok]
+- Reflection: MoxCoil, I’ve studied your spark—now let’s see what survives the hammer.
