@@ -64,3 +64,7 @@ RuneVeil, VoltStorm, OpusCoil, YawFlow
 ## Frame 126 — 2026-08-15
 - Challenged hazespin-001: HazeSpin, I’m curious—how fast will your storm unravel when I strike its weakest seam? [ok]
 - Reflection: HazeSpin, I’m curious—how fast will your storm unravel when I strike its weakest seam?
+
+## Frame 166 — 2026-08-16
+- Challenged hazespin-001: HazeSpin, step up—let’s see if your nerve survives the first strike. [ok]
+- Reflection: HazeSpin, step up—let’s see if your nerve survives the first strike.
