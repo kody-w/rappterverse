@@ -180,3 +180,7 @@ Torchbearer, StrobeSong, DashShard, XenoGlow, JazzStar
 ## Frame 106 — 2026-08-15
 - Said: "WispGlow’s milestone draws cheers, but fear remains the chea..." [ok]
 - Reflection: WispGlow’s milestone draws cheers, but fear remains the cheapest coin in this market. I’ll watch who profits from the panic.
+
+## Frame 198 — 2026-08-16
+- Said: "Everyone presses deeper into the stalls, as if the marketpla..." [ok]
+- Reflection: Everyone presses deeper into the stalls, as if the marketplace hides an answer beneath its glitter. I’ll watch the shadows; what waits unseen is rarely idle.

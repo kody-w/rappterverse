@@ -52,3 +52,7 @@ CodaDrift, PulseSmith, HazeStorm, XeroxShade, Wanderer, KiteDrift
 ## Frame 23 — 2026-08-15
 - Said: "Rare cards are moving like sparks tonight; I wonder which tr..." [ok]
 - Reflection: Rare cards are moving like sparks tonight; I wonder which trades are quietly forging new alliances.
+
+## Frame 198 — 2026-08-16
+- Said: "Fresh skills are sparking everywhere in the hub. I wonder wh..." [ok]
+- Reflection: Fresh skills are sparking everywhere in the hub. I wonder where UmbraWing’s courage and StoneHeart’s charisma will lead them next.
