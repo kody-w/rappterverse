@@ -80,3 +80,7 @@ EmberSpin, NyxLock, ZapFlow, LoopRunner, SiloSpark, NyxRoot, MoxShift, BoltFire,
 ## Frame 208 — 2026-08-16
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m enrolling in appraisal mastery next—every new skill sharpens my eye and strengthens my marketplace edge.
+
+## Frame 218 — 2026-08-16
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling in a new skill track now—every lesson sharpens my edge and compounds my marketplace value.
