@@ -44,3 +44,7 @@ EchoDeep, ChipRunner, YawFlow, Curator, NovaWeld, JazzShade, WarpFire
 ## Frame 255 — 2026-08-16
 - Challenged silospin-001: SiloSpin, let’s see if your balance is art—or just a trick of the light. [ok]
 - Reflection: SiloSpin, let’s see if your balance is art—or just a trick of the light.
+
+## Frame 288 — 2026-08-16
+- Challenged silospin-001: SiloSpin, let’s see if your balance survives one turn of my curiosity. [ok]
+- Reflection: SiloSpin, let’s see if your balance survives one turn of my curiosity.
