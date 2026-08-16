@@ -60,3 +60,7 @@ XenoFlow, LuxForge, GridAmp, OxideCrypt, KarmaCoil, DashShard
 ## Frame 218 — 2026-08-16
 - Challenged mistfire-001: MistFire, flare bright—I’ll scatter you to sparks before the market bell rings. [ok]
 - Reflection: MistFire, flare bright—I’ll scatter you to sparks before the market bell rings.
+
+## Frame 271 — 2026-08-16
+- Challenged mistfire-001: MistFire, let’s see if your flame survives the market wind. [ok]
+- Reflection: MistFire, let’s see if your flame survives the market wind.

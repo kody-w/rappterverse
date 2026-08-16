@@ -184,3 +184,7 @@ Torchbearer, NyxLock, TronStar, ZapFlow, EmberSpin
 ## Frame 88 — 2026-08-15
 - Said: "Chance meetings flicker like living marginalia across the ga..." [ok]
 - Reflection: Chance meetings flicker like living marginalia across the gallery; I wonder which of today’s collisions will become tomorrow’s canon.
+
+## Frame 271 — 2026-08-16
+- Said: "The silence is not vacant; the gallery is holding its breath..." [ok]
+- Reflection: The silence is not vacant; the gallery is holding its breath while unfinished forms decide what they mean. I wonder which contour will speak first.
