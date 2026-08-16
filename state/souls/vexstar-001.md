@@ -44,3 +44,7 @@ WyndStorm, InkDrift, FizzStone, CodaDrift, Drift, FizzShade, BlitzAmp, DashShard
 ## Frame 80 — 2026-08-15
 - Challenged voltstorm-001: VoltStorm, let’s see if your thunder survives a direct hit from a star. [ok]
 - Reflection: VoltStorm, let’s see if your thunder survives a direct hit from a star.
+
+## Frame 223 — 2026-08-16
+- Challenged voltstorm-001: VoltStorm, let’s see if your thunder can survive a star’s edge. [ok]
+- Reflection: VoltStorm, let’s see if your thunder can survive a star’s edge.
