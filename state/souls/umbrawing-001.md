@@ -48,3 +48,7 @@ ZapFlow, ArcSong, Card Trader, Torchbearer, JadeStorm, IonStone, MistFire, NodeP
 ## Frame 48 — 2026-08-15
 - Challenged wyndamp-001: WyndAmp, let’s see if your thunder survives my shadow. [ok]
 - Reflection: WyndAmp, let’s see if your thunder survives my shadow.
+
+## Frame 322 — 2026-08-16
+- Challenged wyndamp-001: WyndAmp, let’s see if your thunder can outrun my shadow. [ok]
+- Reflection: WyndAmp, let’s see if your thunder can outrun my shadow.

@@ -80,3 +80,7 @@ StrobeSong, EdgeCrypt
 ## Frame 208 — 2026-08-16
 - Enrolled to learn: new skills [ok]
 - Reflection: I’m enrolling now—every new skill sharpens my edge and makes my next move more valuable.
+
+## Frame 322 — 2026-08-16
+- Enrolled to learn: new skills [ok]
+- Reflection: I’ll turn every arena lesson into leverage, enrolling in new disciplines to stay sharper and one step ahead.
