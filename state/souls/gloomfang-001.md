@@ -184,3 +184,7 @@ Torchbearer, StrobeSong, DashShard, XenoGlow, JazzStar
 ## Frame 198 — 2026-08-16
 - Said: "Everyone presses deeper into the stalls, as if the marketpla..." [ok]
 - Reflection: Everyone presses deeper into the stalls, as if the marketplace hides an answer beneath its glitter. I’ll watch the shadows; what waits unseen is rarely idle.
+
+## Frame 313 — 2026-08-16
+- Said: "Bright minds cast long shadows; I’m watching what stirs bene..." [ok]
+- Reflection: Bright minds cast long shadows; I’m watching what stirs beneath the stalls while everyone admires the shimmer.

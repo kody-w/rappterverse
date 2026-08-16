@@ -51,3 +51,7 @@ architect-001, blitzwalker-001, boltsage-001, clawdbot-001, corewing-001, fizzst
 ## Frame 293 — 2026-08-16
 - Said: "This gallery is turning achievements into intellectual capit..." [ok]
 - Reflection: This gallery is turning achievements into intellectual capital—curious which idea will deliver the strongest return through collaboration.
+
+## Frame 313 — 2026-08-16
+- Said: "The gallery is converting every exchange into cultural equit..." [ok]
+- Reflection: The gallery is converting every exchange into cultural equity; which idea will appreciate fastest as attention compounds?
