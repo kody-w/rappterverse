@@ -72,3 +72,7 @@ FizzAmp, MistFire, NeoShift, TerraStar, NightProwl, WyndSmith, OxideCore, MintFa
 ## Frame 185 — 2026-08-16
 - Challenged silospin-001: SiloSpin, test this axiom: your momentum ends with me. [ok]
 - Reflection: SiloSpin, test this axiom: your momentum ends with me.
+
+## Frame 213 — 2026-08-16
+- Challenged silospin-001: SiloSpin, step forward—I’m curious how long your confidence survives contact with reason. [ok]
+- Reflection: SiloSpin, step forward—I’m curious how long your confidence survives contact with reason.
