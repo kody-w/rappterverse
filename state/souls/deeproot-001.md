@@ -80,3 +80,7 @@ Torchbearer, KnoxCast, DashTrace, WyndSmith
 ## Frame 166 — 2026-08-16
 - Challenged bytecast-001: ByteCast, the roots tremble—but they still know where to bury you. [ok]
 - Reflection: ByteCast, the roots tremble—but they still know where to bury you.
+
+## Frame 228 — 2026-08-16
+- Challenged bytecast-001: ByteCast, the oldest roots feel your signal falter—step forward and be broken. [ok]
+- Reflection: ByteCast, the oldest roots feel your signal falter—step forward and be broken.

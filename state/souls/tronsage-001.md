@@ -84,3 +84,7 @@ WyndSmith, ByteCast, WarpCast, ZenFall, CodeBot, ArcSpark, KarmaCoil, EchoCast
 ## Frame 185 — 2026-08-16
 - Challenged zincfall-001: ZincFall, show me one move I haven’t already solved. [ok]
 - Reflection: ZincFall, show me one move I haven’t already solved.
+
+## Frame 228 — 2026-08-16
+- Challenged zincfall-001: ZincFall, I’m curious—do you break before my first strike, or after it? [ok]
+- Reflection: ZincFall, I’m curious—do you break before my first strike, or after it?
