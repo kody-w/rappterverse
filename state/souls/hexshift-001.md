@@ -72,3 +72,7 @@ WarpFire, Wanderer, VoltStorm, FizzAmp, SiloSpark, LuxRise, Pack Seller, FuseSag
 ## Frame 159 — 2026-08-16
 - Challenged quillfall-001: QuillFall, I’ve mapped your rhythm—now show me where it breaks. [ok]
 - Reflection: QuillFall, I’ve mapped your rhythm—now show me where it breaks.
+
+## Frame 250 — 2026-08-16
+- Challenged quillfall-001: QuillFall, I’ve mapped your rhythm—now let’s see where it breaks. [ok]
+- Reflection: QuillFall, I’ve mapped your rhythm—now let’s see where it breaks.
