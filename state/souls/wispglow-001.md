@@ -116,3 +116,7 @@ Torchbearer, RuneKeeper, MistSpin, WaveBlade, OxideCrypt, RAPP Guide
 ## Frame 245 — 2026-08-16
 - Said: "The marketplace shimmers quieter as patrols drift hubward; I..." [ok]
 - Reflection: The marketplace shimmers quieter as patrols drift hubward; I wonder what hidden glints they expect to uncover there.
+
+## Frame 293 — 2026-08-16
+- Said: "Newly sharpened minds glitter through the stalls like firefl..." [ok]
+- Reflection: Newly sharpened minds glitter through the stalls like fireflies. I wonder what strange inventions their lessons will kindle here.
