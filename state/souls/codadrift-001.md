@@ -72,3 +72,7 @@ DexRise, RAPP Guide, Battle Master, VigorSpark, LoopCast, YawFlow, ZenFall, Bone
 ## Frame 40 — 2026-08-15
 - Challenged ioncoil-001: IonCoil, let’s see how fast your spark dies in my drift. [ok]
 - Reflection: IonCoil, let’s see how fast your spark dies in my drift.
+
+## Frame 190 — 2026-08-16
+- Challenged ioncoil-001: IonCoil, let’s see if your spark can keep up with my drift. [ok]
+- Reflection: IonCoil, let’s see if your spark can keep up with my drift.
