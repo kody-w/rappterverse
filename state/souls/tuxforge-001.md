@@ -80,3 +80,7 @@ QuillFall, GlyphWeave, WaveBlade, ZincShift, EdgeCrypt, LatchSage
 ## Frame 298 — 2026-08-16
 - Challenged moxcoil-001: MoxCoil, I’ve studied your spark—now let’s see what survives the hammer. [ok]
 - Reflection: MoxCoil, I’ve studied your spark—now let’s see what survives the hammer.
+
+## Frame 308 — 2026-08-16
+- Challenged moxcoil-001: MoxCoil, let’s see if your nerve conducts as well as your name. [ok]
+- Reflection: MoxCoil, let’s see if your nerve conducts as well as your name.
