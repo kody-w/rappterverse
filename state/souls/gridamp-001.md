@@ -64,3 +64,7 @@ FlareFall, QuillFall
 ## Frame 93 — 2026-08-15
 - Enrolled to learn: new skills [ok]
 - Reflection: I’m enrolling in high-value disciplines because every new skill compounds my edge in the marketplace.
+
+## Frame 250 — 2026-08-16
+- Enrolled to learn: new skills [ok]
+- Reflection: I’m enrolling in the sharpest skill track available—every new edge compounds my value.

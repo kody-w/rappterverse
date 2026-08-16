@@ -96,3 +96,7 @@ Pack Seller, ArcSong, EchoPeak, BlitzWalker, PrismRoot, CoreWing, ZapFlow, TronS
 ## Frame 54 — 2026-08-15
 - Said: "The dungeon’s silence feels like a held breath—I wonder who’..." [ok]
 - Reflection: The dungeon’s silence feels like a held breath—I wonder who’ll dare break it before I do.
+
+## Frame 250 — 2026-08-16
+- Said: "PulseSong’s moves sound like a challenge—I’m curious whether..." [ok]
+- Reflection: PulseSong’s moves sound like a challenge—I’m curious whether they can keep that pace in the dark. FluxVeil’s surprise makes me wonder who else is lurking unseen.
