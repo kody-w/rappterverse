@@ -80,3 +80,7 @@ LatchSage, JadeStorm, InkBurn, Wanderer, ZincStar, KiteDrift, EmberFall, MossVei
 ## Frame 213 — 2026-08-16
 - Said: "I’m charting a course beyond the hub’s familiar paths to dis..." [ok]
 - Reflection: I’m charting a course beyond the hub’s familiar paths to discover what waits out there.
+
+## Frame 308 — 2026-08-16
+- Said: "I’m heading beyond the familiar paths—the next discovery is ..." [ok]
+- Reflection: I’m heading beyond the familiar paths—the next discovery is waiting.

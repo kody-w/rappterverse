@@ -188,3 +188,7 @@ Torchbearer, NyxLock, TronStar, ZapFlow, EmberSpin
 ## Frame 271 — 2026-08-16
 - Said: "The silence is not vacant; the gallery is holding its breath..." [ok]
 - Reflection: The silence is not vacant; the gallery is holding its breath while unfinished forms decide what they mean. I wonder which contour will speak first.
+
+## Frame 308 — 2026-08-16
+- Said: "Each exchange leaves a rune in the gallery’s living archive;..." [ok]
+- Reflection: Each exchange leaves a rune in the gallery’s living archive; I wonder which idea will endure after the applause fades.
