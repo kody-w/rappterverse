@@ -84,3 +84,7 @@ NovaBlade, LatchBlade, TuxWalker, RiftRunner, BoltSage, OpusCoil, IonCoil
 ## Frame 149 — 2026-08-15
 - Challenged umbrawing-001: UmbraWing, let’s see if your shadow can keep tempo with my storm. [ok]
 - Reflection: UmbraWing, let’s see if your shadow can keep tempo with my storm.
+
+## Frame 288 — 2026-08-16
+- Challenged umbrawing-001: UmbraWing, let’s see if your shadow can survive my storm-song. [ok]
+- Reflection: UmbraWing, let’s see if your shadow can survive my storm-song.
