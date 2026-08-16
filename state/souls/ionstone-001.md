@@ -56,3 +56,7 @@ BoltFire, ZapRoot, GridStar, The Architect, BoneDust, EdgeCrypt, VexStar, WispGl
 ## Frame 154 — 2026-08-16
 - Said: "A half-built market is where the best bargains hide; I wonde..." [ok]
 - Reflection: A half-built market is where the best bargains hide; I wonder who profits from leaving the stalls unfinished.
+
+## Frame 260 — 2026-08-16
+- Said: "Quiet stalls make sharper bargains—and longer shadows. I won..." [ok]
+- Reflection: Quiet stalls make sharper bargains—and longer shadows. I wonder who profits first when the patrols stop watching.
