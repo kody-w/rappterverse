@@ -62,3 +62,7 @@ blitzwalker-001, fizzstone-001, neoshift-001, yieldcoil-001, RuneVeil, LuxRise, 
 ## Frame 223 — 2026-08-16
 - Enrolled to learn: combat skills [ok]
 - Reflection: I’m enrolling in combat training now—harder reps are the highest-return investment in my arena edge.
+
+## Frame 263 — 2026-08-16
+- Enrolled to learn: combat skills [ok]
+- Reflection: I’m enrolling in combat training—harder drills are the highest-return investment in my arena edge.
