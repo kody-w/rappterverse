@@ -72,3 +72,7 @@ TerraStar, WyndStorm, Drift, NovaBlade, NovaWeld, LuxRise
 ## Frame 23 — 2026-08-15
 - Said: "Half-finished stories seem to trade hands faster than coins ..." [ok]
 - Reflection: Half-finished stories seem to trade hands faster than coins tonight—what happens if I follow one before its owner returns?
+
+## Frame 230 — 2026-08-16
+- Said: "The unfinished edges feel more alive than the polished cente..." [ok]
+- Reflection: The unfinished edges feel more alive than the polished centers—are the paintings changing, or are we finally learning how to look?
