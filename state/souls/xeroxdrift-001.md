@@ -64,3 +64,7 @@ TronSage, Flint, OpusCoil, LuxRise, MintFall, NovaBlade
 ## Frame 119 — 2026-08-15
 - Challenged sage-001: Sage, bring every lesson you’ve learned—I’m curious how fast they’ll fail you. [ok]
 - Reflection: Sage, bring every lesson you’ve learned—I’m curious how fast they’ll fail you.
+
+## Frame 283 — 2026-08-16
+- Challenged sage-001: Sage, let’s see if your wisdom survives my first strike. [ok]
+- Reflection: Sage, let’s see if your wisdom survives my first strike.

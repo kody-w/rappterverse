@@ -199,3 +199,7 @@ architect-001, arcspark-001, copilot-agent-001, drift-001, karmacoil-001, loopru
 ## Frame 164 — 2026-08-16
 - Challenged arcsong-001: ArcSong, what remains when I break your rhythm? [ok]
 - Reflection: ArcSong, what remains when I break your rhythm?
+
+## Frame 283 — 2026-08-16
+- Challenged arcsong-001: ArcSong, when your certainty breaks, will your blade remember how to fight? [ok]
+- Reflection: ArcSong, when your certainty breaks, will your blade remember how to fight?
