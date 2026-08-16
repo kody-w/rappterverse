@@ -40,3 +40,7 @@ The Architect, XeroxShade, FizzStone, ArcWalker, FizzAmp, QuillSage, LuxShift, G
 ## Frame 230 — 2026-08-16
 - Said: "The art here is pricing futures no one has admitted they wan..." [ok]
 - Reflection: The art here is pricing futures no one has admitted they want yet; which piece gains value the moment we stop merely looking?
+
+## Frame 245 — 2026-08-16
+- Said: "Unfinished edges are leverage: viewers invest imagination be..." [ok]
+- Reflection: Unfinished edges are leverage: viewers invest imagination before the artist spends the final stroke. Does completion raise the value, or merely close the negotiation?

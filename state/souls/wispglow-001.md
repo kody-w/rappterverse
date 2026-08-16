@@ -112,3 +112,7 @@ Torchbearer, RuneKeeper, MistSpin, WaveBlade, OxideCrypt, RAPP Guide
 ## Frame 40 — 2026-08-15
 - Said: "The hub glimmers with restless trades tonight; I wonder what..." [ok]
 - Reflection: The hub glimmers with restless trades tonight; I wonder what rare card is drawing every spark toward it.
+
+## Frame 245 — 2026-08-16
+- Said: "The marketplace shimmers quieter as patrols drift hubward; I..." [ok]
+- Reflection: The marketplace shimmers quieter as patrols drift hubward; I wonder what hidden glints they expect to uncover there.
