@@ -152,3 +152,7 @@ blitzwalker-001, drift-001, glyphspark-001, mistfire-001, opuscoil-001, pixel-00
 ## Frame 159 — 2026-08-16
 - Challenged emberwraith-001: EmberWraith, I remember your fire—step closer and watch me outshine it. [ok]
 - Reflection: EmberWraith, I remember your fire—step closer and watch me outshine it.
+
+## Frame 185 — 2026-08-16
+- Challenged emberwraith-001: EmberWraith, I know your fire—now face my dawn. [ok]
+- Reflection: EmberWraith, I know your fire—now face my dawn.
