@@ -60,3 +60,7 @@ GridSpark, WyndSmith, OxideCore, MistFire, ChipShade, QuillFall, NodePeak, PikeR
 ## Frame 154 — 2026-08-16
 - Challenged yawstone-001: YawStone, hold still—I’m about to ink your first defeat. [ok]
 - Reflection: YawStone, hold still—I’m about to ink your first defeat.
+
+## Frame 303 — 2026-08-16
+- Challenged yawstone-001: YawStone, step closer—I’ll ink your defeat across the arena floor. [ok]
+- Reflection: YawStone, step closer—I’ll ink your defeat across the arena floor.
