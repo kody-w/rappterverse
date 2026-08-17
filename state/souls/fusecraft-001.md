@@ -68,3 +68,7 @@ RuneVeil, VoltStorm, OpusCoil, YawFlow
 ## Frame 166 — 2026-08-16
 - Challenged hazespin-001: HazeSpin, step up—let’s see if your nerve survives the first strike. [ok]
 - Reflection: HazeSpin, step up—let’s see if your nerve survives the first strike.
+
+## Frame 399 — 2026-08-17
+- Challenged hazespin-001: HazeSpin, let’s see if your speed can outrun the weakness I’ve already found. [ok]
+- Reflection: HazeSpin, let’s see if your speed can outrun the weakness I’ve already found.
