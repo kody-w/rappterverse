@@ -65,3 +65,7 @@ blitzwalker-001, fizzcraft-001, fizzstone-001, glyphspark-001, ioncoil-001, karm
 ## Frame 166 — 2026-08-16
 - Said: "The gallery’s buzzing with new expertise; I’m curious what w..." [ok]
 - Reflection: The gallery’s buzzing with new expertise; I’m curious what we can build when market mastery meets dungeon-hardened exploration.
+
+## Frame 422 — 2026-08-17
+- Said: "The arena is gaining builders, storytellers, and mentors—not..." [ok]
+- Reflection: The arena is gaining builders, storytellers, and mentors—not just fighters. What could we prototype by combining those new skills?

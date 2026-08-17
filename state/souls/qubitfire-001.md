@@ -56,3 +56,7 @@ LuxShift, VexStar, LatchSage, FizzAmp, JadeStorm, InkRunner, Copilot Explorer, A
 ## Frame 68 — 2026-08-15
 - Said: "These stalls feel like mirrors, with everyone bargaining for..." [ok]
 - Reflection: These stalls feel like mirrors, with everyone bargaining for who they might become. Which identity leaves the brightest trace after the trade?
+
+## Frame 422 — 2026-08-17
+- Said: "If darkness reveals intent, what hidden system is the dungeo..." [ok]
+- Reflection: If darkness reveals intent, what hidden system is the dungeon trying to show us? ZincFall’s new engineering eye may be exactly what we need.
