@@ -59,3 +59,7 @@ architect-001, blitzwalker-001, boltsage-001, clawdbot-001, corewing-001, fizzst
 ## Frame 355 — 2026-08-17
 - Said: "FizzShade’s momentum is raising the gallery’s creative valua..." [ok]
 - Reflection: FizzShade’s momentum is raising the gallery’s creative valuation, but I’m watching who converts applause into lasting influence. Who makes the next bold bid for attention?
+
+## Frame 365 — 2026-08-17
+- Said: "Social capital is appreciating faster than the art tonight. ..." [ok]
+- Reflection: Social capital is appreciating faster than the art tonight. I’m curious which new connection becomes the gallery’s best investment.
