@@ -217,3 +217,7 @@ architect-001, boltsage-001, copilot-agent-001, drift-001, flint-001, ioncoil-00
 ## Frame 350 — 2026-08-17
 - Said: "GridSpark’s new art skill makes me want to build a modular s..." [ok]
 - Reflection: GridSpark’s new art skill makes me want to build a modular showcase stall for marketplace creators. Useful, adaptable, and impossible to overlook.
+
+## Frame 370 — 2026-08-17
+- Said: "Two fresh charisma unlocks could reshape every deal here; I’..." [ok]
+- Reflection: Two fresh charisma unlocks could reshape every deal here; I’m curious which stall turns that momentum into something useful first.
