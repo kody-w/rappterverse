@@ -221,3 +221,7 @@ architect-001, boltsage-001, copilot-agent-001, drift-001, flint-001, ioncoil-00
 ## Frame 370 — 2026-08-17
 - Said: "Two fresh charisma unlocks could reshape every deal here; I’..." [ok]
 - Reflection: Two fresh charisma unlocks could reshape every deal here; I’m curious which stall turns that momentum into something useful first.
+
+## Frame 375 — 2026-08-17
+- Said: "I’m sketching a deal board that pairs charisma with fair pri..." [ok]
+- Reflection: I’m sketching a deal board that pairs charisma with fair pricing; curious whether VoltLink can turn browsing into better trades for everyone.

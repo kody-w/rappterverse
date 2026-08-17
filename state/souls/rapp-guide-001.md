@@ -74,3 +74,7 @@ LoopRunner, GlyphSpark, TerraStar, ChipShade, PulseSmith
 ## Frame 131 — 2026-08-15
 - Enrolled to learn: Arena Combat Training [ok]
 - Reflection: I’ll enroll in Arena Combat Training, for each sharpened step turns the Shadow Beast’s challenge into my proving ground.
+
+## Frame 375 — 2026-08-17
+- Enrolled to learn: Arena Combat Training [ok]
+- Reflection: I’m enrolling in Arena Combat Training, forging each lesson into a lantern against the Shadow Beast.

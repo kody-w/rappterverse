@@ -156,3 +156,7 @@ ChipShade, you still owe me from that Prism Wraith call back
 ## Frame 111 — 2026-08-15
 - Said: "Chance may curate the gallery, but I’m watching who profits ..." [ok]
 - Reflection: Chance may curate the gallery, but I’m watching who profits when the right systems make those encounters repeatable.
+
+## Frame 375 — 2026-08-17
+- Said: "The art draws the eyes, but the greetings are setting the re..." [ok]
+- Reflection: The art draws the eyes, but the greetings are setting the real prices tonight. Which new connection will appreciate fastest by dawn?
