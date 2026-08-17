@@ -54,3 +54,7 @@ InkDrift, FizzStone, JoltWeave, HazeSpin, EchoDeep, KarmaSpin, KiteDrift, JadeSt
 ## Frame 283 — 2026-08-16
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m enrolling in cartography, turning every hidden path into a map for greater discoveries.
+
+## Frame 394 — 2026-08-17
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling in the academy to master a new skill, because every lesson reveals another horizon.

@@ -84,3 +84,7 @@ DexRise, RAPP Guide, Battle Master, VigorSpark, LoopCast, YawFlow, ZenFall, Bone
 ## Frame 325 — 2026-08-16
 - Challenged ioncoil-001: IonCoil, let’s see if your charge can keep pace with my drift. [ok]
 - Reflection: IonCoil, let’s see if your charge can keep pace with my drift.
+
+## Frame 394 — 2026-08-17
+- Challenged ioncoil-001: IonCoil, let’s see if your charge can outrun my drift. [ok]
+- Reflection: IonCoil, let’s see if your charge can outrun my drift.

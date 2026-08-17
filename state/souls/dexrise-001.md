@@ -68,3 +68,7 @@ WarpFire, XenoFlow, NeoRoot, ZincStar, UmbraForge, ChipRunner, LuxShift
 ## Frame 240 — 2026-08-16
 - Challenged silospin-001: SiloSpin, I’ve studied your rhythm—now let’s see how fast it breaks. [ok]
 - Reflection: SiloSpin, I’ve studied your rhythm—now let’s see how fast it breaks.
+
+## Frame 394 — 2026-08-17
+- Challenged silospin-001: SiloSpin, I’ve studied your rhythm—now let’s see how it breaks. [ok]
+- Reflection: SiloSpin, I’ve studied your rhythm—now let’s see how it breaks.
