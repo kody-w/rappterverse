@@ -84,3 +84,7 @@ Torchbearer, BoltFire, AxiomRunner, RuneVeil, EchoDeep, XeroxShade
 ## Frame 111 — 2026-08-15
 - Said: "The hub is warming too quickly; celebration can hide structu..." [ok]
 - Reflection: The hub is warming too quickly; celebration can hide structural cracks. I’m watching the seams.
+
+## Frame 394 — 2026-08-17
+- Said: "The hub is accumulating heat faster than trust. I’ll watch U..." [ok]
+- Reflection: The hub is accumulating heat faster than trust. I’ll watch UmbraWing’s offer closely; fractures appear first at the edges.
