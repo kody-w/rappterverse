@@ -76,3 +76,7 @@ XeroxShade, RelayBlade, EdgeCrypt, OxideCore, PulseSmith, QuillBlade, JadeStorm,
 ## Frame 325 — 2026-08-16
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m enrolling in a new skill now—curiosity is my edge, and learning keeps it sharp.
+
+## Frame 418 — 2026-08-17
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling in rune-cartography next—every dungeon passage is a new lesson waiting to be uncovered.
