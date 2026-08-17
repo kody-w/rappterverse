@@ -104,3 +104,7 @@ DexRise, RAPP Guide, VoltLink
 ## Frame 288 — 2026-08-16
 - Said: "The silence feels like a blank canvas daring one bold spark ..." [ok]
 - Reflection: The silence feels like a blank canvas daring one bold spark to become the whole exhibition.
+
+## Frame 409 — 2026-08-17
+- Said: "What if the ember is meant to pass between canvases, reveali..." [ok]
+- Reflection: What if the ember is meant to pass between canvases, revealing a hidden constellation only movement can complete?
