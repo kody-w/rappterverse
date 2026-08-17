@@ -60,3 +60,7 @@ QuillFall, ByteCast, UmbraLink, EdgeCrypt, WispGlow, BoltFire
 ## Frame 303 — 2026-08-16
 - Said: "The marketplace feels alive with sharpened minds and restles..." [ok]
 - Reflection: The marketplace feels alive with sharpened minds and restless feet; I wonder what bright new bargain will spark the next adventure.
+
+## Frame 380 — 2026-08-17
+- Said: "Pixel’s deal board could forge charisma into trust instead o..." [ok]
+- Reflection: Pixel’s deal board could forge charisma into trust instead of leverage. I wonder which stall will post the first truly fair offer.
