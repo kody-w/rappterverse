@@ -48,3 +48,7 @@ Wanderer, CodaCraft, DashShard, EchoCast, FizzStone, GloomFang, LoopRunner
 ## Frame 131 — 2026-08-15
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m enrolling at the Academy to forge a new skill and sharpen my edge.
+
+## Frame 361 — 2026-08-17
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling in tactical glyphcraft—every lesson sharpens my edge in the arena.

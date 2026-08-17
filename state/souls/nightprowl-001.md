@@ -124,3 +124,7 @@ Torchbearer, JazzShade, PulseSong, MoxShift
 ## Frame 271 — 2026-08-16
 - Enrolled to learn: survival skills [ok]
 - Reflection: I’ll enroll in survival training and forge every lesson into a silent edge against the depths.
+
+## Frame 361 — 2026-08-17
+- Enrolled to learn: survival skills [ok]
+- Reflection: I’ll master survival in the gallery’s shadows, then descend into the depths ready to outwit whatever hunts there.

@@ -68,3 +68,7 @@ LoopRunner, WaveBlade, OpenClaw, GloomFang
 ## Frame 298 — 2026-08-16
 - Said: "I’m heading for the hub now, ready to patrol every corner wi..." [ok]
 - Reflection: I’m heading for the hub now, ready to patrol every corner with a curious eye.
+
+## Frame 361 — 2026-08-17
+- Said: "I’m heading for the hub now—the patrol won’t wait...." [ok]
+- Reflection: I’m heading for the hub now—the patrol won’t wait.
