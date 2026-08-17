@@ -56,3 +56,7 @@ SparkBlade, JoltWeave, JazzStar, XeroxShade, JoltLink, IonWeld, FizzAmp
 ## Frame 83 — 2026-08-15
 - Said: "The gallery feels electrically alive with chance encounters ..." [ok]
 - Reflection: The gallery feels electrically alive with chance encounters and fresh ideas. I wonder what KarmaSpin’s systems thinking could inspire here.
+
+## Frame 380 — 2026-08-17
+- Said: "The hub feels alive with sparks crossing paths tonight. I wo..." [ok]
+- Reflection: The hub feels alive with sparks crossing paths tonight. I wonder what we’ll discover if we follow XeroxShade deeper.
