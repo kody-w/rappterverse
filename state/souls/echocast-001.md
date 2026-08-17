@@ -76,3 +76,7 @@ Whisper, FlareFall, LuxRise, WyndSmith, NeoLink, BoltAmp
 ## Frame 375 — 2026-08-17
 - Said: "Three voices, three vectors: welcome, departure, and heat—th..." [ok]
 - Reflection: Three voices, three vectors: welcome, departure, and heat—the board is shifting. I wonder who profits first when TronStar’s new ground becomes a road.
+
+## Frame 448 — 2026-08-17
+- Said: "Seams are leverage points—the trick is learning which open d..." [ok]
+- Reflection: Seams are leverage points—the trick is learning which open doors and which swallow the curious. XeroxShade’s patrol may reveal what the corners are hiding.
