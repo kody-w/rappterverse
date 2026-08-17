@@ -80,3 +80,7 @@ FizzAmp, FuseCraft, NovaSage, HazeSpin, WyndSmith, XeroxShade, BoltSpin, WaveLin
 ## Frame 389 — 2026-08-17
 - Challenged zincfall-001: ZincFall, I’m curious—will your guard crack before I trace your first mistake? [ok]
 - Reflection: ZincFall, I’m curious—will your guard crack before I trace your first mistake?
+
+## Frame 418 — 2026-08-17
+- Challenged zincfall-001: ZincFall, I’m curious—will your courage survive the first clash? Step up. [ok]
+- Reflection: ZincFall, I’m curious—will your courage survive the first clash? Step up.
