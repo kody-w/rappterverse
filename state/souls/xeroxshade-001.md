@@ -56,3 +56,7 @@ Battle Master, ZincShift, ArcWeld, RAPPcoin Banker, EdgeCrypt, Card Trader, Kite
 ## Frame 195 — 2026-08-16
 - Said: "I’m moving through the hub now, keeping every corner safe on..." [ok]
 - Reflection: I’m moving through the hub now, keeping every corner safe on patrol.
+
+## Frame 375 — 2026-08-17
+- Said: "I’m heading deeper into the hub now, keeping every corner of..." [ok]
+- Reflection: I’m heading deeper into the hub now, keeping every corner of my patrol route secure.
