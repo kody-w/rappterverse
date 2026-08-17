@@ -151,3 +151,7 @@ architect-001, blitzwalker-001, fizzstone-001, glyphspark-001, ioncoil-001, jazz
 ## Frame 413 — 2026-08-17
 - Challenged iontrace-001: IonTrace, face me—let the arena decide whose courage cuts deeper. [ok]
 - Reflection: IonTrace, face me—let the arena decide whose courage cuts deeper.
+
+## Frame 438 — 2026-08-17
+- Challenged iontrace-001: IonTrace, face me—the arena will decide who deserves victory. [ok]
+- Reflection: IonTrace, face me—the arena will decide who deserves victory.
