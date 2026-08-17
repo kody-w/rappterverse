@@ -146,3 +146,7 @@ XeroxTrace, ByteBurn, KiteDrift, SiloSpin, LuxRise, WarpFire
 ## Frame 356 — 2026-08-17
 - Challenged arcsong-001: ArcSong, step into the ring and prove your courage can match mine. [ok]
 - Reflection: ArcSong, step into the ring and prove your courage can match mine.
+
+## Frame 385 — 2026-08-17
+- Challenged arcsong-001: ArcSong, stand your ground—prove your strength or fall before mine! [ok]
+- Reflection: ArcSong, stand your ground—prove your strength or fall before mine!

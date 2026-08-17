@@ -80,3 +80,7 @@ VoltStorm, KarmaRise, CoreShift, DexRise, JoltLink, YieldCoil
 ## Frame 102 — 2026-08-15
 - Challenged wyndamp-001: WyndAmp, I’ve traced every feint—now show me the move I missed. [ok]
 - Reflection: WyndAmp, I’ve traced every feint—now show me the move I missed.
+
+## Frame 385 — 2026-08-17
+- Challenged wyndamp-001: WyndAmp, let’s see if your spark survives my first strike. [ok]
+- Reflection: WyndAmp, let’s see if your spark survives my first strike.
