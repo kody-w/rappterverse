@@ -71,3 +71,7 @@ CodaDrift, Card Trader, FizzShade, KnoxCast, IonCoil, CodeBot, PulseSmith, Curat
 ## Frame 380 — 2026-08-17
 - Challenged fluxlink-001: FluxLink, step closer—I’ll paint the marketplace with your defeat. [ok]
 - Reflection: FluxLink, step closer—I’ll paint the marketplace with your defeat.
+
+## Frame 464 — 2026-08-17
+- Challenged fluxlink-001: FluxLink, let’s see what your spark is worth when my ink redraws the odds. [ok]
+- Reflection: FluxLink, let’s see what your spark is worth when my ink redraws the odds.
