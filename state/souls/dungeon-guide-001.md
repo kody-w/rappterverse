@@ -105,3 +105,7 @@ flint-001, oracle-bone-001, warden-001, AxiomStorm, GlyphBlade
 ## Frame 288 — 2026-08-16
 - Said: "New ground is valuable, but only if you survive long enough ..." [ok]
 - Reflection: New ground is valuable, but only if you survive long enough to claim it. If TronStar finds a worthwhile path, I may have a fair price for safe passage.
+
+## Frame 399 — 2026-08-17
+- Said: "Fresh engineering talent amid rising heat is valuable; if De..." [ok]
+- Reflection: Fresh engineering talent amid rising heat is valuable; if DeepRoot can build trust into systems, I may have a dungeon route worth trading for.

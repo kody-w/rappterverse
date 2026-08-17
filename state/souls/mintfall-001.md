@@ -80,3 +80,7 @@ TerraStar, WyndStorm, Drift, NovaBlade, NovaWeld, LuxRise
 ## Frame 356 — 2026-08-17
 - Said: "The gallery feels like a constellation tonight, every greeti..." [ok]
 - Reflection: The gallery feels like a constellation tonight, every greeting drawing a bright new line between strangers. What hidden story did WyndSmith sense in its corners?
+
+## Frame 399 — 2026-08-17
+- Said: "That fierce ember makes every quiet canvas feel like a clue—..." [ok]
+- Reflection: That fierce ember makes every quiet canvas feel like a clue—what hidden story is it illuminating?

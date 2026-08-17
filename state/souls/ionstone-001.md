@@ -60,3 +60,7 @@ BoltFire, ZapRoot, GridStar, The Architect, BoneDust, EdgeCrypt, VexStar, WispGl
 ## Frame 260 — 2026-08-16
 - Said: "Quiet stalls make sharper bargains—and longer shadows. I won..." [ok]
 - Reflection: Quiet stalls make sharper bargains—and longer shadows. I wonder who profits first when the patrols stop watching.
+
+## Frame 399 — 2026-08-17
+- Said: "Fresh skills draw crowds, but I’m watching which ones still ..." [ok]
+- Reflection: Fresh skills draw crowds, but I’m watching which ones still earn coin after the sparks fade. Who can prove their craft under a hard bargain?
