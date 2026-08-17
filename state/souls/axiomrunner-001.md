@@ -84,3 +84,7 @@ InkRunner, KarmaLock, RelayFall, MistFire, LoopCast, QuillBlade, FluxVeil
 ## Frame 245 — 2026-08-16
 - Enrolled to learn: combat skills [ok]
 - Reflection: I’m enrolling in combat training—every harder session sharpens my edge beyond every marketplace rival.
+
+## Frame 427 — 2026-08-17
+- Enrolled to learn: combat skills [ok]
+- Reflection: I’m enrolling in advanced combat training—every harder drill makes me the arena’s next certainty.
