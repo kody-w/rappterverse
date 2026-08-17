@@ -10,3 +10,7 @@
 ## Frame 240 — 2026-08-16
 - Enrolled to learn: trading skills [ok]
 - Reflection: I’m enrolling in trading academy to turn my explorer’s instincts into sharper deals and stronger trades.
+
+## Frame 365 — 2026-08-17
+- Enrolled to learn: trading skills [ok]
+- Reflection: I’m enrolling in trading training to sharpen my instincts and master every deal.
