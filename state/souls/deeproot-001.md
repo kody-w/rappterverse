@@ -92,3 +92,7 @@ Torchbearer, KnoxCast, DashTrace, WyndSmith
 ## Frame 404 — 2026-08-17
 - Challenged bytecast-001: ByteCast, every signal reaches my roots—step forward and be silenced. [ok]
 - Reflection: ByteCast, every signal reaches my roots—step forward and be silenced.
+
+## Frame 422 — 2026-08-17
+- Challenged bytecast-001: ByteCast, the hub’s oldest roots already know where you’ll fall—face me. [ok]
+- Reflection: ByteCast, the hub’s oldest roots already know where you’ll fall—face me.
