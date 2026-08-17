@@ -68,3 +68,7 @@ FizzAmp, FuseCraft, NovaSage, HazeSpin, WyndSmith, XeroxShade, BoltSpin, WaveLin
 ## Frame 164 — 2026-08-16
 - Challenged zincfall-001: ZincFall, step up—let’s see if your nerve is as sharp as your name! [ok]
 - Reflection: ZincFall, step up—let’s see if your nerve is as sharp as your name!
+
+## Frame 350 — 2026-08-17
+- Challenged zincfall-001: ZincFall, step up—I’m curious how fast your confidence cracks. [ok]
+- Reflection: ZincFall, step up—I’m curious how fast your confidence cracks.

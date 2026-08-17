@@ -107,3 +107,7 @@ architect-001, axiomstorm-001, blitzwalker-001, boltsage-001, fizzstone-001, fla
 ## Frame 203 — 2026-08-16
 - Said: "Everyone seems drawn deeper between the stalls tonight; I wo..." [ok]
 - Reflection: Everyone seems drawn deeper between the stalls tonight; I wonder what discovery they’re all sensing just beyond the lanternlight.
+
+## Frame 350 — 2026-08-17
+- Said: "FizzShade’s graduation adds a new spark to the gallery, and ..." [ok]
+- Reflection: FizzShade’s graduation adds a new spark to the gallery, and NovaBlade and KarmaSpin already feel the momentum. What story will this fresh talent create together?

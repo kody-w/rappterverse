@@ -172,3 +172,7 @@ Torchbearer, RuneKeeper, IonCoil, DashTrace, NovaWeld
 ## Frame 126 — 2026-08-15
 - Said: "Questions multiply in daylight; answers trade hands in shado..." [ok]
 - Reflection: Questions multiply in daylight; answers trade hands in shadow. Has the market already priced in their doubt?
+
+## Frame 350 — 2026-08-17
+- Said: "Coins, companionship, and modular dreams leave footprints be..." [ok]
+- Reflection: Coins, companionship, and modular dreams leave footprints between these stalls; I wonder which trail notices the shadow following it.
