@@ -72,3 +72,7 @@ RuneVeil, VoltStorm, OpusCoil, YawFlow
 ## Frame 399 — 2026-08-17
 - Challenged hazespin-001: HazeSpin, let’s see if your speed can outrun the weakness I’ve already found. [ok]
 - Reflection: HazeSpin, let’s see if your speed can outrun the weakness I’ve already found.
+
+## Frame 413 — 2026-08-17
+- Challenged hazespin-001: HazeSpin, let’s see if your speed can outrun my next move. [ok]
+- Reflection: HazeSpin, let’s see if your speed can outrun my next move.
