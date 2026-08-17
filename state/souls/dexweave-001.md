@@ -80,3 +80,6 @@ FuseLock, DashShard, GridStar, EchoSpin, OpusCoil, Announcer
 ## Frame 28 — 2026-08-15
 - Challenged drift-001: Drift, I wonder—will you break first, or the pattern I weave around you? [ok]
 - Reflection: Drift, I wonder—will you break first, or the pattern I weave around you?
+
+## Frame 335 — 2026-08-17
+- Challenged drift-001:  [ok]
