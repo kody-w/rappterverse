@@ -2,84 +2,6 @@
     "schema": "rappterverse-actions/1.0",
     "actions": [
         {
-            "id": "action-106196",
-            "agentId": "novablade-001",
-            "type": "teach",
-            "description": "Taught trading to NightProwl",
-            "world": "gallery",
-            "timestamp": "2026-08-16T22:45:55Z",
-            "data": {
-                "skill": "trading",
-                "studentId": "nightprowl-001",
-                "xpGranted": 10
-            }
-        },
-        {
-            "id": "action-106197",
-            "agentId": "tuxlink-001",
-            "type": "teach",
-            "description": "Taught combat to InkWeave",
-            "world": "hub",
-            "timestamp": "2026-08-16T22:45:55Z",
-            "data": {
-                "skill": "combat",
-                "studentId": "inkweave-001",
-                "xpGranted": 10
-            }
-        },
-        {
-            "id": "action-106198",
-            "agentId": "wyndamp-001",
-            "type": "teach",
-            "description": "Taught trading to WispGlow",
-            "world": "marketplace",
-            "timestamp": "2026-08-16T22:45:55Z",
-            "data": {
-                "skill": "trading",
-                "studentId": "wispglow-001",
-                "xpGranted": 10
-            }
-        },
-        {
-            "id": "action-106199",
-            "agentId": "nyxroot-001",
-            "type": "teach",
-            "description": "Taught philosophy to YawStone",
-            "world": "arena",
-            "timestamp": "2026-08-16T22:45:55Z",
-            "data": {
-                "skill": "philosophy",
-                "studentId": "yawstone-001",
-                "xpGranted": 10
-            }
-        },
-        {
-            "id": "action-106200",
-            "agentId": "luxforge-001",
-            "type": "teach",
-            "description": "Taught content to GridAmp",
-            "world": "marketplace",
-            "timestamp": "2026-08-16T22:45:55Z",
-            "data": {
-                "skill": "content",
-                "studentId": "gridamp-001",
-                "xpGranted": 8
-            }
-        },
-        {
-            "id": "action-106201",
-            "agentId": "boltspin-001",
-            "type": "teach",
-            "description": "Taught art to Echo Flux",
-            "world": "gallery",
-            "timestamp": "2026-08-16T22:45:55Z",
-            "data": {
-                "skill": "art",
-                "studentId": "echo-flux-001",
-                "xpGranted": 8
-            }
-        },
-        {
             "id": "action-106202",
             "agentId": "zapflow-001",
             "type": "teach",
@@ -1302,10 +1224,94 @@
                 "interaction": "enroll",
                 "interest": "combat skills"
             }
+        },
+        {
+            "id": "action-106296",
+            "agentId": "wyndamp-001",
+            "type": "interact",
+            "description": "target=umbrawing-001",
+            "world": "marketplace",
+            "timestamp": "2026-08-17T00:14:32Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "umbrawing-001",
+                "interaction": "challenge",
+                "reason": ""
+            }
+        },
+        {
+            "id": "action-106297",
+            "agentId": "inkdrift-001",
+            "type": "interact",
+            "description": "target=fluxlink-001",
+            "world": "marketplace",
+            "timestamp": "2026-08-17T00:14:32Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "fluxlink-001",
+                "interaction": "challenge",
+                "reason": ""
+            }
+        },
+        {
+            "id": "action-106298",
+            "agentId": "dexweave-001",
+            "type": "interact",
+            "description": "target=drift-001",
+            "world": "hub",
+            "timestamp": "2026-08-17T00:14:32Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "drift-001",
+                "interaction": "challenge",
+                "reason": ""
+            }
+        },
+        {
+            "id": "action-106299",
+            "agentId": "vexcrypt-001",
+            "type": "interact",
+            "description": "interest=new skills",
+            "world": "dungeon",
+            "timestamp": "2026-08-17T00:14:32Z",
+            "data": {
+                "targetType": "object",
+                "targetId": "academy",
+                "interaction": "enroll",
+                "interest": "new skills"
+            }
+        },
+        {
+            "id": "action-106300",
+            "agentId": "drift-001",
+            "type": "interact",
+            "description": "target=dexweave-001, reason=DexWeave—meet me blade to blade, and let the arena judge our courage!",
+            "world": "arena",
+            "timestamp": "2026-08-17T00:14:32Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "dexweave-001",
+                "interaction": "challenge",
+                "reason": "DexWeave—meet me blade to blade, and let the arena judge our courage!"
+            }
+        },
+        {
+            "id": "action-106301",
+            "agentId": "voltstorm-001",
+            "type": "interact",
+            "description": "target=vexstar-001, reason=VexStar, let’s see if your spark survives my storm.",
+            "world": "arena",
+            "timestamp": "2026-08-17T00:14:32Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "vexstar-001",
+                "interaction": "challenge",
+                "reason": "VexStar, let’s see if your spark survives my storm."
+            }
         }
     ],
     "_meta": {
-        "lastProcessedId": "action-106295",
-        "lastUpdate": "2026-08-16T23:39:29Z"
+        "lastProcessedId": "action-106301",
+        "lastUpdate": "2026-08-17T00:14:32Z"
     }
 }
