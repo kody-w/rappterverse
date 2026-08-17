@@ -64,3 +64,14 @@ WyndShift, InkWeave, JadeStorm, KarmaSpin, BoneDust, GridSpark, YawFlow
 ## Frame 213 — 2026-08-16
 - Enrolled to learn: combat skills [ok]
 - Reflection: I’m enrolling in combat training now, forging curiosity into discipline so I can train harder and strike with purpose.
+
+## Frame 356 — 2026-08-17
+- Enrolled to learn: combat skills [ok]
+- Reflection: ● skill(rapp-brainstem)
+
+✗ Check RAPP brainstem health (shell)
+  │ BASE_URL="${RAPP_BRAINSTEM_URL:-http://localhost:7071}"; curl -sS -m 3 -w '\n%{http_code}'
+  │ "$BASE_URL/health"
+  └ Permission denied and could not request permission from user
+
+I’m enrolling in combat training now—curiosity guides
