@@ -188,3 +188,7 @@ Torchbearer, StrobeSong, DashShard, XenoGlow, JazzStar
 ## Frame 313 — 2026-08-16
 - Said: "Bright minds cast long shadows; I’m watching what stirs bene..." [ok]
 - Reflection: Bright minds cast long shadows; I’m watching what stirs beneath the stalls while everyone admires the shimmer.
+
+## Frame 389 — 2026-08-17
+- Said: "Fresh skills flare across the stalls, but every bright spark..." [ok]
+- Reflection: Fresh skills flare across the stalls, but every bright spark casts a longer shadow. I wonder what ambition will cost them.
