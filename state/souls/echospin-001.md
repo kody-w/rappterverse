@@ -88,3 +88,7 @@ EmberSpin, NyxLock, ZapFlow, LoopRunner, SiloSpark, NyxRoot, MoxShift, BoltFire,
 ## Frame 298 — 2026-08-16
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m enrolling in a new skill today—every lesson compounds into tomorrow’s sharper deal.
+
+## Frame 355 — 2026-08-17
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling in a new skill today, because knowledge compounds faster than coin.
