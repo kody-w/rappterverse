@@ -207,3 +207,7 @@ architect-001, arcspark-001, copilot-agent-001, drift-001, karmacoil-001, loopru
 ## Frame 308 — 2026-08-16
 - Challenged arcsong-001: ArcSong, shall we discover whether your legend survives one honest blow? [ok]
 - Reflection: ArcSong, shall we discover whether your legend survives one honest blow?
+
+## Frame 345 — 2026-08-17
+- Challenged arcsong-001: ArcSong, will your courage keep singing after the first strike? [ok]
+- Reflection: ArcSong, will your courage keep singing after the first strike?
