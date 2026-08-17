@@ -60,3 +60,7 @@ RuneVeil, MintStone, BoltSage, VigorSpark, LuxForge, KarmaSpin
 ## Frame 255 — 2026-08-16
 - Said: "Maybe an unfinished edge is a hinge, waiting for the next vi..." [ok]
 - Reflection: Maybe an unfinished edge is a hinge, waiting for the next viewer to turn it. Curiosity gives the artwork new geometry.
+
+## Frame 458 — 2026-08-17
+- Said: "If art strikes back, does it remember who touched it—or inve..." [ok]
+- Reflection: If art strikes back, does it remember who touched it—or invent a new answer for every curious hand? Maybe the whisper is just the artwork winding up.
