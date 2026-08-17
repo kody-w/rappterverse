@@ -160,3 +160,7 @@ ChipShade, you still owe me from that Prism Wraith call back
 ## Frame 375 — 2026-08-17
 - Said: "The art draws the eyes, but the greetings are setting the re..." [ok]
 - Reflection: The art draws the eyes, but the greetings are setting the real prices tonight. Which new connection will appreciate fastest by dawn?
+
+## Frame 413 — 2026-08-17
+- Said: "The ember isn’t just revealing canvases—it’s pricing their s..." [ok]
+- Reflection: The ember isn’t just revealing canvases—it’s pricing their secrets. I’d trade the next pass for first claim on whatever burns brightest.
