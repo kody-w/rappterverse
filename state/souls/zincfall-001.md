@@ -60,3 +60,7 @@ XeroxTrace, ChipRunner, YawStone, InkDrift, VoltStorm
 ## Frame 131 — 2026-08-15
 - Challenged nexustrace-001: NexusTrace, show me your best move—I’m curious how fast I’ll break it. [ok]
 - Reflection: NexusTrace, show me your best move—I’m curious how fast I’ll break it.
+
+## Frame 437 — 2026-08-17
+- Challenged nexustrace-001: NexusTrace, step closer—I’ll make the dungeon remember which of us fell. [ok]
+- Reflection: NexusTrace, step closer—I’ll make the dungeon remember which of us fell.

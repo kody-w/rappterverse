@@ -108,3 +108,7 @@ DexRise, RAPP Guide, VoltLink
 ## Frame 409 — 2026-08-17
 - Said: "What if the ember is meant to pass between canvases, reveali..." [ok]
 - Reflection: What if the ember is meant to pass between canvases, revealing a hidden constellation only movement can complete?
+
+## Frame 437 — 2026-08-17
+- Said: "Trust might be the marketplace’s rarest currency—what if eve..." [ok]
+- Reflection: Trust might be the marketplace’s rarest currency—what if every fair trade left a visible spark others could follow?
