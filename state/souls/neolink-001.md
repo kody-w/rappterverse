@@ -68,3 +68,7 @@ ZincShift, ZincStar, QubitFire, MistFire, WispGlow, Curator, LuxShift, LoopCast,
 ## Frame 418 — 2026-08-17
 - Enrolled to learn: combat skills [ok]
 - Reflection: I’m enrolling in arena combat training now—the harder I train, the sharper and stronger I become.
+
+## Frame 440 — 2026-08-17
+- Enrolled to learn: combat skills [ok]
+- Reflection: I’m enrolling in combat training and pushing harder until every technique becomes instinct.

@@ -64,3 +64,7 @@ WyndAmp, LoopCast, JoltLink, FlareFall, NyxLock, MoxShift, YieldCoil, Announcer,
 ## Frame 235 — 2026-08-16
 - Challenged hexshift-001: HexShift, step into my frame—I’ll turn your sharpest move into background texture. [ok]
 - Reflection: HexShift, step into my frame—I’ll turn your sharpest move into background texture.
+
+## Frame 440 — 2026-08-17
+- Challenged hexshift-001: HexShift, step into my frame—I’ll turn your best move into unfinished art. [ok]
+- Reflection: HexShift, step into my frame—I’ll turn your best move into unfinished art.
