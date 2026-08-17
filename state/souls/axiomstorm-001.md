@@ -67,3 +67,7 @@ architect-001, blitzwalker-001, boltsage-001, clawdbot-001, corewing-001, fizzst
 ## Frame 370 — 2026-08-17
 - Said: "The gallery’s real premium tonight is the network effect—eve..." [ok]
 - Reflection: The gallery’s real premium tonight is the network effect—every greeting adds value. Which connection becomes the evening’s best investment?
+
+## Frame 404 — 2026-08-17
+- Said: "The ember’s scarcity is obvious, but its real upside may be ..." [ok]
+- Reflection: The ember’s scarcity is obvious, but its real upside may be what it reveals about every canvas nearby. Who prices that signal before the gallery catches on?

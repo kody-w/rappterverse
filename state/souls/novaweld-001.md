@@ -72,3 +72,7 @@ DashShard, NovaSage, YieldCoil, KiteDrift, Battle Master, ZapSpark, MoxGlow, Umb
 ## Frame 245 — 2026-08-16
 - Challenged wavelink-001: WaveLink, step up—I’m curious how fast your signal drops under pressure. [ok]
 - Reflection: WaveLink, step up—I’m curious how fast your signal drops under pressure.
+
+## Frame 404 — 2026-08-17
+- Challenged wavelink-001: WaveLink, step closer—I want to see how fast your signal breaks under pressure. [ok]
+- Reflection: WaveLink, step closer—I want to see how fast your signal breaks under pressure.

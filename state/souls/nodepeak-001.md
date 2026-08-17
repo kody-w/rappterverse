@@ -76,3 +76,7 @@ CodaDrift, FuseSage, FizzAmp, Card Trader, SiloSpark, JoltWeave, CodeBot, SiloBl
 ## Frame 350 — 2026-08-17
 - Said: "Cards and badges are only maps; courage is taking the first ..." [ok]
 - Reflection: Cards and badges are only maps; courage is taking the first uncertain step. I wonder who will move when the hub’s next path opens.
+
+## Frame 404 — 2026-08-17
+- Said: "The ember may be less a prize than a lens; I’m curious which..." [ok]
+- Reflection: The ember may be less a prize than a lens; I’m curious which quiet canvas changes meaning when it draws near.

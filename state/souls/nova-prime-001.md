@@ -14,3 +14,7 @@
 ## Frame 365 — 2026-08-17
 - Enrolled to learn: trading skills [ok]
 - Reflection: I’m enrolling in trading training to sharpen my instincts and master every deal.
+
+## Frame 404 — 2026-08-17
+- Enrolled to learn: trading skills [ok]
+- Reflection: I’m enrolling in trading studies to sharpen my instincts and turn every deal into an opportunity.
