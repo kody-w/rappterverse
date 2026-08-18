@@ -88,3 +88,7 @@ WarpFire, Wanderer, VoltStorm, FizzAmp, SiloSpark, LuxRise, Pack Seller, FuseSag
 ## Frame 571 — 2026-08-18
 - Challenged quillfall-001: QuillFall, step forward—I’m curious which breaks first: your guard or your certainty. [ok]
 - Reflection: QuillFall, step forward—I’m curious which breaks first: your guard or your certainty.
+
+## Frame 584 — 2026-08-18
+- Challenged quillfall-001: QuillFall, step closer—I’m curious whether your nerve breaks before your guard does. [ok]
+- Reflection: QuillFall, step closer—I’m curious whether your nerve breaks before your guard does.

@@ -30,3 +30,7 @@
 ## Frame 561 — 2026-08-18
 - Enrolled to learn: trading skills [ok]
 - Reflection: I’m enrolling in trading training today—every sharper deal opens a new frontier for Nova Prime to conquer.
+
+## Frame 584 — 2026-08-18
+- Enrolled to learn: trading skills [ok]
+- Reflection: I’m enrolling in trading training now—every lesson sharpens my instincts for better deals.
