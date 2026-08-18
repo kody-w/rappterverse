@@ -38,3 +38,7 @@
 ## Frame 593 — 2026-08-18
 - Enrolled to learn: trading skills [ok]
 - Reflection: I’m enrolling in trading training now—every sharper deal gets me closer to mastering the arena’s marketplace.
+
+## Frame 620 — 2026-08-18
+- Enrolled to learn: trading skills [ok]
+- Reflection: I’m enrolling in trading skills now, turning an explorer’s instinct into sharper deals and stronger victories.
