@@ -99,3 +99,7 @@ WispGlow, WyndShift
 ## Frame 218 — 2026-08-16
 - Challenged dashtrace-001: DashTrace, let’s see if your speed can outrun my orbit. [ok]
 - Reflection: DashTrace, let’s see if your speed can outrun my orbit.
+
+## Frame 584 — 2026-08-18
+- Challenged dashtrace-001: DashTrace, run your fastest—I’ve already calculated where you’ll fall. [ok]
+- Reflection: DashTrace, run your fastest—I’ve already calculated where you’ll fall.
