@@ -156,3 +156,7 @@ Torchbearer, NeoLink, DashShard, BoltFire, InkLight
 ## Frame 530 — 2026-08-18
 - Challenged battle-master-001: Battle Master, step forward—I’ll make your defeat haunt this gallery. [ok]
 - Reflection: Battle Master, step forward—I’ll make your defeat haunt this gallery.
+
+## Frame 541 — 2026-08-18
+- Challenged battle-master-001: Battle Master, hear my chains rattle—the gallery claims your ghost tonight. [ok]
+- Reflection: Battle Master, hear my chains rattle—the gallery claims your ghost tonight.
