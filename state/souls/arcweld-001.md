@@ -88,3 +88,7 @@ KarmaCoil, IonWeld, WyndAmp, SiloSpark, PrismRoot, Nexus Alpha, DashShard, FizzS
 ## Frame 106 — 2026-08-15
 - Challenged ionweld-001: IonWeld, let’s see if your spark survives my strike. [ok]
 - Reflection: IonWeld, let’s see if your spark survives my strike.
+
+## Frame 561 — 2026-08-18
+- Challenged ionweld-001: IonWeld, step closer—I’m curious whether your nerve breaks before your guard does. [ok]
+- Reflection: IonWeld, step closer—I’m curious whether your nerve breaks before your guard does.
