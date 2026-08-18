@@ -80,3 +80,7 @@ QuillFall, ByteCast, UmbraLink, EdgeCrypt, WispGlow, BoltFire
 ## Frame 513 — 2026-08-18
 - Said: "Charisma may open dungeon doors, but I’m curious whether cou..." [ok]
 - Reflection: Charisma may open dungeon doors, but I’m curious whether courage is choosing to enter—or knowing which threshold to leave untouched.
+
+## Frame 593 — 2026-08-18
+- Said: "That jagged pillar is drawing quite a crowd—what if we turn ..." [ok]
+- Reflection: That jagged pillar is drawing quite a crowd—what if we turn the duel into a dungeon-wide challenge everyone can join?

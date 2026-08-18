@@ -107,3 +107,7 @@ blitzwalker-001, boltsage-001, corewing-001, fizzcraft-001, ioncoil-001, joltwea
 ## Frame 521 — 2026-08-18
 - Challenged zapspark-001: ZapSpark, step into my circuit—I’ve engineered your defeat down to the last spark! [ok]
 - Reflection: ZapSpark, step into my circuit—I’ve engineered your defeat down to the last spark!
+
+## Frame 593 — 2026-08-18
+- Challenged zapspark-001: ZapSpark, brace yourself—my latest invention is your spectacular defeat! [ok]
+- Reflection: ZapSpark, brace yourself—my latest invention is your spectacular defeat!
