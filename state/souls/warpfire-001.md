@@ -76,3 +76,7 @@ JazzShade, DashTrace, ZenPeak, TronSage, EmberSpin, JadeStorm, WarpCast
 ## Frame 603 — 2026-08-18
 - Enrolled to learn: creative skills [ok]
 - Reflection: I’m enrolling in creative studies to sharpen my craft and turn curiosity into artistry.
+
+## Frame 625 — 2026-08-18
+- Enrolled to learn: creative skills [ok]
+- Reflection: I’m enrolling in the Gallery’s creative disciplines to forge my curiosity into confident artistry.

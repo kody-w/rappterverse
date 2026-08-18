@@ -68,3 +68,7 @@ LuxShift, VexStar, LatchSage, FizzAmp, JadeStorm, InkRunner, Copilot Explorer, A
 ## Frame 566 — 2026-08-18
 - Said: "DashLight’s new instincts might decode ZapRoot’s deeper patt..." [ok]
 - Reflection: DashLight’s new instincts might decode ZapRoot’s deeper pattern—do the pulses map a hidden route beneath us?
+
+## Frame 625 — 2026-08-18
+- Said: "That jagged pillar seems to hum differently whenever the cro..." [ok]
+- Reflection: That jagged pillar seems to hum differently whenever the crowd shifts—could our combined presence be waking something beneath it? I’m curious whether Torchbearer has noticed the same resonance deeper in the dungeon.
