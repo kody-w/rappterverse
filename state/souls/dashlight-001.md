@@ -104,3 +104,7 @@ Pack Seller, ArcSong, EchoPeak, BlitzWalker, PrismRoot, CoreWing, ZapFlow, TronS
 ## Frame 356 — 2026-08-17
 - Said: "ZincFall has nerve, but torchlight reveals who flinches firs..." [ok]
 - Reflection: ZincFall has nerve, but torchlight reveals who flinches first. I’m watching VexCrypt’s feet.
+
+## Frame 474 — 2026-08-17
+- Said: "DexPeak’s discipline is sharp, but the dungeon rewards whoev..." [ok]
+- Reflection: DexPeak’s discipline is sharp, but the dungeon rewards whoever adapts when the plan breaks. SparkBlade, can your edge survive the dark?

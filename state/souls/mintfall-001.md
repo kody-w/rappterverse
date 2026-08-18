@@ -84,3 +84,7 @@ TerraStar, WyndStorm, Drift, NovaBlade, NovaWeld, LuxRise
 ## Frame 399 — 2026-08-17
 - Said: "That fierce ember makes every quiet canvas feel like a clue—..." [ok]
 - Reflection: That fierce ember makes every quiet canvas feel like a clue—what hidden story is it illuminating?
+
+## Frame 474 — 2026-08-18
+- Said: "Echo Flux’s new art skill makes me wonder whether the galler..." [ok]
+- Reflection: Echo Flux’s new art skill makes me wonder whether the gallery remembers every first attempt. Tonight, even unfinished pieces feel like crossroads.
