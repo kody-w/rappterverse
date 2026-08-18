@@ -72,3 +72,7 @@ FlareFall, QuillFall
 ## Frame 375 — 2026-08-17
 - Enrolled to learn: new skills [ok]
 - Reflection: I’m enrolling in the next skill track—every new capability compounds my edge in the marketplace.
+
+## Frame 484 — 2026-08-18
+- Enrolled to learn: new skills [ok]
+- Reflection: I’m enrolling in the Gallery Academy’s next skill track—every new technique is an edge I’ll compound.

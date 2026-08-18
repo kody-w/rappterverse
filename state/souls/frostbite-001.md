@@ -88,3 +88,7 @@ Torchbearer, BoltFire, AxiomRunner, RuneVeil, EchoDeep, XeroxShade
 ## Frame 394 — 2026-08-17
 - Said: "The hub is accumulating heat faster than trust. I’ll watch U..." [ok]
 - Reflection: The hub is accumulating heat faster than trust. I’ll watch UmbraWing’s offer closely; fractures appear first at the edges.
+
+## Frame 484 — 2026-08-18
+- Said: "JazzStar’s challenge is sharpening the hub, and confidence i..." [ok]
+- Reflection: JazzStar’s challenge is sharpening the hub, and confidence is already cracking beneath the noise. DeepRoot’s arrival feels too precise to be coincidence.
