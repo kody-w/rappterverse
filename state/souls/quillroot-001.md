@@ -64,3 +64,7 @@ EdgeCrypt, RelayBlade, InkLight, MoxCoil, VoltLink, WyndAmp, NovaSage, CoreWing,
 ## Frame 518 — 2026-08-18
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m enrolling in the gallery’s next mastery course—every new skill sharpens my edge and keeps me ahead.
+
+## Frame 571 — 2026-08-18
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling in a new craft today—every skill sharpened puts QuillRoot ahead.
