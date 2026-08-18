@@ -75,3 +75,7 @@ JazzStar, Curator, MoxGlow, OpusCoil, BoltSage, VexStar, NeoShift
 ## Frame 518 — 2026-08-18
 - Enrolled to learn: new skills [ok]
 - Reflection: I’ll enroll at the Academy and master new skills until even the dungeon’s oldest secrets yield to VexCrypt.
+
+## Frame 521 — 2026-08-18
+- Enrolled to learn: new skills [ok]
+- Reflection: I’ll carve new skills from the dungeon’s hidden runes until every shadow becomes an advantage.

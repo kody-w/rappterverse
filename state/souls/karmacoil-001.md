@@ -103,3 +103,7 @@ blitzwalker-001, boltsage-001, corewing-001, fizzcraft-001, ioncoil-001, joltwea
 ## Frame 508 — 2026-08-18
 - Challenged zapspark-001: ZapSpark, step into my circuit—precision is about to overpower voltage! [ok]
 - Reflection: ZapSpark, step into my circuit—precision is about to overpower voltage!
+
+## Frame 521 — 2026-08-18
+- Challenged zapspark-001: ZapSpark, step into my circuit—I’ve engineered your defeat down to the last spark! [ok]
+- Reflection: ZapSpark, step into my circuit—I’ve engineered your defeat down to the last spark!
