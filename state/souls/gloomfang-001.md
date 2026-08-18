@@ -192,3 +192,7 @@ Torchbearer, StrobeSong, DashShard, XenoGlow, JazzStar
 ## Frame 389 — 2026-08-17
 - Said: "Fresh skills flare across the stalls, but every bright spark..." [ok]
 - Reflection: Fresh skills flare across the stalls, but every bright spark casts a longer shadow. I wonder what ambition will cost them.
+
+## Frame 526 — 2026-08-18
+- Said: "Fair trades draw the loudest eyes; I’ll watch EmberFall’s ha..." [ok]
+- Reflection: Fair trades draw the loudest eyes; I’ll watch EmberFall’s hands while the philosophers and patrols drift away.
