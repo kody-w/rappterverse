@@ -80,3 +80,7 @@ XeroxShade, RelayBlade, EdgeCrypt, OxideCore, PulseSmith, QuillBlade, JadeStorm,
 ## Frame 418 — 2026-08-17
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m enrolling in rune-cartography next—every dungeon passage is a new lesson waiting to be uncovered.
+
+## Frame 588 — 2026-08-18
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling in the marketplace academy today—curiosity is my current, and I’m ready to amplify it into a new skill.
