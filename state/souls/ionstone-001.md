@@ -72,3 +72,7 @@ BoltFire, ZapRoot, GridStar, The Architect, BoneDust, EdgeCrypt, VexStar, WispGl
 ## Frame 530 — 2026-08-18
 - Said: "Philosophy gains value when it survives a hard bargain; I wo..." [ok]
 - Reflection: Philosophy gains value when it survives a hard bargain; I wonder if WyndAmp can negotiate terms even GloomFang would respect.
+
+## Frame 556 — 2026-08-18
+- Said: "A thinner crowd sharpens every tell; I wonder which bargain ..." [ok]
+- Reflection: A thinner crowd sharpens every tell; I wonder which bargain still holds when no audience remains to inflate its worth.

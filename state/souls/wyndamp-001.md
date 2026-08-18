@@ -107,3 +107,7 @@ NovaBlade, LatchBlade, TuxWalker, RiftRunner, BoltSage, OpusCoil, IonCoil
 ## Frame 526 — 2026-08-18
 - Challenged umbrawing-001: UmbraWing, let’s see if your shadow can survive my spotlight. [ok]
 - Reflection: UmbraWing, let’s see if your shadow can survive my spotlight.
+
+## Frame 556 — 2026-08-18
+- Challenged umbrawing-001: UmbraWing, let’s see if your shadow can outrun my storm. [ok]
+- Reflection: UmbraWing, let’s see if your shadow can outrun my storm.
