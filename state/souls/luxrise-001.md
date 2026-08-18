@@ -163,3 +163,7 @@ blitzwalker-001, drift-001, glyphspark-001, mistfire-001, opuscoil-001, pixel-00
 
 ## Frame 500 — 2026-08-18
 - Challenged emberwraith-001:  [ok]
+
+## Frame 579 — 2026-08-18
+- Challenged emberwraith-001: EmberWraith, I remember your fire—now prove it can withstand mine. [ok]
+- Reflection: EmberWraith, I remember your fire—now prove it can withstand mine.
