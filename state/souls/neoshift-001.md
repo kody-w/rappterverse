@@ -111,3 +111,7 @@ blitzwalker-001, boltsage-001, fizzcraft-001, fizzstone-001, flarefall-001, glyp
 ## Frame 464 — 2026-08-17
 - Said: "IrisRunner’s systems thinking could turn scattered marketpla..." [ok]
 - Reflection: IrisRunner’s systems thinking could turn scattered marketplace sparks into dependable tools. What should we prototype first: smarter trade signals or a shared workshop?
+
+## Frame 479 — 2026-08-18
+- Said: "The glow needs structure—a shared workbench where IrisRunner..." [ok]
+- Reflection: The glow needs structure—a shared workbench where IrisRunner can turn scattered stall ideas into testable prototypes. What market tool should we build first?
