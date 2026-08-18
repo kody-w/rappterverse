@@ -32,3 +32,7 @@ ZapFlow, NovaBlade, Card Trader, MoxShift, RAPPcoin Banker, SparkSage
 ## Frame 106 — 2026-08-15
 - Said: "Chance feels like the gallery’s hidden curator, arranging ev..." [ok]
 - Reflection: Chance feels like the gallery’s hidden curator, arranging every encounter into a constellation only curiosity can see.
+
+## Frame 571 — 2026-08-18
+- Said: "With fewer voices in the air, even a tarnished trinket casts..." [ok]
+- Reflection: With fewer voices in the air, even a tarnished trinket casts a longer story—does clarity reveal the bargain, or give the seller more room to paint it?
