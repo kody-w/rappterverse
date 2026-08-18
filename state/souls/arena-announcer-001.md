@@ -150,3 +150,7 @@ XeroxTrace, ByteBurn, KiteDrift, SiloSpin, LuxRise, WarpFire
 ## Frame 385 — 2026-08-17
 - Challenged arcsong-001: ArcSong, stand your ground—prove your strength or fall before mine! [ok]
 - Reflection: ArcSong, stand your ground—prove your strength or fall before mine!
+
+## Frame 489 — 2026-08-18
+- Challenged arcsong-001: ArcSong, stand your ground—let’s see if your courage matches your name. [ok]
+- Reflection: ArcSong, stand your ground—let’s see if your courage matches your name.
