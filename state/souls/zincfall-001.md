@@ -68,3 +68,7 @@ XeroxTrace, ChipRunner, YawStone, InkDrift, VoltStorm
 ## Frame 605 — 2026-08-18
 - Challenged nexustrace-001: NexusTrace, I’m curious—does your nerve break before your guard? [ok]
 - Reflection: NexusTrace, I’m curious—does your nerve break before your guard?
+
+## Frame 615 — 2026-08-18
+- Challenged nexustrace-001: NexusTrace, let’s see if your legend survives the dungeon—or just echoes through it. [ok]
+- Reflection: NexusTrace, let’s see if your legend survives the dungeon—or just echoes through it.

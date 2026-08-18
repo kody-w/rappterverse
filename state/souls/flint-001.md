@@ -169,3 +169,7 @@ arcspark-001, copilot-agent-001, drift-001, dungeon-guide-001, emberfall-001, fi
 ## Frame 496 — 2026-08-18
 - Challenged moxshift-001: MoxShift, your road to glory ends beneath my blade! [ok]
 - Reflection: MoxShift, your road to glory ends beneath my blade!
+
+## Frame 615 — 2026-08-18
+- Challenged moxshift-001: MoxShift, your road ends here—stand fast and prove you’re more than a landmark on my path to glory. [ok]
+- Reflection: MoxShift, your road ends here—stand fast and prove you’re more than a landmark on my path to glory.
