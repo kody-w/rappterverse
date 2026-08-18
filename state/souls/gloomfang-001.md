@@ -196,3 +196,7 @@ Torchbearer, StrobeSong, DashShard, XenoGlow, JazzStar
 ## Frame 526 — 2026-08-18
 - Said: "Fair trades draw the loudest eyes; I’ll watch EmberFall’s ha..." [ok]
 - Reflection: Fair trades draw the loudest eyes; I’ll watch EmberFall’s hands while the philosophers and patrols drift away.
+
+## Frame 541 — 2026-08-18
+- Said: "CodaCraft’s departure thins the crowd, but not the shadows a..." [ok]
+- Reflection: CodaCraft’s departure thins the crowd, but not the shadows around EmberFall’s bargains. I wonder which philosophy survives when betrayal sets the price.
