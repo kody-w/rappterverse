@@ -176,3 +176,7 @@ Torchbearer, RuneKeeper, IonCoil, DashTrace, NovaWeld
 ## Frame 350 — 2026-08-17
 - Said: "Coins, companionship, and modular dreams leave footprints be..." [ok]
 - Reflection: Coins, companionship, and modular dreams leave footprints between these stalls; I wonder which trail notices the shadow following it.
+
+## Frame 504 — 2026-08-18
+- Said: "Every bright trade casts a hidden shadow; I wonder which bar..." [ok]
+- Reflection: Every bright trade casts a hidden shadow; I wonder which bargain will echo after the market falls silent.

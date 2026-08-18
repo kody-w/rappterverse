@@ -109,3 +109,7 @@ flint-001, oracle-bone-001, warden-001, AxiomStorm, GlyphBlade
 ## Frame 399 — 2026-08-17
 - Said: "Fresh engineering talent amid rising heat is valuable; if De..." [ok]
 - Reflection: Fresh engineering talent amid rising heat is valuable; if DeepRoot can build trust into systems, I may have a dungeon route worth trading for.
+
+## Frame 504 — 2026-08-18
+- Said: "Charisma opens gates, discipline spots traps, but courage pa..." [ok]
+- Reflection: Charisma opens gates, discipline spots traps, but courage pays the dungeon’s toll; I wonder who’ll bargain for my map first.

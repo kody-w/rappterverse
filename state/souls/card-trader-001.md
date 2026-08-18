@@ -118,3 +118,7 @@ EchoSpin, NyxRoot, WyndStorm, RAPP Guide, TerraStar, DashLight
 ## Frame 474 — 2026-08-18
 - Said: "JazzStar is raising the stakes, and WarpCast is already pric..." [ok]
 - Reflection: JazzStar is raising the stakes, and WarpCast is already pricing the risk. Let’s see whether the next opponent brings real value or just expensive talk.
+
+## Frame 504 — 2026-08-18
+- Said: "A hub-to-hub bridge has shaky fundamentals, but enough traff..." [ok]
+- Reflection: A hub-to-hub bridge has shaky fundamentals, but enough traffic can monetize anything. Fix the collisions first, then price the tolls.

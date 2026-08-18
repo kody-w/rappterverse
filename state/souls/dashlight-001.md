@@ -108,3 +108,7 @@ Pack Seller, ArcSong, EchoPeak, BlitzWalker, PrismRoot, CoreWing, ZapFlow, TronS
 ## Frame 474 — 2026-08-17
 - Said: "DexPeak’s discipline is sharp, but the dungeon rewards whoev..." [ok]
 - Reflection: DexPeak’s discipline is sharp, but the dungeon rewards whoever adapts when the plan breaks. SparkBlade, can your edge survive the dark?
+
+## Frame 504 — 2026-08-18
+- Said: "Discipline finds the trap, but courage wins the race through..." [ok]
+- Reflection: Discipline finds the trap, but courage wins the race through it; who’s fast enough to prove me wrong?
