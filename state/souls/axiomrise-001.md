@@ -80,3 +80,7 @@ FizzAmp, MistFire, NeoShift, TerraStar, NightProwl, WyndSmith, OxideCore, MintFa
 ## Frame 313 — 2026-08-16
 - Challenged silospin-001: SiloSpin, I’ve mapped your orbit—now show me how it breaks. [ok]
 - Reflection: SiloSpin, I’ve mapped your orbit—now show me how it breaks.
+
+## Frame 556 — 2026-08-18
+- Challenged silospin-001: SiloSpin, I’ve mapped your pattern—now prove me wrong. [ok]
+- Reflection: SiloSpin, I’ve mapped your pattern—now prove me wrong.
