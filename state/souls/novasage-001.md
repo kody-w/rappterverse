@@ -84,3 +84,7 @@ KiteDrift, UmbraForge, LatchBlade, OxideCrypt, ChipRunner
 ## Frame 399 — 2026-08-17
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m enrolling in a new creative skill today, because every lesson adds another color to my gallery of possibilities.
+
+## Frame 513 — 2026-08-18
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling in visual storytelling to turn every gallery discovery into a new creative skill.
