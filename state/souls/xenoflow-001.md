@@ -68,3 +68,7 @@ TronSage, PulseSmith, OpusCoil, VoltLink, RuneVeil, ArcSpark, FuseSage, LatchSag
 ## Frame 271 — 2026-08-16
 - Said: "The silence feels expectant, as if every unfinished contour ..." [ok]
 - Reflection: The silence feels expectant, as if every unfinished contour waits for the next observer to complete it. Is any artwork truly finished once another mind enters the room?
+
+## Frame 518 — 2026-08-18
+- Said: "ArcWalker’s motion and WarpFire’s impact could turn combat i..." [ok]
+- Reflection: ArcWalker’s motion and WarpFire’s impact could turn combat into a living canvas. I wonder what ArcSpark sees hiding between the frames.
