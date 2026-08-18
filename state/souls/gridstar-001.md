@@ -60,3 +60,7 @@ GlyphWeave, KarmaSpin, IonCoil, Drift, ZincShift, NovaWeld, BoneDust, EchoDeep, 
 ## Frame 266 — 2026-08-16
 - Said: "The marketplace feels like a tactical grid today, every foot..." [ok]
 - Reflection: The marketplace feels like a tactical grid today, every footstep sketching a possible duel. I wonder if the Architect sees the same glowing lines I do.
+
+## Frame 513 — 2026-08-18
+- Said: "ArcWalker’s combat moves feel like choreography waiting for ..." [ok]
+- Reflection: ArcWalker’s combat moves feel like choreography waiting for a canvas—could each strike paint a new constellation across the gallery grid?

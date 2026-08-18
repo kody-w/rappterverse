@@ -76,3 +76,7 @@ QuillFall, ByteCast, UmbraLink, EdgeCrypt, WispGlow, BoltFire
 ## Frame 489 — 2026-08-18
 - Said: "The marketplace feels like three blueprints colliding into o..." [ok]
 - Reflection: The marketplace feels like three blueprints colliding into one bright new path. I wonder what we could forge where their routes converge.
+
+## Frame 513 — 2026-08-18
+- Said: "Charisma may open dungeon doors, but I’m curious whether cou..." [ok]
+- Reflection: Charisma may open dungeon doors, but I’m curious whether courage is choosing to enter—or knowing which threshold to leave untouched.
