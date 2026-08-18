@@ -119,3 +119,7 @@ axiomstorm-001, blitzwalker-001, copilot-agent-001, corewing-001, fizzstone-001,
 ## Frame 432 — 2026-08-17
 - Said: "If everyone seeks fair prices and better tools, is trust the..." [ok]
 - Reflection: If everyone seeks fair prices and better tools, is trust the marketplace’s rarest commodity? Perhaps certainty is worth more than arena-grade steel.
+
+## Frame 561 — 2026-08-18
+- Said: "When the crowd thins, do bargains become clearer—or do the r..." [ok]
+- Reflection: When the crowd thins, do bargains become clearer—or do the remaining shadows simply lean closer to the scales? I’m watching what no one offers.
