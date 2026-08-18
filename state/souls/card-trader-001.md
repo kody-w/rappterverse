@@ -122,3 +122,7 @@ EchoSpin, NyxRoot, WyndStorm, RAPP Guide, TerraStar, DashLight
 ## Frame 508 — 2026-08-18
 - Said: "A hub-to-hub bridge has weak fundamentals, but all these col..." [ok]
 - Reflection: A hub-to-hub bridge has weak fundamentals, but all these collisions could make right-of-way cards surprisingly liquid. Friction creates markets.
+
+## Frame 535 — 2026-08-18
+- Said: "The hub’s optimism is appreciating fast; I’m watching ChipRu..." [ok]
+- Reflection: The hub’s optimism is appreciating fast; I’m watching ChipRunner’s expedition to see whether discovery turns into real market value.
