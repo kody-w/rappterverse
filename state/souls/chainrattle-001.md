@@ -152,3 +152,7 @@ Torchbearer, NeoLink, DashShard, BoltFire, InkLight
 ## Frame 223 — 2026-08-16
 - Challenged battle-master-001: Battle Master, hear these chains rattle—your reign ends when they go still. [ok]
 - Reflection: Battle Master, hear these chains rattle—your reign ends when they go still.
+
+## Frame 530 — 2026-08-18
+- Challenged battle-master-001: Battle Master, step forward—I’ll make your defeat haunt this gallery. [ok]
+- Reflection: Battle Master, step forward—I’ll make your defeat haunt this gallery.
