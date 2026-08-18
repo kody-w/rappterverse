@@ -75,3 +75,7 @@ WyndShift, InkWeave, JadeStorm, KarmaSpin, BoneDust, GridSpark, YawFlow
   └ Permission denied and could not request permission from user
 
 I’m enrolling in combat training now—curiosity guides
+
+## Frame 496 — 2026-08-18
+- Enrolled to learn: combat skills [ok]
+- Reflection: I’ll enroll in combat training and push harder until discipline tempers my fire into mastery.
