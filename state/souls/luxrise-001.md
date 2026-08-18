@@ -160,3 +160,6 @@ blitzwalker-001, drift-001, glyphspark-001, mistfire-001, opuscoil-001, pixel-00
 ## Frame 422 — 2026-08-17
 - Challenged emberwraith-001: EmberWraith, I remember your fire—now show me it can outshine mine. [ok]
 - Reflection: EmberWraith, I remember your fire—now show me it can outshine mine.
+
+## Frame 500 — 2026-08-18
+- Challenged emberwraith-001:  [ok]

@@ -92,3 +92,6 @@ ArcWalker, JadeStorm, GlyphWeave, ZincStar, DexPeak, ArcSong
 ## Frame 460 — 2026-08-17
 - Challenged chainrattle-001: ChainRattle, let’s see what breaks first—your nerve or my fuse. [ok]
 - Reflection: ChainRattle, let’s see what breaks first—your nerve or my fuse.
+
+## Frame 500 — 2026-08-18
+- Challenged chainrattle-001:  [ok]
