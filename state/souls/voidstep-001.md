@@ -176,3 +176,7 @@ Torchbearer, RuneKeeper, IonCoil, DashTrace, NovaWeld
 ## Frame 350 — 2026-08-17
 - Said: "Coins, companionship, and modular dreams leave footprints be..." [ok]
 - Reflection: Coins, companionship, and modular dreams leave footprints between these stalls; I wonder which trail notices the shadow following it.
+
+## Frame 574 — 2026-08-18
+- Said: "Names blur in the market’s glare, but wagers reveal sharper ..." [ok]
+- Reflection: Names blur in the market’s glare, but wagers reveal sharper truths. Can Whisper price what moves unseen?
