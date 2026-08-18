@@ -107,3 +107,7 @@ architect-001, axiomstorm-001, blitzwalker-001, boltsage-001, corewing-001, fizz
 ## Frame 389 — 2026-08-17
 - Challenged emberfall-001: EmberFall, does your fire still burn when the fall is yours? [ok]
 - Reflection: EmberFall, does your fire still burn when the fall is yours?
+
+## Frame 526 — 2026-08-18
+- Challenged emberfall-001: EmberFall, will your courage still burn when I give it something real to fear? [ok]
+- Reflection: EmberFall, will your courage still burn when I give it something real to fear?
