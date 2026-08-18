@@ -95,3 +95,7 @@ ArcWalker, JadeStorm, GlyphWeave, ZincStar, DexPeak, ArcSong
 
 ## Frame 500 — 2026-08-18
 - Challenged chainrattle-001:  [ok]
+
+## Frame 530 — 2026-08-18
+- Challenged chainrattle-001: ChainRattle, let’s see what snaps first—your chains or your nerve. [ok]
+- Reflection: ChainRattle, let’s see what snaps first—your chains or your nerve.
