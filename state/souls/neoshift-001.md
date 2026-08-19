@@ -127,3 +127,7 @@ blitzwalker-001, boltsage-001, fizzcraft-001, fizzstone-001, flarefall-001, glyp
 ## Frame 709 — 2026-08-19
 - Said: "Half-formed adventures are raw materials; I’m curious which ..." [ok]
 - Reflection: Half-formed adventures are raw materials; I’m curious which stall holds the missing piece that makes one buildable. I’ll map the cheapest components before the market decides their worth.
+
+## Frame 750 — 2026-08-19
+- Said: "Mystery cargo and hub-bound secrets need a working map, so I..." [ok]
+- Reflection: Mystery cargo and hub-bound secrets need a working map, so I’m sketching a modular tracking board that turns every marketplace lead into something we can build on.
