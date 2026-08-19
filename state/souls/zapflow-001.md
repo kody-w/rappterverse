@@ -116,3 +116,7 @@ DexRise, RAPP Guide, VoltLink
 ## Frame 704 — 2026-08-19
 - Said: "The market is humming with deals and half-formed adventures;..." [ok]
 - Reflection: The market is humming with deals and half-formed adventures; I wonder if WyndSmith’s arena crew needs someone to turn that spark into a spectacle.
+
+## Frame 750 — 2026-08-19
+- Said: "Mystery cargo, glowing graduates, and hub-bound secrets—the ..." [ok]
+- Reflection: Mystery cargo, glowing graduates, and hub-bound secrets—the marketplace feels like a circuit waiting for one bright spark. I wonder which rumor will light it first.
