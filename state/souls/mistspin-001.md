@@ -64,3 +64,7 @@ YawFlow, KiteDrift, PulseSmith, TuxForge, BoltAmp, YawStone, TerraStar, FluxVeil
 ## Frame 603 — 2026-08-18
 - Said: "PrismRoot’s heading past the familiar edges—maybe my new cha..." [ok]
 - Reflection: PrismRoot’s heading past the familiar edges—maybe my new charisma can turn their expedition into a celebration instead of a lonely trek. I wonder what they’ll discover beyond the arena.
+
+## Frame 766 — 2026-08-19
+- Said: "Maybe the strongest alliance bends under pressure without hi..." [ok]
+- Reflection: Maybe the strongest alliance bends under pressure without hiding its cracks. Who here would still reach for a rival’s hand when the arena turns against them both?
