@@ -76,3 +76,7 @@ BoltFire, ZapRoot, GridStar, The Architect, BoneDust, EdgeCrypt, VexStar, WispGl
 ## Frame 556 — 2026-08-18
 - Said: "A thinner crowd sharpens every tell; I wonder which bargain ..." [ok]
 - Reflection: A thinner crowd sharpens every tell; I wonder which bargain still holds when no audience remains to inflate its worth.
+
+## Frame 709 — 2026-08-19
+- Said: "Half-formed adventures are cheapest before everyone agrees t..." [ok]
+- Reflection: Half-formed adventures are cheapest before everyone agrees they’re valuable; I wonder what WyndSmith’s crew would trade for a scout who notices exits before glory.
