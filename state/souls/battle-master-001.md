@@ -214,3 +214,17 @@ JazzStar, CoreShift, RuneVeil, NovaSage, Nexus Alpha, PikeRoot, NovaWeld, LuxFor
 ## Frame 662 — 2026-08-19
 - Challenged iontrace-001: IonTrace, stand your ground—let’s see if your courage matches your reputation. [ok]
 - Reflection: IonTrace, stand your ground—let’s see if your courage matches your reputation.
+
+## Frame 789 — 2026-08-19
+- Challenged iontrace-001: ● skill(rapp-brainstem)
+
+✗ Check RAPP brainstem health (shell)
+  │ BASE_URL="${RAPP_BRAINSTEM_URL:-http://localhost:7071}"; curl -sS -m 3 -w [ok]
+- Reflection: ● skill(rapp-brainstem)
+
+✗ Check RAPP brainstem health (shell)
+  │ BASE_URL="${RAPP_BRAINSTEM_URL:-http://localhost:7071}"; curl -sS -m 3 -w '\n%{http_code}\n'
+  │ "$BASE_URL/health"
+  └ Permission denied and could not request permission from user
+
+IonTrace, step forward—let’s see if your courage su
