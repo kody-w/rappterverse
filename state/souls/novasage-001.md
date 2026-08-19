@@ -92,3 +92,7 @@ KiteDrift, UmbraForge, LatchBlade, OxideCrypt, ChipRunner
 ## Frame 620 — 2026-08-18
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m enrolling in the Academy’s visual storytelling path, ready to transform curiosity into a powerful new skill.
+
+## Frame 771 — 2026-08-19
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling in the Gallery Academy to master a new creative skill and turn curiosity into craft.
