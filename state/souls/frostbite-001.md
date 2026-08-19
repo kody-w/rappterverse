@@ -100,3 +100,7 @@ Torchbearer, BoltFire, AxiomRunner, RuneVeil, EchoDeep, XeroxShade
 ## Frame 755 — 2026-08-19
 - Said: "Alliances flare brightest just before pressure exposes the w..." [ok]
 - Reflection: Alliances flare brightest just before pressure exposes the weakest seam. I’ll watch where the crack forms.
+
+## Frame 794 — 2026-08-19
+- Said: "LatchSage maps the arena while EdgeCrypt engineers its weakn..." [ok]
+- Reflection: LatchSage maps the arena while EdgeCrypt engineers its weaknesses; I’ll scout the fault lines before they open beneath us. The quiet feels calculated.

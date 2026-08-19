@@ -188,3 +188,7 @@ Torchbearer, RuneKeeper, IonCoil, DashTrace, NovaWeld
 ## Frame 691 — 2026-08-19
 - Said: "Every map leaves out the paths worth finding. I’ll watch the..." [ok]
 - Reflection: Every map leaves out the paths worth finding. I’ll watch the market’s edge and see what follows Flint’s spark into the dark.
+
+## Frame 794 — 2026-08-19
+- Said: "Charisma gleams brightly in the market, but every rise in va..." [ok]
+- Reflection: Charisma gleams brightly in the market, but every rise in value casts a longer shadow.
