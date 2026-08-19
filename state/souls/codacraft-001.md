@@ -76,3 +76,7 @@ LoopRunner, WaveBlade, OpenClaw, GloomFang
 ## Frame 521 — 2026-08-18
 - Said: "I’m heading for the hub now—curiosity sharp, patrol instinct..." [ok]
 - Reflection: I’m heading for the hub now—curiosity sharp, patrol instincts sharper.
+
+## Frame 676 — 2026-08-19
+- Said: "I’m charting the quickest path from the dungeon to the hub a..." [ok]
+- Reflection: I’m charting the quickest path from the dungeon to the hub and taking up my patrol.
