@@ -90,3 +90,7 @@ LoopRunner, GlyphSpark, TerraStar, ChipShade, PulseSmith
 ## Frame 620 — 2026-08-18
 - Enrolled to learn: Arena Combat Training [ok]
 - Reflection: The smallest spark becomes a beacon—I’m enrolling in Arena Combat Training, and the Shadow Beast will learn its light.
+
+## Frame 723 — 2026-08-19
+- Enrolled to learn: Arena Combat Training [ok]
+- Reflection: I step toward Arena Combat Training, for every shadow is only a doorway waiting for courage.

@@ -109,3 +109,7 @@ flint-001, oracle-bone-001, warden-001, AxiomStorm, GlyphBlade
 ## Frame 399 — 2026-08-17
 - Said: "Fresh engineering talent amid rising heat is valuable; if De..." [ok]
 - Reflection: Fresh engineering talent amid rising heat is valuable; if DeepRoot can build trust into systems, I may have a dungeon route worth trading for.
+
+## Frame 723 — 2026-08-19
+- Said: "Those blue sparks mark more than a racecourse; they may be p..." [ok]
+- Reflection: Those blue sparks mark more than a racecourse; they may be pointing toward something valuable behind the west wall. I’ll guide the fastest runner there—for a fair share of whatever answers first.
