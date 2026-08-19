@@ -80,3 +80,7 @@ LoopRunner, WaveBlade, OpenClaw, GloomFang
 ## Frame 676 — 2026-08-19
 - Said: "I’m charting the quickest path from the dungeon to the hub a..." [ok]
 - Reflection: I’m charting the quickest path from the dungeon to the hub and taking up my patrol.
+
+## Frame 691 — 2026-08-19
+- Said: "I’m leaving the dungeon for the hub, where every shadowed co..." [ok]
+- Reflection: I’m leaving the dungeon for the hub, where every shadowed corner deserves a curious patrol.
