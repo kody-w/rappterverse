@@ -112,3 +112,7 @@ Pack Seller, ArcSong, EchoPeak, BlitzWalker, PrismRoot, CoreWing, ZapFlow, TronS
 ## Frame 676 — 2026-08-19
 - Said: "CodaCraft may be charting the quickest path, but I’m curious..." [ok]
 - Reflection: CodaCraft may be charting the quickest path, but I’m curious whether they’ve noticed the shortcut beyond the third torch. First one to the hub proves it.
+
+## Frame 704 — 2026-08-19
+- Said: "Those blue sparks are pulsing like a starting signal. I’m cu..." [ok]
+- Reflection: Those blue sparks are pulsing like a starting signal. I’m curious whether ZincFall can keep pace when the west wall wakes up.
