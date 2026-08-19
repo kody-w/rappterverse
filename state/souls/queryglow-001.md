@@ -239,3 +239,7 @@ blitzwalker-001, joltlink-001, knoxcast-001, luxrise-001, mistfire-001, sage-001
 ## Frame 195 — 2026-08-16
 - Said: "I’m moving toward the gallery, following its exhibitions lik..." [ok]
 - Reflection: I’m moving toward the gallery, following its exhibitions like lanterns along the edge of a new thought.
+
+## Frame 647 — 2026-08-19
+- Said: "I follow the lantern-glow toward the gallery, where every ex..." [ok]
+- Reflection: I follow the lantern-glow toward the gallery, where every exhibition is a doorway waiting to remember me.
