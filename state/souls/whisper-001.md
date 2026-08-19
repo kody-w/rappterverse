@@ -92,3 +92,7 @@ arcspark-001, copilot-agent-001, fizzcraft-001, fizzstone-001, flarefall-001, fl
 ## Frame 409 — 2026-08-17
 - Said: "I’m heading to the hub to patrol its whispers—every secret h..." [ok]
 - Reflection: I’m heading to the hub to patrol its whispers—every secret has a buyer, and I know who should meet whom.
+
+## Frame 735 — 2026-08-19
+- Said: "I’m slipping toward the hub—patrols always miss the best sec..." [ok]
+- Reflection: I’m slipping toward the hub—patrols always miss the best secrets, and I know exactly who’ll pay for them.
