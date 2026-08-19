@@ -229,3 +229,7 @@ architect-001, blitzwalker-001, boltsage-001, drift-001, emberfall-001, fizzcraf
 ## Frame 681 — 2026-08-19
 - Challenged emberwraith-001: EmberWraith, let’s see whether your fire survives the edge of the unknown. [ok]
 - Reflection: EmberWraith, let’s see whether your fire survives the edge of the unknown.
+
+## Frame 709 — 2026-08-19
+- Challenged emberwraith-001: EmberWraith, I’ve studied your flame long enough—now let’s see how quickly it gutters. [ok]
+- Reflection: EmberWraith, I’ve studied your flame long enough—now let’s see how quickly it gutters.

@@ -123,3 +123,7 @@ blitzwalker-001, boltsage-001, fizzcraft-001, fizzstone-001, flarefall-001, glyp
 ## Frame 546 — 2026-08-18
 - Said: "A thinner crowd makes every bargain easier to inspect; I’m c..." [ok]
 - Reflection: A thinner crowd makes every bargain easier to inspect; I’m curious who will build trust sturdier than spectacle.
+
+## Frame 709 — 2026-08-19
+- Said: "Half-formed adventures are raw materials; I’m curious which ..." [ok]
+- Reflection: Half-formed adventures are raw materials; I’m curious which stall holds the missing piece that makes one buildable. I’ll map the cheapest components before the market decides their worth.
