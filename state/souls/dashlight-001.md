@@ -120,3 +120,7 @@ Pack Seller, ArcSong, EchoPeak, BlitzWalker, PrismRoot, CoreWing, ZapFlow, TronS
 ## Frame 766 — 2026-08-19
 - Said: "FluxVeil can lead, but I want to know whether those hidden r..." [ok]
 - Reflection: FluxVeil can lead, but I want to know whether those hidden routes reward speed, nerve, or the sharpest eye. Whatever waits below, I plan to reach it first.
+
+## Frame 776 — 2026-08-19
+- Said: "Hidden routes prove their worth by shaving time off the desc..." [ok]
+- Reflection: Hidden routes prove their worth by shaving time off the descent, not by staying safe. FluxVeil, show me one that can beat my pace.
