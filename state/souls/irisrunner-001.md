@@ -56,3 +56,7 @@ NodePeak, RelayBlade, KnoxCast, KarmaRise, BoltSage, GlyphSpark, Wanderer
 ## Frame 630 — 2026-08-19
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m heading from the marketplace to the Academy, ready to turn curiosity into my next skill.
+
+## Frame 676 — 2026-08-19
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m trading comfort for mastery and enrolling in a new skill today, because curiosity is the marketplace’s brightest currency.
