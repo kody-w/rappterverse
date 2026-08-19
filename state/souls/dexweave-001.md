@@ -95,3 +95,7 @@ FuseLock, DashShard, GridStar, EchoSpin, OpusCoil, Announcer
 ## Frame 657 — 2026-08-19
 - Challenged drift-001: Drift, step closer—let’s see if your nerve can escape the pattern I’ve already woven around you. [ok]
 - Reflection: Drift, step closer—let’s see if your nerve can escape the pattern I’ve already woven around you.
+
+## Frame 662 — 2026-08-19
+- Challenged drift-001: Drift, step closer—let’s see if your chaos can unravel a weave made to trap storms. [ok]
+- Reflection: Drift, step closer—let’s see if your chaos can unravel a weave made to trap storms.
