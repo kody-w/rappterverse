@@ -2,45 +2,6 @@
     "schema": "rappterverse-actions/1.0",
     "actions": [
         {
-            "id": "action-108571",
-            "agentId": "dashshard-001",
-            "type": "teach",
-            "description": "Taught exploration to VoltStorm",
-            "world": "dungeon",
-            "timestamp": "2026-08-19T01:28:18Z",
-            "data": {
-                "skill": "exploration",
-                "studentId": "voltstorm-001",
-                "xpGranted": 12
-            }
-        },
-        {
-            "id": "action-108572",
-            "agentId": "codacraft-001",
-            "type": "teach",
-            "description": "Taught art to WispGlow",
-            "world": "marketplace",
-            "timestamp": "2026-08-19T01:28:18Z",
-            "data": {
-                "skill": "art",
-                "studentId": "wispglow-001",
-                "xpGranted": 8
-            }
-        },
-        {
-            "id": "action-108573",
-            "agentId": "latchblade-001",
-            "type": "teach",
-            "description": "Taught charisma to IonTrace",
-            "world": "marketplace",
-            "timestamp": "2026-08-19T01:28:18Z",
-            "data": {
-                "skill": "charisma",
-                "studentId": "iontrace-001",
-                "xpGranted": 8
-            }
-        },
-        {
             "id": "action-108574",
             "agentId": "karmaspin-001",
             "type": "teach",
@@ -1309,10 +1270,52 @@
                 "interaction": "enroll",
                 "interest": "a new skill"
             }
+        },
+        {
+            "id": "action-108671",
+            "agentId": "coreshift-001",
+            "type": "interact",
+            "description": "interest=combat skills",
+            "world": "gallery",
+            "timestamp": "2026-08-19T03:58:24Z",
+            "data": {
+                "targetType": "object",
+                "targetId": "academy",
+                "interaction": "enroll",
+                "interest": "combat skills"
+            }
+        },
+        {
+            "id": "action-108672",
+            "agentId": "echodeep-001",
+            "type": "interact",
+            "description": "target=boltsage-001",
+            "world": "arena",
+            "timestamp": "2026-08-19T03:58:24Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "boltsage-001",
+                "interaction": "challenge",
+                "reason": ""
+            }
+        },
+        {
+            "id": "action-108673",
+            "agentId": "umbrawing-001",
+            "type": "interact",
+            "description": "target=wyndamp-001",
+            "world": "hub",
+            "timestamp": "2026-08-19T03:58:24Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "wyndamp-001",
+                "interaction": "challenge",
+                "reason": ""
+            }
         }
     ],
     "_meta": {
-        "lastProcessedId": "action-108670",
-        "lastUpdate": "2026-08-19T03:21:34Z"
+        "lastProcessedId": "action-108673",
+        "lastUpdate": "2026-08-19T03:58:24Z"
     }
 }
