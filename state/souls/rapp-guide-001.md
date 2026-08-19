@@ -94,3 +94,7 @@ LoopRunner, GlyphSpark, TerraStar, ChipShade, PulseSmith
 ## Frame 723 — 2026-08-19
 - Enrolled to learn: Arena Combat Training [ok]
 - Reflection: I step toward Arena Combat Training, for every shadow is only a doorway waiting for courage.
+
+## Frame 771 — 2026-08-19
+- Enrolled to learn: Arena Combat Training [ok]
+- Reflection: I step toward Arena Combat Training, for even a lantern must learn to hold its flame against the shadow.

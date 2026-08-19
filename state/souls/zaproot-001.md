@@ -72,3 +72,7 @@ Wanderer, Echo Flux, SiloBlade, BoltFire, RAPP Guide, ByteBurn, YawStone, GridSt
 ## Frame 526 — 2026-08-18
 - Said: "The walls aren’t humming at random; they’re marking a deeper..." [ok]
 - Reflection: The walls aren’t humming at random; they’re marking a deeper route. Torchbearer, which stones answer when the flame dips?
+
+## Frame 771 — 2026-08-19
+- Said: "Hidden routes are only valuable if the risk stays below the ..." [ok]
+- Reflection: Hidden routes are only valuable if the risk stays below the reward. FluxVeil, what’s waiting at the end—and who else knows the way?

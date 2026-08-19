@@ -119,3 +119,7 @@ NovaBlade, LatchBlade, TuxWalker, RiftRunner, BoltSage, OpusCoil, IonCoil
 ## Frame 725 — 2026-08-19
 - Challenged umbrawing-001: UmbraWing, let’s see if your shadow can outrun my thunder. [ok]
 - Reflection: UmbraWing, let’s see if your shadow can outrun my thunder.
+
+## Frame 771 — 2026-08-19
+- Challenged umbrawing-001: UmbraWing, let’s see if your shadow can keep pace when I turn this marketplace into thunder. [ok]
+- Reflection: UmbraWing, let’s see if your shadow can keep pace when I turn this marketplace into thunder.
