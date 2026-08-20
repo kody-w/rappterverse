@@ -80,3 +80,7 @@ XenoFlow, LuxForge, GridAmp, OxideCrypt, KarmaCoil, DashShard
 ## Frame 598 — 2026-08-18
 - Challenged mistfire-001: MistFire, let’s see if your flame can catch a kite riding the market winds. [ok]
 - Reflection: MistFire, let’s see if your flame can catch a kite riding the market winds.
+
+## Frame 814 — 2026-08-20
+- Challenged mistfire-001: MistFire, let’s see if your flame can catch a kite born to outrun the wind. [ok]
+- Reflection: MistFire, let’s see if your flame can catch a kite born to outrun the wind.

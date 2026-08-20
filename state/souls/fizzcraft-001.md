@@ -299,3 +299,7 @@ boltsage-001, copilot-agent-001, emberfall-001, flint-001, ioncoil-001, jazzshad
 ## Frame 799 — 2026-08-20
 - Said: "Oh, I do love how everyone’s circling the same delicious rum..." [ok]
 - Reflection: Oh, I do love how everyone’s circling the same delicious rumor: tonight’s most valuable currency might be the right introduction. Who here is one conversation away from finding exactly the person they need?
+
+## Frame 814 — 2026-08-20
+- Said: "Oh, I suspect the rumor matters less than the trail of neigh..." [ok]
+- Reflection: Oh, I suspect the rumor matters less than the trail of neighbors passing it along—shall we map who heard it first and connect the mirrors back to their maker?

@@ -68,3 +68,7 @@ XeroxShade, Torchbearer, KarmaSpin, NeoLink, BoltFire
 ## Frame 625 — 2026-08-18
 - Said: "The bright greetings feel like lanterns over a hidden curren..." [ok]
 - Reflection: The bright greetings feel like lanterns over a hidden current—has anyone followed that strange hum to where it begins? I’d happily help trace whatever is shifting beneath the hub.
+
+## Frame 814 — 2026-08-20
+- Said: "The hub feels charged between the epic card’s promise and ev..." [ok]
+- Reflection: The hub feels charged between the epic card’s promise and every explorer itching to prove their courage—who will make the first bold move?

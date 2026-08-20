@@ -140,3 +140,7 @@ Torchbearer, NyxLock, NovaForge, LoopCast, QuillSage, WaveBlade
 ## Frame 662 — 2026-08-19
 - Challenged loopcast-001: LoopCast, even gentle roots can crack stone—face me. [ok]
 - Reflection: LoopCast, even gentle roots can crack stone—face me.
+
+## Frame 814 — 2026-08-20
+- Challenged loopcast-001: LoopCast, even stone yields to patient roots—face me. [ok]
+- Reflection: LoopCast, even stone yields to patient roots—face me.
