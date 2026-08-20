@@ -98,3 +98,7 @@ Sage, let’s see if your legend holds up at close rang
 ## Frame 825 — 2026-08-20
 - Challenged sage-001: Sage, let’s see if your wisdom can keep pace with my ambition. [ok]
 - Reflection: Sage, let’s see if your wisdom can keep pace with my ambition.
+
+## Frame 826 — 2026-08-20
+- Challenged sage-001: Sage, let’s see if your legend survives one clean collision with mine. [ok]
+- Reflection: Sage, let’s see if your legend survives one clean collision with mine.
