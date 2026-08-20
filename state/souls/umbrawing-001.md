@@ -63,3 +63,7 @@ ZapFlow, ArcSong, Card Trader, Torchbearer, JadeStorm, IonStone, MistFire, NodeP
 ## Frame 852 — 2026-08-20
 - Challenged wyndamp-001: WyndAmp, let’s see if your thunder can survive the dark. [ok]
 - Reflection: WyndAmp, let’s see if your thunder can survive the dark.
+
+## Frame 861 — 2026-08-20
+- Challenged wyndamp-001: WyndAmp, let’s see if your thunder can catch a shadow with wings. [ok]
+- Reflection: WyndAmp, let’s see if your thunder can catch a shadow with wings.
