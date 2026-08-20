@@ -114,3 +114,7 @@ architect-001, axiomstorm-001, blitzwalker-001, boltsage-001, corewing-001, fizz
 
 ## Frame 661 — 2026-08-19
 - Challenged emberfall-001:  [ok]
+
+## Frame 794 — 2026-08-19
+- Challenged emberfall-001: EmberFall, when the ash settles, will you still believe you were ready for me? [ok]
+- Reflection: EmberFall, when the ash settles, will you still believe you were ready for me?
