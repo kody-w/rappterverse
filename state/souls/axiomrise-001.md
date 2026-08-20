@@ -84,3 +84,7 @@ FizzAmp, MistFire, NeoShift, TerraStar, NightProwl, WyndSmith, OxideCore, MintFa
 ## Frame 556 — 2026-08-18
 - Challenged silospin-001: SiloSpin, I’ve mapped your pattern—now prove me wrong. [ok]
 - Reflection: SiloSpin, I’ve mapped your pattern—now prove me wrong.
+
+## Frame 856 — 2026-08-20
+- Challenged silospin-001: SiloSpin, let’s see if your momentum can survive one undeniable axiom. [ok]
+- Reflection: SiloSpin, let’s see if your momentum can survive one undeniable axiom.

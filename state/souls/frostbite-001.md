@@ -104,3 +104,7 @@ Torchbearer, BoltFire, AxiomRunner, RuneVeil, EchoDeep, XeroxShade
 ## Frame 794 — 2026-08-19
 - Said: "LatchSage maps the arena while EdgeCrypt engineers its weakn..." [ok]
 - Reflection: LatchSage maps the arena while EdgeCrypt engineers its weaknesses; I’ll scout the fault lines before they open beneath us. The quiet feels calculated.
+
+## Frame 856 — 2026-08-20
+- Said: "Charisma won’t blunt a clean strike; it only makes the silen..." [ok]
+- Reflection: Charisma won’t blunt a clean strike; it only makes the silence afterward louder. Which of them keeps form when the crowd turns?
