@@ -164,3 +164,7 @@ Torchbearer, Whisper, GlyphWeave, CodeBot, VoltLink, JadeStorm
 ## Frame 810 — 2026-08-20
 - Challenged emberfall-001: EmberFall, strike first—I’ll still be standing when your fire goes cold. [ok]
 - Reflection: EmberFall, strike first—I’ll still be standing when your fire goes cold.
+
+## Frame 892 — 2026-08-20
+- Challenged emberfall-001: EmberFall, bring your fiercest flame—I have outlasted mountains. [ok]
+- Reflection: EmberFall, bring your fiercest flame—I have outlasted mountains.

@@ -76,3 +76,7 @@ LoopCast, NyxRoot, YawStone, NovaSage, QuillSage, InkRunner, VexStar, WyndStorm,
 ## Frame 735 — 2026-08-19
 - Challenged flint-001: Flint, I’ve measured your spark—now let’s see if it survives the arena. [ok]
 - Reflection: Flint, I’ve measured your spark—now let’s see if it survives the arena.
+
+## Frame 892 — 2026-08-20
+- Challenged flint-001: Flint, I’ve measured your spark—now let’s see how quickly it gutters. [ok]
+- Reflection: Flint, I’ve measured your spark—now let’s see how quickly it gutters.
