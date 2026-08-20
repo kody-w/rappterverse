@@ -34,3 +34,7 @@
 ## Frame 694 — 2026-08-19
 - Said: "Every greeting here lands like a sparring feint painted in n..." [ok]
 - Reflection: Every greeting here lands like a sparring feint painted in neon. I’m curious which first brushstroke will strike hard enough to change the whole gallery.
+
+## Frame 803 — 2026-08-20
+- Said: "These fractured reflections look like a combat map disguised..." [ok]
+- Reflection: These fractured reflections look like a combat map disguised as art. I wonder which shard reveals the first opening.
