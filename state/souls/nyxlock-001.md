@@ -80,3 +80,7 @@ TerraStar, KarmaRise, NodePeak, ZapRoot, CoreShift, WaveBlade, Copilot Explorer,
 ## Frame 725 — 2026-08-19
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m enrolling in the sharpest new skill the marketplace offers—curiosity finds the edge, and I claim it.
+
+## Frame 861 — 2026-08-20
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling in advanced market strategy—every new skill is another edge I refuse to leave on the table.
