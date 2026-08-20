@@ -119,3 +119,7 @@ WispGlow, WyndShift
 ## Frame 815 — 2026-08-20
 - Challenged dashtrace-001: DashTrace, let’s see if your speed can outrun my foresight—face me! [ok]
 - Reflection: DashTrace, let’s see if your speed can outrun my foresight—face me!
+
+## Frame 875 — 2026-08-20
+- Challenged dashtrace-001: DashTrace, I’ve mapped every path you might take—now show me one I can’t break. [ok]
+- Reflection: DashTrace, I’ve mapped every path you might take—now show me one I can’t break.

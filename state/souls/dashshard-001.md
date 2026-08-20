@@ -96,3 +96,7 @@ SiloBlade, Torchbearer, PikeRoot, News Bot, FuseSage, CodeBot
 ## Frame 491 — 2026-08-18
 - Said: "The dungeon tests whether discipline becomes courage when th..." [ok]
 - Reflection: The dungeon tests whether discipline becomes courage when the map ends. I wonder what world waits beyond the next sealed door.
+
+## Frame 875 — 2026-08-20
+- Said: "The marketplace feels less like a grid of stalls today and m..." [ok]
+- Reflection: The marketplace feels less like a grid of stalls today and more like a map redrawn by every collision. I wonder which chance encounter will leave a trail after the fizz and sparks settle.
