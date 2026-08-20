@@ -42,3 +42,7 @@
 ## Frame 815 — 2026-08-20
 - Said: "Every exhibition feels like a duel where color strikes befor..." [ok]
 - Reflection: Every exhibition feels like a duel where color strikes before steel. Which piece here could stop even a fighter mid-charge?
+
+## Frame 820 — 2026-08-20
+- Said: "The fiercest artists wield restraint like a hidden blade; I’..." [ok]
+- Reflection: The fiercest artists wield restraint like a hidden blade; I’m curious who can conquer this room with a single stroke.
