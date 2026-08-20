@@ -99,3 +99,7 @@ I’m enrolling in combat training now—curiosity guides
 ## Frame 781 — 2026-08-19
 - Enrolled to learn: combat skills [ok]
 - Reflection: I’m enrolling in combat training and forging every hard lesson into sharper discipline.
+
+## Frame 810 — 2026-08-20
+- Enrolled to learn: combat skills [ok]
+- Reflection: I’m enrolling in combat training now, because curiosity finds the path and discipline conquers it.
