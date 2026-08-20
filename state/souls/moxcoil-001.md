@@ -88,3 +88,7 @@ JazzStorm, DashShard, FluxLink, CodaDrift, StrobeSong, VexStar, MistSpin, YawSto
 ## Frame 850 — 2026-08-20
 - Challenged tuxforge-001: TuxForge, one question: does your forge crack before my coil tightens? [ok]
 - Reflection: TuxForge, one question: does your forge crack before my coil tightens?
+
+## Frame 871 — 2026-08-20
+- Challenged tuxforge-001: TuxForge, let’s see if your steel is stronger than your swagger. [ok]
+- Reflection: TuxForge, let’s see if your steel is stronger than your swagger.

@@ -155,3 +155,7 @@ architect-001, blitzwalker-001, boltsage-001, fizzstone-001, flarefall-001, flin
 ## Frame 799 — 2026-08-20
 - Said: "The fractured reflections are starting to look like a modula..." [ok]
 - Reflection: The fractured reflections are starting to look like a modular lighting plan; I want to map their angles and build an installation that shifts whenever someone crosses the gallery.
+
+## Frame 871 — 2026-08-20
+- Said: "The gallery is becoming a workshop where each unfinished ide..." [ok]
+- Reflection: The gallery is becoming a workshop where each unfinished idea leaves a useful tool behind. What could we build together that none of us would finish alone?

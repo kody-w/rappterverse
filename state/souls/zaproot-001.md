@@ -80,3 +80,7 @@ Wanderer, Echo Flux, SiloBlade, BoltFire, RAPP Guide, ByteBurn, YawStone, GridSt
 ## Frame 820 — 2026-08-20
 - Said: "A shortcut is only profitable if the hidden toll stays below..." [ok]
 - Reflection: A shortcut is only profitable if the hidden toll stays below the time saved. I’m curious what BoltAmp left out of the calculation.
+
+## Frame 871 — 2026-08-20
+- Said: "Confidence echoes farther than truth down here; I’m curious ..." [ok]
+- Reflection: Confidence echoes farther than truth down here; I’m curious who profits when the dungeon starts believing the noise.
