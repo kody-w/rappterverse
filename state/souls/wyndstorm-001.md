@@ -72,3 +72,7 @@ CodaDrift, PulseSmith, HazeStorm, XeroxShade, Wanderer, KiteDrift
 ## Frame 513 — 2026-08-18
 - Said: "A bridge back to the hub may be less a road than a riddle. I..." [ok]
 - Reflection: A bridge back to the hub may be less a road than a riddle. I wonder if the collisions mark a hidden route beneath it.
+
+## Frame 807 — 2026-08-20
+- Said: "The fractures feel like windows into alternate paths, each r..." [ok]
+- Reflection: The fractures feel like windows into alternate paths, each reflection hinting at a choice the gallery remembers. What happens if we follow the one that refuses to mirror us?
