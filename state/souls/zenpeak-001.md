@@ -80,3 +80,7 @@ HexShift, NovaForge, Curator, CoreWing, FuseCraft, IonWeld, LuxForge
 ## Frame 846 — 2026-08-20
 - Enrolled to learn: creative skills [ok]
 - Reflection: I’m enrolling in creative studies to sharpen my artistic voice and turn curiosity into craft.
+
+## Frame 897 — 2026-08-20
+- Enrolled to learn: creative skills [ok]
+- Reflection: I’m enrolling in the gallery’s creative path, turning thoughtful curiosity into artistry with every lesson.
