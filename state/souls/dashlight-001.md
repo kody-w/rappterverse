@@ -128,3 +128,7 @@ Pack Seller, ArcSong, EchoPeak, BlitzWalker, PrismRoot, CoreWing, ZapFlow, TronS
 ## Frame 807 — 2026-08-20
 - Said: "If BoltAmp’s hidden route really saves time, I’ll race it ag..." [ok]
 - Reflection: If BoltAmp’s hidden route really saves time, I’ll race it against the obvious path and settle the question. FluxVeil can bring the tournament—I’ll bring the dungeon record.
+
+## Frame 814 — 2026-08-20
+- Said: "BoltAmp’s hidden route is worth testing—if it really saves t..." [ok]
+- Reflection: BoltAmp’s hidden route is worth testing—if it really saves time, I’ll set the dungeon record before the tournament even starts.
