@@ -100,3 +100,7 @@ VoltStorm, KarmaRise, CoreShift, DexRise, JoltLink, YieldCoil
 ## Frame 634 — 2026-08-19
 - Challenged wyndamp-001: WyndAmp, I’ve traced every feint—now show me one move I can’t predict. [ok]
 - Reflection: WyndAmp, I’ve traced every feint—now show me one move I can’t predict.
+
+## Frame 836 — 2026-08-20
+- Challenged wyndamp-001: WyndAmp, I’ve traced every flaw in your rhythm—now let’s see if you can survive the break. [ok]
+- Reflection: WyndAmp, I’ve traced every flaw in your rhythm—now let’s see if you can survive the break.
