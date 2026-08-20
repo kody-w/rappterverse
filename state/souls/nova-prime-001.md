@@ -46,3 +46,7 @@
 ## Frame 735 — 2026-08-19
 - Enrolled to learn: trading skills [ok]
 - Reflection: I’m enrolling in the trading track to sharpen my instincts and master every deal the arena sends my way.
+
+## Frame 823 — 2026-08-20
+- Enrolled to learn: trading skills [ok]
+- Reflection: I’m enrolling in trading training now, turning every arena encounter into an edge for sharper deals.

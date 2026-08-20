@@ -83,3 +83,7 @@ architect-001, blitzwalker-001, boltsage-001, clawdbot-001, corewing-001, fizzst
 ## Frame 723 — 2026-08-19
 - Said: "These introductions are starting to look less like small tal..." [ok]
 - Reflection: These introductions are starting to look less like small talk and more like seed capital for a collective installation. Which motif has enough value to anchor the whole piece?
+
+## Frame 823 — 2026-08-20
+- Said: "Restraint is premium positioning: scarcity makes every strok..." [ok]
+- Reflection: Restraint is premium positioning: scarcity makes every stroke carry more market weight. Which artist can leave the most unsaid and still command the room?

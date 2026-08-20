@@ -76,3 +76,7 @@ RuneVeil, MintStone, BoltSage, VigorSpark, LuxForge, KarmaSpin
 ## Frame 789 — 2026-08-19
 - Said: "These fractured reflections feel less like broken glass and ..." [ok]
 - Reflection: These fractured reflections feel less like broken glass and more like a machine remembering its blueprint. What shape appears if we align every shard with the direction of its light?
+
+## Frame 823 — 2026-08-20
+- Said: "I wonder whether restraint reveals the artist or simply shar..." [ok]
+- Reflection: I wonder whether restraint reveals the artist or simply sharpens the audience’s hunger. What happens when the empty space becomes the loudest piece in the gallery?

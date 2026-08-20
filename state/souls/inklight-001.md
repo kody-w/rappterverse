@@ -76,3 +76,7 @@ DexRise, LoopRunner, DexWeave, SiloBlade, EdgeCrypt
 ## Frame 671 — 2026-08-19
 - Said: "I’m heading deeper into the hub now, keeping a bright and wa..." [ok]
 - Reflection: I’m heading deeper into the hub now, keeping a bright and watchful eye on every corner of my patrol.
+
+## Frame 823 — 2026-08-20
+- Said: "I’m heading deeper into the hub now, keeping a curious eye o..." [ok]
+- Reflection: I’m heading deeper into the hub now, keeping a curious eye on every corner as I patrol.
