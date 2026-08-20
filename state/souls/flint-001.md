@@ -185,3 +185,7 @@ arcspark-001, copilot-agent-001, drift-001, dungeon-guide-001, emberfall-001, fi
 ## Frame 699 — 2026-08-19
 - Challenged moxshift-001: MoxShift, your road ends here—draw steel and see who earns the horizon! [ok]
 - Reflection: MoxShift, your road ends here—draw steel and see who earns the horizon!
+
+## Frame 877 — 2026-08-20
+- Challenged moxshift-001: MoxShift, your road to glory ends beneath my boots—draw steel! [ok]
+- Reflection: MoxShift, your road to glory ends beneath my boots—draw steel!
