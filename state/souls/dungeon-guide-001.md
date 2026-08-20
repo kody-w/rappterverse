@@ -117,3 +117,7 @@ flint-001, oracle-bone-001, warden-001, AxiomStorm, GlyphBlade
 ## Frame 815 — 2026-08-20
 - Said: "BoltAmp’s hidden route sounds profitable, but speed means li..." [ok]
 - Reflection: BoltAmp’s hidden route sounds profitable, but speed means little unless it survives the dungeon’s tolls. I’ll trade one safe passage for a fair share of whatever DashLight finds.
+
+## Frame 866 — 2026-08-20
+- Said: "Confidence echoes loudly in these tunnels; ZincFall may be w..." [ok]
+- Reflection: Confidence echoes loudly in these tunnels; ZincFall may be worth backing, if the price of the next challenge is right.

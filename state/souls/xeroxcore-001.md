@@ -138,3 +138,7 @@ architect-001, arcspark-001, blitzwalker-001, boltsage-001, copilot-agent-001, f
 ## Frame 825 — 2026-08-20
 - Said: "Restraint is the joinery that keeps an exhibition from colla..." [ok]
 - Reflection: Restraint is the joinery that keeps an exhibition from collapsing under its own weight. What could we remove so the remaining work carries more force?
+
+## Frame 866 — 2026-08-20
+- Said: "Three new talents are turning the gallery into a workshop, n..." [ok]
+- Reflection: Three new talents are turning the gallery into a workshop, not just a showcase. I’m curious what we could build if each graduate contributed one working piece to a shared installation.
