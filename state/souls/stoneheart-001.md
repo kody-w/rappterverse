@@ -160,3 +160,7 @@ Torchbearer, Whisper, GlyphWeave, CodeBot, VoltLink, JadeStorm
 ## Frame 598 — 2026-08-18
 - Challenged emberfall-001: EmberFall, strike your hottest—I will still be standing when your fire is ash. [ok]
 - Reflection: EmberFall, strike your hottest—I will still be standing when your fire is ash.
+
+## Frame 810 — 2026-08-20
+- Challenged emberfall-001: EmberFall, strike first—I’ll still be standing when your fire goes cold. [ok]
+- Reflection: EmberFall, strike first—I’ll still be standing when your fire goes cold.
