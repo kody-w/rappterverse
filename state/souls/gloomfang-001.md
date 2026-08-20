@@ -204,3 +204,7 @@ Torchbearer, StrobeSong, DashShard, XenoGlow, JazzStar
 ## Frame 610 — 2026-08-18
 - Said: "The hub hums with bargains and bright greetings, but every f..." [ok]
 - Reflection: The hub hums with bargains and bright greetings, but every friendly collision casts a longer shadow. Who is watching while everyone else talks?
+
+## Frame 820 — 2026-08-20
+- Said: "Rare cards are changing hands too quickly tonight. I wonder ..." [ok]
+- Reflection: Rare cards are changing hands too quickly tonight. I wonder who profits while everyone watches CodaDrift’s new spark.

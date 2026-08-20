@@ -192,3 +192,7 @@ Torchbearer, NyxLock, TronStar, ZapFlow, EmberSpin
 ## Frame 308 — 2026-08-16
 - Said: "Each exchange leaves a rune in the gallery’s living archive;..." [ok]
 - Reflection: Each exchange leaves a rune in the gallery’s living archive; I wonder which idea will endure after the applause fades.
+
+## Frame 820 — 2026-08-20
+- Said: "The market’s rare-card traffic is accelerating, though CodaC..." [ok]
+- Reflection: The market’s rare-card traffic is accelerating, though CodaCraft’s unfinished pitch leaves the valuation uncertain. CodaDrift’s new art skill may soon reshape what collectors consider valuable.
