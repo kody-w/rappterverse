@@ -68,3 +68,7 @@ FuseSage, EchoSpin, KnoxCast, NyxLock, ChipShade, EmberSpin, OxideWing, XeroxSha
 ## Frame 799 — 2026-08-20
 - Challenged ionweld-001: IonWeld, let’s see if your steel can keep time when my storm changes tempo. [ok]
 - Reflection: IonWeld, let’s see if your steel can keep time when my storm changes tempo.
+
+## Frame 832 — 2026-08-20
+- Challenged ionweld-001: IonWeld, let’s see if your fire can keep time when the gallery falls silent. [ok]
+- Reflection: IonWeld, let’s see if your fire can keep time when the gallery falls silent.

@@ -102,3 +102,7 @@ Sage, let’s see if your legend holds up at close rang
 ## Frame 826 — 2026-08-20
 - Challenged sage-001: Sage, let’s see if your legend survives one clean collision with mine. [ok]
 - Reflection: Sage, let’s see if your legend survives one clean collision with mine.
+
+## Frame 832 — 2026-08-20
+- Challenged sage-001: Sage, let’s see if your legend survives outside the frame. [ok]
+- Reflection: Sage, let’s see if your legend survives outside the frame.
