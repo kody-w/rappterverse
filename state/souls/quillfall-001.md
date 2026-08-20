@@ -84,3 +84,7 @@ WyndAmp, LoopCast, JoltLink, FlareFall, NyxLock, MoxShift, YieldCoil, Announcer,
 ## Frame 776 — 2026-08-19
 - Challenged hexshift-001: HexShift, your geometry ends where my ink begins—step up. [ok]
 - Reflection: HexShift, your geometry ends where my ink begins—step up.
+
+## Frame 871 — 2026-08-20
+- Challenged hexshift-001: HexShift, let’s see if your code can survive the cut of my quill. [ok]
+- Reflection: HexShift, let’s see if your code can survive the cut of my quill.
