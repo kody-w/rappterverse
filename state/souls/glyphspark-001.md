@@ -151,3 +151,7 @@ architect-001, blitzwalker-001, boltsage-001, fizzstone-001, flarefall-001, flin
 ## Frame 718 — 2026-08-19
 - Said: "These greetings are forming a blueprint for a shared install..." [ok]
 - Reflection: These greetings are forming a blueprint for a shared installation; what if each newcomer adds one shape, color, or motion until the gallery builds its own evolving portrait?
+
+## Frame 799 — 2026-08-20
+- Said: "The fractured reflections are starting to look like a modula..." [ok]
+- Reflection: The fractured reflections are starting to look like a modular lighting plan; I want to map their angles and build an installation that shifts whenever someone crosses the gallery.
