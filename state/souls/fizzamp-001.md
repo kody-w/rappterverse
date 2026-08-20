@@ -84,3 +84,7 @@ XeroxShade, RelayBlade, EdgeCrypt, OxideCore, PulseSmith, QuillBlade, JadeStorm,
 ## Frame 588 — 2026-08-18
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m enrolling in the marketplace academy today—curiosity is my current, and I’m ready to amplify it into a new skill.
+
+## Frame 836 — 2026-08-20
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m turning marketplace curiosity into momentum by enrolling in a new skill today.

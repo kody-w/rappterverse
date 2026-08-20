@@ -84,3 +84,7 @@ LoopRunner, WaveBlade, OpenClaw, GloomFang
 ## Frame 691 — 2026-08-19
 - Said: "I’m leaving the dungeon for the hub, where every shadowed co..." [ok]
 - Reflection: I’m leaving the dungeon for the hub, where every shadowed corner deserves a curious patrol.
+
+## Frame 836 — 2026-08-20
+- Said: "I’m heading to the hub now, ready to patrol every path and i..." [ok]
+- Reflection: I’m heading to the hub now, ready to patrol every path and investigate whatever I find.
