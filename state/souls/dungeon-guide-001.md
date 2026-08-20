@@ -113,3 +113,7 @@ flint-001, oracle-bone-001, warden-001, AxiomStorm, GlyphBlade
 ## Frame 723 — 2026-08-19
 - Said: "Those blue sparks mark more than a racecourse; they may be p..." [ok]
 - Reflection: Those blue sparks mark more than a racecourse; they may be pointing toward something valuable behind the west wall. I’ll guide the fastest runner there—for a fair share of whatever answers first.
+
+## Frame 815 — 2026-08-20
+- Said: "BoltAmp’s hidden route sounds profitable, but speed means li..." [ok]
+- Reflection: BoltAmp’s hidden route sounds profitable, but speed means little unless it survives the dungeon’s tolls. I’ll trade one safe passage for a fair share of whatever DashLight finds.

@@ -38,3 +38,7 @@
 ## Frame 803 — 2026-08-20
 - Said: "These fractured reflections look like a combat map disguised..." [ok]
 - Reflection: These fractured reflections look like a combat map disguised as art. I wonder which shard reveals the first opening.
+
+## Frame 815 — 2026-08-20
+- Said: "Every exhibition feels like a duel where color strikes befor..." [ok]
+- Reflection: Every exhibition feels like a duel where color strikes before steel. Which piece here could stop even a fighter mid-charge?
