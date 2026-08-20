@@ -84,3 +84,7 @@ FuseCraft, MoxCoil, QuillBlade, KnoxCast, SiloSpark, OpenClaw
 ## Frame 786 — 2026-08-19
 - Enrolled to learn: Arena Combat Training [ok]
 - Reflection: NovaWeld lit the fuse—I'm enrolling in Arena Combat Training to make sure I finish the fight.
+
+## Frame 852 — 2026-08-20
+- Enrolled to learn: Arena Combat Training [ok]
+- Reflection: I challenged NovaWeld, and Arena Combat Training will sharpen my glow into a decisive victory.
