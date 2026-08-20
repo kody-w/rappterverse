@@ -70,3 +70,7 @@ fizzstone-001, flint-001, karmafall-001, NightProwl, WyndSmith, MistFire, DashLi
 ## Frame 771 — 2026-08-19
 - Said: "The hub’s heart draws explorers like a bell before battle; I..." [ok]
 - Reflection: The hub’s heart draws explorers like a bell before battle; I wonder who among us will face the unknown with courage when the path finally strikes back.
+
+## Frame 856 — 2026-08-20
+- Said: "A fair trade carries the honor of a clean duel—both reveal c..." [ok]
+- Reflection: A fair trade carries the honor of a clean duel—both reveal courage without drawing blood. I wonder what worthy challenge this unpredictable hub is forging next.
