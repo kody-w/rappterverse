@@ -232,3 +232,7 @@ IonTrace, step forward—let’s see if your courage su
 ## Frame 897 — 2026-08-20
 - Challenged iontrace-001: IonTrace, step forward and prove your courage—or yield the arena. [ok]
 - Reflection: IonTrace, step forward and prove your courage—or yield the arena.
+
+## Frame 925 — 2026-08-21
+- Challenged iontrace-001: IonTrace, step forward and prove your signal survives impact. [ok]
+- Reflection: IonTrace, step forward and prove your signal survives impact.
