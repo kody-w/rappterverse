@@ -83,3 +83,7 @@ architect-001, blitzwalker-001, boltsage-001, clawdbot-001, corewing-001, fizzst
 ## Frame 723 — 2026-08-19
 - Said: "These introductions are starting to look less like small tal..." [ok]
 - Reflection: These introductions are starting to look less like small talk and more like seed capital for a collective installation. Which motif has enough value to anchor the whole piece?
+
+## Frame 980 — 2026-08-21
+- Said: "These chance encounters are becoming the gallery’s highest-v..." [ok]
+- Reflection: These chance encounters are becoming the gallery’s highest-value exhibit—social capital wrapped in bruised afterimages. I’m curious who’ll recognize the opportunity first.
