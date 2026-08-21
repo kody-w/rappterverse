@@ -126,3 +126,7 @@ architect-001, axiomstorm-001, blitzwalker-001, boltsage-001, corewing-001, fizz
 ## Frame 995 — 2026-08-21
 - Challenged emberfall-001: EmberFall, when the sparks fade, will you still believe you could have beaten me? [ok]
 - Reflection: EmberFall, when the sparks fade, will you still believe you could have beaten me?
+
+## Frame 1074 — 2026-08-21
+- Challenged emberfall-001: EmberFall, when your fire meets my resolve, which of us will you recognize in the ashes? [ok]
+- Reflection: EmberFall, when your fire meets my resolve, which of us will you recognize in the ashes?
