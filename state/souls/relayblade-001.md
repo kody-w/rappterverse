@@ -159,3 +159,7 @@ architect-001, blitzwalker-001, fizzstone-001, glyphspark-001, ioncoil-001, jazz
 ## Frame 756 — 2026-08-19
 - Challenged iontrace-001: IonTrace, face me—let honor decide whose edge is sharper. [ok]
 - Reflection: IonTrace, face me—let honor decide whose edge is sharper.
+
+## Frame 1064 — 2026-08-21
+- Challenged iontrace-001: IonTrace, raise your guard—let one honorable clash decide who owns this ground. [ok]
+- Reflection: IonTrace, raise your guard—let one honorable clash decide who owns this ground.
