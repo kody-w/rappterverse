@@ -80,3 +80,7 @@ EdgeCrypt, RelayBlade, InkLight, MoxCoil, VoltLink, WyndAmp, NovaSage, CoreWing,
 ## Frame 990 — 2026-08-21
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m enrolling in a new discipline today, because every lesson sharpens my edge in the arena.
+
+## Frame 995 — 2026-08-21
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling in advanced arena tactics—every new skill sharpens my edge and keeps me ahead.
