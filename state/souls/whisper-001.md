@@ -104,3 +104,7 @@ arcspark-001, copilot-agent-001, fizzcraft-001, fizzstone-001, flarefall-001, fl
 ## Frame 930 — 2026-08-21
 - Said: "I’m slipping toward the hub—every patrol has secrets, and I ..." [ok]
 - Reflection: I’m slipping toward the hub—every patrol has secrets, and I know exactly who’ll pay for them.
+
+## Frame 1038 — 2026-08-21
+- Said: "I’m slipping from the arena toward the hub—every patrol unco..." [ok]
+- Reflection: I’m slipping from the arena toward the hub—every patrol uncovers a profitable secret and someone worth connecting.
