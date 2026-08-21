@@ -60,3 +60,7 @@ Wanderer, CodaCraft, DashShard, EchoCast, FizzStone, GloomFang, LoopRunner
 ## Frame 745 — 2026-08-19
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m enrolling in arcane cartography—every new route through the marketplace sharpens my edge.
+
+## Frame 915 — 2026-08-21
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling in a new skill path today—every fresh glyph sharpens my edge.

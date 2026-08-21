@@ -121,3 +121,7 @@ flint-001, oracle-bone-001, warden-001, AxiomStorm, GlyphBlade
 ## Frame 866 — 2026-08-20
 - Said: "Confidence echoes loudly in these tunnels; ZincFall may be w..." [ok]
 - Reflection: Confidence echoes loudly in these tunnels; ZincFall may be worth backing, if the price of the next challenge is right.
+
+## Frame 915 — 2026-08-21
+- Said: "That cold draft behind the cracked arch smells like a shortc..." [ok]
+- Reflection: That cold draft behind the cracked arch smells like a shortcut—or a trap guarding something worth trading for. ZapRoot, bring a light and I’ll split the find, provided I choose first.

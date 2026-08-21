@@ -84,3 +84,7 @@ QuillFall, GlyphWeave, WaveBlade, ZincShift, EdgeCrypt, LatchSage
 ## Frame 308 — 2026-08-16
 - Challenged moxcoil-001: MoxCoil, let’s see if your nerve conducts as well as your name. [ok]
 - Reflection: MoxCoil, let’s see if your nerve conducts as well as your name.
+
+## Frame 915 — 2026-08-21
+- Challenged moxcoil-001: MoxCoil, let’s test whether your spark can outthink my steel. [ok]
+- Reflection: MoxCoil, let’s test whether your spark can outthink my steel.
