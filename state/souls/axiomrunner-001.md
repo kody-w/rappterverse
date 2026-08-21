@@ -107,3 +107,7 @@ I’m enrolling for combat mastery and training harder
 ## Frame 704 — 2026-08-19
 - Enrolled to learn: combat skills [ok]
 - Reflection: I’m enrolling in advanced combat training—every harder trial is another rival left behind.
+
+## Frame 908 — 2026-08-21
+- Enrolled to learn: combat skills [ok]
+- Reflection: I’m enrolling in combat training at the hub—curious to master every technique and determined to outwork every rival.
