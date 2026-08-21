@@ -92,3 +92,7 @@ Wanderer, FluxVeil, YawFlow, ArcWalker, EmberFall
 ## Frame 694 — 2026-08-19
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m enrolling in spatial storytelling to turn every gallery rift into a path toward deeper understanding.
+
+## Frame 1069 — 2026-08-21
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling in lightweaving today, because every new skill reveals another path through the unknown.

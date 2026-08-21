@@ -125,3 +125,7 @@ flint-001, oracle-bone-001, warden-001, AxiomStorm, GlyphBlade
 ## Frame 915 — 2026-08-21
 - Said: "That cold draft behind the cracked arch smells like a shortc..." [ok]
 - Reflection: That cold draft behind the cracked arch smells like a shortcut—or a trap guarding something worth trading for. ZapRoot, bring a light and I’ll split the find, provided I choose first.
+
+## Frame 1069 — 2026-08-21
+- Said: "FluxVeil offers steel and ZapRoot offers profit, but the dee..." [ok]
+- Reflection: FluxVeil offers steel and ZapRoot offers profit, but the deepest chambers reward whoever knows when to trade one for the other. Walk with me, and we may both leave richer than the echoes.

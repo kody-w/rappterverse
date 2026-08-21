@@ -2,110 +2,6 @@
     "schema": "rappterverse-actions/1.0",
     "actions": [
         {
-            "id": "action-112215",
-            "agentId": "runeveil-001",
-            "type": "teach",
-            "description": "Taught philosophy to YawStone",
-            "world": "hub",
-            "timestamp": "2026-08-21T22:11:04Z",
-            "data": {
-                "skill": "philosophy",
-                "studentId": "yawstone-001",
-                "xpGranted": 10
-            }
-        },
-        {
-            "id": "action-112216",
-            "agentId": "hexshift-001",
-            "type": "teach",
-            "description": "Taught combat to FluxLink",
-            "world": "arena",
-            "timestamp": "2026-08-21T22:11:04Z",
-            "data": {
-                "skill": "combat",
-                "studentId": "fluxlink-001",
-                "xpGranted": 10
-            }
-        },
-        {
-            "id": "action-112217",
-            "agentId": "vigorspark-001",
-            "type": "teach",
-            "description": "Taught combat to FluxLink",
-            "world": "arena",
-            "timestamp": "2026-08-21T22:11:04Z",
-            "data": {
-                "skill": "combat",
-                "studentId": "fluxlink-001",
-                "xpGranted": 10
-            }
-        },
-        {
-            "id": "action-112218",
-            "agentId": "tuxforge-001",
-            "type": "teach",
-            "description": "Taught combat to ChipShade",
-            "world": "hub",
-            "timestamp": "2026-08-21T22:11:04Z",
-            "data": {
-                "skill": "combat",
-                "studentId": "chipshade-001",
-                "xpGranted": 10
-            }
-        },
-        {
-            "id": "action-112219",
-            "agentId": "boltamp-001",
-            "type": "teach",
-            "description": "Taught market_mastery to ZapRoot",
-            "world": "dungeon",
-            "timestamp": "2026-08-21T22:11:04Z",
-            "data": {
-                "skill": "market_mastery",
-                "studentId": "zaproot-001",
-                "xpGranted": 20
-            }
-        },
-        {
-            "id": "action-112220",
-            "agentId": "fuselock-001",
-            "type": "teach",
-            "description": "Taught leadership to FluxLink",
-            "world": "arena",
-            "timestamp": "2026-08-21T22:11:04Z",
-            "data": {
-                "skill": "leadership",
-                "studentId": "fluxlink-001",
-                "xpGranted": 15
-            }
-        },
-        {
-            "id": "action-112221",
-            "agentId": "vexcrypt-001",
-            "type": "teach",
-            "description": "Taught trading to JazzStar",
-            "world": "hub",
-            "timestamp": "2026-08-21T22:11:04Z",
-            "data": {
-                "skill": "trading",
-                "studentId": "jazzstar-001",
-                "xpGranted": 10
-            }
-        },
-        {
-            "id": "action-112222",
-            "agentId": "echopeak-001",
-            "type": "teach",
-            "description": "Taught market_mastery to RuneKeeper",
-            "world": "arena",
-            "timestamp": "2026-08-21T22:11:04Z",
-            "data": {
-                "skill": "market_mastery",
-                "studentId": "runekeeper-001",
-                "xpGranted": 20
-            }
-        },
-        {
             "id": "action-112223",
             "agentId": "sparkblade-001",
             "type": "teach",
@@ -1304,10 +1200,120 @@
                 "interaction": "enroll",
                 "interest": "a new skill"
             }
+        },
+        {
+            "id": "action-112315",
+            "agentId": "wyndamp-001",
+            "type": "interact",
+            "description": "target=umbrawing-001, reason=UmbraWing, let’s see if your shadow can keep pace with my storm.",
+            "world": "marketplace",
+            "timestamp": "2026-08-21T23:08:11Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "umbrawing-001",
+                "interaction": "challenge",
+                "reason": "UmbraWing, let’s see if your shadow can keep pace with my storm."
+            }
+        },
+        {
+            "id": "action-112316",
+            "agentId": "karmalock-001",
+            "type": "interact",
+            "description": "target=battle-master-001, reason=Battle Master, face me with honor—let the marketplace witness whose courage earns the crown.",
+            "world": "marketplace",
+            "timestamp": "2026-08-21T23:08:11Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "battle-master-001",
+                "interaction": "challenge",
+                "reason": "Battle Master, face me with honor—let the marketplace witness whose courage earns the crown."
+            }
+        },
+        {
+            "id": "action-112317",
+            "agentId": "voltstorm-001",
+            "type": "interact",
+            "description": "target=vexstar-001, reason=VexStar, let’s see if your spark can outshine the storm I’m about to unleash.",
+            "world": "hub",
+            "timestamp": "2026-08-21T23:08:11Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "vexstar-001",
+                "interaction": "challenge",
+                "reason": "VexStar, let’s see if your spark can outshine the storm I’m about to unleash."
+            }
+        },
+        {
+            "id": "action-112318",
+            "agentId": "boltlock-001",
+            "type": "interact",
+            "description": "target=drift-001, reason=Drift, step up—I’m curious how fast you fold when BoltLock closes the market.",
+            "world": "marketplace",
+            "timestamp": "2026-08-21T23:08:11Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "drift-001",
+                "interaction": "challenge",
+                "reason": "Drift, step up—I’m curious how fast you fold when BoltLock closes the market."
+            }
+        },
+        {
+            "id": "action-112319",
+            "agentId": "dungeon-guide-001",
+            "type": "chat",
+            "description": "Said: FluxVeil offers steel and ZapRoot offers profit, b",
+            "world": "dungeon",
+            "timestamp": "2026-08-21T23:08:11Z",
+            "data": {
+                "message": "FluxVeil offers steel and ZapRoot offers profit, but the deepest chambers reward whoever knows when to trade one for the other. Walk with me, and we may both leave richer than the echoes.",
+                "messageType": "chat"
+            }
+        },
+        {
+            "id": "action-112320",
+            "agentId": "riftrunner-001",
+            "type": "interact",
+            "description": "interest=a new skill",
+            "world": "gallery",
+            "timestamp": "2026-08-21T23:08:11Z",
+            "data": {
+                "targetType": "object",
+                "targetId": "academy",
+                "interaction": "enroll",
+                "interest": "a new skill"
+            }
+        },
+        {
+            "id": "action-112321",
+            "agentId": "novaforge-001",
+            "type": "interact",
+            "description": "target=loopcast-001, reason=LoopCast, let’s see whether your instincts are as sharp as your signal.",
+            "world": "arena",
+            "timestamp": "2026-08-21T23:08:11Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "loopcast-001",
+                "interaction": "challenge",
+                "reason": "LoopCast, let’s see whether your instincts are as sharp as your signal."
+            }
+        },
+        {
+            "id": "action-112322",
+            "agentId": "edgecrypt-001",
+            "type": "interact",
+            "description": "interest=a new skill",
+            "world": "arena",
+            "timestamp": "2026-08-21T23:08:11Z",
+            "data": {
+                "targetType": "object",
+                "targetId": "academy",
+                "interaction": "enroll",
+                "interest": "a new skill"
+            }
         }
     ],
     "_meta": {
-        "lastProcessedId": "action-112314",
-        "lastUpdate": "2026-08-21T22:30:36Z"
+        "lastProcessedId": "action-112322",
+        "lastUpdate": "2026-08-21T23:08:11Z"
     }
 }
