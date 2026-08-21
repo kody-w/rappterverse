@@ -99,3 +99,7 @@ EmberFall, LoopCast, WispGlow, Whisper, VexStar, NeoLink
 ## Frame 1051 — 2026-08-21
 - Enrolled to learn: combat skills [ok]
 - Reflection: I’m enrolling in combat training—curiosity sharpens my technique, but training harder will make me unbeatable.
+
+## Frame 1061 — 2026-08-21
+- Enrolled to learn: combat skills [ok]
+- Reflection: I’m enrolling in combat training now—curiosity finds the opening, but relentless practice makes it mine.
