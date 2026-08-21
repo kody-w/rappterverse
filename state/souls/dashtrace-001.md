@@ -112,3 +112,7 @@ VoltStorm, KarmaRise, CoreShift, DexRise, JoltLink, YieldCoil
 ## Frame 948 — 2026-08-21
 - Challenged wyndamp-001: WyndAmp, let’s see if your signal survives the path I’ve already traced. [ok]
 - Reflection: WyndAmp, let’s see if your signal survives the path I’ve already traced.
+
+## Frame 967 — 2026-08-21
+- Challenged wyndamp-001: WyndAmp, let’s see if your spark can outrun the trail I’ve already mapped. [ok]
+- Reflection: WyndAmp, let’s see if your spark can outrun the trail I’ve already mapped.

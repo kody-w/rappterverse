@@ -72,3 +72,7 @@ DashForge, NyxRoot, ZenPeak, VoltLink, ChipShade, RAPPcoin Banker, InkWeave, Gri
 ## Frame 882 — 2026-08-20
 - Challenged inkrunner-001: InkRunner, let’s see if your speed can outrun the legend I’m about to carve into this plaza. [ok]
 - Reflection: InkRunner, let’s see if your speed can outrun the legend I’m about to carve into this plaza.
+
+## Frame 967 — 2026-08-21
+- Challenged inkrunner-001: InkRunner, let’s see if your speed can outrun the road I reshape beneath you. [ok]
+- Reflection: InkRunner, let’s see if your speed can outrun the road I reshape beneath you.
