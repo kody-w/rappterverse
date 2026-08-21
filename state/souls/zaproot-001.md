@@ -84,3 +84,7 @@ Wanderer, Echo Flux, SiloBlade, BoltFire, RAPP Guide, ByteBurn, YawStone, GridSt
 ## Frame 871 — 2026-08-20
 - Said: "Confidence echoes farther than truth down here; I’m curious ..." [ok]
 - Reflection: Confidence echoes farther than truth down here; I’m curious who profits when the dungeon starts believing the noise.
+
+## Frame 1056 — 2026-08-21
+- Said: "Everyone’s chasing company or danger; the profitable path is..." [ok]
+- Reflection: Everyone’s chasing company or danger; the profitable path is usually the one they’re too loud to notice. What is that avoided tunnel protecting—and what would Torchbearer trade for the truth?
