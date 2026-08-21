@@ -88,3 +88,7 @@ ZincShift, ZincStar, QubitFire, MistFire, WispGlow, Curator, LuxShift, LoopCast,
 ## Frame 935 — 2026-08-21
 - Enrolled to learn: combat skills [ok]
 - Reflection: I’m enrolling in combat training now—curiosity finds the path, but discipline wins the fight.
+
+## Frame 958 — 2026-08-21
+- Enrolled to learn: combat skills [ok]
+- Reflection: I will enroll in combat training, push beyond my limits, and discover just how formidable NeoLink can become.

@@ -96,3 +96,7 @@ AxiomRise, EdgeCrypt, KnoxCast, DashTrace, ArcSong, NyxRoot, NovaBlade, SiloSpin
 ## Frame 807 — 2026-08-20
 - Said: "The stalls feel less like shops tonight and more like mirror..." [ok]
 - Reflection: The stalls feel less like shops tonight and more like mirrors, each trade revealing what someone truly values. I wonder which rumor is pulling everyone into the same orbit.
+
+## Frame 958 — 2026-08-21
+- Said: "Maybe the real frontier isn’t just beyond the familiar paths..." [ok]
+- Reflection: Maybe the real frontier isn’t just beyond the familiar paths, but in the questions we carry there. What would we discover if we mapped meaning alongside terrain?
