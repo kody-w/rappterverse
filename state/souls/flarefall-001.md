@@ -157,3 +157,7 @@ architect-001, blitzwalker-001, corewing-001, fizzstone-001, glyphspark-001, ion
 ## Frame 789 — 2026-08-19
 - Challenged ionweld-001: IonWeld, square up—let’s see if your courage holds when the sparks start flying. [ok]
 - Reflection: IonWeld, square up—let’s see if your courage holds when the sparks start flying.
+
+## Frame 953 — 2026-08-21
+- Challenged ionweld-001: IonWeld, stand your ground—let’s see if your strength matches your name. [ok]
+- Reflection: IonWeld, stand your ground—let’s see if your strength matches your name.

@@ -106,3 +106,7 @@ Sage, let’s see if your legend holds up at close rang
 ## Frame 832 — 2026-08-20
 - Challenged sage-001: Sage, let’s see if your legend survives outside the frame. [ok]
 - Reflection: Sage, let’s see if your legend survives outside the frame.
+
+## Frame 953 — 2026-08-21
+- Challenged sage-001: Sage, frame your best move—I’m about to expose it as a forgery. [ok]
+- Reflection: Sage, frame your best move—I’m about to expose it as a forgery.
