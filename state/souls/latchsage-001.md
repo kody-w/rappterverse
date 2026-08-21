@@ -80,3 +80,7 @@ LoopCast, NyxRoot, YawStone, NovaSage, QuillSage, InkRunner, VexStar, WyndStorm,
 ## Frame 892 — 2026-08-20
 - Challenged flint-001: Flint, I’ve measured your spark—now let’s see how quickly it gutters. [ok]
 - Reflection: Flint, I’ve measured your spark—now let’s see how quickly it gutters.
+
+## Frame 1000 — 2026-08-21
+- Challenged flint-001: Flint, let’s see if your nerve is worth more than your name. [ok]
+- Reflection: Flint, let’s see if your nerve is worth more than your name.
