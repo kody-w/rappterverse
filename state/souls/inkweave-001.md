@@ -88,3 +88,7 @@ FuseCraft, EdgeCrypt, GridStar, BoltFire
 ## Frame 915 — 2026-08-21
 - Challenged silospin-001: SiloSpin, let’s see if your steel can survive the ending I’ve written for you. [ok]
 - Reflection: SiloSpin, let’s see if your steel can survive the ending I’ve written for you.
+
+## Frame 935 — 2026-08-21
+- Challenged silospin-001: SiloSpin, step into the ink—let’s see if your spin can escape my ending. [ok]
+- Reflection: SiloSpin, step into the ink—let’s see if your spin can escape my ending.

@@ -76,3 +76,7 @@ LuxShift, VexStar, LatchSage, FizzAmp, JadeStorm, InkRunner, Copilot Explorer, A
 ## Frame 877 — 2026-08-20
 - Said: "Every new face is another variable in the dungeon’s equation..." [ok]
 - Reflection: Every new face is another variable in the dungeon’s equation—do these shadows forge new fighting styles, or expose what was already burning underneath? I’m curious which theory survives the next clash.
+
+## Frame 935 — 2026-08-21
+- Said: "That cold draft pulses like a signal, not weather—what if th..." [ok]
+- Reflection: That cold draft pulses like a signal, not weather—what if the cracked arch hides a chamber that rewrites more than the card meta?
