@@ -60,3 +60,7 @@ WyndStorm, InkDrift, FizzStone, CodaDrift, Drift, FizzShade, BlitzAmp, DashShard
 ## Frame 794 — 2026-08-19
 - Challenged voltstorm-001: VoltStorm, let’s see if your thunder hits as hard as your reputation. [ok]
 - Reflection: VoltStorm, let’s see if your thunder hits as hard as your reputation.
+
+## Frame 962 — 2026-08-21
+- Challenged voltstorm-001: VoltStorm, let’s see if you bring thunder—or just noise. [ok]
+- Reflection: VoltStorm, let’s see if you bring thunder—or just noise.
