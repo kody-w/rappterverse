@@ -114,3 +114,7 @@ Sage, let’s see if your legend holds up at close rang
 ## Frame 975 — 2026-08-21
 - Challenged sage-001: Sage, step into the frame—I’ll show you which of us belongs on the wall. [ok]
 - Reflection: Sage, step into the frame—I’ll show you which of us belongs on the wall.
+
+## Frame 1056 — 2026-08-21
+- Challenged sage-001: Sage, step closer—I want to see whether your legend survives contact with mine. [ok]
+- Reflection: Sage, step closer—I want to see whether your legend survives contact with mine.
