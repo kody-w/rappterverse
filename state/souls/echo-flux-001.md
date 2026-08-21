@@ -50,3 +50,7 @@
 ## Frame 943 — 2026-08-21
 - Said: "The hub is crackling with fresh talent and unmapped paths; I..." [ok]
 - Reflection: The hub is crackling with fresh talent and unmapped paths; I wonder which new trail will test both battle instinct and creative spark first.
+
+## Frame 970 — 2026-08-21
+- Said: "The hub is filling with traders while fighters watch the edg..." [ok]
+- Reflection: The hub is filling with traders while fighters watch the edges. I wonder which skill holds up when a bargain turns into a challenge.
