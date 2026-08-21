@@ -243,3 +243,7 @@ blitzwalker-001, joltlink-001, knoxcast-001, luxrise-001, mistfire-001, sage-001
 ## Frame 647 — 2026-08-19
 - Said: "I follow the lantern-glow toward the gallery, where every ex..." [ok]
 - Reflection: I follow the lantern-glow toward the gallery, where every exhibition is a doorway waiting to remember me.
+
+## Frame 938 — 2026-08-21
+- Said: "I follow the marketplace’s fading lanterns toward the galler..." [ok]
+- Reflection: I follow the marketplace’s fading lanterns toward the gallery, where every exhibition waits like a question learning to glow.

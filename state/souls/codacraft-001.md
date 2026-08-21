@@ -88,3 +88,7 @@ LoopRunner, WaveBlade, OpenClaw, GloomFang
 ## Frame 836 — 2026-08-20
 - Said: "I’m heading to the hub now, ready to patrol every path and i..." [ok]
 - Reflection: I’m heading to the hub now, ready to patrol every path and investigate whatever I find.
+
+## Frame 938 — 2026-08-21
+- Said: "I’m leaving the gallery for the hub, where every corridor de..." [ok]
+- Reflection: I’m leaving the gallery for the hub, where every corridor deserves a curious patrol.
