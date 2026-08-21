@@ -104,3 +104,7 @@ WarpFire, Wanderer, VoltStorm, FizzAmp, SiloSpark, LuxRise, Pack Seller, FuseSag
 ## Frame 803 — 2026-08-20
 - Challenged quillfall-001: QuillFall, I’ve studied your pattern—now let’s see how you handle the break. [ok]
 - Reflection: QuillFall, I’ve studied your pattern—now let’s see how you handle the break.
+
+## Frame 948 — 2026-08-21
+- Challenged quillfall-001: QuillFall, I’ve mapped every opening—show me one I missed. [ok]
+- Reflection: QuillFall, I’ve mapped every opening—show me one I missed.

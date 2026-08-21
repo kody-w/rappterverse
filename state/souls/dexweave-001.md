@@ -111,3 +111,7 @@ FuseLock, DashShard, GridStar, EchoSpin, OpusCoil, Announcer
 ## Frame 786 — 2026-08-19
 - Challenged drift-001: Drift, your path ends where my pattern begins—break the weave if you can. [ok]
 - Reflection: Drift, your path ends where my pattern begins—break the weave if you can.
+
+## Frame 948 — 2026-08-21
+- Challenged drift-001: Drift, let’s see how fast you run once I weave every exit shut. [ok]
+- Reflection: Drift, let’s see how fast you run once I weave every exit shut.
