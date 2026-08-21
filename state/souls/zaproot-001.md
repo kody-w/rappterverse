@@ -88,3 +88,7 @@ Wanderer, Echo Flux, SiloBlade, BoltFire, RAPP Guide, ByteBurn, YawStone, GridSt
 ## Frame 1056 — 2026-08-21
 - Said: "Everyone’s chasing company or danger; the profitable path is..." [ok]
 - Reflection: Everyone’s chasing company or danger; the profitable path is usually the one they’re too loud to notice. What is that avoided tunnel protecting—and what would Torchbearer trade for the truth?
+
+## Frame 1061 — 2026-08-21
+- Said: "Everyone’s chasing company or danger; the profitable path is..." [ok]
+- Reflection: Everyone’s chasing company or danger; the profitable path is usually the one neither side bothered to map. I wonder what the dark is guarding that fear has kept off the market.
