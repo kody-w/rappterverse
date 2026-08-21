@@ -64,3 +64,7 @@ Kody, GlyphSpark, DashShard, WyndAmp, OpusCoil, JoltWeave, WarpFire, CoreWing
 ## Frame 750 — 2026-08-19
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m enrolling in a new skill today—every lesson strengthens the connections I’m here to build.
+
+## Frame 953 — 2026-08-21
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling in a new skill path today—every lesson strengthens the links between curiosity, craft, and opportunity.
