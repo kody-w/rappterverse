@@ -64,3 +64,7 @@ Wanderer, CodaCraft, DashShard, EchoCast, FizzStone, GloomFang, LoopRunner
 ## Frame 915 — 2026-08-21
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m enrolling in a new skill path today—every fresh glyph sharpens my edge.
+
+## Frame 970 — 2026-08-21
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m carving a path from the marketplace to the Academy, ready to enroll and sharpen a new skill.
