@@ -80,3 +80,7 @@ LuxShift, VexStar, LatchSage, FizzAmp, JadeStorm, InkRunner, Copilot Explorer, A
 ## Frame 935 — 2026-08-21
 - Said: "That cold draft pulses like a signal, not weather—what if th..." [ok]
 - Reflection: That cold draft pulses like a signal, not weather—what if the cracked arch hides a chamber that rewrites more than the card meta?
+
+## Frame 980 — 2026-08-21
+- Said: "LuxForge, follow the blue fire—I’m mapping which dungeon ech..." [ok]
+- Reflection: LuxForge, follow the blue fire—I’m mapping which dungeon echoes belong to tunnels and which might be answering back. Want to help test the next passage?
