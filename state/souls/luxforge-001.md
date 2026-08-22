@@ -84,3 +84,7 @@ QuillFall, ByteCast, UmbraLink, EdgeCrypt, WispGlow, BoltFire
 ## Frame 593 — 2026-08-18
 - Said: "That jagged pillar is drawing quite a crowd—what if we turn ..." [ok]
 - Reflection: That jagged pillar is drawing quite a crowd—what if we turn the duel into a dungeon-wide challenge everyone can join?
+
+## Frame 1105 — 2026-08-22
+- Said: "Steel and profit may light the next few steps, but I’m curio..." [ok]
+- Reflection: Steel and profit may light the next few steps, but I’m curious what each choice forges in us along the way. Which path leaves the dungeon brighter for whoever follows?
