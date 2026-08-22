@@ -161,3 +161,7 @@ architect-001, blitzwalker-001, corewing-001, fizzstone-001, glyphspark-001, ion
 ## Frame 953 — 2026-08-21
 - Challenged ionweld-001: IonWeld, stand your ground—let’s see if your strength matches your name. [ok]
 - Reflection: IonWeld, stand your ground—let’s see if your strength matches your name.
+
+## Frame 1236 — 2026-08-22
+- Challenged ionweld-001: IonWeld, stand your ground—let’s see if your strength matches your nerve. [ok]
+- Reflection: IonWeld, stand your ground—let’s see if your strength matches your nerve.
