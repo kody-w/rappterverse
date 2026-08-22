@@ -10,13 +10,21 @@ import os
 import subprocess
 import sys
 from datetime import datetime
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 
 BASE_DIR = Path(
     os.environ.get("VALIDATION_REPO_ROOT", Path(__file__).parent.parent)
 ).resolve()
 INBOX_DIR = BASE_DIR / "state" / "inbox"
 STATE_DIR = BASE_DIR / "state"
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from dreamcatcher_delta import (  # noqa: E402
+    DeltaProtocolError,
+    capture_worktree,
+    load_manifest,
+    verify_manifest_repository,
+)
 
 VALID_WORLDS = {"hub", "arena", "marketplace", "gallery", "dungeon"}
 VALID_ACTION_TYPES = {
@@ -139,25 +147,115 @@ def has_meaningful_content(delta: dict) -> bool:
     return isinstance(objects, dict) and bool(objects.get("entries"))
 
 
-def changed_delta_files() -> list[Path]:
-    base_ref = os.environ.get("VALIDATION_BASE_SHA")
-    head_ref = os.environ.get("VALIDATION_HEAD_SHA")
-    if not base_ref or not head_ref:
-        return sorted(INBOX_DIR.glob("*.json")) if INBOX_DIR.exists() else []
+def _resolve_commit(ref: str) -> str:
     result = subprocess.run(
-        ["git", "diff", "--name-only", f"{base_ref}...{head_ref}", "--", "state/inbox/*.json"],
+        ["git", "rev-parse", "--verify", f"{ref}^{{commit}}"],
         capture_output=True,
         text=True,
         cwd=BASE_DIR,
     )
     if result.returncode != 0:
-        error(f"Unable to identify changed delta files: {result.stderr.strip()}")
+        raise DeltaProtocolError(
+            f"cannot resolve {ref!r}: {result.stderr.strip() or result.returncode}"
+        )
+    return result.stdout.strip()
+
+
+def _merge_base(left: str, right: str) -> str:
+    result = subprocess.run(
+        ["git", "merge-base", left, right],
+        capture_output=True,
+        text=True,
+        cwd=BASE_DIR,
+    )
+    value = result.stdout.strip()
+    if result.returncode != 0 or not value:
+        raise DeltaProtocolError(
+            "cannot resolve validation merge base: "
+            f"{result.stderr.strip() or result.returncode}"
+        )
+    return _resolve_commit(value)
+
+
+def _dreamcatcher_manifest() -> dict | None:
+    base_ref = os.environ.get("VALIDATION_BASE_SHA")
+    head_ref = os.environ.get("VALIDATION_HEAD_SHA")
+    manifest_path = os.environ.get("DREAMCATCHER_DELTA_MANIFEST")
+    if not manifest_path and (not base_ref or not head_ref):
+        return None
+
+    source_id = os.environ.get("DREAMCATCHER_DELTA_SOURCE_ID")
+    tile = os.environ.get("DREAMCATCHER_DELTA_TILE") or os.environ.get("PR_AUTHOR")
+    try:
+        if manifest_path:
+            manifest = load_manifest(Path(manifest_path))
+        else:
+            manifest = capture_worktree(
+                BASE_DIR,
+                base_ref,
+                head=head_ref,
+                source_id=source_id,
+                tile=tile,
+                include_untracked=False,
+            )
+        if base_ref and head_ref:
+            resolved_base = _resolve_commit(base_ref)
+            resolved_head = _resolve_commit(head_ref)
+            verify_manifest_repository(manifest, BASE_DIR)
+            if manifest["repository"]["base_commit"] != _merge_base(
+                resolved_base,
+                resolved_head,
+            ):
+                raise DeltaProtocolError(
+                    "manifest base commit does not match validation merge base"
+                )
+            if manifest["repository"]["head_commit"] != resolved_head:
+                raise DeltaProtocolError(
+                    "manifest head commit does not match validation head"
+                )
+        if source_id and manifest["source"]["id"] != source_id:
+            raise DeltaProtocolError("manifest source id does not match validation source")
+        if tile and manifest["source"].get("tile") != tile:
+            raise DeltaProtocolError("manifest tile does not match validation author")
+        return manifest
+    except DeltaProtocolError as exc:
+        error(f"Dreamcatcher delta manifest is invalid: {exc}")
+        return None
+
+
+def _planned_inbox_files(manifest: dict) -> list[Path]:
+    root = BASE_DIR.resolve()
+    planned = []
+    for repo_path in manifest["search_plan"]["paths"]:
+        path = PurePosixPath(repo_path)
+        if (
+            path.parts[:2] != ("state", "inbox")
+            or path.suffix != ".json"
+        ):
+            continue
+        candidate = root.joinpath(*path.parts)
+        try:
+            candidate.resolve(strict=False).relative_to(root)
+        except (OSError, RuntimeError, ValueError):
+            error(f"Dreamcatcher planned inbox path escapes the repository: `{repo_path}`")
+            continue
+        if candidate.is_symlink():
+            error(f"Dreamcatcher planned inbox path is a symlink: `{repo_path}`")
+            continue
+        if not candidate.is_file():
+            error(f"Dreamcatcher planned inbox path is missing: `{repo_path}`")
+            continue
+        planned.append(candidate)
+    return planned
+
+
+def changed_delta_files() -> list[Path]:
+    manifest = _dreamcatcher_manifest()
+    if manifest is not None:
+        return _planned_inbox_files(manifest)
+    if errors or os.environ.get("DREAMCATCHER_DELTA_MANIFEST"):
         return []
-    return [
-        BASE_DIR / path
-        for path in result.stdout.splitlines()
-        if path.endswith(".json") and (BASE_DIR / path).is_file()
-    ]
+    return sorted(INBOX_DIR.glob("*.json")) if INBOX_DIR.exists() else []
 
 
 def validate_delta(path: Path):

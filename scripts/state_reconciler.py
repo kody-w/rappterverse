@@ -14,6 +14,14 @@ import urllib.parse
 from pathlib import Path
 
 BASE_DIR = Path(__file__).parent.parent.resolve()
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from dreamcatcher_delta import (  # noqa: E402
+    DeltaProtocolError,
+    capture_worktree,
+    verify_manifest_repository,
+    write_manifest,
+)
+
 STATE_PREFIXES = ("state/", "worlds/", "feed/")
 REQUIRED_CHECKS = {"state-consensus", "pii-scan", "test"}
 MAX_CANDIDATE_FILE_BYTES = 5 * 1024 * 1024
@@ -96,22 +104,70 @@ def preflight_candidate(candidate: Path, changed_paths: list[str]):
             raise ValidationRejected(f"{filepath}: changed file exceeds size limit")
 
 
-def candidate_changed_paths(base_sha: str, head_sha: str, candidate: Path) -> list[str]:
-    output = run_command([
-        "git", "diff", "--name-status", "--no-renames",
-        f"{base_sha}...{head_sha}", "--",
-    ], cwd=candidate)
+def manifest_changed_paths(manifest: dict) -> list[str]:
     paths = []
-    for line in output.splitlines():
-        status, separator, filepath = line.partition("\t")
-        if not separator or not filepath:
-            raise ValidationRejected(f"Unparseable changed-path record: {line}")
+    for change in manifest["changes"]:
+        status = change["status"]
+        filepath = change["path"]
         if status == "D":
             raise ValidationRejected(f"{filepath}: state PRs may not delete files")
+        if status == "R":
+            raise ValidationRejected(
+                f"{change['old_path']}: state PRs may not rename files"
+            )
         if not filepath.startswith(STATE_PREFIXES):
             raise ValidationRejected(f"{filepath}: path is outside canonical state")
         paths.append(filepath)
     return paths
+
+
+def capture_verified_pr_manifest(
+    candidate: Path,
+    base_sha: str,
+    head_sha: str,
+    *,
+    number: int,
+    author: str,
+) -> dict:
+    try:
+        manifest = capture_worktree(
+            candidate,
+            base_sha,
+            head=head_sha,
+            source_id=f"pr-{number}",
+            tile=author,
+            include_untracked=False,
+            paths=[],
+        )
+        verify_manifest_repository(manifest, candidate)
+        return manifest
+    except DeltaProtocolError as exc:
+        raise ValidationRejected(
+            f"Dreamcatcher delta verification failed: {exc}"
+        ) from exc
+
+
+def planned_inbox_paths(manifest: dict) -> list[str]:
+    return [
+        path
+        for path in manifest["search_plan"]["paths"]
+        if path.startswith("state/inbox/") and path.endswith(".json")
+    ]
+
+
+def synthetic_commit_messages(
+    number: int,
+    head_sha: str,
+    manifest: dict,
+) -> list[str]:
+    return [
+        f"[state] apply PR #{number}",
+        f"Source-PR: #{number}",
+        f"Source-Head: {head_sha}",
+        f"Dreamcatcher-Delta: {manifest['manifest_id']}",
+        "Dreamcatcher-Search-Queries: "
+        f"{len(manifest['search_plan']['queries'])}",
+    ]
 
 
 def gh_json(args: list[str]) -> object:
@@ -347,6 +403,8 @@ class StateReconciler:
         number = int(pr["number"])
         head_sha = str(pr["headRefOid"])
         author = str((pr.get("author") or {}).get("login") or "")
+        if not author:
+            raise ReconcileError(f"PR #{number} author is unavailable")
         ref = f"refs/remotes/state-queue/pr-{number}"
         run_command(["git", "fetch", "--force", "--no-tags", "origin", f"pull/{number}/head:{ref}"])
         fetched_sha = run_command(["git", "rev-parse", ref])
@@ -373,7 +431,16 @@ class StateReconciler:
                 if "conflict" in detail or "automatic merge failed" in detail:
                     raise ValidationRejected(f"synthetic merge conflict: {exc}") from exc
                 raise
-            changed_paths = candidate_changed_paths(base_sha, head_sha, candidate)
+            manifest = capture_verified_pr_manifest(
+                candidate,
+                base_sha,
+                head_sha,
+                number=number,
+                author=author,
+            )
+            changed_paths = manifest_changed_paths(manifest)
+            manifest_path = temp_root / "dreamcatcher-delta.json"
+            write_manifest(manifest_path, manifest)
             preflight_candidate(candidate, changed_paths)
             env = os.environ.copy()
             env.update({
@@ -385,17 +452,23 @@ class StateReconciler:
                 "REPOSITORY_OWNER": self.owner,
                 "PR_AUTHOR": author,
             })
+            delta_env = env.copy()
+            delta_env.update({
+                "DREAMCATCHER_DELTA_MANIFEST": str(manifest_path),
+                "DREAMCATCHER_DELTA_SOURCE_ID": f"pr-{number}",
+                "DREAMCATCHER_DELTA_TILE": author,
+            })
             run_validation(
                 [sys.executable, str(BASE_DIR / "scripts" / "validate_action.py")],
                 env=env,
             )
             run_validation(
                 [sys.executable, str(BASE_DIR / "scripts" / "validate_delta.py")],
-                env=env,
+                env=delta_env,
             )
 
-            if list((candidate / "state" / "inbox").glob("*.json")):
-                materialize_env = env.copy()
+            if planned_inbox_paths(manifest):
+                materialize_env = delta_env.copy()
                 materialize_env["RAPPTERVERSE_REPO_ROOT"] = str(candidate)
                 run_validation(
                     [sys.executable, str(BASE_DIR / "scripts" / "apply_deltas.py")],
@@ -478,13 +551,10 @@ class StateReconciler:
                 "GIT_COMMITTER_NAME": "rappterverse-bot",
                 "GIT_COMMITTER_EMAIL": "41898282+github-actions[bot]@users.noreply.github.com",
             })
-            return run_command([
-                "git", "commit-tree", tree_sha,
-                "-p", base_sha,
-                "-m", f"[state] apply PR #{number}",
-                "-m", f"Source-PR: #{number}",
-                "-m", f"Source-Head: {head_sha}",
-            ], cwd=candidate, env=commit_env)
+            commit_args = ["git", "commit-tree", tree_sha, "-p", base_sha]
+            for message in synthetic_commit_messages(number, head_sha, manifest):
+                commit_args.extend(["-m", message])
+            return run_command(commit_args, cwd=candidate, env=commit_env)
         finally:
             if candidate.exists():
                 subprocess.run(
