@@ -130,6 +130,7 @@ class TestPublicIssueWritePath(unittest.TestCase):
         self.assertIn("issues:", workflow)
         self.assertIn("scripts/process_issue_action.py", workflow)
         self.assertIn("gh pr create", workflow)
+        self.assertIn("--json author --jq .author.login", workflow)
         self.assertIn("context=state-consensus", workflow)
         self.assertIn("context=pii-scan", workflow)
         self.assertIn("context=test", workflow)

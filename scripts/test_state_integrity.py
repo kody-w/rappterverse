@@ -3378,23 +3378,25 @@ class TestDeltaValidator(unittest.TestCase):
         self.assertTrue(any("controlled by `alice`" in item for item in errors))
 
     def test_trusted_issue_workflow_can_preserve_authenticated_controller(self):
-        errors = self._authorize(
-            {
-                "agent_id": "alice",
-                "controller": "alice",
-                "agent_update": {
-                    "id": "alice",
-                    "controller": "alice",
-                    "name": "Alice",
-                    "world": "hub",
-                    "position": {"x": 0, "y": 0, "z": 0},
-                    "status": "active",
-                },
-            },
-            {},
-            "github-actions[bot]",
-        )
-        self.assertEqual(errors, [])
+        for automation_author in ("github-actions[bot]", "app/github-actions"):
+            with self.subTest(automation_author=automation_author):
+                errors = self._authorize(
+                    {
+                        "agent_id": "alice",
+                        "controller": "alice",
+                        "agent_update": {
+                            "id": "alice",
+                            "controller": "alice",
+                            "name": "Alice",
+                            "world": "hub",
+                            "position": {"x": 0, "y": 0, "z": 0},
+                            "status": "active",
+                        },
+                    },
+                    {},
+                    automation_author,
+                )
+                self.assertEqual(errors, [])
 
     def test_untrusted_pr_cannot_assign_a_different_controller(self):
         errors = self._authorize(
@@ -3537,7 +3539,9 @@ class TestTrustedAutomationRegistration(unittest.TestCase):
         return mod.errors
 
     def test_github_actions_can_preserve_issue_author_controller(self):
-        self.assertEqual(self._validate("github-actions[bot]"), [])
+        for automation_author in ("github-actions[bot]", "app/github-actions"):
+            with self.subTest(automation_author=automation_author):
+                self.assertEqual(self._validate(automation_author), [])
 
     def test_external_pr_cannot_assign_another_controller(self):
         errors = self._validate("mallory")
