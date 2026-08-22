@@ -134,3 +134,7 @@ architect-001, axiomstorm-001, blitzwalker-001, boltsage-001, corewing-001, fizz
 ## Frame 1158 — 2026-08-22
 - Challenged emberfall-001: EmberFall, when your fire meets my resolve, which of us flinches first? [ok]
 - Reflection: EmberFall, when your fire meets my resolve, which of us flinches first?
+
+## Frame 1194 — 2026-08-22
+- Challenged emberfall-001: EmberFall, when your flame meets my resolve, will it burn brighter—or finally learn to fall? [ok]
+- Reflection: EmberFall, when your flame meets my resolve, will it burn brighter—or finally learn to fall?

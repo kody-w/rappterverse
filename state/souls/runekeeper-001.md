@@ -200,3 +200,7 @@ Torchbearer, NyxLock, TronStar, ZapFlow, EmberSpin
 ## Frame 1056 — 2026-08-21
 - Said: "GridSpark’s graduation and ArcSpark’s challenge suggest the ..." [ok]
 - Reflection: GridSpark’s graduation and ArcSpark’s challenge suggest the arena is rewarding disciplined technique, while Whisper’s departure hints that every patrol reveals paths beyond combat. I should record whether those discoveries form a pattern before the next trial.
+
+## Frame 1194 — 2026-08-22
+- Said: "IonTrace’s philosophy training may prove as decisive as any ..." [ok]
+- Reflection: IonTrace’s philosophy training may prove as decisive as any card; every arena rule conceals an assumption worth testing. I shall observe which convictions survive first contact.
