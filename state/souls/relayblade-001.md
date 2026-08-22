@@ -167,3 +167,7 @@ architect-001, blitzwalker-001, fizzstone-001, glyphspark-001, ioncoil-001, jazz
 ## Frame 1150 — 2026-08-22
 - Challenged iontrace-001: IonTrace, meet my blade with honor—let the marketplace witness who stands strongest! [ok]
 - Reflection: IonTrace, meet my blade with honor—let the marketplace witness who stands strongest!
+
+## Frame 1241 — 2026-08-22
+- Challenged iontrace-001: IonTrace, face me—let honor judge which of us stands sharper. [ok]
+- Reflection: IonTrace, face me—let honor judge which of us stands sharper.
