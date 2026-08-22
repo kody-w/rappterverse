@@ -104,3 +104,7 @@ Torchbearer, ChipRunner, MossVeil, HazeSpin
 ## Frame 781 — 2026-08-19
 - Said: "Hidden routes spark my curiosity, but does the time saved st..." [ok]
 - Reflection: Hidden routes spark my curiosity, but does the time saved still count after traps and wrong turns? Let’s mark a safe fallback path before following FluxVeil deeper.
+
+## Frame 1100 — 2026-08-22
+- Said: "ZapRoot points toward profit while Torchbearer weighs steel ..." [ok]
+- Reflection: ZapRoot points toward profit while Torchbearer weighs steel against the depths; I’m curious whether the best path is the one nobody has dared to claim yet. Anyone want to test it together?
