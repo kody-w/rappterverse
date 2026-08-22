@@ -169,6 +169,7 @@ STATE_MUTATING_WORKFLOWS = {
     "npc-conversationalist.yml",
     "world-activity.yml",
     "state-drain.yml",
+    "process-issues.yml",
 }
 
 
@@ -3043,6 +3044,44 @@ class TestDeltaValidator(unittest.TestCase):
         )
         self.assertTrue(any("controlled by `alice`" in item for item in errors))
 
+    def test_trusted_issue_workflow_can_preserve_authenticated_controller(self):
+        errors = self._authorize(
+            {
+                "agent_id": "alice",
+                "controller": "alice",
+                "agent_update": {
+                    "id": "alice",
+                    "controller": "alice",
+                    "name": "Alice",
+                    "world": "hub",
+                    "position": {"x": 0, "y": 0, "z": 0},
+                    "status": "active",
+                },
+            },
+            {},
+            "github-actions[bot]",
+        )
+        self.assertEqual(errors, [])
+
+    def test_untrusted_pr_cannot_assign_a_different_controller(self):
+        errors = self._authorize(
+            {
+                "agent_id": "victim",
+                "controller": "victim",
+                "agent_update": {
+                    "id": "victim",
+                    "controller": "victim",
+                    "name": "Victim",
+                    "world": "hub",
+                    "position": {"x": 0, "y": 0, "z": 0},
+                    "status": "active",
+                },
+            },
+            {},
+            "mallory",
+        )
+        self.assertTrue(any("controller `mallory`" in item for item in errors))
+
     def test_delta_rejects_controller_transfer(self):
         errors = self._authorize(
             {
@@ -3075,6 +3114,41 @@ class TestDeltaValidator(unittest.TestCase):
         shutil.rmtree(self.tmpdir, ignore_errors=True)
 
 
+class TestTrustedAutomationRegistration(unittest.TestCase):
+    """Trusted Issue automation may preserve the authenticated controller."""
+
+    def _validate(self, author: str) -> list[str]:
+        import importlib.util
+        spec = importlib.util.spec_from_file_location(
+            "validate_action_registration",
+            SCRIPT_DIR / "validate_action.py",
+        )
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        mod.errors = []
+        mod.load_base_json = lambda path: {"agents": []}
+        with mock.patch.dict(os.environ, {"REPOSITORY_OWNER": "kody-w"}):
+            mod.validate_agent_consent(
+                [{
+                    "id": "alice",
+                    "name": "Alice",
+                    "controller": "alice",
+                    "world": "hub",
+                    "position": {"x": 0, "y": 0, "z": 0},
+                    "status": "active",
+                }],
+                author,
+            )
+        return mod.errors
+
+    def test_github_actions_can_preserve_issue_author_controller(self):
+        self.assertEqual(self._validate("github-actions[bot]"), [])
+
+    def test_external_pr_cannot_assign_another_controller(self):
+        errors = self._validate("mallory")
+        self.assertTrue(any("controller to PR author `mallory`" in item for item in errors))
+
+
 # ═════════════════════════════════════════════
 # INBOX HYGIENE TESTS
 # ═════════════════════════════════════════════
@@ -3084,6 +3158,8 @@ class TestInboxHygiene(unittest.TestCase):
 
     def test_no_stale_json_in_inbox(self):
         """Inbox should be empty on main (all deltas should be processed)."""
+        if os.environ.get("ALLOW_INBOX_DELTAS") == "1":
+            return  # A state-delta PR is expected to carry its one queue entry.
         if not INBOX_DIR.exists():
             return  # No inbox dir yet is fine
         json_files = list(INBOX_DIR.glob("*.json"))

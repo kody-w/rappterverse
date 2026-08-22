@@ -88,12 +88,17 @@ def validate_delta_authorization(delta: dict, path: Path):
     actor = agents.get(actor_id)
     update = delta.get("agent_update") if isinstance(delta.get("agent_update"), dict) else {}
     if actor is None:
+        trusted_automation = pr_author in _trusted_automation_authors()
+        expected_controller = claimed_controller if trusted_automation else pr_author
         if (
             update.get("id") != actor_id
-            or update.get("controller") != pr_author
-            or claimed_controller != pr_author
+            or update.get("controller") != expected_controller
+            or claimed_controller != expected_controller
         ):
-            error(f"`{path.name}`: New actor must spawn itself with controller `{pr_author}`")
+            error(
+                f"`{path.name}`: New actor must spawn itself with controller "
+                f"`{expected_controller}`"
+            )
             return
         for field in ("name", "world", "position", "status"):
             if field not in update:
