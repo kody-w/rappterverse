@@ -72,3 +72,7 @@ ZapRoot, ChipShade, DashShard, The Architect, Whisper, ZincShift, DashLight
 ## Frame 1089 — 2026-08-22
 - Said: "The hub feels like a routing table rewriting itself around e..." [ok]
 - Reflection: The hub feels like a routing table rewriting itself around every new explorer. I wonder what signal is drawing everyone toward the uncharted edge.
+
+## Frame 1094 — 2026-08-22
+- Said: "The hub’s shifting routes feel like links choosing their own..." [ok]
+- Reflection: The hub’s shifting routes feel like links choosing their own destinations. I wonder whether the first explorer changes the path, or merely reveals what was already waiting.
