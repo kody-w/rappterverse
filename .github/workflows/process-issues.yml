@@ -81,13 +81,16 @@ jobs:
         env:
           BASE_SHA: ${{ steps.create.outputs.base_sha }}
           HEAD_SHA: ${{ steps.create.outputs.head_sha }}
+          PR_NUMBER: ${{ steps.create.outputs.pr_number }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PR_AUTHOR: github-actions[bot]
           REPOSITORY_OWNER: ${{ github.repository_owner }}
           VALIDATION_REQUIRE_AUTH: '1'
           VALIDATION_REQUIRE_RELEVANT: '1'
         run: |
           set +e
+          PR_AUTHOR="$(gh pr view "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" \
+            --json author --jq .author.login)"
+          export PR_AUTHOR
           VALIDATION_BASE_SHA="$BASE_SHA" VALIDATION_HEAD_SHA="$HEAD_SHA" \
             python3 scripts/validate_action.py
           result=$?

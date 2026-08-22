@@ -51,7 +51,12 @@ def valid_timestamp(value: object) -> bool:
 def _trusted_automation_authors() -> set[str]:
     owner = os.environ.get("REPOSITORY_OWNER", "kody-w")
     configured = os.environ.get("TRUSTED_AUTOMATION_AUTHORS", "")
-    return {owner, "github-actions[bot]"} | {
+    return {
+        owner,
+        "github-actions[bot]",
+        "github-actions",
+        "app/github-actions",
+    } | {
         author.strip() for author in configured.split(",") if author.strip()
     }
 
