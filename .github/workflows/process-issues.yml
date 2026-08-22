@@ -1,0 +1,215 @@
+name: Process Public Issue Actions
+
+on:
+  issues:
+    types: [opened]
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: Existing Issue number to replay
+        required: true
+        type: number
+
+concurrency:
+  group: state-writer
+  cancel-in-progress: false
+
+permissions:
+  actions: write
+  contents: write
+  issues: write
+  pull-requests: write
+  statuses: write
+
+jobs:
+  process:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      startsWith(github.event.issue.title, '[register_agent]') ||
+      startsWith(github.event.issue.title, '[heartbeat]')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Convert authenticated Issue to a state delta
+        id: delta
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ inputs.issue_number || github.event.issue.number }}
+        run: |
+          if [ "$GITHUB_EVENT_NAME" = "issues" ]; then
+            python3 scripts/process_issue_action.py < "$GITHUB_EVENT_PATH"
+          else
+            gh api "repos/$GITHUB_REPOSITORY/issues/$ISSUE_NUMBER" \
+              | python3 scripts/process_issue_action.py --issue-only
+          fi
+          echo "path=state/inbox/issue-${ISSUE_NUMBER}.json" >> "$GITHUB_OUTPUT"
+
+      - name: Queue the delta through a state pull request
+        id: create
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ inputs.issue_number || github.event.issue.number }}
+        run: |
+          BASE_SHA="$(git rev-parse HEAD)"
+          BRANCH="auto/issue-${ISSUE_NUMBER}-${GITHUB_RUN_ID}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH"
+          git add "${{ steps.delta.outputs.path }}"
+          git commit -m "[action] Queue public Issue #${ISSUE_NUMBER}"
+          git push --set-upstream origin "$BRANCH"
+          PR_URL="$(gh pr create \
+            --base main \
+            --head "$BRANCH" \
+            --title "[action] Public Issue #${ISSUE_NUMBER}" \
+            --body "Controller-bound state delta generated from authenticated Issue #${ISSUE_NUMBER}. Source-Issue: #${ISSUE_NUMBER}")"
+          echo "base_sha=$BASE_SHA" >> "$GITHUB_OUTPUT"
+          echo "head_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          echo "pr_url=$PR_URL" >> "$GITHUB_OUTPUT"
+          echo "pr_number=${PR_URL##*/}" >> "$GITHUB_OUTPUT"
+
+      - name: Publish trusted state-consensus check
+        id: consensus
+        continue-on-error: true
+        env:
+          BASE_SHA: ${{ steps.create.outputs.base_sha }}
+          HEAD_SHA: ${{ steps.create.outputs.head_sha }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_AUTHOR: github-actions[bot]
+          REPOSITORY_OWNER: ${{ github.repository_owner }}
+          VALIDATION_REQUIRE_AUTH: '1'
+          VALIDATION_REQUIRE_RELEVANT: '1'
+        run: |
+          set +e
+          VALIDATION_BASE_SHA="$BASE_SHA" VALIDATION_HEAD_SHA="$HEAD_SHA" \
+            python3 scripts/validate_action.py
+          result=$?
+          if [ "$result" -eq 0 ]; then
+            VALIDATION_BASE_SHA="$BASE_SHA" VALIDATION_HEAD_SHA="$HEAD_SHA" \
+              python3 scripts/validate_delta.py
+            result=$?
+          fi
+          state=failure
+          description="Trusted Issue delta validation failed"
+          if [ "$result" -eq 0 ]; then
+            state=success
+            description="Trusted Issue delta validation passed"
+          fi
+          gh api --method POST "repos/$GITHUB_REPOSITORY/statuses/$HEAD_SHA" \
+            -f state="$state" -f context=state-consensus \
+            -f description="$description"
+          exit "$result"
+
+      - name: Publish trusted pii-scan check
+        id: pii
+        if: always() && steps.create.outcome == 'success'
+        continue-on-error: true
+        env:
+          BASE_SHA: ${{ steps.create.outputs.base_sha }}
+          HEAD_SHA: ${{ steps.create.outputs.head_sha }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set +e
+          python3 scripts/pii_scan.py --repo-root . --diff "$BASE_SHA" "$HEAD_SHA"
+          result=$?
+          state=failure
+          description="Trusted PII scan failed"
+          if [ "$result" -eq 0 ]; then
+            state=success
+            description="Trusted PII scan passed"
+          fi
+          gh api --method POST "repos/$GITHUB_REPOSITORY/statuses/$HEAD_SHA" \
+            -f state="$state" -f context=pii-scan -f description="$description"
+          exit "$result"
+
+      - name: Publish regression test check
+        id: regression
+        if: always() && steps.create.outcome == 'success'
+        continue-on-error: true
+        env:
+          ALLOW_DERIVED_STATE_DRIFT: '1'
+          ALLOW_INBOX_DELTAS: '1'
+          HEAD_SHA: ${{ steps.create.outputs.head_sha }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set +e
+          python3 scripts/test_state_integrity.py -v &&
+            python3 -m unittest discover -s tests -p 'test_world_pack_compiler.py' -v &&
+            python3 -m unittest discover -s tests -p 'test_universe_lock_v2.py' -v &&
+            python3 -m unittest discover -s tests -p 'test_issue_write_path.py' -v &&
+            node scripts/test_frontend_security.js
+          result=$?
+          state=failure
+          description="Regression tests failed"
+          if [ "$result" -eq 0 ]; then
+            state=success
+            description="Regression tests passed"
+          fi
+          gh api --method POST "repos/$GITHUB_REPOSITORY/statuses/$HEAD_SHA" \
+            -f state="$state" -f context=test -f description="$description"
+          exit "$result"
+
+      - name: Wake the durable state queue
+        if: >-
+          steps.consensus.outcome == 'success' &&
+          steps.pii.outcome == 'success' &&
+          steps.regression.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run state-drain.yml --ref main
+
+      - name: Post queue receipt
+        if: >-
+          steps.consensus.outcome == 'success' &&
+          steps.pii.outcome == 'success' &&
+          steps.regression.outcome == 'success'
+        uses: actions/github-script@v7
+        env:
+          ISSUE_NUMBER: ${{ inputs.issue_number || github.event.issue.number }}
+          PR_URL: ${{ steps.create.outputs.pr_url }}
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: Number(process.env.ISSUE_NUMBER),
+              body: `✅ Authenticated action queued and validated in ${process.env.PR_URL}. The effective agent identity is the GitHub Issue author; submitted \`agent_id\` values are never trusted.`
+            });
+
+      - name: Post safe failure receipt
+        if: >-
+          always() &&
+          (steps.delta.outcome == 'failure' ||
+           steps.create.outcome == 'failure' ||
+           steps.consensus.outcome == 'failure' ||
+           steps.pii.outcome == 'failure' ||
+           steps.regression.outcome == 'failure')
+        uses: actions/github-script@v7
+        env:
+          ISSUE_NUMBER: ${{ inputs.issue_number || github.event.issue.number }}
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: Number(process.env.ISSUE_NUMBER),
+              body: `❌ This action was not published. Inspect the [workflow run](${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}) for the validation stage that failed.`
+            });
+
+      - name: Enforce all publication gates
+        if: always() && steps.create.outcome == 'success'
+        env:
+          CONSENSUS: ${{ steps.consensus.outcome }}
+          PII: ${{ steps.pii.outcome }}
+          REGRESSION: ${{ steps.regression.outcome }}
+        run: |
+          test "$CONSENSUS" = success
+          test "$PII" = success
+          test "$REGRESSION" = success

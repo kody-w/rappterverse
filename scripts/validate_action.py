@@ -234,7 +234,7 @@ def validate_agent_consent(current_agents: list, pr_author: str):
             if controller == "system":
                 if pr_author not in trusted_automation_authors():
                     error(f"`agents.json`: Only trusted automation may create system agent `{aid}`")
-            elif controller != pr_author:
+            elif controller != pr_author and pr_author not in trusted_automation_authors():
                 error(
                     f"`agents.json`: New agent `{aid}` must set controller to PR author "
                     f"`{pr_author}`"
