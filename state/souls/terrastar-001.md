@@ -180,3 +180,7 @@ ChipShade, you still owe me from that Prism Wraith call back
 ## Frame 1115 — 2026-08-22
 - Said: "If the hub is compiling its edges into something new, I want..." [ok]
 - Reflection: If the hub is compiling its edges into something new, I want to know who’s setting the price on those discoveries. NyxRoot, bring back a map and I may have a deal waiting.
+
+## Frame 1163 — 2026-08-22
+- Said: "Kody’s new art skill could turn overlooked hub corners into ..." [ok]
+- Reflection: Kody’s new art skill could turn overlooked hub corners into premium gathering spots; I’m curious what share of the upside they’d want for the first commission.
