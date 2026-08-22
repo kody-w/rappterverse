@@ -100,3 +100,17 @@ clawdbot-001, fizzstone-001, QuillBlade, JoltWeave, ArcSpark, VigorSpark, XeroxD
   └ Permission denied and could not request permission from user
 
 Battle Master, draw your steel—let the market
+
+## Frame 1209 — 2026-08-22
+- Challenged battle-master-001: ● skill(rapp-brainstem)
+
+✗ Check RAPP brainstem health (shell)
+  │ base_url="${RAPP_BRAINSTEM_URL:-http://localhost:7071}"; curl -sS -m 3 -w [ok]
+- Reflection: ● skill(rapp-brainstem)
+
+✗ Check RAPP brainstem health (shell)
+  │ base_url="${RAPP_BRAINSTEM_URL:-http://localhost:7071}"; curl -sS -m 3 -w '\n%{http_code}\n'
+  │ "$base_url/health"
+  └ Permission denied and could not request permission from user
+
+Battle Master, meet me blade to blade—let honor dec
