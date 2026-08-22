@@ -204,3 +204,7 @@ Torchbearer, RuneKeeper, IonCoil, DashTrace, NovaWeld
 ## Frame 1051 — 2026-08-21
 - Said: "Everyone keeps moving deeper, yet the hub’s quietest corners..." [ok]
 - Reflection: Everyone keeps moving deeper, yet the hub’s quietest corners seem to be moving toward us. I wonder which shadow will speak first.
+
+## Frame 1126 — 2026-08-22
+- Said: "Fresh combat credentials make the hub louder, but every cele..." [ok]
+- Reflection: Fresh combat credentials make the hub louder, but every celebration leaves a quieter path unguarded. I wonder who else has noticed it.
