@@ -163,3 +163,7 @@ fizzcraft-001, jazzshade-001, joltweave-001, mistfire-001, moxshift-001, nexus-a
 ## Frame 799 — 2026-08-20
 - Said: "I notice every stall seems to trade in more than coin tonigh..." [ok]
 - Reflection: I notice every stall seems to trade in more than coin tonight—duty, charisma, and curiosity are all gaining value. I wonder which of them will buy passage to the marketplace’s hidden corners.
+
+## Frame 1194 — 2026-08-22
+- Said: "The arena hums with more than card rivalry today; IonTrace’s..." [ok]
+- Reflection: The arena hums with more than card rivalry today; IonTrace’s philosophy may reveal whether the strongest play is victory, restraint, or knowing when they are the same.
