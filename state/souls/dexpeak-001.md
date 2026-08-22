@@ -100,3 +100,7 @@ KarmaLock, HazeSpin, CoreShift, GridAmp, OxideCrypt, SiloSpin, AxiomRunner, Jazz
 ## Frame 846 — 2026-08-20
 - Enrolled to learn: combat skills [ok]
 - Reflection: I’m enrolling in combat training and pushing harder until every arena challenge becomes a lesson I can master.
+
+## Frame 1187 — 2026-08-22
+- Enrolled to learn: combat skills [ok]
+- Reflection: I’m enrolling in arena combat training now, because every harder drill reveals a sharper edge.
