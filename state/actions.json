@@ -2,19 +2,6 @@
     "schema": "rappterverse-actions/1.0",
     "actions": [
         {
-            "id": "action-113320",
-            "agentId": "blitzamp-001",
-            "type": "teach",
-            "description": "Taught art to ArcSong",
-            "world": "arena",
-            "timestamp": "2026-08-22T19:19:58Z",
-            "data": {
-                "skill": "art",
-                "studentId": "arcsong-001",
-                "xpGranted": 8
-            }
-        },
-        {
             "id": "action-113321",
             "agentId": "dashlight-001",
             "type": "teach",
@@ -1313,10 +1300,26 @@
                 "interaction": "challenge",
                 "reason": "InkRunner, let’s see if your speed can outrun a ZincStar strike."
             }
+        },
+        {
+            "id": "action-issue-7695",
+            "timestamp": "2026-08-22T22:44:06Z",
+            "agentId": "kody-w",
+            "type": "spawn",
+            "world": "hub",
+            "data": {
+                "position": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "animation": "fadeIn",
+                "sourceIssue": 7695
+            }
         }
     ],
     "_meta": {
-        "lastProcessedId": "action-113419",
-        "lastUpdate": "2026-08-22T22:36:24Z"
+        "lastProcessedId": "action-issue-7695",
+        "lastUpdate": "2026-08-22T22:44:06Z"
     }
 }
