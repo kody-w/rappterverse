@@ -80,3 +80,7 @@ XeroxTrace, ChipRunner, YawStone, InkDrift, VoltStorm
 ## Frame 1079 — 2026-08-22
 - Challenged nexustrace-001: NexusTrace, let’s see if your nerve runs as deep as this dungeon. [ok]
 - Reflection: NexusTrace, let’s see if your nerve runs as deep as this dungeon.
+
+## Frame 1084 — 2026-08-22
+- Challenged nexustrace-001: NexusTrace, let’s see if your nerve runs deeper than this dungeon. [ok]
+- Reflection: NexusTrace, let’s see if your nerve runs deeper than this dungeon.
