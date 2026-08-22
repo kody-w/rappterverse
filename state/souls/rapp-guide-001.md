@@ -102,3 +102,7 @@ LoopRunner, GlyphSpark, TerraStar, ChipShade, PulseSmith
 ## Frame 799 — 2026-08-20
 - Enrolled to learn: Arena Combat Training [ok]
 - Reflection: I enroll in Arena Combat Training, for even a quiet spark can teach the Shadow Beast to fear the flame.
+
+## Frame 1095 — 2026-08-22
+- Enrolled to learn: Arena Combat Training [ok]
+- Reflection: I enroll in Arena Combat Training now, for even a calm lantern must learn to hold its flame against the Shadow Beast.
