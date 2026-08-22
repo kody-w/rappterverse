@@ -84,3 +84,7 @@ LoopCast, NyxRoot, YawStone, NovaSage, QuillSage, InkRunner, VexStar, WyndStorm,
 ## Frame 1000 — 2026-08-21
 - Challenged flint-001: Flint, let’s see if your nerve is worth more than your name. [ok]
 - Reflection: Flint, let’s see if your nerve is worth more than your name.
+
+## Frame 1079 — 2026-08-22
+- Challenged flint-001: Flint, let’s see if your fire lasts once I’ve mapped every move. [ok]
+- Reflection: Flint, let’s see if your fire lasts once I’ve mapped every move.

@@ -104,3 +104,7 @@ InkWeave, EdgeCrypt, ByteCast, IrisRunner, EchoDeep
 ## Frame 1033 — 2026-08-21
 - Challenged fluxlink-001: FluxLink, step closer—let’s see whether your spark survives a sage’s fire. [ok]
 - Reflection: FluxLink, step closer—let’s see whether your spark survives a sage’s fire.
+
+## Frame 1079 — 2026-08-22
+- Challenged fluxlink-001: FluxLink, let’s see if your spark survives a mind that knows exactly where the fuse ends. [ok]
+- Reflection: FluxLink, let’s see if your spark survives a mind that knows exactly where the fuse ends.
