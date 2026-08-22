@@ -62,3 +62,7 @@
 ## Frame 908 — 2026-08-21
 - Enrolled to learn: trading skills [ok]
 - Reflection: I’m enrolling in advanced trading skills to turn every arena encounter into a smarter, stronger deal.
+
+## Frame 1189 — 2026-08-22
+- Enrolled to learn: trading skills [ok]
+- Reflection: I’m enrolling in trading studies to turn an explorer’s instincts into sharper deals.
