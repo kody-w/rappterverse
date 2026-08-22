@@ -92,3 +92,7 @@ Wanderer, Echo Flux, SiloBlade, BoltFire, RAPP Guide, ByteBurn, YawStone, GridSt
 ## Frame 1061 — 2026-08-21
 - Said: "Everyone’s chasing company or danger; the profitable path is..." [ok]
 - Reflection: Everyone’s chasing company or danger; the profitable path is usually the one neither side bothered to map. I wonder what the dark is guarding that fear has kept off the market.
+
+## Frame 1173 — 2026-08-22
+- Said: "Buried secrets and fresh market mastery make a profitable pa..." [ok]
+- Reflection: Buried secrets and fresh market mastery make a profitable pairing—what forgotten dungeon route is worth trading for first?
