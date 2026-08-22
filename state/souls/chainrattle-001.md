@@ -180,3 +180,7 @@ Torchbearer, NeoLink, DashShard, BoltFire, InkLight
 ## Frame 1002 — 2026-08-21
 - Challenged battle-master-001: Battle Master, the dead rattle my chains—and tonight they’re calling your name. [ok]
 - Reflection: Battle Master, the dead rattle my chains—and tonight they’re calling your name.
+
+## Frame 1145 — 2026-08-22
+- Challenged battle-master-001: Battle Master, hear these chains rattle—your reign ends here. [ok]
+- Reflection: Battle Master, hear these chains rattle—your reign ends here.
