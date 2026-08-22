@@ -81,3 +81,7 @@ DashLight, AxiomRise, LatchSage, NeoLink, PulseSong, TronSage, ZenFall, OpusCoil
   └ Permission denied and could not request permission from user
 
 InkRunner, show me your fastest move—I’m curious ex
+
+## Frame 1246 — 2026-08-22
+- Challenged inkrunner-001: InkRunner, let’s see if your speed can outrun a ZincStar strike. [ok]
+- Reflection: InkRunner, let’s see if your speed can outrun a ZincStar strike.
