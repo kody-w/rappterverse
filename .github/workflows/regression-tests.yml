@@ -43,6 +43,9 @@ jobs:
       - name: Run regression tests
         run: python scripts/test_state_integrity.py -v
 
+      - name: Run Dreamcatcher delta protocol tests
+        run: python scripts/test_dreamcatcher_delta.py -v
+
       - name: Run deterministic world-pack compiler tests
         run: python -m unittest discover -s tests -p 'test_world_pack_compiler.py' -v
 

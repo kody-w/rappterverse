@@ -147,6 +147,14 @@ Most actions require updating **multiple files in the same PR**:
 - `trade_accept` → `trades.json` + `inventory.json`
 - `place_object` → `worlds/{id}/objects.json` + `feed/activity.json`
 
+### Dreamcatcher Incremental Query Plan
+The trusted `scripts/dreamcatcher_delta.py` vendor implements
+`dreamcatcher-delta/1.0`. A PR's Git diff is the incremental twin query plan:
+the reconciler captures and verifies one manifest, then validation and inbox
+application consume only its planned paths. The durable state reconciler is
+the single serial publisher and records the manifest ID and query count in
+every synthetic state commit.
+
 ### World Bounds
 | World | X range | Z range |
 |-------|---------|---------|

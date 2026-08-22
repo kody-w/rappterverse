@@ -24,7 +24,7 @@ import json
 import os
 import sys
 from datetime import datetime
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 
 BASE_DIR = Path(
     os.environ.get("RAPPTERVERSE_REPO_ROOT", Path(__file__).parent.parent)
@@ -37,6 +37,7 @@ FEED_DIR = BASE_DIR / "feed"
 
 # rapp-static-api/1.0 §3: a state write must preserve the document's schema string.
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+from dreamcatcher_delta import DeltaProtocolError, load_manifest
 from static_api import stamp_mapping
 
 
@@ -104,6 +105,43 @@ def save_json(path: Path, data: dict):
     with open(path, "w") as f:
         json.dump(data, f, indent=4, ensure_ascii=False)
         f.write("\n")
+
+
+def manifest_delta_files() -> list[Path] | None:
+    manifest_path = os.environ.get("DREAMCATCHER_DELTA_MANIFEST")
+    if not manifest_path:
+        return None
+    try:
+        manifest = load_manifest(Path(manifest_path))
+    except DeltaProtocolError as exc:
+        raise ValueError(f"Dreamcatcher delta manifest is invalid: {exc}") from exc
+
+    root = BASE_DIR.resolve()
+    planned = []
+    for repo_path in manifest["search_plan"]["paths"]:
+        path = PurePosixPath(repo_path)
+        if (
+            path.parts[:2] != ("state", "inbox")
+            or path.suffix != ".json"
+        ):
+            continue
+        candidate = root.joinpath(*path.parts)
+        try:
+            candidate.resolve(strict=False).relative_to(root)
+        except (OSError, RuntimeError, ValueError) as exc:
+            raise ValueError(
+                f"Dreamcatcher planned inbox path escapes the repository: {repo_path}"
+            ) from exc
+        if candidate.is_symlink():
+            raise ValueError(
+                f"Dreamcatcher planned inbox path is a symlink: {repo_path}"
+            )
+        if not candidate.is_file():
+            raise ValueError(
+                f"Dreamcatcher planned inbox path is missing: {repo_path}"
+            )
+        planned.append(candidate)
+    return planned
 
 
 def apply_delta(delta_path: Path, stats: dict):
@@ -215,13 +253,22 @@ def apply_delta(delta_path: Path, stats: dict):
 
 
 def main():
-    if not INBOX_DIR.exists():
-        print("No inbox directory found. Nothing to apply.")
-        sys.exit(0)
-
-    delta_files = sorted(INBOX_DIR.glob("*.json"))
+    try:
+        delta_files = manifest_delta_files()
+    except ValueError as exc:
+        print(f"❌ Delta batch rejected before apply: {exc}")
+        sys.exit(1)
+    manifest_scoped = delta_files is not None
+    if delta_files is None:
+        if not INBOX_DIR.exists():
+            print("No inbox directory found. Nothing to apply.")
+            sys.exit(0)
+        delta_files = sorted(INBOX_DIR.glob("*.json"))
     if not delta_files:
-        print("Inbox empty. Nothing to apply.")
+        if manifest_scoped:
+            print("No manifest-planned inbox deltas. Nothing to apply.")
+        else:
+            print("Inbox empty. Nothing to apply.")
         sys.exit(0)
 
     print(f"Found {len(delta_files)} delta file(s) in inbox:\n")

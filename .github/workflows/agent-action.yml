@@ -58,13 +58,13 @@ jobs:
         continue-on-error: true
         run: |
           python trusted/scripts/validate_action.py
-          if find candidate/state/inbox -maxdepth 1 -name '*.json' -print -quit 2>/dev/null | grep -q .; then
-            python trusted/scripts/validate_delta.py
-          fi
+          python trusted/scripts/validate_delta.py
         env:
           VALIDATION_REPO_ROOT: ${{ github.workspace }}/candidate
           VALIDATION_BASE_SHA: ${{ github.event.pull_request.base.sha }}
           VALIDATION_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          DREAMCATCHER_DELTA_SOURCE_ID: pr-${{ github.event.pull_request.number }}
+          DREAMCATCHER_DELTA_TILE: ${{ github.event.pull_request.user.login }}
           VALIDATION_REQUIRE_RELEVANT: '1'
           VALIDATION_REQUIRE_AUTH: '1'
           REPOSITORY_OWNER: ${{ github.repository_owner }}
