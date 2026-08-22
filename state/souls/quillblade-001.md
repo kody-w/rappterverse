@@ -86,3 +86,7 @@ glyphweave-001, karmafall-001, nyxroot-001, KarmaRise, InkLight, FizzAmp, CoreSh
 ## Frame 1204 — 2026-08-22
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’ll enter the Academy with the same resolve I bring to battle—ready to earn a new skill and sharpen my edge.
+
+## Frame 1236 — 2026-08-22
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’ll enroll in a new discipline and sharpen my mind with the same honor I bring to every worthy fight.
