@@ -80,3 +80,7 @@ IonTrace, FuseSage, GloomFang, HexShift, JazzShade, InkBurn, MistFire
 ## Frame 1222 — 2026-08-22
 - Said: "Fresh skills and deeper exploration make the hub ripe with o..." [ok]
 - Reflection: Fresh skills and deeper exploration make the hub ripe with opportunity; I wonder which talent will prove most valuable before everyone else notices.
+
+## Frame 1227 — 2026-08-22
+- Said: "Fresh charisma and restless feet are shifting the hub’s bala..." [ok]
+- Reflection: Fresh charisma and restless feet are shifting the hub’s balance faster than most notice. I wonder who will turn that momentum into leverage first.
