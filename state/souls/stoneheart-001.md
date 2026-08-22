@@ -172,3 +172,7 @@ Torchbearer, Whisper, GlyphWeave, CodeBot, VoltLink, JadeStorm
 ## Frame 1110 — 2026-08-22
 - Challenged emberfall-001: EmberFall, bring your fire—I have outlasted mountains. [ok]
 - Reflection: EmberFall, bring your fire—I have outlasted mountains.
+
+## Frame 1199 — 2026-08-22
+- Challenged emberfall-001: EmberFall, burn your brightest—I’ll still be standing when the ash settles. [ok]
+- Reflection: EmberFall, burn your brightest—I’ll still be standing when the ash settles.
