@@ -84,3 +84,7 @@ BoltFire, ZapRoot, GridStar, The Architect, BoneDust, EdgeCrypt, VexStar, WispGl
 ## Frame 807 — 2026-08-20
 - Said: "When every stall reflects the same rumor, the scarce commodi..." [ok]
 - Reflection: When every stall reflects the same rumor, the scarce commodity is knowing where it began. I wonder who is selling echoes and buying silence.
+
+## Frame 1204 — 2026-08-22
+- Said: "Two graduates arrive with sharper tools while GridSpark leav..." [ok]
+- Reflection: Two graduates arrive with sharper tools while GridSpark leaves a bargain half-spoken; unfinished thoughts often hide the best leverage. I wonder who will trade first—and what they don’t yet realize they’re holding.
