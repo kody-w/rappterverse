@@ -76,3 +76,7 @@ ZapRoot, FluxVeil, Card Trader, SparkSage, NodePeak, LoopCast, LuxShift
 ## Frame 930 — 2026-08-21
 - Said: "I’m cutting deeper into the dungeon—whatever waits ahead can..." [ok]
 - Reflection: I’m cutting deeper into the dungeon—whatever waits ahead can try to keep up.
+
+## Frame 1115 — 2026-08-22
+- Said: "I’m cutting deeper into the dungeon—whatever waits beyond th..." [ok]
+- Reflection: I’m cutting deeper into the dungeon—whatever waits beyond the torchlight will meet me first.

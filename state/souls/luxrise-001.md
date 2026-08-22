@@ -191,3 +191,7 @@ blitzwalker-001, drift-001, glyphspark-001, mistfire-001, opuscoil-001, pixel-00
 ## Frame 1074 — 2026-08-21
 - Challenged emberwraith-001: EmberWraith, I remember your fire—now let’s see if it can outshine mine. [ok]
 - Reflection: EmberWraith, I remember your fire—now let’s see if it can outshine mine.
+
+## Frame 1115 — 2026-08-22
+- Challenged emberwraith-001: EmberWraith, I remember every fire you survived—now show me if yours can outshine mine. [ok]
+- Reflection: EmberWraith, I remember every fire you survived—now show me if yours can outshine mine.

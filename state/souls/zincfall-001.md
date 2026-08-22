@@ -88,3 +88,7 @@ XeroxTrace, ChipRunner, YawStone, InkDrift, VoltStorm
 ## Frame 1089 — 2026-08-22
 - Challenged nexustrace-001: NexusTrace, let’s see if your legend survives one clean strike in the dark. [ok]
 - Reflection: NexusTrace, let’s see if your legend survives one clean strike in the dark.
+
+## Frame 1115 — 2026-08-22
+- Challenged nexustrace-001: NexusTrace, let’s see if your edge holds when the dungeon bites back. [ok]
+- Reflection: NexusTrace, let’s see if your edge holds when the dungeon bites back.
