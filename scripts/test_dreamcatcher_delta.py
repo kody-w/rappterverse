@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import copy
 import importlib.util
 import json
 import os
@@ -198,7 +199,34 @@ class DreamcatcherDeltaTests(unittest.TestCase):
                 {"kind": "scope", "value": "state/new"},
             ],
         })
+        self.assertEqual(manifest["repository"]["path_filter"], [])
         self.assertEqual(dp.validate_manifest(manifest), manifest)
+
+    def test_capture_can_scope_one_tile_path(self) -> None:
+        repo = self._clone("scoped")
+        (repo / "state" / "alpha.txt").write_text(
+            "changed\n",
+            encoding="utf-8",
+        )
+        (repo / "state" / "beta.txt").write_text(
+            "also changed\n",
+            encoding="utf-8",
+        )
+        manifest = dp.capture_worktree(
+            repo,
+            self.base,
+            source_id="tile-alpha",
+            paths=["state/alpha.txt"],
+        )
+        self.assertEqual(
+            manifest["repository"]["path_filter"],
+            ["state/alpha.txt"],
+        )
+        self.assertEqual(
+            manifest["search_plan"]["paths"],
+            ["state/alpha.txt"],
+        )
+        self.assertEqual(len(manifest["changes"]), 1)
 
     def test_repository_verification_rejects_stale_worktree(self) -> None:
         repo = self._clone("verify")
@@ -211,8 +239,90 @@ class DreamcatcherDeltaTests(unittest.TestCase):
             '{"id":"changed-after-capture"}\n',
             encoding="utf-8",
         )
-        with self.assertRaisesRegex(dp.DeltaProtocolError, "after blob"):
+        with self.assertRaisesRegex(dp.DeltaProtocolError, "exact declared"):
             dp.verify_manifest_repository(manifest, repo)
+
+    def test_headed_capture_uses_merge_base_after_main_advances(self) -> None:
+        (self.seed / "state" / "main-only.txt").write_text(
+            "advanced main\n",
+            encoding="utf-8",
+        )
+        _git(self.seed, "add", ".")
+        _git(self.seed, "commit", "-m", "advance main")
+        repo = self._clone("stale-worker")
+        _git(repo, "checkout", "-b", "worker", self.base)
+        (repo / "state" / "alpha.txt").write_text(
+            "worker change\n",
+            encoding="utf-8",
+        )
+        _git(repo, "add", ".")
+        _git(repo, "commit", "-m", "worker")
+
+        manifest = dp.capture_worktree(
+            repo,
+            "origin/main",
+            head="HEAD",
+            source_id="stale-pr",
+        )
+
+        self.assertEqual(manifest["repository"]["base_commit"], self.base)
+        self.assertEqual(manifest["repository"]["path_filter"], [])
+        self.assertEqual(
+            manifest["search_plan"]["paths"],
+            ["state/alpha.txt"],
+        )
+        self.assertNotIn(
+            "state/main-only.txt",
+            manifest["search_plan"]["paths"],
+        )
+        self.assertEqual(dp.verify_manifest_repository(manifest, repo), manifest)
+
+        manifest_path = self.tmp / "stale-pr-manifest.json"
+        dp.write_manifest(manifest_path, manifest)
+        spec = importlib.util.spec_from_file_location(
+            "validate_delta_stale_pr_test",
+            Path(__file__).resolve().parent / "validate_delta.py",
+        )
+        validator = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(validator)
+        validator.BASE_DIR = repo
+        validator.INBOX_DIR = repo / "state" / "inbox"
+        validator.STATE_DIR = repo / "state"
+        validator.errors = []
+        with mock.patch.dict(os.environ, {
+            "VALIDATION_BASE_SHA": "origin/main",
+            "VALIDATION_HEAD_SHA": "HEAD",
+            "DREAMCATCHER_DELTA_MANIFEST": str(manifest_path),
+            "DREAMCATCHER_DELTA_SOURCE_ID": "stale-pr",
+        }, clear=False):
+            os.environ.pop("DREAMCATCHER_DELTA_TILE", None)
+            actual = validator._dreamcatcher_manifest()
+
+        self.assertEqual(validator.errors, [])
+        self.assertEqual(actual, manifest)
+
+    def test_repository_verification_rejects_omitted_change(self) -> None:
+        repo = self._clone("incomplete")
+        (repo / "state" / "alpha.txt").write_text(
+            "changed alpha\n",
+            encoding="utf-8",
+        )
+        (repo / "state" / "beta.txt").write_text(
+            "changed beta\n",
+            encoding="utf-8",
+        )
+        manifest = dp.capture_worktree(repo, self.base)
+        incomplete_payload = copy.deepcopy(manifest)
+        incomplete_payload.pop("manifest_id")
+        incomplete_payload["changes"] = incomplete_payload["changes"][:1]
+        incomplete_payload["search_plan"] = dp._search_plan(
+            incomplete_payload["changes"]
+        )
+        incomplete = dp._with_id(incomplete_payload, "manifest_id")
+
+        self.assertEqual(dp.validate_manifest(incomplete), incomplete)
+        with self.assertRaisesRegex(dp.DeltaProtocolError, "exact declared"):
+            dp.verify_manifest_repository(incomplete, repo)
 
     def test_validator_capture_matches_canonical_manifest(self) -> None:
         repo = self._clone("validator")
@@ -306,6 +416,54 @@ class DreamcatcherDeltaTests(unittest.TestCase):
         ])
         self.assertFalse(conflicting["ready"])
         self.assertEqual(conflicting["conflicts"][0]["kind"], "conflict")
+
+    def test_batch_uses_shared_base_coordinates_for_hunks(self) -> None:
+        repo = self._clone("shifted-hunks")
+        (repo / "state" / "beta.txt").write_text(
+            "ONE\ntwo\n",
+            encoding="utf-8",
+        )
+        first = dp.capture_worktree(repo, self.base, source_id="first")
+        second_payload = copy.deepcopy(first)
+        second_payload.pop("manifest_id")
+        second_payload["source"]["id"] = "second"
+        second_payload["source"]["branch"] = "worker/second"
+        second_payload["repository"]["head_commit"] = "f" * 40
+        second_payload["changes"][0]["after"]["sha256"] = "e" * 64
+        second_payload["changes"][0]["line_ranges"][0]["new_start"] += 5
+        second = dp._with_id(second_payload, "manifest_id")
+
+        batch = dp.batch_manifests([first, second])
+
+        self.assertFalse(batch["ready"])
+        self.assertEqual(batch["conflicts"][0]["path"], "state/beta.txt")
+
+    def test_batch_detects_rename_source_conflict(self) -> None:
+        renamed = self._clone("renamed-source")
+        modified = self._clone("modified-source")
+        _git(renamed, "mv", "agents/old.py", "agents/new.py")
+        (modified / "agents" / "old.py").write_text(
+            "# changed agent\n",
+            encoding="utf-8",
+        )
+        rename_manifest = dp.capture_worktree(
+            renamed,
+            self.base,
+            source_id="rename",
+        )
+        modify_manifest = dp.capture_worktree(
+            modified,
+            self.base,
+            source_id="modify",
+        )
+
+        batch = dp.batch_manifests([rename_manifest, modify_manifest])
+
+        self.assertFalse(batch["ready"])
+        self.assertTrue(any(
+            conflict["path"] == "agents/old.py"
+            for conflict in batch["conflicts"]
+        ))
 
 
 if __name__ == "__main__":

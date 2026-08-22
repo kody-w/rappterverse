@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Vendored verbatim from rappter/engines/twin-dreamcatcher/delta_protocol.py.
-# Canonical producer version 0.2.0; wire contract dreamcatcher-delta/1.0.
 """Deterministic git-worktree deltas for Dreamcatcher fan-out/fan-in."""
 
 from __future__ import annotations
@@ -96,6 +94,13 @@ def _resolve_commit(repo: Path, ref: str) -> str:
     value = str(_run_git(repo, ["rev-parse", "--verify", f"{ref}^{{commit}}"])).strip()
     if not COMMIT_PATTERN.fullmatch(value):
         raise DeltaProtocolError(f"{ref!r} did not resolve to a commit")
+    return value
+
+
+def _merge_base(repo: Path, left: str, right: str) -> str:
+    value = str(_run_git(repo, ["merge-base", left, right])).strip()
+    if not COMMIT_PATTERN.fullmatch(value):
+        raise DeltaProtocolError("git merge-base did not return a commit")
     return value
 
 
@@ -269,6 +274,7 @@ def capture_worktree(
     frame: Optional[int] = None,
     tile: Optional[str] = None,
     include_untracked: bool = True,
+    paths: Optional[Iterable[str]] = None,
 ) -> dict:
     """Capture a deterministic semantic manifest for one worktree diff."""
     repo = repo.resolve()
@@ -276,23 +282,33 @@ def capture_worktree(
         probe = str(_run_git(repo, ["rev-parse", "--git-dir"], check=False)).strip()
         if not probe:
             raise DeltaProtocolError(f"{repo} is not a git worktree")
-    base_commit = _resolve_commit(repo, base)
+    requested_base = _resolve_commit(repo, base)
     resolved_head = _resolve_commit(repo, head) if head else None
+    base_commit = (
+        _merge_base(repo, requested_base, resolved_head)
+        if resolved_head
+        else requested_base
+    )
     branch = str(_run_git(repo, ["branch", "--show-current"])).strip()
+    path_filter = (
+        sorted({_normalize_path(path) for path in paths})
+        if paths is not None
+        else []
+    )
 
     args = ["diff", "--name-status", "-z", "--find-renames", base_commit]
     if resolved_head:
         args.append(resolved_head)
     args.append("--")
+    args.extend(path_filter)
     changes = _parse_name_status(bytes(_run_git(repo, args, binary=True)))
     seen_paths = {change["path"] for change in changes}
 
     if include_untracked and resolved_head is None:
-        raw = bytes(_run_git(
-            repo,
-            ["ls-files", "--others", "--exclude-standard", "-z"],
-            binary=True,
-        ))
+        untracked_args = ["ls-files", "--others", "--exclude-standard", "-z"]
+        if path_filter:
+            untracked_args.extend(["--", *path_filter])
+        raw = bytes(_run_git(repo, untracked_args, binary=True))
         for token in raw.split(b"\0"):
             if not token:
                 continue
@@ -346,6 +362,7 @@ def capture_worktree(
             "base_commit": base_commit,
             "head_commit": resolved_head or _resolve_commit(repo, "HEAD"),
             "includes_worktree": resolved_head is None,
+            "path_filter": path_filter,
         },
         "source": source,
         "changes": enriched,
@@ -383,6 +400,17 @@ def validate_manifest(manifest: dict) -> dict:
             raise DeltaProtocolError(f"repository.{field} is invalid")
     if not isinstance(repository.get("includes_worktree"), bool):
         raise DeltaProtocolError("repository.includes_worktree must be boolean")
+    path_filter = repository.get("path_filter")
+    if (
+        not isinstance(path_filter, list)
+        or any(not isinstance(path, str) for path in path_filter)
+    ):
+        raise DeltaProtocolError("repository.path_filter must be an array")
+    normalized_filter = sorted({_normalize_path(path) for path in path_filter})
+    if path_filter != normalized_filter:
+        raise DeltaProtocolError(
+            "repository.path_filter must be unique and sorted"
+        )
     source = manifest.get("source")
     if not isinstance(source, dict) or not isinstance(source.get("id"), str):
         raise DeltaProtocolError("source.id is required")
@@ -491,28 +519,24 @@ def verify_manifest_repository(manifest: dict, repo: Path) -> dict:
     """Prove manifest hashes match its declared base/head or live worktree."""
     manifest = validate_manifest(manifest)
     repo = repo.resolve()
-    base_commit = _resolve_commit(repo, manifest["repository"]["base_commit"])
-    head_commit = _resolve_commit(repo, manifest["repository"]["head_commit"])
-    if base_commit != manifest["repository"]["base_commit"]:
-        raise DeltaProtocolError("repository base commit does not match manifest")
-    if head_commit != manifest["repository"]["head_commit"]:
-        raise DeltaProtocolError("repository head commit does not match manifest")
-    for change in manifest["changes"]:
-        old_path = change.get("old_path", change["path"])
-        before = _blob_summary(_git_blob(repo, base_commit, old_path))
-        after = (
-            _blob_summary(_worktree_blob(repo, change["path"]))
-            if manifest["repository"]["includes_worktree"]
-            else _blob_summary(_git_blob(repo, head_commit, change["path"]))
+    repository = manifest["repository"]
+    base_commit = _resolve_commit(repo, repository["base_commit"])
+    head_commit = _resolve_commit(repo, repository["head_commit"])
+    source = manifest["source"]
+    expected = capture_worktree(
+        repo,
+        base_commit,
+        head=None if repository["includes_worktree"] else head_commit,
+        source_id=source["id"],
+        frame=source.get("frame"),
+        tile=source.get("tile"),
+        include_untracked=repository["includes_worktree"],
+        paths=repository["path_filter"] or None,
+    )
+    if expected != manifest:
+        raise DeltaProtocolError(
+            "manifest does not cover the exact declared repository diff"
         )
-        if before != change["before"]:
-            raise DeltaProtocolError(
-                f"{change['path']}: before blob does not match base commit"
-            )
-        if after != change["after"]:
-            raise DeltaProtocolError(
-                f"{change['path']}: after blob does not match candidate"
-            )
     return manifest
 
 
@@ -552,16 +576,34 @@ def write_manifest(path: Path, value: dict) -> None:
     )
 
 
+def _base_intervals(line_ranges: list[dict]) -> list[tuple[int, int]]:
+    """Map hunks to a shared-base coordinate system.
+
+    Base lines use even coordinates. Pure insertions use the odd coordinate
+    between two base lines, so two inserts at one anchor conflict without
+    falsely colliding with an edit to either neighboring line.
+    """
+    intervals = []
+    for line_range in line_ranges:
+        old_start = line_range["old_start"]
+        old_lines = line_range["old_lines"]
+        if old_lines == 0:
+            anchor = old_start * 2 + 1
+            intervals.append((anchor, anchor))
+        else:
+            intervals.append((
+                old_start * 2,
+                (old_start + old_lines - 1) * 2,
+            ))
+    return intervals
+
+
 def _ranges_overlap(left: list[dict], right: list[dict]) -> bool:
     if not left or not right:
         return True
-    for a in left:
-        a_start = a["new_start"]
-        a_end = a_start + max(a["new_lines"], 1) - 1
-        for b in right:
-            b_start = b["new_start"]
-            b_end = b_start + max(b["new_lines"], 1) - 1
-            if a_start <= b_end and b_start <= a_end:
+    for left_start, left_end in _base_intervals(left):
+        for right_start, right_end in _base_intervals(right):
+            if left_start <= right_end and right_start <= left_end:
                 return True
     return False
 
@@ -592,25 +634,42 @@ def batch_manifests(manifests: Iterable[dict]) -> dict:
     if len(bases) != 1:
         raise DeltaProtocolError("parallel manifests must share one base commit")
 
-    by_path: dict[str, list[tuple[dict, dict]]] = {}
+    by_path: dict[str, list[tuple[dict, dict, str]]] = {}
     for manifest in validated:
         for change in manifest["changes"]:
-            by_path.setdefault(change["path"], []).append((manifest, change))
+            by_path.setdefault(change["path"], []).append(
+                (manifest, change, "target")
+            )
+            if change["status"] == "R":
+                by_path.setdefault(change["old_path"], []).append(
+                    (manifest, change, "rename-source")
+                )
 
     collisions = []
     conflicts = []
     for path, entries in sorted(by_path.items()):
         if len(entries) < 2:
             continue
-        ids = [manifest["manifest_id"] for manifest, _ in entries]
-        after_hashes = {
-            change["after"]["sha256"] if change.get("after") else None
-            for _, change in entries
+        ids = sorted({
+            manifest["manifest_id"] for manifest, _, _ in entries
+        })
+        semantic_changes = {
+            (
+                change["status"],
+                change["path"],
+                change.get("old_path"),
+                change["after"]["sha256"] if change.get("after") else None,
+            )
+            for _, change, _ in entries
         }
-        statuses = {change["status"] for _, change in entries}
-        if len(after_hashes) == 1 and len(statuses) == 1:
+        roles = {role for _, _, role in entries}
+        statuses = {change["status"] for _, change, _ in entries}
+        if len(semantic_changes) == 1:
             kind = "identical"
             ready = True
+        elif "rename-source" in roles:
+            kind = "conflict"
+            ready = False
         elif statuses <= {"M"} and all(
             not _ranges_overlap(left[1]["line_ranges"], right[1]["line_ranges"])
             for index, left in enumerate(entries)
@@ -690,6 +749,7 @@ def _cli() -> int:
     capture.add_argument("--source-id")
     capture.add_argument("--frame", type=int)
     capture.add_argument("--tile")
+    capture.add_argument("--path", action="append", dest="paths")
     capture.add_argument("--no-untracked", action="store_true")
     capture.add_argument("--output")
 
@@ -711,6 +771,7 @@ def _cli() -> int:
                 frame=args.frame,
                 tile=args.tile,
                 include_untracked=not args.no_untracked,
+                paths=args.paths,
             )
             if args.output:
                 write_manifest(Path(args.output), value)

@@ -146,6 +146,7 @@ def write_test_dreamcatcher_manifest(
             "base_commit": "0" * 40,
             "head_commit": "1" * 40,
             "includes_worktree": False,
+            "path_filter": sorted(planned_paths),
         },
         "source": {"id": "test-pr", "branch": None, "tile": "test-controller"},
         "changes": changes,
@@ -178,13 +179,18 @@ def robust_rmtree(path: Path | str, *, retries: int = 8, base_delay_s: float = 0
     """Best-effort tree cleanup resilient to transient filesystem timing races.
 
     macOS occasionally reports ENOTEMPTY/EBUSY while deleting hot .git trees
-    that are still finishing background file-handle teardown. Retrying cleanup
-    keeps fixture teardown from flipping a valid validator run to red.
+    that are still finishing background file-handle teardown, while Git for
+    Windows marks immutable object files read-only. Retrying cleanup and
+    clearing that bit keeps fixture teardown from flipping a valid run to red.
     """
+    def remove_readonly(function, name, _exc_info):
+        os.chmod(name, 0o700)
+        function(name)
+
     target = Path(path)
     for attempt in range(retries):
         try:
-            shutil.rmtree(target)
+            shutil.rmtree(target, onerror=remove_readonly)
             return
         except FileNotFoundError:
             return
@@ -1500,6 +1506,104 @@ class TestStateReconciler(unittest.TestCase):
         with self.assertRaises(self.module.ValidationRejected):
             self.module.manifest_changed_paths(manifest)
 
+    def test_stale_fifo_pr_manifest_excludes_main_only_changes(self):
+        root = Path(tempfile.mkdtemp(prefix="rappterverse-stale-pr-"))
+        self.addCleanup(robust_rmtree, root)
+        repo = root / "repo"
+        candidate = root / "candidate"
+        repo.mkdir()
+        subprocess.run(["git", "init", "-q", "-b", "main"], cwd=repo, check=True)
+        (repo / "state").mkdir()
+        (repo / "state" / "base.json").write_text("{}\n", encoding="utf-8")
+        subprocess.run(["git", "add", "."], cwd=repo, check=True)
+        subprocess.run([
+            "git", "-c", "user.name=Fixture", "-c",
+            "user.email=fixture@users.noreply.github.com",
+            "commit", "-qm", "base",
+        ], cwd=repo, check=True)
+        branch_point = subprocess.check_output(
+            ["git", "rev-parse", "HEAD"],
+            cwd=repo,
+            text=True,
+        ).strip()
+
+        subprocess.run(["git", "switch", "-qc", "stale-pr"], cwd=repo, check=True)
+        (repo / "state" / "pr-only.json").write_text(
+            '{"source":"pr"}\n',
+            encoding="utf-8",
+        )
+        subprocess.run(["git", "add", "."], cwd=repo, check=True)
+        subprocess.run([
+            "git", "-c", "user.name=Fixture", "-c",
+            "user.email=fixture@users.noreply.github.com",
+            "commit", "-qm", "pr change",
+        ], cwd=repo, check=True)
+        head_sha = subprocess.check_output(
+            ["git", "rev-parse", "HEAD"],
+            cwd=repo,
+            text=True,
+        ).strip()
+
+        subprocess.run(["git", "switch", "-q", "main"], cwd=repo, check=True)
+        (repo / "state" / "main-only.json").write_text(
+            '{"source":"main"}\n',
+            encoding="utf-8",
+        )
+        subprocess.run(["git", "add", "."], cwd=repo, check=True)
+        subprocess.run([
+            "git", "-c", "user.name=Fixture", "-c",
+            "user.email=fixture@users.noreply.github.com",
+            "commit", "-qm", "advance main",
+        ], cwd=repo, check=True)
+        base_sha = subprocess.check_output(
+            ["git", "rev-parse", "HEAD"],
+            cwd=repo,
+            text=True,
+        ).strip()
+
+        subprocess.run(
+            ["git", "worktree", "add", "--detach", str(candidate), base_sha],
+            cwd=repo,
+            check=True,
+            capture_output=True,
+        )
+        try:
+            self.module.run_command([
+                "git",
+                "-c", "user.name=rappterverse-reconciler",
+                "-c",
+                "user.email=41898282+github-actions[bot]@users.noreply.github.com",
+                "merge", "--no-commit", "--no-ff", head_sha,
+            ], cwd=candidate)
+            manifest = self.module.capture_verified_pr_manifest(
+                candidate,
+                base_sha,
+                head_sha,
+                number=17,
+                author="alice",
+            )
+        finally:
+            subprocess.run(
+                ["git", "worktree", "remove", "--force", str(candidate)],
+                cwd=repo,
+                check=False,
+                capture_output=True,
+            )
+
+        self.assertEqual(
+            manifest["repository"]["base_commit"],
+            branch_point,
+        )
+        self.assertEqual(manifest["repository"]["path_filter"], [])
+        self.assertEqual(
+            self.module.manifest_changed_paths(manifest),
+            ["state/pr-only.json"],
+        )
+        self.assertNotIn(
+            "state/main-only.json",
+            manifest["search_plan"]["paths"],
+        )
+
     def test_synthetic_commit_provenance_records_dreamcatcher_manifest(self):
         manifest = {
             "manifest_id": "sha256:" + "a" * 64,
@@ -1580,6 +1684,8 @@ class TestStateReconciler(unittest.TestCase):
         self.assertIn("self.policy_sha", source)
         self.assertIn('f"Source-Head: {head_sha}"', source)
         self.assertIn("capture_worktree(", source)
+        self.assertIn("paths=[]", source)
+        self.assertIn("capture_verified_pr_manifest(", source)
         self.assertIn("verify_manifest_repository(manifest, candidate)", source)
         self.assertIn('"DREAMCATCHER_DELTA_MANIFEST"', source)
         self.assertIn('candidate / "scripts" / "test_state_integrity.py"', source)

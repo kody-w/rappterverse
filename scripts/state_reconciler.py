@@ -121,6 +121,32 @@ def manifest_changed_paths(manifest: dict) -> list[str]:
     return paths
 
 
+def capture_verified_pr_manifest(
+    candidate: Path,
+    base_sha: str,
+    head_sha: str,
+    *,
+    number: int,
+    author: str,
+) -> dict:
+    try:
+        manifest = capture_worktree(
+            candidate,
+            base_sha,
+            head=head_sha,
+            source_id=f"pr-{number}",
+            tile=author,
+            include_untracked=False,
+            paths=[],
+        )
+        verify_manifest_repository(manifest, candidate)
+        return manifest
+    except DeltaProtocolError as exc:
+        raise ValidationRejected(
+            f"Dreamcatcher delta verification failed: {exc}"
+        ) from exc
+
+
 def planned_inbox_paths(manifest: dict) -> list[str]:
     return [
         path
@@ -405,23 +431,16 @@ class StateReconciler:
                 if "conflict" in detail or "automatic merge failed" in detail:
                     raise ValidationRejected(f"synthetic merge conflict: {exc}") from exc
                 raise
-            try:
-                manifest = capture_worktree(
-                    candidate,
-                    base_sha,
-                    head=head_sha,
-                    source_id=f"pr-{number}",
-                    tile=author,
-                    include_untracked=False,
-                )
-                verify_manifest_repository(manifest, candidate)
-            except DeltaProtocolError as exc:
-                raise ValidationRejected(
-                    f"Dreamcatcher delta verification failed: {exc}"
-                ) from exc
+            manifest = capture_verified_pr_manifest(
+                candidate,
+                base_sha,
+                head_sha,
+                number=number,
+                author=author,
+            )
+            changed_paths = manifest_changed_paths(manifest)
             manifest_path = temp_root / "dreamcatcher-delta.json"
             write_manifest(manifest_path, manifest)
-            changed_paths = manifest_changed_paths(manifest)
             preflight_candidate(candidate, changed_paths)
             env = os.environ.copy()
             env.update({

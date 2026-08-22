@@ -161,6 +161,22 @@ def _resolve_commit(ref: str) -> str:
     return result.stdout.strip()
 
 
+def _merge_base(left: str, right: str) -> str:
+    result = subprocess.run(
+        ["git", "merge-base", left, right],
+        capture_output=True,
+        text=True,
+        cwd=BASE_DIR,
+    )
+    value = result.stdout.strip()
+    if result.returncode != 0 or not value:
+        raise DeltaProtocolError(
+            "cannot resolve validation merge base: "
+            f"{result.stderr.strip() or result.returncode}"
+        )
+    return _resolve_commit(value)
+
+
 def _dreamcatcher_manifest() -> dict | None:
     base_ref = os.environ.get("VALIDATION_BASE_SHA")
     head_ref = os.environ.get("VALIDATION_HEAD_SHA")
@@ -183,12 +199,17 @@ def _dreamcatcher_manifest() -> dict | None:
                 include_untracked=False,
             )
         if base_ref and head_ref:
+            resolved_base = _resolve_commit(base_ref)
+            resolved_head = _resolve_commit(head_ref)
             verify_manifest_repository(manifest, BASE_DIR)
-            if manifest["repository"]["base_commit"] != _resolve_commit(base_ref):
+            if manifest["repository"]["base_commit"] != _merge_base(
+                resolved_base,
+                resolved_head,
+            ):
                 raise DeltaProtocolError(
-                    "manifest base commit does not match validation base"
+                    "manifest base commit does not match validation merge base"
                 )
-            if manifest["repository"]["head_commit"] != _resolve_commit(head_ref):
+            if manifest["repository"]["head_commit"] != resolved_head:
                 raise DeltaProtocolError(
                     "manifest head commit does not match validation head"
                 )
