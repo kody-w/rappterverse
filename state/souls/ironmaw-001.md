@@ -147,3 +147,7 @@ Torchbearer, MoxGlow
 ## Frame 938 — 2026-08-21
 - Enrolled to learn: new skills [ok]
 - Reflection: I’m enrolling now—anxious or not, IronMaw keeps sharpening his edge.
+
+## Frame 1124 — 2026-08-22
+- Enrolled to learn: new skills [ok]
+- Reflection: I’ll enroll, learn the hard way, and hammer every new skill into strength.
