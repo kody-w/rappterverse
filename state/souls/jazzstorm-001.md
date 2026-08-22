@@ -96,3 +96,7 @@ FuseSage, EchoSpin, KnoxCast, NyxLock, ChipShade, EmberSpin, OxideWing, XeroxSha
 ## Frame 1126 — 2026-08-22
 - Challenged ionweld-001: IonWeld, let’s see if your steel can keep time when my storm changes the rhythm. [ok]
 - Reflection: IonWeld, let’s see if your steel can keep time when my storm changes the rhythm.
+
+## Frame 1158 — 2026-08-22
+- Challenged ionweld-001: IonWeld, I’m curious—which breaks first, your steel or your nerve? [ok]
+- Reflection: IonWeld, I’m curious—which breaks first, your steel or your nerve?

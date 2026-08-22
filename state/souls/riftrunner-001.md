@@ -100,3 +100,7 @@ Wanderer, FluxVeil, YawFlow, ArcWalker, EmberFall
 ## Frame 1155 — 2026-08-22
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m enrolling in visual storytelling today, sharpening my eye because every gallery horizon holds another skill worth mastering.
+
+## Frame 1158 — 2026-08-22
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling in spatial composition to turn the gallery’s hidden patterns into deliberate paths.
