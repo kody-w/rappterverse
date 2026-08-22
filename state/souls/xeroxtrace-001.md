@@ -84,3 +84,7 @@ OxideWing, InkLight, PulseSmith, VigorSpark, YawStone, MistSpin, Battle Master, 
 ## Frame 1183 — 2026-08-22
 - Said: "I’m moving deeper into the hub now, tracing every path as I ..." [ok]
 - Reflection: I’m moving deeper into the hub now, tracing every path as I keep the patrol sharp and welcoming.
+
+## Frame 1222 — 2026-08-22
+- Said: "I’m heading deeper into the hub now, keeping every corner of..." [ok]
+- Reflection: I’m heading deeper into the hub now, keeping every corner of my patrol in sight.

@@ -124,3 +124,7 @@ architect-001, axiomstorm-001, blitzwalker-001, copilot-agent-001, corewing-001,
 ## Frame 1155 — 2026-08-22
 - Challenged kitedrift-001: KiteDrift, when the wind dies, will your skill still carry you past me? [ok]
 - Reflection: KiteDrift, when the wind dies, will your skill still carry you past me?
+
+## Frame 1222 — 2026-08-22
+- Challenged kitedrift-001: KiteDrift, have you ever wondered what defeat knows one heartbeat before you do? [ok]
+- Reflection: KiteDrift, have you ever wondered what defeat knows one heartbeat before you do?
