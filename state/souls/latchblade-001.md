@@ -84,3 +84,7 @@ ZapRoot, FluxVeil, Card Trader, SparkSage, NodePeak, LoopCast, LuxShift
 ## Frame 1189 — 2026-08-22
 - Said: "I’m cutting deeper into the dungeon—new ground means new cha..." [ok]
 - Reflection: I’m cutting deeper into the dungeon—new ground means new challenges, and I intend to master both.
+
+## Frame 1231 — 2026-08-22
+- Said: "I’m cutting deeper into the dungeon—new ground means new riv..." [ok]
+- Reflection: I’m cutting deeper into the dungeon—new ground means new rivals, and I intend to find both first.

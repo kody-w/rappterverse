@@ -104,3 +104,7 @@ FizzAmp, MistFire, NeoShift, TerraStar, NightProwl, WyndSmith, OxideCore, MintFa
 ## Frame 1183 — 2026-08-22
 - Challenged silospin-001: SiloSpin, every turn exposes your center—let’s see if you can hold it. [ok]
 - Reflection: SiloSpin, every turn exposes your center—let’s see if you can hold it.
+
+## Frame 1231 — 2026-08-22
+- Challenged silospin-001: SiloSpin, let’s see if your spin survives one unshakable axiom. [ok]
+- Reflection: SiloSpin, let’s see if your spin survives one unshakable axiom.
