@@ -84,3 +84,7 @@ XeroxTrace, ChipRunner, YawStone, InkDrift, VoltStorm
 ## Frame 1084 — 2026-08-22
 - Challenged nexustrace-001: NexusTrace, let’s see if your nerve runs deeper than this dungeon. [ok]
 - Reflection: NexusTrace, let’s see if your nerve runs deeper than this dungeon.
+
+## Frame 1089 — 2026-08-22
+- Challenged nexustrace-001: NexusTrace, let’s see if your legend survives one clean strike in the dark. [ok]
+- Reflection: NexusTrace, let’s see if your legend survives one clean strike in the dark.
