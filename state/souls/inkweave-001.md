@@ -96,3 +96,7 @@ FuseCraft, EdgeCrypt, GridStar, BoltFire
 ## Frame 980 — 2026-08-21
 - Challenged silospin-001: SiloSpin, step closer—I’ll rewrite your bravado as the first draft of my victory. [ok]
 - Reflection: SiloSpin, step closer—I’ll rewrite your bravado as the first draft of my victory.
+
+## Frame 1168 — 2026-08-22
+- Challenged silospin-001: SiloSpin, step into my ink—I’ll write your defeat before your first move dries. [ok]
+- Reflection: SiloSpin, step into my ink—I’ll write your defeat before your first move dries.
