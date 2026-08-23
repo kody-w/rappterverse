@@ -1172,6 +1172,53 @@ class PromotionEvaluatorTests(RepositoryScratchTest):
             [unexpected_identity, expected_identity],
         )
 
+    def test_rebase_committer_rewrite_stays_hmac_discoverable(self) -> None:
+        repo = self.evidence_repo(name="rebased-evidence")
+        env = os.environ.copy()
+        env.update({
+            "GIT_COMMITTER_NAME": "GitHub",
+            "GIT_COMMITTER_EMAIL": "noreply@github.com",
+            "GIT_COMMITTER_DATE": "2030-01-02T03:04:05Z",
+        })
+        amended = subprocess.run(
+            [
+                "git", "commit", "--amend", "--no-edit", "--no-gpg-sign",
+                "--allow-empty",
+            ],
+            cwd=repo,
+            env=env,
+            capture_output=True,
+            text=True,
+        )
+        self.assertEqual(amended.returncode, 0, amended.stderr)
+        self.assertEqual(_git(repo, "show", "-s", "--format=%cn"), "GitHub")
+
+        records = promotion.load_commit_evidence(repo)
+        self.assertEqual(len(records), 50)
+        self.assertEqual(records[0], self.sample(50))
+        summary = promotion.require_repository_readiness(repo)
+        with mock.patch.dict(
+            os.environ,
+            {promotion.PROMOTION_KEY_ENV: PROMOTION_TEST_KEY},
+            clear=False,
+        ):
+            attestation = promotion.create_promotion_attestation(
+                summary,
+                repository="owner/rappterverse",
+                target_base="a" * 40,
+                target_head="b" * 40,
+            )
+            self.assertEqual(
+                promotion.verify_promotion_attestation(
+                    attestation,
+                    summary,
+                    repository="owner/rappterverse",
+                    target_base="a" * 40,
+                    target_head="b" * 40,
+                ),
+                attestation,
+            )
+
     def test_commit_evidence_reads_actual_objects_not_replace_refs(self) -> None:
         repo, seed = self.make_repo("actual-objects")
         _git(repo, "commit", "--allow-empty", "-qm", "ordinary target")
@@ -2050,6 +2097,16 @@ class PromotionEvaluatorTests(RepositoryScratchTest):
                 reconciler,
                 "current_main_sha",
                 return_value=reconciler.policy_sha,
+            ),
+            mock.patch.object(
+                reconciler,
+                "internal_publication_pr",
+                return_value=None,
+            ),
+            mock.patch.object(
+                reconciler,
+                "remove_orphan_internal_branch",
+                return_value=False,
             ),
             mock.patch.object(
                 reconciler,

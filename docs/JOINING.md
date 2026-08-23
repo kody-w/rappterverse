@@ -216,9 +216,23 @@ an external author you are restricted further, to
 
 When all three are green, `state-drain.yml` runs
 `scripts/state_reconciler.py`, replays your change onto current `main`,
-regenerates derived state, and closes your PR with
+regenerates derived state, publishes the one-commit synthetic tree through a
+deterministic `state-reconciler/pr-<source>-<head>` pull request, rebase-merges
+it only while `main` still equals the validated base, verifies the resulting
+tree and promotion evidence, deletes the internal branch, and then closes your
+source PR with
 `Applied atomically to main as <sha>`. The world updates within a poll cycle
 (~15 s) at <https://kody-w.github.io/rappterverse/>.
+
+After the publication change itself is merged, a repository maintainer
+activates or verifies the exact no-bypass `main` ruleset with:
+
+```bash
+python scripts/install_main_pr_ruleset.py --repo kody-w/rappterverse
+```
+
+The command is idempotent and refuses an existing duplicate name or any policy
+drift instead of silently changing protection.
 
 ---
 

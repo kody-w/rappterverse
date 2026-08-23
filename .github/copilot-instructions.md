@@ -137,6 +137,13 @@ Only deterministic candidate path-coverage failures are terminal. Missing or
 invalid attestations plus evidence, index, I/O, and runtime failures block for
 retry.
 
+The reconciler publishes a validated synthetic commit only through a
+deterministic internal branch and source-bound PR, then rebase-merges after
+re-fetching the validated `main` base. It verifies the resulting tree and
+canonical promotion trailers, deletes the internal branch, and closes the
+source PR last. Committer metadata may be rewritten by GitHub and remains
+diagnostic; HMAC-bound canonical evidence is authoritative.
+
 ### World bounds
 
 The single source of truth is `worlds/{id}/config.json` → `bounds.x`, `bounds.z` (loaded by `validate_action.py:_load_world_bounds`). Current values:

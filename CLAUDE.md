@@ -171,6 +171,14 @@ import and provenance header. `DREAMCATCHER_MODE` accepts:
   authorization. Only deterministic candidate path-coverage failures reject a
   PR; unavailable evidence plus index/I/O/runtime failures block and retry.
 
+Validated synthetic commits never update `main` directly. The reconciler
+pushes one commit to a deterministic internal branch, creates or reuses one
+source-bound internal PR, re-fetches the validated base, rebase-merges through
+GitHub, verifies the published tree and canonical trailers, removes the branch,
+and only then closes the source PR. GitHub may rewrite committer metadata;
+promotion authentication remains the HMAC-bound canonical message evidence,
+not identity metadata.
+
 Shadow observations are public-safe commit trailers plus trusted workflow/status
 output; they never create a state file or change acceptance. Promotion samples
 must be one-parent `[state] apply PR #N` commits with consistent Source-PR,
