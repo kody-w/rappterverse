@@ -182,18 +182,18 @@ class RepositoryScratchTest(unittest.TestCase):
 
 
 class ReverseIndexVendorTests(RepositoryScratchTest):
-    def test_vendor_provenance_schema_and_delta_hardening(self) -> None:
+    def test_vendor_provenance_and_canonical_hashes(self) -> None:
         reverse_source = (
             SCRIPT_DIR / "dreamcatcher_reverse_index.py"
         ).read_text(encoding="utf-8")
         self.assertIn(
-            "kody-w/RAPP@50e53a246fbf2178ffa70cee08e655a786ba07a4",
+            "kody-w/rappter@75025fe696331c85de58a9dbdd0efbbc68ac6f86",
             reverse_source,
         )
         self.assertIn("from dreamcatcher_delta import (", reverse_source)
         canonicalized = reverse_source.replace(
             "# Vendored from "
-            "kody-w/RAPP@50e53a246fbf2178ffa70cee08e655a786ba07a4:\n"
+            "kody-w/rappter@75025fe696331c85de58a9dbdd0efbbc68ac6f86:\n"
             "# engines/twin-dreamcatcher/reverse_index.py\n"
             "# Canonical Git-blob SHA-256:\n"
             "# 8f490c8158d4576f62d872cac69bf4fdd88fe9915e5d90a02e90e01789748d47\n"
@@ -223,10 +223,10 @@ class ReverseIndexVendorTests(RepositoryScratchTest):
                 .read_bytes()
                 .replace(b"\r\n", b"\n")
             ).hexdigest(),
-            "3cc760f97d56f3e6161b991d69cb84a2591b7de8c079df0b8ed32a47bfb4fd64",
+            "edabf77d2c0431eed4a116536fd3446c7b079b9ac249751582948618b934bb9b",
         )
-        self.assertIn(
-            "kody-w/rappter@da3aa4f5a97864b7f71332948ce47e1f3a99b288",
+        self.assertNotIn(
+            "# Vendored from",
             (SCRIPT_DIR / "dreamcatcher_delta.py").read_text(
                 encoding="utf-8"
             ),
@@ -237,7 +237,7 @@ class ReverseIndexVendorTests(RepositoryScratchTest):
                 .read_bytes()
                 .replace(b"\r\n", b"\n")
             ).hexdigest(),
-            "d514076d58d1cfa3c305977cdf94a0c9d46d24020949511080a52f959b2a7ad2",
+            "74ed88c5b50be2f7a023afa3de2599ed8e0c2d5de594b8cf6fe26afb9a3fbbd1",
         )
 
     def test_index_is_deterministic_and_selects_dependency_closure(self) -> None:

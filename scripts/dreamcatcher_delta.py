@@ -1,10 +1,6 @@
 #!/usr/bin/env python3
 """Deterministic git-worktree deltas for Dreamcatcher fan-out/fan-in."""
 
-# Vendored from kody-w/rappter@da3aa4f5a97864b7f71332948ce47e1f3a99b288:
-# engines/twin-dreamcatcher/delta_protocol.py (Git blob 08a58fba27724f0a9a1b5b67b5cc27c37e00a176).
-# Local hardening rejects noncanonical repository paths pending an upstream sync.
-
 from __future__ import annotations
 
 import argparse
@@ -114,12 +110,12 @@ def _normalize_path(value: str) -> str:
     path = PurePosixPath(value)
     if path.is_absolute() or any(part in {"", ".", ".."} for part in path.parts):
         raise DeltaProtocolError(f"path escapes repository: {value!r}")
-    normalized = path.as_posix()
-    if normalized != value:
+    canonical = path.as_posix()
+    if canonical != value:
         raise DeltaProtocolError(
             f"repository path is not canonical: {value!r}"
         )
-    return normalized
+    return canonical
 
 
 def _blob_summary(content: Optional[bytes]) -> Optional[dict]:
@@ -358,7 +354,7 @@ def capture_worktree(
         "branch": branch or None,
     }
     if frame is not None:
-        if frame < 0:
+        if isinstance(frame, bool) or not isinstance(frame, int) or frame < 0:
             raise DeltaProtocolError("frame must be non-negative")
         source["frame"] = frame
     if tile is not None:
@@ -428,7 +424,9 @@ def validate_manifest(manifest: dict) -> dict:
     if source.get("branch") is not None and not isinstance(source["branch"], str):
         raise DeltaProtocolError("source.branch must be a string or null")
     if "frame" in source and (
-        not isinstance(source["frame"], int) or source["frame"] < 0
+        isinstance(source["frame"], bool)
+        or not isinstance(source["frame"], int)
+        or source["frame"] < 0
     ):
         raise DeltaProtocolError("source.frame must be a non-negative integer")
     if "tile" in source and (
@@ -476,7 +474,11 @@ def validate_manifest(manifest: dict) -> dict:
                 raise DeltaProtocolError(f"changes[{index}].{side} must be an object")
             if not HASH_PATTERN.fullmatch(str(summary.get("sha256", ""))):
                 raise DeltaProtocolError(f"changes[{index}].{side}.sha256 is invalid")
-            if not isinstance(summary.get("bytes"), int) or summary["bytes"] < 0:
+            if (
+                isinstance(summary.get("bytes"), bool)
+                or not isinstance(summary.get("bytes"), int)
+                or summary["bytes"] < 0
+            ):
                 raise DeltaProtocolError(f"changes[{index}].{side}.bytes is invalid")
         if status == "A" and (change.get("before") is not None or change.get("after") is None):
             raise DeltaProtocolError(f"changes[{index}] has invalid add blobs")
@@ -499,7 +501,8 @@ def validate_manifest(manifest: dict) -> dict:
                 or set(line_range)
                 != {"old_start", "old_lines", "new_start", "new_lines"}
                 or any(
-                    not isinstance(line_range[field], int)
+                    isinstance(line_range[field], bool)
+                    or not isinstance(line_range[field], int)
                     or line_range[field] < 0
                     for field in line_range
                 )
@@ -621,11 +624,189 @@ def _manifest_order(manifest: dict) -> tuple:
     source = manifest["source"]
     frame = source.get("frame")
     return (
-        frame if isinstance(frame, int) else sys.maxsize,
+        frame
+        if isinstance(frame, int) and not isinstance(frame, bool)
+        else sys.maxsize,
         str(source.get("tile") or ""),
         str(source.get("id") or ""),
         manifest["manifest_id"],
     )
+
+
+def _validate_search_plan(plan: object) -> dict:
+    if not isinstance(plan, dict) or set(plan) != {
+        "paths",
+        "deleted_paths",
+        "renamed_paths",
+        "entity_ids",
+        "scopes",
+        "queries",
+    }:
+        raise DeltaProtocolError("batch search_plan is invalid")
+    for field in ("paths", "deleted_paths"):
+        values = plan[field]
+        if (
+            not isinstance(values, list)
+            or values != sorted(set(values))
+            or any(_normalize_path(value) != value for value in values)
+        ):
+            raise DeltaProtocolError(f"batch search_plan.{field} is invalid")
+    for field in ("entity_ids", "scopes"):
+        values = plan[field]
+        if (
+            not isinstance(values, list)
+            or values != sorted(set(values))
+            or any(not isinstance(value, str) or not value for value in values)
+        ):
+            raise DeltaProtocolError(f"batch search_plan.{field} is invalid")
+    renamed = plan["renamed_paths"]
+    if not isinstance(renamed, list):
+        raise DeltaProtocolError("batch search_plan.renamed_paths is invalid")
+    rename_pairs = []
+    for item in renamed:
+        if not isinstance(item, dict) or set(item) != {"from", "to"}:
+            raise DeltaProtocolError("batch renamed path is invalid")
+        rename_pairs.append((
+            _normalize_path(item["from"]),
+            _normalize_path(item["to"]),
+        ))
+    if rename_pairs != sorted(set(rename_pairs)):
+        raise DeltaProtocolError("batch renamed paths are not sorted and unique")
+    queries = plan["queries"]
+    if not isinstance(queries, list):
+        raise DeltaProtocolError("batch search_plan.queries is invalid")
+    query_pairs = []
+    for query in queries:
+        if (
+            not isinstance(query, dict)
+            or set(query) != {"kind", "value"}
+            or query["kind"] not in {"entity", "path", "scope"}
+            or not isinstance(query["value"], str)
+            or not query["value"]
+        ):
+            raise DeltaProtocolError("batch search query is invalid")
+        if query["kind"] == "path":
+            _normalize_path(query["value"])
+        query_pairs.append((query["kind"], query["value"]))
+    if query_pairs != sorted(set(query_pairs)):
+        raise DeltaProtocolError("batch search queries are not sorted and unique")
+    return plan
+
+
+def validate_batch(batch: dict) -> dict:
+    """Strictly validate a deterministic batch artifact."""
+    if not isinstance(batch, dict) or set(batch) != {
+        "schema",
+        "producer",
+        "base_commit",
+        "ready",
+        "ordered_manifest_ids",
+        "sources",
+        "collisions",
+        "conflicts",
+        "search_plan",
+        "batch_id",
+    }:
+        raise DeltaProtocolError("batch has unsupported fields")
+    if batch["schema"] != BATCH_SCHEMA:
+        raise DeltaProtocolError("unsupported batch schema")
+    producer = batch["producer"]
+    if (
+        not isinstance(producer, dict)
+        or set(producer) != {"name", "version"}
+        or producer["name"] != "twin-dreamcatcher"
+        or not isinstance(producer["version"], str)
+        or not producer["version"]
+    ):
+        raise DeltaProtocolError("batch producer is invalid")
+    if not COMMIT_PATTERN.fullmatch(str(batch["base_commit"])):
+        raise DeltaProtocolError("batch base_commit is invalid")
+    if not isinstance(batch["ready"], bool):
+        raise DeltaProtocolError("batch ready must be boolean")
+    manifest_ids = batch["ordered_manifest_ids"]
+    if (
+        not isinstance(manifest_ids, list)
+        or not manifest_ids
+        or len(manifest_ids) != len(set(manifest_ids))
+        or any(
+            not isinstance(manifest_id, str)
+            or not re.fullmatch(r"sha256:[0-9a-f]{64}", manifest_id)
+            for manifest_id in manifest_ids
+        )
+    ):
+        raise DeltaProtocolError("batch ordered_manifest_ids are invalid")
+    sources = batch["sources"]
+    if not isinstance(sources, list) or len(sources) != len(manifest_ids):
+        raise DeltaProtocolError("batch sources are invalid")
+    for source in sources:
+        if (
+            not isinstance(source, dict)
+            or set(source) - {"id", "branch", "frame", "tile"}
+            or not isinstance(source.get("id"), str)
+            or not source["id"]
+            or (
+                source.get("branch") is not None
+                and not isinstance(source.get("branch"), str)
+            )
+            or (
+                "frame" in source
+                and (
+                    not isinstance(source["frame"], int)
+                    or isinstance(source["frame"], bool)
+                    or source["frame"] < 0
+                )
+            )
+            or (
+                "tile" in source
+                and (
+                    not isinstance(source["tile"], str)
+                    or not source["tile"]
+                )
+            )
+        ):
+            raise DeltaProtocolError("batch source is invalid")
+
+    def validate_collisions(value: object, field: str) -> list[dict]:
+        if not isinstance(value, list):
+            raise DeltaProtocolError(f"batch {field} must be an array")
+        paths = []
+        for collision in value:
+            if (
+                not isinstance(collision, dict)
+                or set(collision) != {"path", "kind", "manifest_ids"}
+                or collision["kind"]
+                not in {"identical", "disjoint-hunks", "conflict"}
+            ):
+                raise DeltaProtocolError(f"batch {field} record is invalid")
+            path = _normalize_path(collision["path"])
+            ids = collision["manifest_ids"]
+            if (
+                not isinstance(ids, list)
+                or len(ids) < 2
+                or ids != sorted(set(ids))
+                or any(manifest_id not in manifest_ids for manifest_id in ids)
+            ):
+                raise DeltaProtocolError(
+                    f"batch {field} manifest IDs are invalid"
+                )
+            paths.append(path)
+        if paths != sorted(paths) or len(paths) != len(set(paths)):
+            raise DeltaProtocolError(f"batch {field} is not sorted and unique")
+        return value
+
+    collisions = validate_collisions(batch["collisions"], "collisions")
+    conflicts = validate_collisions(batch["conflicts"], "conflicts")
+    expected_conflicts = [
+        collision for collision in collisions
+        if collision["kind"] == "conflict"
+    ]
+    if conflicts != expected_conflicts or batch["ready"] != (not conflicts):
+        raise DeltaProtocolError("batch ready/conflicts fields disagree")
+    _validate_search_plan(batch["search_plan"])
+    payload = {key: value for key, value in batch.items() if key != "batch_id"}
+    if batch["batch_id"] != _content_id(payload):
+        raise DeltaProtocolError("batch_id does not match canonical payload")
+    return batch
 
 
 def batch_manifests(manifests: Iterable[dict]) -> dict:
@@ -742,7 +923,7 @@ def batch_manifests(manifests: Iterable[dict]) -> dict:
         "conflicts": conflicts,
         "search_plan": merged_plan,
     }
-    return _with_id(payload, "batch_id")
+    return validate_batch(_with_id(payload, "batch_id"))
 
 
 def _cli() -> int:

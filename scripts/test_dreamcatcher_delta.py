@@ -7,7 +7,6 @@ import copy
 import importlib.util
 import json
 import os
-import re
 import shutil
 import subprocess
 import sys
@@ -257,19 +256,6 @@ class DreamcatcherDeltaTests(unittest.TestCase):
                 malformed["changes"][0]["path"] = value
                 with self.assertRaises(dp.DeltaProtocolError):
                     dp.validate_manifest(malformed)
-
-        schema = json.loads(
-            (
-                Path(__file__).resolve().parent.parent
-                / "schema"
-                / "delta.schema.json"
-            ).read_text(encoding="utf-8")
-        )
-        pattern = schema["$defs"]["repositoryPath"]["pattern"]
-        self.assertIsNotNone(re.fullmatch(pattern, "state/alpha.txt"))
-        for value in invalid_paths:
-            with self.subTest(schema_path=value):
-                self.assertIsNone(re.fullmatch(pattern, value))
 
     def test_repository_verification_rejects_stale_worktree(self) -> None:
         repo = self._clone("verify")

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Content-addressed reverse index for Dreamcatcher twin search plans."""
 
-# Vendored from kody-w/RAPP@50e53a246fbf2178ffa70cee08e655a786ba07a4:
+# Vendored from kody-w/rappter@75025fe696331c85de58a9dbdd0efbbc68ac6f86:
 # engines/twin-dreamcatcher/reverse_index.py
 # Canonical Git-blob SHA-256:
 # 8f490c8158d4576f62d872cac69bf4fdd88fe9915e5d90a02e90e01789748d47
