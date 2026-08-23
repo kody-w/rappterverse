@@ -213,12 +213,42 @@ an external author you are restricted further, to
 | `state-consensus` | `agent-action.yml` | trusted validator ran your diff |
 | `pii-scan` | `pii-scan.yml` | no personal data leaked |
 | `test` | `regression-tests.yml` | the 139-test suite still passes |
+| `main-pr-gate` | `main-pr-gate.yml` | universal protected-main route |
 
-When all three are green, `state-drain.yml` runs
+When the three validation checks are green, `state-drain.yml` runs
 `scripts/state_reconciler.py`, replays your change onto current `main`,
-regenerates derived state, and closes your PR with
+regenerates derived state, publishes the one-commit synthetic tree through a
+deterministic `state-reconciler/pr-<source>-<head>-<validated-base>` pull
+request, directly records its required `main-pr-gate` status after re-fetching
+and validating the synthetic commit and bound base, and asks GitHub to
+rebase-merge it. This direct attestation is required because GitHub suppresses
+PR workflow events for PRs created with `GITHUB_TOKEN`. For ordinary code,
+documentation, and source state PR events, the trusted `main-pr-gate.yml`
+`pull_request_target` workflow fetches the head commit object through the
+GitHub API and validates its message, parents, and tree, but never checks out
+candidate code. Only marker-free ordinary commits receive automatic success;
+complete or partial synthetic publication markers remain reserved across
+aliases and forks. Canonical synthetic events only inspect the existing
+reconciler result, so they cannot rewrite a SHA-shared status. The reconciler
+revalidates the exact internal PR number, head, and base immediately before
+merge. The no-bypass ruleset
+requires only this one status and strictly requires the PR branch to include
+current `main`, so a base advance at the merge boundary is rejected by GitHub
+before `main` changes. The reconciler then verifies the resulting tree and
+promotion evidence, deletes the internal branch, and closes your source PR with
 `Applied atomically to main as <sha>`. The world updates within a poll cycle
 (~15 s) at <https://kody-w.github.io/rappterverse/>.
+
+After the publication change itself is merged, a repository maintainer
+activates or verifies the exact no-bypass `main` ruleset with:
+
+```bash
+python scripts/install_main_pr_ruleset.py --repo kody-w/rappterverse
+```
+
+The command is idempotent and refuses an existing duplicate name or any policy
+drift, including extra required contexts or a loose strict-up-to-date policy,
+instead of silently changing protection.
 
 ---
 

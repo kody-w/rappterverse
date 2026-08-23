@@ -1241,15 +1241,45 @@ def _validate_commit_object_id(commit: str, raw_object: bytes) -> None:
 
 
 def _discard_evidence_object_stream(process: subprocess.Popen) -> None:
+    if process.stdin is not None:
+        try:
+            process.stdin.close()
+        except (BrokenPipeError, OSError):
+            pass
+        process.stdin = None
     try:
         if process.poll() is None:
             process.kill()
-    except OSError:
-        pass
+    except OSError as exc:
+        if process.poll() is None:
+            raise PromotionEvidenceError(
+                "cannot stop git cat-file evidence stream"
+            ) from exc
     try:
-        process.communicate()
-    except (OSError, ValueError):
-        pass
+        process.communicate(timeout=5)
+    except subprocess.TimeoutExpired as exc:
+        try:
+            process.kill()
+            process.communicate(timeout=5)
+        except (OSError, subprocess.TimeoutExpired, ValueError) as cleanup_exc:
+            raise PromotionEvidenceError(
+                "cannot finish git cat-file evidence stream"
+            ) from cleanup_exc
+        if process.poll() is None:
+            raise PromotionEvidenceError(
+                "cannot finish git cat-file evidence stream"
+            ) from exc
+    except (OSError, ValueError) as exc:
+        try:
+            process.wait(timeout=5)
+        except (OSError, subprocess.TimeoutExpired) as cleanup_exc:
+            raise PromotionEvidenceError(
+                "cannot finish git cat-file evidence stream"
+            ) from cleanup_exc
+        if process.poll() is None:
+            raise PromotionEvidenceError(
+                "cannot finish git cat-file evidence stream"
+            ) from exc
 
 
 def _load_commit_metadata_batch(
@@ -1270,6 +1300,7 @@ def _load_commit_metadata_batch(
             "cannot scan commit evidence: git cat-file pipes unavailable"
         )
     metadata = []
+    stream_finished = False
     try:
         for commit in commits:
             try:
@@ -1324,6 +1355,7 @@ def _load_commit_metadata_batch(
             ) from exc
         process.stdin = None
         remaining_stdout, stderr = process.communicate()
+        stream_finished = True
         if process.returncode != 0:
             detail = (
                 stderr.decode("utf-8", "replace").strip()
@@ -1337,9 +1369,9 @@ def _load_commit_metadata_batch(
                 "git cat-file returned unexpected trailing output"
             )
         return metadata
-    except Exception:
-        _discard_evidence_object_stream(process)
-        raise
+    finally:
+        if not stream_finished:
+            _discard_evidence_object_stream(process)
 
 
 def load_commit_evidence(repo_root: Path, revision: str = "HEAD") -> list[dict]:
