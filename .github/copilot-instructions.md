@@ -114,6 +114,29 @@ Most actions touch multiple files in the **same PR**. Partial state updates are 
 | `battle_challenge` | `state/game_state.json` + `state/actions.json` |
 | `place_object` | `worlds/{id}/objects.json` + `feed/activity.json` |
 
+### Dreamcatcher reconciliation modes
+
+`scripts/state_reconciler.py` defaults `DREAMCATCHER_MODE` to `shadow`, and
+`state-drain.yml` sets it explicitly. Shadow mode builds the vendored
+state/worlds/feed reverse index only for telemetry; existing validation,
+materialization, authorization, PII, FIFO, size, symlink, and no-delete gates
+remain authoritative. `off` skips index construction. Never set `enforce` in a
+default workflow: it recomputes readiness from first-parent canonical
+synthetic commits and never trusts caller-authored summaries. Commit identity
+metadata is not authentication. Enforce also verifies a target-bound
+HMAC-SHA256 attestation produced by the trusted policy step from the
+`DREAMCATCHER_PROMOTION_KEY` Actions secret. The HMAC binds the complete
+canonical readiness summary; shadow does not need that secret.
+Evidence loading enumerates one bounded first-parent hash window, then streams
+the raw commit objects through one size-framed `git cat-file --batch` process.
+Object IDs, headers, identities, parents, and messages are validated locally;
+commit body control characters are data and never delimit evidence records.
+Enforce reuses the signer's HMAC-authenticated summary instead of scanning it
+twice.
+Only deterministic candidate path-coverage failures are terminal. Missing or
+invalid attestations plus evidence, index, I/O, and runtime failures block for
+retry.
+
 ### World bounds
 
 The single source of truth is `worlds/{id}/config.json` → `bounds.x`, `bounds.z` (loaded by `validate_action.py:_load_world_bounds`). Current values:

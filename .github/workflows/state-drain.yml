@@ -27,7 +27,7 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Drain next eligible state PR with current policy
+      - name: Drain next eligible state PR with trusted promotion signer
         run: |
           git fetch --force --no-tags origin main
           policy_root="$(mktemp -d)"
@@ -40,3 +40,5 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_REPO: ${{ github.repository }}
           REPOSITORY_OWNER: ${{ github.repository_owner }}
+          DREAMCATCHER_MODE: shadow
+          DREAMCATCHER_PROMOTION_KEY: ${{ secrets.DREAMCATCHER_PROMOTION_KEY }}

@@ -1689,12 +1689,38 @@ class TestStateReconciler(unittest.TestCase):
         self.assertIn("capture_verified_pr_manifest(", source)
         self.assertIn("verify_manifest_repository(manifest, candidate)", source)
         self.assertIn('"DREAMCATCHER_DELTA_MANIFEST"', source)
+        self.assertIn("self.observe_dreamcatcher(", source)
+        self.assertIn("caller-authored Dreamcatcher promotion summaries", source)
+        self.assertIn(
+            "generate_authenticated_promotion_evidence(",
+            source,
+        )
+        self.assertIn('"--attest-bundle"', source)
+        self.assertIn("self._authenticated_evidence_cache", source)
+        self.assertIn(
+            "authenticated_promotion_evidence=authenticated_evidence",
+            source,
+        )
+        self.assertIn("evidence_repo=BASE_DIR", source)
+        self.assertIn("evidence_revision=self.policy_sha", source)
+        self.assertIn("target_base=base_sha", source)
+        self.assertIn("def without_promotion_key()", source)
+        self.assertIn("env.pop(PROMOTION_KEY_ENV, None)", source)
+        self.assertIn("DREAMCATCHER_TELEMETRY=", source)
+        self.assertIn('context=f"dreamcatcher-{telemetry[\'mode\']}"', source)
         self.assertIn('candidate / "scripts" / "test_state_integrity.py"', source)
         self.assertIn('generate_state_snapshot.py', source)
         self.assertIn('apply_deltas.py', source)
         workflow = load_yaml_text(WORKFLOWS_DIR / "state-drain.yml")
         self.assertIn('git worktree add --detach "$policy_root" origin/main', workflow)
         self.assertIn("cron: '17 * * * *'", workflow)
+        self.assertIn("DREAMCATCHER_MODE: shadow", workflow)
+        self.assertNotIn("DREAMCATCHER_MODE: enforce", workflow)
+        self.assertIn(
+            "DREAMCATCHER_PROMOTION_KEY: "
+            "${{ secrets.DREAMCATCHER_PROMOTION_KEY }}",
+            workflow,
+        )
         delta_workflow = load_yaml_text(WORKFLOWS_DIR / "apply-deltas.yml")
         self.assertNotIn("git push", delta_workflow)
         self.assertIn("state-drain.yml", delta_workflow)

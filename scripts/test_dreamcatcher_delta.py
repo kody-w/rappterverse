@@ -228,6 +228,35 @@ class DreamcatcherDeltaTests(unittest.TestCase):
         )
         self.assertEqual(len(manifest["changes"]), 1)
 
+    def test_noncanonical_repository_paths_are_rejected(self) -> None:
+        invalid_paths = (
+            "state//x",
+            "state/./x",
+            "./state/x",
+            "state/x/",
+            "state/a/../x",
+            "../state/x",
+            "/state/x",
+            "state\\x",
+        )
+        for value in invalid_paths:
+            with self.subTest(value=value):
+                with self.assertRaises(dp.DeltaProtocolError):
+                    dp._normalize_path(value)
+
+        repo = self._clone("noncanonical")
+        (repo / "state" / "alpha.txt").write_text(
+            "changed\n",
+            encoding="utf-8",
+        )
+        manifest = dp.capture_worktree(repo, self.base)
+        for value in invalid_paths:
+            with self.subTest(manifest_path=value):
+                malformed = copy.deepcopy(manifest)
+                malformed["changes"][0]["path"] = value
+                with self.assertRaises(dp.DeltaProtocolError):
+                    dp.validate_manifest(malformed)
+
     def test_repository_verification_rejects_stale_worktree(self) -> None:
         repo = self._clone("verify")
         path = repo / "state" / "new.json"
