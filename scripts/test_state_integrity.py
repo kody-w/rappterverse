@@ -1856,6 +1856,137 @@ echo "first=$first_rc second=$second_rc" > "{rc_file}"
         )
 
 
+class TestLocalPlatformWorktreeSelfHeal(unittest.TestCase):
+    """A disposable worktree that lost its .git link must end the loop.
+
+    Live, 2026-08-23: the scratch worktree went prunable while the loop still
+    owned it. Every cycle died on `git fetch` with "not a git repository",
+    logged "will retry", slept 300s, and did it again for 7.4h. The process
+    never exited, so KeepAlive never rebuilt the worktree, launchd reported the
+    job healthy, and rappterverse stopped merging state entirely -- no frame
+    PRs, so the validation gate had nothing to run on either. Retrying cannot
+    repair a missing .git; only a fresh worktree can.
+    """
+
+    @staticmethod
+    def _shell_function_definition(name: str) -> str:
+        content = (SCRIPT_DIR / "local_platform.sh").read_text(encoding="utf-8")
+        match = re.search(
+            rf"^{re.escape(name)}\(\) \{{.*?^\}}\n(?=\n)",
+            content,
+            re.MULTILINE | re.DOTALL,
+        )
+        if match is None:
+            raise AssertionError(f"{name} not found in local_platform.sh")
+        return match.group(0).rstrip()
+
+    @staticmethod
+    def _loop_branch() -> str:
+        content = (SCRIPT_DIR / "local_platform.sh").read_text(encoding="utf-8")
+        match = re.search(
+            r"^  --loop\)\n(.*?)^    ;;$", content, re.MULTILINE | re.DOTALL
+        )
+        if match is None:
+            raise AssertionError("--loop branch not found in local_platform.sh")
+        return match.group(1)
+
+    def test_probe_separates_a_live_worktree_from_a_reaped_one(self):
+        tmp = Path(tempfile.mkdtemp(prefix="rappterverse-worktree-probe-"))
+        self.addCleanup(robust_rmtree, tmp)
+        live = tmp / "live"
+        live.mkdir()
+        subprocess.run(["git", "init", "-q", str(live)], check=True)
+        reaped = tmp / "reaped"
+        reaped.mkdir()
+        probe = self._shell_function_definition("isolated_worktree_intact")
+        for repo, intact in ((live, True), (reaped, False)):
+            script = (
+                f'set -uo pipefail\nREPO="{repo}"\n{probe}\n'
+                'if isolated_worktree_intact; then echo intact; else echo broken; fi\n'
+            )
+            result = subprocess.run(
+                ["bash", "-c", script], capture_output=True, text=True
+            )
+            self.assertEqual(
+                result.stdout.strip(),
+                "intact" if intact else "broken",
+                f"probe misread {repo.name} worktree: {result.stderr}",
+            )
+
+    def test_loop_exits_for_the_supervisor_instead_of_retrying_forever(self):
+        tmp = Path(tempfile.mkdtemp(prefix="rappterverse-worktree-loop-"))
+        self.addCleanup(robust_rmtree, tmp)
+        sleeps = tmp / "sleeps.log"
+        errors = tmp / "errors.log"
+        script = f"""\
+set -uo pipefail
+REPO="{tmp / 'reaped'}"
+mkdir -p "$REPO"
+INTERVAL=0
+: > "{sleeps}"
+: > "{errors}"
+log() {{ :; }}
+err() {{ echo "$1" >> "{errors}"; }}
+run_cycle() {{ return 1; }}
+sleep() {{
+  echo tick >> "{sleeps}"
+  if [ "$(wc -l < "{sleeps}")" -ge 3 ]; then
+    exit 77
+  fi
+}}
+{self._shell_function_definition("isolated_worktree_intact")}
+set -- --loop
+{self._loop_branch()}
+"""
+        result = subprocess.run(["bash", "-c", script], capture_output=True, text=True)
+        # 77 is the harness saying the loop went back to sleep on a worktree it
+        # could never repair -- the 7.4h freeze reproduced.
+        self.assertNotEqual(
+            result.returncode, 77, "loop retried a reaped worktree instead of exiting"
+        )
+        self.assertEqual(result.returncode, 1, f"unexpected exit: {result.stderr}")
+        self.assertEqual(sleeps.read_text(encoding="utf-8"), "")
+        self.assertIn(
+            "no longer a git repository", errors.read_text(encoding="utf-8")
+        )
+
+    def test_healthy_worktree_still_retries_an_ordinary_cycle_failure(self):
+        tmp = Path(tempfile.mkdtemp(prefix="rappterverse-worktree-retry-"))
+        self.addCleanup(robust_rmtree, tmp)
+        repo = tmp / "live"
+        repo.mkdir()
+        subprocess.run(["git", "init", "-q", str(repo)], check=True)
+        sleeps = tmp / "sleeps.log"
+        errors = tmp / "errors.log"
+        script = f"""\
+set -uo pipefail
+REPO="{repo}"
+INTERVAL=0
+: > "{sleeps}"
+: > "{errors}"
+log() {{ :; }}
+err() {{ echo "$1" >> "{errors}"; }}
+run_cycle() {{ return 1; }}
+sleep() {{
+  echo tick >> "{sleeps}"
+  if [ "$(wc -l < "{sleeps}")" -ge 3 ]; then
+    exit 77
+  fi
+}}
+{self._shell_function_definition("isolated_worktree_intact")}
+set -- --loop
+{self._loop_branch()}
+"""
+        result = subprocess.run(["bash", "-c", script], capture_output=True, text=True)
+        # A validation or PII failure is not a broken worktree: the guard must
+        # not turn an ordinary bad cycle into a service restart.
+        self.assertEqual(result.returncode, 77, f"loop stopped retrying: {result.stderr}")
+        self.assertIn(
+            "Cycle failed; retained publication block and will retry",
+            errors.read_text(encoding="utf-8"),
+        )
+
+
 class TestLocalPlatformLeaseBehavior(unittest.TestCase):
     """Lease ownership must block split-brain and self-heal stale wrappers."""
 
