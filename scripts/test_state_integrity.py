@@ -11,6 +11,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import random
 import re
 import shutil
 import subprocess
@@ -3754,6 +3755,93 @@ class TestBundleSourceFiles(unittest.TestCase):
         self.assertIn('scripts" / "bundle.sh', source)
         self.assertNotIn("CSS_FILES", source)
         self.assertNotIn("JS_FILES", source)
+
+
+class TestRoamingCrossWorldMoveShape(unittest.TestCase):
+    """A roaming NPC that changes world must not record an intra-world origin.
+
+    Live, 2026-08-22/23: `execute_agent_action` let a roaming agent switch
+    world, stamped the action with the *destination* world, but still wrote
+    `data.from` = the agent's position in the world it left. validate_action
+    checks `from` against the action's world, so a position that was perfectly
+    legal in hub (+-15) was rejected against arena/dungeon (+-12):
+
+        Action `action-113441` move origin: z=15 out of bounds for dungeon
+
+    Canonical state validation then failed, the whole cycle was discarded, and
+    the local platform regenerated frame 1251 nineteen times over 13.8h without
+    ever publishing. rappterverse stopped merging state and the validation gate
+    had nothing to run on. The sibling cross-world paths (travel, arena summon)
+    already emit from_world/to_world and were never affected.
+    """
+
+    @staticmethod
+    def _bounds():
+        sys.path.insert(0, str(SCRIPT_DIR))
+        import validate_action
+        return {w: {"x": tuple(b["x"]), "z": tuple(b["z"])}
+                for w, b in validate_action.WORLD_BOUNDS.items()}
+
+    def _emit_move(self, roll: float):
+        """Drive the real dispatcher; roll < 0.2 forces the world change."""
+        sys.path.insert(0, str(SCRIPT_DIR))
+        import agent_brain
+        import agent_dispatch
+
+        agent_id = "test-roamer-001"
+        registry = {agent_id: {
+            "name": "Test Roamer", "controller": "system", "world": "hub",
+            "behavior": {"roaming": True, "decisionWeights": {"move": 1.0}},
+        }}
+        # x=14,z=15 is legal in hub and illegal in dungeon.
+        agents = [{"id": agent_id, "name": "Test Roamer", "world": "hub",
+                   "status": "active", "position": {"x": 14, "y": 0, "z": 15}}]
+        actions = []
+        real_choice = random.choice
+        scratch = Path(tempfile.mkdtemp(prefix="rappterverse-roam-memory-"))
+        self.addCleanup(shutil.rmtree, scratch, True)
+        with mock.patch.object(agent_brain, "MEMORY_DIR", scratch), \
+                mock.patch.object(random, "random", lambda: roll), \
+                mock.patch.object(random, "choices", lambda pop, **kw: ["move"]), \
+                mock.patch.object(
+                    random, "choice",
+                    lambda seq: "dungeon" if "dungeon" in seq else real_choice(seq)):
+            agent_dispatch.execute_agent_action(
+                agent_id, registry, {}, agents, actions, [],
+                self._bounds(), "2026-08-23T12:00:00Z", None,
+            )
+        moves = [a for a in actions if a.get("type") == "move"]
+        self.assertTrue(moves, "dispatcher emitted no move action")
+        return agent_id, moves[0]
+
+    def test_cross_world_move_records_travel_not_a_foreign_origin(self):
+        agent_id, move = self._emit_move(roll=0.0)
+        self.assertEqual(move["world"], "dungeon")
+        self.assertNotIn(
+            "from", move["data"],
+            "cross-world move must not carry an origin from the world it left",
+        )
+        self.assertEqual(move["data"]["from_world"], "hub")
+        self.assertEqual(move["data"]["to_world"], "dungeon")
+        self._assert_validates(agent_id, move)
+
+    def test_same_world_move_still_records_a_local_origin(self):
+        agent_id, move = self._emit_move(roll=0.99)
+        self.assertEqual(move["world"], "hub")
+        self.assertEqual(sorted(move["data"]), ["duration", "from", "to"])
+        self._assert_validates(agent_id, move)
+
+    def _assert_validates(self, agent_id: str, move: dict):
+        sys.path.insert(0, str(SCRIPT_DIR))
+        import validate_action
+        validate_action.errors.clear()
+        try:
+            validate_action.validate_actions({"actions": [move]}, {agent_id})
+            self.assertEqual(
+                [e for e in validate_action.errors if "move origin" in e], [],
+            )
+        finally:
+            validate_action.errors.clear()
 
 
 class TestRepositoryHygiene(unittest.TestCase):
