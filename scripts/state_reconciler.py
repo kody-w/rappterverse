@@ -21,6 +21,19 @@ from dreamcatcher_delta import (  # noqa: E402
     verify_manifest_repository,
     write_manifest,
 )
+from dreamcatcher_promotion import (  # noqa: E402
+    PromotionEvidenceError,
+    load_promotion_summary,
+)
+from dreamcatcher_shadow import (  # noqa: E402
+    DreamcatcherConfigurationError,
+    DreamcatcherEnforcementError,
+    observe_candidate,
+    resolve_mode,
+    telemetry_json,
+    telemetry_status_description,
+    telemetry_trailers,
+)
 
 STATE_PREFIXES = ("state/", "worlds/", "feed/")
 REQUIRED_CHECKS = {"state-consensus", "pii-scan", "test"}
@@ -159,8 +172,9 @@ def synthetic_commit_messages(
     number: int,
     head_sha: str,
     manifest: dict,
+    telemetry: dict | None = None,
 ) -> list[str]:
-    return [
+    messages = [
         f"[state] apply PR #{number}",
         f"Source-PR: #{number}",
         f"Source-Head: {head_sha}",
@@ -168,6 +182,12 @@ def synthetic_commit_messages(
         "Dreamcatcher-Search-Queries: "
         f"{len(manifest['search_plan']['queries'])}",
     ]
+    if telemetry is not None:
+        return [
+            messages[0],
+            "\n".join([*messages[1:], *telemetry_trailers(telemetry)]),
+        ]
+    return messages
 
 
 def gh_json(args: list[str]) -> object:
@@ -250,11 +270,32 @@ def ordered_queue(prs: list[dict]) -> list[dict]:
 
 
 class StateReconciler:
-    def __init__(self, repo: str, *, dry_run: bool = False):
+    def __init__(
+        self,
+        repo: str,
+        *,
+        dry_run: bool = False,
+        dreamcatcher_mode: str | None = None,
+    ):
         self.repo = repo
         self.dry_run = dry_run
         self.owner = os.environ.get("REPOSITORY_OWNER", repo.split("/", 1)[0])
         self.policy_sha = run_command(["git", "rev-parse", "HEAD"])
+        try:
+            self.dreamcatcher_mode = resolve_mode(dreamcatcher_mode)
+        except DreamcatcherConfigurationError as exc:
+            raise ReconcileError(str(exc)) from exc
+        self.last_dreamcatcher_telemetry: dict | None = None
+
+    def promotion_summary(self) -> dict | None:
+        if self.dreamcatcher_mode != "enforce":
+            return None
+        try:
+            return load_promotion_summary(
+                os.environ.get("DREAMCATCHER_PROMOTION_SUMMARY", "")
+            )
+        except PromotionEvidenceError as exc:
+            raise ReconcileError(str(exc)) from exc
 
     def current_main_sha(self) -> str:
         data = gh_json(["api", f"repos/{self.repo}/git/ref/heads/main"])
@@ -402,6 +443,7 @@ class StateReconciler:
     def validate(self, pr: dict, base_sha: str) -> str:
         number = int(pr["number"])
         head_sha = str(pr["headRefOid"])
+        self.last_dreamcatcher_telemetry = None
         author = str((pr.get("author") or {}).get("login") or "")
         if not author:
             raise ReconcileError(f"PR #{number} author is unavailable")
@@ -466,6 +508,19 @@ class StateReconciler:
                 [sys.executable, str(BASE_DIR / "scripts" / "validate_delta.py")],
                 env=delta_env,
             )
+            try:
+                self.last_dreamcatcher_telemetry = observe_candidate(
+                    candidate,
+                    manifest,
+                    mode=self.dreamcatcher_mode,
+                    source_pr=number,
+                    source_head=head_sha,
+                    promotion_summary=self.promotion_summary(),
+                )
+            except DreamcatcherConfigurationError as exc:
+                raise ReconcileError(str(exc)) from exc
+            except DreamcatcherEnforcementError as exc:
+                raise ValidationRejected(str(exc)) from exc
 
             if planned_inbox_paths(manifest):
                 materialize_env = delta_env.copy()
@@ -552,7 +607,12 @@ class StateReconciler:
                 "GIT_COMMITTER_EMAIL": "41898282+github-actions[bot]@users.noreply.github.com",
             })
             commit_args = ["git", "commit-tree", tree_sha, "-p", base_sha]
-            for message in synthetic_commit_messages(number, head_sha, manifest):
+            for message in synthetic_commit_messages(
+                number,
+                head_sha,
+                manifest,
+                self.last_dreamcatcher_telemetry,
+            ):
                 commit_args.extend(["-m", message])
             return run_command(commit_args, cwd=candidate, env=commit_env)
         finally:
@@ -602,6 +662,26 @@ class StateReconciler:
             self.note_status(head_sha, "pending", f"Reconciling against {base_sha[:12]}")
         try:
             merge_commit = self.validate(pr, base_sha)
+            telemetry = self.last_dreamcatcher_telemetry
+            if telemetry is not None:
+                try:
+                    print(
+                        "DREAMCATCHER_TELEMETRY="
+                        f"{telemetry_json(telemetry)}"
+                    )
+                    if not self.dry_run:
+                        self.note_status(
+                            head_sha,
+                            "success",
+                            telemetry_status_description(telemetry),
+                            context=f"dreamcatcher-{telemetry['mode']}",
+                        )
+                except Exception as exc:
+                    print(
+                        "Could not publish Dreamcatcher telemetry: "
+                        f"{type(exc).__name__}",
+                        file=sys.stderr,
+                    )
             if not self.dry_run:
                 self.set_status(
                     head_sha,

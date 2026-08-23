@@ -155,6 +155,34 @@ application consume only its planned paths. The durable state reconciler is
 the single serial publisher and records the manifest ID and query count in
 every synthetic state commit.
 
+The reconciler also vendors the public-safe reverse index from
+`kody-w/RAPP@50e53a2` as `scripts/dreamcatcher_reverse_index.py` with its exact
+schema at `schema/index.schema.json`. `DREAMCATCHER_MODE` accepts:
+
+- `off` — retain the pre-index reconciler path and do not build an index.
+- `shadow` — the default and explicit workflow setting. Build/query the
+  candidate's `state/`, `worlds/`, and `feed/` corpus, but leave the existing
+  full validation and materialization path authoritative.
+- `enforce` — allowed only with a validated, ready
+  `DREAMCATCHER_PROMOTION_SUMMARY`; incomplete path coverage or index/query
+  errors fail closed.
+
+Shadow observations are public-safe commit trailers plus trusted workflow/status
+output; they never create a state file. Evaluate commit history or JSONL with:
+
+```bash
+python scripts/dreamcatcher_promotion.py
+python scripts/dreamcatcher_promotion.py --jsonl telemetry.jsonl
+```
+
+The evaluator exits 0 only for a ready verdict, 1 for valid but not-ready
+evidence, and 2 for malformed evidence. Enforce callers may supply the
+resulting summary as a UTF-8 file path or inline JSON.
+
+Promotion requires at least 50 distinct samples, zero errors, zero path-coverage
+failures, p95 index/query duration at most 5 seconds, median document reduction
+at least 0.5, and median byte reduction at least 0.25.
+
 ### World Bounds
 | World | X range | Z range |
 |-------|---------|---------|

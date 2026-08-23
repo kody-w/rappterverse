@@ -114,6 +114,16 @@ Most actions touch multiple files in the **same PR**. Partial state updates are 
 | `battle_challenge` | `state/game_state.json` + `state/actions.json` |
 | `place_object` | `worlds/{id}/objects.json` + `feed/activity.json` |
 
+### Dreamcatcher reconciliation modes
+
+`scripts/state_reconciler.py` defaults `DREAMCATCHER_MODE` to `shadow`, and
+`state-drain.yml` sets it explicitly. Shadow mode builds the vendored
+state/worlds/feed reverse index only for telemetry; existing validation,
+materialization, authorization, PII, FIFO, size, symlink, and no-delete gates
+remain authoritative. `off` skips index construction. Never set `enforce` in a
+default workflow: it requires a caller-supplied ready summary validated by
+`scripts/dreamcatcher_promotion.py`.
+
 ### World bounds
 
 The single source of truth is `worlds/{id}/config.json` → `bounds.x`, `bounds.z` (loaded by `validate_action.py:_load_world_bounds`). Current values:

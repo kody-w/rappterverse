@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rappter.com/schemas/dreamcatcher-index-1.0.json",
+  "title": "Dreamcatcher Twin Reverse Index",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "producer",
+    "configuration",
+    "documents",
+    "entities",
+    "dependencies",
+    "dependents",
+    "stats",
+    "index_id"
+  ],
+  "properties": {
+    "schema": {"const": "dreamcatcher-index/1.0"},
+    "producer": {
+      "type": "object",
+      "required": ["name", "version"],
+      "properties": {
+        "name": {"const": "twin-dreamcatcher"},
+        "version": {"type": "string", "minLength": 1}
+      }
+    },
+    "configuration": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["includes", "max_bytes", "max_entity_fanout", "suffixes"],
+      "properties": {
+        "includes": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true
+        },
+        "max_bytes": {"type": "integer", "minimum": 1},
+        "max_entity_fanout": {"type": "integer", "minimum": 1},
+        "suffixes": {
+          "type": "array",
+          "items": {"type": "string", "pattern": "^\\."},
+          "uniqueItems": true
+        }
+      }
+    },
+    "documents": {
+      "type": "object",
+      "additionalProperties": {"$ref": "#/$defs/document"}
+    },
+    "entities": {"$ref": "#/$defs/pathMap"},
+    "dependencies": {"$ref": "#/$defs/pathMap"},
+    "dependents": {"$ref": "#/$defs/pathMap"},
+    "stats": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "documents",
+        "bytes",
+        "entities",
+        "dependency_edges",
+        "hub_entities"
+      ],
+      "properties": {
+        "documents": {"type": "integer", "minimum": 0},
+        "bytes": {"type": "integer", "minimum": 0},
+        "entities": {"type": "integer", "minimum": 0},
+        "dependency_edges": {"type": "integer", "minimum": 0},
+        "hub_entities": {"type": "integer", "minimum": 0}
+      }
+    },
+    "index_id": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "$defs": {
+    "document": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sha256", "bytes", "format", "entity_ids", "path_refs"],
+      "properties": {
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "bytes": {"type": "integer", "minimum": 0},
+        "format": {"type": "string"},
+        "entity_ids": {
+          "type": "array",
+          "items": {"type": "string"},
+          "uniqueItems": true
+        },
+        "path_refs": {
+          "type": "array",
+          "items": {"type": "string"},
+          "uniqueItems": true
+        }
+      }
+    },
+    "pathMap": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": {"type": "string"},
+        "uniqueItems": true
+      }
+    }
+  }
+}
