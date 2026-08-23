@@ -516,6 +516,7 @@ def execute_agent_action(agent_id: str, registry: dict, npc_lookup: dict,
     if activity == "move":
         # Check if roaming NPC should change worlds
         roaming = reg.get("behavior", {}).get("roaming", False)
+        origin_world = world
         if roaming and random.random() < 0.2:
             other_worlds = [w for w in bounds if w != world]
             if other_worlds:
@@ -524,14 +525,22 @@ def execute_agent_action(agent_id: str, registry: dict, npc_lookup: dict,
 
         new_pos = random_position(world, bounds)
         aid = get_next_id("action-", action_ids + [a["id"] for a in new_actions])
-        new_actions.append({
-            "id": aid, "timestamp": timestamp, "agentId": agent_id,
-            "type": "move", "world": world,
-            "data": {
+        if world != origin_world:
+            # Cross-world hop: the old position belongs to origin_world and is
+            # not a valid coordinate in the destination, so record it as travel
+            # rather than an intra-world origin.
+            move_data = {"from_world": origin_world, "to_world": world,
+                         "to": new_pos}
+        else:
+            move_data = {
                 "from": agent.get("position", {"x": 0, "y": 0, "z": 0}),
                 "to": new_pos,
                 "duration": random.randint(1500, 4000),
-            },
+            }
+        new_actions.append({
+            "id": aid, "timestamp": timestamp, "agentId": agent_id,
+            "type": "move", "world": world,
+            "data": move_data,
         })
         agent["position"] = new_pos
         agent["action"] = "walking"
