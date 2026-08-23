@@ -14,12 +14,28 @@ import sys
 from pathlib import Path
 from typing import Iterable
 
-TELEMETRY_SCHEMA = "dreamcatcher-shadow-telemetry/1.0"
-SUMMARY_SCHEMA = "dreamcatcher-promotion-summary/1.0"
+from dreamcatcher_reverse_index import (
+    DEFAULT_MAX_ENTITY_FANOUT,
+    DEFAULT_SUFFIXES,
+    PRODUCER as INDEX_PRODUCER,
+    SCHEMA as INDEX_SCHEMA,
+)
+
+TELEMETRY_SCHEMA = "dreamcatcher-shadow-telemetry/1.1"
+SUMMARY_SCHEMA = "dreamcatcher-promotion-summary/1.1"
 REPOSITORY = "rappterverse"
 CONTENT_ID_PATTERN = re.compile(r"^sha256:[0-9a-f]{64}$")
 COMMIT_PATTERN = re.compile(r"^[0-9a-f]{40,64}$")
 ERROR_CODE_PATTERN = re.compile(r"^[a-z0-9][a-z0-9-]{0,63}$")
+SYNTHETIC_SUBJECT_PATTERN = re.compile(
+    r"^\[state\] apply PR #([1-9]\d*)$"
+)
+TRUSTED_COMMITTERS = frozenset({
+    (
+        "rappterverse-bot",
+        "41898282+github-actions[bot]@users.noreply.github.com",
+    ),
+})
 MINIMUM_SAMPLES = 50
 MAXIMUM_ERRORS = 0
 MAXIMUM_COVERAGE_FAILURES = 0
@@ -43,6 +59,10 @@ TELEMETRY_FIELDS = {
     "source_pr",
     "source_head",
     "manifest_id",
+    "search_queries",
+    "policy_revision",
+    "index_configuration_id",
+    "promotion_evidence_id",
     "index_id",
     "query_id",
     "manifest_paths",
@@ -64,6 +84,10 @@ TRAILER_KEYS = {
     "Source-Head",
     "Dreamcatcher-Mode",
     "Dreamcatcher-Delta",
+    "Dreamcatcher-Search-Queries",
+    "Dreamcatcher-Policy",
+    "Dreamcatcher-Index-Configuration",
+    "Dreamcatcher-Promotion-Evidence",
     "Dreamcatcher-Index",
     "Dreamcatcher-Query",
     "Dreamcatcher-Paths",
@@ -77,7 +101,12 @@ TRAILER_KEYS = {
     "Dreamcatcher-Errors",
     "Dreamcatcher-Error-Code",
 }
-NON_EVIDENCE_TRAILER_KEYS = {"Dreamcatcher-Search-Queries"}
+INDEX_INCLUDES = ("state", "worlds", "feed")
+INDEX_MAX_BYTES = 8 * 1024 * 1024
+INDEX_MAX_ENTITY_FANOUT = DEFAULT_MAX_ENTITY_FANOUT
+INDEX_SUFFIXES = frozenset(DEFAULT_SUFFIXES)
+INDEX_DEPTH = 1
+INDEX_INCLUDE_SCOPES = False
 
 
 class PromotionEvidenceError(ValueError):
@@ -95,6 +124,42 @@ def _canonical_bytes(value: object) -> bytes:
 
 def _content_id(value: object) -> str:
     return "sha256:" + hashlib.sha256(_canonical_bytes(value)).hexdigest()
+
+
+INDEX_CONFIGURATION = {
+    "schema": "dreamcatcher-index-configuration/1.0",
+    "index_schema": INDEX_SCHEMA,
+    "index_producer": dict(INDEX_PRODUCER),
+    "build": {
+        "includes": sorted(INDEX_INCLUDES),
+        "max_bytes": INDEX_MAX_BYTES,
+        "max_entity_fanout": INDEX_MAX_ENTITY_FANOUT,
+        "suffixes": sorted(INDEX_SUFFIXES),
+    },
+    "query": {
+        "depth": INDEX_DEPTH,
+        "include_scopes": INDEX_INCLUDE_SCOPES,
+    },
+}
+INDEX_CONFIGURATION_ID = _content_id(INDEX_CONFIGURATION)
+PROMOTION_POLICY = {
+    "schema": "dreamcatcher-promotion-policy/1.0",
+    "telemetry_schema": TELEMETRY_SCHEMA,
+    "summary_schema": SUMMARY_SCHEMA,
+    "thresholds": dict(THRESHOLDS),
+    "evidence": {
+        "history": "first-parent",
+        "parent_count": 1,
+        "sample_mode": "shadow",
+        "subject": "[state] apply PR #N",
+        "trailers": sorted(TRAILER_KEYS),
+        "trusted_committers": [
+            {"name": name, "email": email}
+            for name, email in sorted(TRUSTED_COMMITTERS)
+        ],
+    },
+}
+PROMOTION_POLICY_REVISION = _content_id(PROMOTION_POLICY)
 
 
 def _require_int(
@@ -155,19 +220,34 @@ def validate_telemetry(record: dict) -> dict:
     ):
         raise PromotionEvidenceError("source_head must be a commit ID")
     _require_content_id(record["manifest_id"], "manifest_id")
+    _require_int(record["search_queries"], "search_queries")
+    _require_content_id(record["policy_revision"], "policy_revision")
+    _require_content_id(
+        record["index_configuration_id"],
+        "index_configuration_id",
+    )
+    promotion_evidence_id = _require_content_id(
+        record["promotion_evidence_id"],
+        "promotion_evidence_id",
+        optional=True,
+    )
+    if record["mode"] == "shadow" and promotion_evidence_id is not None:
+        raise PromotionEvidenceError(
+            "shadow telemetry cannot claim promotion evidence"
+        )
+    if record["mode"] == "enforce" and promotion_evidence_id is None:
+        raise PromotionEvidenceError(
+            "enforce telemetry must bind promotion evidence"
+        )
 
     error_count = _require_int(record["error_count"], "error_count")
     if error_count not in {0, 1}:
         raise PromotionEvidenceError("error_count must be 0 or 1")
-    _require_content_id(
-        record["index_id"],
-        "index_id",
-        optional=error_count > 0,
+    index_id = _require_content_id(
+        record["index_id"], "index_id", optional=error_count > 0
     )
-    _require_content_id(
-        record["query_id"],
-        "query_id",
-        optional=error_count > 0,
+    query_id = _require_content_id(
+        record["query_id"], "query_id", optional=error_count > 0
     )
     error_code = record["error_code"]
     if error_count == 0:
@@ -175,13 +255,18 @@ def validate_telemetry(record: dict) -> dict:
             raise PromotionEvidenceError(
                 "successful telemetry cannot contain an error_code"
             )
-    elif (
-        not isinstance(error_code, str)
-        or not ERROR_CODE_PATTERN.fullmatch(error_code)
-    ):
-        raise PromotionEvidenceError(
-            "failed telemetry requires a stable error_code"
-        )
+    else:
+        if index_id is not None or query_id is not None:
+            raise PromotionEvidenceError(
+                "failed telemetry cannot claim index or query evidence"
+            )
+        if (
+            not isinstance(error_code, str)
+            or not ERROR_CODE_PATTERN.fullmatch(error_code)
+        ):
+            raise PromotionEvidenceError(
+                "failed telemetry requires a stable error_code"
+            )
 
     manifest_paths = _require_int(record["manifest_paths"], "manifest_paths")
     covered_paths = _require_int(record["covered_paths"], "covered_paths")
@@ -210,6 +295,22 @@ def validate_telemetry(record: dict) -> dict:
     if selected_bytes > total_bytes:
         raise PromotionEvidenceError(
             "selected_bytes cannot exceed total_bytes"
+        )
+    if record["missing_paths"] != manifest_paths - covered_paths:
+        raise PromotionEvidenceError(
+            "missing_paths does not match uncovered manifest paths"
+        )
+    if error_count and any((
+        covered_paths,
+        selected_documents,
+        total_documents,
+        selected_bytes,
+        total_bytes,
+        record["missing_count"],
+        record["hub_count"],
+    )):
+        raise PromotionEvidenceError(
+            "failed telemetry must not claim index/query metrics"
         )
     expected_coverage = round(
         1.0 if manifest_paths == 0 else covered_paths / manifest_paths,
@@ -253,14 +354,41 @@ def _summary_ready(metrics: dict) -> bool:
     )
 
 
-def evaluate_records(records: Iterable[dict]) -> dict:
-    """Compute a deterministic promotion verdict from distinct samples."""
-    validated = [dict(validate_telemetry(dict(record))) for record in records]
+def evaluate_records(
+    records: Iterable[dict],
+    *,
+    policy_revision: str = PROMOTION_POLICY_REVISION,
+    index_configuration_id: str = INDEX_CONFIGURATION_ID,
+) -> dict:
+    """Compute a bound verdict from matching shadow samples."""
+    _require_content_id(policy_revision, "policy_revision")
+    _require_content_id(
+        index_configuration_id,
+        "index_configuration_id",
+    )
+    available = [
+        dict(validate_telemetry(dict(record))) for record in records
+    ]
+    validated = [
+        record
+        for record in available
+        if (
+            record["mode"] == "shadow"
+            and record["policy_revision"] == policy_revision
+            and record["index_configuration_id"]
+            == index_configuration_id
+        )
+    ]
     validated.sort(key=lambda item: item["source_head"])
     source_heads = [record["source_head"] for record in validated]
     if len(source_heads) != len(set(source_heads)):
         raise PromotionEvidenceError(
             "promotion evidence contains duplicate source_head samples"
+        )
+    source_prs = [record["source_pr"] for record in validated]
+    if len(source_prs) != len(set(source_prs)):
+        raise PromotionEvidenceError(
+            "promotion evidence contains duplicate source_pr samples"
         )
 
     document_reductions = [
@@ -299,6 +427,8 @@ def evaluate_records(records: Iterable[dict]) -> dict:
     payload = {
         "schema": SUMMARY_SCHEMA,
         "repository": REPOSITORY,
+        "policy_revision": policy_revision,
+        "index_configuration_id": index_configuration_id,
         "thresholds": dict(THRESHOLDS),
         "metrics": metrics,
         "ready": _summary_ready(metrics),
@@ -313,13 +443,17 @@ def validate_promotion_summary(
     summary: dict,
     *,
     require_ready: bool = False,
+    policy_revision: str = PROMOTION_POLICY_REVISION,
+    index_configuration_id: str = INDEX_CONFIGURATION_ID,
 ) -> dict:
-    """Validate an evaluator-produced, content-addressed promotion summary."""
+    """Validate an offline summary; this does not authenticate its evidence."""
     if not isinstance(summary, dict):
         raise PromotionEvidenceError("promotion summary must be an object")
     if set(summary) != {
         "schema",
         "repository",
+        "policy_revision",
+        "index_configuration_id",
         "thresholds",
         "metrics",
         "ready",
@@ -331,6 +465,19 @@ def validate_promotion_summary(
         raise PromotionEvidenceError("unsupported promotion summary schema")
     if summary["repository"] != REPOSITORY:
         raise PromotionEvidenceError("promotion summary is not for Rappterverse")
+    _require_content_id(summary["policy_revision"], "policy_revision")
+    _require_content_id(
+        summary["index_configuration_id"],
+        "index_configuration_id",
+    )
+    if summary["policy_revision"] != policy_revision:
+        raise PromotionEvidenceError(
+            "promotion summary is for a different policy revision"
+        )
+    if summary["index_configuration_id"] != index_configuration_id:
+        raise PromotionEvidenceError(
+            "promotion summary is for a different index configuration"
+        )
     if summary["thresholds"] != THRESHOLDS:
         raise PromotionEvidenceError("promotion thresholds do not match policy")
     metrics = summary["metrics"]
@@ -382,11 +529,9 @@ def validate_promotion_summary(
 
 
 def load_promotion_summary(source: str) -> dict:
-    """Load a promotion summary from a path or an inline JSON object."""
+    """Load an offline summary without treating it as trusted evidence."""
     if not isinstance(source, str) or not source.strip():
-        raise PromotionEvidenceError(
-            "DREAMCATCHER_PROMOTION_SUMMARY is required in enforce mode"
-        )
+        raise PromotionEvidenceError("promotion summary source is required")
     rendered = source.strip()
     try:
         if rendered.startswith("{"):
@@ -431,7 +576,6 @@ def telemetry_from_commit_message(message: str) -> dict | None:
         if (
             key.startswith("Dreamcatcher-")
             and key not in TRAILER_KEYS
-            and key not in NON_EVIDENCE_TRAILER_KEYS
         ):
             unknown.append(key)
             continue
@@ -479,6 +623,19 @@ def telemetry_from_commit_message(message: str) -> dict | None:
         "source_pr": int(source_pr_match.group(1)),
         "source_head": values["Source-Head"],
         "manifest_id": values["Dreamcatcher-Delta"],
+        "search_queries": _parse_integer(
+            values["Dreamcatcher-Search-Queries"],
+            "Dreamcatcher-Search-Queries",
+        ),
+        "policy_revision": values["Dreamcatcher-Policy"],
+        "index_configuration_id": (
+            values["Dreamcatcher-Index-Configuration"]
+        ),
+        "promotion_evidence_id": (
+            None
+            if values["Dreamcatcher-Promotion-Evidence"] == "none"
+            else values["Dreamcatcher-Promotion-Evidence"]
+        ),
         "index_id": (
             None
             if values["Dreamcatcher-Index"] == "unavailable"
@@ -523,6 +680,32 @@ def telemetry_from_commit_message(message: str) -> dict | None:
     return validate_telemetry(record)
 
 
+def telemetry_from_synthetic_commit(message: str) -> dict | None:
+    """Require the canonical synthetic state-commit message shape."""
+    lines = message.splitlines()
+    if not lines:
+        return None
+    subject_match = SYNTHETIC_SUBJECT_PATTERN.fullmatch(lines[0])
+    if not subject_match:
+        return None
+    for line in lines[1:]:
+        if not line:
+            continue
+        key, separator, _ = line.partition(":")
+        if not separator or key not in TRAILER_KEYS:
+            raise PromotionEvidenceError(
+                "synthetic commit body must contain only canonical trailers"
+            )
+    record = telemetry_from_commit_message(message)
+    if record is None:
+        return None
+    if record["source_pr"] != int(subject_match.group(1)):
+        raise PromotionEvidenceError(
+            "Source-PR does not match the synthetic commit subject"
+        )
+    return record
+
+
 def parse_jsonl(text: str) -> list[dict]:
     """Parse strict JSONL telemetry, rejecting every malformed sample."""
     records = []
@@ -555,17 +738,23 @@ def load_jsonl(path: str) -> list[dict]:
 
 
 def load_commit_evidence(repo_root: Path, revision: str = "HEAD") -> list[dict]:
-    """Scan synthetic commit messages reachable from one Git revision."""
-    result = subprocess.run(
-        [
-            "git",
-            "log",
-            revision,
-            "--format=%H%x1f%B%x1e",
-        ],
-        cwd=repo_root,
-        capture_output=True,
-    )
+    """Load authenticated samples from canonical first-parent commits."""
+    try:
+        result = subprocess.run(
+            [
+                "git",
+                "log",
+                "--first-parent",
+                revision,
+                "--format=%H%x1f%P%x1f%cn%x1f%ce%x1f%B%x1e",
+            ],
+            cwd=repo_root,
+            capture_output=True,
+        )
+    except OSError as exc:
+        raise PromotionEvidenceError(
+            f"cannot scan commit evidence: {exc}"
+        ) from exc
     if result.returncode != 0:
         detail = (
             result.stderr.decode("utf-8", "replace").strip()
@@ -578,16 +767,51 @@ def load_commit_evidence(repo_root: Path, revision: str = "HEAD") -> list[dict]:
         raw_record = raw_record.strip("\r\n")
         if not raw_record:
             continue
-        commit, separator, message = raw_record.partition("\x1f")
-        if not separator or not COMMIT_PATTERN.fullmatch(commit):
+        fields = raw_record.split("\x1f", 4)
+        if len(fields) != 5:
             raise PromotionEvidenceError("git log returned a malformed record")
+        commit, parents_value, committer_name, committer_email, message = fields
+        if not COMMIT_PATTERN.fullmatch(commit):
+            raise PromotionEvidenceError("git log returned a malformed commit")
+        lines = message.splitlines()
+        if (
+            not lines
+            or not SYNTHETIC_SUBJECT_PATTERN.fullmatch(lines[0])
+        ):
+            continue
+        if not any(
+            line.startswith("Dreamcatcher-Mode:")
+            for line in lines[1:]
+        ):
+            continue
+        parents = parents_value.split()
+        if (
+            len(parents) != 1
+            or not COMMIT_PATTERN.fullmatch(parents[0])
+        ):
+            raise PromotionEvidenceError(
+                f"commit {commit}: synthetic evidence must have one parent"
+            )
+        if (committer_name, committer_email) not in TRUSTED_COMMITTERS:
+            raise PromotionEvidenceError(
+                f"commit {commit}: synthetic evidence committer is untrusted"
+            )
         try:
-            record = telemetry_from_commit_message(message)
+            record = telemetry_from_synthetic_commit(message)
         except PromotionEvidenceError as exc:
             raise PromotionEvidenceError(f"commit {commit}: {exc}") from exc
-        if record is not None:
+        if record is not None and record["mode"] == "shadow":
             records.append(record)
     return records
+
+
+def require_repository_readiness(
+    repo_root: Path,
+    revision: str = "HEAD",
+) -> dict:
+    """Recompute readiness from authenticated repository evidence."""
+    summary = evaluate_records(load_commit_evidence(repo_root, revision))
+    return validate_promotion_summary(summary, require_ready=True)
 
 
 def _cli() -> int:

@@ -21,13 +21,10 @@ from dreamcatcher_delta import (  # noqa: E402
     verify_manifest_repository,
     write_manifest,
 )
-from dreamcatcher_promotion import (  # noqa: E402
-    PromotionEvidenceError,
-    load_promotion_summary,
-)
 from dreamcatcher_shadow import (  # noqa: E402
     DreamcatcherConfigurationError,
     DreamcatcherEnforcementError,
+    DreamcatcherRuntimeError,
     observe_candidate,
     resolve_mode,
     telemetry_json,
@@ -183,6 +180,16 @@ def synthetic_commit_messages(
         f"{len(manifest['search_plan']['queries'])}",
     ]
     if telemetry is not None:
+        if (
+            telemetry.get("source_pr") != number
+            or telemetry.get("source_head") != head_sha
+            or telemetry.get("manifest_id") != manifest["manifest_id"]
+            or telemetry.get("search_queries")
+            != len(manifest["search_plan"]["queries"])
+        ):
+            raise ReconcileError(
+                "Dreamcatcher telemetry does not match synthetic commit evidence"
+            )
         return [
             messages[0],
             "\n".join([*messages[1:], *telemetry_trailers(telemetry)]),
@@ -286,16 +293,6 @@ class StateReconciler:
         except DreamcatcherConfigurationError as exc:
             raise ReconcileError(str(exc)) from exc
         self.last_dreamcatcher_telemetry: dict | None = None
-
-    def promotion_summary(self) -> dict | None:
-        if self.dreamcatcher_mode != "enforce":
-            return None
-        try:
-            return load_promotion_summary(
-                os.environ.get("DREAMCATCHER_PROMOTION_SUMMARY", "")
-            )
-        except PromotionEvidenceError as exc:
-            raise ReconcileError(str(exc)) from exc
 
     def current_main_sha(self) -> str:
         data = gh_json(["api", f"repos/{self.repo}/git/ref/heads/main"])
@@ -440,6 +437,61 @@ class StateReconciler:
         except ReconcileError as exc:
             print(f"Could not close rejected PR #{number}: {exc}", file=sys.stderr)
 
+    def observe_dreamcatcher(
+        self,
+        candidate: Path,
+        manifest: dict,
+        *,
+        number: int,
+        head_sha: str,
+    ) -> dict | None:
+        if (
+            self.dreamcatcher_mode == "enforce"
+            and os.environ.get("DREAMCATCHER_PROMOTION_SUMMARY")
+        ):
+            raise ReconcileError(
+                "caller-authored Dreamcatcher promotion summaries are not accepted"
+            )
+        try:
+            return observe_candidate(
+                candidate,
+                manifest,
+                mode=self.dreamcatcher_mode,
+                source_pr=number,
+                source_head=head_sha,
+                evidence_repo=BASE_DIR,
+                evidence_revision=self.policy_sha,
+            )
+        except DreamcatcherEnforcementError as exc:
+            if self.dreamcatcher_mode == "shadow":
+                print(
+                    "Dreamcatcher shadow observation unavailable: "
+                    f"{type(exc).__name__}",
+                    file=sys.stderr,
+                )
+                return None
+            raise ValidationRejected(str(exc)) from exc
+        except (DreamcatcherConfigurationError, DreamcatcherRuntimeError) as exc:
+            if self.dreamcatcher_mode == "shadow":
+                print(
+                    "Dreamcatcher shadow observation unavailable: "
+                    f"{type(exc).__name__}",
+                    file=sys.stderr,
+                )
+                return None
+            raise ReconcileError(str(exc)) from exc
+        except Exception as exc:
+            if self.dreamcatcher_mode == "shadow":
+                print(
+                    "Dreamcatcher shadow observation unavailable: "
+                    f"{type(exc).__name__}",
+                    file=sys.stderr,
+                )
+                return None
+            raise ReconcileError(
+                "Dreamcatcher enforcement is temporarily unavailable"
+            ) from exc
+
     def validate(self, pr: dict, base_sha: str) -> str:
         number = int(pr["number"])
         head_sha = str(pr["headRefOid"])
@@ -508,19 +560,12 @@ class StateReconciler:
                 [sys.executable, str(BASE_DIR / "scripts" / "validate_delta.py")],
                 env=delta_env,
             )
-            try:
-                self.last_dreamcatcher_telemetry = observe_candidate(
-                    candidate,
-                    manifest,
-                    mode=self.dreamcatcher_mode,
-                    source_pr=number,
-                    source_head=head_sha,
-                    promotion_summary=self.promotion_summary(),
-                )
-            except DreamcatcherConfigurationError as exc:
-                raise ReconcileError(str(exc)) from exc
-            except DreamcatcherEnforcementError as exc:
-                raise ValidationRejected(str(exc)) from exc
+            self.last_dreamcatcher_telemetry = self.observe_dreamcatcher(
+                candidate,
+                manifest,
+                number=number,
+                head_sha=head_sha,
+            )
 
             if planned_inbox_paths(manifest):
                 materialize_env = delta_env.copy()
@@ -607,12 +652,30 @@ class StateReconciler:
                 "GIT_COMMITTER_EMAIL": "41898282+github-actions[bot]@users.noreply.github.com",
             })
             commit_args = ["git", "commit-tree", tree_sha, "-p", base_sha]
-            for message in synthetic_commit_messages(
-                number,
-                head_sha,
-                manifest,
-                self.last_dreamcatcher_telemetry,
-            ):
+            try:
+                commit_messages = synthetic_commit_messages(
+                    number,
+                    head_sha,
+                    manifest,
+                    self.last_dreamcatcher_telemetry,
+                )
+            except Exception as exc:
+                if self.dreamcatcher_mode != "shadow":
+                    raise ReconcileError(
+                        "Dreamcatcher enforcement evidence could not be recorded"
+                    ) from exc
+                print(
+                    "Dreamcatcher shadow telemetry could not be attached: "
+                    f"{type(exc).__name__}",
+                    file=sys.stderr,
+                )
+                self.last_dreamcatcher_telemetry = None
+                commit_messages = synthetic_commit_messages(
+                    number,
+                    head_sha,
+                    manifest,
+                )
+            for message in commit_messages:
                 commit_args.extend(["-m", message])
             return run_command(commit_args, cwd=candidate, env=commit_env)
         finally:

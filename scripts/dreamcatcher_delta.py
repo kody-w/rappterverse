@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 """Deterministic git-worktree deltas for Dreamcatcher fan-out/fan-in."""
 
+# Vendored from kody-w/rappter@da3aa4f5a97864b7f71332948ce47e1f3a99b288:
+# engines/twin-dreamcatcher/delta_protocol.py (Git blob 08a58fba27724f0a9a1b5b67b5cc27c37e00a176).
+# Local hardening rejects noncanonical repository paths pending an upstream sync.
+
 from __future__ import annotations
 
 import argparse
@@ -110,7 +114,12 @@ def _normalize_path(value: str) -> str:
     path = PurePosixPath(value)
     if path.is_absolute() or any(part in {"", ".", ".."} for part in path.parts):
         raise DeltaProtocolError(f"path escapes repository: {value!r}")
-    return path.as_posix()
+    normalized = path.as_posix()
+    if normalized != value:
+        raise DeltaProtocolError(
+            f"repository path is not canonical: {value!r}"
+        )
+    return normalized
 
 
 def _blob_summary(content: Optional[bytes]) -> Optional[dict]:

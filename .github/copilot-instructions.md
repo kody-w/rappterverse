@@ -121,8 +121,10 @@ Most actions touch multiple files in the **same PR**. Partial state updates are 
 state/worlds/feed reverse index only for telemetry; existing validation,
 materialization, authorization, PII, FIFO, size, symlink, and no-delete gates
 remain authoritative. `off` skips index construction. Never set `enforce` in a
-default workflow: it requires a caller-supplied ready summary validated by
-`scripts/dreamcatcher_promotion.py`.
+default workflow: it recomputes readiness from trusted first-parent canonical
+synthetic commits and never trusts caller-authored summaries. In enforce mode,
+only deterministic candidate path-coverage failures are terminal; evidence,
+index, I/O, and runtime failures block for retry.
 
 ### World bounds
 

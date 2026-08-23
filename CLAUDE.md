@@ -163,12 +163,18 @@ schema at `schema/index.schema.json`. `DREAMCATCHER_MODE` accepts:
 - `shadow` — the default and explicit workflow setting. Build/query the
   candidate's `state/`, `worlds/`, and `feed/` corpus, but leave the existing
   full validation and materialization path authoritative.
-- `enforce` — allowed only with a validated, ready
-  `DREAMCATCHER_PROMOTION_SUMMARY`; incomplete path coverage or index/query
-  errors fail closed.
+- `enforce` — recompute readiness from the trusted policy checkout's
+  first-parent synthetic commit history. Caller-authored summaries are never
+  authorization. Only deterministic candidate path-coverage failures reject a
+  PR; unavailable evidence plus index/I/O/runtime failures block and retry.
 
 Shadow observations are public-safe commit trailers plus trusted workflow/status
-output; they never create a state file. Evaluate commit history or JSONL with:
+output; they never create a state file or change acceptance. Authenticated
+promotion evidence must be a one-parent `[state] apply PR #N` commit from the
+trusted reconciler committer with consistent Source-PR, Source-Head, policy,
+index-configuration, delta, and telemetry trailers. Evidence scanning is
+first-parent only, so ordinary branch/merge commits do not count. Evaluate
+trusted commit history or untrusted diagnostic JSONL with:
 
 ```bash
 python scripts/dreamcatcher_promotion.py
@@ -176,8 +182,9 @@ python scripts/dreamcatcher_promotion.py --jsonl telemetry.jsonl
 ```
 
 The evaluator exits 0 only for a ready verdict, 1 for valid but not-ready
-evidence, and 2 for malformed evidence. Enforce callers may supply the
-resulting summary as a UTF-8 file path or inline JSON.
+evidence, and 2 for malformed evidence. JSONL and loaded summary files are
+offline diagnostics only; enforce mode always recomputes and binds the
+evidence ID, promotion policy revision, and index configuration.
 
 Promotion requires at least 50 distinct samples, zero errors, zero path-coverage
 failures, p95 index/query duration at most 5 seconds, median document reduction

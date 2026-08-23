@@ -1,6 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://rappter.com/schemas/dreamcatcher-delta-1.0.json",
+  "$comment": "Vendored from kody-w/rappter@da3aa4f5a97864b7f71332948ce47e1f3a99b288 with local canonical-path hardening pending an upstream sync.",
   "title": "Dreamcatcher Worktree Delta",
   "type": "object",
   "additionalProperties": false,
@@ -36,7 +37,7 @@
         "includes_worktree": {"type": "boolean"},
         "path_filter": {
           "type": "array",
-          "items": {"type": "string", "minLength": 1},
+          "items": {"$ref": "#/$defs/repositoryPath"},
           "uniqueItems": true
         }
       }
@@ -65,6 +66,10 @@
     }
   },
   "$defs": {
+    "repositoryPath": {
+      "type": "string",
+      "pattern": "^(?!/)(?!.*//)(?!.*\\\\)(?!.*(?:^|/)(?:\\.|\\.\\.)(?:/|$))[^/]+(?:/[^/]+)*$"
+    },
     "blob": {
       "type": ["object", "null"],
       "additionalProperties": false,
@@ -99,8 +104,8 @@
       ],
       "properties": {
         "status": {"enum": ["A", "M", "D", "R", "C", "T", "U"]},
-        "path": {"type": "string", "minLength": 1},
-        "old_path": {"type": "string", "minLength": 1},
+        "path": {"$ref": "#/$defs/repositoryPath"},
+        "old_path": {"$ref": "#/$defs/repositoryPath"},
         "similarity": {"type": "integer", "minimum": 0, "maximum": 100},
         "before": {"$ref": "#/$defs/blob"},
         "after": {"$ref": "#/$defs/blob"},
@@ -134,12 +139,12 @@
       "properties": {
         "paths": {
           "type": "array",
-          "items": {"type": "string", "minLength": 1},
+          "items": {"$ref": "#/$defs/repositoryPath"},
           "uniqueItems": true
         },
         "deleted_paths": {
           "type": "array",
-          "items": {"type": "string", "minLength": 1},
+          "items": {"$ref": "#/$defs/repositoryPath"},
           "uniqueItems": true
         },
         "renamed_paths": {
@@ -149,8 +154,8 @@
             "additionalProperties": false,
             "required": ["from", "to"],
             "properties": {
-              "from": {"type": "string", "minLength": 1},
-              "to": {"type": "string", "minLength": 1}
+              "from": {"$ref": "#/$defs/repositoryPath"},
+              "to": {"$ref": "#/$defs/repositoryPath"}
             }
           }
         },

@@ -11,10 +11,19 @@ from typing import Callable
 
 from dreamcatcher_delta import validate_manifest
 from dreamcatcher_promotion import (
-    PromotionEvidenceError,
+    INDEX_CONFIGURATION,
+    INDEX_CONFIGURATION_ID,
+    INDEX_DEPTH,
+    INDEX_INCLUDE_SCOPES,
+    INDEX_INCLUDES,
+    INDEX_MAX_BYTES,
+    INDEX_MAX_ENTITY_FANOUT,
+    INDEX_SUFFIXES,
+    PROMOTION_POLICY_REVISION,
     REPOSITORY,
     TELEMETRY_SCHEMA,
-    validate_promotion_summary,
+    PromotionEvidenceError,
+    require_repository_readiness,
     validate_telemetry,
 )
 from dreamcatcher_reverse_index import (
@@ -25,8 +34,6 @@ from dreamcatcher_reverse_index import (
 
 MODES = {"off", "shadow", "enforce"}
 DEFAULT_MODE = "shadow"
-INDEX_INCLUDES = ("state", "worlds", "feed")
-INDEX_DEPTH = 1
 
 
 class DreamcatcherConfigurationError(RuntimeError):
@@ -34,7 +41,11 @@ class DreamcatcherConfigurationError(RuntimeError):
 
 
 class DreamcatcherEnforcementError(RuntimeError):
-    """Promoted index policy could not prove a candidate complete."""
+    """A promoted query deterministically missed candidate paths."""
+
+
+class DreamcatcherRuntimeError(RuntimeError):
+    """Indexing or evidence evaluation is temporarily unavailable."""
 
 
 def resolve_mode(value: str | None = None) -> str:
@@ -81,6 +92,12 @@ def _failed_telemetry(
         "source_pr": source_pr,
         "source_head": source_head,
         "manifest_id": manifest.get("manifest_id"),
+        "search_queries": len(
+            manifest.get("search_plan", {}).get("queries", [])
+        ),
+        "policy_revision": PROMOTION_POLICY_REVISION,
+        "index_configuration_id": INDEX_CONFIGURATION_ID,
+        "promotion_evidence_id": None,
         "index_id": None,
         "query_id": None,
         "manifest_paths": manifest_paths,
@@ -108,37 +125,61 @@ def observe_candidate(
     source_pr: int,
     source_head: str,
     promotion_summary: dict | None = None,
+    evidence_repo: Path | None = None,
+    evidence_revision: str = "HEAD",
     clock_ns: Callable[[], int] = time.perf_counter_ns,
 ) -> dict | None:
     """Build/query the candidate index without changing its accepted tree."""
     selected_mode = resolve_mode(mode)
     if selected_mode == "off":
         return None
+    promotion_evidence_id = None
     if selected_mode == "enforce":
-        if promotion_summary is None:
+        if promotion_summary is not None:
             raise DreamcatcherConfigurationError(
-                "enforce mode requires DREAMCATCHER_PROMOTION_SUMMARY"
+                "caller-authored promotion summaries are not trusted"
+            )
+        if evidence_repo is None:
+            raise DreamcatcherConfigurationError(
+                "enforce mode requires trusted repository evidence"
             )
         try:
-            validate_promotion_summary(
-                promotion_summary,
-                require_ready=True,
+            trusted_summary = require_repository_readiness(
+                evidence_repo,
+                evidence_revision,
             )
         except PromotionEvidenceError as exc:
-            raise DreamcatcherConfigurationError(str(exc)) from exc
+            raise DreamcatcherConfigurationError(
+                f"trusted promotion evidence is unavailable: {exc}"
+            ) from exc
+        except Exception as exc:
+            raise DreamcatcherRuntimeError(
+                "Dreamcatcher promotion evidence evaluation failed"
+            ) from exc
+        promotion_evidence_id = trusted_summary["evidence_id"]
 
     start_ns = clock_ns()
     phase = "manifest"
     try:
         validated_manifest = validate_manifest(manifest)
         phase = "index"
-        index = build_index(candidate, includes=INDEX_INCLUDES)
+        index = build_index(
+            candidate,
+            includes=INDEX_INCLUDES,
+            max_bytes=INDEX_MAX_BYTES,
+            max_entity_fanout=INDEX_MAX_ENTITY_FANOUT,
+            suffixes=set(INDEX_SUFFIXES),
+        )
+        if index["configuration"] != INDEX_CONFIGURATION["build"]:
+            raise ReverseIndexError(
+                "reverse index configuration does not match policy"
+            )
         phase = "query"
         query = expand_search_plan(
             index,
             validated_manifest["search_plan"],
             depth=INDEX_DEPTH,
-            include_scopes=False,
+            include_scopes=INDEX_INCLUDE_SCOPES,
         )
         duration_ms = _elapsed_ms(start_ns, clock_ns())
         manifest_paths = validated_manifest["search_plan"]["paths"]
@@ -151,6 +192,12 @@ def observe_candidate(
             "source_pr": source_pr,
             "source_head": source_head,
             "manifest_id": validated_manifest["manifest_id"],
+            "search_queries": len(
+                validated_manifest["search_plan"]["queries"]
+            ),
+            "policy_revision": PROMOTION_POLICY_REVISION,
+            "index_configuration_id": INDEX_CONFIGURATION_ID,
+            "promotion_evidence_id": promotion_evidence_id,
             "index_id": index["index_id"],
             "query_id": query["query_id"],
             "manifest_paths": len(manifest_paths),
@@ -165,7 +212,7 @@ def observe_candidate(
                 else covered_paths / len(manifest_paths),
                 6,
             ),
-            "missing_paths": len(query["missing_paths"]),
+            "missing_paths": len(manifest_paths) - covered_paths,
             "missing_count": len(query["missing_entities"]),
             "hub_count": len(query["hub_entities"]),
             "duration_ms": duration_ms,
@@ -177,17 +224,20 @@ def observe_candidate(
     except Exception as exc:
         duration_ms = _elapsed_ms(start_ns, clock_ns())
         if selected_mode == "enforce":
-            raise DreamcatcherEnforcementError(
+            raise DreamcatcherRuntimeError(
                 f"Dreamcatcher {phase} failed"
             ) from exc
-        return _failed_telemetry(
-            manifest,
-            mode=selected_mode,
-            source_pr=source_pr,
-            source_head=source_head,
-            duration_ms=duration_ms,
-            error_code=_error_code(phase, exc),
-        )
+        try:
+            return _failed_telemetry(
+                manifest,
+                mode=selected_mode,
+                source_pr=source_pr,
+                source_head=source_head,
+                duration_ms=duration_ms,
+                error_code=_error_code(phase, exc),
+            )
+        except Exception:
+            return None
 
     if (
         selected_mode == "enforce"
@@ -215,6 +265,11 @@ def telemetry_trailers(record: dict) -> list[str]:
     record = validate_telemetry(record)
     return [
         f"Dreamcatcher-Mode: {record['mode']}",
+        f"Dreamcatcher-Policy: {record['policy_revision']}",
+        "Dreamcatcher-Index-Configuration: "
+        f"{record['index_configuration_id']}",
+        "Dreamcatcher-Promotion-Evidence: "
+        f"{record['promotion_evidence_id'] or 'none'}",
         f"Dreamcatcher-Index: {record['index_id'] or 'unavailable'}",
         f"Dreamcatcher-Query: {record['query_id'] or 'unavailable'}",
         "Dreamcatcher-Paths: "

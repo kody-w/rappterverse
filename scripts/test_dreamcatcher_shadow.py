@@ -137,9 +137,52 @@ class RepositoryScratchTest(unittest.TestCase):
         )
         return manifest, head
 
+    def commit_telemetry(
+        self,
+        repo: Path,
+        telemetry: dict,
+        *,
+        trusted: bool = True,
+    ) -> str:
+        manifest = {
+            "manifest_id": telemetry["manifest_id"],
+            "search_plan": {
+                "queries": [
+                    {"kind": "path", "value": "state/actions.json"}
+                    for _ in range(telemetry["search_queries"])
+                ],
+            },
+        }
+        messages = state_reconciler.synthetic_commit_messages(
+            telemetry["source_pr"],
+            telemetry["source_head"],
+            manifest,
+            telemetry,
+        )
+        identity = (
+            (
+                "rappterverse-bot",
+                "41898282+github-actions[bot]@users.noreply.github.com",
+            )
+            if trusted
+            else ("Untrusted", "untrusted@example.com")
+        )
+        command = [
+            "-c",
+            f"user.name={identity[0]}",
+            "-c",
+            f"user.email={identity[1]}",
+            "commit",
+            "--allow-empty",
+        ]
+        for message in messages:
+            command.extend(["-m", message])
+        _git(repo, *command)
+        return _git(repo, "rev-parse", "HEAD")
+
 
 class ReverseIndexVendorTests(RepositoryScratchTest):
-    def test_vendor_provenance_schema_and_delta_protocol_parity(self) -> None:
+    def test_vendor_provenance_schema_and_delta_hardening(self) -> None:
         reverse_source = (
             SCRIPT_DIR / "dreamcatcher_reverse_index.py"
         ).read_text(encoding="utf-8")
@@ -180,7 +223,21 @@ class ReverseIndexVendorTests(RepositoryScratchTest):
                 .read_bytes()
                 .replace(b"\r\n", b"\n")
             ).hexdigest(),
-            "ac0eb8be4d76a2c06cba0a6f272ad1e644f7869f9ca35142c9652902c2b26d6a",
+            "3cc760f97d56f3e6161b991d69cb84a2591b7de8c079df0b8ed32a47bfb4fd64",
+        )
+        self.assertIn(
+            "kody-w/rappter@da3aa4f5a97864b7f71332948ce47e1f3a99b288",
+            (SCRIPT_DIR / "dreamcatcher_delta.py").read_text(
+                encoding="utf-8"
+            ),
+        )
+        self.assertEqual(
+            hashlib.sha256(
+                (BASE_DIR / "schema" / "delta.schema.json")
+                .read_bytes()
+                .replace(b"\r\n", b"\n")
+            ).hexdigest(),
+            "d514076d58d1cfa3c305977cdf94a0c9d46d24020949511080a52f959b2a7ad2",
         )
 
     def test_index_is_deterministic_and_selects_dependency_closure(self) -> None:
@@ -361,9 +418,23 @@ class ShadowTelemetryTests(RepositoryScratchTest):
         self.assertEqual(telemetry["hub_count"], 0)
         self.assertEqual(telemetry["duration_ms"], 4)
         self.assertEqual(
+            telemetry["policy_revision"],
+            promotion.PROMOTION_POLICY_REVISION,
+        )
+        self.assertEqual(
+            telemetry["index_configuration_id"],
+            promotion.INDEX_CONFIGURATION_ID,
+        )
+        self.assertIsNone(telemetry["promotion_evidence_id"])
+        self.assertEqual(
             shadow.telemetry_trailers(telemetry),
             [
                 "Dreamcatcher-Mode: shadow",
+                "Dreamcatcher-Policy: "
+                f"{promotion.PROMOTION_POLICY_REVISION}",
+                "Dreamcatcher-Index-Configuration: "
+                f"{promotion.INDEX_CONFIGURATION_ID}",
+                "Dreamcatcher-Promotion-Evidence: none",
                 f"Dreamcatcher-Index: {telemetry['index_id']}",
                 f"Dreamcatcher-Query: {telemetry['query_id']}",
                 "Dreamcatcher-Paths: 1/1",
@@ -522,14 +593,28 @@ class PromotionEvaluatorTests(RepositoryScratchTest):
         covered_paths: int = 1,
         manifest_paths: int = 1,
         error_count: int = 0,
+        mode: str = "shadow",
+        policy_revision: str = promotion.PROMOTION_POLICY_REVISION,
+        index_configuration_id: str = promotion.INDEX_CONFIGURATION_ID,
+        promotion_evidence_id: str | None = None,
     ) -> dict:
+        if error_count:
+            covered_paths = 0
+            selected_documents = 0
+            total_documents = 0
+            selected_bytes = 0
+            total_bytes = 0
         return {
             "schema": promotion.TELEMETRY_SCHEMA,
             "repository": promotion.REPOSITORY,
-            "mode": "shadow",
+            "mode": mode,
             "source_pr": number,
             "source_head": f"{number:040x}",
             "manifest_id": _content_id(f"manifest-{number}"),
+            "search_queries": 1,
+            "policy_revision": policy_revision,
+            "index_configuration_id": index_configuration_id,
+            "promotion_evidence_id": promotion_evidence_id,
             "index_id": (
                 None if error_count else _content_id(f"index-{number}")
             ),
@@ -561,9 +646,28 @@ class PromotionEvaluatorTests(RepositoryScratchTest):
             self.sample(number) for number in range(1, 51)
         )
 
+    def evidence_repo(
+        self,
+        *,
+        count: int = 50,
+        name: str = "evidence",
+    ) -> Path:
+        repo, _ = self.make_repo(name)
+        for number in range(1, count + 1):
+            self.commit_telemetry(repo, self.sample(number))
+        return repo
+
     def test_gate_accepts_exact_fifty_sample_boundaries(self) -> None:
         summary = self.ready_summary()
         self.assertTrue(summary["ready"])
+        self.assertEqual(
+            summary["policy_revision"],
+            promotion.PROMOTION_POLICY_REVISION,
+        )
+        self.assertEqual(
+            summary["index_configuration_id"],
+            promotion.INDEX_CONFIGURATION_ID,
+        )
         self.assertEqual(summary["metrics"], {
             "samples": 50,
             "errors": 0,
@@ -604,6 +708,16 @@ class PromotionEvaluatorTests(RepositoryScratchTest):
             for number in range(1, 51)
         ]
         self.assertFalse(promotion.evaluate_records(dense_bytes)["ready"])
+        other_policy = [
+            self.sample(
+                number,
+                policy_revision=_content_id("other-policy"),
+            )
+            for number in range(1, 51)
+        ]
+        filtered = promotion.evaluate_records(other_policy)
+        self.assertEqual(filtered["metrics"]["samples"], 0)
+        self.assertFalse(filtered["ready"])
 
     def test_malformed_evidence_and_verdicts_fail_explicitly(self) -> None:
         with self.assertRaisesRegex(
@@ -644,7 +758,12 @@ class PromotionEvaluatorTests(RepositoryScratchTest):
             sample["source_head"],
             {
                 "manifest_id": sample["manifest_id"],
-                "search_plan": {"queries": []},
+                "search_plan": {
+                    "queries": [{
+                        "kind": "path",
+                        "value": "state/actions.json",
+                    }],
+                },
             },
             sample,
         )
@@ -655,6 +774,24 @@ class PromotionEvaluatorTests(RepositoryScratchTest):
             promotion.telemetry_from_commit_message(
                 "\n\n".join(messages) + "\nDreamcatcher-Unrecognized: 1"
             )
+        with self.assertRaisesRegex(
+            promotion.PromotionEvidenceError,
+            "Source-PR does not match",
+        ):
+            promotion.telemetry_from_synthetic_commit(
+                "\n\n".join(messages).replace(
+                    "[state] apply PR #2",
+                    "[state] apply PR #3",
+                    1,
+                )
+            )
+        inconsistent = self.sample(3)
+        inconsistent["missing_paths"] = 1
+        with self.assertRaisesRegex(
+            promotion.PromotionEvidenceError,
+            "missing_paths",
+        ):
+            promotion.validate_telemetry(inconsistent)
 
     def test_jsonl_and_commit_trailer_inputs_produce_valid_samples(self) -> None:
         records = [self.sample(number) for number in range(1, 51)]
@@ -666,20 +803,7 @@ class PromotionEvaluatorTests(RepositoryScratchTest):
 
         repo, _ = self.make_repo("history")
         telemetry = records[0]
-        manifest = {
-            "manifest_id": telemetry["manifest_id"],
-            "search_plan": {"queries": []},
-        }
-        messages = state_reconciler.synthetic_commit_messages(
-            telemetry["source_pr"],
-            telemetry["source_head"],
-            manifest,
-            telemetry,
-        )
-        command = ["commit", "--allow-empty"]
-        for message in messages:
-            command.extend(["-m", message])
-        _git(repo, *command)
+        self.commit_telemetry(repo, telemetry)
         body = _git(repo, "log", "-1", "--format=%B")
         parsed_trailers = subprocess.run(
             ["git", "interpret-trailers", "--parse"],
@@ -693,6 +817,79 @@ class PromotionEvaluatorTests(RepositoryScratchTest):
             self.assertIn(f"{key}:", parsed_trailers)
         scanned = promotion.load_commit_evidence(repo)
         self.assertEqual(scanned, [telemetry])
+
+    def test_commit_evidence_is_first_parent_canonical_and_trusted(self) -> None:
+        repo, _ = self.make_repo("first-parent")
+        _git(repo, "switch", "-qc", "side")
+        self.commit_telemetry(repo, self.sample(1))
+        _git(repo, "switch", "-q", "main")
+        _git(
+            repo,
+            "-c",
+            "user.name=Merge Test",
+            "-c",
+            "user.email=merge@example.com",
+            "merge",
+            "--no-ff",
+            "-m",
+            "ordinary merged branch",
+            "side",
+        )
+        self.assertEqual(promotion.load_commit_evidence(repo), [])
+
+        trusted = self.sample(2)
+        self.commit_telemetry(repo, trusted)
+        self.assertEqual(promotion.load_commit_evidence(repo), [trusted])
+
+        self.commit_telemetry(repo, self.sample(3), trusted=False)
+        with self.assertRaisesRegex(
+            promotion.PromotionEvidenceError,
+            "committer is untrusted",
+        ):
+            promotion.load_commit_evidence(repo)
+
+    def test_canonical_looking_merge_commit_is_not_evidence(self) -> None:
+        repo, _ = self.make_repo("merge-shape")
+        _git(repo, "switch", "-qc", "side")
+        (repo / "state" / "side.json").write_text("{}\n", encoding="utf-8")
+        _git(repo, "add", ".")
+        _git(repo, "commit", "-qm", "side change")
+        _git(repo, "switch", "-q", "main")
+        sample = self.sample(4)
+        manifest = {
+            "manifest_id": sample["manifest_id"],
+            "search_plan": {
+                "queries": [{
+                    "kind": "path",
+                    "value": "state/actions.json",
+                }],
+            },
+        }
+        message = "\n\n".join(
+            state_reconciler.synthetic_commit_messages(
+                sample["source_pr"],
+                sample["source_head"],
+                manifest,
+                sample,
+            )
+        )
+        _git(
+            repo,
+            "-c",
+            "user.name=rappterverse-bot",
+            "-c",
+            "user.email=41898282+github-actions[bot]@users.noreply.github.com",
+            "merge",
+            "--no-ff",
+            "-m",
+            message,
+            "side",
+        )
+        with self.assertRaisesRegex(
+            promotion.PromotionEvidenceError,
+            "must have one parent",
+        ):
+            promotion.load_commit_evidence(repo)
 
     def test_jsonl_cli_returns_ready_and_malformed_exit_codes(self) -> None:
         jsonl = "\n".join(
@@ -726,12 +923,12 @@ class PromotionEvaluatorTests(RepositoryScratchTest):
         self.assertEqual(malformed.returncode, 2)
         self.assertIn("error: JSONL line 1", malformed.stderr)
 
-    def test_enforce_requires_and_validates_readiness(self) -> None:
+    def test_enforce_recomputes_authenticated_readiness(self) -> None:
         repo, base = self.make_repo()
         manifest, head = self.modified_actions_manifest(repo, base)
         with self.assertRaisesRegex(
             shadow.DreamcatcherConfigurationError,
-            "requires",
+            "trusted repository evidence",
         ):
             shadow.observe_candidate(
                 repo,
@@ -740,12 +937,11 @@ class PromotionEvaluatorTests(RepositoryScratchTest):
                 source_pr=7,
                 source_head=head,
             )
-        not_ready = promotion.evaluate_records(
-            self.sample(number) for number in range(1, 50)
-        )
+
+        invented = self.ready_summary()
         with self.assertRaisesRegex(
             shadow.DreamcatcherConfigurationError,
-            "does not prove",
+            "caller-authored",
         ):
             shadow.observe_candidate(
                 repo,
@@ -753,20 +949,58 @@ class PromotionEvaluatorTests(RepositoryScratchTest):
                 mode="enforce",
                 source_pr=7,
                 source_head=head,
-                promotion_summary=not_ready,
+                promotion_summary=invented,
             )
+
+        with mock.patch.object(
+            shadow,
+            "require_repository_readiness",
+            side_effect=OSError("history unavailable"),
+        ):
+            with self.assertRaisesRegex(
+                shadow.DreamcatcherRuntimeError,
+                "evidence evaluation failed",
+            ):
+                shadow.observe_candidate(
+                    repo,
+                    manifest,
+                    mode="enforce",
+                    source_pr=7,
+                    source_head=head,
+                    evidence_repo=repo,
+                )
+
+        evidence = self.evidence_repo(count=49)
+        with self.assertRaisesRegex(
+            shadow.DreamcatcherConfigurationError,
+            "trusted promotion evidence is unavailable",
+        ):
+            shadow.observe_candidate(
+                repo,
+                manifest,
+                mode="enforce",
+                source_pr=7,
+                source_head=head,
+                evidence_repo=evidence,
+            )
+        self.commit_telemetry(evidence, self.sample(50))
+        trusted = promotion.require_repository_readiness(evidence)
         telemetry = shadow.observe_candidate(
             repo,
             manifest,
             mode="enforce",
             source_pr=7,
             source_head=head,
-            promotion_summary=self.ready_summary(),
+            evidence_repo=evidence,
         )
         self.assertEqual(telemetry["mode"], "enforce")
         self.assertEqual(telemetry["coverage"], 1.0)
+        self.assertEqual(
+            telemetry["promotion_evidence_id"],
+            trusted["evidence_id"],
+        )
 
-    def test_enforce_rejects_incomplete_coverage_and_index_errors(self) -> None:
+    def test_enforce_only_rejects_deterministic_path_coverage(self) -> None:
         repo, base = self.make_repo()
         blob = repo / "state" / "opaque.bin"
         blob.write_bytes(b"opaque")
@@ -781,7 +1015,7 @@ class PromotionEvaluatorTests(RepositoryScratchTest):
             tile="alice",
             include_untracked=False,
         )
-        ready = self.ready_summary()
+        evidence = self.evidence_repo(name="coverage-evidence")
         with self.assertRaisesRegex(
             shadow.DreamcatcherEnforcementError,
             "cover every manifest path",
@@ -792,25 +1026,32 @@ class PromotionEvaluatorTests(RepositoryScratchTest):
                 mode="enforce",
                 source_pr=9,
                 source_head=head,
-                promotion_summary=ready,
+                evidence_repo=evidence,
             )
-        with mock.patch.object(
-            shadow,
-            "build_index",
-            side_effect=reverse_index.ReverseIndexError("broken"),
+
+        for failure in (
+            reverse_index.ReverseIndexError("broken"),
+            OSError("unavailable"),
+            RuntimeError("implementation bug"),
         ):
-            with self.assertRaisesRegex(
-                shadow.DreamcatcherEnforcementError,
-                "index failed",
-            ):
-                shadow.observe_candidate(
-                    repo,
-                    manifest,
-                    mode="enforce",
-                    source_pr=9,
-                    source_head=head,
-                    promotion_summary=ready,
-                )
+            with self.subTest(failure=type(failure).__name__):
+                with mock.patch.object(
+                    shadow,
+                    "build_index",
+                    side_effect=failure,
+                ):
+                    with self.assertRaisesRegex(
+                        shadow.DreamcatcherRuntimeError,
+                        "index failed",
+                    ):
+                        shadow.observe_candidate(
+                            repo,
+                            manifest,
+                            mode="enforce",
+                            source_pr=9,
+                            source_head=head,
+                            evidence_repo=evidence,
+                        )
 
     def test_summary_loader_accepts_inline_and_path_but_rejects_tampering(self) -> None:
         summary = self.ready_summary()
@@ -827,6 +1068,135 @@ class PromotionEvaluatorTests(RepositoryScratchTest):
             "ready verdict|summary_id",
         ):
             promotion.load_promotion_summary(str(path))
+
+    def test_reconciler_classifies_only_coverage_as_terminal(self) -> None:
+        manifest = {
+            "manifest_id": _content_id("manifest"),
+            "search_plan": {"queries": []},
+        }
+        candidate = self.tmp / "candidate"
+        candidate.mkdir()
+        reconciler = state_reconciler.StateReconciler(
+            "owner/repo",
+            dry_run=True,
+            dreamcatcher_mode="enforce",
+        )
+        cases = (
+            (
+                shadow.DreamcatcherEnforcementError("coverage"),
+                state_reconciler.ValidationRejected,
+            ),
+            (
+                shadow.DreamcatcherRuntimeError("index"),
+                state_reconciler.ReconcileError,
+            ),
+            (
+                shadow.DreamcatcherConfigurationError("evidence"),
+                state_reconciler.ReconcileError,
+            ),
+            (OSError("filesystem"), state_reconciler.ReconcileError),
+        )
+        with mock.patch.dict(os.environ, {}, clear=False):
+            os.environ.pop("DREAMCATCHER_PROMOTION_SUMMARY", None)
+            for failure, expected in cases:
+                with self.subTest(failure=type(failure).__name__):
+                    with mock.patch.object(
+                        state_reconciler,
+                        "observe_candidate",
+                        side_effect=failure,
+                    ):
+                        with self.assertRaises(expected):
+                            reconciler.observe_dreamcatcher(
+                                candidate,
+                                manifest,
+                                number=7,
+                                head_sha="1" * 40,
+                            )
+
+        with mock.patch.dict(
+            os.environ,
+            {"DREAMCATCHER_PROMOTION_SUMMARY": json.dumps(self.ready_summary())},
+            clear=False,
+        ):
+            with self.assertRaisesRegex(
+                state_reconciler.ReconcileError,
+                "caller-authored",
+            ):
+                reconciler.observe_dreamcatcher(
+                    candidate,
+                    manifest,
+                    number=7,
+                    head_sha="1" * 40,
+                )
+
+        shadow_reconciler = state_reconciler.StateReconciler(
+            "owner/repo",
+            dry_run=True,
+            dreamcatcher_mode="shadow",
+        )
+        for failure in (
+            RuntimeError("telemetry bug"),
+            shadow.DreamcatcherEnforcementError("unexpected coverage"),
+        ):
+            with self.subTest(shadow_failure=type(failure).__name__):
+                with mock.patch.object(
+                    state_reconciler,
+                    "observe_candidate",
+                    side_effect=failure,
+                ):
+                    self.assertIsNone(
+                        shadow_reconciler.observe_dreamcatcher(
+                            candidate,
+                            manifest,
+                            number=7,
+                            head_sha="1" * 40,
+                        )
+                    )
+
+    def test_retryable_enforce_failure_does_not_close_pr(self) -> None:
+        reconciler = state_reconciler.StateReconciler(
+            "owner/repo",
+            dreamcatcher_mode="enforce",
+        )
+        head = "2" * 40
+        pr = {
+            "number": 7,
+            "headRefOid": head,
+            "baseRefName": "main",
+        }
+        details = {
+            "state": "OPEN",
+            "isDraft": False,
+            "baseRefName": "main",
+            "headRefOid": head,
+            "files": [{"path": "state/actions.json"}],
+            "statusCheckRollup": [],
+        }
+        with (
+            mock.patch.object(reconciler, "details", return_value=details),
+            mock.patch.object(reconciler, "published_commit", return_value=None),
+            mock.patch.object(
+                reconciler,
+                "current_reconciler_state",
+                return_value=None,
+            ),
+            mock.patch.object(
+                reconciler,
+                "current_main_sha",
+                return_value=reconciler.policy_sha,
+            ),
+            mock.patch.object(
+                reconciler,
+                "validate",
+                side_effect=state_reconciler.ReconcileError(
+                    "index unavailable"
+                ),
+            ),
+            mock.patch.object(reconciler, "note_status"),
+            mock.patch.object(reconciler, "finalize_rejected_pr") as close,
+        ):
+            self.assertEqual(reconciler.process(pr), state_reconciler.BLOCKED)
+        close.assert_not_called()
 
 
 if __name__ == "__main__":
