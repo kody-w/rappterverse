@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import copy
+import errno
 import hashlib
 import json
 import os
@@ -41,6 +42,12 @@ def _git(repo: Path, *args: str) -> str:
     return result.stdout.strip()
 
 
+def _initialize_test_repo(repo: Path) -> None:
+    _git(repo, "init", "-q", "-b", "main")
+    _git(repo, "config", "gc.auto", "0")
+    _git(repo, "config", "maintenance.auto", "false")
+
+
 def _write_json(path: Path, value: object) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(
@@ -53,13 +60,37 @@ def _content_id(label: str) -> str:
     return "sha256:" + hashlib.sha256(label.encode("utf-8")).hexdigest()
 
 
-def _remove_tree(path: Path) -> None:
+def _remove_tree(
+    path: Path,
+    *,
+    attempts: int = 8,
+    base_delay_s: float = 0.025,
+) -> None:
     def make_writable(function, target, _error) -> None:
-        os.chmod(target, stat.S_IWRITE)
+        os.chmod(target, stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR)
         function(target)
 
-    if path.exists():
-        shutil.rmtree(path, onerror=make_writable)
+    if attempts < 1:
+        raise ValueError("cleanup attempts must be positive")
+    retryable = {
+        errno.EACCES,
+        errno.EBUSY,
+        errno.ENOTEMPTY,
+        errno.EPERM,
+    }
+    for attempt in range(attempts):
+        try:
+            shutil.rmtree(path, onerror=make_writable)
+            return
+        except FileNotFoundError:
+            if not path.exists():
+                return
+            if attempt == attempts - 1:
+                raise
+        except OSError as exc:
+            if exc.errno not in retryable or attempt == attempts - 1:
+                raise
+        time.sleep(min(base_delay_s * (2 ** attempt), 0.2))
 
 
 class RepositoryScratchTest(unittest.TestCase):
@@ -100,7 +131,7 @@ class RepositoryScratchTest(unittest.TestCase):
         _write_json(repo / "feed" / "activity.json", {
             "activities": [],
         })
-        _git(repo, "init", "-q", "-b", "main")
+        _initialize_test_repo(repo)
         _git(repo, "config", "user.name", "Dreamcatcher Test")
         _git(
             repo,
@@ -180,6 +211,62 @@ class RepositoryScratchTest(unittest.TestCase):
             command.extend(["-m", message])
         _git(repo, *command)
         return _git(repo, "rev-parse", "HEAD")
+
+
+class CleanupRegressionTests(RepositoryScratchTest):
+    def test_test_repositories_disable_automatic_maintenance(self) -> None:
+        repo, _ = self.make_repo("maintenance-disabled")
+        self.assertEqual(_git(repo, "config", "--get", "gc.auto"), "0")
+        self.assertEqual(
+            _git(repo, "config", "--bool", "--get", "maintenance.auto"),
+            "false",
+        )
+
+    def test_remove_tree_retries_transient_errors(self) -> None:
+        for error_number in (errno.ENOTEMPTY, errno.EACCES):
+            with self.subTest(error_number=error_number):
+                target = self.tmp / f"transient-cleanup-{error_number}"
+                target.mkdir()
+                (target / "file.txt").write_text("ok\n", encoding="utf-8")
+                real_rmtree = shutil.rmtree
+                calls = 0
+
+                def flaky_rmtree(path, *args, **kwargs):
+                    nonlocal calls
+                    calls += 1
+                    if calls == 1:
+                        raise OSError(error_number, "Transient error", str(path))
+                    return real_rmtree(path, *args, **kwargs)
+
+                with mock.patch.object(
+                    shutil,
+                    "rmtree",
+                    side_effect=flaky_rmtree,
+                ):
+                    _remove_tree(target, attempts=3, base_delay_s=0)
+
+                self.assertEqual(calls, 2)
+                self.assertFalse(target.exists())
+
+    def test_remove_tree_reports_persistent_enotempty(self) -> None:
+        target = self.tmp / "persistent-cleanup"
+        target.mkdir()
+
+        with mock.patch.object(
+            shutil,
+            "rmtree",
+            side_effect=OSError(
+                errno.ENOTEMPTY,
+                "Directory not empty",
+                str(target),
+            ),
+        ) as remove:
+            with self.assertRaises(OSError) as raised:
+                _remove_tree(target, attempts=3, base_delay_s=0)
+
+        self.assertEqual(raised.exception.errno, errno.ENOTEMPTY)
+        self.assertEqual(remove.call_count, 3)
+        self.assertTrue(target.exists())
 
 
 class ReverseIndexVendorTests(RepositoryScratchTest):
@@ -648,7 +735,7 @@ class ShadowTelemetryTests(RepositoryScratchTest):
         repo.mkdir()
         (repo / "state").mkdir()
         _write_json(repo / "state" / "base.json", {"id": "base"})
-        _git(repo, "init", "-q", "-b", "main")
+        _initialize_test_repo(repo)
         _git(repo, "config", "user.name", "Dreamcatcher Test")
         _git(
             repo,
@@ -1379,6 +1466,14 @@ class PromotionEvaluatorTests(RepositoryScratchTest):
             ),
             promotion.MAXIMUM_COMMIT_EVIDENCE_COMMITS,
         )
+        started_processes = []
+        start_evidence_object_stream = promotion._start_evidence_object_stream
+
+        def start_and_record(*args, **kwargs):
+            process = start_evidence_object_stream(*args, **kwargs)
+            started_processes.append(process)
+            return process
+
         with (
             mock.patch.object(
                 promotion,
@@ -1388,12 +1483,14 @@ class PromotionEvaluatorTests(RepositoryScratchTest):
             mock.patch.object(
                 promotion,
                 "_start_evidence_object_stream",
-                wraps=promotion._start_evidence_object_stream,
+                side_effect=start_and_record,
             ) as start_stream,
         ):
             self.assertEqual(promotion.load_commit_evidence(repo), [])
         self.assertEqual(run_git.call_count, 2)
         self.assertEqual(start_stream.call_count, 1)
+        self.assertEqual(len(started_processes), 1)
+        self.assertEqual(started_processes[0].poll(), 0)
         self.assertEqual(
             [call.args[2][0] for call in run_git.call_args_list],
             ["rev-parse", "rev-list"],
