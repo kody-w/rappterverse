@@ -404,8 +404,9 @@ class StateReconcilerPublicationTests(unittest.TestCase):
             ) as reopen,
             mock.patch.object(
                 self.reconciler,
-                "set_status",
-            ) as status,
+                "authorize_internal_main_pr_gate",
+                return_value=reopened,
+            ) as authorize,
             mock.patch.object(
                 self.reconciler,
                 "merge_internal_publication",
@@ -427,11 +428,11 @@ class StateReconcilerPublicationTests(unittest.TestCase):
             synthetic_commit=self.synthetic,
             synthetic_tree=self.tree,
         )
-        status.assert_called_once_with(
-            self.synthetic,
-            "success",
-            f"Validated against {self.base[:12]}",
-            context=reconciler_module.PUBLICATION_STATUS_CONTEXT,
+        authorize.assert_called_once_with(
+            reopened,
+            number=self.number,
+            head_sha=self.head,
+            evidence=self.evidence(),
         )
         merge.assert_called_once_with(
             reopened,
@@ -440,7 +441,7 @@ class StateReconcilerPublicationTests(unittest.TestCase):
             evidence=self.evidence(),
         )
 
-    def test_publication_sets_required_strict_status_context(self) -> None:
+    def test_publication_authorizes_gate_without_pr_event(self) -> None:
         internal_pr = self.internal_pr()
         branch = reconciler_module.internal_branch_name(
             self.number,
@@ -463,13 +464,14 @@ class StateReconcilerPublicationTests(unittest.TestCase):
             ) as ensure,
             mock.patch.object(
                 self.reconciler,
-                "set_status",
-            ) as status,
-            mock.patch.object(
-                self.reconciler,
                 "create_or_reuse_internal_pr",
                 return_value=internal_pr,
             ),
+            mock.patch.object(
+                self.reconciler,
+                "authorize_internal_main_pr_gate",
+                return_value=internal_pr,
+            ) as authorize,
             mock.patch.object(
                 self.reconciler,
                 "merge_internal_publication",
@@ -484,12 +486,113 @@ class StateReconcilerPublicationTests(unittest.TestCase):
             )
         self.assertEqual(result, self.published)
         ensure.assert_called_once_with(branch, self.synthetic)
+        authorize.assert_called_once_with(
+            internal_pr,
+            number=self.number,
+            head_sha=self.head,
+            evidence=self.evidence(),
+        )
+
+    def test_internal_gate_verifies_commit_and_base_before_success(self) -> None:
+        internal_pr = self.internal_pr()
+        events = []
+        with (
+            mock.patch.object(
+                self.reconciler,
+                "internal_branch_sha",
+                return_value=self.synthetic,
+            ),
+            mock.patch.object(
+                self.reconciler,
+                "fetch_internal_branch",
+                return_value=self.synthetic,
+            ),
+            mock.patch.object(
+                self.reconciler,
+                "verify_synthetic_commit",
+                side_effect=lambda *args, **kwargs: events.append("verified"),
+            ) as verify,
+            mock.patch.object(
+                self.reconciler,
+                "refresh_internal_pr",
+                return_value=internal_pr,
+            ),
+            mock.patch.object(
+                self.reconciler,
+                "fetch_main_sha",
+                side_effect=lambda: events.append("base-bound") or self.base,
+            ),
+            mock.patch.object(
+                self.reconciler,
+                "set_status",
+                side_effect=lambda *args, **kwargs: events.append("status"),
+            ) as status,
+        ):
+            result = self.reconciler.authorize_internal_main_pr_gate(
+                internal_pr,
+                number=self.number,
+                head_sha=self.head,
+                evidence=self.evidence(),
+            )
+        self.assertIs(result, internal_pr)
+        self.assertEqual(events, ["verified", "base-bound", "status"])
+        verify.assert_called_once_with(
+            self.synthetic,
+            number=self.number,
+            head_sha=self.head,
+            base_sha=self.base,
+            tree_sha=self.tree,
+        )
         status.assert_called_once_with(
             self.synthetic,
             "success",
             f"Validated against {self.base[:12]}",
-            context=reconciler_module.PUBLICATION_STATUS_CONTEXT,
+            context=reconciler_module.MAIN_PR_GATE_CONTEXT,
         )
+
+    def test_internal_gate_base_move_never_sets_success(self) -> None:
+        internal_pr = self.internal_pr()
+        with (
+            mock.patch.object(
+                self.reconciler,
+                "internal_branch_sha",
+                return_value=self.synthetic,
+            ),
+            mock.patch.object(
+                self.reconciler,
+                "fetch_internal_branch",
+                return_value=self.synthetic,
+            ),
+            mock.patch.object(
+                self.reconciler,
+                "verify_synthetic_commit",
+            ),
+            mock.patch.object(
+                self.reconciler,
+                "refresh_internal_pr",
+                return_value=internal_pr,
+            ),
+            mock.patch.object(
+                self.reconciler,
+                "fetch_main_sha",
+                return_value="6" * 40,
+            ),
+            mock.patch.object(
+                self.reconciler,
+                "set_status",
+            ) as status,
+        ):
+            with self.assertRaisesRegex(
+                reconciler_module.ReconcileError,
+                "main advanced",
+            ):
+                self.reconciler.authorize_internal_main_pr_gate(
+                    internal_pr,
+                    number=self.number,
+                    head_sha=self.head,
+                    evidence=self.evidence(),
+                )
+        status.assert_not_called()
 
     def test_closed_stale_attempt_is_cleaned_for_new_base(self) -> None:
         stale_base = "6" * 40
@@ -1115,8 +1218,10 @@ class StateReconcilerPublicationTests(unittest.TestCase):
         self.assertNotIn('"update-ref"', source)
         self.assertNotIn("--admin", source)
         self.assertNotIn("pr review", source)
+        self.assertNotIn("workflow run main-pr-gate", source)
         self.assertIn("merge_method=rebase", source)
         self.assertIn("refs/heads/{branch}", source)
+        self.assertIn("context=MAIN_PR_GATE_CONTEXT", source)
 
 
 if __name__ == "__main__":

@@ -11,7 +11,7 @@ import subprocess
 import sys
 
 RULESET_NAME = "main-pr-only-rebase"
-PUBLICATION_STATUS_CONTEXT = "state-reconciler-publication"
+MAIN_PR_GATE_CONTEXT = "main-pr-gate"
 REPOSITORY_PATTERN = re.compile(
     r"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"
 )
@@ -27,7 +27,7 @@ PULL_REQUEST_PARAMETERS = {
 REQUIRED_STATUS_CHECK_PARAMETERS = {
     "do_not_enforce_on_create": False,
     "required_status_checks": [
-        {"context": PUBLICATION_STATUS_CONTEXT},
+        {"context": MAIN_PR_GATE_CONTEXT},
     ],
     "strict_required_status_checks_policy": True,
 }

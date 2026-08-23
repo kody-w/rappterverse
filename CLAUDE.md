@@ -173,12 +173,18 @@ import and provenance header. `DREAMCATCHER_MODE` accepts:
 
 Validated synthetic commits never update `main` directly. The reconciler
 pushes one commit to a validated-base-bound internal branch, creates or reuses
-one source-bound internal PR, and sets the required publication status. The
-strict server ruleset rejects the rebase merge if `main` advances at the API
-boundary. The reconciler verifies the published tree and canonical trailers,
-removes the branch, and only then closes the source PR. GitHub may rewrite
-committer metadata; promotion authentication remains the HMAC-bound canonical
-message evidence, not identity metadata.
+one source-bound internal PR, and directly sets the sole required
+`main-pr-gate` status after re-fetching and validating the synthetic commit,
+canonical PR evidence, and current base. This does not depend on a PR workflow
+event, which GitHub suppresses for `GITHUB_TOKEN`-created PRs. A trusted
+`pull_request_target` workflow sets the same context for ordinary PR events
+without checking out candidate code, but reserved publication branches can
+only reuse an existing trusted reconciler status. The strict server ruleset
+rejects the rebase merge if `main` advances at the API boundary. The reconciler
+verifies the published tree and canonical trailers, removes the branch, and
+only then closes the source PR. GitHub may rewrite committer metadata;
+promotion authentication remains the HMAC-bound canonical message evidence,
+not identity metadata.
 
 Shadow observations are public-safe commit trailers plus trusted workflow/status
 output; they never create a state file or change acceptance. Promotion samples

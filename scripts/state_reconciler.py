@@ -51,7 +51,7 @@ INTERNAL_PR_DESCRIPTION = (
     "Trusted synthetic state publication. The reconciler must rebase-merge "
     "this pull request."
 )
-PUBLICATION_STATUS_CONTEXT = "state-reconciler-publication"
+MAIN_PR_GATE_CONTEXT = "main-pr-gate"
 MAX_ABANDONED_PUBLICATION_CLEANUPS = 8
 COMMIT_OID_PATTERN = re.compile(r"^(?:[0-9a-f]{40}|[0-9a-f]{64})$")
 
@@ -185,6 +185,10 @@ def _pr_head_sha(pr: dict) -> str:
 
 def _pr_base_ref(pr: dict) -> str:
     return str(pr.get("baseRefName") or (pr.get("base") or {}).get("ref") or "")
+
+
+def _pr_base_sha(pr: dict) -> str:
+    return str((pr.get("base") or {}).get("sha") or "")
 
 
 def _pr_author(pr: dict) -> str:
@@ -1010,6 +1014,67 @@ class StateReconciler:
             "-f", f"description={description[:140]}",
         ])
 
+    def authorize_internal_main_pr_gate(
+        self,
+        internal_pr: dict,
+        *,
+        number: int,
+        head_sha: str,
+        evidence: dict,
+    ) -> dict:
+        if evidence["policy_sha"] != self.policy_sha:
+            raise ReconcileError(
+                "internal publication policy does not match the loaded policy"
+            )
+        branch = internal_branch_name(
+            number,
+            head_sha,
+            evidence["base_sha"],
+        )
+        if self.internal_branch_sha(branch) != evidence["synthetic_commit"]:
+            raise ReconcileError(
+                f"internal publication branch collision at {branch}"
+            )
+        fetched = self.fetch_internal_branch(branch, number)
+        if fetched != evidence["synthetic_commit"]:
+            raise ReconcileError(
+                f"internal publication branch {branch} moved while fetched"
+            )
+        self.verify_synthetic_commit(
+            fetched,
+            number=number,
+            head_sha=head_sha,
+            base_sha=evidence["base_sha"],
+            tree_sha=evidence["synthetic_tree"],
+        )
+        internal_number = internal_pr.get("number")
+        if not isinstance(internal_number, int) or internal_number < 1:
+            raise ReconcileError("internal publication PR number is invalid")
+        latest = self.refresh_internal_pr(internal_number)
+        latest_evidence = self.require_internal_pr(latest, number, head_sha)
+        latest_base_sha = _pr_base_sha(latest)
+        if (
+            latest_evidence != evidence
+            or str(latest.get("state") or "").lower() != "open"
+            or _pr_base_ref(latest) != "main"
+            or latest_base_sha != evidence["base_sha"]
+            or _pr_head_sha(latest) != evidence["synthetic_commit"]
+        ):
+            raise ReconcileError(
+                "internal publication PR changed before gate authorization"
+            )
+        if self.fetch_main_sha() != evidence["base_sha"]:
+            raise ReconcileError(
+                "main advanced beyond the validated internal publication base"
+            )
+        self.set_status(
+            evidence["synthetic_commit"],
+            "success",
+            f"Validated against {evidence['base_sha'][:12]}",
+            context=MAIN_PR_GATE_CONTEXT,
+        )
+        return latest
+
     def note_status(self, sha: str, state: str, description: str, **kwargs):
         """Record progress, but never let bookkeeping take down the queue.
 
@@ -1386,12 +1451,6 @@ class StateReconciler:
         branch = internal_branch_name(number, head_sha, base_sha)
         self.ensure_internal_branch(branch, synthetic_commit)
         try:
-            self.set_status(
-                synthetic_commit,
-                "success",
-                f"Validated against {base_sha[:12]}",
-                context=PUBLICATION_STATUS_CONTEXT,
-            )
             internal_pr = self.create_or_reuse_internal_pr(
                 number=number,
                 head_sha=head_sha,
@@ -1399,6 +1458,17 @@ class StateReconciler:
                 base_sha=base_sha,
                 synthetic_commit=synthetic_commit,
                 synthetic_tree=tree_sha,
+            )
+            evidence = self.require_internal_pr(
+                internal_pr,
+                number,
+                head_sha,
+            )
+            internal_pr = self.authorize_internal_main_pr_gate(
+                internal_pr,
+                number=number,
+                head_sha=head_sha,
+                evidence=evidence,
             )
         except ReconcileError:
             try:
@@ -1418,7 +1488,6 @@ class StateReconciler:
                     file=sys.stderr,
                 )
             raise
-        evidence = self.require_internal_pr(internal_pr, number, head_sha)
         return self.merge_internal_publication(
             internal_pr,
             number=number,
@@ -1463,11 +1532,11 @@ class StateReconciler:
                 number,
                 head_sha,
             )
-        self.set_status(
-            evidence["synthetic_commit"],
-            "success",
-            f"Validated against {base_sha[:12]}",
-            context=PUBLICATION_STATUS_CONTEXT,
+        internal_pr = self.authorize_internal_main_pr_gate(
+            internal_pr,
+            number=number,
+            head_sha=head_sha,
+            evidence=evidence,
         )
         return self.merge_internal_publication(
             internal_pr,

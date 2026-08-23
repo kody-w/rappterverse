@@ -138,12 +138,17 @@ invalid attestations plus evidence, index, I/O, and runtime failures block for
 retry.
 
 The reconciler publishes a validated synthetic commit only through a
-validated-base-bound internal branch and source-bound PR. A required
-publication status activates the ruleset's strict up-to-date check, so GitHub
-rejects a merge if `main` advances at the API boundary. The reconciler verifies
-the resulting tree and canonical promotion trailers, deletes the internal
-branch, and closes the source PR last. Committer metadata may be rewritten by
-GitHub and remains diagnostic; HMAC-bound canonical evidence is authoritative.
+validated-base-bound internal branch and source-bound PR. The ruleset requires
+only `main-pr-gate` with strict up-to-date enforcement. A trusted
+`pull_request_target` workflow grants that status for ordinary PR events
+without checking out candidate code; reserved publication heads stay pending.
+The reconciler writes `main-pr-gate` directly only after re-fetching and
+validating the synthetic commit, canonical PR evidence, and current base, so
+publication does not depend on suppressed `GITHUB_TOKEN` PR events. GitHub
+rejects a base race before `main` changes. The reconciler then verifies the
+published tree and canonical promotion trailers, deletes the internal branch,
+and closes the source PR last. Committer metadata may be rewritten by GitHub
+and remains diagnostic; HMAC-bound canonical evidence is authoritative.
 
 ### World bounds
 

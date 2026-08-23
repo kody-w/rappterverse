@@ -58,6 +58,9 @@ jobs:
       - name: Run protected-main ruleset tests
         run: python scripts/test_main_pr_ruleset.py -v
 
+      - name: Run universal protected-main gate tests
+        run: python scripts/test_main_pr_gate.py -v
+
       - name: Run deterministic world-pack compiler tests
         run: python -m unittest discover -s tests -p 'test_world_pack_compiler.py' -v
 

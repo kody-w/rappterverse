@@ -1,0 +1,38 @@
+name: Route Protected Main PR
+
+on:
+  pull_request_target:
+    branches: [main]
+    types: [opened, reopened, synchronize, ready_for_review, edited]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: main-pr-routing-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  route:
+    name: Route protected main PR
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      statuses: write
+    steps:
+      - name: Checkout trusted gate policy
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository }}
+          ref: ${{ github.event.pull_request.base.sha }}
+          path: trusted
+          persist-credentials: false
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Route required status
+        run: python trusted/scripts/main_pr_gate.py
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

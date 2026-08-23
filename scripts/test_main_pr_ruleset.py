@@ -60,10 +60,26 @@ class MainRulesetTests(unittest.TestCase):
             {
                 "do_not_enforce_on_create": False,
                 "required_status_checks": [{
-                    "context": ruleset.PUBLICATION_STATUS_CONTEXT,
+                    "context": ruleset.MAIN_PR_GATE_CONTEXT,
                 }],
                 "strict_required_status_checks_policy": True,
             },
+        )
+        self.assertEqual(ruleset.MAIN_PR_GATE_CONTEXT, "main-pr-gate")
+
+    def test_policy_has_no_direct_push_bypass(self) -> None:
+        payload = ruleset.desired_ruleset()
+        self.assertEqual(payload["bypass_actors"], [])
+        self.assertIn(
+            "pull_request",
+            {rule["type"] for rule in payload["rules"]},
+        )
+        status_rule = next(
+            rule for rule in payload["rules"]
+            if rule["type"] == "required_status_checks"
+        )
+        self.assertFalse(
+            status_rule["parameters"]["do_not_enforce_on_create"]
         )
 
     def test_live_response_round_trips_idempotently(self) -> None:
@@ -109,7 +125,7 @@ class MainRulesetTests(unittest.TestCase):
                     "parameters": {
                         "do_not_enforce_on_create": False,
                         "required_status_checks": [{
-                            "context": ruleset.PUBLICATION_STATUS_CONTEXT,
+                            "context": ruleset.MAIN_PR_GATE_CONTEXT,
                             "integration_id": None,
                         }],
                         "strict_required_status_checks_policy": True,
@@ -121,6 +137,29 @@ class MainRulesetTests(unittest.TestCase):
             ruleset.normalize_ruleset(live),
             ruleset.desired_ruleset(),
         )
+
+    def test_extra_required_context_is_configuration_drift(self) -> None:
+        drifted = copy.deepcopy(ruleset.desired_ruleset())
+        status_rule = next(
+            rule for rule in drifted["rules"]
+            if rule["type"] == "required_status_checks"
+        )
+        status_rule["parameters"]["required_status_checks"].append({
+            "context": "test",
+        })
+        with mock.patch.object(
+            ruleset,
+            "gh_api",
+            side_effect=[
+                [{"id": 42, "name": ruleset.RULESET_NAME}],
+                drifted,
+            ],
+        ):
+            with self.assertRaisesRegex(
+                ruleset.RulesetError,
+                "configuration drift",
+            ):
+                ruleset.install_or_verify("owner/repo")
 
     def test_missing_ruleset_is_created_then_verified(self) -> None:
         desired = ruleset.desired_ruleset()
