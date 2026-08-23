@@ -1085,6 +1085,16 @@ def _commit_headers(
     return headers
 
 
+def _canonical_utc_timestamp(value: str) -> str:
+    if value.endswith("Z"):
+        value = value[:-1] + "+00:00"
+    parsed = datetime.fromisoformat(value)
+    if parsed.tzinfo is None or parsed.utcoffset() is None:
+        raise ValueError("timestamp must include a UTC offset")
+    utc_value = parsed.astimezone(timezone.utc).isoformat(timespec="seconds")
+    return utc_value.removesuffix("+00:00") + "Z"
+
+
 def _identity_metadata(
     commit: str,
     value: bytes,
@@ -1114,6 +1124,7 @@ def _identity_metadata(
             timestamp,
             timezone.utc,
         ).astimezone(identity_timezone).isoformat(timespec="seconds")
+        identity_date = _canonical_utc_timestamp(identity_date)
     except (OverflowError, OSError, ValueError) as exc:
         raise PromotionEvidenceError(
             f"commit {commit}: malformed {label} timestamp"

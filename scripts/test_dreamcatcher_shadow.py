@@ -1035,6 +1035,9 @@ class PromotionEvaluatorTests(RepositoryScratchTest):
             + " commit 123\n"
             "author-shaped text <not-a-header@example.com> 1 +0000\n"
         )
+        commit_env = os.environ.copy()
+        commit_env["GIT_AUTHOR_DATE"] = "2024-02-03T04:05:06+05:30"
+        commit_env["GIT_COMMITTER_DATE"] = "2024-02-03T04:05:06-07:00"
         created = subprocess.run(
             [
                 "git",
@@ -1052,6 +1055,7 @@ class PromotionEvaluatorTests(RepositoryScratchTest):
             input=ordinary_message,
             capture_output=True,
             text=True,
+            env=commit_env,
         )
         self.assertEqual(
             created.returncode,
@@ -1090,6 +1094,23 @@ class PromotionEvaluatorTests(RepositoryScratchTest):
                 check=True,
             ).stdout
 
+        def show_identity(
+            commit: str,
+            format_string: str,
+        ) -> tuple[str, str, str]:
+            values = tuple(
+                value.decode("utf-8", "replace")
+                for value in show(commit, format_string).split(b"\x00")
+            )
+            self.assertEqual(len(values), 3)
+            return (
+                values[0],
+                values[1],
+                promotion._canonical_utc_timestamp(values[2]),
+            )
+
+        self.assertEqual(metadata[0].author[2], "2024-02-02T22:35:06Z")
+        self.assertEqual(metadata[0].committer[2], "2024-02-03T11:05:06Z")
         for commit, actual in zip(commits, metadata, strict=True):
             with self.subTest(commit=commit):
                 self.assertEqual(
@@ -1106,23 +1127,11 @@ class PromotionEvaluatorTests(RepositoryScratchTest):
                 )
                 self.assertEqual(
                     actual.author,
-                    tuple(
-                        value.decode("utf-8", "replace")
-                        for value in show(
-                            commit,
-                            "%an%x00%ae%x00%aI",
-                        ).split(b"\x00")
-                    ),
+                    show_identity(commit, "%an%x00%ae%x00%aI"),
                 )
                 self.assertEqual(
                     actual.committer,
-                    tuple(
-                        value.decode("utf-8", "replace")
-                        for value in show(
-                            commit,
-                            "%cn%x00%ce%x00%cI",
-                        ).split(b"\x00")
-                    ),
+                    show_identity(commit, "%cn%x00%ce%x00%cI"),
                 )
                 self.assertEqual(actual.signatures, ())
 
