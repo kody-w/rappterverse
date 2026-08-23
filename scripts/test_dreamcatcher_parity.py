@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import copy
 import hashlib
 import importlib.util
 import json
@@ -17,11 +18,15 @@ from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 BASE_DIR = SCRIPT_DIR.parent
-CORE_COMMIT = "75025fe696331c85de58a9dbdd0efbbc68ac6f86"
+DELTA_CORE_COMMIT = "42c1bcf7d84044d3132d86314e040a8b8b146ddb"
+REVERSE_CORE_COMMIT = "75025fe696331c85de58a9dbdd0efbbc68ac6f86"
 CANONICAL_HASHES = {
-    "delta": "edabf77d2c0431eed4a116536fd3446c7b079b9ac249751582948618b934bb9b",
+    "delta": "75c2abf377206f78f6d0d7399dae5b1fbd74404aa1ce6ea91f848dbfa012191a",
     "delta_schema": (
-        "74ed88c5b50be2f7a023afa3de2599ed8e0c2d5de594b8cf6fe26afb9a3fbbd1"
+        "e980509c5661b5ffb548a32def675ded84ba31cb7b96ac9affa184ce6656c58e"
+    ),
+    "delta_fixture": (
+        "04f72ae280d1f1d89b052cee4fa4d9d0281595cb7e129f75d83f2e517fa720ac"
     ),
     "reverse": "8f490c8158d4576f62d872cac69bf4fdd88fe9915e5d90a02e90e01789748d47",
     "index_schema": (
@@ -29,7 +34,7 @@ CANONICAL_HASHES = {
     ),
 }
 VENDOR_HEADER = (
-    f"# Vendored from kody-w/rappter@{CORE_COMMIT}:\n"
+    f"# Vendored from kody-w/rappter@{REVERSE_CORE_COMMIT}:\n"
     "# engines/twin-dreamcatcher/reverse_index.py\n"
     "# Canonical Git-blob SHA-256:\n"
     f"# {CANONICAL_HASHES['reverse']}\n"
@@ -178,6 +183,9 @@ class DreamcatcherParityTests(unittest.TestCase):
     def _implementations(self) -> tuple[object, object, object, object]:
         vendor_delta = SCRIPT_DIR / "dreamcatcher_delta.py"
         vendor_reverse = SCRIPT_DIR / "dreamcatcher_reverse_index.py"
+        vendor_delta_fixture = (
+            SCRIPT_DIR / "fixtures" / "dreamcatcher-delta-1.0-git.json"
+        )
         vendor_delta_schema = BASE_DIR / "schema" / "delta.schema.json"
         vendor_index_schema = BASE_DIR / "schema" / "index.schema.json"
         core_dir = self._core_dir()
@@ -189,6 +197,10 @@ class DreamcatcherParityTests(unittest.TestCase):
         self.assertEqual(
             _sha256(_normalized(vendor_delta_schema)),
             CANONICAL_HASHES["delta_schema"],
+        )
+        self.assertEqual(
+            _sha256(_normalized(vendor_delta_fixture)),
+            CANONICAL_HASHES["delta_fixture"],
         )
         self.assertEqual(
             _normalized(vendor_reverse).count(VENDOR_HEADER),
@@ -213,6 +225,15 @@ class DreamcatcherParityTests(unittest.TestCase):
             self.assertEqual(
                 vendor_delta_schema.read_bytes(),
                 (core_dir / "delta.schema.json").read_bytes(),
+            )
+            self.assertEqual(
+                vendor_delta_fixture.read_bytes(),
+                (
+                    core_dir
+                    / "tests"
+                    / "fixtures"
+                    / "dreamcatcher-delta-1.0-git.json"
+                ).read_bytes(),
             )
             self.assertEqual(
                 vendor_index_schema.read_bytes(),
@@ -281,6 +302,57 @@ class DreamcatcherParityTests(unittest.TestCase):
         _git(repo, "add", ".")
         _git(repo, "commit", "-qm", "seed")
         return repo, _git(repo, "rev-parse", "HEAD")
+
+    def test_core_and_vendor_legacy_semantics_are_identical(self) -> None:
+        core_dp, vendor_dp, _, _ = self._implementations()
+        fixture = (
+            SCRIPT_DIR / "fixtures" / "dreamcatcher-delta-1.0-git.json"
+        )
+        core_fixture = core_dp.load_manifest(fixture)
+        vendor_fixture = vendor_dp.load_manifest(fixture)
+        self.assertEqual(core_fixture, vendor_fixture)
+        self.assertNotIn(
+            "line_coordinates",
+            vendor_fixture["repository"],
+        )
+
+        repo, base = self._fixture()
+        _write_json(repo / "state" / "legacy.json", {
+            "frame_id": "frame-modern",
+            "agent_id": "agent-1",
+        })
+        core_modern = core_dp.capture_worktree(repo, base)
+        vendor_modern = vendor_dp.capture_worktree(repo, base)
+        self.assertEqual(core_modern, vendor_modern)
+        self.assertEqual(
+            vendor_modern["repository"]["line_coordinates"],
+            vendor_dp.LINE_COORDINATES,
+        )
+
+        legacy_payload = copy.deepcopy(vendor_modern)
+        legacy_payload.pop("manifest_id")
+        legacy_payload["repository"].pop("line_coordinates")
+        core_legacy = core_dp._with_id(
+            copy.deepcopy(legacy_payload),
+            "manifest_id",
+        )
+        vendor_legacy = vendor_dp._with_id(
+            copy.deepcopy(legacy_payload),
+            "manifest_id",
+        )
+        self.assertEqual(core_legacy, vendor_legacy)
+        self.assertEqual(
+            core_dp.verify_manifest_repository(core_legacy, repo),
+            core_legacy,
+        )
+        self.assertEqual(
+            vendor_dp.verify_manifest_repository(vendor_legacy, repo),
+            vendor_legacy,
+        )
+        self.assertEqual(
+            core_dp.batch_manifests([core_modern, core_legacy]),
+            vendor_dp.batch_manifests([vendor_modern, vendor_legacy]),
+        )
 
     def test_core_and_vendor_wire_output_is_identical(self) -> None:
         core_dp, vendor_dp, core_ri, vendor_ri = self._implementations()

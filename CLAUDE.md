@@ -155,11 +155,12 @@ application consume only its planned paths. The durable state reconciler is
 the single serial publisher and records the manifest ID and query count in
 every synthetic state commit.
 
-The reconciler vendors the finalized Dreamcatcher protocol and public-safe
-reverse index from `kody-w/rappter@75025fe` as
-`scripts/dreamcatcher_delta.py` and `scripts/dreamcatcher_reverse_index.py`,
-with exact schemas under `schema/`. The reverse-index source differs only in
-its local protocol import and provenance header. `DREAMCATCHER_MODE` accepts:
+The reconciler vendors the optimized Dreamcatcher delta protocol and schema
+from `kody-w/rappter@42c1bcf` as `scripts/dreamcatcher_delta.py` and
+`schema/delta.schema.json`. The public-safe reverse index remains pinned to
+`kody-w/rappter@75025fe` as `scripts/dreamcatcher_reverse_index.py` with its
+exact schema under `schema/`; its source differs only in the local protocol
+import and provenance header. `DREAMCATCHER_MODE` accepts:
 
 - `off` — retain the pre-index reconciler path and do not build an index.
 - `shadow` — the default and explicit workflow setting. Build/query the
