@@ -13,6 +13,7 @@ import re
 import statistics
 import subprocess
 import sys
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable
 
@@ -30,7 +31,7 @@ ATTESTATION_ALGORITHM = "hmac-sha256"
 PROMOTION_KEY_ENV = "DREAMCATCHER_PROMOTION_KEY"
 REPOSITORY = "rappterverse"
 CONTENT_ID_PATTERN = re.compile(r"^sha256:[0-9a-f]{64}$")
-COMMIT_PATTERN = re.compile(r"^[0-9a-f]{40,64}$")
+COMMIT_PATTERN = re.compile(r"^(?:[0-9a-f]{40}|[0-9a-f]{64})$")
 ERROR_CODE_PATTERN = re.compile(r"^[a-z0-9][a-z0-9-]{0,63}$")
 ATTESTATION_PATTERN = re.compile(r"^hmac-sha256:[0-9a-f]{64}$")
 REPOSITORY_PATTERN = re.compile(
@@ -39,6 +40,7 @@ REPOSITORY_PATTERN = re.compile(
 SYNTHETIC_SUBJECT_PATTERN = re.compile(
     r"^\[state\] apply PR #([1-9]\d*)$"
 )
+MAXIMUM_COMMIT_EVIDENCE_COMMITS = 512
 MINIMUM_SAMPLES = 50
 MAXIMUM_ERRORS = 0
 MAXIMUM_COVERAGE_FAILURES = 0
@@ -122,6 +124,16 @@ class PromotionAttestationError(PromotionEvidenceError):
     """Promotion readiness is missing a valid trusted attestation."""
 
 
+@dataclass(frozen=True)
+class _CommitMetadata:
+    parents: tuple[str, ...]
+    subject: str
+    message: str
+    author: tuple[str, str, str]
+    committer: tuple[str, str, str]
+    signature: tuple[str, str, str, str, str]
+
+
 def _canonical_bytes(value: object) -> bytes:
     return json.dumps(
         value,
@@ -158,6 +170,9 @@ PROMOTION_POLICY = {
     "thresholds": dict(THRESHOLDS),
     "evidence": {
         "history": "first-parent",
+        "maximum_commits": MAXIMUM_COMMIT_EVIDENCE_COMMITS,
+        "object_validation": "git-commit",
+        "message_transport": "per-object-fixed-format",
         "parent_count": 1,
         "sample_mode": "shadow",
         "subject": "[state] apply PR #N",
@@ -731,7 +746,7 @@ def telemetry_from_commit_message(message: str) -> dict | None:
     """Parse one synthetic commit's Dreamcatcher trailer sample."""
     values: dict[str, str] = {}
     unknown = []
-    for line in message.splitlines():
+    for line in message.split("\n"):
         key, separator, value = line.partition(":")
         if not separator:
             continue
@@ -856,7 +871,7 @@ def telemetry_from_commit_message(message: str) -> dict | None:
 
 def telemetry_from_synthetic_commit(message: str) -> dict | None:
     """Require the canonical synthetic state-commit message shape."""
-    lines = message.splitlines()
+    lines = message.split("\n")
     if not lines:
         return None
     subject_match = SYNTHETIC_SUBJECT_PATTERN.fullmatch(lines[0])
@@ -911,21 +926,19 @@ def load_jsonl(path: str) -> list[dict]:
     return parse_jsonl(text)
 
 
-def load_commit_evidence(repo_root: Path, revision: str = "HEAD") -> list[dict]:
-    """Load canonical first-parent samples without claiming authentication."""
-    git_env = os.environ.copy()
-    git_env.pop(PROMOTION_KEY_ENV, None)
+def _run_evidence_git(
+    repo_root: Path,
+    git_env: dict[str, str],
+    arguments: list[str],
+    *,
+    input_bytes: bytes | None = None,
+) -> bytes:
     try:
         result = subprocess.run(
-            [
-                "git",
-                "log",
-                "--first-parent",
-                revision,
-                "--format=%H%x1f%P%x1f%B%x1e",
-            ],
+            ["git", *arguments],
             cwd=repo_root,
             env=git_env,
+            input=input_bytes,
             capture_output=True,
         )
     except OSError as exc:
@@ -935,42 +948,191 @@ def load_commit_evidence(repo_root: Path, revision: str = "HEAD") -> list[dict]:
     if result.returncode != 0:
         detail = (
             result.stderr.decode("utf-8", "replace").strip()
-            or f"git log exited {result.returncode}"
+            or f"git exited {result.returncode}"
         )
         raise PromotionEvidenceError(f"cannot scan commit evidence: {detail}")
-    records = []
-    output = result.stdout.decode("utf-8", "replace")
-    for raw_record in output.split("\x1e"):
-        raw_record = raw_record.strip("\r\n")
-        if not raw_record:
-            continue
-        fields = raw_record.split("\x1f", 2)
-        if len(fields) != 3:
-            raise PromotionEvidenceError("git log returned a malformed record")
-        commit, parents_value, message = fields
+    return result.stdout
+
+
+def _decode_commit_field(value: bytes) -> str:
+    return value.decode("utf-8", "replace")
+
+
+def _resolve_evidence_revision(
+    repo_root: Path,
+    git_env: dict[str, str],
+    revision: str,
+) -> str:
+    output = _run_evidence_git(
+        repo_root,
+        git_env,
+        [
+            "rev-parse",
+            "--verify",
+            "--end-of-options",
+            f"{revision}^{{commit}}",
+        ],
+    )
+    try:
+        resolved = output.decode("ascii").strip()
+    except UnicodeDecodeError as exc:
+        raise PromotionEvidenceError(
+            "git rev-parse returned a malformed commit"
+        ) from exc
+    if not COMMIT_PATTERN.fullmatch(resolved):
+        raise PromotionEvidenceError(
+            "git rev-parse returned a malformed commit"
+        )
+    return resolved
+
+
+def _enumerate_evidence_commits(
+    repo_root: Path,
+    git_env: dict[str, str],
+    revision: str,
+) -> list[str]:
+    output = _run_evidence_git(
+        repo_root,
+        git_env,
+        [
+            "rev-list",
+            "--first-parent",
+            f"--max-count={MAXIMUM_COMMIT_EVIDENCE_COMMITS}",
+            revision,
+        ],
+    )
+    commits = []
+    for raw_commit in output.splitlines():
+        try:
+            commit = raw_commit.decode("ascii")
+        except UnicodeDecodeError as exc:
+            raise PromotionEvidenceError(
+                "git rev-list returned a malformed commit"
+            ) from exc
         if not COMMIT_PATTERN.fullmatch(commit):
-            raise PromotionEvidenceError("git log returned a malformed commit")
-        lines = message.splitlines()
-        if (
-            not lines
-            or not SYNTHETIC_SUBJECT_PATTERN.fullmatch(lines[0])
-        ):
+            raise PromotionEvidenceError(
+                "git rev-list returned a malformed commit"
+            )
+        commits.append(commit)
+    return commits
+
+
+def _validate_evidence_objects(
+    repo_root: Path,
+    git_env: dict[str, str],
+    commits: list[str],
+) -> None:
+    if not commits:
+        return
+    output = _run_evidence_git(
+        repo_root,
+        git_env,
+        [
+            "cat-file",
+            "--batch-check=%(objectname) %(objecttype)",
+        ],
+        input_bytes=("".join(f"{commit}\n" for commit in commits)).encode(
+            "ascii"
+        ),
+    )
+    try:
+        actual = output.decode("ascii").splitlines()
+    except UnicodeDecodeError as exc:
+        raise PromotionEvidenceError(
+            "git cat-file returned malformed object metadata"
+        ) from exc
+    expected = [f"{commit} commit" for commit in commits]
+    if actual != expected:
+        raise PromotionEvidenceError(
+            "git cat-file did not validate the enumerated commit objects"
+        )
+
+
+def _load_commit_metadata(
+    repo_root: Path,
+    git_env: dict[str, str],
+    commit: str,
+) -> _CommitMetadata:
+    def fixed_format(format_string: str) -> bytes:
+        return _run_evidence_git(
+            repo_root,
+            git_env,
+            [
+                "show",
+                "--no-patch",
+                "--no-notes",
+                "--no-show-signature",
+                "--no-color",
+                f"--format=format:{format_string}",
+                commit,
+            ],
+        )
+
+    def metadata_fields(
+        format_string: str,
+        count: int,
+        label: str,
+    ) -> tuple[str, ...]:
+        fields = fixed_format(format_string).split(b"\x00")
+        if len(fields) != count:
+            raise PromotionEvidenceError(
+                f"commit {commit}: git show returned malformed {label}"
+            )
+        return tuple(_decode_commit_field(value) for value in fields)
+
+    parents = tuple(
+        _decode_commit_field(fixed_format("%P")).split()
+    )
+    return _CommitMetadata(
+        parents=parents,
+        subject=_decode_commit_field(fixed_format("%s")),
+        message=_decode_commit_field(fixed_format("%B")),
+        author=metadata_fields(
+            "%an%x00%ae%x00%aI",
+            3,
+            "author metadata",
+        ),
+        committer=metadata_fields(
+            "%cn%x00%ce%x00%cI",
+            3,
+            "committer metadata",
+        ),
+        signature=metadata_fields(
+            "%G?%x00%GS%x00%GK%x00%GF%x00%GP",
+            5,
+            "signature metadata",
+        ),
+    )
+
+
+def load_commit_evidence(repo_root: Path, revision: str = "HEAD") -> list[dict]:
+    """Load bounded, object-validated first-parent commit samples."""
+    git_env = os.environ.copy()
+    git_env.pop(PROMOTION_KEY_ENV, None)
+    git_env["GIT_NO_REPLACE_OBJECTS"] = "1"
+    resolved = _resolve_evidence_revision(repo_root, git_env, revision)
+    commits = _enumerate_evidence_commits(repo_root, git_env, resolved)
+    _validate_evidence_objects(repo_root, git_env, commits)
+    records = []
+    for commit in commits:
+        metadata = _load_commit_metadata(repo_root, git_env, commit)
+        if not SYNTHETIC_SUBJECT_PATTERN.fullmatch(metadata.subject):
             continue
+        lines = metadata.message.split("\n")
         if not any(
             line.startswith("Dreamcatcher-Mode:")
             for line in lines[1:]
         ):
             continue
-        parents = parents_value.split()
         if (
-            len(parents) != 1
-            or not COMMIT_PATTERN.fullmatch(parents[0])
+            len(metadata.parents) != 1
+            or not COMMIT_PATTERN.fullmatch(metadata.parents[0])
         ):
             raise PromotionEvidenceError(
                 f"commit {commit}: synthetic evidence must have one parent"
             )
         try:
-            record = telemetry_from_synthetic_commit(message)
+            record = telemetry_from_synthetic_commit(metadata.message)
         except PromotionEvidenceError as exc:
             raise PromotionEvidenceError(f"commit {commit}: {exc}") from exc
         if record is not None and record["mode"] == "shadow":

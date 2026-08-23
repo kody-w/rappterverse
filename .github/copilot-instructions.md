@@ -126,6 +126,10 @@ synthetic commits and never trusts caller-authored summaries. Commit identity
 metadata is not authentication. Enforce also verifies a target-bound
 HMAC-SHA256 attestation produced by the trusted policy step from the
 `DREAMCATCHER_PROMOTION_KEY` Actions secret; shadow does not need that secret.
+Evidence loading enumerates a bounded first-parent hash window, validates each
+commit object, and retrieves parents, subject, `%B`, and diagnostic metadata
+with separate fixed formats per object. Commit body control characters are
+data and never delimit evidence records.
 Only deterministic candidate path-coverage failures are terminal. Missing or
 invalid attestations plus evidence, index, I/O, and runtime failures block for
 retry.

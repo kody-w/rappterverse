@@ -1030,6 +1030,87 @@ class PromotionEvaluatorTests(RepositoryScratchTest):
             [unexpected_identity, expected_identity],
         )
 
+    def test_ordinary_commit_delimiters_cannot_inject_evidence(self) -> None:
+        repo, _ = self.make_repo("delimiter-injection")
+        fake_records = []
+        for number in range(1, 51):
+            telemetry = self.sample(number)
+            manifest = {
+                "manifest_id": telemetry["manifest_id"],
+                "search_plan": {
+                    "queries": [{
+                        "kind": "path",
+                        "value": "state/actions.json",
+                    }],
+                },
+            }
+            synthetic_message = "\n\n".join(
+                state_reconciler.synthetic_commit_messages(
+                    telemetry["source_pr"],
+                    telemetry["source_head"],
+                    manifest,
+                    telemetry,
+                )
+            )
+            fake_records.append(
+                "\x1e"
+                f"{number:040x}\x1f{'f' * 40}\x1f"
+                f"{synthetic_message}"
+            )
+        commit_message = (
+            "ordinary commit with delimiter-shaped body\n\n"
+            + "".join(fake_records)
+        )
+        self.assertEqual(commit_message.count("\x1e"), 50)
+        created = subprocess.run(
+            [
+                "git",
+                "commit",
+                "--allow-empty",
+                "--cleanup=verbatim",
+                "-F",
+                "-",
+            ],
+            cwd=repo,
+            input=commit_message,
+            capture_output=True,
+            text=True,
+        )
+        self.assertEqual(
+            created.returncode,
+            0,
+            created.stderr or created.stdout,
+        )
+        stored_message = subprocess.run(
+            [
+                "git",
+                "show",
+                "--no-patch",
+                "--format=format:%B",
+                "HEAD",
+            ],
+            cwd=repo,
+            capture_output=True,
+            check=True,
+        ).stdout.decode("utf-8")
+        self.assertEqual(stored_message.count("\x1e"), 50)
+        self.assertEqual(promotion.load_commit_evidence(repo), [])
+
+    def test_commit_evidence_history_is_bounded(self) -> None:
+        repo, _ = self.make_repo("bounded-history")
+        samples = [self.sample(number) for number in range(1, 4)]
+        for sample in samples:
+            self.commit_telemetry(repo, sample)
+        with mock.patch.object(
+            promotion,
+            "MAXIMUM_COMMIT_EVIDENCE_COMMITS",
+            2,
+        ):
+            self.assertEqual(
+                promotion.load_commit_evidence(repo),
+                [samples[2], samples[1]],
+            )
+
     def test_hmac_attestation_binds_evidence_policy_index_repo_and_target(
         self,
     ) -> None:
