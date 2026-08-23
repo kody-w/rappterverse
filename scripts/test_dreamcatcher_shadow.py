@@ -214,7 +214,7 @@ class ReverseIndexVendorTests(RepositoryScratchTest):
                 .read_bytes()
                 .replace(b"\r\n", b"\n")
             ).hexdigest(),
-            "434dbf01565845d680391992ee6f6a503d7e828c6fdf9d91036943f89ec640ef",
+            "75c2abf377206f78f6d0d7399dae5b1fbd74404aa1ce6ea91f848dbfa012191a",
         )
         self.assertNotIn(
             "# Vendored from",

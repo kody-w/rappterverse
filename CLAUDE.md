@@ -156,7 +156,7 @@ the single serial publisher and records the manifest ID and query count in
 every synthetic state commit.
 
 The reconciler vendors the optimized Dreamcatcher delta protocol and schema
-from `kody-w/rappter@8b6c824` as `scripts/dreamcatcher_delta.py` and
+from `kody-w/rappter@42c1bcf` as `scripts/dreamcatcher_delta.py` and
 `schema/delta.schema.json`. The public-safe reverse index remains pinned to
 `kody-w/rappter@75025fe` as `scripts/dreamcatcher_reverse_index.py` with its
 exact schema under `schema/`; its source differs only in the local protocol

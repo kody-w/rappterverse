@@ -175,6 +175,15 @@ def _note_buffered_patch(metrics: Optional[dict], size: int) -> None:
     )
 
 
+def _note_accumulated_entities(metrics: Optional[dict], size: int) -> None:
+    if metrics is None:
+        return
+    metrics["max_accumulated_entity_ids"] = max(
+        int(metrics.get("max_accumulated_entity_ids", 0)),
+        size,
+    )
+
+
 def _read_nul_record(stream: BinaryIO, *, context: str) -> bytes:
     value = bytearray()
     while True:
@@ -527,20 +536,31 @@ def _read_raw_changes(reader: _BufferedGitOutput) -> list[dict]:
     return changes
 
 
-def _scan_entity_line(metadata: dict, content: bytes) -> None:
+def _disable_entity_accumulation(metadata: dict) -> None:
+    metadata["entities_complete"] = False
+    metadata["entities"].clear()
+
+
+def _scan_entity_line(
+    metadata: dict,
+    content: bytes,
+    *,
+    metrics: Optional[dict] = None,
+) -> None:
     if not metadata["entities_complete"]:
         return
     if len(content) > ENTITY_LINE_MAX_BYTES:
-        metadata["entities_complete"] = False
+        _disable_entity_accumulation(metadata)
         return
     try:
         text = content.decode("utf-8", "strict")
     except UnicodeDecodeError:
-        metadata["entities_complete"] = False
+        _disable_entity_accumulation(metadata)
         return
     for match in ENTITY_PATTERN.finditer(text):
         value = match.group("value").strip("\"'")
         metadata["entities"].add(f"{match.group('key')}:{value}")
+    _note_accumulated_entities(metrics, len(metadata["entities"]))
 
 
 def _finish_patch_hunk(metadata: dict) -> None:
@@ -565,8 +585,12 @@ def _new_patch_metadata(path: str) -> dict:
 def _stream_patch_metadata(
     reader: _BufferedGitOutput,
     changes: list[dict],
+    *,
+    metrics: Optional[dict] = None,
 ) -> list[dict]:
     metadata = [_new_patch_metadata(change["path"]) for change in changes]
+    for value in metadata:
+        _note_accumulated_entities(metrics, len(value["entities"]))
     # Raw and patch records share Git's order; a type change expands to delete/add.
     section_targets = [
         index
@@ -609,6 +633,7 @@ def _stream_patch_metadata(
             current = metadata[change_index]
             if changes[change_index]["status"] == "T":
                 current["coordinates_complete"] = False
+                _disable_entity_accumulation(current)
             continue
         if line.startswith((b"diff --cc ", b"diff --combined ")):
             raise DeltaProtocolError(
@@ -619,7 +644,7 @@ def _stream_patch_metadata(
                 raise DeltaProtocolError("git diff returned patch data without a path")
             continue
         if not line_complete:
-            current["entities_complete"] = False
+            _disable_entity_accumulation(current)
             current["coordinates_complete"] = False
         if line.startswith(b"@@ "):
             if current["in_hunk"]:
@@ -646,12 +671,12 @@ def _stream_patch_metadata(
                 if current["new_remaining"] <= 0:
                     raise DeltaProtocolError("git diff hunk exceeds its new range")
                 current["new_remaining"] -= 1
-                _scan_entity_line(current, line[1:])
+                _scan_entity_line(current, line[1:], metrics=metrics)
             elif line.startswith(b"-"):
                 if current["old_remaining"] <= 0:
                     raise DeltaProtocolError("git diff hunk exceeds its old range")
                 current["old_remaining"] -= 1
-                _scan_entity_line(current, line[1:])
+                _scan_entity_line(current, line[1:], metrics=metrics)
             elif line.startswith(b" "):
                 if (
                     current["old_remaining"] <= 0
@@ -669,12 +694,15 @@ def _stream_patch_metadata(
             continue
         if line.startswith(b"Binary files ") or line == b"GIT binary patch":
             current["binary"] = True
+            _disable_entity_accumulation(current)
         elif line.startswith(b"\\ No newline at end of file"):
             continue
         elif line.startswith(b"Submodule "):
             current["coordinates_complete"] = False
+            _disable_entity_accumulation(current)
         elif line and not line.startswith(allowed_metadata):
             current["coordinates_complete"] = False
+            _disable_entity_accumulation(current)
     if current is not None and current["in_hunk"]:
         _finish_patch_hunk(current)
     if changes and section_index + 1 != len(section_targets):
@@ -724,7 +752,7 @@ def _stream_git_diff(
     reader = _BufferedGitOutput(process.stdout, metrics=metrics)
     try:
         changes = _read_raw_changes(reader)
-        metadata = _stream_patch_metadata(reader, changes)
+        metadata = _stream_patch_metadata(reader, changes, metrics=metrics)
         stderr = process.stderr.read().decode("utf-8", "replace")
         returncode = process.wait()
         process.stdout.close()
@@ -816,6 +844,10 @@ def _scan_untracked_file(
     contains_nul = False
     entity_metadata = _new_patch_metadata(path)
     pending = bytearray()
+    if unsafe_attribute:
+        _disable_entity_accumulation(entity_metadata)
+    else:
+        _note_accumulated_entities(metrics, len(entity_metadata["entities"]))
     with candidate.open("rb") as handle:
         while True:
             chunk = handle.read(BLOB_STREAM_CHUNK_BYTES)
@@ -826,20 +858,31 @@ def _scan_untracked_file(
             size += len(chunk)
             newline_count += chunk.count(b"\n")
             last_byte = chunk[-1:]
-            contains_nul = contains_nul or b"\0" in chunk
+            chunk_contains_nul = b"\0" in chunk
+            contains_nul = contains_nul or chunk_contains_nul
+            if chunk_contains_nul:
+                _disable_entity_accumulation(entity_metadata)
+                pending.clear()
             if entity_metadata["entities_complete"]:
                 pending.extend(chunk)
                 while True:
                     newline = pending.find(b"\n")
                     if newline < 0:
                         break
-                    _scan_entity_line(entity_metadata, bytes(pending[:newline]))
+                    _scan_entity_line(
+                        entity_metadata,
+                        bytes(pending[:newline]),
+                        metrics=metrics,
+                    )
                     del pending[:newline + 1]
+                    if not entity_metadata["entities_complete"]:
+                        pending.clear()
+                        break
                 if len(pending) > ENTITY_LINE_MAX_BYTES:
-                    entity_metadata["entities_complete"] = False
+                    _disable_entity_accumulation(entity_metadata)
                     pending.clear()
     if entity_metadata["entities_complete"] and pending:
-        _scan_entity_line(entity_metadata, bytes(pending))
+        _scan_entity_line(entity_metadata, bytes(pending), metrics=metrics)
     summary = {"sha256": digest.hexdigest(), "bytes": size}
     if unsafe_attribute or contains_nul:
         return summary, [], []
@@ -1099,6 +1142,7 @@ def capture_worktree(
         "max_buffered_blob_bytes": 0,
         "patch_line_max_bytes": PATCH_LINE_MAX_BYTES,
         "max_buffered_patch_bytes": 0,
+        "max_accumulated_entity_ids": 0,
         "worktree_capture_max_attempts": WORKTREE_CAPTURE_MAX_ATTEMPTS,
         "worktree_capture_attempts": 0,
     }
@@ -1366,8 +1410,24 @@ def validate_manifest(manifest: dict) -> dict:
     return manifest
 
 
-def _repository_semantics(manifest: dict) -> dict:
+def _repository_semantics(
+    manifest: dict,
+    *,
+    conservative_paths: set[str],
+) -> dict:
     repository = manifest["repository"]
+    legacy = "line_coordinates" not in repository
+    changes = []
+    for change in manifest["changes"]:
+        normalized = change
+        if (
+            legacy
+            and change["path"] in conservative_paths
+            and not change["line_ranges"]
+            and change["entity_ids"] == [f"path:{change['path']}"]
+        ):
+            normalized = {**change, "entity_ids": []}
+        changes.append(normalized)
     return {
         "repository": {
             "base_commit": repository["base_commit"],
@@ -1376,8 +1436,8 @@ def _repository_semantics(manifest: dict) -> dict:
             "path_filter": repository["path_filter"],
         },
         "source": manifest["source"],
-        "changes": manifest["changes"],
-        "search_plan": manifest["search_plan"],
+        "changes": changes,
+        "search_plan": _search_plan(changes),
     }
 
 
@@ -1399,7 +1459,18 @@ def verify_manifest_repository(manifest: dict, repo: Path) -> dict:
         include_untracked=repository["includes_worktree"],
         paths=repository["path_filter"] or None,
     )
-    if _repository_semantics(expected) != _repository_semantics(manifest):
+    conservative_paths = {
+        change["path"]
+        for change in expected["changes"]
+        if not change["line_ranges"] and not change["entity_ids"]
+    }
+    if _repository_semantics(
+        expected,
+        conservative_paths=conservative_paths,
+    ) != _repository_semantics(
+        manifest,
+        conservative_paths=conservative_paths,
+    ):
         raise DeltaProtocolError(
             "manifest does not cover the exact declared repository diff"
         )

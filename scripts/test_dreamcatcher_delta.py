@@ -545,6 +545,42 @@ class DeltaProtocolTests(unittest.TestCase):
             dp.BLOB_STREAM_CHUNK_BYTES,
         )
 
+    def test_untracked_binary_scanning_bounds_discarded_entities(self) -> None:
+        repo = self._clone("untracked-binary-entities")
+        declared_path = "state/declared.bin"
+        detected_path = "state/detected.bin"
+        (repo / ".gitattributes").write_text(
+            f"{declared_path} -diff\n",
+            encoding="utf-8",
+        )
+        _git(repo, "add", ".gitattributes")
+        _git(repo, "commit", "-m", "declare binary path")
+        base = _git(repo, "rev-parse", "HEAD")
+
+        records = b"".join(
+            f'{{"frame_id":"discard-{index:05d}"}}\n'.encode()
+            for index in range(20_000)
+        )
+        (repo / declared_path).write_bytes(records)
+        (repo / detected_path).write_bytes(b"\0" + records)
+        metrics = {}
+        manifest = dp.capture_worktree(
+            repo,
+            base,
+            paths=[declared_path, detected_path],
+            metrics=metrics,
+        )
+
+        changes = {change["path"]: change for change in manifest["changes"]}
+        for path in (declared_path, detected_path):
+            self.assertEqual(changes[path]["line_ranges"], [])
+            self.assertEqual(changes[path]["entity_ids"], [])
+        self.assertEqual(metrics["max_accumulated_entity_ids"], 1)
+        self.assertLessEqual(
+            metrics["max_buffered_blob_bytes"],
+            dp.BLOB_STREAM_CHUNK_BYTES,
+        )
+
     def test_unicode_and_binary_metadata_remain_safe(self) -> None:
         repo = self._clone("unicode-binary")
         unicode_path = "state/unicode.jsonl"
@@ -731,6 +767,74 @@ class DeltaProtocolTests(unittest.TestCase):
         unsealed["manifest_id"] = modern["manifest_id"]
         with self.assertRaisesRegex(dp.DeltaProtocolError, "manifest_id"):
             dp.verify_manifest_repository(unsealed, repo)
+
+    def test_repository_verification_replays_legacy_binary_entities(self) -> None:
+        repo = self._clone("verify-legacy-binary")
+        path = "state/legacy.bin"
+        (repo / ".gitattributes").write_text(
+            f"{path} -diff\n",
+            encoding="utf-8",
+        )
+        (repo / path).write_text('{"frame_id":"old"}\n', encoding="utf-8")
+        _git(repo, "add", ".")
+        _git(repo, "commit", "-m", "add declared binary")
+        base = _git(repo, "rev-parse", "HEAD")
+        (repo / path).write_text('{"frame_id":"new"}\n', encoding="utf-8")
+
+        modern = dp.capture_worktree(repo, base, paths=[path])
+        change = modern["changes"][0]
+        self.assertEqual(change["line_ranges"], [])
+        self.assertEqual(change["entity_ids"], [])
+
+        legacy_payload = copy.deepcopy(modern)
+        legacy_payload.pop("manifest_id")
+        legacy_payload["repository"].pop("line_coordinates")
+        legacy_payload["changes"][0]["entity_ids"] = [f"path:{path}"]
+        legacy_payload["search_plan"] = dp._search_plan(
+            legacy_payload["changes"]
+        )
+        legacy = dp._with_id(legacy_payload, "manifest_id")
+        self.assertEqual(dp.validate_manifest(legacy), legacy)
+        self.assertEqual(dp.verify_manifest_repository(legacy, repo), legacy)
+
+        unsealed = copy.deepcopy(legacy)
+        unsealed["manifest_id"] = modern["manifest_id"]
+        with self.assertRaisesRegex(dp.DeltaProtocolError, "manifest_id"):
+            dp.verify_manifest_repository(unsealed, repo)
+
+        non_path_payload = copy.deepcopy(legacy)
+        non_path_payload.pop("manifest_id")
+        non_path_payload["changes"][0]["entity_ids"].append(
+            "frame_id:forged"
+        )
+        non_path_payload["search_plan"] = dp._search_plan(
+            non_path_payload["changes"]
+        )
+        non_path = dp._with_id(non_path_payload, "manifest_id")
+        with self.assertRaisesRegex(dp.DeltaProtocolError, "exact declared"):
+            dp.verify_manifest_repository(non_path, repo)
+
+        ranged_payload = copy.deepcopy(legacy)
+        ranged_payload.pop("manifest_id")
+        ranged_payload["changes"][0]["line_ranges"] = [{
+            "old_start": 1,
+            "old_lines": 1,
+            "new_start": 1,
+            "new_lines": 1,
+        }]
+        ranged = dp._with_id(ranged_payload, "manifest_id")
+        with self.assertRaisesRegex(dp.DeltaProtocolError, "exact declared"):
+            dp.verify_manifest_repository(ranged, repo)
+
+        modern_path_payload = copy.deepcopy(modern)
+        modern_path_payload.pop("manifest_id")
+        modern_path_payload["changes"][0]["entity_ids"] = [f"path:{path}"]
+        modern_path_payload["search_plan"] = dp._search_plan(
+            modern_path_payload["changes"]
+        )
+        modern_path = dp._with_id(modern_path_payload, "manifest_id")
+        with self.assertRaisesRegex(dp.DeltaProtocolError, "exact declared"):
+            dp.verify_manifest_repository(modern_path, repo)
 
     def test_worktree_capture_retries_content_and_path_set_races(self) -> None:
         repo = self._clone("capture-race")

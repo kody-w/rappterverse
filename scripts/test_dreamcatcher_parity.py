@@ -18,10 +18,10 @@ from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 BASE_DIR = SCRIPT_DIR.parent
-DELTA_CORE_COMMIT = "8b6c824e859ebf5b3387c1054ca9649ac404d961"
+DELTA_CORE_COMMIT = "42c1bcf7d84044d3132d86314e040a8b8b146ddb"
 REVERSE_CORE_COMMIT = "75025fe696331c85de58a9dbdd0efbbc68ac6f86"
 CANONICAL_HASHES = {
-    "delta": "434dbf01565845d680391992ee6f6a503d7e828c6fdf9d91036943f89ec640ef",
+    "delta": "75c2abf377206f78f6d0d7399dae5b1fbd74404aa1ce6ea91f848dbfa012191a",
     "delta_schema": (
         "e980509c5661b5ffb548a32def675ded84ba31cb7b96ac9affa184ce6656c58e"
     ),
