@@ -214,7 +214,7 @@ class ReverseIndexVendorTests(RepositoryScratchTest):
                 .read_bytes()
                 .replace(b"\r\n", b"\n")
             ).hexdigest(),
-            "edabf77d2c0431eed4a116536fd3446c7b079b9ac249751582948618b934bb9b",
+            "434dbf01565845d680391992ee6f6a503d7e828c6fdf9d91036943f89ec640ef",
         )
         self.assertNotIn(
             "# Vendored from",
@@ -228,7 +228,7 @@ class ReverseIndexVendorTests(RepositoryScratchTest):
                 .read_bytes()
                 .replace(b"\r\n", b"\n")
             ).hexdigest(),
-            "74ed88c5b50be2f7a023afa3de2599ed8e0c2d5de594b8cf6fe26afb9a3fbbd1",
+            "e980509c5661b5ffb548a32def675ded84ba31cb7b96ac9affa184ce6656c58e",
         )
 
     def test_index_is_deterministic_and_selects_dependency_closure(self) -> None:

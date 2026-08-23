@@ -1,0 +1,93 @@
+{
+  "changes": [
+    {
+      "after": {
+        "bytes": 31,
+        "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+      },
+      "before": {
+        "bytes": 28,
+        "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "entity_ids": [
+        "frame_id:legacy-frame",
+        "path:state/history.jsonl"
+      ],
+      "line_ranges": [
+        {
+          "new_lines": 1,
+          "new_start": 1,
+          "old_lines": 1,
+          "old_start": 1
+        }
+      ],
+      "path": "state/history.jsonl",
+      "search_scopes": [
+        "format:jsonl",
+        "state",
+        "state/history"
+      ],
+      "status": "M"
+    }
+  ],
+  "manifest_id": "sha256:6f07c2d81b174c61095df23ba399b528a73deb4742f9d2eaca976e283fa2449e",
+  "producer": {
+    "name": "twin-dreamcatcher",
+    "version": "0.2.0"
+  },
+  "repository": {
+    "base_commit": "1111111111111111111111111111111111111111",
+    "head_commit": "2222222222222222222222222222222222222222",
+    "includes_worktree": false,
+    "path_filter": []
+  },
+  "schema": "dreamcatcher-delta/1.0",
+  "search_plan": {
+    "deleted_paths": [],
+    "entity_ids": [
+      "frame_id:legacy-frame",
+      "path:state/history.jsonl"
+    ],
+    "paths": [
+      "state/history.jsonl"
+    ],
+    "queries": [
+      {
+        "kind": "entity",
+        "value": "frame_id:legacy-frame"
+      },
+      {
+        "kind": "entity",
+        "value": "path:state/history.jsonl"
+      },
+      {
+        "kind": "path",
+        "value": "state/history.jsonl"
+      },
+      {
+        "kind": "scope",
+        "value": "format:jsonl"
+      },
+      {
+        "kind": "scope",
+        "value": "state"
+      },
+      {
+        "kind": "scope",
+        "value": "state/history"
+      }
+    ],
+    "renamed_paths": [],
+    "scopes": [
+      "format:jsonl",
+      "state",
+      "state/history"
+    ]
+  },
+  "source": {
+    "branch": "worker/legacy",
+    "frame": 7,
+    "id": "legacy-worker",
+    "tile": "west"
+  }
+}
