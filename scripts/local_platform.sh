@@ -971,6 +971,18 @@ discard_failed_cycle() {
   rm -f "$PUBLICATION_BLOCK"
 }
 
+isolated_worktree_intact() {
+  # The disposable worktree can lose its .git link while the loop still owns it
+  # -- /tmp reaping, or an interrupted `worktree remove` that leaves the entry
+  # prunable. Every git command then fails identically, so retrying can never
+  # repair it: the loop below just re-runs a doomed cycle every INTERVAL and
+  # keeps the process alive, which means KeepAlive never rebuilds the worktree
+  # and every liveness probe reads green while the world is frozen. Ran is not
+  # worked. Report the breakage so the caller can exit and let the supervisor
+  # build a fresh worktree off origin/main.
+  git -C "$REPO" rev-parse --git-dir >/dev/null 2>&1
+}
+
 run_cycle() {
   CYCLE=$((CYCLE + 1))
   local cycle_failed=0
@@ -1125,6 +1137,10 @@ case "${1:-}" in
     log ""
     while true; do
       if ! run_cycle; then
+        if ! isolated_worktree_intact; then
+          err "Isolated worktree is no longer a git repository; exiting so the supervisor rebuilds it"
+          exit 1
+        fi
         err "Cycle failed; retained publication block and will retry"
       fi
       log "Sleeping ${INTERVAL}s..."
