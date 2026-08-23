@@ -19,9 +19,11 @@ class FakeApi:
     def __init__(
         self,
         *,
+        commit: dict | None = None,
         refs: list[dict] | None = None,
         statuses: list[dict] | None = None,
     ):
+        self.commit = commit
         self.refs = refs or []
         self.statuses = statuses or []
         self.calls: list[tuple[str, str, dict | None]] = []
@@ -35,6 +37,10 @@ class FakeApi:
         payload: dict | None = None,
     ) -> object:
         self.calls.append((endpoint, method, payload))
+        if "/git/commits/" in endpoint:
+            if self.commit is None:
+                raise AssertionError("head commit fixture is missing")
+            return self.commit
         if "/git/matching-refs/" in endpoint:
             return self.refs
         if "/commits/" in endpoint and endpoint.endswith(
@@ -122,6 +128,56 @@ class MainPrGatePolicyTests(unittest.TestCase):
             "object": {"type": "commit", "sha": self.synthetic},
         }
 
+    def synthetic_message(self) -> str:
+        return "\n\n".join([
+            f"[state] apply PR #{self.source_number}",
+            f"Source-PR: #{self.source_number}",
+            f"Source-Head: {self.source_head}",
+            "Dreamcatcher-Delta: sha256:" + ("a" * 64),
+            "Dreamcatcher-Search-Queries: 1",
+        ])
+
+    def commit_object(
+        self,
+        *,
+        sha: str,
+        message: str,
+        tree_sha: str,
+        parents: list[str],
+    ) -> dict:
+        return {
+            "sha": sha,
+            "message": message,
+            "tree": {"sha": tree_sha},
+            "parents": [{"sha": parent} for parent in parents],
+        }
+
+    def ordinary_commit(
+        self,
+        *,
+        sha: str | None = None,
+        message: str = "Document the protected path",
+    ) -> dict:
+        return self.commit_object(
+            sha=sha or self.source_head,
+            message=message,
+            tree_sha="6" * 40,
+            parents=[self.base],
+        )
+
+    def synthetic_commit(
+        self,
+        *,
+        tree_sha: str | None = None,
+        parents: list[str] | None = None,
+    ) -> dict:
+        return self.commit_object(
+            sha=self.synthetic,
+            message=self.synthetic_message(),
+            tree_sha=tree_sha or self.tree,
+            parents=parents or [self.base],
+        )
+
     def trusted_status(self) -> dict:
         return {
             "context": gate.MAIN_PR_GATE_CONTEXT,
@@ -134,7 +190,7 @@ class MainPrGatePolicyTests(unittest.TestCase):
         }
 
     def test_ordinary_pr_receives_gate_without_candidate_execution(self) -> None:
-        api = FakeApi()
+        api = FakeApi(commit=self.ordinary_commit())
         result = gate.route_main_pr(
             self.ordinary_event(),
             repo=self.repo,
@@ -152,12 +208,20 @@ class MainPrGatePolicyTests(unittest.TestCase):
                 "target_url": self.target_url,
             }],
         )
+        self.assertIn(
+            (
+                f"repos/{self.repo}/git/commits/{self.source_head}",
+                "GET",
+                None,
+            ),
+            api.calls,
+        )
 
     def test_attacker_internal_prefix_branch_stays_blocked(self) -> None:
-        api = FakeApi()
+        api = FakeApi(commit=self.ordinary_commit())
         with self.assertRaisesRegex(
             gate.GateBlocked,
-            "not canonical",
+            "does not contain canonical",
         ):
             gate.route_main_pr(
                 self.ordinary_event(
@@ -176,12 +240,13 @@ class MainPrGatePolicyTests(unittest.TestCase):
         event["pull_request"]["head"]["repo"]["full_name"] = "mallory/repo"
         event["pull_request"]["user"]["login"] = "mallory"
         api = FakeApi(
+            commit=self.synthetic_commit(),
             refs=[self.internal_ref()],
             statuses=[self.trusted_status()],
         )
         with self.assertRaisesRegex(
             gate.GateBlocked,
-            "not canonical",
+            "reserved for its canonical",
         ):
             gate.route_main_pr(
                 event,
@@ -190,13 +255,16 @@ class MainPrGatePolicyTests(unittest.TestCase):
                 api=api,
                 target_url=self.target_url,
             )
-        self.assertEqual(api.posts[0]["state"], "pending")
+        self.assertEqual(api.posts, [])
 
     def test_ordinary_alias_of_internal_commit_stays_blocked(self) -> None:
-        api = FakeApi(refs=[self.internal_ref()])
+        api = FakeApi(
+            commit=self.synthetic_commit(),
+            refs=[self.internal_ref()],
+        )
         with self.assertRaisesRegex(
             gate.GateBlocked,
-            "not canonical",
+            "reserved for its canonical",
         ):
             gate.route_main_pr(
                 self.ordinary_event(head_sha=self.synthetic),
@@ -205,10 +273,134 @@ class MainPrGatePolicyTests(unittest.TestCase):
                 api=api,
                 target_url=self.target_url,
             )
+        self.assertEqual(api.posts, [])
+
+    def test_alias_branch_cannot_disguise_synthetic_commit(self) -> None:
+        event = self.internal_event()
+        event["pull_request"]["head"]["ref"] = "feature/publication-alias"
+        api = FakeApi(commit=self.synthetic_commit())
+        with self.assertRaisesRegex(
+            gate.GateBlocked,
+            "reserved for its canonical",
+        ):
+            gate.route_main_pr(
+                event,
+                repo=self.repo,
+                owner=self.owner,
+                api=api,
+                target_url=self.target_url,
+            )
+        self.assertEqual(api.posts, [])
+
+    def test_shared_synthetic_sha_event_never_overwrites_gate_status(
+        self,
+    ) -> None:
+        api = FakeApi(
+            commit=self.synthetic_commit(),
+            statuses=[self.trusted_status()],
+        )
+        self.assertEqual(
+            gate.route_main_pr(
+                self.internal_event(),
+                repo=self.repo,
+                owner=self.owner,
+                api=api,
+                target_url=self.target_url,
+            ),
+            "internal-verified",
+        )
+        with self.assertRaisesRegex(
+            gate.GateBlocked,
+            "reserved for its canonical",
+        ):
+            gate.route_main_pr(
+                self.ordinary_event(head_sha=self.synthetic),
+                repo=self.repo,
+                owner=self.owner,
+                api=api,
+                target_url=self.target_url,
+            )
+        self.assertEqual(api.posts, [])
+
+    def test_partial_synthetic_markers_stay_explicitly_pending(self) -> None:
+        messages = (
+            "[state] apply PR #",
+            "Routine change\n\nSource-PR: #17",
+            f"Routine change\n\nSource-Head: {self.source_head}",
+            f"Routine change\n\nPolicy-SHA: {self.base}",
+            "Routine change\n\nDreamcatcher-Policy: sha256:" + ("a" * 64),
+        )
+        for message in messages:
+            with self.subTest(message=message):
+                api = FakeApi(
+                    commit=self.ordinary_commit(message=message),
+                )
+                with self.assertRaisesRegex(
+                    gate.GateBlocked,
+                    "markers are malformed",
+                ):
+                    gate.route_main_pr(
+                        self.ordinary_event(),
+                        repo=self.repo,
+                        owner=self.owner,
+                        api=api,
+                        target_url=self.target_url,
+                    )
+                self.assertEqual(api.posts[0]["state"], "pending")
+                self.assertEqual(
+                    api.posts[0]["description"],
+                    gate.MALFORMED_DESCRIPTION,
+                )
+
+    def test_synthetic_commit_requires_one_parent(self) -> None:
+        api = FakeApi(
+            commit=self.synthetic_commit(
+                parents=[self.base, "7" * 40],
+            ),
+        )
+        with self.assertRaisesRegex(
+            gate.GateBlocked,
+            "ancestry is malformed",
+        ):
+            gate.route_main_pr(
+                self.internal_event(),
+                repo=self.repo,
+                owner=self.owner,
+                api=api,
+                target_url=self.target_url,
+            )
         self.assertEqual(api.posts[0]["state"], "pending")
+        self.assertEqual(
+            api.posts[0]["description"],
+            gate.MALFORMED_DESCRIPTION,
+        )
+
+    def test_head_commit_object_metadata_must_match_event(self) -> None:
+        valid = self.ordinary_commit()
+        variants = {
+            "sha": {**valid, "sha": "7" * 40},
+            "tree": {**valid, "tree": {"sha": "not-a-tree"}},
+            "parent": {**valid, "parents": [{"sha": "not-a-parent"}]},
+        }
+        for label, commit in variants.items():
+            with self.subTest(label=label):
+                api = FakeApi(commit=commit)
+                with self.assertRaisesRegex(
+                    gate.GateError,
+                    "malformed head commit data",
+                ):
+                    gate.route_main_pr(
+                        self.ordinary_event(),
+                        repo=self.repo,
+                        owner=self.owner,
+                        api=api,
+                        target_url=self.target_url,
+                    )
+                self.assertEqual(api.posts, [])
 
     def test_internal_pr_only_verifies_existing_trusted_status(self) -> None:
         api = FakeApi(
+            commit=self.synthetic_commit(),
             refs=[self.internal_ref()],
             statuses=[self.trusted_status()],
         )
@@ -234,6 +426,7 @@ class MainPrGatePolicyTests(unittest.TestCase):
         ):
             with self.subTest(label=label):
                 api = FakeApi(
+                    commit=self.synthetic_commit(),
                     refs=[self.internal_ref()],
                     statuses=statuses,
                 )
@@ -248,18 +441,19 @@ class MainPrGatePolicyTests(unittest.TestCase):
                         api=api,
                         target_url=self.target_url,
                     )
-                self.assertEqual(api.posts[0]["state"], "pending")
+                self.assertEqual(api.posts, [])
 
     def test_internal_status_is_bound_to_event_base(self) -> None:
         event = self.internal_event()
         event["pull_request"]["base"]["sha"] = "5" * 40
         api = FakeApi(
+            commit=self.synthetic_commit(),
             refs=[self.internal_ref()],
             statuses=[self.trusted_status()],
         )
         with self.assertRaisesRegex(
             gate.GateBlocked,
-            "validated base",
+            "does not match",
         ):
             gate.route_main_pr(
                 event,
@@ -268,7 +462,25 @@ class MainPrGatePolicyTests(unittest.TestCase):
                 api=api,
                 target_url=self.target_url,
             )
-        self.assertEqual(api.posts[0]["state"], "pending")
+        self.assertEqual(api.posts, [])
+
+    def test_internal_status_is_bound_to_commit_tree(self) -> None:
+        api = FakeApi(
+            commit=self.synthetic_commit(tree_sha="7" * 40),
+            statuses=[self.trusted_status()],
+        )
+        with self.assertRaisesRegex(
+            gate.GateBlocked,
+            "does not match",
+        ):
+            gate.route_main_pr(
+                self.internal_event(),
+                repo=self.repo,
+                owner=self.owner,
+                api=api,
+                target_url=self.target_url,
+            )
+        self.assertEqual(api.posts, [])
 
 
 class MainPrGateWorkflowTests(unittest.TestCase):
@@ -305,6 +517,14 @@ class MainPrGateWorkflowTests(unittest.TestCase):
         self.assertNotIn("contents: write", content)
         self.assertIn("name: Route protected main PR", content)
         self.assertNotIn("name: main-pr-gate", content)
+        gate_source = (
+            BASE_DIR / "scripts" / "main_pr_gate.py"
+        ).read_text(encoding="utf-8")
+        self.assertIn(
+            'f"repos/{repo}/git/commits/{head_sha}"',
+            gate_source,
+        )
+        self.assertIn("has_synthetic_publication_markers", gate_source)
 
     def test_test_and_pii_workflows_remain_independent(self) -> None:
         gate_workflow = (

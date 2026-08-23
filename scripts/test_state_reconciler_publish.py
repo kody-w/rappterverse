@@ -200,6 +200,11 @@ class StateReconcilerPublicationTests(unittest.TestCase):
             ),
             mock.patch.object(
                 self.reconciler,
+                "refresh_internal_pr",
+                return_value=internal_pr,
+            ),
+            mock.patch.object(
+                self.reconciler,
                 "discard_internal_publication",
             ) as discard,
             mock.patch.object(reconciler_module, "gh_json") as api,
@@ -220,6 +225,54 @@ class StateReconcilerPublicationTests(unittest.TestCase):
             self.head,
         )
         api.assert_not_called()
+
+    def test_merge_revalidates_specific_pr_number_head_and_base(self) -> None:
+        variants = {}
+        wrong_number = copy.deepcopy(self.internal_pr())
+        wrong_number["number"] += 1
+        variants["number"] = wrong_number
+        wrong_head = copy.deepcopy(self.internal_pr())
+        wrong_head["head"]["sha"] = "6" * 40
+        variants["head"] = wrong_head
+        wrong_base = copy.deepcopy(self.internal_pr())
+        wrong_base["base"]["sha"] = "6" * 40
+        variants["base"] = wrong_base
+
+        for label, latest in variants.items():
+            with self.subTest(label=label):
+                internal_pr = self.internal_pr()
+                with (
+                    mock.patch.object(
+                        self.reconciler,
+                        "internal_branch_sha",
+                        return_value=self.synthetic,
+                    ),
+                    mock.patch.object(
+                        self.reconciler,
+                        "refresh_internal_pr",
+                        return_value=latest,
+                    ) as refresh,
+                    mock.patch.object(
+                        self.reconciler,
+                        "fetch_main_sha",
+                    ) as fetch_main,
+                    mock.patch.object(
+                        reconciler_module,
+                        "gh_json",
+                    ) as api,
+                ):
+                    with self.assertRaises(
+                        reconciler_module.ReconcileError,
+                    ):
+                        self.reconciler.merge_internal_publication(
+                            internal_pr,
+                            number=self.number,
+                            head_sha=self.head,
+                            evidence=self.evidence(),
+                        )
+                refresh.assert_called_once_with(self.internal_number)
+                fetch_main.assert_not_called()
+                api.assert_not_called()
 
     def test_server_rejects_base_race_before_main_is_changed_by_merge(
         self,

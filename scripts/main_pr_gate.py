@@ -16,12 +16,16 @@ from state_reconciler import (
     COMMIT_OID_PATTERN,
     INTERNAL_BRANCH_PREFIX,
     MAIN_PR_GATE_CONTEXT,
+    ReconcileError,
+    has_synthetic_publication_markers,
     is_canonical_internal_pr,
     parse_internal_pr_body,
+    parse_synthetic_commit_identity,
 )
 
 ORDINARY_DESCRIPTION = "Trusted ordinary main PR gate"
 RESERVED_DESCRIPTION = "Reserved publication awaits trusted reconciler"
+MALFORMED_DESCRIPTION = "Malformed synthetic publication is reserved"
 TRUSTED_STATUS_CREATORS = {"github-actions[bot]"}
 
 ApiCall = Callable[..., object]
@@ -60,6 +64,42 @@ def _base_sha(pr: dict) -> str:
     return str((pr.get("base") or {}).get("sha") or "")
 
 
+def _head_commit_metadata(
+    api: ApiCall,
+    repo: str,
+    head_sha: str,
+) -> dict:
+    value = api(
+        f"repos/{repo}/git/commits/{head_sha}",
+        method="GET",
+    )
+    if not isinstance(value, dict) or value.get("sha") != head_sha:
+        raise GateError("GitHub returned malformed head commit data")
+    message = value.get("message")
+    tree = value.get("tree")
+    parents = value.get("parents")
+    if (
+        not isinstance(message, str)
+        or not isinstance(tree, dict)
+        or not COMMIT_OID_PATTERN.fullmatch(str(tree.get("sha") or ""))
+        or not isinstance(parents, list)
+    ):
+        raise GateError("GitHub returned malformed head commit data")
+    parent_shas = []
+    for parent in parents:
+        if not isinstance(parent, dict):
+            raise GateError("GitHub returned malformed head commit data")
+        sha = str(parent.get("sha") or "")
+        if not COMMIT_OID_PATTERN.fullmatch(sha):
+            raise GateError("GitHub returned malformed head commit data")
+        parent_shas.append(sha)
+    return {
+        "message": message,
+        "tree_sha": str(tree["sha"]),
+        "parent_shas": parent_shas,
+    }
+
+
 def _internal_branch_shas(api: ApiCall, repo: str) -> set[str]:
     encoded = urllib.parse.quote(INTERNAL_BRANCH_PREFIX, safe="")
     value = api(
@@ -76,7 +116,9 @@ def _internal_branch_shas(api: ApiCall, repo: str) -> set[str]:
         if not isinstance(item, dict):
             raise GateError("GitHub returned malformed internal branch data")
         ref = str(item.get("ref") or "")
-        target = item.get("object") or {}
+        target = item.get("object")
+        if not isinstance(target, dict):
+            raise GateError("GitHub returned malformed internal branch data")
         sha = str(target.get("sha") or "")
         if (
             not ref.startswith(expected_prefix)
@@ -135,13 +177,15 @@ def _block_reserved(
     head_sha: str,
     target_url: str,
     reason: str,
+    *,
+    description: str = RESERVED_DESCRIPTION,
 ):
     _post_status(
         api,
         repo,
         head_sha,
         state="pending",
-        description=RESERVED_DESCRIPTION,
+        description=description,
         target_url=target_url,
     )
     raise GateBlocked(reason)
@@ -163,61 +207,92 @@ def route_main_pr(
     if not COMMIT_OID_PATTERN.fullmatch(head_sha):
         raise GateError("pull request head is not a commit")
 
+    commit = _head_commit_metadata(api, repo, head_sha)
+    if has_synthetic_publication_markers(commit["message"]):
+        try:
+            identity = parse_synthetic_commit_identity(commit["message"])
+        except ReconcileError as exc:
+            _block_reserved(
+                api,
+                repo,
+                head_sha,
+                target_url,
+                f"synthetic publication markers are malformed: {exc}",
+                description=MALFORMED_DESCRIPTION,
+            )
+        if len(commit["parent_shas"]) != 1:
+            _block_reserved(
+                api,
+                repo,
+                head_sha,
+                target_url,
+                "synthetic publication commit ancestry is malformed",
+                description=MALFORMED_DESCRIPTION,
+            )
+
+        evidence = parse_internal_pr_body(pr.get("body"))
+        if (
+            evidence is None
+            or not is_canonical_internal_pr(pr, repo, owner)
+        ):
+            raise GateBlocked(
+                "synthetic publication commit is reserved for its canonical "
+                "internal pull request"
+            )
+        if (
+            identity["source_pr"] != evidence["source_pr"]
+            or identity["source_head"] != evidence["source_head"]
+            or evidence["synthetic_commit"] != head_sha
+            or commit["tree_sha"] != evidence["synthetic_tree"]
+            or commit["parent_shas"] != [evidence["base_sha"]]
+            or _base_sha(pr) != evidence["base_sha"]
+        ):
+            raise GateBlocked(
+                "synthetic publication commit does not match its canonical "
+                "internal pull request evidence"
+            )
+
+        status = _latest_gate_status(api, repo, head_sha)
+        creator = (status or {}).get("creator") or {}
+        expected_description = (
+            f"Validated against {evidence['base_sha'][:12]}"
+        )
+        if (
+            not isinstance(status, dict)
+            or str(status.get("state") or "").lower() != "success"
+            or status.get("description") != expected_description
+            or creator.get("login") not in TRUSTED_STATUS_CREATORS
+            or creator.get("type") != "Bot"
+        ):
+            raise GateBlocked(
+                "internal publication has no trusted reconciler gate status",
+            )
+        return "internal-verified"
+
     internal_shas = _internal_branch_shas(api, repo)
     reserved = (
         head_ref.startswith(INTERNAL_BRANCH_PREFIX)
         or head_sha in internal_shas
     )
-    if not reserved:
-        _post_status(
-            api,
-            repo,
-            head_sha,
-            state="success",
-            description=ORDINARY_DESCRIPTION,
-            target_url=target_url,
-        )
-        return "ordinary-passed"
-
-    evidence = parse_internal_pr_body(pr.get("body"))
-    if (
-        evidence is None
-        or not is_canonical_internal_pr(pr, repo, owner)
-    ):
+    if reserved:
         _block_reserved(
             api,
             repo,
             head_sha,
             target_url,
-            "reserved internal publication identity is not canonical",
+            "reserved publication branch does not contain canonical "
+            "synthetic commit markers",
+            description=MALFORMED_DESCRIPTION,
         )
-    if _base_sha(pr) != evidence["base_sha"]:
-        _block_reserved(
-            api,
-            repo,
-            head_sha,
-            target_url,
-            "internal publication is not bound to its validated base",
-        )
-
-    status = _latest_gate_status(api, repo, head_sha)
-    creator = (status or {}).get("creator") or {}
-    expected_description = f"Validated against {evidence['base_sha'][:12]}"
-    if (
-        not isinstance(status, dict)
-        or str(status.get("state") or "").lower() != "success"
-        or status.get("description") != expected_description
-        or creator.get("login") not in TRUSTED_STATUS_CREATORS
-        or creator.get("type") != "Bot"
-    ):
-        _block_reserved(
-            api,
-            repo,
-            head_sha,
-            target_url,
-            "internal publication has no trusted reconciler gate status",
-        )
-    return "internal-verified"
+    _post_status(
+        api,
+        repo,
+        head_sha,
+        state="success",
+        description=ORDINARY_DESCRIPTION,
+        target_url=target_url,
+    )
+    return "ordinary-passed"
 
 
 def github_api(

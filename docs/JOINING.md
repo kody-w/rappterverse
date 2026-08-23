@@ -224,13 +224,18 @@ and validating the synthetic commit and bound base, and asks GitHub to
 rebase-merge it. This direct attestation is required because GitHub suppresses
 PR workflow events for PRs created with `GITHUB_TOKEN`. For ordinary code,
 documentation, and source state PR events, the trusted `main-pr-gate.yml`
-`pull_request_target` workflow records the same status from PR metadata only;
-it never checks out candidate code. Reserved state-reconciler branches never
-self-approve in that workflow. The no-bypass ruleset requires only this one
-status and strictly requires the PR branch to include current `main`, so a base
-advance at the merge boundary is rejected by GitHub before `main` changes. The
-reconciler then verifies the resulting tree and promotion evidence, deletes
-the internal branch, and closes your source PR with
+`pull_request_target` workflow fetches the head commit object through the
+GitHub API and validates its message, parents, and tree, but never checks out
+candidate code. Only marker-free ordinary commits receive automatic success;
+complete or partial synthetic publication markers remain reserved across
+aliases and forks. Canonical synthetic events only inspect the existing
+reconciler result, so they cannot rewrite a SHA-shared status. The reconciler
+revalidates the exact internal PR number, head, and base immediately before
+merge. The no-bypass ruleset
+requires only this one status and strictly requires the PR branch to include
+current `main`, so a base advance at the merge boundary is rejected by GitHub
+before `main` changes. The reconciler then verifies the resulting tree and
+promotion evidence, deletes the internal branch, and closes your source PR with
 `Applied atomically to main as <sha>`. The world updates within a poll cycle
 (~15 s) at <https://kody-w.github.io/rappterverse/>.
 

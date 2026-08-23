@@ -54,6 +54,20 @@ INTERNAL_PR_DESCRIPTION = (
 MAIN_PR_GATE_CONTEXT = "main-pr-gate"
 MAX_ABANDONED_PUBLICATION_CLEANUPS = 8
 COMMIT_OID_PATTERN = re.compile(r"^(?:[0-9a-f]{40}|[0-9a-f]{64})$")
+SYNTHETIC_SUBJECT_PATTERN = re.compile(
+    r"^\[state\] apply PR #([1-9]\d*)$"
+)
+SYNTHETIC_PUBLICATION_MARKERS = (
+    "[state] apply pr #",
+    "source-pr",
+    "source-head",
+    "policy-sha",
+    "validated-base",
+    "synthetic-commit",
+    "synthetic-tree",
+    "dreamcatcher-",
+    "state-reconciler-publication",
+)
 
 
 def internal_branch_prefix(number: int, head_sha: str) -> str:
@@ -277,6 +291,74 @@ class ReconcileError(RuntimeError):
 
 class ValidationRejected(ReconcileError):
     """The queue item deterministically failed trusted validation."""
+
+
+def has_synthetic_publication_markers(message: object) -> bool:
+    if not isinstance(message, str):
+        return False
+    folded = message.casefold()
+    return any(marker in folded for marker in SYNTHETIC_PUBLICATION_MARKERS)
+
+
+def parse_synthetic_commit_identity(message: str) -> dict:
+    try:
+        telemetry_from_synthetic_commit(message)
+    except PromotionEvidenceError as exc:
+        raise ReconcileError(
+            f"synthetic publication provenance is malformed: {exc}"
+        ) from exc
+    lines = message.splitlines()
+    subject = SYNTHETIC_SUBJECT_PATTERN.fullmatch(lines[0] if lines else "")
+    if subject is None:
+        raise ReconcileError("synthetic publication subject is not canonical")
+    trailers: dict[str, str] = {}
+    for line in lines[1:]:
+        if not line:
+            continue
+        key, separator, value = line.partition(":")
+        if not separator or key in trailers:
+            raise ReconcileError(
+                "synthetic publication trailers are not canonical"
+            )
+        trailers[key] = value.strip()
+
+    number = int(subject.group(1))
+    if trailers.get("Source-PR") != f"#{number}":
+        raise ReconcileError(
+            "synthetic publication Source-PR trailer is invalid"
+        )
+    head_sha = trailers.get("Source-Head", "")
+    if not COMMIT_OID_PATTERN.fullmatch(head_sha):
+        raise ReconcileError(
+            "synthetic publication Source-Head trailer is invalid"
+        )
+    delta = trailers.get("Dreamcatcher-Delta", "")
+    queries = trailers.get("Dreamcatcher-Search-Queries", "")
+    if (
+        not re.fullmatch(r"sha256:[0-9a-f]{64}", delta)
+        or not queries.isdigit()
+    ):
+        raise ReconcileError(
+            "synthetic publication Dreamcatcher evidence is invalid"
+        )
+    return {
+        "source_pr": number,
+        "source_head": head_sha,
+    }
+
+
+def validate_synthetic_commit_message(
+    message: str,
+    number: int,
+    head_sha: str,
+):
+    identity = parse_synthetic_commit_identity(message)
+    if identity["source_pr"] != number:
+        raise ReconcileError("synthetic publication subject is not canonical")
+    if identity["source_head"] != head_sha:
+        raise ReconcileError(
+            "synthetic publication Source-Head trailer is invalid"
+        )
 
 
 def without_promotion_key() -> dict[str, str]:
@@ -825,43 +907,7 @@ class StateReconciler:
         number: int,
         head_sha: str,
     ):
-        try:
-            telemetry_from_synthetic_commit(message)
-        except PromotionEvidenceError as exc:
-            raise ReconcileError(
-                f"synthetic publication provenance is malformed: {exc}"
-            ) from exc
-        lines = message.splitlines()
-        if not lines or lines[0] != f"[state] apply PR #{number}":
-            raise ReconcileError("synthetic publication subject is not canonical")
-        trailers: dict[str, str] = {}
-        for line in lines[1:]:
-            if not line:
-                continue
-            key, separator, value = line.partition(":")
-            if not separator or key in trailers:
-                raise ReconcileError(
-                    "synthetic publication trailers are not canonical"
-                )
-            trailers[key] = value.strip()
-        required = {
-            "Source-PR": f"#{number}",
-            "Source-Head": head_sha,
-        }
-        for key, expected in required.items():
-            if trailers.get(key) != expected:
-                raise ReconcileError(
-                    f"synthetic publication {key} trailer is invalid"
-                )
-        delta = trailers.get("Dreamcatcher-Delta", "")
-        queries = trailers.get("Dreamcatcher-Search-Queries", "")
-        if (
-            not re.fullmatch(r"sha256:[0-9a-f]{64}", delta)
-            or not queries.isdigit()
-        ):
-            raise ReconcileError(
-                "synthetic publication Dreamcatcher evidence is invalid"
-            )
+        validate_synthetic_commit_message(message, number, head_sha)
 
     def verify_synthetic_commit(
         self,
@@ -1351,6 +1397,9 @@ class StateReconciler:
         head_sha: str,
         evidence: dict,
     ) -> str:
+        internal_number = internal_pr.get("number")
+        if not isinstance(internal_number, int) or internal_number < 1:
+            raise ReconcileError("internal publication PR number is invalid")
         branch = internal_branch_name(
             number,
             head_sha,
@@ -1379,21 +1428,23 @@ class StateReconciler:
             raise ReconcileError(
                 f"internal publication branch collision at {branch}"
             )
-        if self.fetch_main_sha() != evidence["base_sha"]:
-            self.discard_internal_publication(internal_pr, number, head_sha)
-            raise ReconcileError(
-                "main advanced beyond the validated internal publication base"
-            )
-        latest = self.refresh_internal_pr(int(internal_pr["number"]))
+        latest = self.refresh_internal_pr(internal_number)
         latest_evidence = self.require_internal_pr(latest, number, head_sha)
         if latest_evidence != evidence:
             raise ReconcileError("internal publication PR changed before merge")
         if (
-            str(latest.get("state") or "").lower() != "open"
+            latest.get("number") != internal_number
+            or str(latest.get("state") or "").lower() != "open"
             or _pr_base_ref(latest) != "main"
+            or _pr_base_sha(latest) != evidence["base_sha"]
             or _pr_head_sha(latest) != evidence["synthetic_commit"]
         ):
             raise ReconcileError("internal publication PR changed before merge")
+        if self.fetch_main_sha() != evidence["base_sha"]:
+            self.discard_internal_publication(latest, number, head_sha)
+            raise ReconcileError(
+                "main advanced beyond the validated internal publication base"
+            )
         # ``sha`` binds the head; the strict required-status rule binds the
         # merge atomically to the current base.
         try:
