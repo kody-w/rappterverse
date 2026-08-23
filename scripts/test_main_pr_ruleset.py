@@ -27,7 +27,12 @@ class MainRulesetTests(unittest.TestCase):
         )
         self.assertEqual(
             {rule["type"] for rule in payload["rules"]},
-            {"deletion", "non_fast_forward", "pull_request"},
+            {
+                "deletion",
+                "non_fast_forward",
+                "pull_request",
+                "required_status_checks",
+            },
         )
         pull_request = next(
             rule for rule in payload["rules"]
@@ -40,6 +45,81 @@ class MainRulesetTests(unittest.TestCase):
         self.assertEqual(
             pull_request["parameters"]["allowed_merge_methods"],
             ["rebase"],
+        )
+        self.assertTrue(
+            pull_request["parameters"][
+                "require_extra_approval_for_unattributed_changes"
+            ]
+        )
+        status_checks = next(
+            rule for rule in payload["rules"]
+            if rule["type"] == "required_status_checks"
+        )
+        self.assertEqual(
+            status_checks["parameters"],
+            {
+                "do_not_enforce_on_create": False,
+                "required_status_checks": [{
+                    "context": ruleset.PUBLICATION_STATUS_CONTEXT,
+                }],
+                "strict_required_status_checks_policy": True,
+            },
+        )
+
+    def test_live_response_round_trips_idempotently(self) -> None:
+        live = {
+            "id": 42,
+            "name": ruleset.RULESET_NAME,
+            "target": "branch",
+            "enforcement": "active",
+            "bypass_actors": [],
+            "source": "owner/repo",
+            "source_type": "Repository",
+            "node_id": "RRS_live",
+            "created_at": "2026-08-23T00:00:00Z",
+            "updated_at": "2026-08-23T00:00:00Z",
+            "conditions": {
+                "ref_name": {
+                    "include": ["refs/heads/main"],
+                    "exclude": [],
+                },
+            },
+            "rules": [
+                {"type": "deletion"},
+                {"type": "non_fast_forward"},
+                {
+                    "type": "pull_request",
+                    "parameters": {
+                        "allowed_merge_methods": ["rebase"],
+                        "dismiss_stale_reviews_on_push": False,
+                        "dismissal_restriction": {
+                            "enabled": False,
+                            "allowed_actors": [],
+                        },
+                        "require_code_owner_review": False,
+                        "require_extra_approval_for_unattributed_changes": True,
+                        "require_last_push_approval": False,
+                        "required_approving_review_count": 0,
+                        "required_review_thread_resolution": False,
+                        "required_reviewers": [],
+                    },
+                },
+                {
+                    "type": "required_status_checks",
+                    "parameters": {
+                        "do_not_enforce_on_create": False,
+                        "required_status_checks": [{
+                            "context": ruleset.PUBLICATION_STATUS_CONTEXT,
+                            "integration_id": None,
+                        }],
+                        "strict_required_status_checks_policy": True,
+                    },
+                },
+            ],
+        }
+        self.assertEqual(
+            ruleset.normalize_ruleset(live),
+            ruleset.desired_ruleset(),
         )
 
     def test_missing_ruleset_is_created_then_verified(self) -> None:

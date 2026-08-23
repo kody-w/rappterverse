@@ -51,16 +51,53 @@ INTERNAL_PR_DESCRIPTION = (
     "Trusted synthetic state publication. The reconciler must rebase-merge "
     "this pull request."
 )
+PUBLICATION_STATUS_CONTEXT = "state-reconciler-publication"
+MAX_ABANDONED_PUBLICATION_CLEANUPS = 8
 COMMIT_OID_PATTERN = re.compile(r"^(?:[0-9a-f]{40}|[0-9a-f]{64})$")
 
 
-def internal_branch_name(number: int, head_sha: str) -> str:
+def internal_branch_prefix(number: int, head_sha: str) -> str:
     if number < 1 or not COMMIT_OID_PATTERN.fullmatch(head_sha):
         raise ReconcileError("invalid source identity for internal publication")
-    return f"{INTERNAL_BRANCH_PREFIX}{number}-{head_sha}"
+    return f"{INTERNAL_BRANCH_PREFIX}{number}-{head_sha}-"
 
 
-def internal_pr_title(number: int, head_sha: str) -> str:
+def legacy_internal_branch_name(number: int, head_sha: str) -> str:
+    return internal_branch_prefix(number, head_sha)[:-1]
+
+
+def internal_branch_name(
+    number: int,
+    head_sha: str,
+    base_sha: str,
+) -> str:
+    if not COMMIT_OID_PATTERN.fullmatch(base_sha):
+        raise ReconcileError("invalid base identity for internal publication")
+    return f"{internal_branch_prefix(number, head_sha)}{base_sha}"
+
+
+def internal_branch_base(
+    branch: str,
+    number: int,
+    head_sha: str,
+) -> str | None:
+    prefix = internal_branch_prefix(number, head_sha)
+    if not branch.startswith(prefix):
+        return None
+    base_sha = branch[len(prefix):]
+    return base_sha if COMMIT_OID_PATTERN.fullmatch(base_sha) else None
+
+
+def internal_pr_title(number: int, head_sha: str, base_sha: str) -> str:
+    internal_branch_name(number, head_sha, base_sha)
+    return (
+        f"[state-reconciler] publish PR #{number} at {head_sha} "
+        f"from {base_sha}"
+    )
+
+
+def legacy_internal_pr_title(number: int, head_sha: str) -> str:
+    legacy_internal_branch_name(number, head_sha)
     return f"[state-reconciler] publish PR #{number} at {head_sha}"
 
 
@@ -156,14 +193,14 @@ def _pr_author(pr: dict) -> str:
     )
 
 
-def is_canonical_internal_pr(pr: dict, repo: str, owner: str) -> bool:
-    evidence = parse_internal_pr_body(pr.get("body"))
-    if evidence is None:
-        return False
-    branch = internal_branch_name(
-        evidence["source_pr"],
-        evidence["source_head"],
-    )
+def _matches_internal_pr_shape(
+    pr: dict,
+    repo: str,
+    owner: str,
+    *,
+    branch: str,
+    title: str,
+) -> bool:
     trusted_authors = {
         owner,
         "github-actions",
@@ -176,15 +213,57 @@ def is_canonical_internal_pr(pr: dict, repo: str, owner: str) -> bool:
     return (
         _pr_base_ref(pr) == "main"
         and _pr_head_ref(pr) == branch
-        and _pr_head_sha(pr) == evidence["synthetic_commit"]
-        and str(pr.get("title") or "") == internal_pr_title(
-            evidence["source_pr"],
-            evidence["source_head"],
-        )
+        and str(pr.get("title") or "") == title
         and not bool(pr.get("isDraft") or pr.get("draft"))
         and not bool(pr.get("isCrossRepository"))
         and head_repo.casefold() == repo.casefold()
         and _pr_author(pr) in trusted_authors
+    )
+
+
+def is_canonical_internal_pr(pr: dict, repo: str, owner: str) -> bool:
+    evidence = parse_internal_pr_body(pr.get("body"))
+    if evidence is None:
+        return False
+    return (
+        _pr_head_sha(pr) == evidence["synthetic_commit"]
+        and _matches_internal_pr_shape(
+            pr,
+            repo,
+            owner,
+            branch=internal_branch_name(
+                evidence["source_pr"],
+                evidence["source_head"],
+                evidence["base_sha"],
+            ),
+            title=internal_pr_title(
+                evidence["source_pr"],
+                evidence["source_head"],
+                evidence["base_sha"],
+            ),
+        )
+    )
+
+
+def is_legacy_internal_pr(pr: dict, repo: str, owner: str) -> bool:
+    evidence = parse_internal_pr_body(pr.get("body"))
+    if evidence is None:
+        return False
+    return (
+        _pr_head_sha(pr) == evidence["synthetic_commit"]
+        and _matches_internal_pr_shape(
+            pr,
+            repo,
+            owner,
+            branch=legacy_internal_branch_name(
+                evidence["source_pr"],
+                evidence["source_head"],
+            ),
+            title=legacy_internal_pr_title(
+                evidence["source_pr"],
+                evidence["source_head"],
+            ),
+        )
     )
 
 
@@ -527,7 +606,10 @@ class StateReconciler:
         return fetched
 
     def is_internal_publication_pr(self, pr: dict) -> bool:
-        return is_canonical_internal_pr(pr, self.repo, self.owner)
+        return (
+            is_canonical_internal_pr(pr, self.repo, self.owner)
+            or is_legacy_internal_pr(pr, self.repo, self.owner)
+        )
 
     def queue(self) -> list[dict]:
         prs = gh_json([
@@ -574,8 +656,26 @@ class StateReconciler:
         self,
         number: int,
         head_sha: str,
+        base_sha: str,
     ) -> dict | None:
-        branch = internal_branch_name(number, head_sha)
+        branch = internal_branch_name(number, head_sha, base_sha)
+        return self.internal_publication_pr_for_branch(branch)
+
+    def active_internal_publication_pr(
+        self,
+        number: int,
+        head_sha: str,
+        base_sha: str,
+    ) -> dict | None:
+        branch = internal_branch_name(number, head_sha, base_sha)
+        if self.internal_branch_sha(branch) is None:
+            return None
+        return self.internal_publication_pr_for_branch(branch)
+
+    def internal_publication_pr_for_branch(
+        self,
+        branch: str,
+    ) -> dict | None:
         query = urllib.parse.urlencode({
             "state": "all",
             "head": f"{self.owner}:{branch}",
@@ -597,6 +697,51 @@ class StateReconciler:
                 f"multiple internal publication PRs use {branch}"
             )
         return exact[0] if exact else None
+
+    def internal_publication_branches(
+        self,
+        number: int,
+        head_sha: str,
+    ) -> dict[str, str]:
+        prefix = internal_branch_prefix(number, head_sha)
+        encoded = urllib.parse.quote(prefix, safe="")
+        refs = gh_json([
+            "api",
+            f"repos/{self.repo}/git/matching-refs/heads/{encoded}",
+        ])
+        if not isinstance(refs, list):
+            raise ReconcileError(
+                "GitHub returned malformed publication branch data"
+            )
+        expected_prefix = f"refs/heads/{prefix}"
+        branches: dict[str, str] = {}
+        for item in refs:
+            if not isinstance(item, dict):
+                raise ReconcileError(
+                    "GitHub returned malformed publication branch data"
+                )
+            ref = str(item.get("ref") or "")
+            if not ref.startswith(expected_prefix):
+                raise ReconcileError(
+                    "GitHub returned an unrelated publication branch"
+                )
+            branch = ref[len("refs/heads/"):]
+            if internal_branch_base(branch, number, head_sha) is None:
+                raise ReconcileError(
+                    f"malformed internal publication branch {branch}"
+                )
+            target = item.get("object") or {}
+            sha = str(target.get("sha") or "")
+            if (
+                target.get("type") != "commit"
+                or not COMMIT_OID_PATTERN.fullmatch(sha)
+                or branch in branches
+            ):
+                raise ReconcileError(
+                    f"malformed internal publication branch {branch}"
+                )
+            branches[branch] = sha
+        return branches
 
     def refresh_internal_pr(self, number: int) -> dict:
         value = gh_json(["api", f"repos/{self.repo}/pulls/{number}"])
@@ -620,6 +765,24 @@ class StateReconciler:
         ):
             raise ReconcileError(
                 "internal publication PR does not bind the source request"
+            )
+        return evidence
+
+    def require_legacy_internal_pr(
+        self,
+        pr: dict,
+        number: int,
+        head_sha: str,
+    ) -> dict:
+        evidence = parse_internal_pr_body(pr.get("body"))
+        if (
+            evidence is None
+            or evidence["source_pr"] != number
+            or evidence["source_head"] != head_sha
+            or not is_legacy_internal_pr(pr, self.repo, self.owner)
+        ):
+            raise ReconcileError(
+                "legacy internal publication PR shape is not canonical"
             )
         return evidence
 
@@ -767,8 +930,8 @@ class StateReconciler:
         synthetic_commit: str,
         synthetic_tree: str,
     ) -> dict:
-        branch = internal_branch_name(number, head_sha)
-        title = internal_pr_title(number, head_sha)
+        branch = internal_branch_name(number, head_sha, base_sha)
+        title = internal_pr_title(number, head_sha, base_sha)
         body = internal_pr_body(
             number,
             head_sha,
@@ -777,7 +940,7 @@ class StateReconciler:
             synthetic_commit,
             synthetic_tree,
         )
-        existing = self.internal_publication_pr(number, head_sha)
+        existing = self.internal_publication_pr(number, head_sha, base_sha)
         if existing is None:
             try:
                 gh_json([
@@ -788,11 +951,19 @@ class StateReconciler:
                     "-f", f"body={body}",
                 ])
             except ReconcileError:
-                existing = self.internal_publication_pr(number, head_sha)
+                existing = self.internal_publication_pr(
+                    number,
+                    head_sha,
+                    base_sha,
+                )
                 if existing is None:
                     raise
             else:
-                existing = self.internal_publication_pr(number, head_sha)
+                existing = self.internal_publication_pr(
+                    number,
+                    head_sha,
+                    base_sha,
+                )
         if existing is None:
             raise ReconcileError("internal publication PR was not created")
         evidence = self.require_internal_pr(existing, number, head_sha)
@@ -942,21 +1113,118 @@ class StateReconciler:
                 "-f", "state=closed",
             ])
         self.delete_internal_branch(
-            internal_branch_name(number, head_sha),
+            internal_branch_name(
+                number,
+                head_sha,
+                evidence["base_sha"],
+            ),
             evidence["synthetic_commit"],
         )
 
-    def discard_internal_for_source(self, number: int, head_sha: str):
-        internal_pr = self.internal_publication_pr(number, head_sha)
-        if internal_pr is not None:
-            self.discard_internal_publication(internal_pr, number, head_sha)
+    def discard_legacy_internal_publication(
+        self,
+        internal_pr: dict,
+        number: int,
+        head_sha: str,
+    ):
+        evidence = self.require_legacy_internal_pr(
+            internal_pr,
+            number,
+            head_sha,
+        )
+        if internal_pr.get("merged") or internal_pr.get("merged_at"):
+            raise ReconcileError("cannot discard an already merged publication")
+        if str(internal_pr.get("state") or "").lower() == "open":
+            gh_json([
+                "api", "--method", "PATCH",
+                f"repos/{self.repo}/pulls/{internal_pr['number']}",
+                "-f", "state=closed",
+            ])
+        self.delete_internal_branch(
+            legacy_internal_branch_name(number, head_sha),
+            evidence["synthetic_commit"],
+        )
 
-    def remove_orphan_internal_branch(
+    def cleanup_abandoned_publications(
+        self,
+        number: int,
+        head_sha: str,
+        *,
+        keep_base: str | None,
+    ) -> tuple[int, bool]:
+        keep_branch = (
+            internal_branch_name(number, head_sha, keep_base)
+            if keep_base is not None
+            else None
+        )
+        branches = dict(
+            self.internal_publication_branches(number, head_sha)
+        )
+        legacy_branch = legacy_internal_branch_name(number, head_sha)
+        legacy_sha = self.internal_branch_sha(legacy_branch)
+        if legacy_sha is not None:
+            branches[legacy_branch] = legacy_sha
+        abandoned = [
+            (branch, sha)
+            for branch, sha in sorted(
+                branches.items()
+            )
+            if branch != keep_branch
+        ]
+        batch = abandoned[:MAX_ABANDONED_PUBLICATION_CLEANUPS]
+        for branch, _sha in batch:
+            if branch == legacy_branch:
+                internal_pr = self.internal_publication_pr_for_branch(branch)
+                if internal_pr is None:
+                    self.remove_legacy_orphan_internal_branch(
+                        number,
+                        head_sha,
+                    )
+                else:
+                    self.discard_legacy_internal_publication(
+                        internal_pr,
+                        number,
+                        head_sha,
+                    )
+                continue
+            base_sha = internal_branch_base(branch, number, head_sha)
+            if base_sha is None:
+                raise ReconcileError(
+                    f"malformed internal publication branch {branch}"
+                )
+            internal_pr = self.internal_publication_pr_for_branch(branch)
+            if internal_pr is None:
+                self.remove_orphan_internal_branch(
+                    number,
+                    head_sha,
+                    base_sha,
+                )
+            else:
+                self.discard_internal_publication(
+                    internal_pr,
+                    number,
+                    head_sha,
+                )
+        return len(batch), len(abandoned) > len(batch)
+
+    def discard_internal_for_source(self, number: int, head_sha: str):
+        cleaned, remaining = self.cleanup_abandoned_publications(
+            number,
+            head_sha,
+            keep_base=None,
+        )
+        if remaining:
+            raise ReconcileError(
+                f"cleaned {cleaned} abandoned internal publication attempts; "
+                "more remain for retry"
+            )
+
+    def remove_legacy_orphan_internal_branch(
         self,
         number: int,
         head_sha: str,
     ) -> bool:
-        branch = internal_branch_name(number, head_sha)
+        branch = legacy_internal_branch_name(number, head_sha)
         branch_sha = self.internal_branch_sha(branch)
         if branch_sha is None:
             return False
@@ -971,13 +1239,41 @@ class StateReconciler:
             or not COMMIT_OID_PATTERN.fullmatch(parents[0])
         ):
             raise ReconcileError(
-                "orphan internal publication has invalid ancestry"
+                "legacy orphan internal publication has invalid ancestry"
             )
-        self.commit_tree(fetched)
-        self.validate_synthetic_message(
-            self.commit_message(fetched),
-            number,
-            head_sha,
+        tree_sha = self.commit_tree(fetched)
+        self.verify_synthetic_commit(
+            fetched,
+            number=number,
+            head_sha=head_sha,
+            base_sha=parents[0],
+            tree_sha=tree_sha,
+        )
+        self.delete_internal_branch(branch, branch_sha)
+        return True
+
+    def remove_orphan_internal_branch(
+        self,
+        number: int,
+        head_sha: str,
+        base_sha: str,
+    ) -> bool:
+        branch = internal_branch_name(number, head_sha, base_sha)
+        branch_sha = self.internal_branch_sha(branch)
+        if branch_sha is None:
+            return False
+        fetched = self.fetch_internal_branch(branch, number)
+        if fetched != branch_sha:
+            raise ReconcileError(
+                f"internal publication branch {branch} moved while fetched"
+            )
+        tree_sha = self.commit_tree(fetched)
+        self.verify_synthetic_commit(
+            fetched,
+            number=number,
+            head_sha=head_sha,
+            base_sha=base_sha,
+            tree_sha=tree_sha,
         )
         self.delete_internal_branch(branch, branch_sha)
         return True
@@ -990,7 +1286,11 @@ class StateReconciler:
         head_sha: str,
         evidence: dict,
     ) -> str:
-        branch = internal_branch_name(number, head_sha)
+        branch = internal_branch_name(
+            number,
+            head_sha,
+            evidence["base_sha"],
+        )
         state = str(internal_pr.get("state") or "").lower()
         merged = bool(internal_pr.get("merged") or internal_pr.get("merged_at"))
         if merged:
@@ -1029,6 +1329,8 @@ class StateReconciler:
             or _pr_head_sha(latest) != evidence["synthetic_commit"]
         ):
             raise ReconcileError("internal publication PR changed before merge")
+        # ``sha`` binds the head; the strict required-status rule binds the
+        # merge atomically to the current base.
         try:
             result = gh_json([
                 "api", "--method", "PUT",
@@ -1081,9 +1383,15 @@ class StateReconciler:
             base_sha=base_sha,
             tree_sha=tree_sha,
         )
-        branch = internal_branch_name(number, head_sha)
+        branch = internal_branch_name(number, head_sha, base_sha)
         self.ensure_internal_branch(branch, synthetic_commit)
         try:
+            self.set_status(
+                synthetic_commit,
+                "success",
+                f"Validated against {base_sha[:12]}",
+                context=PUBLICATION_STATUS_CONTEXT,
+            )
             internal_pr = self.create_or_reuse_internal_pr(
                 number=number,
                 head_sha=head_sha,
@@ -1094,7 +1402,14 @@ class StateReconciler:
             )
         except ReconcileError:
             try:
-                if self.internal_publication_pr(number, head_sha) is None:
+                if (
+                    self.internal_publication_pr(
+                        number,
+                        head_sha,
+                        base_sha,
+                    )
+                    is None
+                ):
                     self.delete_internal_branch(branch, synthetic_commit)
             except ReconcileError as cleanup_error:
                 print(
@@ -1128,6 +1443,32 @@ class StateReconciler:
             raise ReconcileError(
                 "discarded stale internal publication after main advanced"
             )
+        if (
+            str(internal_pr.get("state") or "").lower() == "closed"
+            and not (
+                internal_pr.get("merged")
+                or internal_pr.get("merged_at")
+            )
+        ):
+            internal_pr = self.create_or_reuse_internal_pr(
+                number=number,
+                head_sha=head_sha,
+                policy_sha=evidence["policy_sha"],
+                base_sha=evidence["base_sha"],
+                synthetic_commit=evidence["synthetic_commit"],
+                synthetic_tree=evidence["synthetic_tree"],
+            )
+            evidence = self.require_internal_pr(
+                internal_pr,
+                number,
+                head_sha,
+            )
+        self.set_status(
+            evidence["synthetic_commit"],
+            "success",
+            f"Validated against {base_sha[:12]}",
+            context=PUBLICATION_STATUS_CONTEXT,
+        )
         return self.merge_internal_publication(
             internal_pr,
             number=number,
@@ -1141,12 +1482,47 @@ class StateReconciler:
         head_sha: str,
         published_sha: str,
     ):
-        internal_pr = self.internal_publication_pr(number, head_sha)
+        parents = self.commit_parents(published_sha)
+        if (
+            len(parents) != 1
+            or not COMMIT_OID_PATTERN.fullmatch(parents[0])
+        ):
+            raise ReconcileError(
+                "published Source-Head has invalid base ancestry"
+            )
+        base_sha = parents[0]
+        internal_pr = self.internal_publication_pr(
+            number,
+            head_sha,
+            base_sha,
+        )
+        legacy = False
+        if internal_pr is None:
+            internal_pr = self.internal_publication_pr_for_branch(
+                legacy_internal_branch_name(number, head_sha)
+            )
+            legacy = internal_pr is not None
         if internal_pr is None:
             raise ReconcileError(
                 "published Source-Head has no canonical internal PR"
             )
-        evidence = self.require_internal_pr(internal_pr, number, head_sha)
+        evidence = (
+            self.require_legacy_internal_pr(
+                internal_pr,
+                number,
+                head_sha,
+            )
+            if legacy
+            else self.require_internal_pr(
+                internal_pr,
+                number,
+                head_sha,
+            )
+        )
+        if evidence["base_sha"] != base_sha:
+            raise ReconcileError(
+                "published Source-Head internal PR base drifted"
+            )
         if not (internal_pr.get("merged") or internal_pr.get("merged_at")):
             raise ReconcileError(
                 "published Source-Head is not backed by a merged internal PR"
@@ -1159,7 +1535,15 @@ class StateReconciler:
             evidence=evidence,
         )
         self.delete_internal_branch(
-            internal_branch_name(number, head_sha),
+            (
+                legacy_internal_branch_name(number, head_sha)
+                if legacy
+                else internal_branch_name(
+                    number,
+                    head_sha,
+                    evidence["base_sha"],
+                )
+            ),
             evidence["synthetic_commit"],
         )
 
@@ -1562,10 +1946,25 @@ class StateReconciler:
                     "pending",
                     f"Reconciling against {base_sha[:12]}",
                 )
+                cleaned, remaining = self.cleanup_abandoned_publications(
+                    number,
+                    head_sha,
+                    keep_base=base_sha,
+                )
+                if cleaned:
+                    suffix = "; more remain" if remaining else ""
+                    raise ReconcileError(
+                        f"removed {cleaned} stale internal publication "
+                        f"attempt(s){suffix}; retry"
+                    )
             internal_pr = (
                 None
                 if self.dry_run
-                else self.internal_publication_pr(number, head_sha)
+                else self.active_internal_publication_pr(
+                    number,
+                    head_sha,
+                    base_sha,
+                )
             )
             merge_commit = None
             if internal_pr is None:
@@ -1574,6 +1973,7 @@ class StateReconciler:
                     and self.remove_orphan_internal_branch(
                         number,
                         head_sha,
+                        base_sha,
                     )
                 ):
                     raise ReconcileError(

@@ -11,6 +11,7 @@ import subprocess
 import sys
 
 RULESET_NAME = "main-pr-only-rebase"
+PUBLICATION_STATUS_CONTEXT = "state-reconciler-publication"
 REPOSITORY_PATTERN = re.compile(
     r"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"
 )
@@ -18,9 +19,17 @@ PULL_REQUEST_PARAMETERS = {
     "allowed_merge_methods": ["rebase"],
     "dismiss_stale_reviews_on_push": False,
     "require_code_owner_review": False,
+    "require_extra_approval_for_unattributed_changes": True,
     "require_last_push_approval": False,
     "required_approving_review_count": 0,
     "required_review_thread_resolution": False,
+}
+REQUIRED_STATUS_CHECK_PARAMETERS = {
+    "do_not_enforce_on_create": False,
+    "required_status_checks": [
+        {"context": PUBLICATION_STATUS_CONTEXT},
+    ],
+    "strict_required_status_checks_policy": True,
 }
 
 
@@ -46,6 +55,18 @@ def desired_ruleset() -> dict:
             {
                 "type": "pull_request",
                 "parameters": dict(PULL_REQUEST_PARAMETERS),
+            },
+            {
+                "type": "required_status_checks",
+                "parameters": {
+                    **REQUIRED_STATUS_CHECK_PARAMETERS,
+                    "required_status_checks": [
+                        dict(check)
+                        for check in REQUIRED_STATUS_CHECK_PARAMETERS[
+                            "required_status_checks"
+                        ]
+                    ],
+                },
             },
         ],
     }
@@ -112,6 +133,47 @@ def _normalize_pull_request_parameters(parameters: object) -> dict:
     }
 
 
+def _normalize_required_status_checks_parameters(parameters: object) -> dict:
+    if not isinstance(parameters, dict):
+        raise RulesetError("required_status_checks rule parameters are missing")
+    expected = set(REQUIRED_STATUS_CHECK_PARAMETERS)
+    unexpected = set(parameters) - expected
+    if unexpected:
+        raise RulesetError(
+            "required_status_checks rule has unexpected parameters: "
+            f"{sorted(unexpected)}"
+        )
+    checks = parameters.get("required_status_checks")
+    if not isinstance(checks, list):
+        raise RulesetError("required status check contexts are malformed")
+    normalized_checks = []
+    for check in checks:
+        if (
+            not isinstance(check, dict)
+            or set(check) - {"context", "integration_id"}
+            or not isinstance(check.get("context"), str)
+            or not check["context"]
+            or check.get("integration_id") is not None
+        ):
+            raise RulesetError("required status check context drifted")
+        normalized_checks.append({"context": check["context"]})
+    if len({
+        check["context"]
+        for check in normalized_checks
+    }) != len(normalized_checks):
+        raise RulesetError("required status check contexts are duplicated")
+    return {
+        "do_not_enforce_on_create": parameters.get(
+            "do_not_enforce_on_create",
+            False,
+        ),
+        "required_status_checks": normalized_checks,
+        "strict_required_status_checks_policy": parameters.get(
+            "strict_required_status_checks_policy"
+        ),
+    }
+
+
 def normalize_ruleset(value: object) -> dict:
     if not isinstance(value, dict):
         raise RulesetError("ruleset details are malformed")
@@ -135,7 +197,12 @@ def normalize_ruleset(value: object) -> dict:
         if rule_type in by_type:
             raise RulesetError(f"ruleset duplicates the {rule_type} rule")
         by_type[rule_type] = rule
-    expected_types = {"deletion", "non_fast_forward", "pull_request"}
+    expected_types = {
+        "deletion",
+        "non_fast_forward",
+        "pull_request",
+        "required_status_checks",
+    }
     if set(by_type) != expected_types:
         raise RulesetError(
             f"ruleset rule types drifted: {sorted(by_type)}"
@@ -166,6 +233,12 @@ def normalize_ruleset(value: object) -> dict:
                 "type": "pull_request",
                 "parameters": _normalize_pull_request_parameters(
                     by_type["pull_request"].get("parameters")
+                ),
+            },
+            {
+                "type": "required_status_checks",
+                "parameters": _normalize_required_status_checks_parameters(
+                    by_type["required_status_checks"].get("parameters")
                 ),
             },
         ],

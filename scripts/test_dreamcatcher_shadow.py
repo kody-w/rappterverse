@@ -2100,7 +2100,12 @@ class PromotionEvaluatorTests(RepositoryScratchTest):
             ),
             mock.patch.object(
                 reconciler,
-                "internal_publication_pr",
+                "cleanup_abandoned_publications",
+                return_value=(0, False),
+            ),
+            mock.patch.object(
+                reconciler,
+                "active_internal_publication_pr",
                 return_value=None,
             ),
             mock.patch.object(

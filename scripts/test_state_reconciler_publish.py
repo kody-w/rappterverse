@@ -45,17 +45,39 @@ class StateReconcilerPublicationTests(unittest.TestCase):
         value.update(overrides)
         return value
 
-    def internal_pr(self, **overrides) -> dict:
-        evidence = self.evidence()
+    def legacy_internal_pr(self, **overrides) -> dict:
+        value = self.internal_pr()
+        value["title"] = reconciler_module.legacy_internal_pr_title(
+            self.number,
+            self.head,
+        )
+        value["head"]["ref"] = (
+            reconciler_module.legacy_internal_branch_name(
+                self.number,
+                self.head,
+            )
+        )
+        value.update(overrides)
+        return value
+
+    def internal_pr(
+        self,
+        *,
+        evidence_overrides: dict | None = None,
+        **overrides,
+    ) -> dict:
+        evidence = self.evidence(**(evidence_overrides or {}))
         branch = reconciler_module.internal_branch_name(
             self.number,
             self.head,
+            evidence["base_sha"],
         )
         value = {
             "number": self.internal_number,
             "title": reconciler_module.internal_pr_title(
                 self.number,
                 self.head,
+                evidence["base_sha"],
             ),
             "body": reconciler_module.internal_pr_body(
                 self.number,
@@ -199,10 +221,70 @@ class StateReconcilerPublicationTests(unittest.TestCase):
         )
         api.assert_not_called()
 
+    def test_server_rejects_base_race_before_main_is_changed_by_merge(
+        self,
+    ) -> None:
+        internal_pr = self.internal_pr()
+        advanced = "6" * 40
+        server_main = {"sha": self.base}
+
+        def merge_api(_args):
+            server_main["sha"] = advanced
+            return {
+                "merged": False,
+                "message": "Base branch was modified. Review and try again.",
+            }
+
+        with (
+            mock.patch.object(
+                self.reconciler,
+                "internal_branch_sha",
+                return_value=self.synthetic,
+            ),
+            mock.patch.object(
+                self.reconciler,
+                "fetch_main_sha",
+                return_value=self.base,
+            ),
+            mock.patch.object(
+                self.reconciler,
+                "refresh_internal_pr",
+                return_value=internal_pr,
+            ),
+            mock.patch.object(
+                self.reconciler,
+                "verify_published_commit",
+            ) as verify,
+            mock.patch.object(
+                self.reconciler,
+                "delete_internal_branch",
+            ) as delete,
+            mock.patch.object(
+                reconciler_module,
+                "gh_json",
+                side_effect=merge_api,
+            ),
+        ):
+            with self.assertRaisesRegex(
+                reconciler_module.ReconcileError,
+                "Base branch was modified",
+            ):
+                self.reconciler.merge_internal_publication(
+                    internal_pr,
+                    number=self.number,
+                    head_sha=self.head,
+                    evidence=self.evidence(),
+                )
+        self.assertEqual(server_main["sha"], advanced)
+        self.assertNotEqual(server_main["sha"], self.published)
+        verify.assert_not_called()
+        delete.assert_not_called()
+
     def test_branch_collision_fails_closed_without_push(self) -> None:
         branch = reconciler_module.internal_branch_name(
             self.number,
             self.head,
+            self.base,
         )
         with (
             mock.patch.object(
@@ -237,6 +319,7 @@ class StateReconcilerPublicationTests(unittest.TestCase):
                 self.reconciler.internal_publication_pr(
                     self.number,
                     self.head,
+                    self.base,
                 )
 
     def test_retry_reuses_existing_internal_pr(self) -> None:
@@ -259,6 +342,283 @@ class StateReconcilerPublicationTests(unittest.TestCase):
             )
         self.assertIs(result, internal_pr)
         api.assert_not_called()
+
+    def test_attempt_identity_changes_with_validated_base(self) -> None:
+        advanced = "6" * 40
+        self.assertNotEqual(
+            reconciler_module.internal_branch_name(
+                self.number,
+                self.head,
+                self.base,
+            ),
+            reconciler_module.internal_branch_name(
+                self.number,
+                self.head,
+                advanced,
+            ),
+        )
+        self.assertNotEqual(
+            reconciler_module.internal_pr_title(
+                self.number,
+                self.head,
+                self.base,
+            ),
+            reconciler_module.internal_pr_title(
+                self.number,
+                self.head,
+                advanced,
+            ),
+        )
+
+    def test_new_base_ignores_closed_history_without_active_branch(
+        self,
+    ) -> None:
+        with (
+            mock.patch.object(
+                self.reconciler,
+                "internal_branch_sha",
+                return_value=None,
+            ),
+            mock.patch.object(
+                self.reconciler,
+                "internal_publication_pr_for_branch",
+            ) as history,
+        ):
+            self.assertIsNone(
+                self.reconciler.active_internal_publication_pr(
+                    self.number,
+                    self.head,
+                    self.base,
+                )
+            )
+        history.assert_not_called()
+
+    def test_closed_current_attempt_reopens_and_resumes(self) -> None:
+        closed = self.internal_pr(state="closed")
+        reopened = self.internal_pr(state="open")
+        with (
+            mock.patch.object(
+                self.reconciler,
+                "create_or_reuse_internal_pr",
+                return_value=reopened,
+            ) as reopen,
+            mock.patch.object(
+                self.reconciler,
+                "set_status",
+            ) as status,
+            mock.patch.object(
+                self.reconciler,
+                "merge_internal_publication",
+                return_value=self.published,
+            ) as merge,
+        ):
+            result = self.reconciler.resume_internal_publication(
+                closed,
+                number=self.number,
+                head_sha=self.head,
+                base_sha=self.base,
+            )
+        self.assertEqual(result, self.published)
+        reopen.assert_called_once_with(
+            number=self.number,
+            head_sha=self.head,
+            policy_sha=self.base,
+            base_sha=self.base,
+            synthetic_commit=self.synthetic,
+            synthetic_tree=self.tree,
+        )
+        status.assert_called_once_with(
+            self.synthetic,
+            "success",
+            f"Validated against {self.base[:12]}",
+            context=reconciler_module.PUBLICATION_STATUS_CONTEXT,
+        )
+        merge.assert_called_once_with(
+            reopened,
+            number=self.number,
+            head_sha=self.head,
+            evidence=self.evidence(),
+        )
+
+    def test_publication_sets_required_strict_status_context(self) -> None:
+        internal_pr = self.internal_pr()
+        branch = reconciler_module.internal_branch_name(
+            self.number,
+            self.head,
+            self.base,
+        )
+        with (
+            mock.patch.object(
+                self.reconciler,
+                "commit_tree",
+                return_value=self.tree,
+            ),
+            mock.patch.object(
+                self.reconciler,
+                "verify_synthetic_commit",
+            ),
+            mock.patch.object(
+                self.reconciler,
+                "ensure_internal_branch",
+            ) as ensure,
+            mock.patch.object(
+                self.reconciler,
+                "set_status",
+            ) as status,
+            mock.patch.object(
+                self.reconciler,
+                "create_or_reuse_internal_pr",
+                return_value=internal_pr,
+            ),
+            mock.patch.object(
+                self.reconciler,
+                "merge_internal_publication",
+                return_value=self.published,
+            ),
+        ):
+            result = self.reconciler.publish_synthetic_commit(
+                number=self.number,
+                head_sha=self.head,
+                base_sha=self.base,
+                synthetic_commit=self.synthetic,
+            )
+        self.assertEqual(result, self.published)
+        ensure.assert_called_once_with(branch, self.synthetic)
+        status.assert_called_once_with(
+            self.synthetic,
+            "success",
+            f"Validated against {self.base[:12]}",
+            context=reconciler_module.PUBLICATION_STATUS_CONTEXT,
+        )
+
+    def test_closed_stale_attempt_is_cleaned_for_new_base(self) -> None:
+        stale_base = "6" * 40
+        stale_pr = self.internal_pr(
+            evidence_overrides={
+                "base_sha": stale_base,
+                "policy_sha": stale_base,
+            },
+            state="closed",
+        )
+        stale_branch = reconciler_module.internal_branch_name(
+            self.number,
+            self.head,
+            stale_base,
+        )
+        with (
+            mock.patch.object(
+                self.reconciler,
+                "internal_publication_branches",
+                return_value={stale_branch: self.synthetic},
+            ),
+            mock.patch.object(
+                self.reconciler,
+                "internal_branch_sha",
+                return_value=None,
+            ),
+            mock.patch.object(
+                self.reconciler,
+                "internal_publication_pr_for_branch",
+                return_value=stale_pr,
+            ),
+            mock.patch.object(
+                self.reconciler,
+                "delete_internal_branch",
+            ) as delete,
+        ):
+            cleaned = self.reconciler.cleanup_abandoned_publications(
+                self.number,
+                self.head,
+                keep_base=self.base,
+            )
+        self.assertEqual(cleaned, (1, False))
+        delete.assert_called_once_with(stale_branch, self.synthetic)
+
+    def test_legacy_attempt_is_cleaned_during_identity_upgrade(self) -> None:
+        legacy_pr = self.legacy_internal_pr(state="closed")
+        legacy_branch = reconciler_module.legacy_internal_branch_name(
+            self.number,
+            self.head,
+        )
+        with (
+            mock.patch.object(
+                self.reconciler,
+                "internal_publication_branches",
+                return_value={},
+            ),
+            mock.patch.object(
+                self.reconciler,
+                "internal_branch_sha",
+                return_value=self.synthetic,
+            ),
+            mock.patch.object(
+                self.reconciler,
+                "internal_publication_pr_for_branch",
+                return_value=legacy_pr,
+            ),
+            mock.patch.object(
+                self.reconciler,
+                "delete_internal_branch",
+            ) as delete,
+        ):
+            cleaned = self.reconciler.cleanup_abandoned_publications(
+                self.number,
+                self.head,
+                keep_base=self.base,
+            )
+        self.assertEqual(cleaned, (1, False))
+        delete.assert_called_once_with(legacy_branch, self.synthetic)
+
+    def test_abandoned_attempt_cleanup_is_bounded(self) -> None:
+        branches = {
+            reconciler_module.internal_branch_name(
+                self.number,
+                self.head,
+                f"{index:040x}",
+            ): self.synthetic
+            for index in range(
+                1,
+                reconciler_module.MAX_ABANDONED_PUBLICATION_CLEANUPS + 3,
+            )
+        }
+        with (
+            mock.patch.object(
+                self.reconciler,
+                "internal_publication_branches",
+                return_value=branches,
+            ),
+            mock.patch.object(
+                self.reconciler,
+                "internal_branch_sha",
+                return_value=None,
+            ),
+            mock.patch.object(
+                self.reconciler,
+                "internal_publication_pr_for_branch",
+                return_value=None,
+            ),
+            mock.patch.object(
+                self.reconciler,
+                "remove_orphan_internal_branch",
+                return_value=True,
+            ) as remove,
+        ):
+            cleaned = self.reconciler.cleanup_abandoned_publications(
+                self.number,
+                self.head,
+                keep_base=self.base,
+            )
+        self.assertEqual(
+            cleaned,
+            (
+                reconciler_module.MAX_ABANDONED_PUBLICATION_CLEANUPS,
+                True,
+            ),
+        )
+        self.assertEqual(
+            remove.call_count,
+            reconciler_module.MAX_ABANDONED_PUBLICATION_CLEANUPS,
+        )
 
     def test_retry_removes_canonical_orphan_even_after_base_move(self) -> None:
         message = "\n\n".join([
@@ -303,12 +663,14 @@ class StateReconcilerPublicationTests(unittest.TestCase):
                 self.reconciler.remove_orphan_internal_branch(
                     self.number,
                     self.head,
+                    "9" * 40,
                 )
             )
         delete.assert_called_once_with(
             reconciler_module.internal_branch_name(
                 self.number,
                 self.head,
+                "9" * 40,
             ),
             self.synthetic,
         )
@@ -400,6 +762,129 @@ class StateReconcilerPublicationTests(unittest.TestCase):
                 )
         delete.assert_not_called()
 
+    def test_stale_attempt_cleanup_then_retry_progresses_fifo(self) -> None:
+        source = {
+            "number": self.number,
+            "headRefOid": self.head,
+            "baseRefName": "main",
+            "author": {"login": "alice"},
+        }
+        with (
+            mock.patch.object(
+                self.reconciler,
+                "details",
+                return_value=self.source_details(),
+            ),
+            mock.patch.object(
+                self.reconciler,
+                "published_commit",
+                return_value=None,
+            ),
+            mock.patch.object(
+                self.reconciler,
+                "current_reconciler_state",
+                return_value=None,
+            ),
+            mock.patch.object(
+                self.reconciler,
+                "current_main_sha",
+                return_value=self.base,
+            ),
+            mock.patch.object(
+                self.reconciler,
+                "cleanup_abandoned_publications",
+                side_effect=[(1, False), (0, False)],
+            ),
+            mock.patch.object(
+                self.reconciler,
+                "active_internal_publication_pr",
+                return_value=None,
+            ),
+            mock.patch.object(
+                self.reconciler,
+                "remove_orphan_internal_branch",
+                return_value=False,
+            ),
+            mock.patch.object(
+                self.reconciler,
+                "validate",
+                return_value=self.synthetic,
+            ) as validate,
+            mock.patch.object(self.reconciler, "set_status"),
+            mock.patch.object(self.reconciler, "note_status"),
+            mock.patch.object(
+                self.reconciler,
+                "publish_synthetic_commit",
+                return_value=self.published,
+            ) as publish,
+            mock.patch.object(
+                self.reconciler,
+                "finalize_applied_pr",
+            ),
+        ):
+            first = self.reconciler.process(source)
+            second = self.reconciler.process(source)
+        self.assertEqual(
+            (first, second),
+            (reconciler_module.BLOCKED, reconciler_module.MERGED),
+        )
+        validate.assert_called_once_with(source, self.base)
+        publish.assert_called_once_with(
+            number=self.number,
+            head_sha=self.head,
+            base_sha=self.base,
+            synthetic_commit=self.synthetic,
+        )
+
+    def test_legacy_merged_attempt_can_finish_source_cleanup(self) -> None:
+        legacy_pr = self.legacy_internal_pr(
+            state="closed",
+            merged=True,
+            merged_at="2026-08-23T12:00:00Z",
+        )
+        legacy_branch = reconciler_module.legacy_internal_branch_name(
+            self.number,
+            self.head,
+        )
+        with (
+            mock.patch.object(
+                self.reconciler,
+                "commit_parents",
+                return_value=[self.base],
+            ),
+            mock.patch.object(
+                self.reconciler,
+                "internal_publication_pr",
+                return_value=None,
+            ),
+            mock.patch.object(
+                self.reconciler,
+                "internal_publication_pr_for_branch",
+                return_value=legacy_pr,
+            ),
+            mock.patch.object(
+                self.reconciler,
+                "verify_published_commit",
+            ) as verify,
+            mock.patch.object(
+                self.reconciler,
+                "delete_internal_branch",
+            ) as delete,
+        ):
+            self.reconciler.complete_existing_publication(
+                self.number,
+                self.head,
+                self.published,
+            )
+        verify.assert_called_once_with(
+            published_sha=self.published,
+            internal_pr=legacy_pr,
+            number=self.number,
+            head_sha=self.head,
+            evidence=self.evidence(),
+        )
+        delete.assert_called_once_with(legacy_branch, self.synthetic)
+
     def test_original_source_closes_only_after_verified_publication(self) -> None:
         events = []
         source = {
@@ -432,7 +917,12 @@ class StateReconcilerPublicationTests(unittest.TestCase):
             ),
             mock.patch.object(
                 self.reconciler,
-                "internal_publication_pr",
+                "cleanup_abandoned_publications",
+                return_value=(0, False),
+            ),
+            mock.patch.object(
+                self.reconciler,
+                "active_internal_publication_pr",
                 return_value=None,
             ),
             mock.patch.object(
@@ -499,7 +989,12 @@ class StateReconcilerPublicationTests(unittest.TestCase):
             ),
             mock.patch.object(
                 self.reconciler,
-                "internal_publication_pr",
+                "cleanup_abandoned_publications",
+                return_value=(0, False),
+            ),
+            mock.patch.object(
+                self.reconciler,
+                "active_internal_publication_pr",
                 return_value=None,
             ),
             mock.patch.object(
@@ -573,6 +1068,20 @@ class StateReconcilerPublicationTests(unittest.TestCase):
         canonical = self.queue_pr()
         self.assertTrue(
             self.reconciler.is_internal_publication_pr(canonical)
+        )
+        legacy = self.queue_pr()
+        legacy["title"] = reconciler_module.legacy_internal_pr_title(
+            self.number,
+            self.head,
+        )
+        legacy["headRefName"] = (
+            reconciler_module.legacy_internal_branch_name(
+                self.number,
+                self.head,
+            )
+        )
+        self.assertTrue(
+            self.reconciler.is_internal_publication_pr(legacy)
         )
         mutations = {
             "title": {"title": "[state] ordinary proposal"},
