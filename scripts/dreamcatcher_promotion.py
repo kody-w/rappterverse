@@ -14,6 +14,7 @@ import statistics
 import subprocess
 import sys
 from dataclasses import dataclass
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Iterable
 
@@ -26,7 +27,10 @@ from dreamcatcher_reverse_index import (
 
 TELEMETRY_SCHEMA = "dreamcatcher-shadow-telemetry/1.2"
 SUMMARY_SCHEMA = "dreamcatcher-promotion-summary/1.1"
-ATTESTATION_SCHEMA = "dreamcatcher-promotion-attestation/1.0"
+ATTESTATION_SCHEMA = "dreamcatcher-promotion-attestation/1.1"
+AUTHENTICATED_EVIDENCE_SCHEMA = (
+    "dreamcatcher-authenticated-promotion-evidence/1.0"
+)
 ATTESTATION_ALGORITHM = "hmac-sha256"
 PROMOTION_KEY_ENV = "DREAMCATCHER_PROMOTION_KEY"
 REPOSITORY = "rappterverse"
@@ -131,7 +135,7 @@ class _CommitMetadata:
     message: str
     author: tuple[str, str, str]
     committer: tuple[str, str, str]
-    signature: tuple[str, str, str, str, str]
+    signatures: tuple[str, ...]
 
 
 def _canonical_bytes(value: object) -> bytes:
@@ -164,15 +168,15 @@ INDEX_CONFIGURATION = {
 }
 INDEX_CONFIGURATION_ID = _content_id(INDEX_CONFIGURATION)
 PROMOTION_POLICY = {
-    "schema": "dreamcatcher-promotion-policy/1.1",
+    "schema": "dreamcatcher-promotion-policy/1.2",
     "telemetry_schema": TELEMETRY_SCHEMA,
     "summary_schema": SUMMARY_SCHEMA,
     "thresholds": dict(THRESHOLDS),
     "evidence": {
         "history": "first-parent",
         "maximum_commits": MAXIMUM_COMMIT_EVIDENCE_COMMITS,
-        "object_validation": "git-commit",
-        "message_transport": "per-object-fixed-format",
+        "object_validation": "git-commit-object-id",
+        "message_transport": "git-cat-file-batch-size-framed",
         "parent_count": 1,
         "sample_mode": "shadow",
         "subject": "[state] apply PR #N",
@@ -180,10 +184,12 @@ PROMOTION_POLICY = {
         "commit_identity": "diagnostic-only-not-authentication",
         "authentication": {
             "schema": ATTESTATION_SCHEMA,
+            "authenticated_evidence_schema": AUTHENTICATED_EVIDENCE_SCHEMA,
             "algorithm": ATTESTATION_ALGORITHM,
             "key_source": f"environment:{PROMOTION_KEY_ENV}",
             "bindings": [
                 "evidence_id",
+                "summary_id",
                 "policy_revision",
                 "index_configuration_id",
                 "repository",
@@ -644,6 +650,7 @@ def _attestation_payload(
         "algorithm": ATTESTATION_ALGORITHM,
         "repository": _require_repository(repository),
         "evidence_id": summary["evidence_id"],
+        "summary_id": summary["summary_id"],
         "policy_revision": summary["policy_revision"],
         "index_configuration_id": summary["index_configuration_id"],
         "target_base": _require_commit(target_base, "target_base"),
@@ -958,6 +965,25 @@ def _decode_commit_field(value: bytes) -> str:
     return value.decode("utf-8", "replace")
 
 
+def _start_evidence_object_stream(
+    repo_root: Path,
+    git_env: dict[str, str],
+) -> subprocess.Popen:
+    try:
+        return subprocess.Popen(
+            ["git", "cat-file", "--batch"],
+            cwd=repo_root,
+            env=git_env,
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+    except OSError as exc:
+        raise PromotionEvidenceError(
+            f"cannot scan commit evidence: {exc}"
+        ) from exc
+
+
 def _resolve_evidence_revision(
     repo_root: Path,
     git_env: dict[str, str],
@@ -1017,92 +1043,292 @@ def _enumerate_evidence_commits(
     return commits
 
 
-def _validate_evidence_objects(
+def _read_exact(stream, size: int, *, commit: str) -> bytes:
+    chunks = []
+    remaining = size
+    while remaining:
+        chunk = stream.read(remaining)
+        if not chunk:
+            raise PromotionEvidenceError(
+                f"commit {commit}: git cat-file truncated the object body"
+            )
+        chunks.append(chunk)
+        remaining -= len(chunk)
+    return b"".join(chunks)
+
+
+def _commit_headers(
+    commit: str,
+    raw_headers: bytes,
+) -> list[tuple[bytes, bytes]]:
+    headers: list[tuple[bytes, bytes]] = []
+    for line in raw_headers.split(b"\n"):
+        if line.startswith(b" "):
+            if not headers:
+                raise PromotionEvidenceError(
+                    f"commit {commit}: malformed continuation header"
+                )
+            key, value = headers[-1]
+            headers[-1] = (key, value + b"\n" + line[1:])
+            continue
+        key, separator, value = line.partition(b" ")
+        if (
+            not separator
+            or not key
+            or any(byte <= 32 or byte >= 127 for byte in key)
+            or b"\x00" in value
+        ):
+            raise PromotionEvidenceError(
+                f"commit {commit}: malformed commit header"
+            )
+        headers.append((key, value))
+    return headers
+
+
+def _identity_metadata(
+    commit: str,
+    value: bytes,
+    label: str,
+) -> tuple[str, str, str]:
+    match = re.fullmatch(
+        rb"([^<>\n]*) <([^<>\n]*)> (-?\d+) ([+-])(\d{2})(\d{2})",
+        value,
+    )
+    if match is None:
+        raise PromotionEvidenceError(
+            f"commit {commit}: malformed {label} identity"
+        )
+    timestamp = int(match.group(3))
+    hours = int(match.group(5))
+    minutes = int(match.group(6))
+    if hours > 23 or minutes > 59:
+        raise PromotionEvidenceError(
+            f"commit {commit}: malformed {label} timezone"
+        )
+    offset_minutes = hours * 60 + minutes
+    if match.group(4) == b"-":
+        offset_minutes = -offset_minutes
+    try:
+        identity_timezone = timezone(timedelta(minutes=offset_minutes))
+        identity_date = datetime.fromtimestamp(
+            timestamp,
+            timezone.utc,
+        ).astimezone(identity_timezone).isoformat(timespec="seconds")
+    except (OverflowError, OSError, ValueError) as exc:
+        raise PromotionEvidenceError(
+            f"commit {commit}: malformed {label} timestamp"
+        ) from exc
+    return (
+        _decode_commit_field(match.group(1)),
+        _decode_commit_field(match.group(2)),
+        identity_date,
+    )
+
+
+def _decode_commit_message(
+    commit: str,
+    message: bytes,
+    encodings: list[bytes],
+) -> str:
+    if len(encodings) > 1:
+        raise PromotionEvidenceError(
+            f"commit {commit}: duplicate encoding header"
+        )
+    encoding = "utf-8"
+    if encodings:
+        try:
+            encoding = encodings[0].decode("ascii")
+        except UnicodeDecodeError as exc:
+            raise PromotionEvidenceError(
+                f"commit {commit}: malformed encoding header"
+            ) from exc
+    try:
+        return message.decode(encoding, "replace")
+    except LookupError:
+        return message.decode("utf-8", "replace")
+
+
+def _parse_commit_object(commit: str, raw_object: bytes) -> _CommitMetadata:
+    raw_headers, separator, raw_message = raw_object.partition(b"\n\n")
+    if not separator:
+        raise PromotionEvidenceError(
+            f"commit {commit}: malformed commit object"
+        )
+    headers = _commit_headers(commit, raw_headers)
+
+    def values(name: bytes) -> list[bytes]:
+        return [value for key, value in headers if key == name]
+
+    trees = values(b"tree")
+    authors = values(b"author")
+    committers = values(b"committer")
+    if len(trees) != 1 or not COMMIT_PATTERN.fullmatch(
+        _decode_commit_field(trees[0])
+    ):
+        raise PromotionEvidenceError(
+            f"commit {commit}: malformed tree header"
+        )
+    if len(authors) != 1:
+        raise PromotionEvidenceError(
+            f"commit {commit}: expected one author header"
+        )
+    if len(committers) != 1:
+        raise PromotionEvidenceError(
+            f"commit {commit}: expected one committer header"
+        )
+    position = 1
+    while position < len(headers) and headers[position][0] == b"parent":
+        position += 1
+    if (
+        headers[0][0] != b"tree"
+        or headers[position][0] != b"author"
+        or headers[position + 1][0] != b"committer"
+        or any(
+            key in {b"tree", b"parent", b"author", b"committer"}
+            for key, _ in headers[position + 2:]
+        )
+    ):
+        raise PromotionEvidenceError(
+            f"commit {commit}: malformed commit header order"
+        )
+    parents = []
+    for value in values(b"parent"):
+        parent = _decode_commit_field(value)
+        if not COMMIT_PATTERN.fullmatch(parent):
+            raise PromotionEvidenceError(
+                f"commit {commit}: malformed parent header"
+            )
+        parents.append(parent)
+    message = _decode_commit_message(
+        commit,
+        raw_message,
+        values(b"encoding"),
+    )
+    return _CommitMetadata(
+        parents=tuple(parents),
+        subject=message.split("\n", 1)[0].removesuffix("\r"),
+        message=message,
+        author=_identity_metadata(commit, authors[0], "author"),
+        committer=_identity_metadata(commit, committers[0], "committer"),
+        signatures=tuple(
+            _decode_commit_field(value)
+            for key, value in headers
+            if key in {b"gpgsig", b"gpgsig-sha256"}
+        ),
+    )
+
+
+def _validate_commit_object_id(commit: str, raw_object: bytes) -> None:
+    object_header = f"commit {len(raw_object)}\0".encode("ascii")
+    hasher = hashlib.sha1() if len(commit) == 40 else hashlib.sha256()
+    hasher.update(object_header)
+    hasher.update(raw_object)
+    if not hmac.compare_digest(hasher.hexdigest(), commit):
+        raise PromotionEvidenceError(
+            f"commit {commit}: object body does not match its object ID"
+        )
+
+
+def _discard_evidence_object_stream(process: subprocess.Popen) -> None:
+    try:
+        if process.poll() is None:
+            process.kill()
+    except OSError:
+        pass
+    try:
+        process.communicate()
+    except (OSError, ValueError):
+        pass
+
+
+def _load_commit_metadata_batch(
     repo_root: Path,
     git_env: dict[str, str],
     commits: list[str],
-) -> None:
+) -> list[_CommitMetadata]:
     if not commits:
-        return
-    output = _run_evidence_git(
-        repo_root,
-        git_env,
-        [
-            "cat-file",
-            "--batch-check=%(objectname) %(objecttype)",
-        ],
-        input_bytes=("".join(f"{commit}\n" for commit in commits)).encode(
-            "ascii"
-        ),
-    )
+        return []
+    process = _start_evidence_object_stream(repo_root, git_env)
+    if (
+        process.stdin is None
+        or process.stdout is None
+        or process.stderr is None
+    ):
+        _discard_evidence_object_stream(process)
+        raise PromotionEvidenceError(
+            "cannot scan commit evidence: git cat-file pipes unavailable"
+        )
+    metadata = []
     try:
-        actual = output.decode("ascii").splitlines()
-    except UnicodeDecodeError as exc:
-        raise PromotionEvidenceError(
-            "git cat-file returned malformed object metadata"
-        ) from exc
-    expected = [f"{commit} commit" for commit in commits]
-    if actual != expected:
-        raise PromotionEvidenceError(
-            "git cat-file did not validate the enumerated commit objects"
-        )
-
-
-def _load_commit_metadata(
-    repo_root: Path,
-    git_env: dict[str, str],
-    commit: str,
-) -> _CommitMetadata:
-    def fixed_format(format_string: str) -> bytes:
-        return _run_evidence_git(
-            repo_root,
-            git_env,
-            [
-                "show",
-                "--no-patch",
-                "--no-notes",
-                "--no-show-signature",
-                "--no-color",
-                f"--format=format:{format_string}",
-                commit,
-            ],
-        )
-
-    def metadata_fields(
-        format_string: str,
-        count: int,
-        label: str,
-    ) -> tuple[str, ...]:
-        fields = fixed_format(format_string).split(b"\x00")
-        if len(fields) != count:
-            raise PromotionEvidenceError(
-                f"commit {commit}: git show returned malformed {label}"
+        for commit in commits:
+            try:
+                process.stdin.write(f"{commit}\n".encode("ascii"))
+                process.stdin.flush()
+            except (BrokenPipeError, OSError) as exc:
+                raise PromotionEvidenceError(
+                    "cannot scan commit evidence: git cat-file stopped early"
+                ) from exc
+            raw_header = process.stdout.readline()
+            if not raw_header.endswith(b"\n"):
+                raise PromotionEvidenceError(
+                    f"commit {commit}: git cat-file returned a malformed frame"
+                )
+            try:
+                object_name, object_type, size_value = (
+                    raw_header[:-1].decode("ascii").split(" ")
+                )
+                object_size = int(size_value)
+            except (UnicodeDecodeError, ValueError) as exc:
+                raise PromotionEvidenceError(
+                    f"commit {commit}: git cat-file returned a malformed frame"
+                ) from exc
+            if (
+                object_name != commit
+                or object_type != "commit"
+                or object_size < 0
+                or str(object_size) != size_value
+            ):
+                raise PromotionEvidenceError(
+                    f"commit {commit}: git cat-file did not return "
+                    "the enumerated commit object"
+                )
+            raw_object = _read_exact(
+                process.stdout,
+                object_size,
+                commit=commit,
             )
-        return tuple(_decode_commit_field(value) for value in fields)
+            if _read_exact(process.stdout, 1, commit=commit) != b"\n":
+                raise PromotionEvidenceError(
+                    f"commit {commit}: git cat-file returned a malformed frame"
+                )
+            _validate_commit_object_id(commit, raw_object)
+            metadata.append(_parse_commit_object(commit, raw_object))
 
-    parents = tuple(
-        _decode_commit_field(fixed_format("%P")).split()
-    )
-    return _CommitMetadata(
-        parents=parents,
-        subject=_decode_commit_field(fixed_format("%s")),
-        message=_decode_commit_field(fixed_format("%B")),
-        author=metadata_fields(
-            "%an%x00%ae%x00%aI",
-            3,
-            "author metadata",
-        ),
-        committer=metadata_fields(
-            "%cn%x00%ce%x00%cI",
-            3,
-            "committer metadata",
-        ),
-        signature=metadata_fields(
-            "%G?%x00%GS%x00%GK%x00%GF%x00%GP",
-            5,
-            "signature metadata",
-        ),
-    )
+        try:
+            process.stdin.close()
+        except (BrokenPipeError, OSError) as exc:
+            process.stdin = None
+            raise PromotionEvidenceError(
+                "cannot scan commit evidence: git cat-file stopped early"
+            ) from exc
+        process.stdin = None
+        remaining_stdout, stderr = process.communicate()
+        if process.returncode != 0:
+            detail = (
+                stderr.decode("utf-8", "replace").strip()
+                or f"git cat-file exited {process.returncode}"
+            )
+            raise PromotionEvidenceError(
+                f"cannot scan commit evidence: {detail}"
+            )
+        if remaining_stdout:
+            raise PromotionEvidenceError(
+                "git cat-file returned unexpected trailing output"
+            )
+        return metadata
+    except Exception:
+        _discard_evidence_object_stream(process)
+        raise
 
 
 def load_commit_evidence(repo_root: Path, revision: str = "HEAD") -> list[dict]:
@@ -1112,10 +1338,13 @@ def load_commit_evidence(repo_root: Path, revision: str = "HEAD") -> list[dict]:
     git_env["GIT_NO_REPLACE_OBJECTS"] = "1"
     resolved = _resolve_evidence_revision(repo_root, git_env, revision)
     commits = _enumerate_evidence_commits(repo_root, git_env, resolved)
-    _validate_evidence_objects(repo_root, git_env, commits)
+    metadata_records = _load_commit_metadata_batch(
+        repo_root,
+        git_env,
+        commits,
+    )
     records = []
-    for commit in commits:
-        metadata = _load_commit_metadata(repo_root, git_env, commit)
+    for commit, metadata in zip(commits, metadata_records, strict=True):
         if not SYNTHETIC_SUBJECT_PATTERN.fullmatch(metadata.subject):
             continue
         lines = metadata.message.split("\n")
@@ -1158,13 +1387,69 @@ def attest_repository_readiness(
     target_head: str,
 ) -> dict:
     """Create a target-bound attestation in a trusted secret-bearing step."""
+    return authenticate_repository_readiness(
+        repo_root,
+        revision,
+        repository=repository,
+        target_base=target_base,
+        target_head=target_head,
+    )["attestation"]
+
+
+def authenticate_repository_readiness(
+    repo_root: Path,
+    revision: str = "HEAD",
+    *,
+    repository: str,
+    target_base: str,
+    target_head: str,
+) -> dict:
+    """Scan once and return an HMAC-authenticated ready evidence bundle."""
     summary = require_repository_readiness(repo_root, revision)
-    return create_promotion_attestation(
+    return {
+        "schema": AUTHENTICATED_EVIDENCE_SCHEMA,
+        "summary": summary,
+        "attestation": create_promotion_attestation(
+            summary,
+            repository=repository,
+            target_base=target_base,
+            target_head=target_head,
+        ),
+    }
+
+
+def require_authenticated_repository_readiness(
+    evidence: dict,
+    *,
+    repository: str,
+    target_base: str,
+    target_head: str,
+) -> dict:
+    """Validate a scan result authenticated by the trusted HMAC signer."""
+    if not isinstance(evidence, dict) or set(evidence) != {
+        "schema",
+        "summary",
+        "attestation",
+    }:
+        raise PromotionAttestationError(
+            "authenticated promotion evidence fields are invalid"
+        )
+    if evidence["schema"] != AUTHENTICATED_EVIDENCE_SCHEMA:
+        raise PromotionAttestationError(
+            "unsupported authenticated promotion evidence schema"
+        )
+    summary = validate_promotion_summary(
+        evidence["summary"],
+        require_ready=True,
+    )
+    verify_promotion_attestation(
+        evidence["attestation"],
         summary,
         repository=repository,
         target_base=target_base,
         target_head=target_head,
     )
+    return summary
 
 
 def require_attested_repository_readiness(
@@ -1202,6 +1487,11 @@ def _cli() -> int:
         help="Sign ready repository evidence for one exact target",
     )
     parser.add_argument(
+        "--attest-bundle",
+        action="store_true",
+        help="Sign and return the authenticated evidence summary",
+    )
+    parser.add_argument(
         "--repository",
         default=os.environ.get("GITHUB_REPOSITORY", REPOSITORY),
     )
@@ -1209,23 +1499,28 @@ def _cli() -> int:
     parser.add_argument("--target-head")
     args = parser.parse_args()
     try:
-        if args.attest:
+        if args.attest or args.attest_bundle:
+            if args.attest and args.attest_bundle:
+                raise PromotionAttestationError(
+                    "--attest and --attest-bundle are mutually exclusive"
+                )
             if args.jsonl:
                 raise PromotionAttestationError(
                     "attestation signing accepts repository evidence only"
                 )
             if not args.target_base or not args.target_head:
                 raise PromotionAttestationError(
-                    "--attest requires --target-base and --target-head"
+                    "attestation requires --target-base and --target-head"
                 )
-            attestation = attest_repository_readiness(
+            evidence = authenticate_repository_readiness(
                 Path(args.repo_root),
                 args.revision,
                 repository=args.repository,
                 target_base=args.target_base,
                 target_head=args.target_head,
             )
-            print(json.dumps(attestation, indent=2, sort_keys=True))
+            output = evidence if args.attest_bundle else evidence["attestation"]
+            print(json.dumps(output, indent=2, sort_keys=True))
             return 0
         records = (
             load_jsonl(args.jsonl)

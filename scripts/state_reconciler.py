@@ -206,7 +206,7 @@ def synthetic_commit_messages(
     return messages
 
 
-def generate_promotion_attestation(
+def generate_authenticated_promotion_evidence(
     *,
     evidence_repo: Path,
     evidence_revision: str,
@@ -214,12 +214,12 @@ def generate_promotion_attestation(
     target_base: str,
     target_head: str,
 ) -> dict:
-    """Run the secret-bearing signer separately from candidate evaluation."""
+    """Run one secret-bearing evidence scan for candidate evaluation."""
     output = run_command(
         [
             sys.executable,
             str(BASE_DIR / "scripts" / "dreamcatcher_promotion.py"),
-            "--attest",
+            "--attest-bundle",
             "--repo-root",
             str(evidence_repo),
             "--revision",
@@ -237,13 +237,31 @@ def generate_promotion_attestation(
         value = json.loads(output)
     except json.JSONDecodeError as exc:
         raise ReconcileError(
-            "Dreamcatcher promotion signer returned malformed output"
+            "Dreamcatcher promotion signer returned malformed evidence"
         ) from exc
     if not isinstance(value, dict):
         raise ReconcileError(
-            "Dreamcatcher promotion signer returned malformed output"
+            "Dreamcatcher promotion signer returned malformed evidence"
         )
     return value
+
+
+def generate_promotion_attestation(
+    *,
+    evidence_repo: Path,
+    evidence_revision: str,
+    repository: str,
+    target_base: str,
+    target_head: str,
+) -> dict:
+    """Return only the attestation for compatibility with existing callers."""
+    return generate_authenticated_promotion_evidence(
+        evidence_repo=evidence_repo,
+        evidence_revision=evidence_revision,
+        repository=repository,
+        target_base=target_base,
+        target_head=target_head,
+    )["attestation"]
 
 
 def gh_json(args: list[str]) -> object:
@@ -342,6 +360,10 @@ class StateReconciler:
         except DreamcatcherConfigurationError as exc:
             raise ReconcileError(str(exc)) from exc
         self.last_dreamcatcher_telemetry: dict | None = None
+        self._authenticated_evidence_cache: dict[
+            tuple[str, str],
+            dict,
+        ] = {}
 
     def current_main_sha(self) -> str:
         data = gh_json(["api", f"repos/{self.repo}/git/ref/heads/main"])
@@ -503,24 +525,32 @@ class StateReconciler:
                 "caller-authored Dreamcatcher promotion summaries are not accepted"
             )
         try:
-            promotion_attestation = None
+            authenticated_evidence = None
             if self.dreamcatcher_mode == "enforce":
-                promotion_attestation = generate_promotion_attestation(
-                    evidence_repo=BASE_DIR,
-                    evidence_revision=self.policy_sha,
-                    repository=self.repo,
-                    target_base=base_sha,
-                    target_head=head_sha,
+                cache_key = (base_sha, head_sha)
+                authenticated_evidence = self._authenticated_evidence_cache.get(
+                    cache_key
                 )
+                if authenticated_evidence is None:
+                    authenticated_evidence = (
+                        generate_authenticated_promotion_evidence(
+                            evidence_repo=BASE_DIR,
+                            evidence_revision=self.policy_sha,
+                            repository=self.repo,
+                            target_base=base_sha,
+                            target_head=head_sha,
+                        )
+                    )
+                    self._authenticated_evidence_cache[cache_key] = (
+                        authenticated_evidence
+                    )
             return observe_candidate(
                 candidate,
                 manifest,
                 mode=self.dreamcatcher_mode,
                 source_pr=number,
                 source_head=head_sha,
-                promotion_attestation=promotion_attestation,
-                evidence_repo=BASE_DIR,
-                evidence_revision=self.policy_sha,
+                authenticated_promotion_evidence=authenticated_evidence,
                 target_repository=self.repo,
                 target_base=base_sha,
             )

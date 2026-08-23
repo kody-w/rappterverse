@@ -824,6 +824,39 @@ class PromotionEvaluatorTests(RepositoryScratchTest):
             self.commit_telemetry(repo, self.sample(number))
         return repo
 
+    def append_empty_commits_fast(self, repo: Path, count: int) -> None:
+        parent = _git(repo, "rev-parse", "HEAD")
+        stream = []
+        for index in range(1, count + 1):
+            message = f"ordinary performance commit {index}\n".encode("utf-8")
+            source = parent if index == 1 else f":{index - 1}"
+            stream.extend([
+                f"commit refs/heads/main\nmark :{index}\n".encode("ascii"),
+                (
+                    "author Performance Test <performance@example.com> "
+                    f"{1700000000 + index} +0000\n"
+                ).encode("ascii"),
+                (
+                    "committer Performance Test <performance@example.com> "
+                    f"{1700000000 + index} +0000\n"
+                ).encode("ascii"),
+                f"data {len(message)}\n".encode("ascii"),
+                message,
+                f"from {source}\n\n".encode("ascii"),
+            ])
+        stream.append(b"done\n")
+        imported = subprocess.run(
+            ["git", "fast-import", "--quiet"],
+            cwd=repo,
+            input=b"".join(stream),
+            capture_output=True,
+        )
+        self.assertEqual(
+            imported.returncode,
+            0,
+            imported.stderr.decode("utf-8", "replace"),
+        )
+
     def test_gate_accepts_exact_fifty_sample_boundaries(self) -> None:
         summary = self.ready_summary()
         self.assertTrue(summary["ready"])
@@ -993,6 +1026,106 @@ class PromotionEvaluatorTests(RepositoryScratchTest):
             telemetry,
         )
 
+    def test_batch_commit_metadata_matches_individual_git_show(self) -> None:
+        repo, _ = self.make_repo("metadata-parity")
+        self.commit_telemetry(repo, self.sample(1))
+        ordinary_message = (
+            "ordinary \x1e\x1f framing commit\n\n"
+            + ("f" * 40)
+            + " commit 123\n"
+            "author-shaped text <not-a-header@example.com> 1 +0000\n"
+        )
+        created = subprocess.run(
+            [
+                "git",
+                "-c",
+                "user.name=Parity Author",
+                "-c",
+                "user.email=parity@example.com",
+                "commit",
+                "--allow-empty",
+                "--cleanup=verbatim",
+                "-F",
+                "-",
+            ],
+            cwd=repo,
+            input=ordinary_message,
+            capture_output=True,
+            text=True,
+        )
+        self.assertEqual(
+            created.returncode,
+            0,
+            created.stderr or created.stdout,
+        )
+        commits = _git(
+            repo,
+            "rev-list",
+            "--first-parent",
+            "HEAD",
+        ).splitlines()
+        git_env = os.environ.copy()
+        git_env.pop(promotion.PROMOTION_KEY_ENV, None)
+        git_env["GIT_NO_REPLACE_OBJECTS"] = "1"
+        metadata = promotion._load_commit_metadata_batch(
+            repo,
+            git_env,
+            commits,
+        )
+
+        def show(commit: str, format_string: str) -> bytes:
+            return subprocess.run(
+                [
+                    "git",
+                    "show",
+                    "--no-patch",
+                    "--no-notes",
+                    "--no-show-signature",
+                    "--no-color",
+                    f"--format=format:{format_string}",
+                    commit,
+                ],
+                cwd=repo,
+                capture_output=True,
+                check=True,
+            ).stdout
+
+        for commit, actual in zip(commits, metadata, strict=True):
+            with self.subTest(commit=commit):
+                self.assertEqual(
+                    actual.parents,
+                    tuple(show(commit, "%P").decode("ascii").split()),
+                )
+                self.assertEqual(
+                    actual.subject,
+                    show(commit, "%s").decode("utf-8", "replace"),
+                )
+                self.assertEqual(
+                    actual.message,
+                    show(commit, "%B").decode("utf-8", "replace"),
+                )
+                self.assertEqual(
+                    actual.author,
+                    tuple(
+                        value.decode("utf-8", "replace")
+                        for value in show(
+                            commit,
+                            "%an%x00%ae%x00%aI",
+                        ).split(b"\x00")
+                    ),
+                )
+                self.assertEqual(
+                    actual.committer,
+                    tuple(
+                        value.decode("utf-8", "replace")
+                        for value in show(
+                            commit,
+                            "%cn%x00%ce%x00%cI",
+                        ).split(b"\x00")
+                    ),
+                )
+                self.assertEqual(actual.signatures, ())
+
     def test_commit_evidence_is_first_parent_canonical_not_identity_auth(self) -> None:
         repo, _ = self.make_repo("first-parent")
         _git(repo, "switch", "-qc", "side")
@@ -1029,6 +1162,17 @@ class PromotionEvaluatorTests(RepositoryScratchTest):
             promotion.load_commit_evidence(repo),
             [unexpected_identity, expected_identity],
         )
+
+    def test_commit_evidence_reads_actual_objects_not_replace_refs(self) -> None:
+        repo, seed = self.make_repo("actual-objects")
+        _git(repo, "commit", "--allow-empty", "-qm", "ordinary target")
+        target = _git(repo, "rev-parse", "HEAD")
+        _git(repo, "switch", "-qc", "replacement", seed)
+        replacement = self.commit_telemetry(repo, self.sample(1))
+        _git(repo, "switch", "-q", "main")
+        _git(repo, "replace", target, replacement)
+        self.assertEqual(_git(repo, "replace", "-l"), target)
+        self.assertEqual(promotion.load_commit_evidence(repo), [])
 
     def test_ordinary_commit_delimiters_cannot_inject_evidence(self) -> None:
         repo, _ = self.make_repo("delimiter-injection")
@@ -1111,6 +1255,94 @@ class PromotionEvaluatorTests(RepositoryScratchTest):
                 [samples[2], samples[1]],
             )
 
+    def test_malformed_commit_object_fails_closed(self) -> None:
+        repo, _ = self.make_repo("malformed-object")
+        telemetry = self.sample(1)
+        manifest = {
+            "manifest_id": telemetry["manifest_id"],
+            "search_plan": {
+                "queries": [{
+                    "kind": "path",
+                    "value": "state/actions.json",
+                }],
+            },
+        }
+        message = "\n\n".join(
+            state_reconciler.synthetic_commit_messages(
+                telemetry["source_pr"],
+                telemetry["source_head"],
+                manifest,
+                telemetry,
+            )
+        ) + "\n"
+        raw_object = (
+            f"tree {_git(repo, 'rev-parse', 'HEAD^{tree}')}\n"
+            f"parent {_git(repo, 'rev-parse', 'HEAD')}\n"
+            "author Malformed Test <malformed@example.com> "
+            "1700000000 +0000\n\n"
+        ).encode("ascii") + message.encode("utf-8")
+        written = subprocess.run(
+            [
+                "git",
+                "hash-object",
+                "--literally",
+                "-t",
+                "commit",
+                "-w",
+                "--stdin",
+            ],
+            cwd=repo,
+            input=raw_object,
+            capture_output=True,
+            check=True,
+        )
+        malformed = written.stdout.decode("ascii").strip()
+        self.assertEqual(_git(repo, "cat-file", "-t", malformed), "commit")
+        _git(repo, "update-ref", "refs/heads/main", malformed)
+        with self.assertRaisesRegex(
+            promotion.PromotionEvidenceError,
+            "expected one committer header",
+        ):
+            promotion.load_commit_evidence(repo)
+
+    def test_512_commit_scan_uses_constant_git_processes(self) -> None:
+        repo, _ = self.make_repo("process-bound")
+        self.append_empty_commits_fast(
+            repo,
+            promotion.MAXIMUM_COMMIT_EVIDENCE_COMMITS,
+        )
+        self.assertEqual(
+            len(
+                _git(
+                    repo,
+                    "rev-list",
+                    "--first-parent",
+                    f"--max-count={promotion.MAXIMUM_COMMIT_EVIDENCE_COMMITS}",
+                    "HEAD",
+                ).splitlines()
+            ),
+            promotion.MAXIMUM_COMMIT_EVIDENCE_COMMITS,
+        )
+        with (
+            mock.patch.object(
+                promotion,
+                "_run_evidence_git",
+                wraps=promotion._run_evidence_git,
+            ) as run_git,
+            mock.patch.object(
+                promotion,
+                "_start_evidence_object_stream",
+                wraps=promotion._start_evidence_object_stream,
+            ) as start_stream,
+        ):
+            self.assertEqual(promotion.load_commit_evidence(repo), [])
+        self.assertEqual(run_git.call_count, 2)
+        self.assertEqual(start_stream.call_count, 1)
+        self.assertEqual(
+            [call.args[2][0] for call in run_git.call_args_list],
+            ["rev-parse", "rev-list"],
+        )
+
     def test_hmac_attestation_binds_evidence_policy_index_repo_and_target(
         self,
     ) -> None:
@@ -1147,6 +1379,7 @@ class PromotionEvaluatorTests(RepositoryScratchTest):
 
             for field, value in (
                 ("evidence_id", _content_id("other-evidence")),
+                ("summary_id", _content_id("other-summary")),
                 ("policy_revision", _content_id("other-policy")),
                 (
                     "index_configuration_id",
@@ -1245,25 +1478,75 @@ class PromotionEvaluatorTests(RepositoryScratchTest):
             {promotion.PROMOTION_KEY_ENV: PROMOTION_TEST_KEY},
             clear=False,
         ):
-            attestation = state_reconciler.generate_promotion_attestation(
-                evidence_repo=evidence,
-                evidence_revision="HEAD",
+            authenticated = (
+                state_reconciler.generate_authenticated_promotion_evidence(
+                    evidence_repo=evidence,
+                    evidence_revision="HEAD",
+                    repository=repository,
+                    target_base=target_base,
+                    target_head=target_head,
+                )
+            )
+            summary = promotion.require_authenticated_repository_readiness(
+                authenticated,
                 repository=repository,
                 target_base=target_base,
                 target_head=target_head,
             )
-            summary = promotion.require_attested_repository_readiness(
+            tampered = copy.deepcopy(authenticated)
+            tampered["summary"]["metrics"]["p95_duration_ms"] = 4_999
+            tampered["summary"]["summary_id"] = promotion._content_id({
+                key: value
+                for key, value in tampered["summary"].items()
+                if key != "summary_id"
+            })
+            with self.assertRaisesRegex(
+                promotion.PromotionAttestationError,
+                "bindings",
+            ):
+                promotion.require_authenticated_repository_readiness(
+                    tampered,
+                    repository=repository,
+                    target_base=target_base,
+                    target_head=target_head,
+                )
+        self.assertTrue(summary["ready"])
+        self.assertNotIn(
+            PROMOTION_TEST_KEY,
+            json.dumps(authenticated, sort_keys=True),
+        )
+
+    def test_authenticated_evidence_reuses_one_repository_scan(self) -> None:
+        evidence = self.evidence_repo(name="single-scan-evidence")
+        repository = "owner/rappterverse"
+        target_base = "a" * 40
+        target_head = "b" * 40
+        with (
+            mock.patch.dict(
+                os.environ,
+                {promotion.PROMOTION_KEY_ENV: PROMOTION_TEST_KEY},
+                clear=False,
+            ),
+            mock.patch.object(
+                promotion,
+                "load_commit_evidence",
+                wraps=promotion.load_commit_evidence,
+            ) as scan,
+        ):
+            authenticated = promotion.authenticate_repository_readiness(
                 evidence,
-                attestation=attestation,
+                repository=repository,
+                target_base=target_base,
+                target_head=target_head,
+            )
+            summary = promotion.require_authenticated_repository_readiness(
+                authenticated,
                 repository=repository,
                 target_base=target_base,
                 target_head=target_head,
             )
         self.assertTrue(summary["ready"])
-        self.assertNotIn(
-            PROMOTION_TEST_KEY,
-            json.dumps(attestation, sort_keys=True),
-        )
+        scan.assert_called_once_with(evidence, "HEAD")
 
     def test_reconciler_scrubs_signing_key_from_other_subprocesses(self) -> None:
         completed = subprocess.CompletedProcess(
@@ -1450,15 +1733,14 @@ class PromotionEvaluatorTests(RepositoryScratchTest):
             {promotion.PROMOTION_KEY_ENV: PROMOTION_TEST_KEY},
             clear=False,
         ):
-            attestation = promotion.attest_repository_readiness(
+            authenticated = promotion.authenticate_repository_readiness(
                 evidence,
                 repository=repository,
                 target_base=base,
                 target_head=head,
             )
-            trusted = promotion.require_attested_repository_readiness(
-                evidence,
-                attestation=attestation,
+            trusted = promotion.require_authenticated_repository_readiness(
+                authenticated,
                 repository=repository,
                 target_base=base,
                 target_head=head,
@@ -1469,8 +1751,7 @@ class PromotionEvaluatorTests(RepositoryScratchTest):
                 mode="enforce",
                 source_pr=7,
                 source_head=head,
-                promotion_attestation=attestation,
-                evidence_repo=evidence,
+                authenticated_promotion_evidence=authenticated,
                 target_repository=repository,
                 target_base=base,
             )
@@ -1482,7 +1763,7 @@ class PromotionEvaluatorTests(RepositoryScratchTest):
         )
         self.assertEqual(
             telemetry["promotion_attestation"],
-            attestation["signature"],
+            authenticated["attestation"]["signature"],
         )
 
     def test_enforce_only_rejects_deterministic_path_coverage(self) -> None:
@@ -1606,7 +1887,7 @@ class PromotionEvaluatorTests(RepositoryScratchTest):
                     with (
                         mock.patch.object(
                             state_reconciler,
-                            "generate_promotion_attestation",
+                            "generate_authenticated_promotion_evidence",
                             return_value={},
                         ),
                         mock.patch.object(
@@ -1666,9 +1947,10 @@ class PromotionEvaluatorTests(RepositoryScratchTest):
                         )
                     )
 
+        reconciler._authenticated_evidence_cache.clear()
         with mock.patch.object(
             state_reconciler,
-            "generate_promotion_attestation",
+            "generate_authenticated_promotion_evidence",
             side_effect=state_reconciler.ReconcileError(
                 "promotion signer unavailable"
             ),
@@ -1684,6 +1966,49 @@ class PromotionEvaluatorTests(RepositoryScratchTest):
                     base_sha="0" * 40,
                     head_sha="1" * 40,
                 )
+
+    def test_reconciler_caches_authenticated_evidence_for_target(self) -> None:
+        manifest = {
+            "manifest_id": _content_id("cache-manifest"),
+            "search_plan": {"queries": []},
+        }
+        candidate = self.tmp / "cache-candidate"
+        candidate.mkdir()
+        authenticated = {"authenticated": True}
+        reconciler = state_reconciler.StateReconciler(
+            "owner/repo",
+            dry_run=True,
+            dreamcatcher_mode="enforce",
+        )
+        with (
+            mock.patch.object(
+                state_reconciler,
+                "generate_authenticated_promotion_evidence",
+                return_value=authenticated,
+            ) as generate,
+            mock.patch.object(
+                state_reconciler,
+                "observe_candidate",
+                return_value=None,
+            ) as observe,
+        ):
+            for _ in range(2):
+                self.assertIsNone(
+                    reconciler.observe_dreamcatcher(
+                        candidate,
+                        manifest,
+                        number=7,
+                        base_sha="0" * 40,
+                        head_sha="1" * 40,
+                    )
+                )
+        generate.assert_called_once()
+        self.assertEqual(observe.call_count, 2)
+        for call in observe.call_args_list:
+            self.assertIs(
+                call.kwargs["authenticated_promotion_evidence"],
+                authenticated,
+            )
 
     def test_retryable_enforce_failure_does_not_close_pr(self) -> None:
         reconciler = state_reconciler.StateReconciler(

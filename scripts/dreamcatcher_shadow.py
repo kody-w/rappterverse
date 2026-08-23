@@ -23,6 +23,7 @@ from dreamcatcher_promotion import (
     REPOSITORY,
     TELEMETRY_SCHEMA,
     PromotionEvidenceError,
+    require_authenticated_repository_readiness,
     require_attested_repository_readiness,
     validate_telemetry,
 )
@@ -127,6 +128,7 @@ def observe_candidate(
     source_head: str,
     promotion_summary: dict | None = None,
     promotion_attestation: dict | None = None,
+    authenticated_promotion_evidence: dict | None = None,
     evidence_repo: Path | None = None,
     evidence_revision: str = "HEAD",
     target_repository: str = REPOSITORY,
@@ -144,23 +146,43 @@ def observe_candidate(
             raise DreamcatcherConfigurationError(
                 "caller-authored promotion summaries are not trusted"
             )
-        if evidence_repo is None:
+        if authenticated_promotion_evidence is not None:
+            if promotion_attestation is not None or evidence_repo is not None:
+                raise DreamcatcherConfigurationError(
+                    "authenticated promotion evidence is ambiguous"
+                )
+        elif evidence_repo is None:
             raise DreamcatcherConfigurationError(
                 "enforce mode requires canonical repository evidence"
             )
-        if promotion_attestation is None or target_base is None:
+        elif promotion_attestation is None:
+            raise DreamcatcherConfigurationError(
+                "enforce mode requires a target-bound promotion attestation"
+            )
+        if target_base is None:
             raise DreamcatcherConfigurationError(
                 "enforce mode requires a target-bound promotion attestation"
             )
         try:
-            attested_summary = require_attested_repository_readiness(
-                evidence_repo,
-                evidence_revision,
-                attestation=promotion_attestation,
-                repository=target_repository,
-                target_base=target_base,
-                target_head=source_head,
-            )
+            if authenticated_promotion_evidence is not None:
+                attested_summary = require_authenticated_repository_readiness(
+                    authenticated_promotion_evidence,
+                    repository=target_repository,
+                    target_base=target_base,
+                    target_head=source_head,
+                )
+                promotion_attestation = authenticated_promotion_evidence[
+                    "attestation"
+                ]
+            else:
+                attested_summary = require_attested_repository_readiness(
+                    evidence_repo,
+                    evidence_revision,
+                    attestation=promotion_attestation,
+                    repository=target_repository,
+                    target_base=target_base,
+                    target_head=source_head,
+                )
         except PromotionEvidenceError as exc:
             raise DreamcatcherConfigurationError(
                 f"valid promotion attestation is unavailable: {exc}"

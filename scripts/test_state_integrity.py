@@ -1691,7 +1691,16 @@ class TestStateReconciler(unittest.TestCase):
         self.assertIn('"DREAMCATCHER_DELTA_MANIFEST"', source)
         self.assertIn("self.observe_dreamcatcher(", source)
         self.assertIn("caller-authored Dreamcatcher promotion summaries", source)
-        self.assertIn("generate_promotion_attestation(", source)
+        self.assertIn(
+            "generate_authenticated_promotion_evidence(",
+            source,
+        )
+        self.assertIn('"--attest-bundle"', source)
+        self.assertIn("self._authenticated_evidence_cache", source)
+        self.assertIn(
+            "authenticated_promotion_evidence=authenticated_evidence",
+            source,
+        )
         self.assertIn("evidence_repo=BASE_DIR", source)
         self.assertIn("evidence_revision=self.policy_sha", source)
         self.assertIn("target_base=base_sha", source)
