@@ -1691,8 +1691,12 @@ class TestStateReconciler(unittest.TestCase):
         self.assertIn('"DREAMCATCHER_DELTA_MANIFEST"', source)
         self.assertIn("self.observe_dreamcatcher(", source)
         self.assertIn("caller-authored Dreamcatcher promotion summaries", source)
+        self.assertIn("generate_promotion_attestation(", source)
         self.assertIn("evidence_repo=BASE_DIR", source)
         self.assertIn("evidence_revision=self.policy_sha", source)
+        self.assertIn("target_base=base_sha", source)
+        self.assertIn("def without_promotion_key()", source)
+        self.assertIn("env.pop(PROMOTION_KEY_ENV, None)", source)
         self.assertIn("DREAMCATCHER_TELEMETRY=", source)
         self.assertIn('context=f"dreamcatcher-{telemetry[\'mode\']}"', source)
         self.assertIn('candidate / "scripts" / "test_state_integrity.py"', source)
@@ -1703,6 +1707,11 @@ class TestStateReconciler(unittest.TestCase):
         self.assertIn("cron: '17 * * * *'", workflow)
         self.assertIn("DREAMCATCHER_MODE: shadow", workflow)
         self.assertNotIn("DREAMCATCHER_MODE: enforce", workflow)
+        self.assertIn(
+            "DREAMCATCHER_PROMOTION_KEY: "
+            "${{ secrets.DREAMCATCHER_PROMOTION_KEY }}",
+            workflow,
+        )
         delta_workflow = load_yaml_text(WORKFLOWS_DIR / "apply-deltas.yml")
         self.assertNotIn("git push", delta_workflow)
         self.assertIn("state-drain.yml", delta_workflow)

@@ -21,6 +21,7 @@ from dreamcatcher_delta import (  # noqa: E402
     verify_manifest_repository,
     write_manifest,
 )
+from dreamcatcher_promotion import PROMOTION_KEY_ENV  # noqa: E402
 from dreamcatcher_shadow import (  # noqa: E402
     DreamcatcherConfigurationError,
     DreamcatcherEnforcementError,
@@ -49,12 +50,20 @@ class ValidationRejected(ReconcileError):
     """The queue item deterministically failed trusted validation."""
 
 
+def without_promotion_key() -> dict[str, str]:
+    env = os.environ.copy()
+    env.pop(PROMOTION_KEY_ENV, None)
+    return env
+
+
 def run_command(
     args: list[str],
     *,
     cwd: Path = BASE_DIR,
     env: dict[str, str] | None = None,
 ) -> str:
+    if env is None:
+        env = without_promotion_key()
     result = subprocess.run(
         args,
         cwd=cwd,
@@ -195,6 +204,46 @@ def synthetic_commit_messages(
             "\n".join([*messages[1:], *telemetry_trailers(telemetry)]),
         ]
     return messages
+
+
+def generate_promotion_attestation(
+    *,
+    evidence_repo: Path,
+    evidence_revision: str,
+    repository: str,
+    target_base: str,
+    target_head: str,
+) -> dict:
+    """Run the secret-bearing signer separately from candidate evaluation."""
+    output = run_command(
+        [
+            sys.executable,
+            str(BASE_DIR / "scripts" / "dreamcatcher_promotion.py"),
+            "--attest",
+            "--repo-root",
+            str(evidence_repo),
+            "--revision",
+            evidence_revision,
+            "--repository",
+            repository,
+            "--target-base",
+            target_base,
+            "--target-head",
+            target_head,
+        ],
+        env=os.environ.copy(),
+    )
+    try:
+        value = json.loads(output)
+    except json.JSONDecodeError as exc:
+        raise ReconcileError(
+            "Dreamcatcher promotion signer returned malformed output"
+        ) from exc
+    if not isinstance(value, dict):
+        raise ReconcileError(
+            "Dreamcatcher promotion signer returned malformed output"
+        )
+    return value
 
 
 def gh_json(args: list[str]) -> object:
@@ -443,6 +492,7 @@ class StateReconciler:
         manifest: dict,
         *,
         number: int,
+        base_sha: str,
         head_sha: str,
     ) -> dict | None:
         if (
@@ -453,14 +503,26 @@ class StateReconciler:
                 "caller-authored Dreamcatcher promotion summaries are not accepted"
             )
         try:
+            promotion_attestation = None
+            if self.dreamcatcher_mode == "enforce":
+                promotion_attestation = generate_promotion_attestation(
+                    evidence_repo=BASE_DIR,
+                    evidence_revision=self.policy_sha,
+                    repository=self.repo,
+                    target_base=base_sha,
+                    target_head=head_sha,
+                )
             return observe_candidate(
                 candidate,
                 manifest,
                 mode=self.dreamcatcher_mode,
                 source_pr=number,
                 source_head=head_sha,
+                promotion_attestation=promotion_attestation,
                 evidence_repo=BASE_DIR,
                 evidence_revision=self.policy_sha,
+                target_repository=self.repo,
+                target_base=base_sha,
             )
         except DreamcatcherEnforcementError as exc:
             if self.dreamcatcher_mode == "shadow":
@@ -480,6 +542,8 @@ class StateReconciler:
                 )
                 return None
             raise ReconcileError(str(exc)) from exc
+        except ReconcileError:
+            raise
         except Exception as exc:
             if self.dreamcatcher_mode == "shadow":
                 print(
@@ -536,7 +600,7 @@ class StateReconciler:
             manifest_path = temp_root / "dreamcatcher-delta.json"
             write_manifest(manifest_path, manifest)
             preflight_candidate(candidate, changed_paths)
-            env = os.environ.copy()
+            env = without_promotion_key()
             env.update({
                 "VALIDATION_REPO_ROOT": str(candidate),
                 "VALIDATION_BASE_SHA": base_sha,
@@ -564,6 +628,7 @@ class StateReconciler:
                 candidate,
                 manifest,
                 number=number,
+                base_sha=base_sha,
                 head_sha=head_sha,
             )
 
@@ -683,6 +748,7 @@ class StateReconciler:
                 subprocess.run(
                     ["git", "worktree", "remove", "--force", str(candidate)],
                     cwd=BASE_DIR,
+                    env=without_promotion_key(),
                     capture_output=True,
                 )
             shutil.rmtree(temp_root, ignore_errors=True)

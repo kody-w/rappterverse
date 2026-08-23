@@ -33,9 +33,33 @@ VENDOR_HEADER = (
     "# engines/twin-dreamcatcher/reverse_index.py\n"
     "# Canonical Git-blob SHA-256:\n"
     f"# {CANONICAL_HASHES['reverse']}\n"
-    "# The only source adaptation is the local delta-protocol module name below.\n"
+    "# Local adaptations keep the wire format while hardening validation and\n"
+    "# case-only rename handling in addition to the local protocol import.\n"
     "\n"
 ).encode()
+# LF-stable wire snapshots from the pinned canonical implementation.
+CANONICAL_INDEX_IDS = {
+    "before": (
+        "sha256:bd0d753af53a51c7171abb302d29ff4a7612e0c47c975b7b9ab0a2efb5ab7cd6"
+    ),
+    "updated": (
+        "sha256:740c58c4c192f3afa82632de08b1fb22818da725765d7e8c6a519ed88d7579af"
+    ),
+    "query": (
+        "sha256:de27e71e367a83e79f4e3c71701e7c413bbe942aac74a34a41939600793891d8"
+    ),
+}
+CANONICAL_WIRE_HASHES = {
+    "before": (
+        "7f0d34b30125a475f5a4e7bbcd5d5e5cdb1654a3cace63ecce653f9e941ccef8"
+    ),
+    "updated": (
+        "a82d50b7f6168c6e6607d8462a0e9c0e85ee0050df4a1a6409c6d8623617c291"
+    ),
+    "query": (
+        "1465342287102f169b75f69e446eaee276867d353afbd7ec6b6c369569c5da9d"
+    ),
+}
 
 
 def _git(repo: Path, *args: str) -> str:
@@ -52,9 +76,8 @@ def _git(repo: Path, *args: str) -> str:
 
 def _write_json(path: Path, value: object) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(
-        json.dumps(value, separators=(",", ":")) + "\n",
-        encoding="utf-8",
+    path.write_bytes(
+        (json.dumps(value, separators=(",", ":")) + "\n").encode("utf-8")
     )
 
 
@@ -116,18 +139,6 @@ class DreamcatcherParityTests(unittest.TestCase):
                 return candidate
         return None
 
-    def _canonical_reverse(self, vendor_path: Path) -> bytes:
-        source = _normalized(vendor_path)
-        self.assertEqual(source.count(VENDOR_HEADER), 1)
-        source = source.replace(VENDOR_HEADER, b"", 1)
-        vendor_import = b"from dreamcatcher_delta import ("
-        self.assertEqual(source.count(vendor_import), 1)
-        return source.replace(
-            vendor_import,
-            b"from delta_protocol import (",
-            1,
-        )
-
     def _load(
         self,
         stem: str,
@@ -179,16 +190,22 @@ class DreamcatcherParityTests(unittest.TestCase):
             _sha256(_normalized(vendor_delta_schema)),
             CANONICAL_HASHES["delta_schema"],
         )
-        canonical_reverse = self._canonical_reverse(vendor_reverse)
         self.assertEqual(
-            _sha256(canonical_reverse),
-            CANONICAL_HASHES["reverse"],
+            _normalized(vendor_reverse).count(VENDOR_HEADER),
+            1,
         )
         self.assertEqual(
             _sha256(_normalized(vendor_index_schema)),
             CANONICAL_HASHES["index_schema"],
         )
 
+        vendor_dp = self._load("vendor_delta", vendor_delta)
+        vendor_ri = self._load(
+            "vendor_reverse",
+            vendor_reverse,
+            dependency_name="dreamcatcher_delta",
+            dependency=vendor_dp,
+        )
         if core_dir is not None:
             core_delta = core_dir / "delta_protocol.py"
             core_reverse = core_dir / "reverse_index.py"
@@ -201,28 +218,20 @@ class DreamcatcherParityTests(unittest.TestCase):
                 vendor_index_schema.read_bytes(),
                 (core_dir / "index.schema.json").read_bytes(),
             )
-            self.assertEqual(canonical_reverse, _normalized(core_reverse))
+            self.assertEqual(
+                _sha256(_normalized(core_reverse)),
+                CANONICAL_HASHES["reverse"],
+            )
+            core_dp = self._load("core_delta", core_delta)
+            core_ri = self._load(
+                "core_reverse",
+                core_reverse,
+                dependency_name="delta_protocol",
+                dependency=core_dp,
+            )
         else:
-            core_delta = vendor_delta
-            generated_core = self.tmp / "canonical-core"
-            generated_core.mkdir()
-            core_reverse = generated_core / "reverse_index.py"
-            core_reverse.write_bytes(canonical_reverse)
-
-        core_dp = self._load("core_delta", core_delta)
-        vendor_dp = self._load("vendor_delta", vendor_delta)
-        core_ri = self._load(
-            "core_reverse",
-            core_reverse,
-            dependency_name="delta_protocol",
-            dependency=core_dp,
-        )
-        vendor_ri = self._load(
-            "vendor_reverse",
-            vendor_reverse,
-            dependency_name="dreamcatcher_delta",
-            dependency=vendor_dp,
-        )
+            core_dp = vendor_dp
+            core_ri = vendor_ri
         return core_dp, vendor_dp, core_ri, vendor_ri
 
     def _fixture(self) -> tuple[Path, str]:
@@ -281,6 +290,14 @@ class DreamcatcherParityTests(unittest.TestCase):
         core_before = core_ri.build_index(repo, includes=includes)
         vendor_before = vendor_ri.build_index(repo, includes=includes)
         self.assertEqual(core_before, vendor_before)
+        self.assertEqual(
+            vendor_before["index_id"],
+            CANONICAL_INDEX_IDS["before"],
+        )
+        self.assertEqual(
+            _sha256(_wire(vendor_before)),
+            CANONICAL_WIRE_HASHES["before"],
+        )
 
         actions_path = repo / "state" / "actions.json"
         actions = json.loads(actions_path.read_text(encoding="utf-8"))
@@ -346,6 +363,14 @@ class DreamcatcherParityTests(unittest.TestCase):
             vendor_index,
             vendor_ri.build_index(repo, includes=includes),
         )
+        self.assertEqual(
+            vendor_index["index_id"],
+            CANONICAL_INDEX_IDS["updated"],
+        )
+        self.assertEqual(
+            _sha256(_wire(vendor_index)),
+            CANONICAL_WIRE_HASHES["updated"],
+        )
 
         core_query = core_ri.expand_search_plan(
             core_index,
@@ -361,6 +386,14 @@ class DreamcatcherParityTests(unittest.TestCase):
         self.assertEqual(core_query["stats"], vendor_query["stats"])
         self.assertEqual(core_query["query_id"], vendor_query["query_id"])
         self.assertEqual(_wire(core_query), _wire(vendor_query))
+        self.assertEqual(
+            vendor_query["query_id"],
+            CANONICAL_INDEX_IDS["query"],
+        )
+        self.assertEqual(
+            _sha256(_wire(vendor_query)),
+            CANONICAL_WIRE_HASHES["query"],
+        )
 
 
 if __name__ == "__main__":

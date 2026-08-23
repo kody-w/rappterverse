@@ -19,6 +19,7 @@ from unittest import mock
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 BASE_DIR = SCRIPT_DIR.parent
+PROMOTION_TEST_KEY = "dreamcatcher-test-key-" + ("x" * 40)
 sys.path.insert(0, str(SCRIPT_DIR))
 
 import dreamcatcher_delta as dp  # noqa: E402
@@ -142,7 +143,7 @@ class RepositoryScratchTest(unittest.TestCase):
         repo: Path,
         telemetry: dict,
         *,
-        trusted: bool = True,
+        expected_identity: bool = True,
     ) -> str:
         manifest = {
             "manifest_id": telemetry["manifest_id"],
@@ -164,7 +165,7 @@ class RepositoryScratchTest(unittest.TestCase):
                 "rappterverse-bot",
                 "41898282+github-actions[bot]@users.noreply.github.com",
             )
-            if trusted
+            if expected_identity
             else ("Untrusted", "untrusted@example.com")
         )
         command = [
@@ -191,23 +192,13 @@ class ReverseIndexVendorTests(RepositoryScratchTest):
             reverse_source,
         )
         self.assertIn("from dreamcatcher_delta import (", reverse_source)
-        canonicalized = reverse_source.replace(
-            "# Vendored from "
-            "kody-w/rappter@75025fe696331c85de58a9dbdd0efbbc68ac6f86:\n"
-            "# engines/twin-dreamcatcher/reverse_index.py\n"
-            "# Canonical Git-blob SHA-256:\n"
-            "# 8f490c8158d4576f62d872cac69bf4fdd88fe9915e5d90a02e90e01789748d47\n"
-            "# The only source adaptation is the local delta-protocol module "
-            "name below.\n\n",
-            "",
-        ).replace(
-            "from dreamcatcher_delta import (",
-            "from delta_protocol import (",
-            1,
+        self.assertIn(
+            "hardening validation and\n# case-only rename handling",
+            reverse_source,
         )
-        self.assertEqual(
-            hashlib.sha256(canonicalized.encode("utf-8")).hexdigest(),
+        self.assertIn(
             "8f490c8158d4576f62d872cac69bf4fdd88fe9915e5d90a02e90e01789748d47",
+            reverse_source,
         )
         self.assertEqual(
             hashlib.sha256(
@@ -318,6 +309,178 @@ class ReverseIndexVendorTests(RepositoryScratchTest):
             state_before,
         )
 
+    def test_integer_configuration_rejects_booleans(self) -> None:
+        repo, _ = self.make_repo()
+        for field in ("max_bytes", "max_entity_fanout"):
+            kwargs = {
+                "includes": ["state"],
+                "max_bytes": 1024,
+                "max_entity_fanout": 16,
+            }
+            kwargs[field] = True
+            with self.subTest(build_field=field):
+                with self.assertRaisesRegex(
+                    reverse_index.ReverseIndexError,
+                    "positive integers",
+                ):
+                    reverse_index.build_index(repo, **kwargs)
+
+        index = reverse_index.build_index(repo, includes=["state"])
+        for field in ("max_bytes", "max_entity_fanout"):
+            malformed = copy.deepcopy(index)
+            malformed["configuration"][field] = True
+            with self.subTest(validate_field=field):
+                with self.assertRaisesRegex(
+                    reverse_index.ReverseIndexError,
+                    "invalid index configuration",
+                ):
+                    reverse_index.validate_index(malformed)
+
+    def test_every_index_document_must_obey_configuration(self) -> None:
+        repo, _ = self.make_repo()
+        index = reverse_index.build_index(repo, includes=["state"])
+        source_path = sorted(index["documents"])[0]
+        cases = (
+            ("worlds/outside.json", None),
+            ("state/unsupported.bin", None),
+            (
+                source_path,
+                index["configuration"]["max_bytes"] + 1,
+            ),
+        )
+        for replacement, byte_count in cases:
+            malformed = copy.deepcopy(index)
+            metadata = malformed["documents"].pop(source_path)
+            if byte_count is not None:
+                metadata["bytes"] = byte_count
+            malformed["documents"][replacement] = metadata
+            with self.subTest(path=replacement, bytes=byte_count):
+                with self.assertRaisesRegex(
+                    reverse_index.ReverseIndexError,
+                    "violates index configuration",
+                ):
+                    reverse_index.validate_index(malformed)
+
+    def test_incremental_index_keeps_only_compliant_documents(self) -> None:
+        repo, _ = self.make_repo()
+        base = _git(repo, "rev-parse", "HEAD")
+        before = reverse_index.build_index(
+            repo,
+            includes=["state"],
+            max_bytes=256,
+            suffixes={".json"},
+        )
+        _write_json(
+            repo / "state" / "actions.json",
+            {"actions": [{"payload": "x" * 512}]},
+        )
+        _git(
+            repo,
+            "mv",
+            "state/unrelated.json",
+            "state/unrelated.bin",
+        )
+        _git(repo, "add", "-A")
+        _git(repo, "commit", "-qm", "make documents noncompliant")
+        head = _git(repo, "rev-parse", "HEAD")
+        manifest = dp.capture_worktree(
+            repo,
+            base,
+            head=head,
+            source_id="pr-18",
+            tile="alice",
+            include_untracked=False,
+        )
+        updated = reverse_index.update_index(repo, before, manifest)
+        self.assertNotIn("state/actions.json", updated["documents"])
+        self.assertNotIn("state/unrelated.json", updated["documents"])
+        self.assertNotIn("state/unrelated.bin", updated["documents"])
+        self.assertEqual(
+            updated,
+            reverse_index.build_index(
+                repo,
+                includes=["state"],
+                max_bytes=256,
+                suffixes={".json"},
+            ),
+        )
+
+    def test_case_only_rename_preserves_parity_and_stale_detection(self) -> None:
+        repo, _ = self.make_repo()
+        old_path = "state/CaseOnly.json"
+        new_path = "state/caseonly.json"
+        _write_json(repo / old_path, {"id": "case-only"})
+        _git(repo, "add", old_path)
+        _git(repo, "commit", "-qm", "add case-only fixture")
+        base = _git(repo, "rev-parse", "HEAD")
+        before = reverse_index.build_index(repo, includes=["state"])
+
+        temporary = "state/case-only-temporary.json"
+        _git(repo, "mv", old_path, temporary)
+        _git(repo, "mv", temporary, new_path)
+        _git(repo, "commit", "-qm", "case-only rename")
+        head = _git(repo, "rev-parse", "HEAD")
+        manifest = dp.capture_worktree(
+            repo,
+            base,
+            head=head,
+            source_id="pr-19",
+            tile="alice",
+            include_untracked=False,
+        )
+        self.assertTrue(any(
+            change["status"] == "R"
+            and change["old_path"] == old_path
+            and change["path"] == new_path
+            for change in manifest["changes"]
+        ))
+
+        updated = reverse_index.update_index(repo, before, manifest)
+        self.assertNotIn(old_path, updated["documents"])
+        self.assertIn(new_path, updated["documents"])
+        self.assertEqual(
+            updated,
+            reverse_index.build_index(repo, includes=["state"]),
+        )
+
+        stale_documents = copy.deepcopy(before["documents"])
+        stale_documents[old_path]["sha256"] = "0" * 64
+        stale = reverse_index._seal_index(
+            stale_documents,
+            before["configuration"],
+        )
+        with self.assertRaisesRegex(
+            reverse_index.ReverseIndexError,
+            "rename source hash is stale",
+        ):
+            reverse_index.update_index(repo, stale, manifest)
+
+    def test_casefold_alias_also_requires_same_resolved_identity(self) -> None:
+        repo, _ = self.make_repo()
+        first = repo / "state" / "agents.json"
+        second = repo / "state" / "actions.json"
+        self.assertEqual(
+            reverse_index._same_casefold_file_alias(
+                "state/Agents.json",
+                "state/agents.json",
+                first,
+                first,
+            ),
+            os.name == "nt",
+        )
+        self.assertFalse(reverse_index._same_casefold_file_alias(
+            "state/Agents.json",
+            "state/agents.json",
+            first,
+            second,
+        ))
+        self.assertFalse(reverse_index._same_casefold_file_alias(
+            "state/agents.json",
+            "state/actions.json",
+            first,
+            first,
+        ))
+
 
 class ShadowTelemetryTests(RepositoryScratchTest):
     def test_mode_defaults_to_shadow_and_rejects_unknown_values(self) -> None:
@@ -426,6 +589,7 @@ class ShadowTelemetryTests(RepositoryScratchTest):
             promotion.INDEX_CONFIGURATION_ID,
         )
         self.assertIsNone(telemetry["promotion_evidence_id"])
+        self.assertIsNone(telemetry["promotion_attestation"])
         self.assertEqual(
             shadow.telemetry_trailers(telemetry),
             [
@@ -435,6 +599,7 @@ class ShadowTelemetryTests(RepositoryScratchTest):
                 "Dreamcatcher-Index-Configuration: "
                 f"{promotion.INDEX_CONFIGURATION_ID}",
                 "Dreamcatcher-Promotion-Evidence: none",
+                "Dreamcatcher-Promotion-Attestation: none",
                 f"Dreamcatcher-Index: {telemetry['index_id']}",
                 f"Dreamcatcher-Query: {telemetry['query_id']}",
                 "Dreamcatcher-Paths: 1/1",
@@ -597,6 +762,7 @@ class PromotionEvaluatorTests(RepositoryScratchTest):
         policy_revision: str = promotion.PROMOTION_POLICY_REVISION,
         index_configuration_id: str = promotion.INDEX_CONFIGURATION_ID,
         promotion_evidence_id: str | None = None,
+        promotion_attestation: str | None = None,
     ) -> dict:
         if error_count:
             covered_paths = 0
@@ -615,6 +781,7 @@ class PromotionEvaluatorTests(RepositoryScratchTest):
             "policy_revision": policy_revision,
             "index_configuration_id": index_configuration_id,
             "promotion_evidence_id": promotion_evidence_id,
+            "promotion_attestation": promotion_attestation,
             "index_id": (
                 None if error_count else _content_id(f"index-{number}")
             ),
@@ -817,8 +984,16 @@ class PromotionEvaluatorTests(RepositoryScratchTest):
             self.assertIn(f"{key}:", parsed_trailers)
         scanned = promotion.load_commit_evidence(repo)
         self.assertEqual(scanned, [telemetry])
+        legacy_body = body.replace(
+            "Dreamcatcher-Promotion-Attestation: none\n",
+            "",
+        )
+        self.assertEqual(
+            promotion.telemetry_from_synthetic_commit(legacy_body),
+            telemetry,
+        )
 
-    def test_commit_evidence_is_first_parent_canonical_and_trusted(self) -> None:
+    def test_commit_evidence_is_first_parent_canonical_not_identity_auth(self) -> None:
         repo, _ = self.make_repo("first-parent")
         _git(repo, "switch", "-qc", "side")
         self.commit_telemetry(repo, self.sample(1))
@@ -837,16 +1012,202 @@ class PromotionEvaluatorTests(RepositoryScratchTest):
         )
         self.assertEqual(promotion.load_commit_evidence(repo), [])
 
-        trusted = self.sample(2)
-        self.commit_telemetry(repo, trusted)
-        self.assertEqual(promotion.load_commit_evidence(repo), [trusted])
+        expected_identity = self.sample(2)
+        self.commit_telemetry(repo, expected_identity)
+        self.assertEqual(
+            promotion.load_commit_evidence(repo),
+            [expected_identity],
+        )
 
-        self.commit_telemetry(repo, self.sample(3), trusted=False)
-        with self.assertRaisesRegex(
-            promotion.PromotionEvidenceError,
-            "committer is untrusted",
+        unexpected_identity = self.sample(3)
+        self.commit_telemetry(
+            repo,
+            unexpected_identity,
+            expected_identity=False,
+        )
+        self.assertEqual(
+            promotion.load_commit_evidence(repo),
+            [unexpected_identity, expected_identity],
+        )
+
+    def test_hmac_attestation_binds_evidence_policy_index_repo_and_target(
+        self,
+    ) -> None:
+        evidence = self.evidence_repo(name="attested-evidence")
+        summary = promotion.require_repository_readiness(evidence)
+        repository = "owner/rappterverse"
+        target_base = "a" * 40
+        target_head = "b" * 40
+        with mock.patch.dict(
+            os.environ,
+            {promotion.PROMOTION_KEY_ENV: PROMOTION_TEST_KEY},
+            clear=False,
         ):
-            promotion.load_commit_evidence(repo)
+            attestation = promotion.create_promotion_attestation(
+                summary,
+                repository=repository,
+                target_base=target_base,
+                target_head=target_head,
+            )
+            self.assertEqual(
+                promotion.verify_promotion_attestation(
+                    attestation,
+                    summary,
+                    repository=repository,
+                    target_base=target_base,
+                    target_head=target_head,
+                ),
+                attestation,
+            )
+            self.assertNotIn(
+                PROMOTION_TEST_KEY,
+                json.dumps(attestation, sort_keys=True),
+            )
+
+            for field, value in (
+                ("evidence_id", _content_id("other-evidence")),
+                ("policy_revision", _content_id("other-policy")),
+                (
+                    "index_configuration_id",
+                    _content_id("other-index"),
+                ),
+                ("repository", "other/rappterverse"),
+                ("target_base", "c" * 40),
+                ("target_head", "d" * 40),
+                (
+                    "signature",
+                    "hmac-sha256:" + ("0" * 64),
+                ),
+            ):
+                tampered = copy.deepcopy(attestation)
+                tampered[field] = value
+                with self.subTest(field=field):
+                    with self.assertRaises(
+                        promotion.PromotionAttestationError
+                    ):
+                        promotion.verify_promotion_attestation(
+                            tampered,
+                            summary,
+                            repository=repository,
+                            target_base=target_base,
+                            target_head=target_head,
+                        )
+
+            with self.assertRaisesRegex(
+                promotion.PromotionAttestationError,
+                "bindings",
+            ):
+                promotion.verify_promotion_attestation(
+                    attestation,
+                    summary,
+                    repository=repository,
+                    target_base=target_base,
+                    target_head="e" * 40,
+                )
+
+        with mock.patch.dict(
+            os.environ,
+            {promotion.PROMOTION_KEY_ENV: "different-" + PROMOTION_TEST_KEY},
+            clear=False,
+        ):
+            with self.assertRaisesRegex(
+                promotion.PromotionAttestationError,
+                "authentication failed",
+            ):
+                promotion.verify_promotion_attestation(
+                    attestation,
+                    summary,
+                    repository=repository,
+                    target_base=target_base,
+                    target_head=target_head,
+                )
+
+        self.commit_telemetry(evidence, self.sample(51))
+        changed_summary = promotion.require_repository_readiness(evidence)
+        with mock.patch.dict(
+            os.environ,
+            {promotion.PROMOTION_KEY_ENV: PROMOTION_TEST_KEY},
+            clear=False,
+        ):
+            with self.assertRaisesRegex(
+                promotion.PromotionAttestationError,
+                "bindings",
+            ):
+                promotion.verify_promotion_attestation(
+                    attestation,
+                    changed_summary,
+                    repository=repository,
+                    target_base=target_base,
+                    target_head=target_head,
+                )
+
+        with mock.patch.dict(os.environ, {}, clear=False):
+            os.environ.pop(promotion.PROMOTION_KEY_ENV, None)
+            with self.assertRaisesRegex(
+                promotion.PromotionAttestationError,
+                promotion.PROMOTION_KEY_ENV,
+            ):
+                promotion.create_promotion_attestation(
+                    summary,
+                    repository=repository,
+                    target_base=target_base,
+                    target_head=target_head,
+                )
+
+    def test_trusted_signer_cli_generates_verifiable_attestation(self) -> None:
+        evidence = self.evidence_repo(name="signer-evidence")
+        repository = "owner/rappterverse"
+        target_base = "a" * 40
+        target_head = "b" * 40
+        with mock.patch.dict(
+            os.environ,
+            {promotion.PROMOTION_KEY_ENV: PROMOTION_TEST_KEY},
+            clear=False,
+        ):
+            attestation = state_reconciler.generate_promotion_attestation(
+                evidence_repo=evidence,
+                evidence_revision="HEAD",
+                repository=repository,
+                target_base=target_base,
+                target_head=target_head,
+            )
+            summary = promotion.require_attested_repository_readiness(
+                evidence,
+                attestation=attestation,
+                repository=repository,
+                target_base=target_base,
+                target_head=target_head,
+            )
+        self.assertTrue(summary["ready"])
+        self.assertNotIn(
+            PROMOTION_TEST_KEY,
+            json.dumps(attestation, sort_keys=True),
+        )
+
+    def test_reconciler_scrubs_signing_key_from_other_subprocesses(self) -> None:
+        completed = subprocess.CompletedProcess(
+            ["git", "status"],
+            0,
+            stdout="",
+            stderr="",
+        )
+        with (
+            mock.patch.dict(
+                os.environ,
+                {promotion.PROMOTION_KEY_ENV: PROMOTION_TEST_KEY},
+                clear=False,
+            ),
+            mock.patch.object(
+                state_reconciler.subprocess,
+                "run",
+                return_value=completed,
+            ) as run,
+        ):
+            state_reconciler.run_command(["git", "status"])
+        self.assertNotIn(
+            promotion.PROMOTION_KEY_ENV,
+            run.call_args.kwargs["env"],
+        )
 
     def test_canonical_looking_merge_commit_is_not_evidence(self) -> None:
         repo, _ = self.make_repo("merge-shape")
@@ -928,7 +1289,7 @@ class PromotionEvaluatorTests(RepositoryScratchTest):
         manifest, head = self.modified_actions_manifest(repo, base)
         with self.assertRaisesRegex(
             shadow.DreamcatcherConfigurationError,
-            "trusted repository evidence",
+            "canonical repository evidence",
         ):
             shadow.observe_candidate(
                 repo,
@@ -954,7 +1315,7 @@ class PromotionEvaluatorTests(RepositoryScratchTest):
 
         with mock.patch.object(
             shadow,
-            "require_repository_readiness",
+            "require_attested_repository_readiness",
             side_effect=OSError("history unavailable"),
         ):
             with self.assertRaisesRegex(
@@ -967,13 +1328,31 @@ class PromotionEvaluatorTests(RepositoryScratchTest):
                     mode="enforce",
                     source_pr=7,
                     source_head=head,
+                    promotion_attestation={},
                     evidence_repo=repo,
+                    target_base=base,
                 )
 
         evidence = self.evidence_repo(count=49)
         with self.assertRaisesRegex(
             shadow.DreamcatcherConfigurationError,
-            "trusted promotion evidence is unavailable",
+            "valid promotion attestation is unavailable",
+        ):
+            shadow.observe_candidate(
+                repo,
+                manifest,
+                mode="enforce",
+                source_pr=7,
+                source_head=head,
+                promotion_attestation={},
+                evidence_repo=evidence,
+                target_base=base,
+            )
+        self.commit_telemetry(evidence, self.sample(50))
+        repository = "owner/rappterverse"
+        with self.assertRaisesRegex(
+            shadow.DreamcatcherConfigurationError,
+            "target-bound promotion attestation",
         ):
             shadow.observe_candidate(
                 repo,
@@ -982,22 +1361,47 @@ class PromotionEvaluatorTests(RepositoryScratchTest):
                 source_pr=7,
                 source_head=head,
                 evidence_repo=evidence,
+                target_repository=repository,
+                target_base=base,
             )
-        self.commit_telemetry(evidence, self.sample(50))
-        trusted = promotion.require_repository_readiness(evidence)
-        telemetry = shadow.observe_candidate(
-            repo,
-            manifest,
-            mode="enforce",
-            source_pr=7,
-            source_head=head,
-            evidence_repo=evidence,
-        )
+        with mock.patch.dict(
+            os.environ,
+            {promotion.PROMOTION_KEY_ENV: PROMOTION_TEST_KEY},
+            clear=False,
+        ):
+            attestation = promotion.attest_repository_readiness(
+                evidence,
+                repository=repository,
+                target_base=base,
+                target_head=head,
+            )
+            trusted = promotion.require_attested_repository_readiness(
+                evidence,
+                attestation=attestation,
+                repository=repository,
+                target_base=base,
+                target_head=head,
+            )
+            telemetry = shadow.observe_candidate(
+                repo,
+                manifest,
+                mode="enforce",
+                source_pr=7,
+                source_head=head,
+                promotion_attestation=attestation,
+                evidence_repo=evidence,
+                target_repository=repository,
+                target_base=base,
+            )
         self.assertEqual(telemetry["mode"], "enforce")
         self.assertEqual(telemetry["coverage"], 1.0)
         self.assertEqual(
             telemetry["promotion_evidence_id"],
             trusted["evidence_id"],
+        )
+        self.assertEqual(
+            telemetry["promotion_attestation"],
+            attestation["signature"],
         )
 
     def test_enforce_only_rejects_deterministic_path_coverage(self) -> None:
@@ -1016,42 +1420,60 @@ class PromotionEvaluatorTests(RepositoryScratchTest):
             include_untracked=False,
         )
         evidence = self.evidence_repo(name="coverage-evidence")
-        with self.assertRaisesRegex(
-            shadow.DreamcatcherEnforcementError,
-            "cover every manifest path",
+        repository = "owner/rappterverse"
+        with mock.patch.dict(
+            os.environ,
+            {promotion.PROMOTION_KEY_ENV: PROMOTION_TEST_KEY},
+            clear=False,
         ):
-            shadow.observe_candidate(
-                repo,
-                manifest,
-                mode="enforce",
-                source_pr=9,
-                source_head=head,
-                evidence_repo=evidence,
+            attestation = promotion.attest_repository_readiness(
+                evidence,
+                repository=repository,
+                target_base=base,
+                target_head=head,
             )
+            with self.assertRaisesRegex(
+                shadow.DreamcatcherEnforcementError,
+                "cover every manifest path",
+            ):
+                shadow.observe_candidate(
+                    repo,
+                    manifest,
+                    mode="enforce",
+                    source_pr=9,
+                    source_head=head,
+                    promotion_attestation=attestation,
+                    evidence_repo=evidence,
+                    target_repository=repository,
+                    target_base=base,
+                )
 
-        for failure in (
-            reverse_index.ReverseIndexError("broken"),
-            OSError("unavailable"),
-            RuntimeError("implementation bug"),
-        ):
-            with self.subTest(failure=type(failure).__name__):
-                with mock.patch.object(
-                    shadow,
-                    "build_index",
-                    side_effect=failure,
-                ):
-                    with self.assertRaisesRegex(
-                        shadow.DreamcatcherRuntimeError,
-                        "index failed",
+            for failure in (
+                reverse_index.ReverseIndexError("broken"),
+                OSError("unavailable"),
+                RuntimeError("implementation bug"),
+            ):
+                with self.subTest(failure=type(failure).__name__):
+                    with mock.patch.object(
+                        shadow,
+                        "build_index",
+                        side_effect=failure,
                     ):
-                        shadow.observe_candidate(
-                            repo,
-                            manifest,
-                            mode="enforce",
-                            source_pr=9,
-                            source_head=head,
-                            evidence_repo=evidence,
-                        )
+                        with self.assertRaisesRegex(
+                            shadow.DreamcatcherRuntimeError,
+                            "index failed",
+                        ):
+                            shadow.observe_candidate(
+                                repo,
+                                manifest,
+                                mode="enforce",
+                                source_pr=9,
+                                source_head=head,
+                                promotion_attestation=attestation,
+                                evidence_repo=evidence,
+                                target_repository=repository,
+                                target_base=base,
+                            )
 
     def test_summary_loader_accepts_inline_and_path_but_rejects_tampering(self) -> None:
         summary = self.ready_summary()
@@ -1100,16 +1522,24 @@ class PromotionEvaluatorTests(RepositoryScratchTest):
             os.environ.pop("DREAMCATCHER_PROMOTION_SUMMARY", None)
             for failure, expected in cases:
                 with self.subTest(failure=type(failure).__name__):
-                    with mock.patch.object(
-                        state_reconciler,
-                        "observe_candidate",
-                        side_effect=failure,
+                    with (
+                        mock.patch.object(
+                            state_reconciler,
+                            "generate_promotion_attestation",
+                            return_value={},
+                        ),
+                        mock.patch.object(
+                            state_reconciler,
+                            "observe_candidate",
+                            side_effect=failure,
+                        ),
                     ):
                         with self.assertRaises(expected):
                             reconciler.observe_dreamcatcher(
                                 candidate,
                                 manifest,
                                 number=7,
+                                base_sha="0" * 40,
                                 head_sha="1" * 40,
                             )
 
@@ -1126,6 +1556,7 @@ class PromotionEvaluatorTests(RepositoryScratchTest):
                     candidate,
                     manifest,
                     number=7,
+                    base_sha="0" * 40,
                     head_sha="1" * 40,
                 )
 
@@ -1149,9 +1580,29 @@ class PromotionEvaluatorTests(RepositoryScratchTest):
                             candidate,
                             manifest,
                             number=7,
+                            base_sha="0" * 40,
                             head_sha="1" * 40,
                         )
                     )
+
+        with mock.patch.object(
+            state_reconciler,
+            "generate_promotion_attestation",
+            side_effect=state_reconciler.ReconcileError(
+                "promotion signer unavailable"
+            ),
+        ):
+            with self.assertRaisesRegex(
+                state_reconciler.ReconcileError,
+                "signer unavailable",
+            ):
+                reconciler.observe_dreamcatcher(
+                    candidate,
+                    manifest,
+                    number=7,
+                    base_sha="0" * 40,
+                    head_sha="1" * 40,
+                )
 
     def test_retryable_enforce_failure_does_not_close_pr(self) -> None:
         reconciler = state_reconciler.StateReconciler(

@@ -5,13 +5,15 @@
 # engines/twin-dreamcatcher/reverse_index.py
 # Canonical Git-blob SHA-256:
 # 8f490c8158d4576f62d872cac69bf4fdd88fe9915e5d90a02e90e01789748d47
-# The only source adaptation is the local delta-protocol module name below.
+# Local adaptations keep the wire format while hardening validation and
+# case-only rename handling in addition to the local protocol import.
 
 from __future__ import annotations
 
 import argparse
 import hashlib
 import json
+import os
 import re
 import sys
 from pathlib import Path
@@ -66,6 +68,57 @@ class ReverseIndexError(ValueError):
 
 def _sha256(content: bytes) -> str:
     return hashlib.sha256(content).hexdigest()
+
+
+def _is_positive_integer(value: object) -> bool:
+    return (
+        isinstance(value, int)
+        and not isinstance(value, bool)
+        and value >= 1
+    )
+
+
+def _path_is_included(path: str, includes: Iterable[str]) -> bool:
+    return any(
+        path == include or path.startswith(include.rstrip("/") + "/")
+        for include in includes
+    )
+
+
+def _document_obeys_configuration(
+    path: str,
+    byte_count: int,
+    configuration: dict,
+) -> bool:
+    return bool(
+        _path_is_included(path, configuration["includes"])
+        and Path(path).suffix.lower() in configuration["suffixes"]
+        and byte_count <= configuration["max_bytes"]
+    )
+
+
+def _same_casefold_file_alias(
+    old_path: str,
+    new_path: str,
+    old_candidate: Path,
+    new_candidate: Path,
+) -> bool:
+    if (
+        os.name != "nt"
+        or old_path == new_path
+        or old_path.casefold() != new_path.casefold()
+    ):
+        return False
+    try:
+        old_resolved = old_candidate.resolve(strict=True)
+        new_resolved = new_candidate.resolve(strict=True)
+        return bool(
+            str(old_resolved).casefold()
+            == str(new_resolved).casefold()
+            and os.path.samefile(old_candidate, new_candidate)
+        )
+    except (OSError, RuntimeError):
+        return False
 
 
 def _walk_entities(value: object, parent_key: Optional[str] = None) -> set[str]:
@@ -258,10 +311,8 @@ def build_index(
 ) -> dict:
     """Build a deterministic index by reading each included document once."""
     if (
-        not isinstance(max_bytes, int)
-        or max_bytes < 1
-        or not isinstance(max_entity_fanout, int)
-        or max_entity_fanout < 1
+        not _is_positive_integer(max_bytes)
+        or not _is_positive_integer(max_entity_fanout)
     ):
         raise ReverseIndexError(
             "max_bytes and max_entity_fanout must be positive integers"
@@ -308,7 +359,11 @@ def validate_index(index: dict) -> dict:
             raise ReverseIndexError(f"{path}: unsupported document metadata")
         if not re.fullmatch(r"[0-9a-f]{64}", str(metadata.get("sha256", ""))):
             raise ReverseIndexError(f"{path}: invalid sha256")
-        if not isinstance(metadata.get("bytes"), int) or metadata["bytes"] < 0:
+        if (
+            isinstance(metadata.get("bytes"), bool)
+            or not isinstance(metadata.get("bytes"), int)
+            or metadata["bytes"] < 0
+        ):
             raise ReverseIndexError(f"{path}: invalid byte count")
         for field in ("entity_ids", "path_refs"):
             values = metadata.get(field)
@@ -342,12 +397,19 @@ def validate_index(index: dict) -> dict:
             not isinstance(suffix, str) or not suffix.startswith(".")
             for suffix in suffixes
         )
-        or not isinstance(max_bytes, int)
-        or max_bytes < 1
-        or not isinstance(max_entity_fanout, int)
-        or max_entity_fanout < 1
+        or not _is_positive_integer(max_bytes)
+        or not _is_positive_integer(max_entity_fanout)
     ):
         raise ReverseIndexError("invalid index configuration")
+    for path, metadata in documents.items():
+        if not _document_obeys_configuration(
+            path,
+            metadata["bytes"],
+            configuration,
+        ):
+            raise ReverseIndexError(
+                f"{path}: document violates index configuration"
+            )
     expected = _seal_index(documents, configuration)
     if expected != index:
         raise ReverseIndexError("reverse index does not match canonical documents")
@@ -363,13 +425,17 @@ def update_index(
     previous = validate_index(previous)
     manifest = validate_manifest(manifest)
     verify_manifest_tree(manifest, root)
+    configuration = previous["configuration"]
     documents = {
         path: dict(metadata)
         for path, metadata in previous["documents"].items()
+        if _document_obeys_configuration(
+            path,
+            metadata["bytes"],
+            configuration,
+        )
     }
-    configuration = previous["configuration"]
     include_roots = configuration["includes"]
-    allowed_suffixes = set(configuration["suffixes"])
     resolved_root = root.resolve()
     resolved_includes = {
         include: (resolved_root / Path(include)).resolve()
@@ -377,10 +443,7 @@ def update_index(
     }
 
     def is_in_scope(path: str) -> bool:
-        return any(
-            path == root or path.startswith(root.rstrip("/") + "/")
-            for root in include_roots
-        )
+        return _path_is_included(path, include_roots)
 
     def checked_candidate(path: str) -> Path:
         candidate = resolved_root / Path(path)
@@ -405,7 +468,16 @@ def update_index(
         if change["status"] == "R":
             old_path = change["old_path"]
             old_candidate = resolved_root / Path(old_path)
-            if old_candidate.exists() or old_candidate.is_symlink():
+            new_candidate = resolved_root / Path(change["path"])
+            if (
+                old_candidate.exists()
+                or old_candidate.is_symlink()
+            ) and not _same_casefold_file_alias(
+                old_path,
+                change["path"],
+                old_candidate,
+                new_candidate,
+            ):
                 raise ReverseIndexError(
                     f"{old_path}: rename source still exists"
                 )
@@ -426,9 +498,10 @@ def update_index(
             documents.pop(path, None)
             continue
         candidate = checked_candidate(path)
-        if (
-            candidate.suffix.lower() not in allowed_suffixes
-            or candidate.stat().st_size > configuration["max_bytes"]
+        if not _document_obeys_configuration(
+            path,
+            candidate.stat().st_size,
+            configuration,
         ):
             documents.pop(path, None)
             continue

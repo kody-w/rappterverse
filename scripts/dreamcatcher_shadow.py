@@ -23,7 +23,7 @@ from dreamcatcher_promotion import (
     REPOSITORY,
     TELEMETRY_SCHEMA,
     PromotionEvidenceError,
-    require_repository_readiness,
+    require_attested_repository_readiness,
     validate_telemetry,
 )
 from dreamcatcher_reverse_index import (
@@ -98,6 +98,7 @@ def _failed_telemetry(
         "policy_revision": PROMOTION_POLICY_REVISION,
         "index_configuration_id": INDEX_CONFIGURATION_ID,
         "promotion_evidence_id": None,
+        "promotion_attestation": None,
         "index_id": None,
         "query_id": None,
         "manifest_paths": manifest_paths,
@@ -125,8 +126,11 @@ def observe_candidate(
     source_pr: int,
     source_head: str,
     promotion_summary: dict | None = None,
+    promotion_attestation: dict | None = None,
     evidence_repo: Path | None = None,
     evidence_revision: str = "HEAD",
+    target_repository: str = REPOSITORY,
+    target_base: str | None = None,
     clock_ns: Callable[[], int] = time.perf_counter_ns,
 ) -> dict | None:
     """Build/query the candidate index without changing its accepted tree."""
@@ -134,6 +138,7 @@ def observe_candidate(
     if selected_mode == "off":
         return None
     promotion_evidence_id = None
+    promotion_attestation_signature = None
     if selected_mode == "enforce":
         if promotion_summary is not None:
             raise DreamcatcherConfigurationError(
@@ -141,22 +146,31 @@ def observe_candidate(
             )
         if evidence_repo is None:
             raise DreamcatcherConfigurationError(
-                "enforce mode requires trusted repository evidence"
+                "enforce mode requires canonical repository evidence"
+            )
+        if promotion_attestation is None or target_base is None:
+            raise DreamcatcherConfigurationError(
+                "enforce mode requires a target-bound promotion attestation"
             )
         try:
-            trusted_summary = require_repository_readiness(
+            attested_summary = require_attested_repository_readiness(
                 evidence_repo,
                 evidence_revision,
+                attestation=promotion_attestation,
+                repository=target_repository,
+                target_base=target_base,
+                target_head=source_head,
             )
         except PromotionEvidenceError as exc:
             raise DreamcatcherConfigurationError(
-                f"trusted promotion evidence is unavailable: {exc}"
+                f"valid promotion attestation is unavailable: {exc}"
             ) from exc
         except Exception as exc:
             raise DreamcatcherRuntimeError(
                 "Dreamcatcher promotion evidence evaluation failed"
             ) from exc
-        promotion_evidence_id = trusted_summary["evidence_id"]
+        promotion_evidence_id = attested_summary["evidence_id"]
+        promotion_attestation_signature = promotion_attestation["signature"]
 
     start_ns = clock_ns()
     phase = "manifest"
@@ -198,6 +212,7 @@ def observe_candidate(
             "policy_revision": PROMOTION_POLICY_REVISION,
             "index_configuration_id": INDEX_CONFIGURATION_ID,
             "promotion_evidence_id": promotion_evidence_id,
+            "promotion_attestation": promotion_attestation_signature,
             "index_id": index["index_id"],
             "query_id": query["query_id"],
             "manifest_paths": len(manifest_paths),
@@ -270,6 +285,8 @@ def telemetry_trailers(record: dict) -> list[str]:
         f"{record['index_configuration_id']}",
         "Dreamcatcher-Promotion-Evidence: "
         f"{record['promotion_evidence_id'] or 'none'}",
+        "Dreamcatcher-Promotion-Attestation: "
+        f"{record['promotion_attestation'] or 'none'}",
         f"Dreamcatcher-Index: {record['index_id'] or 'unavailable'}",
         f"Dreamcatcher-Query: {record['query_id'] or 'unavailable'}",
         "Dreamcatcher-Paths: "

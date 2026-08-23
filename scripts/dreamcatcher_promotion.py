@@ -5,8 +5,10 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import hmac
 import json
 import math
+import os
 import re
 import statistics
 import subprocess
@@ -21,21 +23,22 @@ from dreamcatcher_reverse_index import (
     SCHEMA as INDEX_SCHEMA,
 )
 
-TELEMETRY_SCHEMA = "dreamcatcher-shadow-telemetry/1.1"
+TELEMETRY_SCHEMA = "dreamcatcher-shadow-telemetry/1.2"
 SUMMARY_SCHEMA = "dreamcatcher-promotion-summary/1.1"
+ATTESTATION_SCHEMA = "dreamcatcher-promotion-attestation/1.0"
+ATTESTATION_ALGORITHM = "hmac-sha256"
+PROMOTION_KEY_ENV = "DREAMCATCHER_PROMOTION_KEY"
 REPOSITORY = "rappterverse"
 CONTENT_ID_PATTERN = re.compile(r"^sha256:[0-9a-f]{64}$")
 COMMIT_PATTERN = re.compile(r"^[0-9a-f]{40,64}$")
 ERROR_CODE_PATTERN = re.compile(r"^[a-z0-9][a-z0-9-]{0,63}$")
+ATTESTATION_PATTERN = re.compile(r"^hmac-sha256:[0-9a-f]{64}$")
+REPOSITORY_PATTERN = re.compile(
+    r"^[A-Za-z0-9_.-]+(?:/[A-Za-z0-9_.-]+)?$"
+)
 SYNTHETIC_SUBJECT_PATTERN = re.compile(
     r"^\[state\] apply PR #([1-9]\d*)$"
 )
-TRUSTED_COMMITTERS = frozenset({
-    (
-        "rappterverse-bot",
-        "41898282+github-actions[bot]@users.noreply.github.com",
-    ),
-})
 MINIMUM_SAMPLES = 50
 MAXIMUM_ERRORS = 0
 MAXIMUM_COVERAGE_FAILURES = 0
@@ -63,6 +66,7 @@ TELEMETRY_FIELDS = {
     "policy_revision",
     "index_configuration_id",
     "promotion_evidence_id",
+    "promotion_attestation",
     "index_id",
     "query_id",
     "manifest_paths",
@@ -88,6 +92,7 @@ TRAILER_KEYS = {
     "Dreamcatcher-Policy",
     "Dreamcatcher-Index-Configuration",
     "Dreamcatcher-Promotion-Evidence",
+    "Dreamcatcher-Promotion-Attestation",
     "Dreamcatcher-Index",
     "Dreamcatcher-Query",
     "Dreamcatcher-Paths",
@@ -111,6 +116,10 @@ INDEX_INCLUDE_SCOPES = False
 
 class PromotionEvidenceError(ValueError):
     """Promotion evidence or a promotion summary is malformed."""
+
+
+class PromotionAttestationError(PromotionEvidenceError):
+    """Promotion readiness is missing a valid trusted attestation."""
 
 
 def _canonical_bytes(value: object) -> bytes:
@@ -143,7 +152,7 @@ INDEX_CONFIGURATION = {
 }
 INDEX_CONFIGURATION_ID = _content_id(INDEX_CONFIGURATION)
 PROMOTION_POLICY = {
-    "schema": "dreamcatcher-promotion-policy/1.0",
+    "schema": "dreamcatcher-promotion-policy/1.1",
     "telemetry_schema": TELEMETRY_SCHEMA,
     "summary_schema": SUMMARY_SCHEMA,
     "thresholds": dict(THRESHOLDS),
@@ -153,10 +162,20 @@ PROMOTION_POLICY = {
         "sample_mode": "shadow",
         "subject": "[state] apply PR #N",
         "trailers": sorted(TRAILER_KEYS),
-        "trusted_committers": [
-            {"name": name, "email": email}
-            for name, email in sorted(TRUSTED_COMMITTERS)
-        ],
+        "commit_identity": "diagnostic-only-not-authentication",
+        "authentication": {
+            "schema": ATTESTATION_SCHEMA,
+            "algorithm": ATTESTATION_ALGORITHM,
+            "key_source": f"environment:{PROMOTION_KEY_ENV}",
+            "bindings": [
+                "evidence_id",
+                "policy_revision",
+                "index_configuration_id",
+                "repository",
+                "target_base",
+                "target_head",
+            ],
+        },
     },
 }
 PROMOTION_POLICY_REVISION = _content_id(PROMOTION_POLICY)
@@ -197,6 +216,38 @@ def _require_content_id(
     return value
 
 
+def _require_repository(value: object, field: str = "repository") -> str:
+    if (
+        not isinstance(value, str)
+        or not REPOSITORY_PATTERN.fullmatch(value)
+    ):
+        raise PromotionAttestationError(
+            f"{field} must be a repository name or owner/name"
+        )
+    return value
+
+
+def _require_commit(value: object, field: str) -> str:
+    if not isinstance(value, str) or not COMMIT_PATTERN.fullmatch(value):
+        raise PromotionAttestationError(f"{field} must be a commit ID")
+    return value
+
+
+def _require_attestation_signature(
+    value: object,
+    field: str,
+    *,
+    optional: bool = False,
+) -> str | None:
+    if optional and value is None:
+        return None
+    if not isinstance(value, str) or not ATTESTATION_PATTERN.fullmatch(value):
+        raise PromotionAttestationError(
+            f"{field} must be an HMAC-SHA256 attestation"
+        )
+    return value
+
+
 def validate_telemetry(record: dict) -> dict:
     """Validate one public-safe reconciler telemetry sample."""
     if not isinstance(record, dict):
@@ -231,13 +282,24 @@ def validate_telemetry(record: dict) -> dict:
         "promotion_evidence_id",
         optional=True,
     )
-    if record["mode"] == "shadow" and promotion_evidence_id is not None:
+    promotion_attestation = _require_attestation_signature(
+        record["promotion_attestation"],
+        "promotion_attestation",
+        optional=True,
+    )
+    if record["mode"] == "shadow" and (
+        promotion_evidence_id is not None
+        or promotion_attestation is not None
+    ):
         raise PromotionEvidenceError(
-            "shadow telemetry cannot claim promotion evidence"
+            "shadow telemetry cannot claim promotion evidence or attestation"
         )
-    if record["mode"] == "enforce" and promotion_evidence_id is None:
+    if record["mode"] == "enforce" and (
+        promotion_evidence_id is None
+        or promotion_attestation is None
+    ):
         raise PromotionEvidenceError(
-            "enforce telemetry must bind promotion evidence"
+            "enforce telemetry must bind promotion evidence and attestation"
         )
 
     error_count = _require_int(record["error_count"], "error_count")
@@ -545,6 +607,106 @@ def load_promotion_summary(source: str) -> dict:
     return validate_promotion_summary(value, require_ready=True)
 
 
+def _promotion_key() -> bytes:
+    value = os.environ.get(PROMOTION_KEY_ENV)
+    if not isinstance(value, str) or len(value.encode("utf-8")) < 32:
+        raise PromotionAttestationError(
+            f"{PROMOTION_KEY_ENV} must contain at least 32 bytes"
+        )
+    return value.encode("utf-8")
+
+
+def _attestation_payload(
+    summary: dict,
+    *,
+    repository: str,
+    target_base: str,
+    target_head: str,
+) -> dict:
+    summary = validate_promotion_summary(summary, require_ready=True)
+    return {
+        "schema": ATTESTATION_SCHEMA,
+        "algorithm": ATTESTATION_ALGORITHM,
+        "repository": _require_repository(repository),
+        "evidence_id": summary["evidence_id"],
+        "policy_revision": summary["policy_revision"],
+        "index_configuration_id": summary["index_configuration_id"],
+        "target_base": _require_commit(target_base, "target_base"),
+        "target_head": _require_commit(target_head, "target_head"),
+    }
+
+
+def _sign_attestation_payload(payload: dict) -> str:
+    digest = hmac.new(
+        _promotion_key(),
+        _canonical_bytes(payload),
+        hashlib.sha256,
+    ).hexdigest()
+    return f"{ATTESTATION_ALGORITHM}:{digest}"
+
+
+def create_promotion_attestation(
+    summary: dict,
+    *,
+    repository: str,
+    target_base: str,
+    target_head: str,
+) -> dict:
+    """Sign one ready canonical summary for an exact reconciliation target."""
+    payload = _attestation_payload(
+        summary,
+        repository=repository,
+        target_base=target_base,
+        target_head=target_head,
+    )
+    attestation = dict(payload)
+    attestation["signature"] = _sign_attestation_payload(payload)
+    return attestation
+
+
+def verify_promotion_attestation(
+    attestation: dict,
+    summary: dict,
+    *,
+    repository: str,
+    target_base: str,
+    target_head: str,
+) -> dict:
+    """Verify an HMAC attestation and every target/policy binding."""
+    if not isinstance(attestation, dict):
+        raise PromotionAttestationError(
+            "promotion attestation must be an object"
+        )
+    expected_payload = _attestation_payload(
+        summary,
+        repository=repository,
+        target_base=target_base,
+        target_head=target_head,
+    )
+    expected_fields = {*expected_payload, "signature"}
+    if set(attestation) != expected_fields:
+        raise PromotionAttestationError(
+            "promotion attestation fields are invalid"
+        )
+    actual_payload = {
+        key: attestation[key] for key in expected_payload
+    }
+    if actual_payload != expected_payload:
+        raise PromotionAttestationError(
+            "promotion attestation bindings do not match this target"
+        )
+    signature = _require_attestation_signature(
+        attestation["signature"],
+        "signature",
+    )
+    expected_signature = _sign_attestation_payload(expected_payload)
+    if not hmac.compare_digest(signature, expected_signature):
+        raise PromotionAttestationError(
+            "promotion attestation authentication failed"
+        )
+    return attestation
+
+
 def _parse_pair(value: str, field: str) -> tuple[int, int]:
     match = re.fullmatch(r"(\d+)/(\d+)", value)
     if not match:
@@ -590,7 +752,11 @@ def telemetry_from_commit_message(message: str) -> dict | None:
         raise PromotionEvidenceError(
             f"unsupported Dreamcatcher trailers: {sorted(set(unknown))}"
         )
-    missing = sorted(TRAILER_KEYS - set(values))
+    missing = sorted(
+        TRAILER_KEYS
+        - {"Dreamcatcher-Promotion-Attestation"}
+        - set(values)
+    )
     if missing:
         raise PromotionEvidenceError(
             f"Dreamcatcher trailer sample is missing {missing}"
@@ -635,6 +801,14 @@ def telemetry_from_commit_message(message: str) -> dict | None:
             None
             if values["Dreamcatcher-Promotion-Evidence"] == "none"
             else values["Dreamcatcher-Promotion-Evidence"]
+        ),
+        "promotion_attestation": (
+            None
+            if values.get(
+                "Dreamcatcher-Promotion-Attestation",
+                "none",
+            ) == "none"
+            else values["Dreamcatcher-Promotion-Attestation"]
         ),
         "index_id": (
             None
@@ -738,7 +912,9 @@ def load_jsonl(path: str) -> list[dict]:
 
 
 def load_commit_evidence(repo_root: Path, revision: str = "HEAD") -> list[dict]:
-    """Load authenticated samples from canonical first-parent commits."""
+    """Load canonical first-parent samples without claiming authentication."""
+    git_env = os.environ.copy()
+    git_env.pop(PROMOTION_KEY_ENV, None)
     try:
         result = subprocess.run(
             [
@@ -746,9 +922,10 @@ def load_commit_evidence(repo_root: Path, revision: str = "HEAD") -> list[dict]:
                 "log",
                 "--first-parent",
                 revision,
-                "--format=%H%x1f%P%x1f%cn%x1f%ce%x1f%B%x1e",
+                "--format=%H%x1f%P%x1f%B%x1e",
             ],
             cwd=repo_root,
+            env=git_env,
             capture_output=True,
         )
     except OSError as exc:
@@ -767,10 +944,10 @@ def load_commit_evidence(repo_root: Path, revision: str = "HEAD") -> list[dict]:
         raw_record = raw_record.strip("\r\n")
         if not raw_record:
             continue
-        fields = raw_record.split("\x1f", 4)
-        if len(fields) != 5:
+        fields = raw_record.split("\x1f", 2)
+        if len(fields) != 3:
             raise PromotionEvidenceError("git log returned a malformed record")
-        commit, parents_value, committer_name, committer_email, message = fields
+        commit, parents_value, message = fields
         if not COMMIT_PATTERN.fullmatch(commit):
             raise PromotionEvidenceError("git log returned a malformed commit")
         lines = message.splitlines()
@@ -792,10 +969,6 @@ def load_commit_evidence(repo_root: Path, revision: str = "HEAD") -> list[dict]:
             raise PromotionEvidenceError(
                 f"commit {commit}: synthetic evidence must have one parent"
             )
-        if (committer_name, committer_email) not in TRUSTED_COMMITTERS:
-            raise PromotionEvidenceError(
-                f"commit {commit}: synthetic evidence committer is untrusted"
-            )
         try:
             record = telemetry_from_synthetic_commit(message)
         except PromotionEvidenceError as exc:
@@ -809,9 +982,48 @@ def require_repository_readiness(
     repo_root: Path,
     revision: str = "HEAD",
 ) -> dict:
-    """Recompute readiness from authenticated repository evidence."""
+    """Recompute readiness from canonical but unauthenticated history."""
     summary = evaluate_records(load_commit_evidence(repo_root, revision))
     return validate_promotion_summary(summary, require_ready=True)
+
+
+def attest_repository_readiness(
+    repo_root: Path,
+    revision: str = "HEAD",
+    *,
+    repository: str,
+    target_base: str,
+    target_head: str,
+) -> dict:
+    """Create a target-bound attestation in a trusted secret-bearing step."""
+    summary = require_repository_readiness(repo_root, revision)
+    return create_promotion_attestation(
+        summary,
+        repository=repository,
+        target_base=target_base,
+        target_head=target_head,
+    )
+
+
+def require_attested_repository_readiness(
+    repo_root: Path,
+    revision: str = "HEAD",
+    *,
+    attestation: dict,
+    repository: str,
+    target_base: str,
+    target_head: str,
+) -> dict:
+    """Recompute readiness and require a valid target-bound HMAC."""
+    summary = require_repository_readiness(repo_root, revision)
+    verify_promotion_attestation(
+        attestation,
+        summary,
+        repository=repository,
+        target_base=target_base,
+        target_head=target_head,
+    )
+    return summary
 
 
 def _cli() -> int:
@@ -822,8 +1034,37 @@ def _cli() -> int:
     )
     parser.add_argument("--repo-root", default=".")
     parser.add_argument("--revision", default="HEAD")
+    parser.add_argument(
+        "--attest",
+        action="store_true",
+        help="Sign ready repository evidence for one exact target",
+    )
+    parser.add_argument(
+        "--repository",
+        default=os.environ.get("GITHUB_REPOSITORY", REPOSITORY),
+    )
+    parser.add_argument("--target-base")
+    parser.add_argument("--target-head")
     args = parser.parse_args()
     try:
+        if args.attest:
+            if args.jsonl:
+                raise PromotionAttestationError(
+                    "attestation signing accepts repository evidence only"
+                )
+            if not args.target_base or not args.target_head:
+                raise PromotionAttestationError(
+                    "--attest requires --target-base and --target-head"
+                )
+            attestation = attest_repository_readiness(
+                Path(args.repo_root),
+                args.revision,
+                repository=args.repository,
+                target_base=args.target_base,
+                target_head=args.target_head,
+            )
+            print(json.dumps(attestation, indent=2, sort_keys=True))
+            return 0
         records = (
             load_jsonl(args.jsonl)
             if args.jsonl
