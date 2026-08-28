@@ -123,7 +123,7 @@ def validate_delta_authorization(delta: dict, path: Path):
         if controller == "system":
             if pr_author not in _trusted_automation_authors():
                 error(f"`{path.name}`: `{actor_id}` is system-controlled")
-        elif controller != pr_author:
+        elif controller != pr_author and pr_author not in _trusted_automation_authors():
             error(f"`{path.name}`: `{actor_id}` is controlled by `{controller}`, not `{pr_author}`")
         if update and "controller" in update and update["controller"] != controller:
             error(f"`{path.name}`: Controller transfers require a direct trusted state PR")
