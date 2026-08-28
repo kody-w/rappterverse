@@ -1922,6 +1922,46 @@ class TestLocalPlatformWorktreeSelfHeal(unittest.TestCase):
                 f"probe misread {repo.name} worktree: {result.stderr}",
             )
 
+    def test_probe_catches_a_worktree_whose_scripts_were_reaped(self):
+        """.git surviving is not proof the worktree can still run a cycle.
+
+        /tmp evicts by access time, so the scripts a cycle runs occasionally go
+        before the .git link it touches every 300s. Live, 2026-08-22:
+        validate_action.py and pii_scan.py vanished 34min before .git did, and
+        for that window the probe read intact while job_world_growth failed on
+        the missing files every cycle -- which blocked Phase 9, so job_git_sync
+        was never attempted and the public chat.json froze for 127h.
+        """
+        tmp = Path(tempfile.mkdtemp(prefix="rappterverse-worktree-partial-"))
+        self.addCleanup(robust_rmtree, tmp)
+        repo = tmp / "partial"
+        (repo / "scripts").mkdir(parents=True)
+        subprocess.run(["git", "init", "-q", str(repo)], check=True)
+        victim = repo / "scripts" / "validate_action.py"
+        victim.write_text("print('ok')\n", encoding="utf-8")
+        subprocess.run(
+            ["git", "-C", str(repo), "add", "scripts/validate_action.py"], check=True
+        )
+        probe = self._shell_function_definition("isolated_worktree_intact")
+
+        def verdict() -> str:
+            script = (
+                f'set -uo pipefail\nREPO="{repo}"\n{probe}\n'
+                'if isolated_worktree_intact; then echo intact; else echo broken; fi\n'
+            )
+            result = subprocess.run(
+                ["bash", "-c", script], capture_output=True, text=True
+            )
+            return result.stdout.strip()
+
+        self.assertEqual(verdict(), "intact", "probe misread a complete worktree")
+        victim.unlink()  # the reaper takes the script; .git is still addressable
+        self.assertEqual(
+            verdict(),
+            "broken",
+            "probe called a worktree intact after it lost the code it runs",
+        )
+
     def test_loop_exits_for_the_supervisor_instead_of_retrying_forever(self):
         tmp = Path(tempfile.mkdtemp(prefix="rappterverse-worktree-loop-"))
         self.addCleanup(robust_rmtree, tmp)
