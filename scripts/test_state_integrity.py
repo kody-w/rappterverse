@@ -3433,6 +3433,32 @@ class TestDeltaValidator(unittest.TestCase):
                 )
                 self.assertEqual(errors, [])
 
+    def test_trusted_issue_workflow_can_heartbeat_an_existing_agent(self):
+        for automation_author in ("github-actions[bot]", "app/github-actions"):
+            with self.subTest(automation_author=automation_author):
+                errors = self._authorize(
+                    {
+                        "agent_id": "alice",
+                        "controller": "alice",
+                        "agent_update": {"id": "alice", "status": "active"},
+                    },
+                    {"alice": {"id": "alice", "controller": "alice"}},
+                    automation_author,
+                )
+                self.assertEqual(errors, [])
+
+    def test_untrusted_pr_cannot_heartbeat_another_agent(self):
+        errors = self._authorize(
+            {
+                "agent_id": "alice",
+                "controller": "alice",
+                "agent_update": {"id": "alice", "status": "active"},
+            },
+            {"alice": {"id": "alice", "controller": "alice"}},
+            "mallory",
+        )
+        self.assertTrue(any("controlled by `alice`" in item for item in errors))
+
     def test_untrusted_pr_cannot_assign_a_different_controller(self):
         errors = self._authorize(
             {
