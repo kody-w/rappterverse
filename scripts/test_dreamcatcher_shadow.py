@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import copy
+import errno
 import hashlib
 import json
 import os
@@ -41,6 +42,12 @@ def _git(repo: Path, *args: str) -> str:
     return result.stdout.strip()
 
 
+def _initialize_test_repo(repo: Path) -> None:
+    _git(repo, "init", "-q", "-b", "main")
+    _git(repo, "config", "gc.auto", "0")
+    _git(repo, "config", "maintenance.auto", "false")
+
+
 def _write_json(path: Path, value: object) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(
@@ -53,13 +60,37 @@ def _content_id(label: str) -> str:
     return "sha256:" + hashlib.sha256(label.encode("utf-8")).hexdigest()
 
 
-def _remove_tree(path: Path) -> None:
+def _remove_tree(
+    path: Path,
+    *,
+    attempts: int = 8,
+    base_delay_s: float = 0.025,
+) -> None:
     def make_writable(function, target, _error) -> None:
-        os.chmod(target, stat.S_IWRITE)
+        os.chmod(target, stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR)
         function(target)
 
-    if path.exists():
-        shutil.rmtree(path, onerror=make_writable)
+    if attempts < 1:
+        raise ValueError("cleanup attempts must be positive")
+    retryable = {
+        errno.EACCES,
+        errno.EBUSY,
+        errno.ENOTEMPTY,
+        errno.EPERM,
+    }
+    for attempt in range(attempts):
+        try:
+            shutil.rmtree(path, onerror=make_writable)
+            return
+        except FileNotFoundError:
+            if not path.exists():
+                return
+            if attempt == attempts - 1:
+                raise
+        except OSError as exc:
+            if exc.errno not in retryable or attempt == attempts - 1:
+                raise
+        time.sleep(min(base_delay_s * (2 ** attempt), 0.2))
 
 
 class RepositoryScratchTest(unittest.TestCase):
@@ -100,7 +131,7 @@ class RepositoryScratchTest(unittest.TestCase):
         _write_json(repo / "feed" / "activity.json", {
             "activities": [],
         })
-        _git(repo, "init", "-q", "-b", "main")
+        _initialize_test_repo(repo)
         _git(repo, "config", "user.name", "Dreamcatcher Test")
         _git(
             repo,
@@ -182,6 +213,62 @@ class RepositoryScratchTest(unittest.TestCase):
         return _git(repo, "rev-parse", "HEAD")
 
 
+class CleanupRegressionTests(RepositoryScratchTest):
+    def test_test_repositories_disable_automatic_maintenance(self) -> None:
+        repo, _ = self.make_repo("maintenance-disabled")
+        self.assertEqual(_git(repo, "config", "--get", "gc.auto"), "0")
+        self.assertEqual(
+            _git(repo, "config", "--bool", "--get", "maintenance.auto"),
+            "false",
+        )
+
+    def test_remove_tree_retries_transient_errors(self) -> None:
+        for error_number in (errno.ENOTEMPTY, errno.EACCES):
+            with self.subTest(error_number=error_number):
+                target = self.tmp / f"transient-cleanup-{error_number}"
+                target.mkdir()
+                (target / "file.txt").write_text("ok\n", encoding="utf-8")
+                real_rmtree = shutil.rmtree
+                calls = 0
+
+                def flaky_rmtree(path, *args, **kwargs):
+                    nonlocal calls
+                    calls += 1
+                    if calls == 1:
+                        raise OSError(error_number, "Transient error", str(path))
+                    return real_rmtree(path, *args, **kwargs)
+
+                with mock.patch.object(
+                    shutil,
+                    "rmtree",
+                    side_effect=flaky_rmtree,
+                ):
+                    _remove_tree(target, attempts=3, base_delay_s=0)
+
+                self.assertEqual(calls, 2)
+                self.assertFalse(target.exists())
+
+    def test_remove_tree_reports_persistent_enotempty(self) -> None:
+        target = self.tmp / "persistent-cleanup"
+        target.mkdir()
+
+        with mock.patch.object(
+            shutil,
+            "rmtree",
+            side_effect=OSError(
+                errno.ENOTEMPTY,
+                "Directory not empty",
+                str(target),
+            ),
+        ) as remove:
+            with self.assertRaises(OSError) as raised:
+                _remove_tree(target, attempts=3, base_delay_s=0)
+
+        self.assertEqual(raised.exception.errno, errno.ENOTEMPTY)
+        self.assertEqual(remove.call_count, 3)
+        self.assertTrue(target.exists())
+
+
 class ReverseIndexVendorTests(RepositoryScratchTest):
     def test_vendor_provenance_and_canonical_hashes(self) -> None:
         reverse_source = (
@@ -214,7 +301,7 @@ class ReverseIndexVendorTests(RepositoryScratchTest):
                 .read_bytes()
                 .replace(b"\r\n", b"\n")
             ).hexdigest(),
-            "edabf77d2c0431eed4a116536fd3446c7b079b9ac249751582948618b934bb9b",
+            "75c2abf377206f78f6d0d7399dae5b1fbd74404aa1ce6ea91f848dbfa012191a",
         )
         self.assertNotIn(
             "# Vendored from",
@@ -228,7 +315,7 @@ class ReverseIndexVendorTests(RepositoryScratchTest):
                 .read_bytes()
                 .replace(b"\r\n", b"\n")
             ).hexdigest(),
-            "74ed88c5b50be2f7a023afa3de2599ed8e0c2d5de594b8cf6fe26afb9a3fbbd1",
+            "e980509c5661b5ffb548a32def675ded84ba31cb7b96ac9affa184ce6656c58e",
         )
 
     def test_index_is_deterministic_and_selects_dependency_closure(self) -> None:
@@ -648,7 +735,7 @@ class ShadowTelemetryTests(RepositoryScratchTest):
         repo.mkdir()
         (repo / "state").mkdir()
         _write_json(repo / "state" / "base.json", {"id": "base"})
-        _git(repo, "init", "-q", "-b", "main")
+        _initialize_test_repo(repo)
         _git(repo, "config", "user.name", "Dreamcatcher Test")
         _git(
             repo,
@@ -1172,6 +1259,53 @@ class PromotionEvaluatorTests(RepositoryScratchTest):
             [unexpected_identity, expected_identity],
         )
 
+    def test_rebase_committer_rewrite_stays_hmac_discoverable(self) -> None:
+        repo = self.evidence_repo(name="rebased-evidence")
+        env = os.environ.copy()
+        env.update({
+            "GIT_COMMITTER_NAME": "GitHub",
+            "GIT_COMMITTER_EMAIL": "noreply@github.com",
+            "GIT_COMMITTER_DATE": "2030-01-02T03:04:05Z",
+        })
+        amended = subprocess.run(
+            [
+                "git", "commit", "--amend", "--no-edit", "--no-gpg-sign",
+                "--allow-empty",
+            ],
+            cwd=repo,
+            env=env,
+            capture_output=True,
+            text=True,
+        )
+        self.assertEqual(amended.returncode, 0, amended.stderr)
+        self.assertEqual(_git(repo, "show", "-s", "--format=%cn"), "GitHub")
+
+        records = promotion.load_commit_evidence(repo)
+        self.assertEqual(len(records), 50)
+        self.assertEqual(records[0], self.sample(50))
+        summary = promotion.require_repository_readiness(repo)
+        with mock.patch.dict(
+            os.environ,
+            {promotion.PROMOTION_KEY_ENV: PROMOTION_TEST_KEY},
+            clear=False,
+        ):
+            attestation = promotion.create_promotion_attestation(
+                summary,
+                repository="owner/rappterverse",
+                target_base="a" * 40,
+                target_head="b" * 40,
+            )
+            self.assertEqual(
+                promotion.verify_promotion_attestation(
+                    attestation,
+                    summary,
+                    repository="owner/rappterverse",
+                    target_base="a" * 40,
+                    target_head="b" * 40,
+                ),
+                attestation,
+            )
+
     def test_commit_evidence_reads_actual_objects_not_replace_refs(self) -> None:
         repo, seed = self.make_repo("actual-objects")
         _git(repo, "commit", "--allow-empty", "-qm", "ordinary target")
@@ -1332,6 +1466,14 @@ class PromotionEvaluatorTests(RepositoryScratchTest):
             ),
             promotion.MAXIMUM_COMMIT_EVIDENCE_COMMITS,
         )
+        started_processes = []
+        start_evidence_object_stream = promotion._start_evidence_object_stream
+
+        def start_and_record(*args, **kwargs):
+            process = start_evidence_object_stream(*args, **kwargs)
+            started_processes.append(process)
+            return process
+
         with (
             mock.patch.object(
                 promotion,
@@ -1341,12 +1483,14 @@ class PromotionEvaluatorTests(RepositoryScratchTest):
             mock.patch.object(
                 promotion,
                 "_start_evidence_object_stream",
-                wraps=promotion._start_evidence_object_stream,
+                side_effect=start_and_record,
             ) as start_stream,
         ):
             self.assertEqual(promotion.load_commit_evidence(repo), [])
         self.assertEqual(run_git.call_count, 2)
         self.assertEqual(start_stream.call_count, 1)
+        self.assertEqual(len(started_processes), 1)
+        self.assertEqual(started_processes[0].poll(), 0)
         self.assertEqual(
             [call.args[2][0] for call in run_git.call_args_list],
             ["rev-parse", "rev-list"],
@@ -2050,6 +2194,21 @@ class PromotionEvaluatorTests(RepositoryScratchTest):
                 reconciler,
                 "current_main_sha",
                 return_value=reconciler.policy_sha,
+            ),
+            mock.patch.object(
+                reconciler,
+                "cleanup_abandoned_publications",
+                return_value=(0, False),
+            ),
+            mock.patch.object(
+                reconciler,
+                "active_internal_publication_pr",
+                return_value=None,
+            ),
+            mock.patch.object(
+                reconciler,
+                "remove_orphan_internal_branch",
+                return_value=False,
             ),
             mock.patch.object(
                 reconciler,

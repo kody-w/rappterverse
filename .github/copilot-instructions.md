@@ -137,6 +137,24 @@ Only deterministic candidate path-coverage failures are terminal. Missing or
 invalid attestations plus evidence, index, I/O, and runtime failures block for
 retry.
 
+The reconciler publishes a validated synthetic commit only through a
+validated-base-bound internal branch and source-bound PR. The ruleset requires
+only `main-pr-gate` with strict up-to-date enforcement. A trusted
+`pull_request_target` workflow grants that status for ordinary PR events
+without checking out candidate code. It reads the head commit object through
+the GitHub API and validates its message, parents, and tree. Any complete or
+partial synthetic publication markers remain reserved across branch aliases
+and forks instead of receiving ordinary success; canonical synthetic events
+only inspect the existing reconciler status and never rewrite it.
+The reconciler writes `main-pr-gate` directly only after re-fetching and
+validating the synthetic commit, canonical PR evidence, and current base, then
+revalidates the exact internal PR number, head, and base immediately before
+merge. Publication does not depend on suppressed `GITHUB_TOKEN` PR events.
+GitHub rejects a base race before `main` changes. The reconciler then verifies
+the published tree and canonical promotion trailers, deletes the internal
+branch, and closes the source PR last. Committer metadata may be rewritten by
+GitHub and remains diagnostic; HMAC-bound canonical evidence is authoritative.
+
 ### World bounds
 
 The single source of truth is `worlds/{id}/config.json` → `bounds.x`, `bounds.z` (loaded by `validate_action.py:_load_world_bounds`). Current values:
