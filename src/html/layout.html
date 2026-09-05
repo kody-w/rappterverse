@@ -157,45 +157,57 @@
 <div id="world-container"></div>
 <div class="interaction-prompt" id="interaction-prompt">Press E to interact</div>
 
-<!-- ===== COMBAT HUD ===== -->
-<div class="combat-hud" id="combat-hud" style="display:none">
-    <div class="combat-momentum">
-        <span class="combat-label">MOMENTUM</span>
-        <div class="combat-momentum-bar">
-            <div class="combat-momentum-fill" id="combat-momentum-fill"></div>
+<!-- ===== BOTTOM-CENTER STACK: ability bar (closest to edge) + combat status above it ===== -->
+<div id="hud-bottom-center">
+    <div id="ability-bar">
+        <div class="ability-slot ready" data-ability="0"><span class="ability-key">1</span>⚔️</div>
+        <div class="ability-slot ready" data-ability="1"><span class="ability-key">2</span>🔵</div>
+        <div class="ability-slot ready" data-ability="2"><span class="ability-key">3</span>🛡️</div>
+        <div class="ability-slot ready" data-ability="3"><span class="ability-key">4</span>💨</div>
+        <div class="ability-slot ready" data-ability="4"><span class="ability-key">5</span>💥</div>
+    </div>
+    <div class="combat-hud" id="combat-hud" style="display:none">
+        <div class="combat-momentum">
+            <span class="combat-label">MOMENTUM</span>
+            <div class="combat-momentum-bar">
+                <div class="combat-momentum-fill" id="combat-momentum-fill"></div>
+            </div>
+            <span class="combat-momentum-val" id="combat-momentum-val">50</span>
         </div>
-        <span class="combat-momentum-val" id="combat-momentum-val">50</span>
-    </div>
-    <div class="combat-wave">
-        <span class="combat-label">WAVE</span>
-        <span class="combat-wave-num" id="combat-wave-num">0</span>
-    </div>
-    <div class="combat-hint">SPACE — Attack</div>
-    <div id="weather-label" style="font-size:10px; opacity:0.6; letter-spacing:2px;"></div>
-    <div id="seed-info" style="display:flex; align-items:center; gap:6px; font-size:10px; opacity:0.6; letter-spacing:1px;">
-        <span>SEED: <span id="seed-value" style="color:#00d4ff;">---</span></span>
-        <button id="btn-export-seed" title="Export world seed as JSON" style="background:none; border:1px solid rgba(255,255,255,0.2); color:rgba(255,255,255,0.6); font-size:9px; padding:1px 6px; cursor:pointer; border-radius:3px; font-family:inherit; letter-spacing:1px;">EXPORT</button>
-        <button id="btn-import-seed" title="Import world seed from JSON" style="background:none; border:1px solid rgba(255,255,255,0.2); color:rgba(255,255,255,0.6); font-size:9px; padding:1px 6px; cursor:pointer; border-radius:3px; font-family:inherit; letter-spacing:1px;">IMPORT</button>
-        <button id="btn-reset-seed" title="Reset to universe-computed seed" style="background:none; border:1px solid rgba(255,255,255,0.15); color:rgba(255,255,255,0.4); font-size:9px; padding:1px 6px; cursor:pointer; border-radius:3px; font-family:inherit; letter-spacing:1px;">RESET</button>
+        <div class="combat-wave">
+            <span class="combat-label">WAVE</span>
+            <span class="combat-wave-num" id="combat-wave-num">0</span>
+        </div>
+        <div class="combat-hint">SPACE / Right-click — Attack</div>
+        <div id="weather-label" style="font-size:10px; opacity:0.6; letter-spacing:2px;"></div>
+        <div id="seed-info" style="display:flex; align-items:center; gap:6px; font-size:10px; opacity:0.6; letter-spacing:1px;">
+            <span>SEED: <span id="seed-value" style="color:#00d4ff;">---</span></span>
+            <button id="btn-export-seed" title="Export world seed as JSON" style="background:none; border:1px solid rgba(255,255,255,0.2); color:rgba(255,255,255,0.6); font-size:9px; padding:1px 6px; cursor:pointer; border-radius:3px; font-family:inherit; letter-spacing:1px;">EXPORT</button>
+            <button id="btn-import-seed" title="Import world seed from JSON" style="background:none; border:1px solid rgba(255,255,255,0.2); color:rgba(255,255,255,0.6); font-size:9px; padding:1px 6px; cursor:pointer; border-radius:3px; font-family:inherit; letter-spacing:1px;">IMPORT</button>
+            <button id="btn-reset-seed" title="Reset to universe-computed seed" style="background:none; border:1px solid rgba(255,255,255,0.15); color:rgba(255,255,255,0.4); font-size:9px; padding:1px 6px; cursor:pointer; border-radius:3px; font-family:inherit; letter-spacing:1px;">RESET</button>
+        </div>
     </div>
 </div>
 <input type="file" id="seed-file-input" accept=".json" style="display:none">
 
-<!-- ===== PLAYER STATS BAR ===== -->
-<div id="player-stats-bar">
-    <div class="stat-row"><span class="stat-label">HP</span><div class="stat-bar-container"><div class="stat-bar-fill" id="hp-fill"></div></div><span class="stat-text" id="hp-text">100/100</span></div>
-    <div class="stat-row"><span class="stat-label">MP</span><div class="stat-bar-container"><div class="stat-bar-fill" id="mp-fill"></div></div><span class="stat-text" id="mp-text">50/50</span></div>
-    <div class="stat-row"><span class="stat-label">EN</span><div class="stat-bar-container"><div class="stat-bar-fill" id="energy-fill"></div></div><span class="stat-text" id="energy-text">100/100</span></div>
-    <div class="stat-row"><span class="stat-label">P-XP</span><div class="stat-bar-container"><div class="stat-bar-fill" id="xp-fill"></div></div><span class="stat-text" id="xp-text">0/100</span></div>
-</div>
-<div id="level-badge">1</div>
-<div id="gold-kda-bar" style="position:fixed; bottom:72px; left:12px; display:none; gap:12px; font-size:11px; z-index:900; font-family:'SF Mono',monospace;">
-    <span class="practice-mode-badge" title="Browser-local practice progress; not canonical RAPPcoin">LOCAL PRACTICE</span>
-    <span id="gold-display" style="color:#fbbf24; font-weight:700;">0 PG</span>
-    <span style="color:rgba(255,255,255,0.2);">|</span>
-    <span id="kda-display" style="color:#8b949e;">0/0/0</span>
-    <span style="color:rgba(255,255,255,0.2);">|</span>
-    <span id="gpm-display" style="color:#8b949e; font-size:9px;">0 PG/M</span>
+<!-- ===== BOTTOM-LEFT STACK: player stats (closest to corner), level, gold/KDA, status effects ===== -->
+<div id="hud-bottom-left">
+    <div id="player-stats-bar">
+        <div class="stat-row"><span class="stat-label">HP</span><div class="stat-bar-container"><div class="stat-bar-fill" id="hp-fill"></div></div><span class="stat-text" id="hp-text">100/100</span></div>
+        <div class="stat-row"><span class="stat-label">MP</span><div class="stat-bar-container"><div class="stat-bar-fill" id="mp-fill"></div></div><span class="stat-text" id="mp-text">50/50</span></div>
+        <div class="stat-row"><span class="stat-label">EN</span><div class="stat-bar-container"><div class="stat-bar-fill" id="energy-fill"></div></div><span class="stat-text" id="energy-text">100/100</span></div>
+        <div class="stat-row"><span class="stat-label">P-XP</span><div class="stat-bar-container"><div class="stat-bar-fill" id="xp-fill"></div></div><span class="stat-text" id="xp-text">0/100</span></div>
+    </div>
+    <div id="level-badge">1</div>
+    <div id="gold-kda-bar" style="display:none; gap:12px; font-size:11px; font-family:'SF Mono',monospace;">
+        <span class="practice-mode-badge" title="Browser-local practice progress; not canonical RAPPcoin">LOCAL PRACTICE</span>
+        <span id="gold-display" style="color:#fbbf24; font-weight:700;">0 PG</span>
+        <span style="color:rgba(255,255,255,0.2);">|</span>
+        <span id="kda-display" style="color:#8b949e;">0/0/0</span>
+        <span style="color:rgba(255,255,255,0.2);">|</span>
+        <span id="gpm-display" style="color:#8b949e; font-size:9px;">0 PG/M</span>
+    </div>
+    <div id="status-effects-strip"></div>
 </div>
 <div id="warmup-timer" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:28px;font-weight:900;letter-spacing:4px;color:#d29922;text-shadow:0 0 30px rgba(210,153,34,0.4);z-index:950;pointer-events:none;font-family:'SF Mono',monospace;"></div>
 <div id="damage-vignette"></div>
@@ -204,18 +216,6 @@
     <div style="font-size:48px; font-weight:900; letter-spacing:6px; margin-bottom:12px;" id="victory-title">VICTORY</div>
     <div style="font-size:14px; color:#8b949e; margin-bottom:24px;" id="victory-stats"></div>
     <button id="victory-btn" style="background:rgba(0,212,255,0.2); border:1px solid rgba(0,212,255,0.4); color:#00d4ff; padding:10px 30px; font:inherit; font-size:14px; letter-spacing:2px; border-radius:8px; cursor:pointer;">RETURN TO GALAXY</button>
-</div>
-
-<!-- ===== STATUS EFFECTS STRIP ===== -->
-<div id="status-effects-strip"></div>
-
-<!-- ===== ABILITY BAR ===== -->
-<div id="ability-bar">
-    <div class="ability-slot ready" data-ability="0"><span class="ability-key">1</span>⚔️</div>
-    <div class="ability-slot ready" data-ability="1"><span class="ability-key">2</span>🔵</div>
-    <div class="ability-slot ready" data-ability="2"><span class="ability-key">3</span>🛡️</div>
-    <div class="ability-slot ready" data-ability="3"><span class="ability-key">4</span>💨</div>
-    <div class="ability-slot ready" data-ability="4"><span class="ability-key">5</span>💥</div>
 </div>
 
 <!-- ===== COMBO DISPLAY ===== -->

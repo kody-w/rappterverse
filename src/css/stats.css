@@ -1,9 +1,20 @@
-/* Player Stats HUD — bottom-left corner */
-#player-stats-bar {
+/* Bottom-left HUD stack — player stats (closest to corner), level badge,
+   gold/KDA bar, status effects. All live inside #hud-bottom-left so they
+   stack vertically instead of overlapping at the same fixed position. */
+#hud-bottom-left {
     position: fixed;
     bottom: 20px;
     left: 20px;
     z-index: var(--z-ui);
+    display: flex;
+    flex-direction: column-reverse; /* first child (player stats) sits closest to the corner */
+    align-items: flex-start;
+    gap: 8px;
+    pointer-events: none;
+}
+
+/* Player Stats HUD — bottom-left corner */
+#player-stats-bar {
     display: none; /* shown only in world mode */
     flex-direction: column;
     gap: 4px;
@@ -52,10 +63,6 @@
 }
 
 #level-badge {
-    position: fixed;
-    bottom: 85px;
-    left: 20px;
-    z-index: var(--z-ui);
     display: none;
     font-family: var(--font-mono);
     font-size: 14px;
@@ -117,13 +124,8 @@
     letter-spacing: 3px;
 }
 
-/* Ability bar — bottom center */
+/* Ability bar — lives inside #hud-bottom-center */
 #ability-bar {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: var(--z-ui);
     display: none;
     gap: 6px;
     pointer-events: auto;
@@ -278,16 +280,13 @@
 
 .cinematic-active .cinematic-grain { opacity: 0.03; }
 .cinematic-active #top-bar,
-.cinematic-active #player-stats-bar,
-.cinematic-active #ability-bar,
-.cinematic-active #combat-hud,
+.cinematic-active #hud-bottom-left,
+.cinematic-active #hud-bottom-center,
 .cinematic-active #combo-display,
 .cinematic-active #minimap,
-.cinematic-active #level-badge,
 .cinematic-active #inventory-panel,
 .cinematic-active #equipment-panel,
-.cinematic-active #enemy-hero-hud,
-.cinematic-active #status-effects-strip {
+.cinematic-active #enemy-hero-hud {
     display: none !important;
 }
 .cinematic-active .cinematic-letterbox { height: 10%; }
@@ -307,12 +306,8 @@
 
 /* ── Status Effects Strip ── */
 #status-effects-strip {
-    position: fixed;
-    bottom: 72px;
-    left: 16px;
     display: flex;
     gap: 6px;
-    z-index: var(--z-ui, 100);
     pointer-events: none;
 }
 

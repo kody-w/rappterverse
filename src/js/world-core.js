@@ -92,13 +92,27 @@ const WorldMode = {
         };
         window.addEventListener('wheel', this._onWheel, { passive: false });
 
+        // Right-click to attack (Dota-style) — suppress the browser context menu
+        // on the world canvas so right-click is available as an input.
+        this._onContextMenu = (e) => {
+            if (this.active && GameState.mode === 'world') e.preventDefault();
+        };
+        this._onMouseDown = (e) => {
+            if (e.button !== 2) return; // right mouse button only
+            if (!this.active || GameState.mode !== 'world' || GameState.inputLocked) return;
+            e.preventDefault();
+            if (this.player) WorldCombat.playerAttack(this.player.mesh.position);
+        };
+        GameState.renderer.domElement.addEventListener('contextmenu', this._onContextMenu);
+        GameState.renderer.domElement.addEventListener('mousedown', this._onMouseDown);
+
         // Set mode to world so main loop renders us
         GameState.setMode('world');
 
         // HUD
         if (typeof HUD !== 'undefined') {
             HUD.setWorld(worldId);
-            HUD.showToast(`Landed on ${w.name} — SPACE to attack, WASD to move`);
+            HUD.showToast(`Landed on ${w.name} — SPACE or Right-click to attack, WASD to move`);
             if (HUD.initChatFeed) HUD.initChatFeed();
             GameState.currentWorld = worldId;
         }
@@ -420,6 +434,8 @@ const WorldMode = {
         window.removeEventListener('keydown', this.keyDown);
         window.removeEventListener('keyup', this.keyUp);
         if (this._onWheel) window.removeEventListener('wheel', this._onWheel);
+        if (this._onContextMenu) GameState.renderer.domElement.removeEventListener('contextmenu', this._onContextMenu);
+        if (this._onMouseDown) GameState.renderer.domElement.removeEventListener('mousedown', this._onMouseDown);
         this.keys = {};
         this.cameraZoom = 1.0;
 
