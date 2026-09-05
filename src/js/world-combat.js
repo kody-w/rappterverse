@@ -643,7 +643,19 @@ const WorldCombat = {
             }
         }
 
-        if (!nearest) return false;
+        if (!nearest) {
+            // No lane creep/tower/hero in range — try a jungle camp instead.
+            // (Previously this fell through unreached: the function returned
+            // above whenever there was no lane target, so camps could only
+            // ever be hit as an unintended free bonus alongside a lane attack.)
+            const dmg = (typeof PlayerStats !== 'undefined') ? PlayerStats.getDamage() : COMBAT_CONFIG.playerDamage;
+            const comboMult = (typeof ComboSystem !== 'undefined') ? ComboSystem.getMultiplier() : 1;
+            if (typeof JungleCamps !== 'undefined' && JungleCamps.tryAttack(playerPos, dmg * comboMult)) {
+                this.playerAttackTimer = COMBAT_CONFIG.playerCooldown;
+                return true;
+            }
+            return false;
+        }
 
         this.playerAttackTimer = COMBAT_CONFIG.playerCooldown;
         const dmg = (typeof PlayerStats !== 'undefined') ? PlayerStats.getDamage() : COMBAT_CONFIG.playerDamage;
@@ -672,6 +684,33 @@ const WorldCombat = {
 
         if (nearest.hp <= 0) {
             nearest.alive = false;
+
+            if (nearest.isTower) {
+                // Tower destruction — distinct reward/feedback path so a tower
+                // isn't rewarded and logged as if it were just another creep
+                // (it previously fell through to the creep branch below, which
+                // paid creep-sized gold/XP, inflated the KDA kill count, and
+                // tried to spawn an item drop keyed off a creep-array index
+                // the tower was never part of).
+                if (typeof VFX !== 'undefined') VFX.burst(nearest.mesh.position, 'kill');
+                if (typeof GamepadControls !== 'undefined' && GamepadControls.rumble) GamepadControls.rumble(0.6, 0.3, 200);
+                if (typeof ReplaySystem !== 'undefined') {
+                    ReplaySystem.logEvent('tower_destroy', {
+                        name: 'TOWER',
+                        pos: { x: nearest.mesh.position.x, y: nearest.mesh.position.y, z: nearest.mesh.position.z },
+                        killer: 'player'
+                    });
+                }
+                if (typeof PlayerStats !== 'undefined') {
+                    PlayerStats.awardXp(30);
+                    PlayerStats.awardGold(60, 'tower');
+                }
+                if (typeof HUD !== 'undefined') HUD.showToast('TOWER DESTROYED! +60 gold');
+                this.momentum = Math.min(100, this.momentum + COMBAT_CONFIG.momentumPerKill * 3);
+                this.createAttackFlash(playerPos, nearest.mesh.position);
+                return true;
+            }
+
             // VFX kill burst
             if (typeof VFX !== 'undefined') {
                 VFX.burst(nearest.mesh.position, nearest.isBoss ? 'bossKill' : 'kill');
@@ -720,8 +759,6 @@ const WorldCombat = {
 
         // Visual flash
         this.createAttackFlash(playerPos, nearest.mesh.position);
-        // Also hit jungle camps
-        if (typeof JungleCamps !== "undefined") JungleCamps.tryAttack(playerPos, dmg * comboMult);
         return true;
     },
 

@@ -51,6 +51,10 @@ const PlayerStats = {
   die() {
     this.dead = true;
     this.deaths++;
+    // Death should end the current kill chain immediately, not just let the
+    // 3s combo timeout expire — otherwise a respawned player keeps the
+    // multiplier from before they died.
+    if (typeof ComboSystem !== 'undefined') ComboSystem.reset();
     // Respawn timer scales with level (5s base + 2s per level)
     this.respawnTimer = 5 + this.level * 2;
     const overlay = document.getElementById('death-overlay');

@@ -5704,6 +5704,10 @@ const PlayerStats = {
   die() {
     this.dead = true;
     this.deaths++;
+    // Death should end the current kill chain immediately, not just let the
+    // 3s combo timeout expire — otherwise a respawned player keeps the
+    // multiplier from before they died.
+    if (typeof ComboSystem !== 'undefined') ComboSystem.reset();
     // Respawn timer scales with level (5s base + 2s per level)
     this.respawnTimer = 5 + this.level * 2;
     const overlay = document.getElementById('death-overlay');
@@ -6048,12 +6052,24 @@ const StatusEffects = (function () {
                         if (now - eff.lastTick >= def.tickRate) {
                             var ticks = Math.floor((now - eff.lastTick) / def.tickRate);
                             eff.lastTick += ticks * def.tickRate;
-                            mob.userData.hp -= def.tickDamage * ticks;
+                            var dotDmg = def.tickDamage * ticks;
 
-                            if (mob.userData.hp <= 0) {
-                                events.push({ mob: mob, element: el, killed: true });
-                            } else {
-                                events.push({ mob: mob, element: el, killed: false });
+                            // `mob` is a mesh — actual HP lives elsewhere
+                            // (creep.hp on the combat entity, EnemyHero.state.hp).
+                            // Writing to mob.userData.hp (previously undefined,
+                            // going NaN) never reduced real HP, so fire/cosmic
+                            // DoT never actually damaged or killed anything.
+                            var curHp = null;
+                            if (typeof EnemyHero !== 'undefined' && EnemyHero.mesh === mob) {
+                                EnemyHero.damage(dotDmg);
+                                curHp = EnemyHero.state ? EnemyHero.state.hp : null;
+                            } else if (typeof WorldCombat !== 'undefined' && WorldCombat.creeps) {
+                                var owner = WorldCombat.creeps.find(function (c) { return c.mesh === mob; });
+                                if (owner) { owner.hp -= dotDmg; curHp = owner.hp; }
+                            }
+
+                            if (curHp !== null) {
+                                events.push({ mob: mob, element: el, killed: curHp <= 0 });
                             }
                         }
                     }
@@ -9383,7 +9399,7 @@ const WorldLanes = {
         var offset = faction === 'explorer' ? -3 : 3;
         group.position.set(x + offset, 0, z);
         scene.add(group);
-        this.towers.push({ mesh: group, orb: orb, hpBar: hpBar, hp: 100, maxHp: 100, lane: lane, faction: faction, index: index, attackTimer: 0, target: null, attackRange: 15, attackDamage: 12, attackCooldown: 1.5 });
+        this.towers.push({ mesh: group, orb: orb, hpBar: hpBar, hp: 100, maxHp: 100, lane: lane, faction: faction, index: index, attackTimer: 0, target: null, attackRange: 15, attackDamage: 12, attackCooldown: 1.5, isTower: true });
     },
 
     createThrones(scene, sx, sz) {
@@ -10570,7 +10586,19 @@ const WorldCombat = {
             }
         }
 
-        if (!nearest) return false;
+        if (!nearest) {
+            // No lane creep/tower/hero in range — try a jungle camp instead.
+            // (Previously this fell through unreached: the function returned
+            // above whenever there was no lane target, so camps could only
+            // ever be hit as an unintended free bonus alongside a lane attack.)
+            const dmg = (typeof PlayerStats !== 'undefined') ? PlayerStats.getDamage() : COMBAT_CONFIG.playerDamage;
+            const comboMult = (typeof ComboSystem !== 'undefined') ? ComboSystem.getMultiplier() : 1;
+            if (typeof JungleCamps !== 'undefined' && JungleCamps.tryAttack(playerPos, dmg * comboMult)) {
+                this.playerAttackTimer = COMBAT_CONFIG.playerCooldown;
+                return true;
+            }
+            return false;
+        }
 
         this.playerAttackTimer = COMBAT_CONFIG.playerCooldown;
         const dmg = (typeof PlayerStats !== 'undefined') ? PlayerStats.getDamage() : COMBAT_CONFIG.playerDamage;
@@ -10599,6 +10627,33 @@ const WorldCombat = {
 
         if (nearest.hp <= 0) {
             nearest.alive = false;
+
+            if (nearest.isTower) {
+                // Tower destruction — distinct reward/feedback path so a tower
+                // isn't rewarded and logged as if it were just another creep
+                // (it previously fell through to the creep branch below, which
+                // paid creep-sized gold/XP, inflated the KDA kill count, and
+                // tried to spawn an item drop keyed off a creep-array index
+                // the tower was never part of).
+                if (typeof VFX !== 'undefined') VFX.burst(nearest.mesh.position, 'kill');
+                if (typeof GamepadControls !== 'undefined' && GamepadControls.rumble) GamepadControls.rumble(0.6, 0.3, 200);
+                if (typeof ReplaySystem !== 'undefined') {
+                    ReplaySystem.logEvent('tower_destroy', {
+                        name: 'TOWER',
+                        pos: { x: nearest.mesh.position.x, y: nearest.mesh.position.y, z: nearest.mesh.position.z },
+                        killer: 'player'
+                    });
+                }
+                if (typeof PlayerStats !== 'undefined') {
+                    PlayerStats.awardXp(30);
+                    PlayerStats.awardGold(60, 'tower');
+                }
+                if (typeof HUD !== 'undefined') HUD.showToast('TOWER DESTROYED! +60 gold');
+                this.momentum = Math.min(100, this.momentum + COMBAT_CONFIG.momentumPerKill * 3);
+                this.createAttackFlash(playerPos, nearest.mesh.position);
+                return true;
+            }
+
             // VFX kill burst
             if (typeof VFX !== 'undefined') {
                 VFX.burst(nearest.mesh.position, nearest.isBoss ? 'bossKill' : 'kill');
@@ -10647,8 +10702,6 @@ const WorldCombat = {
 
         // Visual flash
         this.createAttackFlash(playerPos, nearest.mesh.position);
-        // Also hit jungle camps
-        if (typeof JungleCamps !== "undefined") JungleCamps.tryAttack(playerPos, dmg * comboMult);
         return true;
     },
 
