@@ -650,7 +650,8 @@ const WorldCombat = {
             // ever be hit as an unintended free bonus alongside a lane attack.)
             const dmg = (typeof PlayerStats !== 'undefined') ? PlayerStats.getDamage() : COMBAT_CONFIG.playerDamage;
             const comboMult = (typeof ComboSystem !== 'undefined') ? ComboSystem.getMultiplier() : 1;
-            if (typeof JungleCamps !== 'undefined' && JungleCamps.tryAttack(playerPos, dmg * comboMult)) {
+            const jungleElement = (typeof Equipment !== 'undefined') ? Equipment.getEquippedElement() : null;
+            if (typeof JungleCamps !== 'undefined' && JungleCamps.tryAttack(playerPos, dmg * comboMult, jungleElement)) {
                 this.playerAttackTimer = COMBAT_CONFIG.playerCooldown;
                 return true;
             }
@@ -742,7 +743,7 @@ const WorldCombat = {
                 PlayerStats.awardGold(_goldAmt, 'last hit');
                 // Show last hit indicator
                 if (nearest.mesh) this.showDamageNumber(nearest.mesh.position, '+' + lastHitBonus + ' LH', '#ffd700');
-                if (typeof HUD !== 'undefined' && HUD.showKill) HUD.showKill('Player', nearest.isBoss ? 'BOSS' : 'Creep', _goldAmt);
+                if (typeof HUD !== 'undefined' && HUD.showKill) HUD.showKill(nearest.isBoss ? 'BOSS' : 'Creep', _goldAmt);
             }
             if (typeof Inventory !== 'undefined' && nearest.mesh) {
                 Inventory.spawnDrop(nearest.mesh.position.clone(), GameState.currentWorld, this.waveNumber, this.creeps.indexOf(nearest));
