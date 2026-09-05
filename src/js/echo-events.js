@@ -178,5 +178,12 @@ const EchoEvents = {
             this._activeEvent = null;
         }
         this._amplified = false;
+        // Without these resets, a new world session inherits whatever
+        // cooldown was left over from the last one (delaying its first
+        // event for up to 60s) and can never re-trigger the same event id
+        // that was last active, even though this is a fresh session.
+        this._timer = 0;
+        this._lastEvent = null;
+        this._eventTimer = 0;
     }
 };

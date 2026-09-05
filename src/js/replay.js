@@ -557,6 +557,8 @@ const ReplaySystem = {
                 this._triggerSlowMo({ name: evt.data.name + ' SLAIN', isBoss: true });
             } else if (evt.type === 'tower_destroy') {
                 this._showTicker('TOWER DESTROYED');
+            } else if (evt.type === 'streak') {
+                this._showTicker(evt.data && evt.data.text ? evt.data.text : 'KILLING SPREE');
             }
         }
     },
@@ -798,5 +800,9 @@ const ReplaySystem = {
         }
         this.eventLog = [];
         this.snapshots = [];
+        // Otherwise a replay triggered again within 2s of a previous one
+        // ending inherits leftover slow-mo and plays back at 15% speed with
+        // no new kill having happened.
+        this._slowMoUntil = 0;
     }
 };
