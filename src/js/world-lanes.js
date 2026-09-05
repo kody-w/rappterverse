@@ -55,8 +55,7 @@ const LANE_DEFS = {
             { x: 0.58, z: 0.97 },
             { x: 0.80, z: 0.94 },
             { x: 1, z: 1 }
-        ],
-        chokeIndex: 9
+        ]
     },
     mid: {
         name: 'Nexus Spine', color: 0xffaa00,
@@ -76,8 +75,7 @@ const LANE_DEFS = {
             { x: 0.72, z: 0.68 },
             { x: 0.86, z: 0.84 },
             { x: 1, z: 1 }
-        ],
-        chokeIndex: 7
+        ]
     },
     bot: {
         name: 'Verdant Trail', color: 0x44ff88,
@@ -100,8 +98,7 @@ const LANE_DEFS = {
             { x: 0.97, z: 0.58 },
             { x: 0.94, z: 0.80 },
             { x: 1, z: 1 }
-        ],
-        chokeIndex: 9
+        ]
     }
 };
 

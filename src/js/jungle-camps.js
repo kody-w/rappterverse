@@ -48,7 +48,6 @@ var JungleCamps = {
                 gold: typeData.gold, xp: typeData.xp,
                 alive: true, respawnTimer: 0, respawnTime: typeData.respawn,
                 hp: typeData.hp, maxHp: typeData.hp,
-                neutralCount: typeData.neutrals,
                 mesh: null, hpBar: null, body: null
             };
             self._createCampMesh(scene, camp);
@@ -190,7 +189,6 @@ var JungleCamps = {
 
     // ── ECHO TITAN — Epic boss in the river (Roshan-style) ──
     _titan: null,
-    _titanSpawnTimer: 0,
     _titanSpawned: false,
 
     spawnTitan: function(scene, w) {

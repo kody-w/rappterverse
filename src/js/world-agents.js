@@ -18,6 +18,13 @@ const WorldAgents = {
             if (!currentIds.has(id)) {
                 scene.remove(this.agentMeshes[id].group);
                 delete this.agentMeshes[id];
+                // Drop the stale attack-swarm timer too — otherwise if this
+                // same agent id re-enters agentMeshes while the enemy hero is
+                // already mid-fight, it inherits a leftover cooldown instead
+                // of starting fresh (only the "swarm ended" branch of
+                // updateAnimations() clears this, which never runs for an id
+                // that's no longer in agentMeshes to iterate over).
+                delete this.agentAttackTimers[id];
             }
         });
 
@@ -1177,5 +1184,21 @@ const WorldAgents = {
         this.objectMeshes = [];
         this.interactTarget = null;
         this.pokeTarget = null;
+        // Floating combat/interaction text sprites created shortly before a
+        // world switch previously kept animating against the old scene and
+        // were never released until their own timer expired.
+        this.floatingTexts.forEach(ft => { if (ft.mesh && ft.mesh.parent) ft.mesh.parent.remove(ft.mesh); });
+        this.floatingTexts = [];
+        // Relationship edge lines were only ever disposed the next time
+        // updateEdges() ran, so switching worlds left stale geometry
+        // referenced (and visible, if the scene object was reused).
+        if (this._edgeLines) {
+            this._edgeLines.forEach(l => { scene.remove(l); l.geometry.dispose(); l.material.dispose(); });
+            this._edgeLines = null;
+        }
+        this._lastEdgeUpdate = 0;
+        // Defensive-swarm attack cooldowns are per agent id; clear them all
+        // so a fresh world doesn't inherit any stale entries.
+        this.agentAttackTimers = {};
     }
 };

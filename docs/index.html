@@ -8897,8 +8897,7 @@ const LANE_DEFS = {
             { x: 0.58, z: 0.97 },
             { x: 0.80, z: 0.94 },
             { x: 1, z: 1 }
-        ],
-        chokeIndex: 9
+        ]
     },
     mid: {
         name: 'Nexus Spine', color: 0xffaa00,
@@ -8918,8 +8917,7 @@ const LANE_DEFS = {
             { x: 0.72, z: 0.68 },
             { x: 0.86, z: 0.84 },
             { x: 1, z: 1 }
-        ],
-        chokeIndex: 7
+        ]
     },
     bot: {
         name: 'Verdant Trail', color: 0x44ff88,
@@ -8942,8 +8940,7 @@ const LANE_DEFS = {
             { x: 0.97, z: 0.58 },
             { x: 0.94, z: 0.80 },
             { x: 1, z: 1 }
-        ],
-        chokeIndex: 9
+        ]
     }
 };
 
@@ -11493,6 +11490,8 @@ const ReplaySystem = {
                 this._triggerSlowMo({ name: evt.data.name + ' SLAIN', isBoss: true });
             } else if (evt.type === 'tower_destroy') {
                 this._showTicker('TOWER DESTROYED');
+            } else if (evt.type === 'streak') {
+                this._showTicker(evt.data && evt.data.text ? evt.data.text : 'KILLING SPREE');
             }
         }
     },
@@ -11734,6 +11733,10 @@ const ReplaySystem = {
         }
         this.eventLog = [];
         this.snapshots = [];
+        // Otherwise a replay triggered again within 2s of a previous one
+        // ending inherits leftover slow-mo and plays back at 15% speed with
+        // no new kill having happened.
+        this._slowMoUntil = 0;
     }
 };
 
@@ -11918,6 +11921,13 @@ const EchoEvents = {
             this._activeEvent = null;
         }
         this._amplified = false;
+        // Without these resets, a new world session inherits whatever
+        // cooldown was left over from the last one (delaying its first
+        // event for up to 60s) and can never re-trigger the same event id
+        // that was last active, even though this is a fresh session.
+        this._timer = 0;
+        this._lastEvent = null;
+        this._eventTimer = 0;
     }
 };
 
@@ -12091,6 +12101,13 @@ const WorldAgents = {
             if (!currentIds.has(id)) {
                 scene.remove(this.agentMeshes[id].group);
                 delete this.agentMeshes[id];
+                // Drop the stale attack-swarm timer too — otherwise if this
+                // same agent id re-enters agentMeshes while the enemy hero is
+                // already mid-fight, it inherits a leftover cooldown instead
+                // of starting fresh (only the "swarm ended" branch of
+                // updateAnimations() clears this, which never runs for an id
+                // that's no longer in agentMeshes to iterate over).
+                delete this.agentAttackTimers[id];
             }
         });
 
@@ -13250,6 +13267,22 @@ const WorldAgents = {
         this.objectMeshes = [];
         this.interactTarget = null;
         this.pokeTarget = null;
+        // Floating combat/interaction text sprites created shortly before a
+        // world switch previously kept animating against the old scene and
+        // were never released until their own timer expired.
+        this.floatingTexts.forEach(ft => { if (ft.mesh && ft.mesh.parent) ft.mesh.parent.remove(ft.mesh); });
+        this.floatingTexts = [];
+        // Relationship edge lines were only ever disposed the next time
+        // updateEdges() ran, so switching worlds left stale geometry
+        // referenced (and visible, if the scene object was reused).
+        if (this._edgeLines) {
+            this._edgeLines.forEach(l => { scene.remove(l); l.geometry.dispose(); l.material.dispose(); });
+            this._edgeLines = null;
+        }
+        this._lastEdgeUpdate = 0;
+        // Defensive-swarm attack cooldowns are per agent id; clear them all
+        // so a fresh world doesn't inherit any stale entries.
+        this.agentAttackTimers = {};
     }
 };
 
@@ -18955,7 +18988,6 @@ var JungleCamps = {
                 gold: typeData.gold, xp: typeData.xp,
                 alive: true, respawnTimer: 0, respawnTime: typeData.respawn,
                 hp: typeData.hp, maxHp: typeData.hp,
-                neutralCount: typeData.neutrals,
                 mesh: null, hpBar: null, body: null
             };
             self._createCampMesh(scene, camp);
@@ -19097,7 +19129,6 @@ var JungleCamps = {
 
     // ── ECHO TITAN — Epic boss in the river (Roshan-style) ──
     _titan: null,
-    _titanSpawnTimer: 0,
     _titanSpawned: false,
 
     spawnTitan: function(scene, w) {
