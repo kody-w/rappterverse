@@ -117,6 +117,81 @@ python scripts/pii_scan.py --all-tracked
 
 All scripts use **Python 3.11+ with stdlib only** — no external dependencies.
 
+## Frontend Quality Loop (Fan-Out Audit & Fix)
+
+The frontend (`src/js/*.js`) has no type system and a thin test harness
+(`scripts/test-cases.js` / `scripts/test-harness.js`, 14 headless TAP cases),
+so real correctness bugs — dead code, wrong-API calls, state that leaks
+across world switches, rewards that silently never fire — accumulate quietly.
+This is the repeatable playbook that found and fixed 8 rounds of them in one
+session (2026-09-05; see `PASSOFF.md` for the specific bugs). Any agent —
+Claude, Copilot, a future frontier model, whatever — can and should re-run
+this same loop, on this repo or any other, as a standing practice rather than
+a one-off.
+
+**The loop, one cycle:**
+
+1. **Fan out 2 read-only audit subagents in parallel**, each scoped to 1-3
+   related, currently-unaudited `src/js/` files (e.g. one on
+   `world-combat.js` + `jungle-camps.js`, another on `abilities.js` +
+   `equipment.js`). Give each agent the *exact* bug categories to hunt for —
+   dead code (fields/functions defined but never read), wrong/nonexistent API
+   calls (e.g. reading `Inventory.items` when the real field is
+   `Inventory.slots`), state never reset across `init()`/`cleanup()` pairs,
+   reward/event paths inconsistent with a parallel path elsewhere in the
+   codebase — and tell them explicitly **not to fix anything**, and to report
+   honestly if they find fewer than 2 solid bugs rather than padding the
+   list with style nits.
+2. **Verify every finding yourself** against the actual source before
+   touching anything — agents occasionally mis-locate a symbol or miss a
+   caller. Grep for every reference to a suspect field/function across
+   `src/js/*.js` before concluding it's actually dead/unreachable.
+3. **Fix surgically.** Prefer the smallest change that makes the bug
+   impossible to reintroduce, with a comment explaining *why* (not just
+   what) — the next agent reading this code six months from now needs the
+   reasoning, not a diff.
+4. **Rebuild and test before committing, every time:**
+   ```bash
+   node --check src/js/<file>.js     # per edited file
+   bash scripts/bundle.sh            # regenerate docs/index.html
+   node scripts/test-cases.js        # compare pass count to the baseline you started with
+   ```
+   A pass-count regression means you broke something; an *improvement* is a
+   strong signal you fixed something the suite was already trying to check
+   (this happened three times in the 2026-09-05 session — see PASSOFF.md).
+   If the test harness or a test case encodes the same wrong assumption as
+   the bug you just fixed (it will, occasionally — the harness had a
+   `Patch Inventory.items if missing` workaround for exactly the bug
+   described above), fix the test to assert the real, correct behavior
+   instead of leaving it validating a workaround.
+5. **Commit with the reasoning, not just the change** — explain the
+   concrete symptom a player would see, not just "fixed X". Open a PR
+   (direct pushes to `main` are blocked by branch protection here), wait for
+   `main-pr-gate` + `test` + `pii-scan` to pass, then merge.
+6. **Repeat**, moving to the next unaudited file pair, until an audit round
+   comes back with fewer than 2 solid findings — that's the honest signal to
+   stop for now, not a reason to invent nitpicks to keep going.
+
+**Known gotchas discovered so far** (check these first before re-auditing):
+- `Inventory` stores items in `slots[i].item`, never `items` — several older
+  systems (shop, crafting) assumed the latter and silently no-opped.
+- Equipping anything requires the item's name to be registered in
+  `EQUIPMENT_MAP` (`src/js/equipment.js`) or it can never be equipped even if
+  correctly stored — shop/crafted gear bypasses that table entirely and
+  equips straight into `Equipment.gear[slot]` instead.
+- A module's own `cleanup()` being correct doesn't mean it runs —
+  `WorldAgents.cleanup()` and `FogOfWar.cleanup()` existed but were never
+  called from `WorldMode.cleanup()` at all. Grep the orchestrator
+  (`WorldMode.cleanup()` in `world-core.js`) for the call, don't assume it's
+  wired up just because the function looks complete.
+- `world-terrain.js` has ~50+ untracked mesh/geometry/material creation
+  sites and no `cleanup()`; rather than hand-track every one, `WorldMode
+  .cleanup()` now does a generic `scene.traverse()` disposal pass at the end,
+  after every other module's own `cleanup()` has already removed its meshes
+  — that pattern (traverse-and-dispose whatever's left, rather than tracking
+  every creation site) is the right default for any future module in the
+  same situation.
+
 ## Architecture
 
 ### Data Flow

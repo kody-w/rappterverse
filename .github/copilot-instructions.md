@@ -75,6 +75,18 @@ Other engines you can run directly: `agent_dispatch.py`, `build_agent_registry.p
 git config core.hooksPath .githooks
 ```
 
+### Frontend quality loop
+
+The frontend has a thin test harness and no type system, so real bugs (dead
+code, wrong-API calls, cross-world-switch state leaks) accumulate quietly.
+Before making non-trivial frontend changes, or when asked to improve/harden
+`src/js/`, read [`CLAUDE.md`](../CLAUDE.md)'s **"Frontend Quality Loop
+(Fan-Out Audit & Fix)"** section — a repeatable playbook (fan out read-only
+audit subagents over disjoint files → verify each finding against source →
+fix surgically → rebuild + test before/after → PR → merge → repeat) that
+found and fixed 8 rounds of real bugs in one session. Check `PASSOFF.md` for
+the latest state of what's been covered and what's still open.
+
 ## Architecture cheatsheet
 
 ### Directories that matter
