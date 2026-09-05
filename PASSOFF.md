@@ -1,124 +1,156 @@
-# Shift Passoff — 2026-03-29
+# Shift Passoff — 2026-09-05
 
-## Status: V1 FEATURE FREEZE
+## Status: FRONTEND BUG-HUNT LOOP (8 rounds, ongoing)
 
-No new features. Only bug fixes, performance optimization, and polish.
+Not a feature session. A fan-out audit-and-fix loop targeting real
+correctness bugs in the DOTA-mode frontend (`src/js/`), run via the
+methodology now documented in `CLAUDE.md` → **"Frontend Quality Loop
+(Fan-Out Audit & Fix)"**. Read that section before starting another round —
+it's the reusable playbook, this file is just the log of what it found.
 
 ---
 
 ## What Happened This Session
 
-18 commits across one long session. Two phases:
+8 PRs merged (#7721–#7727 plus one direct fix before branch protection was
+hit), each: 2 parallel read-only audit subagents over disjoint files → every
+finding verified against source before touching anything → surgical fix with
+rationale → `bash scripts/bundle.sh` → `node scripts/test-cases.js`
+before/after → PR → wait for `main-pr-gate`/`test`/`pii-scan` → merge.
+Regression suite went from **5/14 → 7/14 passing** over the session (two
+previously-crashing cases got fixed as a side effect of fixing the real bugs
+they were trying to check).
 
-### Phase 1: Echo Engine Megabuild (14 commits)
-Built three new systems and wired the Echo Engine into every corner of the frontend:
+### Round 1 — `enemy-hero.js`
+- Hero never regenerated HP (only mana) — its "retreating" AI state was a
+  no-op, always re-engaging at the same low HP.
+- Killing the hero paid no gold (`killGoldReward` was dead code) and no
+  kill credit; the hero's own kills counter was never incremented when it
+  killed the player via melee, Savage Leap, or Primal Roar.
 
-**New Files Created (6):**
-| File | Lines | Purpose |
-|------|-------|---------|
-| `src/js/vfx.js` | 475 | GPU particle system — 20 presets, pooled, 3 emission modes (burst/emit/trail) |
-| `src/js/replay.js` | 802 | Cinematic battle replay — 5 camera modes, slow-mo kills, VHS overlay, echo-aware |
-| `src/js/echo-events.js` | 182 | Procedural world events triggered by echo thresholds (5 event types) |
-| `src/js/echo-dashboard.js` | 147 | Full echo engine readout overlay (~ key) |
-| `src/css/replay.css` | 211 | Replay overlay styling |
-| `src/css/echo-dashboard.css` | 130 | Dashboard overlay styling |
+### Round 2 — HUD overlap + input (`src/html/layout.html`, `src/css/*.css`, `world-core.js`)
+- `#ability-bar` and `#combat-hud` were both fixed at ~bottom:16-20px,
+  centered — rendering on top of each other. Same for `#player-stats-bar`,
+  `#level-badge`, `#gold-kda-bar` (duplicated in both inline style and
+  `hud.css`), and `#status-effects-strip` in the bottom-left corner.
+  Replaced manual pixel offsets with two flex `column-reverse` stacks
+  (`#hud-bottom-center`, `#hud-bottom-left`).
+- The world canvas had zero mouse handling — SPACE was the only attack
+  input. Added `contextmenu` (suppress browser menu) + `mousedown` (button 2)
+  handlers calling the same `WorldCombat.playerAttack()`.
 
-**Systems Modified (25+):**
-Every major system now reacts to the Echo Engine's L3 atmosphere data (tension, vitality, socialEnergy):
+### Round 3 — `world-combat.js`, `world-lanes.js`, `jungle-camps.js`, `status-effects.js`
+- `playerAttack()` returned early whenever there was no lane creep/tower/
+  hero target, so the "hit jungle camps" call at the end of the function was
+  unreachable in exactly the case it was meant for. Camps could previously
+  only take damage as an unintended bonus alongside a lane hit.
+- Destroying a tower fell into the creep-kill reward branch: creep-sized
+  gold/XP, inflated KDA, and an item-drop call keyed off
+  `creeps.indexOf(tower)` (always -1). Towers now have `isTower: true` and a
+  dedicated reward path.
+- `StatusEffects.updateAll()`'s DoT tick wrote to `mob.userData.hp`, never
+  initialized for creeps/EnemyHero (real HP lives on the creep object /
+  `EnemyHero.state`) — the subtraction produced `NaN`, so fire/cosmic
+  elemental weapons never actually killed via damage-over-time, only via
+  their initial visual proc.
+- `ComboSystem` was never reset on player death — a respawned player kept
+  their pre-death kill-streak multiplier.
 
-| System | File | What Echo Does |
-|--------|------|---------------|
-| Post-processing | `post-processing.js` | Bloom 0.3-0.9, vignette tightens with tension |
-| Audio music | `audio.js` | LFO tremolo 1-4x speed, gain modulated |
-| Audio ambient | `audio.js` | Chirp/crackle intervals speed up 50% |
-| Enemy Hero AI | `enemy-hero.js` | Engages from further, braver retreat, faster movement |
-| Terrain/sky | `world-terrain.js` | Sky red-shifts, weather intensifies, day/night cycle (8 min) |
-| Tower/throne | `world-lanes.js` | Orb pulse 3-7Hz, crystal/crown speed, river tints red |
-| Galaxy | `galaxy.js` | Star throbs harder, planets breathe |
-| Fog of war | `fog-of-war.js` | Denser + redder fog, vision radius shrinks |
-| Agent behavior | `world-agents.js` | Glow scales, wander radius contracts, social bias increases |
-| Agent speech | `world-agents.js` | Echo-contextual ambient chatter every 12-32s |
-| VFX particles | `vfx.js` | 3 ambient echo presets, burst count/size +60% |
-| Replay camera | `replay.js` | Tighter shots, faster cuts, atmosphere overlay + narrative |
-| Shop prices | `shop.js` | +25% war tax during tension, -15% social discount |
-| Crafting | `crafting.js` | 3 echo-only recipes (Echo Blade, Harmony Shield, Vitality Core) |
-| Jungle camps | `jungle-camps.js` | Glow intensity, +30% gold/xp during tension, Echo Titan boss |
-| Abilities | `abilities.js` | +20% damage during tension, Echo Storm 1.5x, shield bubble mesh |
-| Combat difficulty | `world-combat.js` | Creep HP +15%, speed +20% during tension |
-| Projectiles | `world-combat.js` | VFX trails, tension-scaled size |
-| Camera | `world-core.js` | Micro-shake during tension, scroll wheel zoom (0.4x-2.5x) |
-| Player ring | `world-core.js` | Pulse speed/color echo-reactive |
-| Minimap | `hud.js` | Heat map, tension pulse ring, mood-colored agent dots, ping system |
-| HUD | `hud.js` | Tension sparkline in universe card, echo event display |
-| Death/victory | `player-stats.js`, `world-combat.js` | Echo narrative, echo score grading (S+ through D) |
-| Quests | `quests.js` | Echo-generated quest hints when no quests active |
-| Gamepad | `gamepad-controls.js` | Echo rumble during tension, kill haptics |
-| Tutorial | `tutorial.js` | New step explaining Echo Engine |
-| Settings | `settings.js` | Echo effects toggle |
-| Bridge | `bridge.js` | Combat digest, active echo event display |
-| Approach | `approach.js` | Echo narrative on planet approach |
+### Round 4 — `world-agents.js`, `replay.js`, `echo-events.js`
+- `WorldAgents.syncAgents()` dropped a departed agent's mesh but left its
+  entry in `agentAttackTimers` — since `syncAgents()` runs on a periodic 5s
+  timer during live gameplay, a re-entering agent id could inherit a stale
+  attack cooldown against the enemy hero.
+- `WorldAgents.cleanup()` never released `floatingTexts` sprites or
+  `_edgeLines` geometry.
+- `ReplaySystem`'s kill-event playback had no case for the `'streak'` event
+  type `Inventory` already logs; `cleanup()` never reset `_slowMoUntil`.
+- `EchoEvents.cleanup()` left `_timer`/`_lastEvent`/`_eventTimer` untouched,
+  so a new world session could inherit up to a minute of stale cooldown.
+- Removed 3 dead config fields with zero readers: `camp.neutralCount`,
+  `JungleCamps._titanSpawnTimer`, `LANE_DEFS.chokeIndex`.
 
-**Key Gameplay Additions:**
-- **Battle Replay** (R key): records combat, plays back with cinematic camera, slow-mo on kills
-- **Echo Titan**: Roshan-style 500HP river boss, spawns at wave 3, 200 gold + 150 XP
-- **Kill Streaks**: KILLING SPREE (3) through BEYOND GODLIKE (20) with escalating VFX
-- **Last-Hit Gold**: bonus gold for killing blows
-- **Minimap Pings**: click minimap to place 3D gold beam + minimap marker
-- **Wave Cinematics**: letterbox overlay on milestone waves
-- **Combo VFX**: escalating particle effects at 3/5/10 kill combos
-- **Echo Events**: 5 procedural world events (Battle Fury, Social Bloom, Vitality Surge, Echo Storm, Calm Before Storm)
-- **Echo Score**: end-of-match grade based on session dynamics
-- **Session Memory**: echo summaries persist to localStorage across sessions
+### Round 5 — `abilities.js`, `hud.js`
+- **Ability level-ups were completely inert.** `Abilities.getScaled()`
+  computed a level-scaled cooldown/cost/damage/range/duration/distance, but
+  `useAbility()` read straight from the unscaled base `def` and passed that
+  same unscaled `def` into every `_do*()` handler. Spending a skill point
+  only changed the "Level N" HUD badge. This also unblocked two crashing
+  test cases (`_updateSlotUI()` dereferenced `this._slotEls` without a null
+  check — any code path awarding a skill point before `Abilities.init()`
+  runs, like the headless harness, threw instead of returning).
+- `HUD.showKill(victim, gold)` was called with 3 args from
+  `world-combat.js` (`'Player'`, `'BOSS'/'Creep'`, `goldAmount`) but only
+  takes 2 — kill toasts read "YOU killed Player +CreepG".
 
-### Phase 2: Stabilization (4 commits)
-Comprehensive audit and fix pass:
+### Round 6 — `shop.js`, `crafting.js` (biggest fix of the loop)
+- **Both systems read/wrote a nonexistent `Inventory.items` array.** The
+  real field is `Inventory.slots`. Every weapon/armor/boots/accessory
+  purchase deducted gold and gave nothing — not even a toast. Every crafting
+  recipe showed 0/N materials and stayed permanently disabled. Fixed to use
+  `Inventory.slots` directly, and to equip shop/crafted gear straight into
+  `Equipment.gear[slot]` — those item names were never registered in
+  `Inventory.ITEMS` or `EQUIPMENT_MAP` either, so even correctly-stored
+  items could never have been equipped through the normal pickup path.
+- The regression suite's own Crafting test was inadvertently validating
+  this bug (it set `Inventory.items = [...]` directly, and the harness had
+  an explicit `Patch Inventory.items if missing` workaround). Rewrote the
+  test against the real API.
+- `WorldMode.cleanup()` never called `WorldAgents.cleanup()` or
+  `FogOfWar.cleanup()` **at all** — every world switch leaked all of it.
+  (This also means the Round 4 `WorldAgents.cleanup()` fixes were dead code
+  until this round wired the call in.)
+- Minimap/fullscreen map never drew placed wards; fullscreen map was a
+  one-shot snapshot that never updated while open.
 
-- **9 bug fixes**: memory leaks (replay cleanup, setInterval), stale state (XP bonus persisting through death), shader overflow (bloom/vignette unbounded), resource leaks (shield bubble), pool corruption (VFX reusing alive particles), terrain amplitude growing forever
-- **8 perf fixes**: O(n^2) retroEnrich -> O(n), localStorage throttled to 10s, ghost lerp skipped when paused, echo intensity cached 500ms, nova shake timer reused, audio resume {once:true}, creep/projectile cleanup uses reverse splice instead of filter()
-- **15 UX fixes**: transitions on all buttons (HUD, approach, landing, ability slots, echo dashboard), hover states, z-index cleanup (death overlay raised, victory lowered), camera lerp 0.05->0.1, toast stacking capped at 5, interaction prompt smooth fade
-- **6 final fixes**: echo event buff stacking guard, streak banner DOM reuse, wave/boss overlay timeout cleanup, death timer throttled to 1/sec, CSS token consistency
+### Round 7 — `world-terrain.js`
+- ~50+ untracked mesh/geometry/material creation sites (ground, lighting,
+  particles, biome objects/features, weather), no `cleanup()` at all. Rather
+  than hand-track every site, `WorldMode.cleanup()` now does a generic
+  `scene.traverse()` disposal pass at the end — every other module's own
+  `cleanup()` already ran first and removed its own meshes via
+  `scene.remove()`, so the traversal only reaches what nothing else cleaned
+  up. `.dispose()` is safe to call more than once regardless.
+- `initWeather()` only ever set `weatherParticles` on non-clear weather, so
+  a reroll to 'clear' left the previous world's rain/snow/etc. particles
+  referenced and updated every frame for nothing.
+
+### Round 8 — `audio.js` (vfx.js audited clean)
+- `stopAmbient()` only stopped/disconnected oscillators, never the
+  intermediate gain/filter/LFO-support nodes each ambient layer creates —
+  every biome/world transition left another lowpass filter + gain nodes
+  permanently connected to `musicGain`.
+- `setIntensity()`'s high-intensity oscillator's gain node was never
+  disconnected on shutdown.
 
 ---
 
-## Architecture: The Echo Feedback Loop
+## Known Issues / Tech Debt (not yet fixed — lower confidence or higher risk)
 
-```
-Combat (kills, momentum, boss, waves, player HP)
-    |
-    v
-Echo Engine L0-L6 (captures frame, builds echoes)
-    |
-    +---> L1: Social + combat digest
-    +---> L2: Narrative text
-    +---> L3: Atmosphere (tension, vitality, socialEnergy)
-    +---> L4: Spatial mutations (fog, terrain amplitude)
-    +---> L6: Temporal depth (trends, mood stability)
-    |
-    v
-38 reactive systems consume L3
-    |
-    +---> Visuals darken, bloom increases, fog thickens
-    +---> Music intensifies, chirps speed up
-    +---> AI gets bolder, creeps move faster
-    +---> Particles multiply, trails appear
-    +---> Agents huddle, chatter changes
-    +---> Shop prices rise, crafting recipes unlock
-    |
-    v
-More intense combat --> loops back to Echo Engine
-```
-
----
-
-## Known Issues / Tech Debt
-
-1. **Agent canvas textures**: each agent creates its own canvas for emoji + name sprite. 100 agents = 100 canvases. Should use texture atlas.
-2. **Minimap heat map**: `createRadialGradient()` called per-creep per-frame. Could pre-compute or batch.
-3. **Echo dashboard innerHTML**: replaces entire body on every render. Should diff-update.
-4. **Echo engine localStorage**: still writes full frame history (throttled to 10s now, but could compress).
-5. **Three.js r128**: using CDN-loaded r128. Modern features (instanced mesh for particles, etc.) not available.
-
----
+1. **Brush/hiding is purely cosmetic.** `world-terrain.js` renders Terra
+   bushes but there's no brush-zone registry and no enemy-AI vision check —
+   standing in a bush doesn't hide you from `enemy-hero.js` targeting,
+   despite the blog docs describing "8 jungle spots for hiding." Fixing this
+   properly means designing real brush-zone geometry and wiring it into
+   enemy AI targeting — a feature addition, not a bug fix.
+2. **Some biome-feature placement can exceed world bounds.** Lava paths,
+   crystal lakes, abyss platforms/beams, desert oases, and Terra ponds use
+   `bounds * 1.2`/`* 1.4` center-point multipliers with no clamp on the
+   feature's own radius/path drift — cosmetic-only, cheap to spot-check via
+   live inspection but requires per-biome-specific clamping math to fix
+   without visual regressions. Deprioritized this session.
+3. Files not yet given a dedicated audit round: `bridge.js`, `rappter-vm.js`,
+   `rappter-os.js`, `chronicle.js`, `state.js`, `data.js`, `config.js`,
+   `boot.js`, `galaxy.js`, `warp.js`, `approach.js`, `landing.js`,
+   `settings.js`, `debug.js`, `gamepad-controls.js`, `touch-controls.js`,
+   `voice-controls.js`, `gesture-controls.js`, `help-overlay.js`,
+   `tutorial.js`, `post-processing.js`. Many of these are pre-world-mode /
+   meta systems rather than core DOTA gameplay, but haven't been ruled out.
+4. Regression suite is still 7/14 — remaining failures (`Init`, `Warmup`,
+   `Wave spawn`, `Player attack`, `Death + respawn`, `Creep variety`, `Full
+   session`) look like harness/timing gaps (e.g. `warmup=undefined`
+   suggests the harness never reaches `_warmupActive` becoming true) rather
+   than gameplay bugs, but haven't been individually root-caused yet.
 
 ## Build / Test
 
@@ -126,38 +158,17 @@ More intense combat --> loops back to Echo Engine
 # After ANY edit to src/css/, src/js/, or src/html/:
 bash scripts/bundle.sh
 
-# Syntax check:
-node -e "
-const fs = require('fs');
-const html = fs.readFileSync('docs/index.html','utf8');
-const js = html.match(/<script>[\s\S]*<\/script>/)[0].replace(/<\/?script>/g,'');
-try { new Function(js); console.log('OK'); }
-catch(e) { console.log('ERROR:', e.message); }
-"
+# Regression suite (14 headless TAP cases):
+node scripts/test-cases.js
 
-# Bundle is currently: 13 CSS + 44 JS -> 19,301 lines
+# Syntax check a single file before bundling:
+node --check src/js/<file>.js
 ```
 
----
+## Next Session
 
-## Key Files to Know
-
-| File | What it does | Watch out for |
-|------|-------------|---------------|
-| `src/js/echo-engine.js` | Heart of the system. Captures frames, builds L0-L6 echoes | Tension can come from many sources now (combat, economy, mood). Check Math.min(1, tension) is preserved. |
-| `src/js/vfx.js` | Particle pools. 300 per preset max. | Pool exhaustion silently reuses oldest. If you see particle glitches, check pool sizes. |
-| `src/js/replay.js` | Records snapshots every 1s + events. | _shakeInterval must be cleared. Check cleanup() if adding new timers. |
-| `src/js/echo-events.js` | 5 event types with buff/debuff. | Buff stacking guard relies on _orig* fields. Don't delete them outside onEnd(). |
-| `src/js/world-combat.js` | Creep spawning, combat, victory. | _overlayTimeouts array must be cleared in cleanup(). Wave cinematic + boss intro both use it. |
-| `scripts/bundle.sh` | Concatenates everything. Order matters. | New JS files go between their dependencies. CSS order less critical but check. |
-
----
-
-## Feature Freeze Rules
-
-- NO new features
-- Bug fixes: yes
-- Performance: yes
-- Polish (visual tweaks, timing): yes
-- Test coverage: yes
-- Doc updates: yes
+Re-run the loop from `CLAUDE.md`'s Frontend Quality Loop section, starting
+with the "not yet audited" list above. If an audit round comes back with
+fewer than 2 solid findings on real gameplay-relevant files, that's the
+honest signal the loop has reached diminishing returns for now — don't
+manufacture nitpicks to keep going.
