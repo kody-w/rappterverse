@@ -1,7 +1,7 @@
 // Procedural audio system — Web Audio API only, no external files
 const Audio = {
   ctx: null, masterGain: null, musicGain: null, sfxGain: null,
-  initialized: false, _ambientOscs: [], _ambientGains: [],
+  initialized: false, _ambientOscs: [], _ambientGains: [], _ambientExtraNodes: [],
   _intensityOsc: null, _currentBiome: null,
 
   _mtof(m) { return 440 * Math.pow(2, (m - 69) / 12); },
@@ -76,11 +76,13 @@ const Audio = {
         lpf.Q.value = 1;
         lpf.connect(this.musicGain);
         dest = lpf;
+        this._ambientExtraNodes.push(lpf);
       }
       osc.connect(oscG); oscG.connect(dest);
       osc.start(t); lfo.start(t);
       this._ambientOscs.push(osc, lfo);
       this._ambientGains.push(oscG);
+      this._ambientExtraNodes.push(lfoG);
     });
 
     // Crystal shimmer: high quiet oscillator with fast LFO
@@ -99,6 +101,7 @@ const Audio = {
       sh.start(t); shLfo.start(t);
       this._ambientOscs.push(sh, shLfo);
       this._ambientGains.push(shG);
+      this._ambientExtraNodes.push(shLG);
     }
   },
 
@@ -111,9 +114,21 @@ const Audio = {
       g.gain.linearRampToValueAtTime(0, t + 2);
     });
     const oscs = this._ambientOscs;
-    setTimeout(() => oscs.forEach(o => { try { o.stop(); o.disconnect(); } catch(_){} }), 2200);
+    const gains = this._ambientGains;
+    // Also disconnect the intermediate gain/filter/LFO-support nodes once the
+    // fade completes — stopAmbient() previously only stopped/disconnected the
+    // oscillators, so every biome transition left another lowpass filter and
+    // gain node permanently connected to musicGain, accumulating across
+    // repeated world/biome changes in a session.
+    const extras = this._ambientExtraNodes;
+    setTimeout(() => {
+      oscs.forEach(o => { try { o.stop(); o.disconnect(); } catch(_){} });
+      gains.forEach(g => { try { g.disconnect(); } catch(_){} });
+      extras.forEach(n => { try { n.disconnect(); } catch(_){} });
+    }, 2200);
     this._ambientOscs = [];
     this._ambientGains = [];
+    this._ambientExtraNodes = [];
     this._currentBiome = null;
   },
 
@@ -130,6 +145,7 @@ const Audio = {
       this._intensityOsc = { osc, gain: g };
     } else if (v <= 0.6 && this._intensityOsc) {
       try { this._intensityOsc.osc.stop(); this._intensityOsc.osc.disconnect(); } catch(_){}
+      try { this._intensityOsc.gain.disconnect(); } catch(_){}
       this._intensityOsc = null;
     }
     if (this._intensityOsc)
