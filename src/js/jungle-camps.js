@@ -146,9 +146,9 @@ var JungleCamps = {
         }
     },
 
-    tryAttack: function(playerPos, damage) {
+    tryAttack: function(playerPos, damage, element) {
         // Check Titan first
-        if (this.attackTitan(playerPos, damage)) return true;
+        if (this.attackTitan(playerPos, damage, element)) return true;
         var attackRange = 5;
         for (var i = 0; i < this.camps.length; i++) {
             var camp = this.camps[i];
@@ -158,6 +158,7 @@ var JungleCamps = {
             if (dist < attackRange) {
                 camp.hp -= damage;
                 if (typeof VFX !== 'undefined' && camp.mesh) VFX.burst(camp.mesh.position, 'hitSpark');
+                if (element && camp.mesh && typeof StatusEffects !== 'undefined') StatusEffects.applyEffect(camp.mesh, element);
                 if (camp.hp <= 0) {
                     camp.alive = false;
                     camp.respawnTimer = camp.respawnTime;
@@ -288,12 +289,13 @@ var JungleCamps = {
         }
     },
 
-    attackTitan: function(playerPos, damage) {
+    attackTitan: function(playerPos, damage, element) {
         if (!this._titan || !this._titan.alive) return false;
         var dx = playerPos.x - this._titan.x, dz = playerPos.z - this._titan.z;
         if (Math.sqrt(dx * dx + dz * dz) > 8) return false;
         this._titan.hp -= damage;
         if (typeof VFX !== 'undefined') VFX.burst({ x: this._titan.x, y: 3, z: this._titan.z }, 'hitSpark');
+        if (element && this._titan.mesh && typeof StatusEffects !== 'undefined') StatusEffects.applyEffect(this._titan.mesh, element);
         this.showDamageNumber(this._titan.mesh.position, damage);
         if (this._titan.hp <= 0) {
             this._titan.alive = false;

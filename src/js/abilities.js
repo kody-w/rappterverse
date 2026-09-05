@@ -79,6 +79,7 @@ const Abilities = {
   },
 
   _updateSlotUI() {
+    if (!this._slotEls) return; // not initialized yet (e.g. Abilities.init() hasn't run)
     this._slotEls.forEach((el, i) => {
       var lvlBadge = el.querySelector('.ability-level');
       if (!lvlBadge) {
@@ -141,19 +142,27 @@ const Abilities = {
   useAbility(index) {
     if (!this.active || index < 0 || index >= this.defs.length) return false;
     const def = this.defs[index];
+    // Cooldown/cost/damage/range/duration/distance are all meant to scale
+    // with the ability's level (see getScaled()), but this previously read
+    // straight from the unscaled `def` for the cooldown/cost gate and passed
+    // `def` itself into the _do*() handlers — so leveling an ability (spending
+    // a hard-earned skill point) had zero actual gameplay effect beyond the
+    // "Level N" HUD badge.
+    const scaled = this.getScaled(index);
     if (this.cooldowns[index] > 0) return false;
-    if (def.costType === 'mp' && !PlayerStats.useMp(def.cost)) return false;
-    if (def.costType === 'energy' && !PlayerStats.useEnergy(def.cost)) return false;
-    this.cooldowns[index] = def.cooldown;
+    if (def.costType === 'mp' && !PlayerStats.useMp(scaled.cost)) return false;
+    if (def.costType === 'energy' && !PlayerStats.useEnergy(scaled.cost)) return false;
+    this.cooldowns[index] = scaled.cooldown;
 
     const pos = this._playerPos();
     const dir = this._facing();
+    const liveDef = Object.assign({}, def, scaled);
 
-    if (def.type === 'melee_aoe') this._doSlash(pos, def);
-    else if (def.type === 'projectile') this._doPulseShot(pos, dir, def);
-    else if (def.type === 'buff_shield') this._doShield(def);
-    else if (def.type === 'dash') this._doDash(pos, dir, def);
-    else if (def.type === 'aoe_burst') this._doNova(pos, def);
+    if (def.type === 'melee_aoe') this._doSlash(pos, liveDef);
+    else if (def.type === 'projectile') this._doPulseShot(pos, dir, liveDef);
+    else if (def.type === 'buff_shield') this._doShield(liveDef);
+    else if (def.type === 'dash') this._doDash(pos, dir, liveDef);
+    else if (def.type === 'aoe_burst') this._doNova(pos, liveDef);
     return true;
   },
 

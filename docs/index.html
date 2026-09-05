@@ -10590,7 +10590,8 @@ const WorldCombat = {
             // ever be hit as an unintended free bonus alongside a lane attack.)
             const dmg = (typeof PlayerStats !== 'undefined') ? PlayerStats.getDamage() : COMBAT_CONFIG.playerDamage;
             const comboMult = (typeof ComboSystem !== 'undefined') ? ComboSystem.getMultiplier() : 1;
-            if (typeof JungleCamps !== 'undefined' && JungleCamps.tryAttack(playerPos, dmg * comboMult)) {
+            const jungleElement = (typeof Equipment !== 'undefined') ? Equipment.getEquippedElement() : null;
+            if (typeof JungleCamps !== 'undefined' && JungleCamps.tryAttack(playerPos, dmg * comboMult, jungleElement)) {
                 this.playerAttackTimer = COMBAT_CONFIG.playerCooldown;
                 return true;
             }
@@ -10682,7 +10683,7 @@ const WorldCombat = {
                 PlayerStats.awardGold(_goldAmt, 'last hit');
                 // Show last hit indicator
                 if (nearest.mesh) this.showDamageNumber(nearest.mesh.position, '+' + lastHitBonus + ' LH', '#ffd700');
-                if (typeof HUD !== 'undefined' && HUD.showKill) HUD.showKill('Player', nearest.isBoss ? 'BOSS' : 'Creep', _goldAmt);
+                if (typeof HUD !== 'undefined' && HUD.showKill) HUD.showKill(nearest.isBoss ? 'BOSS' : 'Creep', _goldAmt);
             }
             if (typeof Inventory !== 'undefined' && nearest.mesh) {
                 Inventory.spawnDrop(nearest.mesh.position.clone(), GameState.currentWorld, this.waveNumber, this.creeps.indexOf(nearest));
@@ -13810,6 +13811,7 @@ const Abilities = {
   },
 
   _updateSlotUI() {
+    if (!this._slotEls) return; // not initialized yet (e.g. Abilities.init() hasn't run)
     this._slotEls.forEach((el, i) => {
       var lvlBadge = el.querySelector('.ability-level');
       if (!lvlBadge) {
@@ -13872,19 +13874,27 @@ const Abilities = {
   useAbility(index) {
     if (!this.active || index < 0 || index >= this.defs.length) return false;
     const def = this.defs[index];
+    // Cooldown/cost/damage/range/duration/distance are all meant to scale
+    // with the ability's level (see getScaled()), but this previously read
+    // straight from the unscaled `def` for the cooldown/cost gate and passed
+    // `def` itself into the _do*() handlers — so leveling an ability (spending
+    // a hard-earned skill point) had zero actual gameplay effect beyond the
+    // "Level N" HUD badge.
+    const scaled = this.getScaled(index);
     if (this.cooldowns[index] > 0) return false;
-    if (def.costType === 'mp' && !PlayerStats.useMp(def.cost)) return false;
-    if (def.costType === 'energy' && !PlayerStats.useEnergy(def.cost)) return false;
-    this.cooldowns[index] = def.cooldown;
+    if (def.costType === 'mp' && !PlayerStats.useMp(scaled.cost)) return false;
+    if (def.costType === 'energy' && !PlayerStats.useEnergy(scaled.cost)) return false;
+    this.cooldowns[index] = scaled.cooldown;
 
     const pos = this._playerPos();
     const dir = this._facing();
+    const liveDef = Object.assign({}, def, scaled);
 
-    if (def.type === 'melee_aoe') this._doSlash(pos, def);
-    else if (def.type === 'projectile') this._doPulseShot(pos, dir, def);
-    else if (def.type === 'buff_shield') this._doShield(def);
-    else if (def.type === 'dash') this._doDash(pos, dir, def);
-    else if (def.type === 'aoe_burst') this._doNova(pos, def);
+    if (def.type === 'melee_aoe') this._doSlash(pos, liveDef);
+    else if (def.type === 'projectile') this._doPulseShot(pos, dir, liveDef);
+    else if (def.type === 'buff_shield') this._doShield(liveDef);
+    else if (def.type === 'dash') this._doDash(pos, dir, liveDef);
+    else if (def.type === 'aoe_burst') this._doNova(pos, liveDef);
     return true;
   },
 
@@ -19086,9 +19096,9 @@ var JungleCamps = {
         }
     },
 
-    tryAttack: function(playerPos, damage) {
+    tryAttack: function(playerPos, damage, element) {
         // Check Titan first
-        if (this.attackTitan(playerPos, damage)) return true;
+        if (this.attackTitan(playerPos, damage, element)) return true;
         var attackRange = 5;
         for (var i = 0; i < this.camps.length; i++) {
             var camp = this.camps[i];
@@ -19098,6 +19108,7 @@ var JungleCamps = {
             if (dist < attackRange) {
                 camp.hp -= damage;
                 if (typeof VFX !== 'undefined' && camp.mesh) VFX.burst(camp.mesh.position, 'hitSpark');
+                if (element && camp.mesh && typeof StatusEffects !== 'undefined') StatusEffects.applyEffect(camp.mesh, element);
                 if (camp.hp <= 0) {
                     camp.alive = false;
                     camp.respawnTimer = camp.respawnTime;
@@ -19228,12 +19239,13 @@ var JungleCamps = {
         }
     },
 
-    attackTitan: function(playerPos, damage) {
+    attackTitan: function(playerPos, damage, element) {
         if (!this._titan || !this._titan.alive) return false;
         var dx = playerPos.x - this._titan.x, dz = playerPos.z - this._titan.z;
         if (Math.sqrt(dx * dx + dz * dz) > 8) return false;
         this._titan.hp -= damage;
         if (typeof VFX !== 'undefined') VFX.burst({ x: this._titan.x, y: 3, z: this._titan.z }, 'hitSpark');
+        if (element && this._titan.mesh && typeof StatusEffects !== 'undefined') StatusEffects.applyEffect(this._titan.mesh, element);
         this.showDamageNumber(this._titan.mesh.position, damage);
         if (this._titan.hp <= 0) {
             this._titan.alive = false;
