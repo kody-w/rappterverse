@@ -112,12 +112,24 @@ const StatusEffects = (function () {
                         if (now - eff.lastTick >= def.tickRate) {
                             var ticks = Math.floor((now - eff.lastTick) / def.tickRate);
                             eff.lastTick += ticks * def.tickRate;
-                            mob.userData.hp -= def.tickDamage * ticks;
+                            var dotDmg = def.tickDamage * ticks;
 
-                            if (mob.userData.hp <= 0) {
-                                events.push({ mob: mob, element: el, killed: true });
-                            } else {
-                                events.push({ mob: mob, element: el, killed: false });
+                            // `mob` is a mesh — actual HP lives elsewhere
+                            // (creep.hp on the combat entity, EnemyHero.state.hp).
+                            // Writing to mob.userData.hp (previously undefined,
+                            // going NaN) never reduced real HP, so fire/cosmic
+                            // DoT never actually damaged or killed anything.
+                            var curHp = null;
+                            if (typeof EnemyHero !== 'undefined' && EnemyHero.mesh === mob) {
+                                EnemyHero.damage(dotDmg);
+                                curHp = EnemyHero.state ? EnemyHero.state.hp : null;
+                            } else if (typeof WorldCombat !== 'undefined' && WorldCombat.creeps) {
+                                var owner = WorldCombat.creeps.find(function (c) { return c.mesh === mob; });
+                                if (owner) { owner.hp -= dotDmg; curHp = owner.hp; }
+                            }
+
+                            if (curHp !== null) {
+                                events.push({ mob: mob, element: el, killed: curHp <= 0 });
                             }
                         }
                     }

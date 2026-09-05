@@ -557,7 +557,7 @@ const WorldLanes = {
         var offset = faction === 'explorer' ? -3 : 3;
         group.position.set(x + offset, 0, z);
         scene.add(group);
-        this.towers.push({ mesh: group, orb: orb, hpBar: hpBar, hp: 100, maxHp: 100, lane: lane, faction: faction, index: index, attackTimer: 0, target: null, attackRange: 15, attackDamage: 12, attackCooldown: 1.5 });
+        this.towers.push({ mesh: group, orb: orb, hpBar: hpBar, hp: 100, maxHp: 100, lane: lane, faction: faction, index: index, attackTimer: 0, target: null, attackRange: 15, attackDamage: 12, attackCooldown: 1.5, isTower: true });
     },
 
     createThrones(scene, sx, sz) {
