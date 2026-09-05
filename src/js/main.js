@@ -26,6 +26,9 @@
         if (GameState.mode === 'world' && HUD.minimapVisible) {
             HUD.renderMinimap();
         }
+        if (GameState.mode === 'world' && HUD.fullmapVisible) {
+            HUD.renderFullmap();
+        }
 
         // Update Rappterbook-style panels (~every second, not every frame)
         if (!HUD._lastPanelUpdate || time - HUD._lastPanelUpdate > 1) {

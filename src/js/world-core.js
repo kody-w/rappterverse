@@ -450,6 +450,14 @@ const WorldMode = {
         if (typeof Equipment !== 'undefined') Equipment.cleanup();
         if (typeof StatusEffects !== 'undefined') StatusEffects.cleanup();
         if (typeof EnemyHero !== 'undefined') EnemyHero.cleanup();
+        // WorldAgents and FogOfWar own meshes (agent bodies, portals, floating
+        // text, relationship edges, the fog plane, ward markers) added
+        // directly to this.scene, but neither was ever invoked here — every
+        // world switch silently leaked all of it, since init() replaces
+        // this.scene with a brand new THREE.Scene() without ever detaching
+        // or disposing what the previous session created.
+        if (typeof WorldAgents !== 'undefined' && WorldAgents.cleanup) WorldAgents.cleanup(this.scene);
+        if (typeof FogOfWar !== 'undefined') FogOfWar.cleanup();
 
         document.getElementById('world-container').style.display = 'none';
         document.getElementById('combat-hud').style.display = 'none';

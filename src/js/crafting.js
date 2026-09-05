@@ -49,10 +49,32 @@ const Crafting = {
         document.head.appendChild(style);
     },
 
+    // Count how many of a named item the player currently holds. Inventory
+    // stores items in `slots[i].item` (each with an id/name/count), not in
+    // an `items` array — reading `inv.items` always returned undefined, so
+    // every recipe showed 0/N and was permanently disabled.
+    _countMaterial(name) {
+        if (typeof Inventory === 'undefined' || !Inventory.slots) return 0;
+        return Inventory.slots.reduce(function(sum, slot) {
+            return sum + (slot.item && slot.item.name === name ? (slot.item.count || 1) : 0);
+        }, 0);
+    },
+
+    // Remove `need` units of a named item across however many slots hold it.
+    _consumeMaterial(name, need) {
+        if (typeof Inventory === 'undefined' || !Inventory.slots) return;
+        for (var i = 0; i < Inventory.slots.length && need > 0; i++) {
+            var slot = Inventory.slots[i];
+            if (!slot.item || slot.item.name !== name) continue;
+            var take = Math.min(need, slot.item.count || 1);
+            Inventory.removeItem(i, take);
+            need -= take;
+        }
+    },
+
     _render() {
         var el = document.getElementById('crafting-recipes');
         if (!el) return;
-        var inv = typeof Inventory !== 'undefined' ? Inventory : null;
         var gold = typeof PlayerStats !== 'undefined' ? PlayerStats.gold : 0;
 
         // Get echo state for conditional recipes
@@ -72,11 +94,12 @@ const Crafting = {
             });
         }
 
+        var self = this;
         el.innerHTML = allRecipes.map(function(r, i) {
             var canCraft = true;
             var matList = Object.entries(r.materials).map(function(entry) {
                 var name = entry[0], need = entry[1];
-                var have = inv ? (inv.items || []).filter(function(item) { return item && item.name === name; }).length : 0;
+                var have = self._countMaterial(name);
                 if (have < need) canCraft = false;
                 return '<span style="color:' + (have >= need ? '#3fb950' : '#f85149') + '">' + name + ' ' + have + '/' + need + '</span>';
             }).join(' · ');
@@ -84,10 +107,13 @@ const Crafting = {
 
             var rarityColor = r.result.rarity === 'epic' ? '#a78bfa' : r.result.rarity === 'rare' ? '#58a6ff' : '#8b949e';
             var echoBadge = r._echo ? '<span style="color:#d29922;font-size:9px;margin-left:6px;letter-spacing:1px;">ECHO</span>' : '';
+            var resultLabel = r.result.damage ? r.result.damage + ' DMG'
+                : r.result.defense ? r.result.defense + ' DEF'
+                : r.result.type === 'accessory' ? 'Accessory' : '';
             return '<div class="craft-recipe"' + (r._echo ? ' style="border-color:rgba(210,153,34,0.3);background:rgba(210,153,34,0.05);"' : '') + '>' +
                 '<div class="craft-name" style="color:' + rarityColor + '">' + r.name + echoBadge + '</div>' +
                 '<div class="craft-mats">' + matList + ' · <span style="color:' + (gold >= r.gold ? '#fbbf24' : '#f85149') + '">' + r.gold + 'G</span></div>' +
-                '<div class="craft-result">+' + (r.result.damage ? r.result.damage + ' DMG' : r.result.defense + ' DEF') + (r.result.element ? ' [' + r.result.element + ']' : '') + '</div>' +
+                '<div class="craft-result">+' + resultLabel + (r.result.element ? ' [' + r.result.element + ']' : '') + '</div>' +
                 '<button class="craft-btn" ' + (canCraft ? 'onclick="Crafting.craft(' + i + ')"' : 'disabled') + '>CRAFT</button></div>';
         }).join('');
     },
@@ -106,28 +132,27 @@ const Crafting = {
         }
         var r = allRecipes[index];
         if (!r) return;
-        var inv = typeof Inventory !== 'undefined' ? Inventory : null;
-        if (!inv) return;
+        if (typeof Inventory === 'undefined') return;
         // Check gold
         if (typeof PlayerStats !== 'undefined' && PlayerStats.gold < r.gold) return;
         // Check materials
         for (var name in r.materials) {
-            var need = r.materials[name];
-            var have = (inv.items || []).filter(function(item) { return item && item.name === name; }).length;
-            if (have < need) return;
+            if (this._countMaterial(name) < r.materials[name]) return;
         }
         // Consume materials
         for (var name in r.materials) {
-            var need = r.materials[name];
-            for (var i = 0; i < need; i++) {
-                var idx = (inv.items || []).findIndex(function(item) { return item && item.name === name; });
-                if (idx >= 0) inv.items.splice(idx, 1);
-            }
+            this._consumeMaterial(name, r.materials[name]);
         }
         // Consume gold
         if (typeof PlayerStats !== 'undefined') PlayerStats.gold -= r.gold;
-        // Add crafted item
-        if (inv.items) inv.items.push(Object.assign({}, r.result, { id: 'crafted-' + Date.now() }));
+        // Crafted gear (weapon/armor/accessory) equips directly, the same
+        // way shop purchases do — it was never registered in Inventory.ITEMS
+        // or EQUIPMENT_MAP, so pushing it into a nonexistent Inventory.items
+        // array only ever discarded it after already charging gold/materials.
+        if (typeof Equipment !== 'undefined' && r.result.type in Equipment.gear) {
+            Equipment.gear[r.result.type] = { name: r.result.name, stats: Object.assign({}, r.result) };
+            Equipment.updateUI();
+        }
         if (typeof HUD !== 'undefined') HUD.showToast('Crafted ' + r.name + '!');
         if (typeof Audio !== 'undefined' && Audio.playPickup) Audio.playPickup();
         // Crafting VFX

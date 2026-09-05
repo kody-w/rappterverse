@@ -184,9 +184,6 @@ function createWorld(worldId) {
         }
     }
 
-    // Patch Inventory.items if missing (crafting/shop depend on it)
-    vm.runInContext('if(typeof Inventory!=="undefined" && !Inventory.items) Inventory.items=[];', ctx);
-
     // Initialize the world
     vm.runInContext('GameState.currentWorld="' + worldId + '";', ctx);
     try {
@@ -249,7 +246,7 @@ function createWorld(worldId) {
                 'abilities:{levels:Abilities.levels.slice(),skillPoints:Abilities.skillPoints},' +
                 'thrones:{explorer:WorldLanes.thrones.explorer?WorldLanes.thrones.explorer.hp:0,' +
                 'horde:WorldLanes.thrones.horde?WorldLanes.thrones.horde.hp:0},' +
-                'inventory:{count:Inventory.items?Inventory.items.length:0}' +
+                'inventory:{count:(Inventory.slots||[]).filter(function(s){return s&&s.item}).length}' +
                 '})', ctx));
         } catch(e) { return { error: e.message }; }
     }

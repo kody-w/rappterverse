@@ -138,10 +138,21 @@ const Shop = {
             }
             if (typeof HUD !== 'undefined') HUD.showToast('Speed boost for ' + item.value + 's!');
         } else if (item.stats) {
-            // Equipment — add to inventory
-            if (typeof Inventory !== 'undefined' && Inventory.items) {
-                Inventory.items.push(Object.assign({}, item, { id: 'shop-' + Date.now() }));
-                if (typeof HUD !== 'undefined') HUD.showToast('Bought ' + item.name);
+            // Equipment — equip directly into the matching gear slot.
+            // (Previously pushed into Inventory.items, which has never
+            // existed — the real API is Inventory.slots — so every weapon/
+            // armor/boots/accessory purchase silently deducted gold and
+            // gave the player nothing, not even a toast.)
+            var slot = item.category === 'boots' ? 'accessory' : item.category;
+            if (typeof Equipment !== 'undefined' && Equipment.gear && slot in Equipment.gear) {
+                var displaced = Equipment.gear[slot] ? Equipment.gear[slot].name : null;
+                var stats = Object.assign({}, item.stats);
+                if (item.element) stats.element = item.element;
+                Equipment.gear[slot] = { name: item.name, stats: stats };
+                Equipment.updateUI();
+                if (typeof HUD !== 'undefined') {
+                    HUD.showToast('Bought ' + item.name + (displaced ? ' (replaced ' + displaced + ')' : ''));
+                }
             }
         }
 

@@ -319,6 +319,21 @@ const HUD = {
             ctx.stroke();
         }
 
+        // ── Wards (vision, revealed but never drawn before) ──
+        if (typeof FogOfWar !== 'undefined' && FogOfWar._wards) {
+            FogOfWar._wards.forEach(function(ward) {
+                var wx = cx + ward.x * scale;
+                var wz = cz + ward.z * scale;
+                ctx.fillStyle = 'rgba(0,212,255,0.8)';
+                ctx.beginPath();
+                ctx.arc(wx, wz, 2.5, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.strokeStyle = '#00d4ff';
+                ctx.lineWidth = 0.8;
+                ctx.stroke();
+            });
+        }
+
         // ── Jungle Camps (type-specific icons) ──
         if (typeof JungleCamps !== 'undefined' && JungleCamps.camps) {
             JungleCamps.camps.forEach(function(camp) {
@@ -944,6 +959,21 @@ const HUD = {
             ctx.fillStyle = '#fff';
             ctx.font = '10px monospace';
             ctx.fillText('RAVAGER', hx, hz - 10);
+        }
+
+        // Wards
+        if (typeof FogOfWar !== 'undefined' && FogOfWar._wards) {
+            FogOfWar._wards.forEach(function(ward) {
+                var wx = cx + ward.x * scale;
+                var wz = cz + ward.z * scale;
+                ctx.fillStyle = 'rgba(0,212,255,0.8)';
+                ctx.beginPath();
+                ctx.arc(wx, wz, 5, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.strokeStyle = '#00d4ff';
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+            });
         }
 
         // Jungle Camps (type-specific)
