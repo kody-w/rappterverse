@@ -53,7 +53,7 @@ const Tutorial = {
         },
         {
             title: 'COMBAT',
-            body: 'Press <b>SPACE</b> to attack enemies. Use <b>1-5</b> for special abilities.',
+            body: 'Press <b>SPACE</b> or <b>right-click</b> to attack enemies. Use <b>1-5</b> for special abilities.',
             hint: 'Defeat creeps to earn XP and level up.',
             icon: '⚔️',
             keys: 'SPACE'

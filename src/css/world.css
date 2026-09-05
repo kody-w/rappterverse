@@ -13,7 +13,7 @@
 /* ── Interaction Prompt ─────────────────────────────────── */
 .interaction-prompt {
   position: fixed;
-  bottom: 80px;
+  bottom: 150px; /* clears the bottom-center ability-bar + combat-hud stack */
   left: 50%;
   transform: translateX(-50%);
   background: var(--bg-panel);
@@ -44,12 +44,24 @@
   position: absolute;
 }
 
-/* ── Combat HUD ─────────────────────────────────────────── */
-.combat-hud {
+/* ── Bottom-center HUD stack (ability bar + combat status) ──
+   Both live inside #hud-bottom-center so they stack vertically
+   instead of overlapping at the same fixed position. */
+#hud-bottom-center {
   position: fixed;
-  bottom: 16px;
+  bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
+  z-index: var(--z-ui);
+  display: flex;
+  flex-direction: column-reverse; /* first child (ability bar) sits closest to the screen edge */
+  align-items: center;
+  gap: 10px;
+  pointer-events: none;
+}
+
+/* ── Combat HUD ─────────────────────────────────────────── */
+.combat-hud {
   display: flex;
   align-items: center;
   gap: 16px;
@@ -57,7 +69,6 @@
   border: 1px solid rgba(0, 212, 255, 0.25);
   border-radius: var(--radius-lg);
   padding: 8px 20px;
-  z-index: var(--z-ui);
   font-size: 12px;
   color: var(--text-secondary);
   pointer-events: none;
