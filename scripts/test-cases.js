@@ -116,12 +116,20 @@ try {
 // ── T8: Crafting ──
 try {
     var w = createWorld('arena');
-    w.run('Inventory.items = [{name:"Scrap Metal"},{name:"Scrap Metal"},{name:"Scrap Metal"}]');
+    // Seed materials the way real gameplay does — through Inventory.slots
+    // via addItem(), not a nonexistent Inventory.items array (that array
+    // never existed in the real game; the previous version of this test
+    // and the crafting.js bug it was written against both assumed it did).
+    // Inventory.init() is called explicitly since WorldMode.init()'s own
+    // call to it can be silently skipped if an earlier subsystem in that
+    // init chain throws in this headless harness.
+    w.run('Inventory.init();');
+    w.run('Inventory.addItem("scrap_metal"); Inventory.addItem("scrap_metal"); Inventory.addItem("scrap_metal");');
     w.run('PlayerStats.gold = 50');
     w.craft(0); // Iron Blade: 3 Scrap Metal + 20G
     var s = w.getState();
-    var hasIronBlade = w.run('Inventory.items.some(function(i){return i&&i.name==="Iron Blade"})');
-    var scrapsLeft = w.run('Inventory.items.filter(function(i){return i&&i.name==="Scrap Metal"}).length');
+    var hasIronBlade = w.run('typeof Equipment!=="undefined" && Equipment.gear.weapon && Equipment.gear.weapon.name==="Iron Blade"');
+    var scrapsLeft = w.run('Inventory.slots.filter(function(sl){return sl.item&&sl.item.name==="Scrap Metal"}).length');
     ok(s.player.gold === 30 && hasIronBlade === true && scrapsLeft === 0,
         'Crafting: Iron Blade created',
         'gold=' + s.player.gold + ' hasBlade=' + hasIronBlade + ' scraps=' + scrapsLeft);

@@ -91,6 +91,11 @@ const QuestTracker = {
         if (!this._el) this.init();
         this._el.classList.add('visible');
         this._visible = true;
+        // Force an immediate refresh — otherwise the 3s update throttle can
+        // carry over from a previous world session and leave stale quest
+        // content (or a stale empty state) visible for up to 3s after
+        // becoming visible again.
+        this._lastUpdate = 0;
         this.update();
     },
 
