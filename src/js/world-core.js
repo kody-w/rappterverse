@@ -458,6 +458,26 @@ const WorldMode = {
         // or disposing what the previous session created.
         if (typeof WorldAgents !== 'undefined' && WorldAgents.cleanup) WorldAgents.cleanup(this.scene);
         if (typeof FogOfWar !== 'undefined') FogOfWar.cleanup();
+        if (typeof WorldTerrain !== 'undefined' && WorldTerrain.cleanup) WorldTerrain.cleanup();
+
+        // Generic disposal pass for whatever's left in the scene. Ground,
+        // lighting, biome objects/features, and weather particles (all owned
+        // by WorldTerrain) have ~50+ individual creation sites and no
+        // per-object tracking, so rather than enumerate every one, dispose
+        // geometry/material for everything still attached to this.scene —
+        // every module above already removed its own meshes via
+        // scene.remove(), so traverse() only reaches what nothing else
+        // cleaned up (i.e. terrain), with no risk of double-disposing
+        // something another cleanup() already handled.
+        if (this.scene) {
+            this.scene.traverse(function(obj) {
+                if (obj.geometry && obj.geometry.dispose) obj.geometry.dispose();
+                if (obj.material) {
+                    const mats = Array.isArray(obj.material) ? obj.material : [obj.material];
+                    mats.forEach(m => { if (m && m.dispose) m.dispose(); });
+                }
+            });
+        }
 
         document.getElementById('world-container').style.display = 'none';
         document.getElementById('combat-hud').style.display = 'none';

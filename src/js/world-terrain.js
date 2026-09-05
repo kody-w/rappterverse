@@ -827,6 +827,12 @@ const WorldTerrain = {
     },
 
     initWeather(scene, w, worldId) {
+        // Clear any stale reference from a previous world's non-clear weather
+        // before rolling this world's type — otherwise, if the previous
+        // weather was e.g. rain and this world rolls 'clear', the old Points
+        // object (already orphaned from the discarded old scene) stayed
+        // referenced and kept getting updated every frame for nothing.
+        this.weatherParticles = null;
         const rng = seededRandom(worldId + '-weather');
         const roll = rng();
         let type = 'clear';
@@ -943,5 +949,22 @@ const WorldTerrain = {
             if (pos[iz] < -b.z) pos[iz] = b.z;
         }
         pts.geometry.attributes.position.needsUpdate = true;
+    },
+
+    // Terrain has no dedicated container — every ground/lighting/biome-object/
+    // weather mesh is added straight to the scene (~50+ distinct creation
+    // sites), so there was never a cleanup() to remove or dispose any of it.
+    // The actual mesh/geometry/material disposal is handled generically by
+    // WorldMode.cleanup()'s scene traversal; this just resets our own module
+    // state so a stale noise/profile/particle reference can't leak into the
+    // next world.
+    cleanup() {
+        this.particles = null;
+        this.weatherType = null;
+        this.weatherParticles = null;
+        this._noise = null;
+        this._biome = null;
+        this._terrainSize = 0;
+        this._profile = null;
     }
 };
