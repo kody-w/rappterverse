@@ -12,7 +12,9 @@ const HERO_CONFIG = {
     xpPerCreepKill: 15,
     xpToLevel: [0, 80, 200, 380, 620, 920, 1300, 1780, 2380, 3100],
     spawnOffset: { x: 80, z: 80 },
-    ai: { aggressiveness: 0.6, retreatThreshold: 0.25, farmWeight: 0.4 }
+    ai: { aggressiveness: 0.6, retreatThreshold: 0.25, farmWeight: 0.4 },
+    hpRegen: 1.5,       // base HP/sec regen (mirrors player)
+    hpRegenAtBase: 4    // faster regen while retreating near spawn (Dota fountain-style)
 };
 
 const HERO_ABILITIES = {
@@ -124,6 +126,9 @@ const EnemyHero = {
         const s = this.state;
         if (!s.alive) { s.respawnTimer -= delta * 1000; if (s.respawnTimer <= 0) this.respawn(); this.updateHUD(); return; }
         s.mana = Math.min(s.maxMana, s.mana + 2 * delta);
+        // HP regen — faster while retreating near base (mirrors a Dota fountain)
+        const regen = s.aiState === 'retreating' ? HERO_CONFIG.hpRegenAtBase : HERO_CONFIG.hpRegen;
+        s.hp = Math.min(s.maxHp, s.hp + regen * delta);
         this.updateAI(playerPos); this.updateMovement(delta);
         this.updateCombat(delta, time); this.updateAbilities(time);
         this.updateBuffs(time); this.updateVisuals(); this.updateHUD();
@@ -246,7 +251,11 @@ const EnemyHero = {
         if (target === 'player') {
             // Pack Hunter passive: +50% to targets below 30% HP
             if (typeof PlayerStats !== 'undefined' && PlayerStats.hp / PlayerStats.maxHp < 0.3) dmg *= 1.5;
-            if (typeof PlayerStats !== 'undefined') PlayerStats.takeDamage(dmg);
+            if (typeof PlayerStats !== 'undefined') {
+                const wasAlive = !PlayerStats.dead;
+                PlayerStats.takeDamage(dmg);
+                if (wasAlive && PlayerStats.dead) s.kills++; // credit the hero's KDA
+            }
             if (s.buffs.apexPredator) {
                 s.hp = Math.min(s.maxHp, s.hp + dmg * HERO_ABILITIES.apexPredator.lifesteal);
             }
@@ -281,7 +290,9 @@ const EnemyHero = {
                 const dir = new THREE.Vector3().subVectors(s.targetPos, pos).normalize();
                 this.mesh.position.addScaledVector(dir, Math.min(d, HERO_ABILITIES.savageLeap.range));
                 if (s.target === 'player' && typeof PlayerStats !== 'undefined') {
+                    const wasAlive = !PlayerStats.dead;
                     PlayerStats.takeDamage(HERO_ABILITIES.savageLeap.damage);
+                    if (wasAlive && PlayerStats.dead) s.kills++;
                 }
             }
         }
@@ -291,7 +302,11 @@ const EnemyHero = {
             if (s.targetPos && pos.distanceTo(s.targetPos) <= HERO_ABILITIES.primalRoar.radius) {
                 s.mana -= HERO_ABILITIES.primalRoar.manaCost;
                 cd.primalRoar = now + HERO_ABILITIES.primalRoar.cooldown;
-                if (typeof PlayerStats !== 'undefined') PlayerStats.takeDamage(HERO_ABILITIES.primalRoar.damage);
+                if (typeof PlayerStats !== 'undefined') {
+                    const wasAlive = !PlayerStats.dead;
+                    PlayerStats.takeDamage(HERO_ABILITIES.primalRoar.damage);
+                    if (wasAlive && PlayerStats.dead) s.kills++;
+                }
                 s.buffs.primalRoar = now + HERO_ABILITIES.primalRoar.boostDuration;
             }
         }
@@ -378,8 +393,13 @@ const EnemyHero = {
         this.mesh.visible = false;
         s.respawnTimer = HERO_CONFIG.respawnBase + HERO_CONFIG.respawnPerLevel * s.level;
         const xpReward = HERO_CONFIG.killXpReward + 15 * s.level;
-        if (typeof PlayerStats !== 'undefined' && PlayerStats.awardXp) PlayerStats.awardXp(xpReward);
-        if (typeof HUD !== 'undefined' && HUD.showToast) HUD.showToast(`${HERO_CONFIG.name} slain! +${xpReward} XP`);
+        const goldReward = HERO_CONFIG.killGoldReward + 10 * s.level;
+        if (typeof PlayerStats !== 'undefined') {
+            if (PlayerStats.awardXp) PlayerStats.awardXp(xpReward);
+            PlayerStats.awardGold(goldReward, 'hero kill');
+            PlayerStats.kills++;
+        }
+        if (typeof HUD !== 'undefined' && HUD.showToast) HUD.showToast(`${HERO_CONFIG.name} slain! +${xpReward} XP, +${goldReward} Gold`);
     },
 
     respawn() {
