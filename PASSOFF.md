@@ -1,6 +1,6 @@
 # Shift Passoff — 2026-09-05
 
-## Status: FRONTEND BUG-HUNT LOOP (14 rounds, ongoing — regression suite 14/14)
+## Status: FRONTEND BUG-HUNT LOOP (15 rounds, ongoing — regression suite 14/14)
 
 Not a feature session. A fan-out audit-and-fix loop targeting real
 correctness bugs in the DOTA-mode frontend (`src/js/`), run via the
@@ -383,6 +383,55 @@ rebuilding.
 scripts/bundle.sh`, `node scripts/test-cases.js` still 14/14 (no
 regressions), plus the direct behavioral drop-rate simulation above.
 
+### Round 15 — `galaxy.js`, `warp.js`
+
+- **`Warp.start()` had no guard against a second warp starting while one
+  was already in flight — real and reachable, unlike most "no idempotency
+  guard" theories this loop has run into.** `GameState.mode` stays
+  `'galaxy'` for the entire 1.8s tunnel animation — it only becomes
+  `'approach'` inside the warp's own completion callback
+  (`Approach.start()`, which calls `GameState.setMode('approach')`), so
+  both galaxy.js's planet click handler and main.js's Enter-key handler
+  are still reachable for the whole warp duration (neither checks
+  `Warp.active`). A second click or Enter-press mid-warp called
+  `Warp.start()` again, which silently overwrote `this.callback`
+  (discarding the first selected destination for whatever the second
+  click landed on) and reset `this.stars`/`this.progress`/`this.startTime`
+  out from under the still-pending `requestAnimationFrame` loop the first
+  call had scheduled — its `animFrameId` was lost the instant the second
+  call overwrote it, so `cleanup()` could never cancel that first loop,
+  leaving two `animate()` calls racing the same mutable canvas/progress
+  state until the first one's own progress naturally reached 1 and
+  self-cleaned. Fixed by adding `if (this.active) return;` at the top of
+  `start()` — the same "ignore a second start while one is already in
+  flight" guard `DataManager.fetchAllState()` already uses elsewhere in
+  this codebase for the identical class of problem. Verified behaviorally
+  in the test harness: calling `Warp.start(cbA)` then `Warp.start(cbB)`
+  while still active now correctly leaves `Warp.callback` as `cbA` (was
+  silently replaced by `cbB` before the fix); calling `Warp.start()` again
+  *after* `Warp.cleanup()` runs (simulating warp completion) still
+  correctly succeeds.
+- `galaxy.js` audited with 4 findings from the sub-agent, all investigated
+  and found not reachable in the actual codebase: (1)/(2) `Galaxy.init()`
+  non-idempotency / GPU resource leak on repeated init — `Galaxy.init()`
+  is called exactly once, from `boot.js`, with every real "return to
+  galaxy" flow using `Galaxy.show()`/`Galaxy.hide()` instead (confirmed via
+  repo-wide grep), so this never actually happens; (3) click raycasting
+  using `window.innerWidth`/`innerHeight` instead of the canvas's own
+  bounding rect — `#galaxy-container`'s CSS is `position: fixed; inset: 0`,
+  so it is mathematically always exactly viewport-sized with zero offset,
+  making the two equivalent in every real case; (4) `Galaxy.onResize()`
+  not calling `renderer.setSize()` — it doesn't need to, because
+  `main.js`'s single global `window.resize` listener already calls
+  `GameState.renderer.setSize(...)` once, centrally, immediately before
+  calling `Galaxy.onResize()`/`WorldMode.onResize()`/
+  `PostProcessing.onResize()` in sequence. Honest zero findings in
+  `galaxy.js` itself.
+
+**Verification:** `node --check` on `warp.js`, `bash scripts/bundle.sh`,
+`node scripts/test-cases.js` still 14/14 (no regressions), plus direct
+behavioral verification of the guard in the test harness (described above).
+
 ---
 
 ## Known Issues / Tech Debt (not yet fixed — lower confidence or higher risk)
@@ -430,10 +479,10 @@ regressions), plus the direct behavioral drop-rate simulation above.
    `rappter-vm.js`, rather than inventing a speculative new consumer for
    code nothing was calling. Verified: 14/14 regression suite still passes
    after removal.
-4. Files not yet given a dedicated audit round: `galaxy.js`, `warp.js`,
-   `approach.js`, `landing.js`, `settings.js`, `debug.js`, `help-overlay.js`,
-   `tutorial.js`, `post-processing.js`. Many of these are pre-world-mode /
-   meta systems rather than core DOTA gameplay, but haven't been ruled out.
+4. Files not yet given a dedicated audit round: `approach.js`, `landing.js`,
+   `settings.js`, `debug.js`, `help-overlay.js`, `tutorial.js`,
+   `post-processing.js`. Many of these are pre-world-mode / meta systems
+   rather than core DOTA gameplay, but haven't been ruled out.
 5. **Point-down gesture is likely unreachable** (see Round 11) — needs a
    direction-agnostic finger-extension geometry change I can't verify
    without a live camera.
