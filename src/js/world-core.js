@@ -336,6 +336,12 @@ const WorldMode = {
 
         // Touch controls
         if (typeof TouchControls !== 'undefined') TouchControls.update(delta);
+        // GamepadControls.update() was never called either -- controller
+        // movement/attack/abilities/bridge/map/inventory input never reached
+        // the game even after a controller connected. The event listener
+        // registered in main.js only sets active/_padIndex; the actual
+        // per-frame input polling has to run here.
+        if (typeof GamepadControls !== 'undefined') GamepadControls.update();
 
         // RappterVM tick — Lispy behaviors between frames
         if (typeof RappterVM !== 'undefined' && RappterVM._running) RappterVM.tick();
@@ -474,6 +480,11 @@ const WorldMode = {
         // a leftover retry could pop the overlay (and lock input) into a
         // later, unrelated world session.
         if (typeof Chronicle !== 'undefined' && Chronicle.cleanup) Chronicle.cleanup();
+        // GestureControls._stop() (webcam MediaStream + released keys) was
+        // only ever reached via the user manually toggling the feature off
+        // — a world/session ending while gestures were left on kept the
+        // camera recording indefinitely.
+        if (typeof GestureControls !== 'undefined' && GestureControls.cleanup) GestureControls.cleanup();
 
         // Generic disposal pass for whatever's left in the scene. Ground,
         // lighting, biome objects/features, and weather particles (all owned

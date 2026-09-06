@@ -213,15 +213,19 @@ const GestureControls = {
         const pinkyUp = pinkyTip.y < pinkyMcp.y - 0.04;
         const thumbOut = Math.abs(thumbTip.x - wrist.x) > 0.08;
 
-        // Fist: all fingers curled
-        if (!indexUp && !middleUp && !ringUp && !pinkyUp) {
-            this.gesture = 'fist';
+        // Thumbs up: thumb extended, others curled. Checked BEFORE the
+        // generic fist test below -- every thumbs-up pose also satisfies
+        // "all four non-thumb fingers curled", so with fist checked first
+        // it always matched and returned before this branch could ever run.
+        // The documented thumbs-up "poke" action was unreachable.
+        if (thumbOut && thumbTip.y < wrist.y - 0.1 && !indexUp && !middleUp && !ringUp && !pinkyUp) {
+            this.gesture = 'thumbs_up';
             return;
         }
 
-        // Thumbs up: thumb extended, others curled
-        if (thumbOut && thumbTip.y < wrist.y - 0.1 && !indexUp && !middleUp && !ringUp && !pinkyUp) {
-            this.gesture = 'thumbs_up';
+        // Fist: all fingers curled
+        if (!indexUp && !middleUp && !ringUp && !pinkyUp) {
+            this.gesture = 'fist';
             return;
         }
 
@@ -341,5 +345,16 @@ const GestureControls = {
             btn.classList.toggle('active', this.active);
             btn.title = this.active ? 'Gestures ON (H)' : 'Gestures OFF (H)';
         }
+    },
+
+    // _stop() was only ever reached via toggle() while the feature was
+    // active. WorldMode.cleanup() (a world/session teardown, not a user
+    // toggling the feature off) never called this or anything equivalent,
+    // so if gesture controls were left on, the webcam MediaStream kept
+    // recording (camera indicator stays lit) after the world session ended
+    // -- a real privacy/battery issue, not just leaked JS state. Idempotent:
+    // a no-op if the feature was never turned on.
+    cleanup() {
+        if (this.active) { this.active = false; this._stop(); }
     }
 };

@@ -1,6 +1,6 @@
 # Shift Passoff — 2026-09-05
 
-## Status: FRONTEND BUG-HUNT LOOP (10 rounds, ongoing)
+## Status: FRONTEND BUG-HUNT LOOP (11 rounds, ongoing)
 
 Not a feature session. A fan-out audit-and-fix loop targeting real
 correctness bugs in the DOTA-mode frontend (`src/js/`), run via the
@@ -188,6 +188,41 @@ they were trying to check).
   timer chains and closes the overlay if open; wired into
   `WorldMode.cleanup()`.
 
+### Round 11 — `gamepad-controls.js`, `gesture-controls.js` + `main.js`/`world-core.js` (third autonomous-schedule round)
+- **The entire gamepad input modality was dead.** `GamepadControls.init()`
+  (registers `gamepadconnected`/`gamepaddisconnected` listeners) and
+  `.update()` (per-frame stick/button polling) were never called from
+  anywhere in the codebase — only its `.rumble()` calls (kill haptics, echo
+  tension rumble) were ever invoked, and since `active` never got set,
+  every one of those was a silent no-op too. Wired `init()` into the
+  one-time global startup (`main.js`, alongside `VoiceControls.init()`)
+  and `update()` into the per-frame world loop (`world-core.js`, alongside
+  `TouchControls.update()`).
+- **Thumbs-up was unreachable.** Every thumbs-up pose also satisfies "all
+  four non-thumb fingers curled", and the generic fist check ran first and
+  returned before the thumbs-up branch (thumb-extended-and-up, checked
+  strictly after) could ever execute. The documented thumbs-up "poke"
+  gesture never fired. Fixed by reordering the more specific thumbs-up
+  check before the generic fist check.
+- **Gesture-control webcam never released on world exit.** `_stop()`
+  (stops the MediaPipe camera, resets keys) was only ever reached via the
+  user manually toggling gestures off — a world/session ending while
+  gestures were left on kept the webcam MediaStream recording indefinitely
+  (camera indicator stays lit), a real privacy/battery issue, not just
+  leaked JS state. Added an idempotent `cleanup()` and wired it into
+  `WorldMode.cleanup()`.
+
+Reported, not fixed: **point-down is likely unreachable** the same way
+thumbs-up was — the point classifier requires `indexUp` (tip above its own
+MCP joint), which is false for a finger pointing downward, so a
+downward-pointing pose probably falls through to `fist` before the
+direction branch ever runs. Unlike the thumbs-up fix, correcting this needs
+a genuine hand-landmark geometry change (direction-agnostic "is this finger
+extended" detection, e.g. wrist-to-tip vs wrist-to-MCP distance) shared by
+the same code path as the already-working fist/peace/open/point-up/left/
+right classifications — a change I can't behaviorally verify without a
+live camera and real hand poses, so it's logged here rather than guessed at.
+
 ---
 
 ## Known Issues / Tech Debt (not yet fixed — lower confidence or higher risk)
@@ -212,12 +247,14 @@ they were trying to check).
    registration + registry. Needs a design decision, not a mechanical fix.
 4. Files not yet given a dedicated audit round: `state.js`, `data.js`,
    `config.js`, `boot.js`, `galaxy.js`, `warp.js`, `approach.js`,
-   `landing.js`, `settings.js`, `debug.js`, `gamepad-controls.js`,
-   `touch-controls.js`, `voice-controls.js`, `gesture-controls.js`,
-   `help-overlay.js`, `tutorial.js`, `post-processing.js`. Many of these are
-   pre-world-mode / meta systems rather than core DOTA gameplay, but
-   haven't been ruled out.
-5. Regression suite is still 7/14 — remaining failures (`Init`, `Warmup`,
+   `landing.js`, `settings.js`, `debug.js`, `touch-controls.js`,
+   `voice-controls.js`, `help-overlay.js`, `tutorial.js`,
+   `post-processing.js`. Many of these are pre-world-mode / meta systems
+   rather than core DOTA gameplay, but haven't been ruled out.
+5. **Point-down gesture is likely unreachable** (see Round 11) — needs a
+   direction-agnostic finger-extension geometry change I can't verify
+   without a live camera.
+6. Regression suite is still 7/14 — remaining failures (`Init`, `Warmup`,
    `Wave spawn`, `Player attack`, `Death + respawn`, `Creep variety`, `Full
    session`) look like harness/timing gaps (e.g. `warmup=undefined`
    suggests the harness never reaches `_warmupActive` becoming true) rather
