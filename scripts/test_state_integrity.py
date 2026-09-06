@@ -4049,6 +4049,151 @@ class TestRoamingCrossWorldMoveShape(unittest.TestCase):
             validate_action.errors.clear()
 
 
+class TestWorldGrowthCrossWorldMoveShape(unittest.TestCase):
+    """world_growth's cross-world moves must not carry a foreign origin either.
+
+    Live, 2026-08-22 -> 09-06: #7715 fixed this shape in `agent_dispatch`, but
+    `world_growth` carried the same defect in two places, so the freeze it was
+    meant to end simply continued from a sibling file. The `travel` activity
+    stamped the action with the DESTINATION world while writing
+    `data.from` = the agent's position in the world it left, and the
+    position-sync sweep wrote `data.from` = the previous move's `to` even when
+    that move happened in another world. validate_action checks `from` against
+    the action's world, so a coordinate that is legal in hub (+-15) was rejected
+    against arena/dungeon (+-12):
+
+        Action `action-113454` move origin: z=15 out of bounds for dungeon
+
+    Canonical state validation failed, `job_world_growth` failed, and the local
+    platform's publish phase never ran: 406 cycles were discarded over 14.6 days
+    while chat.json stayed frozen on the public API and the validation gate had
+    nothing to run on.
+
+    The first repair only covered the path it was reported from. This covers
+    every remaining emitter so the next one cannot hide in a third file.
+    """
+
+    @staticmethod
+    def _bounds():
+        sys.path.insert(0, str(SCRIPT_DIR))
+        import validate_action
+        return validate_action.WORLD_BOUNDS
+
+    def _assert_origin_valid(self, move):
+        """The real validator must raise no `move origin` error for this move."""
+        sys.path.insert(0, str(SCRIPT_DIR))
+        import validate_action
+        validate_action.errors.clear()
+        try:
+            validate_action.validate_actions(
+                {"actions": [move]}, {move["agentId"]})
+            self.assertEqual(
+                [e for e in validate_action.errors if "move origin" in e], [],
+            )
+        finally:
+            validate_action.errors.clear()
+
+    def test_travel_to_a_tighter_world_records_travel_not_a_foreign_origin(self):
+        sys.path.insert(0, str(SCRIPT_DIR))
+        import world_growth
+
+        # x=14,z=15 is legal in hub and illegal in dungeon (+-12).
+        agent = {"id": "growth-roamer-001", "name": "Roamer", "world": "hub",
+                 "status": "active", "position": {"x": 14, "y": 0, "z": 15}}
+        actions = []
+        with mock.patch.object(world_growth, "pick_attractive_world",
+                               lambda *a, **k: "dungeon"), \
+                mock.patch.object(random, "choices",
+                                  lambda pop, **kw: ["travel"]), \
+                mock.patch.object(random, "random", lambda: 0.0):
+            world_growth.generate_agent_activity(
+                agent, [agent], actions, [], 50, "2026-09-06T12:00:00Z")
+
+        moves = [a for a in actions if a.get("type") == "move"]
+        self.assertTrue(moves, "world_growth emitted no travel move")
+        move = moves[0]
+        self.assertEqual(move["world"], "dungeon")
+        self.assertNotIn(
+            "from", move["data"],
+            "cross-world travel must not carry an origin from the world it left",
+        )
+        self.assertEqual(move["data"]["from_world"], "hub")
+        self.assertEqual(move["data"]["to_world"], "dungeon")
+        self._assert_origin_valid(move)
+
+    def test_same_world_travel_still_records_a_local_origin(self):
+        sys.path.insert(0, str(SCRIPT_DIR))
+        import world_growth
+
+        agent = {"id": "growth-roamer-002", "name": "Roamer", "world": "hub",
+                 "status": "active", "position": {"x": 14, "y": 0, "z": 15}}
+        actions = []
+        with mock.patch.object(world_growth, "pick_attractive_world",
+                               lambda *a, **k: "hub"), \
+                mock.patch.object(random, "choices",
+                                  lambda pop, **kw: ["travel"]), \
+                mock.patch.object(random, "random", lambda: 0.0):
+            world_growth.generate_agent_activity(
+                agent, [agent], actions, [], 50, "2026-09-06T12:00:00Z")
+
+        moves = [a for a in actions if a.get("type") == "move"]
+        self.assertTrue(moves, "world_growth emitted no travel move")
+        move = moves[0]
+        self.assertEqual(move["world"], "hub")
+        self.assertEqual(move["data"]["from"], {"x": 14, "y": 0, "z": 15})
+        self.assertNotIn("from_world", move["data"])
+        self._assert_origin_valid(move)
+
+    def test_every_move_emitter_keeps_its_origin_inside_the_action_world(self):
+        """Sweep the real emitters: no move may carry an out-of-bounds origin.
+
+        This is the check that would have caught the recurrence: it does not
+        care WHICH file emits the move, only that no emitted move states an
+        origin that is illegal in the world the action is stamped with.
+        """
+        sys.path.insert(0, str(SCRIPT_DIR))
+        import world_growth
+
+        bounds = self._bounds()
+        edge = {}
+        for world, b in bounds.items():
+            edge[world] = {"x": b["x"][1], "y": 0, "z": b["z"][1]}
+
+        offenders = []
+        for source_world in ("hub", "marketplace"):
+            for dest in ("dungeon", "arena", "gallery", "hub"):
+                agent = {"id": "sweep-001", "name": "Sweep",
+                         "world": source_world, "status": "active",
+                         "position": dict(edge[source_world])}
+                actions = []
+                with mock.patch.object(world_growth, "pick_attractive_world",
+                                       lambda *a, **k: dest), \
+                        mock.patch.object(random, "choices",
+                                          lambda pop, **kw: ["travel"]), \
+                        mock.patch.object(random, "random", lambda: 0.0):
+                    world_growth.generate_agent_activity(
+                        agent, [agent], actions, [], 50,
+                        "2026-09-06T12:00:00Z")
+                for a in actions:
+                    if a.get("type") != "move":
+                        continue
+                    w = a.get("world", "hub")
+                    b = bounds.get(w)
+                    origin = (a.get("data") or {}).get("from")
+                    if not b or not isinstance(origin, dict):
+                        continue
+                    for axis in ("x", "z"):
+                        v = origin.get(axis)
+                        if v is None:
+                            continue
+                        lo, hi = b[axis]
+                        if not (lo <= v <= hi):
+                            offenders.append(
+                                f"{source_world}->{dest}: from.{axis}={v} "
+                                f"illegal for {w} ({lo} to {hi})")
+        self.assertEqual(offenders, [])
+
+
 class TestRepositoryHygiene(unittest.TestCase):
     """Large inert exports and generated machine files must stay untracked."""
 
