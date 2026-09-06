@@ -1,6 +1,6 @@
 # Shift Passoff — 2026-09-05
 
-## Status: FRONTEND BUG-HUNT LOOP (12 rounds, ongoing)
+## Status: FRONTEND BUG-HUNT LOOP (13 rounds, ongoing — regression suite now 14/14)
 
 Not a feature session. A fan-out audit-and-fix loop targeting real
 correctness bugs in the DOTA-mode frontend (`src/js/`), run via the
@@ -254,6 +254,77 @@ This completes the full input-modality sweep started in Round 11
 (gamepad, gesture) — all four alternate input systems (gamepad, gesture,
 touch, voice) have now had a dedicated audit round.
 
+### Round 13 — root-caused the regression suite's 7/14 baseline, all fixes to `scripts/test-harness.js` (not game code)
+
+Every prior round treated the suite's 7 failing tests (`Init`, `Warmup`,
+`Wave spawn`, `Player attack`, `Death + respawn`, `Creep variety`, `Full
+session`) as an open question — "look like harness/timing gaps... haven't
+been individually root-caused yet." This round root-caused all seven down
+to one real cause: `WorldMode.init()` was silently crashing partway through
+on every single test run, and the harness's own init call swallows any
+exception (`// Init may partially fail on some subsystems — that's OK for
+testing`), so nothing ever surfaced it. Every fix below is to the mock
+THREE.js/DOM layer in `scripts/test-harness.js`, not to game code — the
+real browser always had a real `THREE.Euler`, a real `<canvas>`, a real
+`Element.firstChild`, etc.; only the headless mock was missing them.
+
+Root-caused by temporarily removing the harness's own try/catch around
+`WorldMode.init()` and re-running to see the real, unswallowed stack trace
+each time — repeated four times as each fix exposed the next crash further
+down the same init chain:
+
+1. **`mesh.rotation` had no `.set()`.** `world-lanes.js`'s `buildRiver()`
+   calls `rock.rotation.set(...)`; the mock's plain `{x,y,z}` object has no
+   such method (real `THREE.Euler` does). This crashed `WorldLanes.init()`
+   on literally the first world load, before `WorldCombat.init()` — which
+   sets `_warmupActive = true` — ever ran. That's the exact cause of every
+   `warmup=undefined`/`thrones=0/0` reading every previous round noted but
+   didn't chase down.
+2. **`geometry.parameters` didn't exist.** `world-lanes.js`'s Volcanic-biome
+   rock placement reads `rock.geometry.parameters.radius` (real
+   `DodecahedronGeometry` stores its ctor args there); the mock geometry
+   factory ignored its arguments entirely.
+3. **`renderer.domElement` had no `addEventListener`/`removeEventListener`.**
+   `world-core.js`'s `WorldMode.init()`/`cleanup()` wire the real
+   right-click-to-attack (`contextmenu`) and `mousedown` handlers onto it.
+4. **`MockColor` had no `.clone()`.** `vfx.js`'s particle burst clones a
+   base color per-particle so each particle can fade independently.
+5. **`Vector3` had no `.setScalar()`.** Used by `vfx.js`'s particle scale
+   and several ambient scale-pulse effects (`chronicle.js`, `galaxy.js`,
+   `approach.js`).
+6. **Mock DOM elements had no `.firstChild` — a genuine infinite loop.**
+   `HUD.showToast()`'s "keep at most 5 toasts visible" cleanup is
+   `while (container.children.length > 5) container.removeChild(container.firstChild)`.
+   With `firstChild` always `undefined`, `removeChild(undefined)` never
+   finds a match to splice out, `children.length` never drops, and the loop
+   never exits — this hung the T4/T9 tests solid the moment more than 5
+   toasts could ever really fire in one session (i.e. exactly once fix #1
+   above stopped `WorldMode.init()` from crashing before real gameplay ever
+   ran long enough to reach it).
+7. **`MockColor` had no `.lerpColors()`.** `vfx.js`'s per-frame particle
+   update fades each particle's color and emissive from `startColor` to
+   `endColor` via `lerpColors()` every tick a particle is alive. Missing
+   entirely, this threw inside `VFX.update()` — called early in
+   `WorldMode.update()`, well before `PlayerStats.update()` — so the
+   *entire rest of that tick's `WorldMode.update()`* silently aborted every
+   single tick after the first VFX burst (e.g. every kill or death),
+   because `tick()` also wraps its call in a bare `catch(e){}`. This is
+   specifically why T9 (Death + respawn) never saw `respawnTimer` count
+   down: the death VFX burst on tick 1 permanently broke every tick after it.
+
+Implemented a real RGB-channel interpolation for `lerpColors` (decompose
+hex to r/g/b, lerp each channel, recompose) rather than a stub, since a
+future test asserting on actual particle fade colors should get correct
+values, not a no-op.
+
+**Verification:** `node scripts/test-cases.js` went from the 12-round-old
+baseline of 7/14 to a clean **14/14**, confirmed stable across 3 repeated
+runs (not flaky/order-dependent). No game code (`src/js/`) was touched this
+round — every change is confined to the dev-only, unbundled
+`scripts/test-harness.js` (confirmed via `grep test-harness scripts/bundle.sh`
+— it's never referenced there), so `docs/index.html` did not need
+rebuilding.
+
 ---
 
 ## Known Issues / Tech Debt (not yet fixed — lower confidence or higher risk)
@@ -284,11 +355,6 @@ touch, voice) have now had a dedicated audit round.
 5. **Point-down gesture is likely unreachable** (see Round 11) — needs a
    direction-agnostic finger-extension geometry change I can't verify
    without a live camera.
-6. Regression suite is still 7/14 — remaining failures (`Init`, `Warmup`,
-   `Wave spawn`, `Player attack`, `Death + respawn`, `Creep variety`, `Full
-   session`) look like harness/timing gaps (e.g. `warmup=undefined`
-   suggests the harness never reaches `_warmupActive` becoming true) rather
-   than gameplay bugs, but haven't been individually root-caused yet.
 
 ## Build / Test
 
