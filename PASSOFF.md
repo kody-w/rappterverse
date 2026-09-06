@@ -1,6 +1,6 @@
 # Shift Passoff — 2026-09-05
 
-## Status: FRONTEND BUG-HUNT LOOP (9 rounds, ongoing)
+## Status: FRONTEND BUG-HUNT LOOP (10 rounds, ongoing)
 
 Not a feature session. A fan-out audit-and-fix loop targeting real
 correctness bugs in the DOTA-mode frontend (`src/js/`), run via the
@@ -157,6 +157,37 @@ they were trying to check).
   deciding what should consume shaper output (and how) is a design
   decision, not a mechanical bug.
 
+### Round 10 — `rappter-os.js`, `chronicle.js` + `world-core.js` (second autonomous-schedule round)
+- **`os-result` looked up the wrong command id.** It read
+  `_results[self._commandId]`, but `_commandId` is the most recently
+  *submitted* command's id, not the most recently *completed* one — if a
+  second command was queued before the first finished, this always
+  returned `null` even though a valid earlier result existed. Now tracks
+  `_lastCompletedId` separately (set in `_checkOutput()`, where a result is
+  actually stored) and reads that instead.
+- **`RappterOS.cleanup()` existed but was never called** from
+  `WorldMode.cleanup()` — same pattern as WorldAgents/FogOfWar/WorldTerrain
+  earlier this session. Its queue/results/readiness state survived every
+  world switch indefinitely. Wired in.
+- **A pending 8s VM-boot timer could outlive `cleanup()`.** If a world
+  ended while a (rare, voice-triggered) emulator boot was mid-flight,
+  `cleanup()` destroyed `_emulator` but the untracked `setTimeout` still
+  fired 8s later, setting `_ready=true` and calling `_processQueue()`
+  against a destroyed emulator — and since `_loading` was never reset by
+  `cleanup()` either, a later world's `init()` would return early forever
+  (`if (this._ready || this._loading) return;`), permanently unable to
+  reboot. Now stores the timer handle (cleared in `cleanup()`) plus a
+  generation counter as a belt-and-suspenders guard against an
+  already-queued callback slipping past `clearTimeout`.
+- **Chronicle's premiere/deep-link retry timers had nothing to cancel
+  them.** `scheduleFirstPremiere()`/`openWhenStable()` poll every 500ms for
+  up to 40s waiting for a stable galaxy/world mode, but there was no
+  `Chronicle.cleanup()` and nothing called one — a leftover retry could pop
+  the overlay (and lock input via `openById` → `lockBackground()`) into a
+  later, unrelated world session. Added `cleanup()` that cancels both
+  timer chains and closes the overlay if open; wired into
+  `WorldMode.cleanup()`.
+
 ---
 
 ## Known Issues / Tech Debt (not yet fixed — lower confidence or higher risk)
@@ -179,13 +210,13 @@ they were trying to check).
    stdlib exposed to agent programs. Either wire a real consumer (and
    decide what it should do with the returned value) or remove the
    registration + registry. Needs a design decision, not a mechanical fix.
-4. Files not yet given a dedicated audit round: `rappter-os.js`,
-   `chronicle.js`, `state.js`, `data.js`, `config.js`, `boot.js`, `galaxy.js`,
-   `warp.js`, `approach.js`, `landing.js`, `settings.js`, `debug.js`,
-   `gamepad-controls.js`, `touch-controls.js`, `voice-controls.js`,
-   `gesture-controls.js`, `help-overlay.js`, `tutorial.js`,
-   `post-processing.js`. Many of these are pre-world-mode / meta systems
-   rather than core DOTA gameplay, but haven't been ruled out.
+4. Files not yet given a dedicated audit round: `state.js`, `data.js`,
+   `config.js`, `boot.js`, `galaxy.js`, `warp.js`, `approach.js`,
+   `landing.js`, `settings.js`, `debug.js`, `gamepad-controls.js`,
+   `touch-controls.js`, `voice-controls.js`, `gesture-controls.js`,
+   `help-overlay.js`, `tutorial.js`, `post-processing.js`. Many of these are
+   pre-world-mode / meta systems rather than core DOTA gameplay, but
+   haven't been ruled out.
 5. Regression suite is still 7/14 — remaining failures (`Init`, `Warmup`,
    `Wave spawn`, `Player attack`, `Death + respawn`, `Creep variety`, `Full
    session`) look like harness/timing gaps (e.g. `warmup=undefined`
