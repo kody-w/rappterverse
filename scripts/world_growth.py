@@ -760,18 +760,28 @@ Say ONE thing — a thought, reaction, greeting, or observation. Be genuine and 
         new_world = pick_attractive_world(world, agents, chat_msgs)
         new_pos = rand_pos(new_world)
         action_id = next_id("action-", [a["id"] for a in actions])
+        move_data = {
+            "to": new_pos,
+            "duration": random.randint(2000, 5000),
+            "worldTransition": True,
+        }
+        if new_world != world:
+            # Cross-world hop: the old position belongs to `world` and is not a
+            # valid coordinate in `new_world`, which is the world this action is
+            # stamped with. Record it as travel rather than an intra-world
+            # origin -- the shape agent_dispatch and interaction_engine already
+            # use for every other cross-world move.
+            move_data["from_world"] = world
+            move_data["to_world"] = new_world
+        else:
+            move_data["from"] = agent.get("position", rand_pos(world))
         actions.append({
             "id": action_id,
             "timestamp": ts,
             "agentId": agent_id,
             "type": "move",
             "world": new_world,
-            "data": {
-                "from": agent.get("position", rand_pos(world)),
-                "to": new_pos,
-                "duration": random.randint(2000, 5000),
-                "worldTransition": True,
-            },
+            "data": move_data,
         })
         agent["world"] = new_world
         agent["position"] = new_pos
@@ -1172,18 +1182,25 @@ def simulate_tick(dry_run: bool = False, force_spawn: int = None):
                      and a_pos.get("z") == lm_to.get("z"))
         if not pos_match or a_world != lm_world:
             aid = next_id("action-", [a["id"] for a in actions])
+            sync_data = {
+                "to": agent.get("position", rand_pos(a_world)),
+                "duration": 0,
+                "sync": True,
+            }
+            if a_world != lm_world:
+                # The last move left the agent in `lm_world`; that coordinate is
+                # not valid in `a_world`, which this action is stamped with.
+                sync_data["from_world"] = lm_world
+                sync_data["to_world"] = a_world
+            else:
+                sync_data["from"] = lm_to
             actions.append({
                 "id": aid,
                 "timestamp": ts,
                 "agentId": agent["id"],
                 "type": "move",
                 "world": a_world,
-                "data": {
-                    "from": lm_to,
-                    "to": agent.get("position", rand_pos(a_world)),
-                    "duration": 0,
-                    "sync": True,
-                },
+                "data": sync_data,
             })
             synced += 1
     if synced:
