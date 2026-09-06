@@ -16,6 +16,20 @@ const Warp = {
 
     /* ── Initialise 400 stars and begin the tunnel ── */
     start(callback) {
+        // GameState.mode stays 'galaxy' for the whole 1.8s tunnel -- it only
+        // becomes 'approach' inside `callback` (Approach.start()), which
+        // fires after the warp completes. That means galaxy.js's click
+        // handler and main.js's Enter-key handler are both still reachable
+        // mid-warp (neither checks Warp.active), and a second call here
+        // would silently overwrite `this.callback` (discarding the first
+        // destination) and reset `this.stars`/`this.progress` out from under
+        // the still-pending requestAnimationFrame loop the first call
+        // scheduled -- its animFrameId is lost the moment this call
+        // overwrites it, so cleanup() could never cancel it, leaving two
+        // animate() loops racing the same mutable state. Matches the same
+        // "ignore a second start while one is already in flight" guard
+        // DataManager.fetchAllState() already uses for the same reason.
+        if (this.active) return;
         this.canvas = document.getElementById('warp-canvas');
         if (!this.canvas) return;
         this.ctx = this.canvas.getContext('2d');
