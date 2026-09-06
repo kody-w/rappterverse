@@ -335,15 +335,34 @@ rebuilding.
    despite the blog docs describing "8 jungle spots for hiding." Fixing this
    properly means designing real brush-zone geometry and wiring it into
    enemy AI targeting — a feature addition, not a bug fix.
-2. **Some biome-feature placement can exceed world bounds.** Lava paths,
-   crystal lakes, abyss platforms/beams, desert oases, and Terra ponds use
-   `bounds * 1.2`/`* 1.4` center-point multipliers with no clamp on the
-   feature's own radius/path drift — cosmetic-only, cheap to spot-check via
-   live inspection but requires per-biome-specific clamping math to fix
-   without visual regressions. Still deprioritized: fixing this blind,
-   without a way to actually render and look at the result, risks a worse
-   visual regression than the bug it fixes. Needs live inspection, not a
-   headless mechanical change.
+2. ~~**Some biome-feature placement can exceed world bounds.**~~
+   **Resolved, with the actual math worked through precisely** (not
+   guessed at, and not skipped for lack of a renderer): `w.bounds.x`/`.z` is
+   the canonical playable half-extent (the player's own position is
+   hard-clamped to exactly this range in `world-core.js`); a placement of
+   `(rng()-0.5) * bounds * M` has half-range `0.5*M*bounds`, so `M=2` reaches
+   the true edge and the `M=1.2`/`1.4` used here reach only 60%/70% of the
+   way there. Computed the worst-case footprint (center half-range + each
+   feature's own max radius/half-extent) against every world's real
+   `bounds` values: Crystal lakes (39-51 unit margin), Abyss platforms
+   (32-unit) and beams (48-unit), Desert oases (55-unit), and Terra ponds
+   (54-unit) all turned out to already have large safety margins under
+   their own worst-case parameters — none of them was ever actually capable
+   of exceeding bounds, despite looking suspicious next to the lava river's
+   similar-looking multiplier. Left all four completely untouched and added
+   a one-line comment with the exact numbers at each, so a future audit
+   round doesn't need to re-derive this.
+   The ONE placement that genuinely could exceed bounds is the Volcanic
+   lava river: its start point is safely inset, but it then random-walks
+   via Perlin noise for 15 steps at up to ~6 units/step of *unbounded*
+   drift against only a ~35-unit starting margin. Simulated both the
+   original and fixed algorithm across 5,000 seeded worlds using the game's
+   own real noise function: the original code exceeded bounds in 2/5,000
+   seeds (up to ~1.2 units over) — rare and small, but real; the fixed
+   version (`WorldTerrain.clampToBounds()`, re-pinning every drifted point
+   to stay within `bounds - tubeRadius`) showed **zero** exceedances across
+   the same 5,000 seeds. `node scripts/test-cases.js` still 14/14 after the
+   fix.
 3. ~~**`RappterVM.shape()` is orphaned.**~~ **Resolved (Round 13, follow-up):**
    confirmed via repo-wide grep there was truly no consumer anywhere (not
    the game engine, not a Lisp stdlib primitive — no such primitive
