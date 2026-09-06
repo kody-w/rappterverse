@@ -264,7 +264,13 @@ const Inventory = {
     },
 
     spawnDrop(position, worldId, waveNumber, creepIndex) {
-        const rng = seededRandom(worldId * 10000 + waveNumber * 100 + creepIndex);
+        // worldId is a world id STRING (GameState.currentWorld, e.g.
+        // "arena"), so `worldId * 10000` was NaN -- every call collapsed to
+        // the same constant seed regardless of world/wave/creep, instead of
+        // the per-kill varying seed clearly intended here. Build a real
+        // string seed the same way every other seededRandom() call site in
+        // this codebase does (e.g. world-combat.js's 'wave-'+waveNumber+...).
+        const rng = seededRandom(worldId + '-' + waveNumber + '-' + creepIndex);
         if (rng() < 0.3) return; // 30% chance no drop
 
         // Weighted selection

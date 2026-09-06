@@ -1,6 +1,6 @@
 # Shift Passoff — 2026-09-05
 
-## Status: FRONTEND BUG-HUNT LOOP (13 rounds, ongoing — regression suite now 14/14)
+## Status: FRONTEND BUG-HUNT LOOP (14 rounds, ongoing — regression suite 14/14)
 
 Not a feature session. A fan-out audit-and-fix loop targeting real
 correctness bugs in the DOTA-mode frontend (`src/js/`), run via the
@@ -254,9 +254,19 @@ This completes the full input-modality sweep started in Round 11
 (gamepad, gesture) — all four alternate input systems (gamepad, gesture,
 touch, voice) have now had a dedicated audit round.
 
-### Round 13 — root-caused the regression suite's 7/14 baseline, all fixes to `scripts/test-harness.js` (not game code)
+### Round 13 — `state.js`, `data.js` (audited clean) → root-caused the regression suite's 7/14 baseline, all fixes to `scripts/test-harness.js` (not game code)
 
-Every prior round treated the suite's 7 failing tests (`Init`, `Warmup`,
+Started this round on the next two files in the backlog, `state.js` and
+`data.js`. Both audit subagents reported zero genuine bugs after tracing
+every field/consumer across the codebase — `state.js`'s `GameState`
+singleton and `data.js`'s `DataManager` snapshot-fetching layer are both
+consumed consistently everywhere they're read. That's an honest "audited,
+clean" result, not a skipped file — trimmed from the not-yet-audited list
+below.
+
+With that round otherwise empty, pivoted to root-causing the regression
+suite's 7/14 baseline. Every prior round treated the suite's 7 failing tests
+(`Init`, `Warmup`,
 `Wave spawn`, `Player attack`, `Death + respawn`, `Creep variety`, `Full
 session`) as an open question — "look like harness/timing gaps... haven't
 been individually root-caused yet." This round root-caused all seven down
@@ -325,6 +335,54 @@ round — every change is confined to the dev-only, unbundled
 — it's never referenced there), so `docs/index.html` did not need
 rebuilding.
 
+### Round 14 — `config.js`, `boot.js`
+
+- **`seededRandom()`/`inventory.js`'s `spawnDrop()`: item drops were
+  completely broken in every world, on every wave, since this function was
+  written.** `spawnDrop(position, worldId, waveNumber, creepIndex)` built
+  its seed as `worldId * 10000 + waveNumber * 100 + creepIndex` — but every
+  real caller (`world-combat.js`, `jungle-camps.js`) passes
+  `GameState.currentWorld`, a world id STRING like `"arena"`. `string *
+  number` is `NaN`, and `seededRandom(NaN)`'s hash loop reads `seed.length`
+  — `NaN.length` is `undefined`, so the loop never runs and every call
+  started from the exact same `s = 0` state. The very first `rng()` call
+  from that state is always `≈0.0000057`, permanently under the "30%
+  chance no drop" threshold — so **every single creep kill and jungle camp
+  kill in the entire game silently never dropped an item.** Fixed two
+  layers: `seededRandom()` now coerces its seed to a string first
+  (matching `createNoise2D()`'s own existing defensive `String(seed)`
+  wrapping, so any current or future non-string caller is protected), and
+  `spawnDrop()`'s seed is now built as a real string
+  (`worldId + '-' + waveNumber + '-' + creepIndex`), matching the
+  string-concatenation convention every other `seededRandom()` call site in
+  the codebase already uses. Verified behaviorally in the test harness:
+  simulating 25 drop rolls across 5 waves × 5 creep indices now produces an
+  18/25 (72%) drop rate — matching the intended ~70% design — versus 0/25
+  before the fix.
+- Removed `CLIENT_AUTHORITY`, a frozen config object defined in `config.js`
+  but never read anywhere in `src/js/*.js` — confirmed dead via repo-wide
+  grep.
+- `boot.js` audited with three findings from the sub-agent, all
+  investigated and found not to be real bugs after verification: (1) a
+  theoretical `skip()`-vs-in-flight-fetch race degrades gracefully by
+  design (the deep-link agent lookup already falls back to a sensible
+  default world if the agent isn't found yet) and matches "skip means
+  skip" UX intent, not a bug; (2) the claim that a failed required boot
+  fetch is "silently" treated as success is false — `data.js`'s
+  `_fetchAndApply()` never throws to its caller by design, but it already
+  visibly reports failure via its own status UI
+  (`_showStatus`/`_setLiveState`, e.g. "Offline — state unavailable"),
+  which *is* this codebase's established failure-reporting convention,
+  just implemented one layer down from where the sub-agent looked; (3) the
+  claim that `Boot.run()`'s skip-button listener could be registered more
+  than once is unreachable in practice — `Boot.run()` is called exactly
+  once, from `main()`'s IIFE, with no other call site. Honest zero
+  findings in `boot.js` itself.
+
+**Verification:** `node --check` on both edited files, `bash
+scripts/bundle.sh`, `node scripts/test-cases.js` still 14/14 (no
+regressions), plus the direct behavioral drop-rate simulation above.
+
 ---
 
 ## Known Issues / Tech Debt (not yet fixed — lower confidence or higher risk)
@@ -372,11 +430,10 @@ rebuilding.
    `rappter-vm.js`, rather than inventing a speculative new consumer for
    code nothing was calling. Verified: 14/14 regression suite still passes
    after removal.
-4. Files not yet given a dedicated audit round: `state.js`, `data.js`,
-   `config.js`, `boot.js`, `galaxy.js`, `warp.js`, `approach.js`,
-   `landing.js`, `settings.js`, `debug.js`, `help-overlay.js`, `tutorial.js`,
-   `post-processing.js`. Many of these are pre-world-mode / meta systems
-   rather than core DOTA gameplay, but haven't been ruled out.
+4. Files not yet given a dedicated audit round: `galaxy.js`, `warp.js`,
+   `approach.js`, `landing.js`, `settings.js`, `debug.js`, `help-overlay.js`,
+   `tutorial.js`, `post-processing.js`. Many of these are pre-world-mode /
+   meta systems rather than core DOTA gameplay, but haven't been ruled out.
 5. **Point-down gesture is likely unreachable** (see Round 11) — needs a
    direction-agnostic finger-extension geometry change I can't verify
    without a live camera.
