@@ -11,6 +11,7 @@ const ROOT = path.join(__dirname, '..');
 class Vector3 {
     constructor(x,y,z) { this.x=x||0; this.y=y||0; this.z=z||0; }
     set(x,y,z) { this.x=x; this.y=y; this.z=z; return this; }
+    setScalar(s) { this.x=s; this.y=s; this.z=s; return this; }
     copy(v) { this.x=v.x; this.y=v.y; this.z=v.z; return this; }
     clone() { return new Vector3(this.x, this.y, this.z); }
     add(v) { this.x+=v.x; this.y+=v.y; this.z+=v.z; return this; }
@@ -26,12 +27,42 @@ class MockColor {
     setHex(h) { this._hex = h; } getHex() { return this._hex; }
     set(c) { this._hex = typeof c === 'number' ? c : 0; }
     multiplyScalar() { return this; }
+    // real THREE.Color#lerpColors(c1, c2, alpha) sets this color to the RGB
+    // interpolation between c1 and c2 -- vfx.js's per-particle update loop
+    // calls it every frame a particle is alive (color and emissive fade from
+    // startColor to endColor over the particle's life). Missing this method
+    // entirely made every VFX.update() call throw the instant any particle
+    // existed, silently aborting the REST of that tick's WorldMode.update()
+    // too (the harness's own tick() wraps the whole update call in a bare
+    // try/catch) -- e.g. every tick after a death/kill VFX burst, forever,
+    // since the harness never surfaced the swallowed exception.
+    lerpColors(c1, c2, alpha) {
+        var a = c1._hex || 0, b = c2._hex || 0;
+        var ar=(a>>16)&255, ag=(a>>8)&255, ab=a&255;
+        var br=(b>>16)&255, bg=(b>>8)&255, bb=b&255;
+        var r = Math.round(ar + (br-ar)*alpha), g = Math.round(ag + (bg-ag)*alpha), bl = Math.round(ab + (bb-ab)*alpha);
+        this._hex = (r<<16) | (g<<8) | bl;
+        return this;
+    }
+    // real THREE.Color#clone() returns an independent copy -- vfx.js's
+    // particle system clones a material's base color per-particle so each
+    // particle can fade/tint without mutating the shared material color.
+    clone() { return new MockColor(this._hex); }
     toString() { return '#' + (this._hex||0).toString(16).padStart(6,'0'); }
 }
 
 function mkMesh(geo, mat) {
     return {
-        position: new Vector3(), rotation: {x:0,y:0,z:0}, scale: new Vector3(1,1,1),
+        // real THREE.Object3D#rotation is an Euler with a .set(x,y,z) method
+        // (used by world-lanes.js's buildRiver() and others) -- a plain
+        // {x,y,z} object silently has no such method, so any real-game code
+        // calling mesh.rotation.set(...) threw inside WorldMode.init(),
+        // which the harness's own init call wraps in a swallow-all try/catch
+        // ("Init may partially fail on some subsystems — that's OK for
+        // testing"). That silently aborted init partway through, before
+        // WorldCombat.init() ever ran -- explaining warmup/thrones/creep
+        // state reading as undefined/0 in every downstream test.
+        position: new Vector3(), rotation: { x:0, y:0, z:0, set(x,y,z){this.x=x;this.y=y;this.z=z;return this;} }, scale: new Vector3(1,1,1),
         visible: true, parent: null, children: [], userData: {},
         geometry: geo || { type:'', attributes:{position:{array:new Float32Array(48843)}}, setAttribute(){}, computeVertexNormals(){}, dispose(){}, setFromPoints(){ return this; } },
         material: mat || { color: new MockColor(), emissive: new MockColor(), emissiveIntensity:0, opacity:1, dispose(){}, uniforms:{} },
@@ -67,14 +98,24 @@ function buildTHREE() {
         PlaneGeometry: function(w,h,sw,sh) { sw=sw||1;sh=sh||1; var g=geoFactory(); g.attributes.position.array=new Float32Array((sw+1)*(sh+1)*3); return g; },
         BoxGeometry: geoFactory, SphereGeometry: geoFactory, CylinderGeometry: geoFactory,
         ConeGeometry: geoFactory, RingGeometry: geoFactory, CircleGeometry: geoFactory,
-        DodecahedronGeometry: geoFactory, OctahedronGeometry: geoFactory, IcosahedronGeometry: geoFactory,
+        // real THREE.*Geometry constructors store their ctor args on
+        // .parameters (e.g. `new DodecahedronGeometry(radius, detail)` ->
+        // geometry.parameters.radius) -- world-lanes.js's Volcanic-biome
+        // rock placement reads exactly that field. geoFactory() alone
+        // ignores its args and never sets .parameters, so that read
+        // (`rock.geometry.parameters.radius`) threw and aborted
+        // WorldLanes.init() -> WorldMode.init() partway through, before
+        // WorldCombat.init() ran (same root cause as the rotation.set() fix
+        // above; both were silently swallowed by the harness's init try/catch).
+        DodecahedronGeometry: function(radius, detail) { var g = geoFactory(); g.parameters = { radius: radius || 1, detail: detail || 0 }; return g; },
+        OctahedronGeometry: geoFactory, IcosahedronGeometry: geoFactory,
         TorusGeometry: geoFactory, TubeGeometry: geoFactory, EdgesGeometry: geoFactory,
         GridHelper: function() { return mkMesh(); },
         AmbientLight: function(c,i) { var l=mkMesh(); l.intensity=i||1; l.color=new MockColor(c); return l; },
         DirectionalLight: function(c,i) { var l=mkMesh(); l.intensity=i||1; l.color=new MockColor(c); return l; },
         PointLight: function(c,i,r) { var l=mkMesh(); l.intensity=i||1; return l; },
         FogExp2: function() {},
-        WebGLRenderer: function() { return { setSize(){}, setPixelRatio(){}, render(){}, setRenderTarget(){}, domElement:{style:{}}, toneMapping:0, toneMappingExposure:1 }; },
+        WebGLRenderer: function() { return { setSize(){}, setPixelRatio(){}, render(){}, setRenderTarget(){}, domElement:{style:{}, parentNode:null, addEventListener(){}, removeEventListener(){}}, toneMapping:0, toneMappingExposure:1 }; },
         WebGLRenderTarget: function() { return { texture:{}, setSize(){} }; },
         Clock: function() { return { _d:0.016, _e:0, getDelta(){ return this._d; }, getElapsedTime(){ return this._e; } }; },
         CatmullRomCurve3: function(pts) { this.getPoint=function(){return new Vector3();}; },
@@ -92,6 +133,17 @@ function mkEl(tag, id) {
         style: new Proxy({},{set:()=>true,get:()=>''}),
         classList: { _s:new Set(), add(c){this._s.add(c);}, remove(c){this._s.delete(c);}, toggle(c,f){if(f!==undefined){f?this._s.add(c):this._s.delete(c);}else{this._s.has(c)?this._s.delete(c):this._s.add(c);}}, contains(c){return this._s.has(c);} },
         children:[], childNodes:[], parentNode:null, dataset:{},
+        // Without a real firstChild, `while (el.children.length > N)
+        // el.removeChild(el.firstChild)` (HUD.showToast's "keep at most 5
+        // toasts" cleanup) calls removeChild(undefined) forever: indexOf
+        // never finds undefined in the array, nothing is ever spliced out,
+        // and children.length never drops -- an actual infinite loop that
+        // hung the headless harness solid the first time more than 5 toasts
+        // could ever really fire (i.e. once WorldMode.init() stopped
+        // silently crashing partway through, see the mesh.rotation.set fix
+        // above).
+        get firstChild() { return this.children[0] || null; },
+        get lastChild() { return this.children[this.children.length - 1] || null; },
         appendChild(c){this.children.push(c);c.parentNode=this;return c;},
         removeChild(c){var i=this.children.indexOf(c);if(i>=0)this.children.splice(i,1);return c;},
         addEventListener(){}, removeEventListener(){},
