@@ -374,24 +374,31 @@ const Chronicle = {
         if (seen) return;
 
         this.autoScheduled = true;
+        // Neither this retry chain nor openWhenStable() below was ever
+        // canceled — there was no Chronicle.cleanup() and nothing called
+        // one. Tracking the pending handle here (and in openWhenStable) lets
+        // a new cleanup() stop a leftover retry loop from firing an overlay
+        // into a world session that started well after this one ended.
         const tryOpen = (attempt) => {
+            this._premiereTimer = null;
             if (this.open) return;
             if (!['galaxy', 'world'].includes(GameState.mode) && attempt < 80) {
-                setTimeout(() => tryOpen(attempt + 1), 500);
+                this._premiereTimer = setTimeout(() => tryOpen(attempt + 1), 500);
                 return;
             }
             if (['galaxy', 'world'].includes(GameState.mode)) this.openById(featured.id);
         };
-        setTimeout(() => tryOpen(0), 2200);
+        this._premiereTimer = setTimeout(() => tryOpen(0), 2200);
     },
 
     openWhenStable(id, attempt) {
         const tries = attempt || 0;
+        this._deepLinkTimer = null;
         if (['galaxy', 'world'].includes(GameState.mode)) {
             this.openById(id);
             return;
         }
-        if (tries < 80) setTimeout(() => this.openWhenStable(id, tries + 1), 500);
+        if (tries < 80) this._deepLinkTimer = setTimeout(() => this.openWhenStable(id, tries + 1), 500);
     },
 
     find(id) {
@@ -454,6 +461,16 @@ const Chronicle = {
             if (!this.open) overlay.hidden = true;
         }, 330);
         if (this.previousFocus?.focus) this.previousFocus.focus();
+    },
+
+    // Cancels any pending premiere/deep-link retry timers so a world
+    // session that ends while one is still polling for a stable mode can't
+    // pop the overlay (and lock input via openById -> lockBackground) into
+    // a later, unrelated world session.
+    cleanup() {
+        if (this._premiereTimer) { clearTimeout(this._premiereTimer); this._premiereTimer = null; }
+        if (this._deepLinkTimer) { clearTimeout(this._deepLinkTimer); this._deepLinkTimer = null; }
+        if (this.open) this.close();
     },
 
     markSeen(id) {

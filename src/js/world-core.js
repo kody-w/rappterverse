@@ -464,6 +464,16 @@ const WorldMode = {
         if (typeof WorldAgents !== 'undefined' && WorldAgents.cleanup) WorldAgents.cleanup(this.scene);
         if (typeof FogOfWar !== 'undefined') FogOfWar.cleanup();
         if (typeof WorldTerrain !== 'undefined' && WorldTerrain.cleanup) WorldTerrain.cleanup();
+        // RappterOS.cleanup() existed but was never called from here — its
+        // queue/results/readiness state (and, worse, a pending 8s boot timer
+        // if a voice-triggered VM boot was mid-flight) survived world
+        // switches indefinitely.
+        if (typeof RappterOS !== 'undefined' && RappterOS.cleanup) RappterOS.cleanup();
+        // Chronicle's premiere/deep-link retry timers polled for a stable
+        // galaxy/world mode for up to 40s with nothing to cancel them —
+        // a leftover retry could pop the overlay (and lock input) into a
+        // later, unrelated world session.
+        if (typeof Chronicle !== 'undefined' && Chronicle.cleanup) Chronicle.cleanup();
 
         // Generic disposal pass for whatever's left in the scene. Ground,
         // lighting, biome objects/features, and weather particles (all owned

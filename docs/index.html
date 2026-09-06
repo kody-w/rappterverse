@@ -4681,24 +4681,31 @@ const Chronicle = {
         if (seen) return;
 
         this.autoScheduled = true;
+        // Neither this retry chain nor openWhenStable() below was ever
+        // canceled — there was no Chronicle.cleanup() and nothing called
+        // one. Tracking the pending handle here (and in openWhenStable) lets
+        // a new cleanup() stop a leftover retry loop from firing an overlay
+        // into a world session that started well after this one ended.
         const tryOpen = (attempt) => {
+            this._premiereTimer = null;
             if (this.open) return;
             if (!['galaxy', 'world'].includes(GameState.mode) && attempt < 80) {
-                setTimeout(() => tryOpen(attempt + 1), 500);
+                this._premiereTimer = setTimeout(() => tryOpen(attempt + 1), 500);
                 return;
             }
             if (['galaxy', 'world'].includes(GameState.mode)) this.openById(featured.id);
         };
-        setTimeout(() => tryOpen(0), 2200);
+        this._premiereTimer = setTimeout(() => tryOpen(0), 2200);
     },
 
     openWhenStable(id, attempt) {
         const tries = attempt || 0;
+        this._deepLinkTimer = null;
         if (['galaxy', 'world'].includes(GameState.mode)) {
             this.openById(id);
             return;
         }
-        if (tries < 80) setTimeout(() => this.openWhenStable(id, tries + 1), 500);
+        if (tries < 80) this._deepLinkTimer = setTimeout(() => this.openWhenStable(id, tries + 1), 500);
     },
 
     find(id) {
@@ -4761,6 +4768,16 @@ const Chronicle = {
             if (!this.open) overlay.hidden = true;
         }, 330);
         if (this.previousFocus?.focus) this.previousFocus.focus();
+    },
+
+    // Cancels any pending premiere/deep-link retry timers so a world
+    // session that ends while one is still polling for a stable mode can't
+    // pop the overlay (and lock input via openById -> lockBackground) into
+    // a later, unrelated world session.
+    cleanup() {
+        if (this._premiereTimer) { clearTimeout(this._premiereTimer); this._premiereTimer = null; }
+        if (this._deepLinkTimer) { clearTimeout(this._deepLinkTimer); this._deepLinkTimer = null; }
+        if (this.open) this.close();
     },
 
     markSeen(id) {
@@ -15111,6 +15128,16 @@ const WorldMode = {
         if (typeof WorldAgents !== 'undefined' && WorldAgents.cleanup) WorldAgents.cleanup(this.scene);
         if (typeof FogOfWar !== 'undefined') FogOfWar.cleanup();
         if (typeof WorldTerrain !== 'undefined' && WorldTerrain.cleanup) WorldTerrain.cleanup();
+        // RappterOS.cleanup() existed but was never called from here — its
+        // queue/results/readiness state (and, worse, a pending 8s boot timer
+        // if a voice-triggered VM boot was mid-flight) survived world
+        // switches indefinitely.
+        if (typeof RappterOS !== 'undefined' && RappterOS.cleanup) RappterOS.cleanup();
+        // Chronicle's premiere/deep-link retry timers polled for a stable
+        // galaxy/world mode for up to 40s with nothing to cancel them —
+        // a leftover retry could pop the overlay (and lock input) into a
+        // later, unrelated world session.
+        if (typeof Chronicle !== 'undefined' && Chronicle.cleanup) Chronicle.cleanup();
 
         // Generic disposal pass for whatever's left in the scene. Ground,
         // lighting, biome objects/features, and weather particles (all owned
@@ -19802,6 +19829,9 @@ const RappterOS = {
     _terminal: null,   // Output buffer
     _outputBuffer: '',
     _commandId: 0,
+    _lastCompletedId: 0,
+    _bootTimer: null,
+    _bootGeneration: 0,
 
     // Check if v86 is available
     isAvailable() {
@@ -19857,9 +19887,23 @@ const RappterOS = {
 
             // Wait for boot
             var self = this;
-            setTimeout(function() {
+            // If cleanup() runs during this 8s window (world exit while a
+            // rare voice-triggered boot is in flight), the emulator gets
+            // destroyed and _emulator set to null -- but this timer previously
+            // wasn't cancelable, so it would still fire, set _ready=true, and
+            // call _processQueue(), which reaches this._emulator.serial0_send()
+            // on a null emulator. _loading also never got reset by cleanup(),
+            // so a subsequent world's init() would return early forever
+            // (`if (this._ready || this._loading) return;`), permanently
+            // unable to reboot. bootGeneration lets the callback recognize a
+            // cleanup that happened after it was scheduled, even though
+            // clearTimeout(this._bootTimer) below is the primary guard.
+            var myGeneration = this._bootGeneration;
+            this._bootTimer = setTimeout(function() {
+                if (myGeneration !== self._bootGeneration) return; // canceled mid-boot
                 self._ready = true;
                 self._loading = false;
+                self._bootTimer = null;
                 console.log('[OS] Alpine Linux booted in browser');
                 if (typeof HUD !== 'undefined') HUD.showToast('RappterOS online — Linux VM ready');
                 self._processQueue();
@@ -19929,6 +19973,7 @@ const RappterOS = {
             };
 
             this._results[this._currentTask.id] = result;
+            this._lastCompletedId = this._currentTask.id;
 
             // Callback
             if (this._currentTask.callback) {
@@ -20009,7 +20054,15 @@ const RappterOS = {
             return true;
         };
         RappterVM._env['os-ready'] = function() { return self._ready; };
-        RappterVM._env['os-result'] = function() { return self._results[self._commandId] ? self._results[self._commandId].stdout : null; };
+        RappterVM._env['os-result'] = function() {
+            // _commandId is the most recently SUBMITTED command's id, not the
+            // most recently COMPLETED one -- if a second command is queued
+            // before the first finishes, this always looked up a result that
+            // didn't exist yet, even though an earlier, real result was
+            // sitting in _results under a lower id.
+            var id = self._lastCompletedId;
+            return self._results[id] ? self._results[id].stdout : null;
+        };
         RappterVM._env['os-queue-size'] = function() { return self._queue.length; };
     },
 
@@ -20025,13 +20078,19 @@ const RappterOS = {
     },
 
     cleanup() {
+        if (this._bootTimer) { clearTimeout(this._bootTimer); this._bootTimer = null; }
+        this._bootGeneration++; // stale-boot guard even if clearTimeout missed the window
         if (this._emulator) {
             try { this._emulator.stop(); this._emulator.destroy(); } catch(e) {}
             this._emulator = null;
         }
         this._ready = false;
+        this._loading = false; // otherwise init() 's `if (ready||loading) return` never boots again
         this._queue = [];
         this._results = {};
+        this._lastCompletedId = 0;
+        this._currentTask = null;
+        this._outputBuffer = '';
     }
 };
 

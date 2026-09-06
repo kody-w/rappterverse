@@ -18,6 +18,9 @@ const RappterOS = {
     _terminal: null,   // Output buffer
     _outputBuffer: '',
     _commandId: 0,
+    _lastCompletedId: 0,
+    _bootTimer: null,
+    _bootGeneration: 0,
 
     // Check if v86 is available
     isAvailable() {
@@ -73,9 +76,23 @@ const RappterOS = {
 
             // Wait for boot
             var self = this;
-            setTimeout(function() {
+            // If cleanup() runs during this 8s window (world exit while a
+            // rare voice-triggered boot is in flight), the emulator gets
+            // destroyed and _emulator set to null -- but this timer previously
+            // wasn't cancelable, so it would still fire, set _ready=true, and
+            // call _processQueue(), which reaches this._emulator.serial0_send()
+            // on a null emulator. _loading also never got reset by cleanup(),
+            // so a subsequent world's init() would return early forever
+            // (`if (this._ready || this._loading) return;`), permanently
+            // unable to reboot. bootGeneration lets the callback recognize a
+            // cleanup that happened after it was scheduled, even though
+            // clearTimeout(this._bootTimer) below is the primary guard.
+            var myGeneration = this._bootGeneration;
+            this._bootTimer = setTimeout(function() {
+                if (myGeneration !== self._bootGeneration) return; // canceled mid-boot
                 self._ready = true;
                 self._loading = false;
+                self._bootTimer = null;
                 console.log('[OS] Alpine Linux booted in browser');
                 if (typeof HUD !== 'undefined') HUD.showToast('RappterOS online — Linux VM ready');
                 self._processQueue();
@@ -145,6 +162,7 @@ const RappterOS = {
             };
 
             this._results[this._currentTask.id] = result;
+            this._lastCompletedId = this._currentTask.id;
 
             // Callback
             if (this._currentTask.callback) {
@@ -225,7 +243,15 @@ const RappterOS = {
             return true;
         };
         RappterVM._env['os-ready'] = function() { return self._ready; };
-        RappterVM._env['os-result'] = function() { return self._results[self._commandId] ? self._results[self._commandId].stdout : null; };
+        RappterVM._env['os-result'] = function() {
+            // _commandId is the most recently SUBMITTED command's id, not the
+            // most recently COMPLETED one -- if a second command is queued
+            // before the first finishes, this always looked up a result that
+            // didn't exist yet, even though an earlier, real result was
+            // sitting in _results under a lower id.
+            var id = self._lastCompletedId;
+            return self._results[id] ? self._results[id].stdout : null;
+        };
         RappterVM._env['os-queue-size'] = function() { return self._queue.length; };
     },
 
@@ -241,12 +267,18 @@ const RappterOS = {
     },
 
     cleanup() {
+        if (this._bootTimer) { clearTimeout(this._bootTimer); this._bootTimer = null; }
+        this._bootGeneration++; // stale-boot guard even if clearTimeout missed the window
         if (this._emulator) {
             try { this._emulator.stop(); this._emulator.destroy(); } catch(e) {}
             this._emulator = null;
         }
         this._ready = false;
+        this._loading = false; // otherwise init() 's `if (ready||loading) return` never boots again
         this._queue = [];
         this._results = {};
+        this._lastCompletedId = 0;
+        this._currentTask = null;
+        this._outputBuffer = '';
     }
 };
