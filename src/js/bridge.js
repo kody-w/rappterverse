@@ -54,13 +54,18 @@ const Bridge = {
 
         // Show overlay and attach renderer
         const overlay = document.getElementById('bridge-overlay');
-        overlay.innerHTML = '';
-        const closeBtn = document.createElement('button');
-        closeBtn.id = 'bridge-close';
-        closeBtn.className = 'bridge-close';
-        closeBtn.textContent = '\u00d7';
-        closeBtn.addEventListener('click', () => this.close());
-        overlay.appendChild(closeBtn);
+        // Previously this cleared overlay.innerHTML entirely on every open,
+        // which destroys the static .bridge-title/.bridge-grid markup (and
+        // every card inside it, from src/html/layout.html) the very first
+        // time it runs. close() never recreates any of it, so from the
+        // second bridge open onward the player saw only the 3D scene and a
+        // close button — permanently missing its title and every data card.
+        // Reuse the existing static close button instead of destroying and
+        // recreating the whole overlay each time.
+        let closeBtn = document.getElementById('bridge-close');
+        if (this._boundCloseClick) closeBtn.removeEventListener('click', this._boundCloseClick);
+        this._boundCloseClick = () => this.close();
+        closeBtn.addEventListener('click', this._boundCloseClick);
         overlay.appendChild(GameState.renderer.domElement);
         overlay.classList.add('active');
 
@@ -79,6 +84,7 @@ const Bridge = {
         // Initial data
         this.syncAgents();
         this.updateDataScreens();
+        this.renderEchoSummary();
         this._lastAgentSync = -1;
         this._lastDataUpdate = -1;
 
@@ -390,9 +396,36 @@ const Bridge = {
             }
         });
 
-        // Add new
+        // Add new / refresh existing
         agents.forEach((agent, i) => {
-            if (!this.agentMeshes[agent.id]) this._createAgentMesh(agent, i);
+            const mesh = this.agentMeshes[agent.id];
+            if (!mesh) { this._createAgentMesh(agent, i); return; }
+            // Previously an existing agent's mesh was never touched again,
+            // so a live name/avatar change (GameState.data.agents refreshing
+            // with newer data) never showed up here -- the same agent id
+            // just kept displaying whatever name/avatar it had at spawn,
+            // even across repeated bridge open/close cycles.
+            if (mesh._name !== agent.name) {
+                mesh._name = agent.name;
+                const fresh = this._makeTextSprite(agent.name, '#ffffff', 18);
+                fresh.position.copy(mesh.nameSprite.position);
+                fresh.scale.copy(mesh.nameSprite.scale);
+                mesh.group.remove(mesh.nameSprite);
+                mesh.group.add(fresh);
+                mesh.nameSprite = fresh;
+            }
+            if (mesh._avatar !== agent.avatar) {
+                mesh._avatar = agent.avatar;
+                const ec = document.createElement('canvas');
+                ec.width = 128; ec.height = 128;
+                const ectx = ec.getContext('2d');
+                ectx.font = '72px serif';
+                ectx.textAlign = 'center';
+                ectx.textBaseline = 'middle';
+                ectx.fillText(agent.avatar || '\u{1F916}', 64, 64);
+                mesh.emoji.material.map = new THREE.CanvasTexture(ec);
+                mesh.emoji.material.needsUpdate = true;
+            }
         });
     },
 
@@ -454,7 +487,10 @@ const Bridge = {
         group.userData.phase = Math.random() * Math.PI * 2;
 
         this.scene.add(group);
-        this.agentMeshes[agent.id] = { group, body, head, ring, template: null };
+        this.agentMeshes[agent.id] = {
+            group, body, head, ring, emoji, nameSprite, template: null,
+            _name: agent.name, _avatar: agent.avatar
+        };
     },
 
     // Brainstem template visual style for bridge view (cheaper than world).
@@ -524,6 +560,11 @@ const Bridge = {
         if (sec % 3 === 0 && sec !== this._lastDataUpdate) {
             this._lastDataUpdate = sec;
             this.updateDataScreens();
+            // renderEchoSummary() was fully implemented (combat digest,
+            // active echo event, narrative) but never called from anywhere
+            // -- the bridge never showed any of it. Throttled at the same
+            // 3s cadence as the data screens it's built alongside.
+            this.renderEchoSummary();
         }
 
         GameState.renderer.render(this.scene, this.camera);

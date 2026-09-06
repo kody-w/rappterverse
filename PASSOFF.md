@@ -1,12 +1,14 @@
 # Shift Passoff — 2026-09-05
 
-## Status: FRONTEND BUG-HUNT LOOP (8 rounds, ongoing)
+## Status: FRONTEND BUG-HUNT LOOP (9 rounds, ongoing)
 
 Not a feature session. A fan-out audit-and-fix loop targeting real
 correctness bugs in the DOTA-mode frontend (`src/js/`), run via the
 methodology now documented in `CLAUDE.md` → **"Frontend Quality Loop
 (Fan-Out Audit & Fix)"**. Read that section before starting another round —
 it's the reusable playbook, this file is just the log of what it found.
+This loop now also runs on an autonomous 4h schedule (schedule #2) — rounds
+after the initial session-driven ones are appended here the same way.
 
 ---
 
@@ -123,6 +125,38 @@ they were trying to check).
 - `setIntensity()`'s high-intensity oscillator's gain node was never
   disconnected on shutdown.
 
+### Round 9 — `bridge.js`, `rappter-vm.js` + `world-core.js` (first autonomous-schedule round)
+- **`Bridge.enter()` destroyed its own UI on the first close+reopen.**
+  `overlay.innerHTML = ''` wiped `.bridge-title`/`.bridge-grid` (and every
+  card inside it, from `layout.html`) every time the bridge opened, but
+  `close()` never recreated any of it and `enter()` only ever re-appended a
+  fresh close button + the renderer canvas. From the second bridge open
+  onward the player saw only the 3D scene with a close button — permanently
+  missing its title and every data card. Fixed by reusing the existing
+  static close button instead of destroying and recreating the overlay.
+- `Bridge.renderEchoSummary()` (combat digest, active echo event, full
+  narrative — fully implemented) was never called from anywhere, so the
+  bridge never displayed any of it even before the above bug. Wired into
+  the same throttled cadence as `updateDataScreens()`. (It also targets
+  `.bridge-grid` via `querySelector`, so it could never have worked while
+  the overlay-wipe bug above was live — the two fixes had to land together.)
+- `Bridge.syncAgents()` added/removed agent meshes but never updated an
+  existing agent's name/avatar sprite when live data changed — a renamed
+  or re-avatared agent kept showing stale visuals indefinitely. Now
+  refreshes both in place when they differ from what's stored.
+- `RappterOS.registerVMFunctions()` ran *before* `RappterVM.init()` in
+  `world-core.js`, but `init()` unconditionally replaces `_env` with a
+  fresh object — wiping every `os-exec`/`os-python`/`os-ready`/`os-result`/
+  `os-queue-size` function registerVMFunctions() had just written. Any
+  agent Lisp program calling those symbols silently resolved to `null` in
+  every world. Fixed by swapping the call order.
+- `RappterVM.registerShaper('terrain'/'weather'/'mood-lighting', ...)` are
+  registered on every world load, but nothing anywhere in `src/js/*.js` —
+  neither game-engine code nor the Lisp stdlib exposed to agent programs —
+  ever calls `RappterVM.shape(name, frameData)`. Reported below, not fixed:
+  deciding what should consume shaper output (and how) is a design
+  decision, not a mechanical bug.
+
 ---
 
 ## Known Issues / Tech Debt (not yet fixed — lower confidence or higher risk)
@@ -139,14 +173,20 @@ they were trying to check).
    feature's own radius/path drift — cosmetic-only, cheap to spot-check via
    live inspection but requires per-biome-specific clamping math to fix
    without visual regressions. Deprioritized this session.
-3. Files not yet given a dedicated audit round: `bridge.js`, `rappter-vm.js`,
-   `rappter-os.js`, `chronicle.js`, `state.js`, `data.js`, `config.js`,
-   `boot.js`, `galaxy.js`, `warp.js`, `approach.js`, `landing.js`,
-   `settings.js`, `debug.js`, `gamepad-controls.js`, `touch-controls.js`,
-   `voice-controls.js`, `gesture-controls.js`, `help-overlay.js`,
-   `tutorial.js`, `post-processing.js`. Many of these are pre-world-mode /
-   meta systems rather than core DOTA gameplay, but haven't been ruled out.
-4. Regression suite is still 7/14 — remaining failures (`Init`, `Warmup`,
+3. **`RappterVM.shape()` is orphaned.** Three shapers (`terrain`, `weather`,
+   `mood-lighting`) are registered every world load but nothing ever calls
+   `RappterVM.shape(name, frameData)` — not the game engine, not the Lisp
+   stdlib exposed to agent programs. Either wire a real consumer (and
+   decide what it should do with the returned value) or remove the
+   registration + registry. Needs a design decision, not a mechanical fix.
+4. Files not yet given a dedicated audit round: `rappter-os.js`,
+   `chronicle.js`, `state.js`, `data.js`, `config.js`, `boot.js`, `galaxy.js`,
+   `warp.js`, `approach.js`, `landing.js`, `settings.js`, `debug.js`,
+   `gamepad-controls.js`, `touch-controls.js`, `voice-controls.js`,
+   `gesture-controls.js`, `help-overlay.js`, `tutorial.js`,
+   `post-processing.js`. Many of these are pre-world-mode / meta systems
+   rather than core DOTA gameplay, but haven't been ruled out.
+5. Regression suite is still 7/14 — remaining failures (`Init`, `Warmup`,
    `Wave spawn`, `Player attack`, `Death + respawn`, `Creep variety`, `Full
    session`) look like harness/timing gaps (e.g. `warmup=undefined`
    suggests the harness never reaches `_warmupActive` becoming true) rather
