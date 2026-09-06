@@ -145,10 +145,15 @@ const WorldMode = {
             if (tl) tl.classList.add('visible');
         }
         // Init Lispy VM
-        // RappterOS available for agent compute (boots on demand)
-        if (typeof RappterOS !== 'undefined' && RappterOS.registerVMFunctions) RappterOS.registerVMFunctions();
+        // RappterVM.init() must run before RappterOS.registerVMFunctions() --
+        // init() unconditionally replaces _env with a fresh object, which
+        // previously wiped every os-exec/os-python/os-ready/os-result/
+        // os-queue-size function registerVMFunctions() had just written,
+        // since it ran first. Agent programs calling those symbols silently
+        // resolved to null in every world.
         if (typeof RappterVM !== 'undefined') {
             RappterVM.init();
+            if (typeof RappterOS !== 'undefined' && RappterOS.registerVMFunctions) RappterOS.registerVMFunctions();
             RappterVM.onFrameArrival(GameState.data);
             // Register echo shapers
             RappterVM.registerShaper('terrain', 4, function(d) { return typeof WorldSeed !== 'undefined' ? WorldSeed.getSeed(GameState.currentWorld) : 0; });
