@@ -835,23 +835,4 @@ const RappterVM = {
             }
         }
     },
-
-    // ── Echo Shaper Registry ──
-    _shapers: {},
-
-    registerShaper(name, level, fn) {
-        this._shapers[name] = { name: name, level: level, fn: fn };
-    },
-
-    // Run a shaper on frame data
-    shape(name, frameData) {
-        var shaper = this._shapers[name];
-        if (!shaper) return null;
-        return shaper.fn(frameData);
-    },
-
-    // List registered shapers
-    getShapers() {
-        return Object.values(this._shapers);
-    }
 };

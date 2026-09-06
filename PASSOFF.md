@@ -340,13 +340,19 @@ rebuilding.
    `bounds * 1.2`/`* 1.4` center-point multipliers with no clamp on the
    feature's own radius/path drift — cosmetic-only, cheap to spot-check via
    live inspection but requires per-biome-specific clamping math to fix
-   without visual regressions. Deprioritized this session.
-3. **`RappterVM.shape()` is orphaned.** Three shapers (`terrain`, `weather`,
-   `mood-lighting`) are registered every world load but nothing ever calls
-   `RappterVM.shape(name, frameData)` — not the game engine, not the Lisp
-   stdlib exposed to agent programs. Either wire a real consumer (and
-   decide what it should do with the returned value) or remove the
-   registration + registry. Needs a design decision, not a mechanical fix.
+   without visual regressions. Still deprioritized: fixing this blind,
+   without a way to actually render and look at the result, risks a worse
+   visual regression than the bug it fixes. Needs live inspection, not a
+   headless mechanical change.
+3. ~~**`RappterVM.shape()` is orphaned.**~~ **Resolved (Round 13, follow-up):**
+   confirmed via repo-wide grep there was truly no consumer anywhere (not
+   the game engine, not a Lisp stdlib primitive — no such primitive
+   mechanism for exposing VM functions to agent programs even exists yet).
+   Removed the three `registerShaper()` calls in `world-core.js` and the
+   entire `_shapers`/`registerShaper`/`shape`/`getShapers` registry in
+   `rappter-vm.js`, rather than inventing a speculative new consumer for
+   code nothing was calling. Verified: 14/14 regression suite still passes
+   after removal.
 4. Files not yet given a dedicated audit round: `state.js`, `data.js`,
    `config.js`, `boot.js`, `galaxy.js`, `warp.js`, `approach.js`,
    `landing.js`, `settings.js`, `debug.js`, `help-overlay.js`, `tutorial.js`,

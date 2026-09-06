@@ -159,14 +159,6 @@ const WorldMode = {
             RappterVM.init();
             if (typeof RappterOS !== 'undefined' && RappterOS.registerVMFunctions) RappterOS.registerVMFunctions();
             RappterVM.onFrameArrival(GameState.data);
-            // Register echo shapers
-            RappterVM.registerShaper('terrain', 4, function(d) { return typeof WorldSeed !== 'undefined' ? WorldSeed.getSeed(GameState.currentWorld) : 0; });
-            RappterVM.registerShaper('weather', 4, function(d) { return typeof WorldTerrain !== 'undefined' ? WorldTerrain.weatherType : 'clear'; });
-            RappterVM.registerShaper('mood-lighting', 4, function(d) {
-                var gs = d.gameState || {};
-                var trend = gs.economy ? gs.economy.market_trend : 'stable';
-                return trend === 'bull' ? 1.2 : trend === 'bear' ? 0.7 : 1.0;
-            });
         }
     },
 
