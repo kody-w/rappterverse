@@ -250,5 +250,21 @@ const VoiceControls = {
         }
         const indicator = document.getElementById('voice-indicator');
         if (indicator) indicator.classList.toggle('visible', this.active);
+    },
+
+    // Voice is a persistent, mode-agnostic toggle (init() once globally,
+    // like GamepadControls) -- world-specific commands already self-gate
+    // correctly via `const inWorld = GameState.mode === 'world';` in
+    // _processCommand(), so stopping recognition on every world exit would
+    // be a UX regression (it would also silence mode-agnostic commands
+    // like "travel to arena" said from the galaxy). What DOES need
+    // resetting per world session is the 1s command debounce: lastCommand/
+    // lastCommandTime previously survived a world switch, so saying the
+    // same command again (e.g. "attack") within 1s of the switch had its
+    // first repetition in the new session silently dropped as a duplicate
+    // of the old session's last command.
+    resetSession() {
+        this.lastCommand = '';
+        this.lastCommandTime = 0;
     }
 };

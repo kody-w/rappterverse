@@ -128,6 +128,10 @@ const WorldMode = {
         }
         // Show mobile touch controls
         if (typeof TouchControls !== 'undefined') { TouchControls.init(); TouchControls.show(); }
+        // Reset voice's 1s command debounce so a command repeated right
+        // across a world switch isn't dropped as a stale duplicate of the
+        // previous session's last command.
+        if (typeof VoiceControls !== 'undefined' && VoiceControls.resetSession) VoiceControls.resetSession();
         // First-time tutorial
         if (typeof Tutorial !== 'undefined') Tutorial.start();
         // Quest tracker
@@ -529,8 +533,10 @@ const WorldMode = {
         if (typeof RappterVM !== 'undefined') RappterVM._running = false;
         // Hide quest tracker
         if (typeof QuestTracker !== 'undefined') QuestTracker.hide();
-        // Hide touch controls
-        if (typeof TouchControls !== 'undefined') TouchControls.hide();
+        // TouchControls.cleanup() (not just hide()) -- hide() only sets
+        // display:none; the touchmove/touchend/button listeners and
+        // `active` flag previously survived every world exit.
+        if (typeof TouchControls !== 'undefined' && TouchControls.cleanup) TouchControls.cleanup();
     },
 
     onResize() {

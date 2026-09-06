@@ -1,6 +1,6 @@
 # Shift Passoff — 2026-09-05
 
-## Status: FRONTEND BUG-HUNT LOOP (11 rounds, ongoing)
+## Status: FRONTEND BUG-HUNT LOOP (12 rounds, ongoing)
 
 Not a feature session. A fan-out audit-and-fix loop targeting real
 correctness bugs in the DOTA-mode frontend (`src/js/`), run via the
@@ -223,6 +223,37 @@ the same code path as the already-working fist/peace/open/point-up/left/
 right classifications — a change I can't behaviorally verify without a
 live camera and real hand poses, so it's logged here rather than guessed at.
 
+### Round 12 — `touch-controls.js`, `voice-controls.js` + `world-core.js` (fourth autonomous-schedule round, completes the input-modality sweep)
+- **`TouchControls` had no `cleanup()`** — `WorldMode.cleanup()` only ever
+  called `hide()` (display:none), never anything that unbound the
+  touchmove/touchend window listeners or each button's touchstart
+  listener, and `active` stayed true so the next world's `init()` no-opped
+  on its "already active" guard instead of freshly binding. Added
+  `cleanup()` (calls the existing `disable()`, idempotent) and wired it in.
+- **Every `disable()`→`enable()` cycle leaked an orphaned `<style>` tag.**
+  `_createUI()`'s "already exists" guard only checked `#touch-controls`
+  (the container), but `disable()` only removed the container, not the
+  `<style>` element `_createUI()` unconditionally created on every call —
+  each cycle (now more frequent once `cleanup()` above runs on every world
+  exit) added one more permanent stale style block to `<head>`. Fixed by
+  giving the style tag a stable id and reusing it if present.
+- Removed `_actionTouchId`, a field declared but never read or written
+  anywhere in the codebase.
+- **`VoiceControls`'s 1s command debounce survived world switches.**
+  Voice is a deliberate persistent, mode-agnostic toggle (world-specific
+  commands already self-gate via `GameState.mode === 'world'` inside
+  `_processCommand()`, so recognition itself correctly does *not* stop on
+  world exit — doing so would silence mode-agnostic commands like "travel
+  to arena" said from the galaxy). But `lastCommand`/`lastCommandTime`
+  weren't reset per session, so repeating the same command (e.g. "attack")
+  within 1s of a world switch had its first repetition in the new session
+  silently dropped as a stale duplicate. Added `resetSession()`, called
+  from `WorldMode.init()`.
+
+This completes the full input-modality sweep started in Round 11
+(gamepad, gesture) — all four alternate input systems (gamepad, gesture,
+touch, voice) have now had a dedicated audit round.
+
 ---
 
 ## Known Issues / Tech Debt (not yet fixed — lower confidence or higher risk)
@@ -247,8 +278,7 @@ live camera and real hand poses, so it's logged here rather than guessed at.
    registration + registry. Needs a design decision, not a mechanical fix.
 4. Files not yet given a dedicated audit round: `state.js`, `data.js`,
    `config.js`, `boot.js`, `galaxy.js`, `warp.js`, `approach.js`,
-   `landing.js`, `settings.js`, `debug.js`, `touch-controls.js`,
-   `voice-controls.js`, `help-overlay.js`, `tutorial.js`,
+   `landing.js`, `settings.js`, `debug.js`, `help-overlay.js`, `tutorial.js`,
    `post-processing.js`. Many of these are pre-world-mode / meta systems
    rather than core DOTA gameplay, but haven't been ruled out.
 5. **Point-down gesture is likely unreachable** (see Round 11) — needs a

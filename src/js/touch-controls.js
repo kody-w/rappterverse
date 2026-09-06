@@ -6,7 +6,6 @@ const TouchControls = {
     _joystickOrigin: null,
     _moveVector: { x: 0, z: 0 },
     _touchId: null,
-    _actionTouchId: null,
     _isMobile: false,
 
     init() {
@@ -40,8 +39,26 @@ const TouchControls = {
         this._onAttack = null;
         this._onPoke = null;
         this._onMap = null;
+        this._touchId = null;
+        this._joystickOrigin = null;
+        this._moveVector.x = 0;
+        this._moveVector.z = 0;
         const el = document.getElementById('touch-controls');
         if (el) el.remove();
+    },
+
+    // WorldMode.cleanup() previously only called hide() (display:none) on
+    // world exit, never disable() -- the touchmove/touchend window
+    // listeners and every button's touchstart listener stayed bound, and
+    // `active` stayed true so the next world's init()->enable() call
+    // no-opped on its "already active" guard instead of freshly binding.
+    // The DOM elements weren't removed either, so this was latent rather
+    // than visibly broken, but any bound handler firing while no world
+    // session is active (e.g. WorldMode.pokeAgent()/HUD.toggleMinimap()
+    // from a touch that lands on a hidden button) bypassed the session
+    // boundary entirely. cleanup() is a no-op if never enabled.
+    cleanup() {
+        if (this.active) this.disable();
     },
 
     _createUI() {
@@ -62,8 +79,16 @@ const TouchControls = {
             </div>
         `;
 
-        const style = document.createElement('style');
-        style.textContent = `
+        // disable() only ever removed #touch-controls, never this <style>
+        // element -- every disable()/enable() cycle (which cleanup() below
+        // now triggers on every world exit that had touch controls active)
+        // left one more orphaned <style> tag in <head> forever. Reuse an
+        // existing one if present instead of creating a duplicate.
+        let style = document.getElementById('touch-controls-style');
+        if (!style) {
+            style = document.createElement('style');
+            style.id = 'touch-controls-style';
+            style.textContent = `
             #touch-controls { position: fixed; inset: 0; pointer-events: none; z-index: 800; display: none; }
             #joystick-zone {
                 position: absolute; bottom: 20px; left: 20px;
@@ -100,7 +125,8 @@ const TouchControls = {
             .touch-btn-poke { border-color: rgba(0,255,136,0.3); color: rgba(0,255,136,0.7); }
             .touch-btn-jump { border-color: rgba(255,187,0,0.3); color: rgba(255,187,0,0.7); }
         `;
-        document.head.appendChild(style);
+            document.head.appendChild(style);
+        }
         document.body.appendChild(container);
 
         this._joystickOuter = document.getElementById('joystick-outer');
