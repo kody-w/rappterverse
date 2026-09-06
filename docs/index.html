@@ -15000,6 +15000,12 @@ const WorldMode = {
 
         // Touch controls
         if (typeof TouchControls !== 'undefined') TouchControls.update(delta);
+        // GamepadControls.update() was never called either -- controller
+        // movement/attack/abilities/bridge/map/inventory input never reached
+        // the game even after a controller connected. The event listener
+        // registered in main.js only sets active/_padIndex; the actual
+        // per-frame input polling has to run here.
+        if (typeof GamepadControls !== 'undefined') GamepadControls.update();
 
         // RappterVM tick — Lispy behaviors between frames
         if (typeof RappterVM !== 'undefined' && RappterVM._running) RappterVM.tick();
@@ -15138,6 +15144,11 @@ const WorldMode = {
         // a leftover retry could pop the overlay (and lock input) into a
         // later, unrelated world session.
         if (typeof Chronicle !== 'undefined' && Chronicle.cleanup) Chronicle.cleanup();
+        // GestureControls._stop() (webcam MediaStream + released keys) was
+        // only ever reached via the user manually toggling the feature off
+        // — a world/session ending while gestures were left on kept the
+        // camera recording indefinitely.
+        if (typeof GestureControls !== 'undefined' && GestureControls.cleanup) GestureControls.cleanup();
 
         // Generic disposal pass for whatever's left in the scene. Ground,
         // lighting, biome objects/features, and weather particles (all owned
@@ -17710,15 +17721,19 @@ const GestureControls = {
         const pinkyUp = pinkyTip.y < pinkyMcp.y - 0.04;
         const thumbOut = Math.abs(thumbTip.x - wrist.x) > 0.08;
 
-        // Fist: all fingers curled
-        if (!indexUp && !middleUp && !ringUp && !pinkyUp) {
-            this.gesture = 'fist';
+        // Thumbs up: thumb extended, others curled. Checked BEFORE the
+        // generic fist test below -- every thumbs-up pose also satisfies
+        // "all four non-thumb fingers curled", so with fist checked first
+        // it always matched and returned before this branch could ever run.
+        // The documented thumbs-up "poke" action was unreachable.
+        if (thumbOut && thumbTip.y < wrist.y - 0.1 && !indexUp && !middleUp && !ringUp && !pinkyUp) {
+            this.gesture = 'thumbs_up';
             return;
         }
 
-        // Thumbs up: thumb extended, others curled
-        if (thumbOut && thumbTip.y < wrist.y - 0.1 && !indexUp && !middleUp && !ringUp && !pinkyUp) {
-            this.gesture = 'thumbs_up';
+        // Fist: all fingers curled
+        if (!indexUp && !middleUp && !ringUp && !pinkyUp) {
+            this.gesture = 'fist';
             return;
         }
 
@@ -17838,6 +17853,17 @@ const GestureControls = {
             btn.classList.toggle('active', this.active);
             btn.title = this.active ? 'Gestures ON (H)' : 'Gestures OFF (H)';
         }
+    },
+
+    // _stop() was only ever reached via toggle() while the feature was
+    // active. WorldMode.cleanup() (a world/session teardown, not a user
+    // toggling the feature off) never called this or anything equivalent,
+    // so if gesture controls were left on, the webcam MediaStream kept
+    // recording (camera indicator stays lit) after the world session ended
+    // -- a real privacy/battery issue, not just leaked JS state. Idempotent:
+    // a no-op if the feature was never turned on.
+    cleanup() {
+        if (this.active) { this.active = false; this._stop(); }
     }
 };
 
@@ -21840,6 +21866,14 @@ const QuestTracker = {
         if (typeof Settings !== 'undefined') Settings.init();
         if (typeof Chronicle !== 'undefined') Chronicle.init();
         if (typeof VoiceControls !== 'undefined') VoiceControls.init();
+        // GamepadControls.init() was never called from anywhere -- its
+        // 'gamepadconnected'/'gamepaddisconnected' listeners never registered,
+        // so `active`/`_padIndex` never got set and every rumble() call
+        // scattered through combat/inventory/jungle code was a silent no-op.
+        // Registered once here (global, like VoiceControls) rather than per
+        // world-session, since re-running init() on every world switch with
+        // no matching cleanup() would just accumulate duplicate listeners.
+        if (typeof GamepadControls !== 'undefined') GamepadControls.init();
         if (typeof PostProcessing !== 'undefined') PostProcessing.init(GameState.renderer);
 
         // Run boot then start animation

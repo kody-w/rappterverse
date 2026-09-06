@@ -421,6 +421,14 @@
         if (typeof Settings !== 'undefined') Settings.init();
         if (typeof Chronicle !== 'undefined') Chronicle.init();
         if (typeof VoiceControls !== 'undefined') VoiceControls.init();
+        // GamepadControls.init() was never called from anywhere -- its
+        // 'gamepadconnected'/'gamepaddisconnected' listeners never registered,
+        // so `active`/`_padIndex` never got set and every rumble() call
+        // scattered through combat/inventory/jungle code was a silent no-op.
+        // Registered once here (global, like VoiceControls) rather than per
+        // world-session, since re-running init() on every world switch with
+        // no matching cleanup() would just accumulate duplicate listeners.
+        if (typeof GamepadControls !== 'undefined') GamepadControls.init();
         if (typeof PostProcessing !== 'undefined') PostProcessing.init(GameState.renderer);
 
         // Run boot then start animation
