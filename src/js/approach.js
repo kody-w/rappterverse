@@ -9,6 +9,7 @@ const Approach = {
     startPos: null,        // camera position when approach began
     startLookAt: null,     // initial lookAt target
     animFrame: null,
+    letterboxTimer: null,
     orbitRadius: 20,
     orbitHeight: 8,
 
@@ -32,6 +33,22 @@ const Approach = {
     },
 
     start(worldId) {
+        // voice-controls.js's "travel to X" handler calls Approach.start()
+        // unconditionally, with no GameState.mode guard (voice commands are
+        // a persistent, mode-agnostic toggle by design -- see Round 12) --
+        // so saying a second travel command while already mid-approach
+        // re-entered this function while `this.active` was still true from
+        // the first call. Every field below is shared mutable state, and
+        // animate() re-schedules itself via requestAnimationFrame every
+        // frame, so the old rAF chain kept running alongside the new one --
+        // two overlapping loops racing the same progress/phase/camera state,
+        // with only the newer one's animFrame ever recorded (so cleanup()
+        // could only ever cancel one of them). Clean up any approach
+        // already in flight before starting a new one, same fix shape as
+        // Warp.start()'s concurrent-start guard, but redirecting (not
+        // ignoring) the new destination -- unlike a warp tunnel, changing
+        // your mind mid-approach is a reasonable thing to let happen.
+        if (this.active) this.cleanup();
         this.targetWorld = worldId;
         this.active = true;
         this.phase = 'approaching';
@@ -60,9 +77,20 @@ const Approach = {
         var gs = GameState.data.gameState || {};
         var ws = gs.worlds && gs.worlds[worldId] ? gs.worlds[worldId] : {};
         var apStatLine = document.getElementById('approach-stats');
+        // #approach-stats also holds 3 permanent stat divs (distance/
+        // velocity/eta) that animate() depends on by id, so only remove a
+        // PRIOR live-population stat this same code injected -- not the
+        // whole container's contents. Without this, repeated approaches
+        // (approach world A, abort, approach world B, ...) kept appending
+        // another "AGENTS" row, leaving stale population numbers from
+        // every previously-approached world visible at once.
+        if (apStatLine) {
+            var oldLive = apStatLine.querySelector('.approach-stat-live');
+            if (oldLive) oldLive.remove();
+        }
         if (apStatLine && ws.population) {
             var echoDiv = document.createElement('div');
-            echoDiv.className = 'approach-stat';
+            echoDiv.className = 'approach-stat approach-stat-live';
             echoDiv.innerHTML = '<div class="approach-stat-value">' + escapeHTML(Number(ws.population) || 0) + '</div><div class="approach-stat-label">AGENTS</div>';
             apStatLine.appendChild(echoDiv);
         }
@@ -94,9 +122,19 @@ const Approach = {
         // Show overlay and letterbox
         const approachOverlay = document.getElementById('approach-overlay');
         if (approachOverlay) approachOverlay.classList.add('active');
-        setTimeout(() => {
-            document.getElementById('letterbox-top').classList.add('active');
-            document.getElementById('letterbox-bottom').classList.add('active');
+        // Stored + cancelled in cleanup() -- previously this timer wasn't
+        // tracked at all, so aborting (or redirecting to a new destination,
+        // see the guard added at the top of start()) within this 200ms
+        // window let it fire later regardless: after abort() it silently
+        // turned the letterbox bars back on while already back in galaxy
+        // mode, and after a redirect it could fire mid-way through the NEW
+        // approach for no reason tied to its own state.
+        this.letterboxTimer = setTimeout(() => {
+            this.letterboxTimer = null;
+            const lbTop = document.getElementById('letterbox-top');
+            const lbBottom = document.getElementById('letterbox-bottom');
+            if (lbTop) lbTop.classList.add('active');
+            if (lbBottom) lbBottom.classList.add('active');
         }, 200);
 
         // Hide landing button until ready phase
@@ -204,6 +242,8 @@ const Approach = {
         this.active = false;
         if (this.animFrame) cancelAnimationFrame(this.animFrame);
         this.animFrame = null;
+        if (this.letterboxTimer) clearTimeout(this.letterboxTimer);
+        this.letterboxTimer = null;
         this.phase = null;
         const approachOvl = document.getElementById('approach-overlay');
         if (approachOvl) approachOvl.classList.remove('active');
