@@ -35,6 +35,7 @@ const Landing = {
     lastTime: 0,
     beaconTimer: 0,
     beaconOn: true,
+    resolveTimer: null,
 
     start(worldId) {
         this.targetWorld = worldId;
@@ -53,7 +54,14 @@ const Landing = {
         const overlay = document.getElementById('landing-overlay');
         overlay.classList.add('active');
         const landingStatusEl = document.getElementById('landing-status');
-        if (landingStatusEl) landingStatusEl.textContent = typeof WorldSeed !== 'undefined' ? 'SEED ' + WorldSeed.getSeed(this.worldId || GameState.currentWorld) + ' — AUTOPILOT ENGAGED' : 'AUTOPILOT ENGAGED';
+        // `this.worldId` is never assigned anywhere in this file (dead
+        // reference) -- this coincidentally still showed the right seed
+        // because Landing.start() is only ever reached via approach.js's
+        // initiateLanding(), which runs after Approach.start() already set
+        // GameState.currentWorld to the same target. `this.targetWorld`,
+        // set two lines above, is this object's own authoritative value and
+        // doesn't depend on that caller-ordering coincidence.
+        if (landingStatusEl) landingStatusEl.textContent = typeof WorldSeed !== 'undefined' ? 'SEED ' + WorldSeed.getSeed(this.targetWorld) + ' — AUTOPILOT ENGAGED' : 'AUTOPILOT ENGAGED';
 
         // Scene
         this.scene = new THREE.Scene();
@@ -319,7 +327,7 @@ const Landing = {
             status.textContent = 'MANUAL CONTROL';
         } else {
             btn.textContent = 'TAKE CONTROL';
-            status.textContent = typeof WorldSeed !== 'undefined' ? 'SEED ' + WorldSeed.getSeed(this.worldId || GameState.currentWorld) + ' — AUTOPILOT ENGAGED' : 'AUTOPILOT ENGAGED';
+            status.textContent = typeof WorldSeed !== 'undefined' ? 'SEED ' + WorldSeed.getSeed(this.targetWorld) + ' — AUTOPILOT ENGAGED' : 'AUTOPILOT ENGAGED';
         }
         // Thrust light color: green = autopilot, orange = manual
         if (this.thrustLight) {
@@ -518,7 +526,18 @@ const Landing = {
             HUD.showToast('Crash landing!');
         }
 
-        setTimeout(() => {
+        // Stored + cancelled in cleanup() -- GameState.mode stays 'landing'
+        // for this entire 2s result screen, so pressing Escape (which calls
+        // Landing.abort() whenever mode === 'landing', per main.js) is
+        // reachable during it. Left untracked, this timer used to fire
+        // regardless: it called cleanup() a second time and then
+        // WorldMode.init(this.targetWorld) even though the player had
+        // already backed out to the galaxy -- silently dragging them back
+        // into the world they'd just declined, or (if they'd since started
+        // a new landing) tearing down the NEW landing and initializing the
+        // OLD target world instead.
+        this.resolveTimer = setTimeout(() => {
+            this.resolveTimer = null;
             if (!success) {
                 HUD.showToast('Hull damage sustained');
             }
@@ -530,6 +549,8 @@ const Landing = {
     cleanup() {
         this.active = false;
         if (this.animFrame) cancelAnimationFrame(this.animFrame);
+        if (this.resolveTimer) clearTimeout(this.resolveTimer);
+        this.resolveTimer = null;
 
         window.removeEventListener('keydown', this.keyDown);
         window.removeEventListener('keyup', this.keyUp);

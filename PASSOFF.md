@@ -1,6 +1,6 @@
 # Shift Passoff — 2026-09-05
 
-## Status: FRONTEND BUG-HUNT LOOP (15 rounds, ongoing — regression suite 14/14)
+## Status: FRONTEND BUG-HUNT LOOP (16 rounds, ongoing — regression suite 14/14)
 
 Not a feature session. A fan-out audit-and-fix loop targeting real
 correctness bugs in the DOTA-mode frontend (`src/js/`), run via the
@@ -432,6 +432,77 @@ regressions), plus the direct behavioral drop-rate simulation above.
 `node scripts/test-cases.js` still 14/14 (no regressions), plus direct
 behavioral verification of the guard in the test harness (described above).
 
+### Round 16 — `approach.js`, `landing.js`
+
+Both files turned out to have exactly the same *class* of bug found in
+`warp.js` last round -- a mode-transition window where the "in-flight"
+mode stays active far longer than intuition suggests, making a second
+call to `start()`/a stale delayed callback genuinely reachable via a real
+input path, not just a hypothetical.
+
+**approach.js** — 3 real, verified findings:
+- **`Approach.start()` had no guard against re-entry while an approach was
+  already active.** `voice-controls.js`'s "travel to X" handler calls
+  `Approach.start(worldId)` completely unconditionally (voice is a
+  persistent, mode-agnostic toggle by design, see Round 12), so saying a
+  second travel command mid-approach re-entered `start()` while the first
+  call's `animate()` rAF chain was still running. Since `animate()`
+  re-schedules itself every frame, the old loop kept running alongside the
+  new one, both racing the same `progress`/`phase`/`orbitAngle`/camera
+  state, with only the newer one's `animFrame` ever recorded. Fixed with
+  `if (this.active) this.cleanup();` at the top of `start()` -- but unlike
+  `Warp.start()`'s "ignore the second call" fix, this one *redirects* to
+  the new destination after cleaning up the old loop, since changing your
+  mind mid-approach (unlike mid-warp-tunnel) is a reasonable thing to
+  allow.
+- **The letterbox-bars `setTimeout` was never tracked or cancelled.**
+  Aborting (or redirecting, per the fix above) within its 200ms window
+  left it scheduled; it later fired regardless, silently re-activating the
+  letterbox bars while already back in galaxy mode (or partway through an
+  unrelated new approach). Now stored as `this.letterboxTimer` and
+  cancelled in `cleanup()`.
+- **The live population stat row was never deduplicated.** Every
+  `Approach.start()` call appended another `.approach-stat` "AGENTS" div
+  to `#approach-stats` without removing a prior one, so repeated
+  approaches (approach A, abort, approach B, ...) left every
+  previously-approached world's stale population number visible at once.
+  Gave the dynamically-injected div its own `.approach-stat-live` class
+  and remove any existing one before appending a new one -- the container
+  also holds 3 permanent distance/velocity/eta stat divs `animate()`
+  depends on by id, so a blanket "clear the container" approach would have
+  broken those.
+
+**landing.js** — 2 findings, 1 fix + 1 low-risk defensive cleanup:
+- **`resolveLanding()`'s 2-second result-screen `setTimeout` was never
+  tracked or cancelled.** `GameState.mode` stays `'landing'` for that
+  entire window, so pressing Escape (which calls `Landing.abort()`
+  whenever mode is `'landing'`, per `main.js`) is genuinely reachable
+  during it. The stale callback fired regardless: it called `cleanup()` a
+  second time and then `WorldMode.init(this.targetWorld)` even though the
+  player had already backed out to the galaxy -- silently dragging them
+  back into the world they'd just declined (or, if they'd since started a
+  new landing, tearing down the *new* one and initializing the *old*
+  target world instead). Fixed the same way as the two findings above:
+  stored as `this.resolveTimer`, cancelled in `cleanup()`.
+- `this.worldId` (read in two places for the landing-status seed display)
+  is never assigned anywhere in the file -- confirmed dead via grep. It
+  coincidentally still showed the correct seed today only because
+  `Landing.start()` has exactly one real caller (`approach.js`'s
+  `initiateLanding()`), which runs after `Approach.start()` already set
+  `GameState.currentWorld` to the same target -- not a currently-observable
+  bug, but a fragile landmine relying on caller-ordering coincidence.
+  Replaced both reads with `this.targetWorld`, this object's own
+  authoritative field, removing the dependency on that coincidence.
+
+**Verification:** `node --check` on both edited files, `bash
+scripts/bundle.sh`, `node scripts/test-cases.js` still 14/14 (no
+regressions). Direct behavioral verification in the test harness for all
+three approach.js fixes (concurrent-start redirect, letterbox timer
+tracked/cleared, stat dedup verified against realistic DOM `querySelector`
+semantics since the harness's own mock always returns a dummy element
+regardless of selector) and the landing.js `resolveTimer` fix (set after
+`resolveLanding()`, correctly nulled by `cleanup()`).
+
 ---
 
 ## Known Issues / Tech Debt (not yet fixed — lower confidence or higher risk)
@@ -479,10 +550,10 @@ behavioral verification of the guard in the test harness (described above).
    `rappter-vm.js`, rather than inventing a speculative new consumer for
    code nothing was calling. Verified: 14/14 regression suite still passes
    after removal.
-4. Files not yet given a dedicated audit round: `approach.js`, `landing.js`,
-   `settings.js`, `debug.js`, `help-overlay.js`, `tutorial.js`,
-   `post-processing.js`. Many of these are pre-world-mode / meta systems
-   rather than core DOTA gameplay, but haven't been ruled out.
+4. Files not yet given a dedicated audit round: `settings.js`, `debug.js`,
+   `help-overlay.js`, `tutorial.js`, `post-processing.js`. Many of these
+   are pre-world-mode / meta systems rather than core DOTA gameplay, but
+   haven't been ruled out.
 5. **Point-down gesture is likely unreachable** (see Round 11) — needs a
    direction-agnostic finger-extension geometry change I can't verify
    without a live camera.
