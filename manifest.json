@@ -203,6 +203,14 @@
       "reason": "A W3C PWA web-app manifest, not a static-API document. Different artifact, same filename."
     },
     {
+      "path": "state/inbox/issue-*.json",
+      "reason": "Transient Issue-to-delta queue files consumed by scripts/apply_deltas.py before publication; they are protocol inputs, not static API documents."
+    },
+    {
+      "path": "dreamcatcher-delta-manifest.json",
+      "reason": "Caller-supplied Dreamcatcher protocol manifest output written by scripts/dreamcatcher_delta.py; it is diagnostic evidence, not a served state document."
+    },
+    {
       "path": "api/v1/badge.json",
       "reason": "A shields.io endpoint response. Its shape is fixed by the consumer (`schemaVersion`/`label`/`message`/`color`); an extra `schema` key would be rejected. It is generated, versioned under api/v1/, and listed in registry.json."
     },

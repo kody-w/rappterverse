@@ -249,7 +249,9 @@ class TestWritersPreserveTheStamp(unittest.TestCase):
         ("world_growth.py", "_create_agent_registry"),  # agents/*.agent.json
         ("frame_compile.py", "_save_index"),          # state/programs/_lispvm/_index.json
         ("export_legacy_sources.py", "export"),       # a caller-supplied output directory
+        ("dreamcatcher_delta.py", "write_manifest"),  # caller-supplied protocol manifest
         ("dreamcatcher_reverse_index.py", "write_json"),  # caller-supplied index/query output
+        ("process_issue_action.py", "main"),          # transient state/inbox delta queue
     }
 
     def test_no_file_write_bypasses_the_stamp(self):

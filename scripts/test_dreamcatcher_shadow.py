@@ -545,15 +545,17 @@ class ReverseIndexVendorTests(RepositoryScratchTest):
     def test_casefold_alias_also_requires_same_resolved_identity(self) -> None:
         repo, _ = self.make_repo()
         first = repo / "state" / "agents.json"
+        alias = repo / "state" / "Agents.json"
         second = repo / "state" / "actions.json"
+        supports_casefold_alias = alias.exists() and os.path.samefile(alias, first)
         self.assertEqual(
             reverse_index._same_casefold_file_alias(
                 "state/Agents.json",
                 "state/agents.json",
-                first,
+                alias,
                 first,
             ),
-            os.name == "nt",
+            supports_casefold_alias,
         )
         self.assertFalse(reverse_index._same_casefold_file_alias(
             "state/Agents.json",

@@ -103,10 +103,13 @@ def _same_casefold_file_alias(
     old_candidate: Path,
     new_candidate: Path,
 ) -> bool:
+    old_parts = Path(old_path).parts
+    new_parts = Path(new_path).parts
     if (
-        os.name != "nt"
-        or old_path == new_path
+        old_path == new_path
         or old_path.casefold() != new_path.casefold()
+        or old_candidate.parts[-len(old_parts):] != old_parts
+        or new_candidate.parts[-len(new_parts):] != new_parts
     ):
         return False
     try:
