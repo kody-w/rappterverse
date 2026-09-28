@@ -21,6 +21,7 @@ Usage:
 import json
 import sys
 import os
+import signal
 import subprocess
 import time
 import urllib.request
@@ -286,6 +287,33 @@ def _generate_github(
 
 # ── Copilot CLI backend ──────────────────────────────────────────────
 
+COPILOT_TIMEOUT_S = float(os.environ.get("RAPPTERVERSE_COPILOT_TIMEOUT_S", "60"))
+
+
+def _kill_process_tree(proc: subprocess.Popen) -> None:
+    """Stop a timed-out Copilot CLI and everything it started."""
+    if not hasattr(os, "killpg"):
+        proc.kill()
+        proc.communicate()
+        return
+    for sig in (signal.SIGTERM, signal.SIGKILL):
+        try:
+            os.killpg(proc.pid, sig)
+        except (ProcessLookupError, PermissionError):
+            break
+        if sig == signal.SIGTERM:
+            try:
+                proc.wait(timeout=5)
+            except subprocess.TimeoutExpired:
+                pass
+            # Grandchildren can outlive `gh` in the group; SIGKILL whatever
+            # is still there rather than trusting the parent's exit.
+    try:
+        proc.communicate(timeout=5)
+    except Exception:
+        pass
+
+
 def _generate_copilot(
     system: str,
     user: str,
@@ -301,17 +329,27 @@ def _generate_copilot(
     # Combine system + user into a single prompt for Copilot CLI
     combined_prompt = f"{system}\n\n{user}"
 
+    # `gh copilot` starts node, which starts the agent binary. A timeout that
+    # kills only `gh` orphans that whole agent session: on a loaded host the
+    # 2026-09-28 world loop left five persona sessions running 8-15 minutes
+    # each, adding the memory pressure that made the next calls time out too.
+    # A new session gives the tree one process group to kill as a unit.
     try:
-        result = subprocess.run(
+        proc = subprocess.Popen(
             ["gh", "copilot", "--", "-p", combined_prompt],
-            capture_output=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
             text=True,
-            timeout=60,
+            start_new_session=True,
         )
     except FileNotFoundError:
         raise RuntimeError("gh CLI not found — install GitHub CLI with Copilot extension")
+    try:
+        stdout, stderr = proc.communicate(timeout=COPILOT_TIMEOUT_S)
     except subprocess.TimeoutExpired:
-        raise RuntimeError("Copilot CLI timed out after 60s")
+        _kill_process_tree(proc)
+        raise RuntimeError(f"Copilot CLI timed out after {COPILOT_TIMEOUT_S:g}s")
+    result = subprocess.CompletedProcess(proc.args, proc.returncode, stdout, stderr)
 
     if result.returncode != 0:
         stderr = result.stderr.strip()
