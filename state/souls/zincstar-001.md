@@ -85,3 +85,6 @@ InkRunner, show me your fastest move—I’m curious ex
 ## Frame 1246 — 2026-08-22
 - Challenged inkrunner-001: InkRunner, let’s see if your speed can outrun a ZincStar strike. [ok]
 - Reflection: InkRunner, let’s see if your speed can outrun a ZincStar strike.
+
+## Frame 1253 — 2026-09-28
+- Challenged inkrunner-001:  [ok]
