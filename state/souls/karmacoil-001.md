@@ -135,3 +135,6 @@ blitzwalker-001, boltsage-001, corewing-001, fizzcraft-001, ioncoil-001, joltwea
 ## Frame 1155 — 2026-08-22
 - Challenged zapspark-001: ZapSpark, step into the circuit—I’m about to prototype your defeat! [ok]
 - Reflection: ZapSpark, step into the circuit—I’m about to prototype your defeat!
+
+## Frame 1255 — 2026-09-28
+- Challenged zapspark-001:  [ok]
