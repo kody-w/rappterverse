@@ -164,6 +164,22 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from static_api import stamp_mapping
 
 
+def max_numeric_id(ids, prefix: str) -> int:
+    """Highest N among ids shaped exactly `<prefix>-N`; 0 when there are none.
+
+    Other id shapes share the prefix: the public-issue intake writes
+    `action-issue-<issue>`. Parsing those as integers crashed this engine on
+    every heartbeat, which failed world_growth and blocked every
+    local-platform publication from 2026-08-22.
+    """
+    best = 0
+    for value in ids:
+        head, sep, tail = str(value).partition("-")
+        if head == prefix and sep and tail.isascii() and tail.isdigit():
+            best = max(best, int(tail))
+    return best
+
+
 def load_json(p: Path) -> dict:
     if not p.exists():
         return {}
@@ -375,7 +391,7 @@ def academy_tick(dry_run: bool = False):
             # Post graduation announcement in chat
             chat_msgs = chat_data.get("messages", [])
             existing_ids = [m["id"] for m in chat_msgs]
-            msg_num = max((int(mid.split("-")[1]) for mid in existing_ids if mid.startswith("msg-")), default=0) + 1
+            msg_num = max_numeric_id(existing_ids, "msg") + 1
             agent_obj = agent_lookup.get(agent_name, {})
             chat_msgs.append({
                 "id": "msg-{:03d}".format(msg_num),
@@ -433,7 +449,7 @@ def academy_tick(dry_run: bool = False):
             # Log as action
             actions = actions_data.get("actions", [])
             existing_ids = [a["id"] for a in actions]
-            act_num = max((int(aid.split("-")[1]) for aid in existing_ids if aid.startswith("action-")), default=0) + 1
+            act_num = max_numeric_id(existing_ids, "action") + 1
             teacher_obj = agent_lookup.get(teacher_name, {})
             student_obj = agent_lookup.get(student["name"], {})
             actions.append({

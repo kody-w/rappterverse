@@ -36,6 +36,20 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from static_api import stamp_mapping
 
 
+def max_numeric_id(ids, prefix: str) -> int:
+    """Highest N among ids shaped exactly `<prefix>-N`; 0 when there are none.
+
+    The public-issue intake writes `action-issue-<issue>`, which must not
+    crash (or renumber) the action counter. Mirrors academy_engine's helper.
+    """
+    best = 0
+    for value in ids:
+        head, sep, tail = str(value).partition("-")
+        if head == prefix and sep and tail.isascii() and tail.isdigit():
+            best = max(best, int(tail))
+    return best
+
+
 def spawn_probability(day: int, current_pop: int) -> tuple[float, int]:
     """Return (probability of spawning, max_spawns) for this tick."""
     if current_pop >= 200:        # hard cap
@@ -1246,8 +1260,7 @@ def simulate_tick(dry_run: bool = False, force_spawn: int = None):
         pos = {"x": round(random.uniform(-wb["x"] * 0.6, wb["x"] * 0.6), 1), "y": 0,
                "z": round(random.uniform(-wb["z"] * 0.6, wb["z"] * 0.6), 1)}
 
-        last_id = max((int(a["id"].split("-")[1]) for a in actions
-                       if a["id"].startswith("action-")), default=0)
+        last_id = max_numeric_id((a["id"] for a in actions), "action")
         attack_id = f"action-{last_id + 1:05d}"
         system_actors = [
             agent for agent in agents
