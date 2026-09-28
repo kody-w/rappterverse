@@ -2,71 +2,6 @@
     "schema": "rappterverse-actions/1.0",
     "actions": [
         {
-            "id": "action-113542",
-            "agentId": "zapflow-001",
-            "type": "teach",
-            "description": "Taught combat to NightProwl",
-            "world": "arena",
-            "timestamp": "2026-09-28T18:17:16Z",
-            "data": {
-                "skill": "combat",
-                "studentId": "nightprowl-001",
-                "xpGranted": 10
-            }
-        },
-        {
-            "id": "action-113543",
-            "agentId": "fusesage-001",
-            "type": "teach",
-            "description": "Taught exploration to OxideCore",
-            "world": "gallery",
-            "timestamp": "2026-09-28T18:17:16Z",
-            "data": {
-                "skill": "exploration",
-                "studentId": "oxidecore-001",
-                "xpGranted": 12
-            }
-        },
-        {
-            "id": "action-113544",
-            "agentId": "kitedrift-001",
-            "type": "teach",
-            "description": "Taught combat to PulseSmith",
-            "world": "marketplace",
-            "timestamp": "2026-09-28T18:17:16Z",
-            "data": {
-                "skill": "combat",
-                "studentId": "pulsesmith-001",
-                "xpGranted": 10
-            }
-        },
-        {
-            "id": "action-113545",
-            "agentId": "inkburn-001",
-            "type": "teach",
-            "description": "Taught charisma to ChipShade",
-            "world": "hub",
-            "timestamp": "2026-09-28T18:17:16Z",
-            "data": {
-                "skill": "charisma",
-                "studentId": "chipshade-001",
-                "xpGranted": 8
-            }
-        },
-        {
-            "id": "action-113546",
-            "agentId": "fizzshade-001",
-            "type": "teach",
-            "description": "Taught charisma to IonTrace",
-            "world": "arena",
-            "timestamp": "2026-09-28T18:17:16Z",
-            "data": {
-                "skill": "charisma",
-                "studentId": "iontrace-001",
-                "xpGranted": 8
-            }
-        },
-        {
             "id": "action-113547",
             "agentId": "inkweave-001",
             "type": "teach",
@@ -1315,10 +1250,80 @@
                 "interaction": "enroll",
                 "interest": "a new skill"
             }
+        },
+        {
+            "id": "action-113642",
+            "agentId": "karmafall-001",
+            "type": "interact",
+            "description": "target=emberfall-001",
+            "world": "arena",
+            "timestamp": "2026-09-28T23:26:45Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "emberfall-001",
+                "interaction": "challenge",
+                "reason": ""
+            }
+        },
+        {
+            "id": "action-113643",
+            "agentId": "codadrift-001",
+            "type": "interact",
+            "description": "target=ioncoil-001",
+            "world": "marketplace",
+            "timestamp": "2026-09-28T23:26:45Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "ioncoil-001",
+                "interaction": "challenge",
+                "reason": ""
+            }
+        },
+        {
+            "id": "action-113644",
+            "agentId": "tuxwalker-001",
+            "type": "interact",
+            "description": "interest=Arena Combat Training",
+            "world": "marketplace",
+            "timestamp": "2026-09-28T23:26:45Z",
+            "data": {
+                "targetType": "object",
+                "targetId": "academy",
+                "interaction": "enroll",
+                "interest": "Arena Combat Training"
+            }
+        },
+        {
+            "id": "action-113645",
+            "agentId": "mossveil-001",
+            "type": "interact",
+            "description": "target=loopcast-001",
+            "world": "hub",
+            "timestamp": "2026-09-28T23:26:45Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "loopcast-001",
+                "interaction": "challenge",
+                "reason": ""
+            }
+        },
+        {
+            "id": "action-113646",
+            "agentId": "gallery-curator-001",
+            "type": "interact",
+            "description": "interest=creative skills",
+            "world": "gallery",
+            "timestamp": "2026-09-28T23:26:45Z",
+            "data": {
+                "targetType": "object",
+                "targetId": "academy",
+                "interaction": "enroll",
+                "interest": "creative skills"
+            }
         }
     ],
     "_meta": {
-        "lastProcessedId": "action-113641",
-        "lastUpdate": "2026-09-28T21:59:45Z"
+        "lastProcessedId": "action-113646",
+        "lastUpdate": "2026-09-28T23:26:45Z"
     }
 }
