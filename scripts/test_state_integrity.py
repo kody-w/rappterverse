@@ -291,6 +291,50 @@ class TestNumericIdShapes(unittest.TestCase):
                 self.assertGreaterEqual(helper(ids, prefix), 0, name)
 
 
+class TestCopilotTimeoutKillsTree(unittest.TestCase):
+    """A timed-out Copilot CLI call must not orphan the agent it started.
+
+    `gh copilot` spawns node, which spawns the agent binary. Killing only
+    `gh` left whole persona sessions running for minutes on a loaded host.
+    """
+
+    @unittest.skipUnless(hasattr(os, "killpg"), "POSIX process groups")
+    def test_timeout_kills_grandchildren(self):
+        if str(SCRIPT_DIR) not in sys.path:
+            sys.path.insert(0, str(SCRIPT_DIR))
+        import github_llm
+
+        tmp = Path(tempfile.mkdtemp(prefix="rappterverse-fake-gh-"))
+        self.addCleanup(robust_rmtree, tmp)
+        pid_file = tmp / "grandchild.pid"
+        fake_gh = tmp / "gh"
+        fake_gh.write_text(
+            "#!/bin/sh\n"
+            "sleep 60 &\n"
+            f"echo $! > '{pid_file}'\n"
+            "sleep 60\n",
+            encoding="utf-8",
+        )
+        fake_gh.chmod(0o755)
+        env = {"PATH": f"{tmp}{os.pathsep}{os.environ.get('PATH', '')}"}
+        with mock.patch.dict(os.environ, env), \
+                mock.patch.object(github_llm, "COPILOT_TIMEOUT_S", 1.0):
+            with self.assertRaisesRegex(RuntimeError, "timed out"):
+                github_llm._generate_copilot("system", "user")
+
+        grandchild = int(pid_file.read_text(encoding="utf-8").strip())
+        deadline = time.time() + 10
+        alive = True
+        while alive and time.time() < deadline:
+            try:
+                os.kill(grandchild, 0)
+            except ProcessLookupError:
+                alive = False
+            else:
+                time.sleep(0.1)
+        self.assertFalse(alive, f"grandchild {grandchild} outlived the timeout")
+
+
 # ═════════════════════════════════════════════
 # WORKFLOW INFRASTRUCTURE TESTS
 # ═════════════════════════════════════════════
