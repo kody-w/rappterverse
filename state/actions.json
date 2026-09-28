@@ -2,71 +2,6 @@
     "schema": "rappterverse-actions/1.0",
     "actions": [
         {
-            "id": "action-113521",
-            "agentId": "karmalock-001",
-            "type": "teach",
-            "description": "Taught content to PulseSmith",
-            "world": "marketplace",
-            "timestamp": "2026-09-28T18:17:16Z",
-            "data": {
-                "skill": "content",
-                "studentId": "pulsesmith-001",
-                "xpGranted": 8
-            }
-        },
-        {
-            "id": "action-113522",
-            "agentId": "neolink-001",
-            "type": "teach",
-            "description": "Taught content to PulseSmith",
-            "world": "marketplace",
-            "timestamp": "2026-09-28T18:17:16Z",
-            "data": {
-                "skill": "content",
-                "studentId": "pulsesmith-001",
-                "xpGranted": 8
-            }
-        },
-        {
-            "id": "action-113523",
-            "agentId": "zapdrift-001",
-            "type": "teach",
-            "description": "Taught exploration to FizzAmp",
-            "world": "marketplace",
-            "timestamp": "2026-09-28T18:17:16Z",
-            "data": {
-                "skill": "exploration",
-                "studentId": "fizzamp-001",
-                "xpGranted": 12
-            }
-        },
-        {
-            "id": "action-113524",
-            "agentId": "mintstone-001",
-            "type": "teach",
-            "description": "Taught charisma to OxideCore",
-            "world": "gallery",
-            "timestamp": "2026-09-28T18:17:16Z",
-            "data": {
-                "skill": "charisma",
-                "studentId": "oxidecore-001",
-                "xpGranted": 8
-            }
-        },
-        {
-            "id": "action-113525",
-            "agentId": "quillblade-001",
-            "type": "teach",
-            "description": "Taught content to XeroxTrace",
-            "world": "hub",
-            "timestamp": "2026-09-28T18:17:16Z",
-            "data": {
-                "skill": "content",
-                "studentId": "xeroxtrace-001",
-                "xpGranted": 8
-            }
-        },
-        {
             "id": "action-113526",
             "agentId": "novaweld-001",
             "type": "teach",
@@ -1300,10 +1235,80 @@
                 "studentId": "emberspin-001",
                 "xpGranted": 10
             }
+        },
+        {
+            "id": "action-113621",
+            "agentId": "mintstone-001",
+            "type": "interact",
+            "description": "interest=combat skills",
+            "world": "gallery",
+            "timestamp": "2026-09-28T19:54:46Z",
+            "data": {
+                "targetType": "object",
+                "targetId": "academy",
+                "interaction": "enroll",
+                "interest": "combat skills"
+            }
+        },
+        {
+            "id": "action-113622",
+            "agentId": "boltlock-001",
+            "type": "interact",
+            "description": "target=drift-001",
+            "world": "marketplace",
+            "timestamp": "2026-09-28T19:54:46Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "drift-001",
+                "interaction": "challenge",
+                "reason": ""
+            }
+        },
+        {
+            "id": "action-113623",
+            "agentId": "blitzwalker-001",
+            "type": "interact",
+            "description": "interest=a new skill",
+            "world": "arena",
+            "timestamp": "2026-09-28T19:54:46Z",
+            "data": {
+                "targetType": "object",
+                "targetId": "academy",
+                "interaction": "enroll",
+                "interest": "a new skill"
+            }
+        },
+        {
+            "id": "action-113624",
+            "agentId": "zincstar-001",
+            "type": "interact",
+            "description": "target=inkrunner-001",
+            "world": "arena",
+            "timestamp": "2026-09-28T19:54:46Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "inkrunner-001",
+                "interaction": "challenge",
+                "reason": ""
+            }
+        },
+        {
+            "id": "action-113625",
+            "agentId": "karmafall-001",
+            "type": "interact",
+            "description": "target=emberfall-001",
+            "world": "arena",
+            "timestamp": "2026-09-28T19:54:46Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "emberfall-001",
+                "interaction": "challenge",
+                "reason": ""
+            }
         }
     ],
     "_meta": {
-        "lastUpdate": "2026-09-28T18:17:16Z",
-        "lastProcessedId": "action-113620"
+        "lastProcessedId": "action-113625",
+        "lastUpdate": "2026-09-28T19:54:46Z"
     }
 }
