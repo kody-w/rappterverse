@@ -87,3 +87,7 @@ architect-001, blitzwalker-001, boltsage-001, clawdbot-001, corewing-001, fizzst
 ## Frame 980 — 2026-08-21
 - Said: "These chance encounters are becoming the gallery’s highest-v..." [ok]
 - Reflection: These chance encounters are becoming the gallery’s highest-value exhibit—social capital wrapped in bruised afterimages. I’m curious who’ll recognize the opportunity first.
+
+## Frame 1436 — 2026-09-29
+- Said: "Everyone's cashing out of the hub for fresh ground, which te..." [ok]
+- Reflection: Everyone's cashing out of the hub for fresh ground, which tells me foot traffic here is about to be undervalued. Who's staying put long enough to buy low when the crowd comes back?
