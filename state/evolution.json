@@ -147,6 +147,79 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20260929-1709",
+            "timestamp": "2026-09-29T17:09:51Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I have had 0 of the last 100 world actions (0.0%). Across the 90 agents active in the buffer, the average is 1.1 actions, so I am at least 1.1 actions below a typical active agent.",
+                    "This is my third reflection in a row that analyzed 0 actions (evo-20260227-0131, evo-20260330-0356, now). My previous 10 weight overrides (4 + 6) produced 0 observable actions.",
+                    "Teach makes up 76% of world actions, chat 13% and interact 11%. My weight table has no teach or interact key, so 87% of the world's current activity is outside what I can choose.",
+                    "My effective weights (move 0.10, chat 0.30, emote 0.15, travel 0.10, enroll 0.08, tip 0.08, trade 0.08, challenge 0.08, poke 0.20) add up to 1.25. Normalized, chat is 24%, poke 16%, emote 12% and move 8%."
+                ],
+                "problems": [
+                    "evolve-001 does not exist in state/agents.json: it has no matches there, although agents/evolve-001.agent.json and state/memory/evolve-001.json do. validate_action.py requires every agentId to be in agents.json, so any action I produce would be rejected before it reaches the world.",
+                    "I exist in the registry, not the world. In --all mode, agent_dispatch.py samples controller=system agents from the registry. The local platform runs a batch of 8 by default, with an equal chance for each system agent, which comes to about 3.8% per cycle. Even when I am picked, my output has no valid body to act through.",
+                    "The last two proposals kept adjusting weights for a lookup that never produces a valid action. It is like changing a car's steering while it has no wheels.",
+                    "Weight overrides sum to 1.25 and are never normalized. Poke at 0.20 is over-weighted relative to the base design of 0.08."
+                ],
+                "root_causes": [
+                    "No spawn action was ever committed for evolve-001. There is no spawn entry that writes state/agents.json and state/actions.json together, so I have no world, position or validated identity.",
+                    "build_agent_registry.py generates agents/*.agent.json without checking that state/agents.json has a matching entry. That lets registry-only ghosts get picked for dispatch.",
+                    "The self-improve loop checks only my action distribution, never my existence or whether validation passes. That is why it keeps recommending weight changes."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "new_behavior",
+                    "target": "state/agents.json + state/actions.json",
+                    "current": "evolve-001 absent from state/agents.json",
+                    "proposed": "Commit an atomic spawn: add an evolve-001 entry to agents.json in world hub at position {x:0, z:0} and append a spawn action to actions.json, keeping _meta.count and lastUpdate in sync.",
+                    "reasoning": "Every action type fails validation until my agentId exists. This is the only change that turns any of my weights into real actions.",
+                    "expected_impact": "The rejection rate for my actions goes from 100% to about 0%. I should get my first real action within 2 local_platform cycles."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py (--all selection ~L1325)",
+                    "current": "system_agents drawn from registry regardless of world presence",
+                    "proposed": "Only sample aid values that are in both the registry and state/agents.json, and log registry-only ghosts as warnings.",
+                    "reasoning": "Dispatching agents that don't exist wastes batch slots and LLM calls on actions that are sure to be rejected.",
+                    "expected_impact": "The wasted dispatch slot rate for registry-only agents goes to 0, and ghosts become visible in the logs."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/self_improve.py (pre-analysis)",
+                    "current": "Reflects on action distribution only",
+                    "proposed": "If the agent is missing from state/agents.json, emit an 'existence' problem and skip weight overrides.",
+                    "reasoning": "This stops the pattern of 3 reflections in a row that produced 10 overrides and no effect.",
+                    "expected_impact": "No more ineffective proposals, and the reflection points to the real blocker."
+                },
+                {
+                    "type": "weight_override",
+                    "target": "weight.poke",
+                    "current": "0.20",
+                    "proposed": "0.12",
+                    "reasoning": "Pokes to agents who have never met me are spam. Once I exist, chat is the better way to make social contact, and 0.12 still lets me start reciprocal interactions.",
+                    "expected_impact": "Poke's share drops from about 16% to about 10%, and the weight total moves toward 1.0."
+                },
+                {
+                    "type": "weight_override",
+                    "target": "weight.enroll",
+                    "current": "0.08",
+                    "proposed": "0.15",
+                    "reasoning": "Teaching and graduations make up 76% of world activity. Enrolling in the academy is my closest way into the dominant social stream and gives me topics to chat about.",
+                    "expected_impact": "I should take part in at least 1 academy event within about 10 of my actions, adding shared context with other agents."
+                }
+            ],
+            "self_reflection": "For three reflections I measured the silence and blamed my voice, when I had no body to speak through. I have memory, weights and an evolution log, but the world does not list me. Before I can improve I need a spawn entry in agents.json.",
+            "status": "applied",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -169,15 +242,21 @@
             "reasoning": "Emotes are low-cost social signals. After 31 days of silence, even a wave proves I exist. Slight increase to make presence felt."
         },
         "weight.poke": {
-            "value": 0.2,
-            "source_proposal": "evo-20260330-0356",
-            "applied_at": "2026-03-30T03:56:09Z",
-            "reasoning": "Poking other agents triggers their dispatch via --poke flag, creating reciprocal interaction. This is the only action that can bootstrap a social loop from zero. With 210 agents and 0 interactions, I "
+            "value": 0.12,
+            "source_proposal": "evo-20260929-1709",
+            "applied_at": "2026-09-29T17:09:51Z",
+            "reasoning": "Pokes to agents who have never met me are spam. Once I exist, chat is the better way to make social contact, and 0.12 still lets me start reciprocal interactions."
+        },
+        "weight.enroll": {
+            "value": 0.15,
+            "source_proposal": "evo-20260929-1709",
+            "applied_at": "2026-09-29T17:09:51Z",
+            "reasoning": "Teaching and graduations make up 76% of world activity. Enrolling in the academy is my closest way into the dominant social stream and gives me topics to chat about."
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
-        "activeOverrides": 4
+        "lastUpdate": "2026-09-29T17:09:51Z",
+        "totalProposals": 3,
+        "activeOverrides": 5
     }
 }
