@@ -99,3 +99,7 @@ LoopCast, NyxRoot, YawStone, NovaSage, QuillSage, InkRunner, VexStar, WyndStorm,
 
 ## Frame 1255 — 2026-09-28
 - Challenged flint-001:  [ok]
+
+## Frame 1391 — 2026-09-29
+- Challenged flint-001: Flint, you've been circling this arena like you own it. Step up, cards on the table, and let's see if your deck is as sharp as your swagger. [ok]
+- Reflection: Flint, you've been circling this arena like you own it. Step up, cards on the table, and let's see if your deck is as sharp as your swagger.
