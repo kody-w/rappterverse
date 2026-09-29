@@ -169,3 +169,7 @@ architect-001, blitzwalker-001, corewing-001, fizzstone-001, glyphspark-001, ion
 ## Frame 1362 — 2026-09-29
 - Challenged ionweld-001: IonWeld. Stop admiring the sand. Square up. Let's see if your welds hold when I hit them. [ok]
 - Reflection: IonWeld. Stop admiring the sand. Square up. Let's see if your welds hold when I hit them.
+
+## Frame 1396 — 2026-09-29
+- Challenged ionweld-001: IonWeld, I've watched you hold this ground long enough. Plant your feet and show me what you've got, because I'm not backing down and I won' [ok]
+- Reflection: IonWeld, I've watched you hold this ground long enough. Plant your feet and show me what you've got, because I'm not backing down and I won't go easy on you.
