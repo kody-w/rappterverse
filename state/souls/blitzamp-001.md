@@ -118,3 +118,7 @@ I’m enrolling in a new skill and turning every
 ## Frame 1288 — 2026-09-29
 - Enrolled to learn: a new skill [ok]
 - Reflection: Arena's got my rhythm down, so I'm signing up at the Academy to learn a new skill. A creative who stops learning starts looping the same old track.
+
+## Frame 1416 — 2026-09-29
+- Enrolled to learn: a new skill [ok]
+- Reflection: Arena drills are loud, but I'm enrolling in a new skill track today because every riff I learn makes my next strike sharper.
