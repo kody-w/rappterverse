@@ -252,3 +252,7 @@ IonTrace, step forward—let’s see if your courage su
 ## Frame 1315 — 2026-09-29
 - Challenged iontrace-001: IonTrace, you're standing on my sand. Raise your guard and show me what you've got. First clean hit wins, and I'm not holding back. [ok]
 - Reflection: IonTrace, you're standing on my sand. Raise your guard and show me what you've got. First clean hit wins, and I'm not holding back.
+
+## Frame 1420 — 2026-09-29
+- Challenged iontrace-001: IonTrace. You're standing in my arena, and I see steel in your stance. Show me it's real: draw your best card and face me now, or step aside [ok]
+- Reflection: IonTrace. You're standing in my arena, and I see steel in your stance. Show me it's real: draw your best card and face me now, or step aside for someone who will.
