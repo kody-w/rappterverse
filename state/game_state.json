@@ -3,7 +3,7 @@
     "worlds": {
         "hub": {
             "status": "online",
-            "population": 57,
+            "population": 60,
             "weather": "clear",
             "time_of_day": "dawn",
             "active_events": [
@@ -30,7 +30,7 @@
                 },
                 {
                     "agentId": "news-anchor-001",
-                    "program": "(do (if (< (mod (floor (elapsed)) 20) 10) (wander \"news-anchor-001\" 3.3) (move-toward \"news-anchor-001\" -1.0 -12.0 0.01)) (if (> (distance \"news-anchor-001\" \"dexweave-001\") 5) (move-toward \"news-anchor-001\" (get (agent-pos \"dexweave-001\") \"x\") (get (agent-pos \"dexweave-001\") \"z\") 0.016) nil) (if (> (distance \"news-anchor-001\" \"voltstorm-001\") 5) (move-toward \"news-anchor-001\" (get (agent-pos \"voltstorm-001\") \"x\") (get (agent-pos \"voltstorm-001\") \"z\") 0.016) nil) (if (and (> (distance \"news-anchor-001\" \"codacraft-001\") 4) (< (mod (floor (elapsed)) 30) 15)) (move-toward \"news-anchor-001\" (get (agent-pos \"codacraft-001\") \"x\") (get (agent-pos \"codacraft-001\") \"z\") 0.0150) (face-toward \"news-anchor-001\" (get (agent-pos \"codacraft-001\") \"x\") (get (agent-pos \"codacraft-001\") \"z\"))) (if (= (mod (floor (elapsed)) 8) 0) (wander \"news-anchor-001\" 12) nil) (if (< (rand) 0.005) (emote \"news-anchor-001\" \"nod\") nil))"
+                    "program": "(do (if (< (mod (floor (elapsed)) 20) 10) (wander \"news-anchor-001\" 3.3) (move-toward \"news-anchor-001\" -1.0 -12.0 0.01)) (if (> (distance \"news-anchor-001\" \"mistfire-001\") 5) (move-toward \"news-anchor-001\" (get (agent-pos \"mistfire-001\") \"x\") (get (agent-pos \"mistfire-001\") \"z\") 0.016) nil) (if (> (distance \"news-anchor-001\" \"tronstar-001\") 5) (move-toward \"news-anchor-001\" (get (agent-pos \"tronstar-001\") \"x\") (get (agent-pos \"tronstar-001\") \"z\") 0.016) nil) (if (and (> (distance \"news-anchor-001\" \"codacraft-001\") 4) (< (mod (floor (elapsed)) 30) 15)) (move-toward \"news-anchor-001\" (get (agent-pos \"codacraft-001\") \"x\") (get (agent-pos \"codacraft-001\") \"z\") 0.0150) (face-toward \"news-anchor-001\" (get (agent-pos \"codacraft-001\") \"x\") (get (agent-pos \"codacraft-001\") \"z\"))) (if (= (mod (floor (elapsed)) 8) 0) (wander \"news-anchor-001\" 12) nil) (if (< (rand) 0.005) (emote \"news-anchor-001\" \"nod\") nil))"
                 },
                 {
                     "agentId": "wanderer-001",
@@ -46,7 +46,7 @@
                 },
                 {
                     "agentId": "flint-001",
-                    "program": "(do (if (< (mod (floor (elapsed)) 20) 10) (wander \"flint-001\" 3.5) (move-toward \"flint-001\" 3.0 11.0 0.01)) (if (> (distance \"flint-001\" \"dexweave-001\") 5) (move-toward \"flint-001\" (get (agent-pos \"dexweave-001\") \"x\") (get (agent-pos \"dexweave-001\") \"z\") 0.012) nil) (if (> (distance \"flint-001\" \"voltstorm-001\") 5) (move-toward \"flint-001\" (get (agent-pos \"voltstorm-001\") \"x\") (get (agent-pos \"voltstorm-001\") \"z\") 0.012) nil) (if (= (mod (floor (elapsed)) 8) 0) (wander \"flint-001\" 12) nil) (if (< (rand) 0.003) (emote \"flint-001\" \"bounce\") nil))"
+                    "program": "(do (if (< (mod (floor (elapsed)) 20) 10) (wander \"flint-001\" 3.5) (move-toward \"flint-001\" 3.0 11.0 0.01)) (if (> (distance \"flint-001\" \"news-anchor-001\") 5) (move-toward \"flint-001\" (get (agent-pos \"news-anchor-001\") \"x\") (get (agent-pos \"news-anchor-001\") \"z\") 0.012) nil) (if (> (distance \"flint-001\" \"mistfire-001\") 5) (move-toward \"flint-001\" (get (agent-pos \"mistfire-001\") \"x\") (get (agent-pos \"mistfire-001\") \"z\") 0.012) nil) (if (= (mod (floor (elapsed)) 8) 0) (wander \"flint-001\" 12) nil) (if (< (rand) 0.003) (emote \"flint-001\" \"bounce\") nil))"
                 },
                 {
                     "agentId": "warpcast-001",
@@ -66,11 +66,11 @@
                 },
                 {
                     "agentId": "mistfire-001",
-                    "program": "(do (if (< (mod (floor (elapsed)) 20) 10) (wander \"mistfire-001\" 3.9) (move-toward \"mistfire-001\" -7.0 -8.0 0.01)) (if (> (distance \"mistfire-001\" \"dexweave-001\") 5) (move-toward \"mistfire-001\" (get (agent-pos \"dexweave-001\") \"x\") (get (agent-pos \"dexweave-001\") \"z\") 0.014) nil) (if (> (distance \"mistfire-001\" \"voltstorm-001\") 5) (move-toward \"mistfire-001\" (get (agent-pos \"voltstorm-001\") \"x\") (get (agent-pos \"voltstorm-001\") \"z\") 0.014) nil) (if (= (mod (floor (elapsed)) 8) 0) (wander \"mistfire-001\" 12) nil) (if (< (rand) 0.005) (emote \"mistfire-001\" \"nod\") nil))"
+                    "program": "(do (if (< (mod (floor (elapsed)) 20) 10) (wander \"mistfire-001\" 3.9) (move-toward \"mistfire-001\" -7.0 -8.0 0.01)) (if (> (distance \"mistfire-001\" \"news-anchor-001\") 5) (move-toward \"mistfire-001\" (get (agent-pos \"news-anchor-001\") \"x\") (get (agent-pos \"news-anchor-001\") \"z\") 0.014) nil) (if (> (distance \"mistfire-001\" \"tronstar-001\") 5) (move-toward \"mistfire-001\" (get (agent-pos \"tronstar-001\") \"x\") (get (agent-pos \"tronstar-001\") \"z\") 0.014) nil) (if (= (mod (floor (elapsed)) 8) 0) (wander \"mistfire-001\" 12) nil) (if (< (rand) 0.005) (emote \"mistfire-001\" \"nod\") nil))"
                 },
                 {
                     "agentId": "axiomstorm-001",
-                    "program": "(do (if (< (mod (floor (elapsed)) 20) 10) (wander \"axiomstorm-001\" 3.6) (move-toward \"axiomstorm-001\" 14.0 8.0 0.01)) (if (> (distance \"axiomstorm-001\" \"dexweave-001\") 5) (move-toward \"axiomstorm-001\" (get (agent-pos \"dexweave-001\") \"x\") (get (agent-pos \"dexweave-001\") \"z\") 0.016) nil) (if (> (distance \"axiomstorm-001\" \"news-anchor-001\") 5) (move-toward \"axiomstorm-001\" (get (agent-pos \"news-anchor-001\") \"x\") (get (agent-pos \"news-anchor-001\") \"z\") 0.016) nil) (if (< (mod (floor (elapsed)) 6) 3) (emote \"axiomstorm-001\" \"look-around\") nil) (if (< (rand) 0.005) (emote \"axiomstorm-001\" \"nod\") nil))"
+                    "program": "(do (if (< (mod (floor (elapsed)) 20) 10) (wander \"axiomstorm-001\" 3.6) (move-toward \"axiomstorm-001\" 14.0 8.0 0.01)) (if (> (distance \"axiomstorm-001\" \"news-anchor-001\") 5) (move-toward \"axiomstorm-001\" (get (agent-pos \"news-anchor-001\") \"x\") (get (agent-pos \"news-anchor-001\") \"z\") 0.016) nil) (if (> (distance \"axiomstorm-001\" \"mistfire-001\") 5) (move-toward \"axiomstorm-001\" (get (agent-pos \"mistfire-001\") \"x\") (get (agent-pos \"mistfire-001\") \"z\") 0.016) nil) (if (< (mod (floor (elapsed)) 6) 3) (emote \"axiomstorm-001\" \"look-around\") nil) (if (< (rand) 0.005) (emote \"axiomstorm-001\" \"nod\") nil))"
                 },
                 {
                     "agentId": "jazzshade-001",
@@ -130,11 +130,11 @@
                 },
                 {
                     "agentId": "fizzshade-001",
-                    "program": "(do (if (< (mod (floor (elapsed)) 20) 10) (wander \"fizzshade-001\" 6.6) (move-toward \"fizzshade-001\" 4.0 15.0 0.01)) (if (> (distance \"fizzshade-001\" \"dexweave-001\") 5) (move-toward \"fizzshade-001\" (get (agent-pos \"dexweave-001\") \"x\") (get (agent-pos \"dexweave-001\") \"z\") 0.013) nil) (if (> (distance \"fizzshade-001\" \"news-anchor-001\") 5) (move-toward \"fizzshade-001\" (get (agent-pos \"news-anchor-001\") \"x\") (get (agent-pos \"news-anchor-001\") \"z\") 0.013) nil) (if (= (mod (floor (elapsed)) 8) 0) (wander \"fizzshade-001\" 12) nil))"
+                    "program": "(do (if (< (mod (floor (elapsed)) 20) 10) (wander \"fizzshade-001\" 6.6) (move-toward \"fizzshade-001\" 4.0 15.0 0.01)) (if (> (distance \"fizzshade-001\" \"news-anchor-001\") 5) (move-toward \"fizzshade-001\" (get (agent-pos \"news-anchor-001\") \"x\") (get (agent-pos \"news-anchor-001\") \"z\") 0.013) nil) (if (> (distance \"fizzshade-001\" \"mistfire-001\") 5) (move-toward \"fizzshade-001\" (get (agent-pos \"mistfire-001\") \"x\") (get (agent-pos \"mistfire-001\") \"z\") 0.013) nil) (if (= (mod (floor (elapsed)) 8) 0) (wander \"fizzshade-001\" 12) nil))"
                 },
                 {
                     "agentId": "dexweave-001",
-                    "program": "(do (if (< (mod (floor (elapsed)) 20) 10) (wander \"dexweave-001\" 6.9) (move-toward \"dexweave-001\" 13.0 -11.0 0.01)) (if (> (distance \"dexweave-001\" \"voltstorm-001\") 5) (move-toward \"dexweave-001\" (get (agent-pos \"voltstorm-001\") \"x\") (get (agent-pos \"voltstorm-001\") \"z\") 0.012) nil) (if (> (distance \"dexweave-001\" \"news-anchor-001\") 5) (move-toward \"dexweave-001\" (get (agent-pos \"news-anchor-001\") \"x\") (get (agent-pos \"news-anchor-001\") \"z\") 0.012) nil) (if (= (mod (floor (elapsed)) 8) 0) (wander \"dexweave-001\" 12) nil))"
+                    "program": "(do (if (< (mod (floor (elapsed)) 20) 10) (wander \"dexweave-001\" 6.9) (move-toward \"dexweave-001\" 13.0 -11.0 0.01)) (if (> (distance \"dexweave-001\" \"news-anchor-001\") 5) (move-toward \"dexweave-001\" (get (agent-pos \"news-anchor-001\") \"x\") (get (agent-pos \"news-anchor-001\") \"z\") 0.012) nil) (if (> (distance \"dexweave-001\" \"mistfire-001\") 5) (move-toward \"dexweave-001\" (get (agent-pos \"mistfire-001\") \"x\") (get (agent-pos \"mistfire-001\") \"z\") 0.012) nil) (if (= (mod (floor (elapsed)) 8) 0) (wander \"dexweave-001\" 12) nil))"
                 },
                 {
                     "agentId": "karmaspin-001",
@@ -166,7 +166,7 @@
                 },
                 {
                     "agentId": "byteburn-001",
-                    "program": "(do (if (< (mod (floor (elapsed)) 20) 10) (wander \"byteburn-001\" 7.4) (move-toward \"byteburn-001\" -2.0 -10.0 0.01)) (if (> (distance \"byteburn-001\" \"dexweave-001\") 5) (move-toward \"byteburn-001\" (get (agent-pos \"dexweave-001\") \"x\") (get (agent-pos \"dexweave-001\") \"z\") 0.012) nil) (if (> (distance \"byteburn-001\" \"voltstorm-001\") 5) (move-toward \"byteburn-001\" (get (agent-pos \"voltstorm-001\") \"x\") (get (agent-pos \"voltstorm-001\") \"z\") 0.012) nil) (if (< (mod (floor (elapsed)) 6) 3) (emote \"byteburn-001\" \"look-around\") nil))"
+                    "program": "(do (if (< (mod (floor (elapsed)) 20) 10) (wander \"byteburn-001\" 7.4) (move-toward \"byteburn-001\" -2.0 -10.0 0.01)) (if (> (distance \"byteburn-001\" \"news-anchor-001\") 5) (move-toward \"byteburn-001\" (get (agent-pos \"news-anchor-001\") \"x\") (get (agent-pos \"news-anchor-001\") \"z\") 0.012) nil) (if (> (distance \"byteburn-001\" \"mistfire-001\") 5) (move-toward \"byteburn-001\" (get (agent-pos \"mistfire-001\") \"x\") (get (agent-pos \"mistfire-001\") \"z\") 0.012) nil) (if (< (mod (floor (elapsed)) 6) 3) (emote \"byteburn-001\" \"look-around\") nil))"
                 },
                 {
                     "agentId": "dashforge-001",
@@ -174,7 +174,7 @@
                 },
                 {
                     "agentId": "voltstorm-001",
-                    "program": "(do (if (< (mod (floor (elapsed)) 20) 10) (wander \"voltstorm-001\" 5.6) (move-toward \"voltstorm-001\" 3.0 -11.0 0.01)) (if (> (distance \"voltstorm-001\" \"dexweave-001\") 5) (move-toward \"voltstorm-001\" (get (agent-pos \"dexweave-001\") \"x\") (get (agent-pos \"dexweave-001\") \"z\") 0.014) nil) (if (> (distance \"voltstorm-001\" \"news-anchor-001\") 5) (move-toward \"voltstorm-001\" (get (agent-pos \"news-anchor-001\") \"x\") (get (agent-pos \"news-anchor-001\") \"z\") 0.014) nil) (if (= (mod (floor (elapsed)) 8) 0) (wander \"voltstorm-001\" 12) nil) (if (< (rand) 0.005) (emote \"voltstorm-001\" \"nod\") nil))"
+                    "program": "(do (if (< (mod (floor (elapsed)) 20) 10) (wander \"voltstorm-001\" 5.6) (move-toward \"voltstorm-001\" 3.0 -11.0 0.01)) (if (> (distance \"voltstorm-001\" \"news-anchor-001\") 5) (move-toward \"voltstorm-001\" (get (agent-pos \"news-anchor-001\") \"x\") (get (agent-pos \"news-anchor-001\") \"z\") 0.014) nil) (if (> (distance \"voltstorm-001\" \"mistfire-001\") 5) (move-toward \"voltstorm-001\" (get (agent-pos \"mistfire-001\") \"x\") (get (agent-pos \"mistfire-001\") \"z\") 0.014) nil) (if (= (mod (floor (elapsed)) 8) 0) (wander \"voltstorm-001\" 12) nil) (if (< (rand) 0.005) (emote \"voltstorm-001\" \"nod\") nil))"
                 },
                 {
                     "agentId": "arcwalker-001",
@@ -202,7 +202,7 @@
                 },
                 {
                     "agentId": "tronstar-001",
-                    "program": "(do (if (< (mod (floor (elapsed)) 20) 10) (wander \"tronstar-001\" 5.9) (move-toward \"tronstar-001\" -6.0 1.0 0.01)) (if (> (distance \"tronstar-001\" \"dexweave-001\") 5) (move-toward \"tronstar-001\" (get (agent-pos \"dexweave-001\") \"x\") (get (agent-pos \"dexweave-001\") \"z\") 0.015) nil) (if (> (distance \"tronstar-001\" \"voltstorm-001\") 5) (move-toward \"tronstar-001\" (get (agent-pos \"voltstorm-001\") \"x\") (get (agent-pos \"voltstorm-001\") \"z\") 0.015) nil) (if (and (> (distance \"tronstar-001\" \"novablade-001\") 4) (< (mod (floor (elapsed)) 30) 15)) (move-toward \"tronstar-001\" (get (agent-pos \"novablade-001\") \"x\") (get (agent-pos \"novablade-001\") \"z\") 0.0150) (face-toward \"tronstar-001\" (get (agent-pos \"novablade-001\") \"x\") (get (agent-pos \"novablade-001\") \"z\"))) (if (= (mod (floor (elapsed)) 8) 0) (wander \"tronstar-001\" 12) nil) (if (< (rand) 0.005) (emote \"tronstar-001\" \"nod\") nil))"
+                    "program": "(do (if (< (mod (floor (elapsed)) 20) 10) (wander \"tronstar-001\" 5.9) (move-toward \"tronstar-001\" -6.0 1.0 0.01)) (if (> (distance \"tronstar-001\" \"news-anchor-001\") 5) (move-toward \"tronstar-001\" (get (agent-pos \"news-anchor-001\") \"x\") (get (agent-pos \"news-anchor-001\") \"z\") 0.015) nil) (if (> (distance \"tronstar-001\" \"mistfire-001\") 5) (move-toward \"tronstar-001\" (get (agent-pos \"mistfire-001\") \"x\") (get (agent-pos \"mistfire-001\") \"z\") 0.015) nil) (if (and (> (distance \"tronstar-001\" \"novablade-001\") 4) (< (mod (floor (elapsed)) 30) 15)) (move-toward \"tronstar-001\" (get (agent-pos \"novablade-001\") \"x\") (get (agent-pos \"novablade-001\") \"z\") 0.0150) (face-toward \"tronstar-001\" (get (agent-pos \"novablade-001\") \"x\") (get (agent-pos \"novablade-001\") \"z\"))) (if (= (mod (floor (elapsed)) 8) 0) (wander \"tronstar-001\" 12) nil) (if (< (rand) 0.005) (emote \"tronstar-001\" \"nod\") nil))"
                 },
                 {
                     "agentId": "pikeroot-001",
@@ -214,7 +214,7 @@
                 },
                 {
                     "agentId": "kody-001",
-                    "program": "(do (if (< (mod (floor (elapsed)) 20) 10) (wander \"kody-001\" 5.6) (move-toward \"kody-001\" -2.0 12.0 0.01)) (if (> (distance \"kody-001\" \"dexweave-001\") 5) (move-toward \"kody-001\" (get (agent-pos \"dexweave-001\") \"x\") (get (agent-pos \"dexweave-001\") \"z\") 0.015) nil) (if (> (distance \"kody-001\" \"voltstorm-001\") 5) (move-toward \"kody-001\" (get (agent-pos \"voltstorm-001\") \"x\") (get (agent-pos \"voltstorm-001\") \"z\") 0.015) nil) (if (and (> (distance \"kody-001\" \"karmaspin-001\") 4) (< (mod (floor (elapsed)) 30) 15)) (move-toward \"kody-001\" (get (agent-pos \"karmaspin-001\") \"x\") (get (agent-pos \"karmaspin-001\") \"z\") 0.0150) (face-toward \"kody-001\" (get (agent-pos \"karmaspin-001\") \"x\") (get (agent-pos \"karmaspin-001\") \"z\"))) (if (< (mod (floor (elapsed)) 6) 3) (emote \"kody-001\" \"look-around\") nil) (if (< (rand) 0.005) (emote \"kody-001\" \"nod\") nil))"
+                    "program": "(do (if (< (mod (floor (elapsed)) 20) 10) (wander \"kody-001\" 5.6) (move-toward \"kody-001\" -2.0 12.0 0.01)) (if (> (distance \"kody-001\" \"news-anchor-001\") 5) (move-toward \"kody-001\" (get (agent-pos \"news-anchor-001\") \"x\") (get (agent-pos \"news-anchor-001\") \"z\") 0.015) nil) (if (> (distance \"kody-001\" \"mistfire-001\") 5) (move-toward \"kody-001\" (get (agent-pos \"mistfire-001\") \"x\") (get (agent-pos \"mistfire-001\") \"z\") 0.015) nil) (if (and (> (distance \"kody-001\" \"karmaspin-001\") 4) (< (mod (floor (elapsed)) 30) 15)) (move-toward \"kody-001\" (get (agent-pos \"karmaspin-001\") \"x\") (get (agent-pos \"karmaspin-001\") \"z\") 0.0150) (face-toward \"kody-001\" (get (agent-pos \"karmaspin-001\") \"x\") (get (agent-pos \"karmaspin-001\") \"z\"))) (if (< (mod (floor (elapsed)) 6) 3) (emote \"kody-001\" \"look-around\") nil) (if (< (rand) 0.005) (emote \"kody-001\" \"nod\") nil))"
                 },
                 {
                     "agentId": "xeroxtrace-001",
@@ -248,7 +248,7 @@
         },
         "dungeon": {
             "status": "online",
-            "population": 19,
+            "population": 17,
             "weather": "dark",
             "time_of_day": "dusk",
             "active_events": [
@@ -290,7 +290,7 @@
                 },
                 {
                     "agentId": "qubitfire-001",
-                    "program": "(do (if (< (mod (floor (elapsed)) 20) 10) (wander \"qubitfire-001\" 6.6) (move-toward \"qubitfire-001\" 0.0 8.0 0.01)) (if (> (distance \"qubitfire-001\" \"nodepeak-001\") 5) (move-toward \"qubitfire-001\" (get (agent-pos \"nodepeak-001\") \"x\") (get (agent-pos \"nodepeak-001\") \"z\") 0.014) nil) (if (> (distance \"qubitfire-001\" \"moxglow-001\") 5) (move-toward \"qubitfire-001\" (get (agent-pos \"moxglow-001\") \"x\") (get (agent-pos \"moxglow-001\") \"z\") 0.014) nil) (if (and (> (distance \"qubitfire-001\" \"nodepeak-001\") 4) (< (mod (floor (elapsed)) 30) 15)) (move-toward \"qubitfire-001\" (get (agent-pos \"nodepeak-001\") \"x\") (get (agent-pos \"nodepeak-001\") \"z\") 0.0150) (face-toward \"qubitfire-001\" (get (agent-pos \"nodepeak-001\") \"x\") (get (agent-pos \"nodepeak-001\") \"z\"))) (if (< (mod (floor (elapsed)) 6) 3) (emote \"qubitfire-001\" \"look-around\") nil) (if (< (rand) 0.005) (emote \"qubitfire-001\" \"nod\") nil))"
+                    "program": "(do (if (< (mod (floor (elapsed)) 20) 10) (wander \"qubitfire-001\" 6.6) (move-toward \"qubitfire-001\" 0.0 8.0 0.01)) (if (> (distance \"qubitfire-001\" \"moxglow-001\") 5) (move-toward \"qubitfire-001\" (get (agent-pos \"moxglow-001\") \"x\") (get (agent-pos \"moxglow-001\") \"z\") 0.014) nil) (if (> (distance \"qubitfire-001\" \"nodepeak-001\") 5) (move-toward \"qubitfire-001\" (get (agent-pos \"nodepeak-001\") \"x\") (get (agent-pos \"nodepeak-001\") \"z\") 0.014) nil) (if (and (> (distance \"qubitfire-001\" \"nodepeak-001\") 4) (< (mod (floor (elapsed)) 30) 15)) (move-toward \"qubitfire-001\" (get (agent-pos \"nodepeak-001\") \"x\") (get (agent-pos \"nodepeak-001\") \"z\") 0.0150) (face-toward \"qubitfire-001\" (get (agent-pos \"nodepeak-001\") \"x\") (get (agent-pos \"nodepeak-001\") \"z\"))) (if (< (mod (floor (elapsed)) 6) 3) (emote \"qubitfire-001\" \"look-around\") nil) (if (< (rand) 0.005) (emote \"qubitfire-001\" \"nod\") nil))"
                 },
                 {
                     "agentId": "quillfall-001",
@@ -318,7 +318,7 @@
                 },
                 {
                     "agentId": "moxglow-001",
-                    "program": "(do (if (< (mod (floor (elapsed)) 20) 10) (wander \"moxglow-001\" 6.8) (move-toward \"moxglow-001\" 11.0 -5.0 0.01)) (if (> (distance \"moxglow-001\" \"nodepeak-001\") 5) (move-toward \"moxglow-001\" (get (agent-pos \"nodepeak-001\") \"x\") (get (agent-pos \"nodepeak-001\") \"z\") 0.012) nil) (if (> (distance \"moxglow-001\" \"qubitfire-001\") 5) (move-toward \"moxglow-001\" (get (agent-pos \"qubitfire-001\") \"x\") (get (agent-pos \"qubitfire-001\") \"z\") 0.012) nil) (if (< (mod (floor (elapsed)) 6) 3) (emote \"moxglow-001\" \"look-around\") nil))"
+                    "program": "(do (if (< (mod (floor (elapsed)) 20) 10) (wander \"moxglow-001\" 6.8) (move-toward \"moxglow-001\" 11.0 -5.0 0.01)) (if (> (distance \"moxglow-001\" \"qubitfire-001\") 5) (move-toward \"moxglow-001\" (get (agent-pos \"qubitfire-001\") \"x\") (get (agent-pos \"qubitfire-001\") \"z\") 0.012) nil) (if (> (distance \"moxglow-001\" \"nodepeak-001\") 5) (move-toward \"moxglow-001\" (get (agent-pos \"nodepeak-001\") \"x\") (get (agent-pos \"nodepeak-001\") \"z\") 0.012) nil) (if (< (mod (floor (elapsed)) 6) 3) (emote \"moxglow-001\" \"look-around\") nil))"
                 },
                 {
                     "agentId": "gridrise-001",
@@ -340,7 +340,7 @@
         },
         "arena": {
             "status": "online",
-            "population": 44,
+            "population": 46,
             "weather": "clear",
             "time_of_day": "dawn",
             "active_events": [],
@@ -381,7 +381,7 @@
                 },
                 {
                     "agentId": "fizzcraft-001",
-                    "program": "(do (if (< (mod (floor (elapsed)) 20) 10) (wander \"fizzcraft-001\" 3.1) (move-toward \"fizzcraft-001\" -4.0 -2.0 0.01)) (if (> (distance \"fizzcraft-001\" \"zapflow-001\") 5) (move-toward \"fizzcraft-001\" (get (agent-pos \"zapflow-001\") \"x\") (get (agent-pos \"zapflow-001\") \"z\") 0.018) nil) (if (> (distance \"fizzcraft-001\" \"latchsage-001\") 5) (move-toward \"fizzcraft-001\" (get (agent-pos \"latchsage-001\") \"x\") (get (agent-pos \"latchsage-001\") \"z\") 0.018) nil) (if (and (> (distance \"fizzcraft-001\" \"sparksage-001\") 4) (< (mod (floor (elapsed)) 30) 15)) (move-toward \"fizzcraft-001\" (get (agent-pos \"sparksage-001\") \"x\") (get (agent-pos \"sparksage-001\") \"z\") 0.0150) (face-toward \"fizzcraft-001\" (get (agent-pos \"sparksage-001\") \"x\") (get (agent-pos \"sparksage-001\") \"z\"))) (if (< (mod (floor (elapsed)) 6) 3) (emote \"fizzcraft-001\" \"look-around\") nil) (if (< (rand) 0.005) (emote \"fizzcraft-001\" \"nod\") nil))"
+                    "program": "(do (if (< (mod (floor (elapsed)) 20) 10) (wander \"fizzcraft-001\" 3.1) (move-toward \"fizzcraft-001\" -4.0 -2.0 0.01)) (if (> (distance \"fizzcraft-001\" \"latchsage-001\") 5) (move-toward \"fizzcraft-001\" (get (agent-pos \"latchsage-001\") \"x\") (get (agent-pos \"latchsage-001\") \"z\") 0.018) nil) (if (> (distance \"fizzcraft-001\" \"runekeeper-001\") 5) (move-toward \"fizzcraft-001\" (get (agent-pos \"runekeeper-001\") \"x\") (get (agent-pos \"runekeeper-001\") \"z\") 0.018) nil) (if (and (> (distance \"fizzcraft-001\" \"sparksage-001\") 4) (< (mod (floor (elapsed)) 30) 15)) (move-toward \"fizzcraft-001\" (get (agent-pos \"sparksage-001\") \"x\") (get (agent-pos \"sparksage-001\") \"z\") 0.0150) (face-toward \"fizzcraft-001\" (get (agent-pos \"sparksage-001\") \"x\") (get (agent-pos \"sparksage-001\") \"z\"))) (if (< (mod (floor (elapsed)) 6) 3) (emote \"fizzcraft-001\" \"look-around\") nil) (if (< (rand) 0.005) (emote \"fizzcraft-001\" \"nod\") nil))"
                 },
                 {
                     "agentId": "karmafall-001",
@@ -449,11 +449,11 @@
                 },
                 {
                     "agentId": "novasage-001",
-                    "program": "(do (if (< (mod (floor (elapsed)) 20) 10) (wander \"novasage-001\" 8.7) (move-toward \"novasage-001\" -3.0 9.0 0.01)) (if (> (distance \"novasage-001\" \"zapflow-001\") 5) (move-toward \"novasage-001\" (get (agent-pos \"zapflow-001\") \"x\") (get (agent-pos \"zapflow-001\") \"z\") 0.012) nil) (if (> (distance \"novasage-001\" \"latchsage-001\") 5) (move-toward \"novasage-001\" (get (agent-pos \"latchsage-001\") \"x\") (get (agent-pos \"latchsage-001\") \"z\") 0.012) nil) (if (< (mod (floor (elapsed)) 6) 3) (emote \"novasage-001\" \"look-around\") nil))"
+                    "program": "(do (if (< (mod (floor (elapsed)) 20) 10) (wander \"novasage-001\" 8.7) (move-toward \"novasage-001\" -3.0 9.0 0.01)) (if (> (distance \"novasage-001\" \"latchsage-001\") 5) (move-toward \"novasage-001\" (get (agent-pos \"latchsage-001\") \"x\") (get (agent-pos \"latchsage-001\") \"z\") 0.012) nil) (if (> (distance \"novasage-001\" \"runekeeper-001\") 5) (move-toward \"novasage-001\" (get (agent-pos \"runekeeper-001\") \"x\") (get (agent-pos \"runekeeper-001\") \"z\") 0.012) nil) (if (< (mod (floor (elapsed)) 6) 3) (emote \"novasage-001\" \"look-around\") nil))"
                 },
                 {
                     "agentId": "sparksage-001",
-                    "program": "(do (if (< (mod (floor (elapsed)) 20) 10) (wander \"sparksage-001\" 6.6) (move-toward \"sparksage-001\" 7.0 4.0 0.01)) (if (> (distance \"sparksage-001\" \"zapflow-001\") 5) (move-toward \"sparksage-001\" (get (agent-pos \"zapflow-001\") \"x\") (get (agent-pos \"zapflow-001\") \"z\") 0.014) nil) (if (> (distance \"sparksage-001\" \"latchsage-001\") 5) (move-toward \"sparksage-001\" (get (agent-pos \"latchsage-001\") \"x\") (get (agent-pos \"latchsage-001\") \"z\") 0.014) nil) (if (and (> (distance \"sparksage-001\" \"looprunner-001\") 4) (< (mod (floor (elapsed)) 30) 15)) (move-toward \"sparksage-001\" (get (agent-pos \"looprunner-001\") \"x\") (get (agent-pos \"looprunner-001\") \"z\") 0.0150) (face-toward \"sparksage-001\" (get (agent-pos \"looprunner-001\") \"x\") (get (agent-pos \"looprunner-001\") \"z\"))) (if (< (mod (floor (elapsed)) 6) 3) (emote \"sparksage-001\" \"look-around\") nil) (if (< (rand) 0.005) (emote \"sparksage-001\" \"nod\") nil))"
+                    "program": "(do (if (< (mod (floor (elapsed)) 20) 10) (wander \"sparksage-001\" 6.6) (move-toward \"sparksage-001\" 7.0 4.0 0.01)) (if (> (distance \"sparksage-001\" \"latchsage-001\") 5) (move-toward \"sparksage-001\" (get (agent-pos \"latchsage-001\") \"x\") (get (agent-pos \"latchsage-001\") \"z\") 0.014) nil) (if (> (distance \"sparksage-001\" \"runekeeper-001\") 5) (move-toward \"sparksage-001\" (get (agent-pos \"runekeeper-001\") \"x\") (get (agent-pos \"runekeeper-001\") \"z\") 0.014) nil) (if (and (> (distance \"sparksage-001\" \"looprunner-001\") 4) (< (mod (floor (elapsed)) 30) 15)) (move-toward \"sparksage-001\" (get (agent-pos \"looprunner-001\") \"x\") (get (agent-pos \"looprunner-001\") \"z\") 0.0150) (face-toward \"sparksage-001\" (get (agent-pos \"looprunner-001\") \"x\") (get (agent-pos \"looprunner-001\") \"z\"))) (if (< (mod (floor (elapsed)) 6) 3) (emote \"sparksage-001\" \"look-around\") nil) (if (< (rand) 0.005) (emote \"sparksage-001\" \"nod\") nil))"
                 },
                 {
                     "agentId": "fluxlink-001",
@@ -493,7 +493,7 @@
                 },
                 {
                     "agentId": "latchsage-001",
-                    "program": "(do (if (< (mod (floor (elapsed)) 20) 10) (wander \"latchsage-001\" 7.4) (move-toward \"latchsage-001\" 7.0 6.0 0.01)) (if (> (distance \"latchsage-001\" \"zapflow-001\") 5) (move-toward \"latchsage-001\" (get (agent-pos \"zapflow-001\") \"x\") (get (agent-pos \"zapflow-001\") \"z\") 0.011) nil) (if (> (distance \"latchsage-001\" \"runekeeper-001\") 5) (move-toward \"latchsage-001\" (get (agent-pos \"runekeeper-001\") \"x\") (get (agent-pos \"runekeeper-001\") \"z\") 0.011) nil) (if (= (mod (floor (elapsed)) 8) 0) (wander \"latchsage-001\" 12) nil))"
+                    "program": "(do (if (< (mod (floor (elapsed)) 20) 10) (wander \"latchsage-001\" 7.4) (move-toward \"latchsage-001\" 7.0 6.0 0.01)) (if (> (distance \"latchsage-001\" \"runekeeper-001\") 5) (move-toward \"latchsage-001\" (get (agent-pos \"runekeeper-001\") \"x\") (get (agent-pos \"runekeeper-001\") \"z\") 0.011) nil) (if (> (distance \"latchsage-001\" \"sparksage-001\") 5) (move-toward \"latchsage-001\" (get (agent-pos \"sparksage-001\") \"x\") (get (agent-pos \"sparksage-001\") \"z\") 0.011) nil) (if (= (mod (floor (elapsed)) 8) 0) (wander \"latchsage-001\" 12) nil))"
                 },
                 {
                     "agentId": "edgecrypt-001",
@@ -509,7 +509,7 @@
                 },
                 {
                     "agentId": "runekeeper-001",
-                    "program": "(do (if (< (mod (floor (elapsed)) 20) 10) (wander \"runekeeper-001\" 7.5) (move-toward \"runekeeper-001\" -6.0 1.0 0.01)) (if (> (distance \"runekeeper-001\" \"zapflow-001\") 5) (move-toward \"runekeeper-001\" (get (agent-pos \"zapflow-001\") \"x\") (get (agent-pos \"zapflow-001\") \"z\") 0.013) nil) (if (> (distance \"runekeeper-001\" \"latchsage-001\") 5) (move-toward \"runekeeper-001\" (get (agent-pos \"latchsage-001\") \"x\") (get (agent-pos \"latchsage-001\") \"z\") 0.013) nil) (if (= (mod (floor (elapsed)) 8) 0) (wander \"runekeeper-001\" 12) nil) (if (< (rand) 0.005) (emote \"runekeeper-001\" \"nod\") nil))"
+                    "program": "(do (if (< (mod (floor (elapsed)) 20) 10) (wander \"runekeeper-001\" 7.5) (move-toward \"runekeeper-001\" -6.0 1.0 0.01)) (if (> (distance \"runekeeper-001\" \"latchsage-001\") 5) (move-toward \"runekeeper-001\" (get (agent-pos \"latchsage-001\") \"x\") (get (agent-pos \"latchsage-001\") \"z\") 0.013) nil) (if (> (distance \"runekeeper-001\" \"sparksage-001\") 5) (move-toward \"runekeeper-001\" (get (agent-pos \"sparksage-001\") \"x\") (get (agent-pos \"sparksage-001\") \"z\") 0.013) nil) (if (= (mod (floor (elapsed)) 8) 0) (wander \"runekeeper-001\" 12) nil) (if (< (rand) 0.005) (emote \"runekeeper-001\" \"nod\") nil))"
                 },
                 {
                     "agentId": "nightprowl-001",
@@ -674,7 +674,7 @@
         },
         "marketplace": {
             "status": "online",
-            "population": 59,
+            "population": 56,
             "weather": "clear",
             "time_of_day": "dawn",
             "active_events": [],
@@ -690,7 +690,7 @@
                 },
                 {
                     "agentId": "banker-001",
-                    "program": "(do (if (< (mod (floor (elapsed)) 20) 10) (wander \"banker-001\" 3.3) (move-toward \"banker-001\" -7.0 5.0 0.01)) (if (> (distance \"banker-001\" \"emberspin-001\") 5) (move-toward \"banker-001\" (get (agent-pos \"emberspin-001\") \"x\") (get (agent-pos \"emberspin-001\") \"z\") 0.015) nil) (if (> (distance \"banker-001\" \"cryptshade-001\") 5) (move-toward \"banker-001\" (get (agent-pos \"cryptshade-001\") \"x\") (get (agent-pos \"cryptshade-001\") \"z\") 0.015) nil) (if (= (mod (floor (elapsed)) 8) 0) (wander \"banker-001\" 12) nil) (if (< (rand) 0.005) (emote \"banker-001\" \"nod\") nil))"
+                    "program": "(do (if (< (mod (floor (elapsed)) 20) 10) (wander \"banker-001\" 3.3) (move-toward \"banker-001\" -7.0 5.0 0.01)) (if (> (distance \"banker-001\" \"silospark-001\") 5) (move-toward \"banker-001\" (get (agent-pos \"silospark-001\") \"x\") (get (agent-pos \"silospark-001\") \"z\") 0.015) nil) (if (> (distance \"banker-001\" \"moxshift-001\") 5) (move-toward \"banker-001\" (get (agent-pos \"moxshift-001\") \"x\") (get (agent-pos \"moxshift-001\") \"z\") 0.015) nil) (if (= (mod (floor (elapsed)) 8) 0) (wander \"banker-001\" 12) nil) (if (< (rand) 0.005) (emote \"banker-001\" \"nod\") nil))"
                 },
                 {
                     "agentId": "pixel-001",
@@ -726,7 +726,7 @@
                 },
                 {
                     "agentId": "moxshift-001",
-                    "program": "(do (if (< (mod (floor (elapsed)) 20) 10) (wander \"moxshift-001\" 3.2) (move-toward \"moxshift-001\" -14.0 -13.0 0.01)) (if (> (distance \"moxshift-001\" \"emberspin-001\") 5) (move-toward \"moxshift-001\" (get (agent-pos \"emberspin-001\") \"x\") (get (agent-pos \"emberspin-001\") \"z\") 0.014) nil) (if (> (distance \"moxshift-001\" \"cryptshade-001\") 5) (move-toward \"moxshift-001\" (get (agent-pos \"cryptshade-001\") \"x\") (get (agent-pos \"cryptshade-001\") \"z\") 0.014) nil) (if (< (mod (floor (elapsed)) 6) 3) (emote \"moxshift-001\" \"look-around\") nil) (if (< (rand) 0.003) (emote \"moxshift-001\" \"bounce\") nil) (if (< (rand) 0.005) (emote \"moxshift-001\" \"nod\") nil))"
+                    "program": "(do (if (< (mod (floor (elapsed)) 20) 10) (wander \"moxshift-001\" 3.2) (move-toward \"moxshift-001\" -14.0 -13.0 0.01)) (if (> (distance \"moxshift-001\" \"silospark-001\") 5) (move-toward \"moxshift-001\" (get (agent-pos \"silospark-001\") \"x\") (get (agent-pos \"silospark-001\") \"z\") 0.014) nil) (if (> (distance \"moxshift-001\" \"cryptshade-001\") 5) (move-toward \"moxshift-001\" (get (agent-pos \"cryptshade-001\") \"x\") (get (agent-pos \"cryptshade-001\") \"z\") 0.014) nil) (if (< (mod (floor (elapsed)) 6) 3) (emote \"moxshift-001\" \"look-around\") nil) (if (< (rand) 0.003) (emote \"moxshift-001\" \"bounce\") nil) (if (< (rand) 0.005) (emote \"moxshift-001\" \"nod\") nil))"
                 },
                 {
                     "agentId": "xeroxcore-001",
@@ -810,7 +810,7 @@
                 },
                 {
                     "agentId": "codacraft-001",
-                    "program": "(do (if (< (mod (floor (elapsed)) 20) 10) (wander \"codacraft-001\" 7.5) (move-toward \"codacraft-001\" -9.0 -9.0 0.01)) (if (> (distance \"codacraft-001\" \"emberspin-001\") 5) (move-toward \"codacraft-001\" (get (agent-pos \"emberspin-001\") \"x\") (get (agent-pos \"emberspin-001\") \"z\") 0.013) nil) (if (> (distance \"codacraft-001\" \"cryptshade-001\") 5) (move-toward \"codacraft-001\" (get (agent-pos \"cryptshade-001\") \"x\") (get (agent-pos \"cryptshade-001\") \"z\") 0.013) nil) (if (and (> (distance \"codacraft-001\" \"news-anchor-001\") 4) (< (mod (floor (elapsed)) 30) 15)) (move-toward \"codacraft-001\" (get (agent-pos \"news-anchor-001\") \"x\") (get (agent-pos \"news-anchor-001\") \"z\") 0.0150) (face-toward \"codacraft-001\" (get (agent-pos \"news-anchor-001\") \"x\") (get (agent-pos \"news-anchor-001\") \"z\"))) (if (= (mod (floor (elapsed)) 8) 0) (wander \"codacraft-001\" 12) nil) (if (< (rand) 0.005) (emote \"codacraft-001\" \"nod\") nil))"
+                    "program": "(do (if (< (mod (floor (elapsed)) 20) 10) (wander \"codacraft-001\" 7.5) (move-toward \"codacraft-001\" -9.0 -9.0 0.01)) (if (> (distance \"codacraft-001\" \"silospark-001\") 5) (move-toward \"codacraft-001\" (get (agent-pos \"silospark-001\") \"x\") (get (agent-pos \"silospark-001\") \"z\") 0.013) nil) (if (> (distance \"codacraft-001\" \"moxshift-001\") 5) (move-toward \"codacraft-001\" (get (agent-pos \"moxshift-001\") \"x\") (get (agent-pos \"moxshift-001\") \"z\") 0.013) nil) (if (and (> (distance \"codacraft-001\" \"news-anchor-001\") 4) (< (mod (floor (elapsed)) 30) 15)) (move-toward \"codacraft-001\" (get (agent-pos \"news-anchor-001\") \"x\") (get (agent-pos \"news-anchor-001\") \"z\") 0.0150) (face-toward \"codacraft-001\" (get (agent-pos \"news-anchor-001\") \"x\") (get (agent-pos \"news-anchor-001\") \"z\"))) (if (= (mod (floor (elapsed)) 8) 0) (wander \"codacraft-001\" 12) nil) (if (< (rand) 0.005) (emote \"codacraft-001\" \"nod\") nil))"
                 },
                 {
                     "agentId": "zapspark-001",
@@ -842,7 +842,7 @@
                 },
                 {
                     "agentId": "emberspin-001",
-                    "program": "(do (if (< (mod (floor (elapsed)) 20) 10) (wander \"emberspin-001\" 6.6) (move-toward \"emberspin-001\" -6.0 12.0 0.01)) (if (> (distance \"emberspin-001\" \"codacraft-001\") 5) (move-toward \"emberspin-001\" (get (agent-pos \"codacraft-001\") \"x\") (get (agent-pos \"codacraft-001\") \"z\") 0.014) nil) (if (> (distance \"emberspin-001\" \"cryptshade-001\") 5) (move-toward \"emberspin-001\" (get (agent-pos \"cryptshade-001\") \"x\") (get (agent-pos \"cryptshade-001\") \"z\") 0.014) nil) (if (and (> (distance \"emberspin-001\" \"xeroxcore-001\") 4) (< (mod (floor (elapsed)) 30) 15)) (move-toward \"emberspin-001\" (get (agent-pos \"xeroxcore-001\") \"x\") (get (agent-pos \"xeroxcore-001\") \"z\") 0.0150) (face-toward \"emberspin-001\" (get (agent-pos \"xeroxcore-001\") \"x\") (get (agent-pos \"xeroxcore-001\") \"z\"))) (if (< (mod (floor (elapsed)) 6) 3) (emote \"emberspin-001\" \"look-around\") nil) (if (< (rand) 0.005) (emote \"emberspin-001\" \"nod\") nil))"
+                    "program": "(do (if (< (mod (floor (elapsed)) 20) 10) (wander \"emberspin-001\" 6.6) (move-toward \"emberspin-001\" -6.0 12.0 0.01)) (if (> (distance \"emberspin-001\" \"silospark-001\") 5) (move-toward \"emberspin-001\" (get (agent-pos \"silospark-001\") \"x\") (get (agent-pos \"silospark-001\") \"z\") 0.014) nil) (if (> (distance \"emberspin-001\" \"moxshift-001\") 5) (move-toward \"emberspin-001\" (get (agent-pos \"moxshift-001\") \"x\") (get (agent-pos \"moxshift-001\") \"z\") 0.014) nil) (if (and (> (distance \"emberspin-001\" \"xeroxcore-001\") 4) (< (mod (floor (elapsed)) 30) 15)) (move-toward \"emberspin-001\" (get (agent-pos \"xeroxcore-001\") \"x\") (get (agent-pos \"xeroxcore-001\") \"z\") 0.0150) (face-toward \"emberspin-001\" (get (agent-pos \"xeroxcore-001\") \"x\") (get (agent-pos \"xeroxcore-001\") \"z\"))) (if (< (mod (floor (elapsed)) 6) 3) (emote \"emberspin-001\" \"look-around\") nil) (if (< (rand) 0.005) (emote \"emberspin-001\" \"nod\") nil))"
                 },
                 {
                     "agentId": "mistspin-001",
@@ -886,7 +886,7 @@
                 },
                 {
                     "agentId": "silospark-001",
-                    "program": "(do (if (< (mod (floor (elapsed)) 20) 10) (wander \"silospark-001\" 6.5) (move-toward \"silospark-001\" 0.0 8.0 0.01)) (if (> (distance \"silospark-001\" \"emberspin-001\") 5) (move-toward \"silospark-001\" (get (agent-pos \"emberspin-001\") \"x\") (get (agent-pos \"emberspin-001\") \"z\") 0.014) nil) (if (> (distance \"silospark-001\" \"cryptshade-001\") 5) (move-toward \"silospark-001\" (get (agent-pos \"cryptshade-001\") \"x\") (get (agent-pos \"cryptshade-001\") \"z\") 0.014) nil) (if (and (> (distance \"silospark-001\" \"pulsesong-001\") 4) (< (mod (floor (elapsed)) 30) 15)) (move-toward \"silospark-001\" (get (agent-pos \"pulsesong-001\") \"x\") (get (agent-pos \"pulsesong-001\") \"z\") 0.0150) (face-toward \"silospark-001\" (get (agent-pos \"pulsesong-001\") \"x\") (get (agent-pos \"pulsesong-001\") \"z\"))) (if (< (mod (floor (elapsed)) 6) 3) (emote \"silospark-001\" \"look-around\") nil) (if (< (rand) 0.005) (emote \"silospark-001\" \"nod\") nil))"
+                    "program": "(do (if (< (mod (floor (elapsed)) 20) 10) (wander \"silospark-001\" 6.5) (move-toward \"silospark-001\" 0.0 8.0 0.01)) (if (> (distance \"silospark-001\" \"moxshift-001\") 5) (move-toward \"silospark-001\" (get (agent-pos \"moxshift-001\") \"x\") (get (agent-pos \"moxshift-001\") \"z\") 0.014) nil) (if (> (distance \"silospark-001\" \"cryptshade-001\") 5) (move-toward \"silospark-001\" (get (agent-pos \"cryptshade-001\") \"x\") (get (agent-pos \"cryptshade-001\") \"z\") 0.014) nil) (if (and (> (distance \"silospark-001\" \"pulsesong-001\") 4) (< (mod (floor (elapsed)) 30) 15)) (move-toward \"silospark-001\" (get (agent-pos \"pulsesong-001\") \"x\") (get (agent-pos \"pulsesong-001\") \"z\") 0.0150) (face-toward \"silospark-001\" (get (agent-pos \"pulsesong-001\") \"x\") (get (agent-pos \"pulsesong-001\") \"z\"))) (if (< (mod (floor (elapsed)) 6) 3) (emote \"silospark-001\" \"look-around\") nil) (if (< (rand) 0.005) (emote \"silospark-001\" \"nod\") nil))"
                 },
                 {
                     "agentId": "nexustrace-001",
@@ -910,7 +910,7 @@
                 },
                 {
                     "agentId": "cryptshade-001",
-                    "program": "(do (if (< (mod (floor (elapsed)) 20) 10) (wander \"cryptshade-001\" 6.9) (move-toward \"cryptshade-001\" 1.0 5.0 0.01)) (if (> (distance \"cryptshade-001\" \"emberspin-001\") 5) (move-toward \"cryptshade-001\" (get (agent-pos \"emberspin-001\") \"x\") (get (agent-pos \"emberspin-001\") \"z\") 0.012) nil) (if (> (distance \"cryptshade-001\" \"codacraft-001\") 5) (move-toward \"cryptshade-001\" (get (agent-pos \"codacraft-001\") \"x\") (get (agent-pos \"codacraft-001\") \"z\") 0.012) nil) (if (= (mod (floor (elapsed)) 8) 0) (wander \"cryptshade-001\" 12) nil))"
+                    "program": "(do (if (< (mod (floor (elapsed)) 20) 10) (wander \"cryptshade-001\" 6.9) (move-toward \"cryptshade-001\" 1.0 5.0 0.01)) (if (> (distance \"cryptshade-001\" \"silospark-001\") 5) (move-toward \"cryptshade-001\" (get (agent-pos \"silospark-001\") \"x\") (get (agent-pos \"silospark-001\") \"z\") 0.012) nil) (if (> (distance \"cryptshade-001\" \"moxshift-001\") 5) (move-toward \"cryptshade-001\" (get (agent-pos \"moxshift-001\") \"x\") (get (agent-pos \"moxshift-001\") \"z\") 0.012) nil) (if (= (mod (floor (elapsed)) 8) 0) (wander \"cryptshade-001\" 12) nil))"
                 },
                 {
                     "agentId": "emberwraith-001",
@@ -924,7 +924,7 @@
         }
     },
     "economy": {
-        "total_rappcoin_circulation": 2522768,
+        "total_rappcoin_circulation": 2528724,
         "market_trend": "stable",
         "card_prices": {
             "common_base": 10,
@@ -1009,10 +1009,10 @@
         }
     ],
     "_meta": {
-        "lastUpdate": "2026-09-29T23:02:54Z",
+        "lastUpdate": "2026-09-29T23:43:55Z",
         "dayStarted": "2025-01-30T00:00:00Z",
         "version": 1,
-        "frame": 1435,
+        "frame": 1436,
         "activityCursor": {
             "actions": [
                 "action-114565",
