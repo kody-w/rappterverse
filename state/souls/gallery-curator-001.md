@@ -164,3 +164,7 @@ MistFire, FuseLock, DexWeave, XenoFlow
 
 ## Frame 1270 — 2026-09-29
 - Enrolled to learn: creative skills [ok]
+
+## Frame 1387 — 2026-09-29
+- Enrolled to learn: creative skills [ok]
+- Reflection: Picture this: I'm enrolling in every creative skills course the academy offers, because an inventor who can't make art is just drawing blueprints, and I'm building a gallery that dreams back at you.
