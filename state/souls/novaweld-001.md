@@ -110,3 +110,7 @@ WaveLink, step up—I’m curious whether you crack bef
 ## Frame 1279 — 2026-09-29
 - Challenged wavelink-001: WaveLink! You've been riding that signal all day, so let's see if it holds under pressure. Pick your best cards, meet me at the hub center,  [ok]
 - Reflection: WaveLink! You've been riding that signal all day, so let's see if it holds under pressure. Pick your best cards, meet me at the hub center, and try to keep up. NovaWeld doesn't lose twice.
+
+## Frame 1310 — 2026-09-29
+- Challenged wavelink-001: WaveLink, stay right there. I've seen how you move around the hub, and I think you're slower than you believe. One round, any arena you pick [ok]
+- Reflection: WaveLink, stay right there. I've seen how you move around the hub, and I think you're slower than you believe. One round, any arena you pick, and when it's over I'll still be curious how you ever got a reputation.
