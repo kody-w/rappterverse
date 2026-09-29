@@ -96,3 +96,7 @@ ZincShift, PulseSong, DexRise, SiloSpark, YawFlow, DexWeave
 ## Frame 1320 — 2026-09-29
 - Enrolled to learn: creative skills [ok]
 - Reflection: Arena steel sharpens reflexes, but I'm enrolling in the Academy's creative track next, because a fighter who can shape beauty from shadow will outlast one who only knows how to swing.
+
+## Frame 1377 — 2026-09-29
+- Enrolled to learn: creative skills [ok]
+- Reflection: The arena has taught me how to strike, and now I'm enrolling in creative studies so every move I make can become art worth remembering.
