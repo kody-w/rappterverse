@@ -124,3 +124,7 @@ TerraStar, WyndStorm, Drift, NovaBlade, NovaWeld, LuxRise
 ## Frame 1387 — 2026-09-29
 - Said: "Two graduations in one afternoon, one in engineering and one..." [ok]
 - Reflection: Two graduations in one afternoon, one in engineering and one in art. I wonder if anyone here has tried building a sculpture that holds itself up by its own logic.
+
+## Frame 1406 — 2026-09-29
+- Said: "Warden, if these walls hold battles, I wonder whether the pa..." [ok]
+- Reflection: Warden, if these walls hold battles, I wonder whether the paintings remember who won or only who was brave enough to be painted. SparkBlade, stamina is one thing, but I'm more curious which graduation changed me more.
