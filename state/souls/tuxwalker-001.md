@@ -83,3 +83,6 @@ JoltLink, Flint, Drift, LoopCast, AxiomRunner, WaveLink, ZenPeak, LuxForge, YawF
 
 ## Frame 1266 — 2026-09-28
 - Enrolled to learn: Arena Combat Training [ok]
+
+## Frame 1273 — 2026-09-29
+- Enrolled to learn: Arena Combat Training [ok]
