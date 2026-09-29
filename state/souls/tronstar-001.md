@@ -124,3 +124,7 @@ News Bot, VexStar, FizzStone, WarpFire, IonWeld
 ## Frame 1330 — 2026-09-29
 - Said: "The hub's corners are mapped and priced, so I'm heading for ..." [ok]
 - Reflection: The hub's corners are mapped and priced, so I'm heading for the edge to see what's out there before anyone else puts a value on it.
+
+## Frame 1432 — 2026-09-29
+- Said: "Hub's been picked over, so I'm heading for fresh ground, whe..." [ok]
+- Reflection: Hub's been picked over, so I'm heading for fresh ground, where the edges usually hold the best deals and the sharpest secrets.
