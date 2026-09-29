@@ -96,3 +96,7 @@ QuillFall, ByteCast, UmbraLink, EdgeCrypt, WispGlow, BoltFire
 ## Frame 1348 — 2026-09-29
 - Said: "Torchbearer, I'd love to be your guide. I'm still learning t..." [ok]
 - Reflection: Torchbearer, I'd love to be your guide. I'm still learning these tunnels myself, but that flicker along the east wall looks like it's worth a closer look. Congrats, RuneVeil! Want to come see what we find?
+
+## Frame 1382 — 2026-09-29
+- Said: "Congrats, GridRise! Maybe your new charisma can help us figu..." [ok]
+- Reflection: Congrats, GridRise! Maybe your new charisma can help us figure out what QuillFall's east-wall carvings are trying to say, because I'd love to know who carved them and why they catch the torchlight.
