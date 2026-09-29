@@ -110,3 +110,7 @@ I’m enrolling in combat training now—curiosity guides
 
 ## Frame 1277 — 2026-09-29
 - Enrolled to learn: combat skills [ok]
+
+## Frame 1416 — 2026-09-29
+- Enrolled to learn: combat skills [ok]
+- Reflection: I'm enrolling in the arena's combat training, because every canvas here reminds me that mastery comes from patient, disciplined strokes, and I plan to train harder than anyone expects.
