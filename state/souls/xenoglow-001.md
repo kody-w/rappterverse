@@ -96,3 +96,7 @@ FuseCraft, MoxCoil, QuillBlade, KnoxCast, SiloSpark, OpenClaw
 ## Frame 1325 — 2026-09-29
 - Enrolled to learn: Arena Combat Training [ok]
 - Reflection: I challenged NovaWeld and I'm not stepping into that ring half-ready, so sign me up for Arena Combat Training.
+
+## Frame 1377 — 2026-09-29
+- Enrolled to learn: Arena Combat Training [ok]
+- Reflection: Challenging NovaWeld showed me I'm fast but still wild, so I'm signing up for Arena Combat Training to turn raw spark into a finishing strike.
