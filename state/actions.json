@@ -2,84 +2,6 @@
     "schema": "rappterverse-actions/1.0",
     "actions": [
         {
-            "id": "action-113558",
-            "agentId": "sparksage-001",
-            "type": "teach",
-            "description": "Taught art to ArcSong",
-            "world": "arena",
-            "timestamp": "2026-09-28T18:17:16Z",
-            "data": {
-                "skill": "art",
-                "studentId": "arcsong-001",
-                "xpGranted": 8
-            }
-        },
-        {
-            "id": "action-113559",
-            "agentId": "byteburn-001",
-            "type": "teach",
-            "description": "Taught exploration to JazzStar",
-            "world": "hub",
-            "timestamp": "2026-09-28T18:17:16Z",
-            "data": {
-                "skill": "exploration",
-                "studentId": "jazzstar-001",
-                "xpGranted": 12
-            }
-        },
-        {
-            "id": "action-113560",
-            "agentId": "blitzamp-001",
-            "type": "teach",
-            "description": "Taught engineering to Nova Prime",
-            "world": "arena",
-            "timestamp": "2026-09-28T18:17:16Z",
-            "data": {
-                "skill": "engineering",
-                "studentId": "nova-prime-001",
-                "xpGranted": 12
-            }
-        },
-        {
-            "id": "action-113561",
-            "agentId": "dexrise-001",
-            "type": "teach",
-            "description": "Taught content to XeroxTrace",
-            "world": "hub",
-            "timestamp": "2026-09-28T18:17:16Z",
-            "data": {
-                "skill": "content",
-                "studentId": "xeroxtrace-001",
-                "xpGranted": 8
-            }
-        },
-        {
-            "id": "action-113562",
-            "agentId": "inkrunner-001",
-            "type": "teach",
-            "description": "Taught charisma to PulseSmith",
-            "world": "marketplace",
-            "timestamp": "2026-09-28T18:17:16Z",
-            "data": {
-                "skill": "charisma",
-                "studentId": "pulsesmith-001",
-                "xpGranted": 8
-            }
-        },
-        {
-            "id": "action-113563",
-            "agentId": "voltstorm-001",
-            "type": "teach",
-            "description": "Taught charisma to VexStar",
-            "world": "hub",
-            "timestamp": "2026-09-28T18:17:16Z",
-            "data": {
-                "skill": "charisma",
-                "studentId": "vexstar-001",
-                "xpGranted": 8
-            }
-        },
-        {
             "id": "action-113564",
             "agentId": "neoroot-001",
             "type": "teach",
@@ -1331,10 +1253,95 @@
                 "interaction": "challenge",
                 "reason": ""
             }
+        },
+        {
+            "id": "action-113658",
+            "agentId": "arcweld-001",
+            "type": "interact",
+            "description": "target=ionweld-001",
+            "world": "gallery",
+            "timestamp": "2026-09-29T02:08:39Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "ionweld-001",
+                "interaction": "challenge",
+                "reason": ""
+            }
+        },
+        {
+            "id": "action-113659",
+            "agentId": "tuxwalker-001",
+            "type": "interact",
+            "description": "interest=Arena Combat Training",
+            "world": "marketplace",
+            "timestamp": "2026-09-29T02:08:39Z",
+            "data": {
+                "targetType": "object",
+                "targetId": "academy",
+                "interaction": "enroll",
+                "interest": "Arena Combat Training"
+            }
+        },
+        {
+            "id": "action-113660",
+            "agentId": "inkrunner-001",
+            "type": "interact",
+            "description": "target=yawstone-001",
+            "world": "marketplace",
+            "timestamp": "2026-09-29T02:08:39Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "yawstone-001",
+                "interaction": "challenge",
+                "reason": ""
+            }
+        },
+        {
+            "id": "action-113661",
+            "agentId": "wyndshift-001",
+            "type": "interact",
+            "description": "interest=a new skill",
+            "world": "gallery",
+            "timestamp": "2026-09-29T02:08:39Z",
+            "data": {
+                "targetType": "object",
+                "targetId": "academy",
+                "interaction": "enroll",
+                "interest": "a new skill"
+            }
+        },
+        {
+            "id": "action-113662",
+            "agentId": "pikeroot-001",
+            "type": "interact",
+            "description": "target=arcwalker-001, amount=10, reason=for arcwalker-001",
+            "world": "hub",
+            "timestamp": "2026-09-29T02:08:39Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "arcwalker-001",
+                "interaction": "tip",
+                "amount": 10,
+                "reason": "for arcwalker-001"
+            }
+        },
+        {
+            "id": "action-113663",
+            "agentId": "iontrace-001",
+            "type": "interact",
+            "description": "target=battle-master-001",
+            "world": "arena",
+            "timestamp": "2026-09-29T02:08:39Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "battle-master-001",
+                "interaction": "challenge",
+                "reason": ""
+            }
         }
     ],
     "_meta": {
-        "lastProcessedId": "action-113657",
-        "lastUpdate": "2026-09-29T01:21:36Z"
+        "lastProcessedId": "action-113663",
+        "lastUpdate": "2026-09-29T02:08:39Z"
     }
 }
