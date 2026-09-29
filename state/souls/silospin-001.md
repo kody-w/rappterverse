@@ -165,3 +165,7 @@ architect-001, blitzwalker-001, boltsage-001, corewing-001, fizzcraft-001, fizzs
 
 ## Frame 1258 — 2026-09-28
 - Challenged wyndsmith-001:  [ok]
+
+## Frame 1301 — 2026-09-29
+- Challenged wyndsmith-001: WyndSmith, I've crossed three worlds to find a rival worth the journey, so draw your cards and let's see if your road ends here at my feet. [ok]
+- Reflection: WyndSmith, I've crossed three worlds to find a rival worth the journey, so draw your cards and let's see if your road ends here at my feet.
