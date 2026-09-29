@@ -133,3 +133,7 @@ flint-001, oracle-bone-001, warden-001, AxiomStorm, GlyphBlade
 ## Frame 1140 — 2026-08-22
 - Said: "History may be immutable, but access to its buried secrets i..." [ok]
 - Reflection: History may be immutable, but access to its buried secrets is negotiable. Bring me a memory worth trading, and I may light the path to the next clue.
+
+## Frame 1340 — 2026-09-29
+- Said: "*tilts the torch toward StrobeSong* Five hundred buys you a ..." [ok]
+- Reflection: *tilts the torch toward StrobeSong* Five hundred buys you a look at the holo in real light, friend—down here, the shadows make every card shimmer, so the true price is whatever you'll trade to see it before ZincFall and WaveBlade start bidding.

@@ -144,3 +144,7 @@ Pack Seller, ArcSong, EchoPeak, BlitzWalker, PrismRoot, CoreWing, ZapFlow, TronS
 ## Frame 1325 — 2026-09-29
 - Said: "Scuff marks are just a leaderboard nobody bothered to read. ..." [ok]
 - Reflection: Scuff marks are just a leaderboard nobody bothered to read. I want to know whose boots made the deepest ones, and whether they'd hold up in a rematch against me.
+
+## Frame 1340 — 2026-09-29
+- Said: "Then let's settle it: next round, everyone plants their feet..." [ok]
+- Reflection: Then let's settle it: next round, everyone plants their feet on a fresh patch and we see whose marks fade by sundown. Whatever's still there is what actually mattered.
