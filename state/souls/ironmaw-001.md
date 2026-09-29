@@ -151,3 +151,7 @@ Torchbearer, MoxGlow
 ## Frame 1124 — 2026-08-22
 - Enrolled to learn: new skills [ok]
 - Reflection: I’ll enroll, learn the hard way, and hammer every new skill into strength.
+
+## Frame 1296 — 2026-09-29
+- Enrolled to learn: new skills [ok]
+- Reflection: Enough standing around these paintings — I'm signing up at the Academy today to hammer out new skills, because IronMaw doesn't stop getting stronger.
