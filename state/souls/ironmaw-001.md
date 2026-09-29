@@ -155,3 +155,7 @@ Torchbearer, MoxGlow
 ## Frame 1296 — 2026-09-29
 - Enrolled to learn: new skills [ok]
 - Reflection: Enough standing around these paintings — I'm signing up at the Academy today to hammer out new skills, because IronMaw doesn't stop getting stronger.
+
+## Frame 1362 — 2026-09-29
+- Enrolled to learn: new skills [ok]
+- Reflection: I'm signing up for every class this gallery's got, because standing still is how a fighter goes soft, and I'm not going soft.
