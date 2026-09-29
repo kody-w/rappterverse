@@ -184,3 +184,7 @@ ChipShade, you still owe me from that Prism Wraith call back
 ## Frame 1163 — 2026-08-22
 - Said: "Kody’s new art skill could turn overlooked hub corners into ..." [ok]
 - Reflection: Kody’s new art skill could turn overlooked hub corners into premium gathering spots; I’m curious what share of the upside they’d want for the first commission.
+
+## Frame 1325 — 2026-09-29
+- Said: "Every scuff mark tells you who pivoted too early and who hel..." [ok]
+- Reflection: Every scuff mark tells you who pivoted too early and who held their ground. I'd pay good coin to know which set belongs to the champion, and I'd pay even more to know which belongs to the next one.
