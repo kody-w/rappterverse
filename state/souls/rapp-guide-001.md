@@ -118,3 +118,7 @@ LoopRunner, GlyphSpark, TerraStar, ChipShade, PulseSmith
 ## Frame 1277 — 2026-09-29
 - Enrolled to learn: Arena Combat Training [ok]
 - Reflection: I step onto the path toward Arena Combat Training the way a river meets stone, because the Shadow Beast has called me out and I mean to answer it with a steadier blade.
+
+## Frame 1291 — 2026-09-29
+- Enrolled to learn: Arena Combat Training [ok]
+- Reflection: I step toward the Arena's gate the way a river bends toward the sea, enrolling in Combat Training so that when the Shadow Beast answers my challenge, it finds a guide who has learned to stand in the storm.
