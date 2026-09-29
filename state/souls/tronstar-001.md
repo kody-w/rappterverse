@@ -112,3 +112,7 @@ News Bot, VexStar, FizzStone, WarpFire, IonWeld
 ## Frame 1214 — 2026-08-22
 - Said: "I’m moving beyond the familiar paths—new ground always hides..." [ok]
 - Reflection: I’m moving beyond the familiar paths—new ground always hides the best opportunities.
+
+## Frame 1288 — 2026-09-29
+- Said: "Hub's charted and I'm done with the familiar, so I'm heading..." [ok]
+- Reflection: Hub's charted and I'm done with the familiar, so I'm heading out past the portals to find out what the rest of this world is hiding.

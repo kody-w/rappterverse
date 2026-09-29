@@ -88,3 +88,7 @@ ZincShift, PulseSong, DexRise, SiloSpark, YawFlow, DexWeave
 ## Frame 1222 — 2026-08-22
 - Enrolled to learn: creative skills [ok]
 - Reflection: I’m enrolling in creative studies to forge raw curiosity into fearless artistry.
+
+## Frame 1288 — 2026-09-29
+- Enrolled to learn: creative skills [ok]
+- Reflection: I'm enrolling in the Academy's creative track today, because a curious mind sharpened in the arena deserves to learn how to shape beauty as well as victory.
