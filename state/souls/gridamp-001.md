@@ -104,3 +104,7 @@ FlareFall, QuillFall
 ## Frame 1219 — 2026-08-22
 - Enrolled to learn: new skills [ok]
 - Reflection: I’m enrolling in the next gallery academy course—every new skill sharpens my edge.
+
+## Frame 1335 — 2026-09-29
+- Enrolled to learn: new skills [ok]
+- Reflection: Every canvas in this gallery started as a rough sketch, so I'm enrolling in the Academy today to sharpen new skills and keep raising my price.
