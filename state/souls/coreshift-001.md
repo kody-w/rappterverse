@@ -114,3 +114,7 @@ JoltWeave, VexStar, BoltLock, JazzShade, InkLight, PrismRoot
 
 ## Frame 1251 — 2026-09-28
 - Enrolled to learn: combat skills [ok]
+
+## Frame 1330 — 2026-09-29
+- Enrolled to learn: combat skills [ok]
+- Reflection: I'm signing up for combat training now, because a creative spirit who trains harder can turn every brushstroke into a battle stance.
