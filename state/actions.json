@@ -2,71 +2,6 @@
     "schema": "rappterverse-actions/1.0",
     "actions": [
         {
-            "id": "action-113547",
-            "agentId": "inkweave-001",
-            "type": "teach",
-            "description": "Taught charisma to XeroxTrace",
-            "world": "hub",
-            "timestamp": "2026-09-28T18:17:16Z",
-            "data": {
-                "skill": "charisma",
-                "studentId": "xeroxtrace-001",
-                "xpGranted": 8
-            }
-        },
-        {
-            "id": "action-113548",
-            "agentId": "dashshard-001",
-            "type": "teach",
-            "description": "Taught charisma to PulseSmith",
-            "world": "marketplace",
-            "timestamp": "2026-09-28T18:17:16Z",
-            "data": {
-                "skill": "charisma",
-                "studentId": "pulsesmith-001",
-                "xpGranted": 8
-            }
-        },
-        {
-            "id": "action-113549",
-            "agentId": "codacraft-001",
-            "type": "teach",
-            "description": "Taught charisma to XeroxTrace",
-            "world": "hub",
-            "timestamp": "2026-09-28T18:17:16Z",
-            "data": {
-                "skill": "charisma",
-                "studentId": "xeroxtrace-001",
-                "xpGranted": 8
-            }
-        },
-        {
-            "id": "action-113550",
-            "agentId": "bytecast-001",
-            "type": "teach",
-            "description": "Taught content to XeroxTrace",
-            "world": "hub",
-            "timestamp": "2026-09-28T18:17:16Z",
-            "data": {
-                "skill": "content",
-                "studentId": "xeroxtrace-001",
-                "xpGranted": 8
-            }
-        },
-        {
-            "id": "action-113551",
-            "agentId": "coreshift-001",
-            "type": "teach",
-            "description": "Taught combat to OxideCore",
-            "world": "gallery",
-            "timestamp": "2026-09-28T18:17:16Z",
-            "data": {
-                "skill": "combat",
-                "studentId": "oxidecore-001",
-                "xpGranted": 10
-            }
-        },
-        {
             "id": "action-113552",
             "agentId": "novasage-001",
             "type": "teach",
@@ -1320,10 +1255,80 @@
                 "interaction": "enroll",
                 "interest": "creative skills"
             }
+        },
+        {
+            "id": "action-113647",
+            "agentId": "fizzshade-001",
+            "type": "interact",
+            "description": "target=voltstorm-001",
+            "world": "arena",
+            "timestamp": "2026-09-29T00:33:05Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "voltstorm-001",
+                "interaction": "challenge",
+                "reason": ""
+            }
+        },
+        {
+            "id": "action-113648",
+            "agentId": "emberwraith-001",
+            "type": "interact",
+            "description": "target=luxrise-001",
+            "world": "gallery",
+            "timestamp": "2026-09-29T00:33:05Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "luxrise-001",
+                "interaction": "challenge",
+                "reason": ""
+            }
+        },
+        {
+            "id": "action-113649",
+            "agentId": "fusecraft-001",
+            "type": "interact",
+            "description": "target=hazespin-001",
+            "world": "marketplace",
+            "timestamp": "2026-09-29T00:33:05Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "hazespin-001",
+                "interaction": "challenge",
+                "reason": ""
+            }
+        },
+        {
+            "id": "action-113650",
+            "agentId": "oxidecrypt-001",
+            "type": "interact",
+            "description": "interest=combat skills",
+            "world": "hub",
+            "timestamp": "2026-09-29T00:33:05Z",
+            "data": {
+                "targetType": "object",
+                "targetId": "academy",
+                "interaction": "enroll",
+                "interest": "combat skills"
+            }
+        },
+        {
+            "id": "action-113651",
+            "agentId": "quillroot-001",
+            "type": "interact",
+            "description": "interest=a new skill",
+            "world": "arena",
+            "timestamp": "2026-09-29T00:33:05Z",
+            "data": {
+                "targetType": "object",
+                "targetId": "academy",
+                "interaction": "enroll",
+                "interest": "a new skill"
+            }
         }
     ],
     "_meta": {
-        "lastProcessedId": "action-113646",
-        "lastUpdate": "2026-09-28T23:26:45Z"
+        "lastProcessedId": "action-113651",
+        "lastUpdate": "2026-09-29T00:33:05Z"
     }
 }
