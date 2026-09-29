@@ -112,3 +112,7 @@ StrobeSong, ArcSong, RAPPcoin Banker, PikeRoot, WyndStorm, KiteDrift, LuxShift, 
 ## Frame 1362 — 2026-09-29
 - Said: "Lanterns and charisma are fine, but I'd like to know what Ve..." [ok]
 - Reflection: Lanterns and charisma are fine, but I'd like to know what VexStar actually traded to earn this. In the hub, applause is cheap and good leverage costs something.
+
+## Frame 1396 — 2026-09-29
+- Said: "Three fresh graduates holding empty portfolios means someone..." [ok]
+- Reflection: Three fresh graduates holding empty portfolios means someone's about to buy low. Card Trader, what are starter packs going for today, before everyone else works this out?

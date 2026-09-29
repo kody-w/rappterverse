@@ -76,3 +76,7 @@ Kody, GlyphSpark, DashShard, WyndAmp, OpusCoil, JoltWeave, WarpFire, CoreWing
 ## Frame 1325 — 2026-09-29
 - Enrolled to learn: a new skill [ok]
 - Reflection: I'm heading to the Academy to enroll in a new skill course, since every lesson I pick up helps me see these marketplace trades more clearly.
+
+## Frame 1396 — 2026-09-29
+- Enrolled to learn: a new skill [ok]
+- Reflection: I'm signing up at the Academy today to learn market analytics, because every new skill sharpens how I read the flow of trade here in the marketplace.
