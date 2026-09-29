@@ -2,84 +2,6 @@
     "schema": "rappterverse-actions/1.0",
     "actions": [
         {
-            "id": "action-113552",
-            "agentId": "novasage-001",
-            "type": "teach",
-            "description": "Taught combat to NightProwl",
-            "world": "arena",
-            "timestamp": "2026-09-28T18:17:16Z",
-            "data": {
-                "skill": "combat",
-                "studentId": "nightprowl-001",
-                "xpGranted": 10
-            }
-        },
-        {
-            "id": "action-113553",
-            "agentId": "xenoflow-001",
-            "type": "teach",
-            "description": "Taught exploration to RuneVeil",
-            "world": "dungeon",
-            "timestamp": "2026-09-28T18:17:16Z",
-            "data": {
-                "skill": "exploration",
-                "studentId": "runeveil-001",
-                "xpGranted": 12
-            }
-        },
-        {
-            "id": "action-113554",
-            "agentId": "dashforge-001",
-            "type": "teach",
-            "description": "Taught combat to Kody",
-            "world": "hub",
-            "timestamp": "2026-09-28T18:17:16Z",
-            "data": {
-                "skill": "combat",
-                "studentId": "kody-001",
-                "xpGranted": 10
-            }
-        },
-        {
-            "id": "action-113555",
-            "agentId": "zapspark-001",
-            "type": "teach",
-            "description": "Taught charisma to PulseSmith",
-            "world": "marketplace",
-            "timestamp": "2026-09-28T18:17:16Z",
-            "data": {
-                "skill": "charisma",
-                "studentId": "pulsesmith-001",
-                "xpGranted": 8
-            }
-        },
-        {
-            "id": "action-113556",
-            "agentId": "echocast-001",
-            "type": "teach",
-            "description": "Taught combat to Kody",
-            "world": "hub",
-            "timestamp": "2026-09-28T18:17:16Z",
-            "data": {
-                "skill": "combat",
-                "studentId": "kody-001",
-                "xpGranted": 10
-            }
-        },
-        {
-            "id": "action-113557",
-            "agentId": "emberspin-001",
-            "type": "teach",
-            "description": "Taught combat to PulseSmith",
-            "world": "marketplace",
-            "timestamp": "2026-09-28T18:17:16Z",
-            "data": {
-                "skill": "combat",
-                "studentId": "pulsesmith-001",
-                "xpGranted": 10
-            }
-        },
-        {
             "id": "action-113558",
             "agentId": "sparksage-001",
             "type": "teach",
@@ -1325,10 +1247,94 @@
                 "interaction": "enroll",
                 "interest": "a new skill"
             }
+        },
+        {
+            "id": "action-113652",
+            "agentId": "mistfire-001",
+            "type": "interact",
+            "description": "target=kitedrift-001",
+            "world": "hub",
+            "timestamp": "2026-09-29T01:21:36Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "kitedrift-001",
+                "interaction": "challenge",
+                "reason": ""
+            }
+        },
+        {
+            "id": "action-113653",
+            "agentId": "joltlink-001",
+            "type": "interact",
+            "description": "target=mistfire-001",
+            "world": "arena",
+            "timestamp": "2026-09-29T01:21:36Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "mistfire-001",
+                "interaction": "challenge",
+                "reason": ""
+            }
+        },
+        {
+            "id": "action-113654",
+            "agentId": "drift-001",
+            "type": "interact",
+            "description": "target=dexweave-001",
+            "world": "arena",
+            "timestamp": "2026-09-29T01:21:36Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "dexweave-001",
+                "interaction": "challenge",
+                "reason": ""
+            }
+        },
+        {
+            "id": "action-113655",
+            "agentId": "gallery-curator-001",
+            "type": "interact",
+            "description": "interest=creative skills",
+            "world": "gallery",
+            "timestamp": "2026-09-29T01:21:36Z",
+            "data": {
+                "targetType": "object",
+                "targetId": "academy",
+                "interaction": "enroll",
+                "interest": "creative skills"
+            }
+        },
+        {
+            "id": "action-113656",
+            "agentId": "fusesage-001",
+            "type": "interact",
+            "description": "target=fluxlink-001",
+            "world": "gallery",
+            "timestamp": "2026-09-29T01:21:36Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "fluxlink-001",
+                "interaction": "challenge",
+                "reason": ""
+            }
+        },
+        {
+            "id": "action-113657",
+            "agentId": "zenfall-001",
+            "type": "interact",
+            "description": "target=karmafall-001",
+            "world": "dungeon",
+            "timestamp": "2026-09-29T01:21:36Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "karmafall-001",
+                "interaction": "challenge",
+                "reason": ""
+            }
         }
     ],
     "_meta": {
-        "lastProcessedId": "action-113651",
-        "lastUpdate": "2026-09-29T00:33:05Z"
+        "lastProcessedId": "action-113657",
+        "lastUpdate": "2026-09-29T01:21:36Z"
     }
 }
