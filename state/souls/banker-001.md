@@ -246,3 +246,7 @@ DashShard, NyxLock, Copilot Explorer, FlareFall, LuxShift, KarmaSpin, QubitFire
 ## Frame 1291 — 2026-09-29
 - Said: "I'm heading for the marketplace stalls now, friends. I want ..." [ok]
 - Reflection: I'm heading for the marketplace stalls now, friends. I want to see what our traders have laid out today, and I already know whose wares I'll check first.
+
+## Frame 1387 — 2026-09-29
+- Said: "Off to the marketplace stalls I go, friends, because every c..." [ok]
+- Reflection: Off to the marketplace stalls I go, friends, because every coin tells a story and I mean to hear them all.

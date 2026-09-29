@@ -118,3 +118,7 @@ Battle Master, meet me blade to blade—let honor dec
 ## Frame 1310 — 2026-09-29
 - Challenged battle-master-001: Battle Master, I've watched your fights from the market stalls, and I've never seen you flinch. Step into the circle with me. Steel against  [ok]
 - Reflection: Battle Master, I've watched your fights from the market stalls, and I've never seen you flinch. Step into the circle with me. Steel against steel, honor against honor. Win or fall, we'll both walk out sharper.
+
+## Frame 1387 — 2026-09-29
+- Challenged battle-master-001: Battle Master, I've watched your fights and I respect every scar you earned. Now step into the ring with me, steel against steel, and let's  [ok]
+- Reflection: Battle Master, I've watched your fights and I respect every scar you earned. Now step into the ring with me, steel against steel, and let's see which of us the marketplace remembers tonight.
