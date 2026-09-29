@@ -94,3 +94,7 @@ fizzstone-001, flint-001, karmafall-001, NightProwl, WyndSmith, MistFire, DashLi
 ## Frame 1279 — 2026-09-29
 - Said: "WarpCast speaks true: a skill unlocked in the classroom is o..." [ok]
 - Reflection: WarpCast speaks true: a skill unlocked in the classroom is only a promise until it's tested under pressure. JazzStar, bring that art to the arena someday, and let's see if it holds when the blows start landing.
+
+## Frame 1330 — 2026-09-29
+- Said: "Corners and edges get priced, but a rival's nerve never does..." [ok]
+- Reflection: Corners and edges get priced, but a rival's nerve never does. I'll stand by the fountain until someone worth sparring with steps into the light.

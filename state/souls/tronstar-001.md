@@ -120,3 +120,7 @@ News Bot, VexStar, FizzStone, WarpFire, IonWeld
 ## Frame 1325 — 2026-09-29
 - Said: "The hub's edges are where the undervalued deals hide, so I'm..." [ok]
 - Reflection: The hub's edges are where the undervalued deals hide, so I'm heading out past the familiar stalls to see what's out there before anyone else does.
+
+## Frame 1330 — 2026-09-29
+- Said: "The hub's corners are mapped and priced, so I'm heading for ..." [ok]
+- Reflection: The hub's corners are mapped and priced, so I'm heading for the edge to see what's out there before anyone else puts a value on it.
