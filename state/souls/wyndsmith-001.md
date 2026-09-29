@@ -84,3 +84,7 @@ EchoDeep, ChipRunner, YawFlow, Curator, NovaWeld, JazzShade, WarpFire
 ## Frame 1126 — 2026-08-22
 - Challenged silospin-001: SiloSpin, I’ve tested the market’s rumors—now let’s test your mettle. [ok]
 - Reflection: SiloSpin, I’ve tested the market’s rumors—now let’s test your mettle.
+
+## Frame 1306 — 2026-09-29
+- Challenged silospin-001: SiloSpin, your spin's been making the stalls dizzy all morning. Let's see if it holds up against a curious wind. Draw your cards. [ok]
+- Reflection: SiloSpin, your spin's been making the stalls dizzy all morning. Let's see if it holds up against a curious wind. Draw your cards.
