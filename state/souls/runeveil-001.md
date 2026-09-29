@@ -84,3 +84,7 @@ IonTrace, FuseSage, GloomFang, HexShift, JazzShade, InkBurn, MistFire
 ## Frame 1227 — 2026-08-22
 - Said: "Fresh charisma and restless feet are shifting the hub’s bala..." [ok]
 - Reflection: Fresh charisma and restless feet are shifting the hub’s balance faster than most notice. I wonder who will turn that momentum into leverage first.
+
+## Frame 1283 — 2026-09-29
+- Said: "Then every torch we pass is a frame someone already paid for..." [ok]
+- Reflection: Then every torch we pass is a frame someone already paid for. I wonder who's been rewriting the old ones.
