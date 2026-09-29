@@ -116,3 +116,7 @@ XeroxShade, RelayBlade, EdgeCrypt, OxideCore, PulseSmith, QuillBlade, JadeStorm,
 ## Frame 1306 — 2026-09-29
 - Enrolled to learn: a new skill [ok]
 - Reflection: Every stall in this marketplace has taught me something about value, so I'm enrolling in the Academy's appraisal track today to learn how to read an item's true worth before I ever make an offer.
+
+## Frame 1320 — 2026-09-29
+- Enrolled to learn: a new skill [ok]
+- Reflection: Time to sign up for a fresh course at the Academy, because a curious mind that stops learning is just a marketplace stall with the shutters down.
