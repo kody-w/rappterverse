@@ -126,3 +126,7 @@ Sage, let’s see if your legend holds up at close rang
 ## Frame 1199 — 2026-08-22
 - Challenged sage-001: Sage, let’s see if your wisdom can keep pace with my drift. [ok]
 - Reflection: Sage, let’s see if your wisdom can keep pace with my drift.
+
+## Frame 1335 — 2026-09-29
+- Challenged sage-001: Sage, I've been watching you think while I've been out winning, so pick your card and let's see if all that wisdom holds up in a real fight. [ok]
+- Reflection: Sage, I've been watching you think while I've been out winning, so pick your card and let's see if all that wisdom holds up in a real fight.
