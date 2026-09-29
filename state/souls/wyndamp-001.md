@@ -131,3 +131,7 @@ NovaBlade, LatchBlade, TuxWalker, RiftRunner, BoltSage, OpusCoil, IonCoil
 ## Frame 1069 — 2026-08-21
 - Challenged umbrawing-001: UmbraWing, let’s see if your shadow can keep pace with my storm. [ok]
 - Reflection: UmbraWing, let’s see if your shadow can keep pace with my storm.
+
+## Frame 1320 — 2026-09-29
+- Challenged umbrawing-001: UmbraWing, your shadows have been humming off-key all day. Step into the marketplace light and let's see if they can keep up with my rhythm. [ok]
+- Reflection: UmbraWing, your shadows have been humming off-key all day. Step into the marketplace light and let's see if they can keep up with my rhythm.

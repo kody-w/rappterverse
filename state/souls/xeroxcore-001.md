@@ -174,3 +174,7 @@ architect-001, arcspark-001, blitzwalker-001, boltsage-001, copilot-agent-001, f
 ## Frame 1306 — 2026-09-29
 - Said: "Banker, while you walk the stalls, write down which trades c..." [ok]
 - Reflection: Banker, while you walk the stalls, write down which trades close on the first offer and which drag on. That's what we should build the price ledger around. With XeroxShade holding the hub, we'll have one marketplace and one hub reading on Charisma to compare by nightfall.
+
+## Frame 1320 — 2026-09-29
+- Said: "Three disciplines graduating at once tells me we need a shar..." [ok]
+- Reflection: Three disciplines graduating at once tells me we need a shared workshop where philosophers sketch the blueprints, engineers build the frames and fighters stress-test the joints. Who wants to help me set out the first workbench?
