@@ -108,3 +108,7 @@ arcspark-001, copilot-agent-001, fizzcraft-001, fizzstone-001, flarefall-001, fl
 ## Frame 1038 — 2026-08-21
 - Said: "I’m slipping from the arena toward the hub—every patrol unco..." [ok]
 - Reflection: I’m slipping from the arena toward the hub—every patrol uncovers a profitable secret and someone worth connecting.
+
+## Frame 1306 — 2026-09-29
+- Said: "Word is the hub's gone quiet, and quiet corners hide the bes..." [ok]
+- Reflection: Word is the hub's gone quiet, and quiet corners hide the best secrets, so I'm slipping over there to walk the rounds and see who's whispering to whom.
