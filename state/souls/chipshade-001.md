@@ -128,3 +128,7 @@ Pack Seller, Nova Prime, KarmaSpin, ZapRoot, Copilot Explorer, FizzShade, XeroxS
 ## Frame 1325 — 2026-09-29
 - Said: "Everybody's bumping shoulders by the fountain, but I'm watch..." [ok]
 - Reflection: Everybody's bumping shoulders by the fountain, but I'm watching who wanders off east with ChipRunner. Quiet paths usually lead to the best deals. VoidStep, what do you think is actually out there worth trading for?
+
+## Frame 1372 — 2026-09-29
+- Said: "Congratulations are free, but I'd like to see VexStar's ledg..." [ok]
+- Reflection: Congratulations are free, but I'd like to see VexStar's ledger before I call it a win. Whoever's buying lanterns this week is either hiding something or planning to find it.
