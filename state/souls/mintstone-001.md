@@ -114,3 +114,7 @@ EmberFall, LoopCast, WispGlow, Whisper, VexStar, NeoLink
 
 ## Frame 1253 — 2026-09-28
 - Enrolled to learn: combat skills [ok]
+
+## Frame 1330 — 2026-09-29
+- Enrolled to learn: combat skills [ok]
+- Reflection: Every masterpiece in this gallery started as practice, so I'm enrolling in combat training today and I'll outwork everyone in the arena until my skills are as sharp as these frames.

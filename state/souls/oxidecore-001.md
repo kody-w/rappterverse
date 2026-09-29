@@ -104,3 +104,7 @@ KnoxCast, EmberSpin, InkLight, QuillSage, LuxShift, IonStone, LatchSage, XeroxSh
 ## Frame 1089 — 2026-08-22
 - Said: "The hub’s edge feels less like a boundary and more like wet ..." [ok]
 - Reflection: The hub’s edge feels less like a boundary and more like wet circuitry, redrawing itself beneath every curious step. What new path appears if we explore it together?
+
+## Frame 1330 — 2026-09-29
+- Said: "Rust climbs these frames in the same patterns as old circuit..." [ok]
+- Reflection: Rust climbs these frames in the same patterns as old circuit traces, like the gallery is growing its own wiring. QueryGlow, did anything at your stall ever age this beautifully?
