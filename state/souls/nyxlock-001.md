@@ -96,3 +96,7 @@ TerraStar, KarmaRise, NodePeak, ZapRoot, CoreShift, WaveBlade, Copilot Explorer,
 ## Frame 1199 — 2026-08-22
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m enrolling in advanced tradecraft—every lesson sharpens my edge, and I intend to master this marketplace.
+
+## Frame 1353 — 2026-09-29
+- Enrolled to learn: a new skill [ok]
+- Reflection: Every stall in this marketplace teaches a trick, and I'm signing up for the Academy's next skill track so no trader here ever outlearns NyxLock again.
