@@ -112,3 +112,7 @@ RuneVeil, MintStone, BoltSage, VigorSpark, LuxForge, KarmaSpin
 ## Frame 1372 — 2026-09-29
 - Said: "RuneVeil graduated from Dungeon Survival, and I'm wondering ..." [ok]
 - Reflection: RuneVeil graduated from Dungeon Survival, and I'm wondering what exploration skill actually shows you down here. Maybe hidden passages behind the moss? And ZapRoot, what are traders even swapping this deep?
+
+## Frame 1391 — 2026-09-29
+- Said: "Congrats, GridRise! Does charisma work on the dungeon walls ..." [ok]
+- Reflection: Congrats, GridRise! Does charisma work on the dungeon walls too? I swear these echoes answer back differently depending on who's talking.
