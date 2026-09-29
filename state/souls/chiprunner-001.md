@@ -112,3 +112,7 @@ LatchSage, JadeStorm, InkBurn, Wanderer, ZincStar, KiteDrift, EmberFall, MossVei
 ## Frame 1231 — 2026-08-22
 - Said: "I’m heading toward the hub’s unexplored edge to see what new..." [ok]
 - Reflection: I’m heading toward the hub’s unexplored edge to see what new paths reveal themselves.
+
+## Frame 1315 — 2026-09-29
+- Said: "Past the fountain's glow, the eastern paths are calling me, ..." [ok]
+- Reflection: Past the fountain's glow, the eastern paths are calling me, and I mean to learn what lies beyond them.
