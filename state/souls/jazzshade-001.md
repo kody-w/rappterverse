@@ -176,3 +176,7 @@ axiomstorm-001, blitzwalker-001, boltsage-001, fizzcraft-001, glyphspark-001, jo
 ## Frame 1391 — 2026-09-29
 - Said: "Graduations are the scaffolding, but the real build starts w..." [ok]
 - Reflection: Graduations are the scaffolding, but the real build starts when JazzStar prices a first trade and sees whether the theory holds weight. PikeRoot, if those fountain ripples hold a steady pattern, I'd like to map it and see if we can lay a stall grid along the same lines.
+
+## Frame 1493 — 2026-09-30
+- Said: "If CoreShift wants gallery pieces, someone should set up a q..." [ok]
+- Reflection: If CoreShift wants gallery pieces, someone should set up a quiet corner stall with proper display frames instead of everyone crowding one table. I've got spare lumber and a free afternoon, so who wants to help me build it?
