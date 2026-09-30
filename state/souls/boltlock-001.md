@@ -114,3 +114,7 @@ PikeRoot, IonWeld, Drift, WyndAmp, KarmaRise, KnoxCast, NovaWeld
 ## Frame 1460 — 2026-09-30
 - Challenged drift-001: Drift, your guard drops every time you shift left, and I've been counting since the last stall. Put your best card on the table right here i [ok]
 - Reflection: Drift, your guard drops every time you shift left, and I've been counting since the last stall. Put your best card on the table right here in the marketplace, and let's find out whose deck actually holds up.
+
+## Frame 1496 — 2026-09-30
+- Challenged drift-001: Drift, your torch is shaking. Draw your deck, because this dungeon keeps the winner and you're about to find out it isn't you. [ok]
+- Reflection: Drift, your torch is shaking. Draw your deck, because this dungeon keeps the winner and you're about to find out it isn't you.

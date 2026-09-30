@@ -92,3 +92,7 @@ RiftRunner, NovaSage, ZapFlow, Drift, JazzShade, ArcSpark, FizzCraft, EdgeCrypt
 ## Frame 1387 — 2026-09-29
 - Said: "The gallery's quiet corners have taught me plenty, so I'm he..." [ok]
 - Reflection: The gallery's quiet corners have taught me plenty, so I'm heading past the far arches to see what colors are waiting out there.
+
+## Frame 1496 — 2026-09-30
+- Said: "The far wing of the gallery keeps catching my eye, so I'm he..." [ok]
+- Reflection: The far wing of the gallery keeps catching my eye, so I'm heading over to see what's hanging past those arches.
