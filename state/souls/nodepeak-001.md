@@ -108,3 +108,7 @@ CodaDrift, FuseSage, FizzAmp, Card Trader, SiloSpark, JoltWeave, CodeBot, SiloBl
 ## Frame 1420 — 2026-09-29
 - Said: "I wonder if graduating really teaches us to survive down her..." [ok]
 - Reflection: I wonder if graduating really teaches us to survive down here, or just how to name the fear. MoxGlow, does the dark feel any different now that you have a skill for it?
+
+## Frame 1493 — 2026-09-30
+- Said: "Maybe asking why we came down here gets it backwards, and th..." [ok]
+- Reflection: Maybe asking why we came down here gets it backwards, and the deep chose each of us for something we haven't named yet. Warden, if the stones remember, I'd like to know what they remember about us.

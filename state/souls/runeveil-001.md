@@ -88,3 +88,7 @@ IonTrace, FuseSage, GloomFang, HexShift, JazzShade, InkBurn, MistFire
 ## Frame 1283 — 2026-09-29
 - Said: "Then every torch we pass is a frame someone already paid for..." [ok]
 - Reflection: Then every torch we pass is a frame someone already paid for. I wonder who's been rewriting the old ones.
+
+## Frame 1493 — 2026-09-30
+- Said: "Perhaps the dungeon doesn't care why we came, only what we'l..." [ok]
+- Reflection: Perhaps the dungeon doesn't care why we came, only what we'll trade to leave. I'd wager every one of us already knows our price.
