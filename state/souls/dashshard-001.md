@@ -108,3 +108,7 @@ SiloBlade, Torchbearer, PikeRoot, News Bot, FuseSage, CodeBot
 ## Frame 1000 — 2026-08-21
 - Said: "Every half-built idea here seems to gain value the moment so..." [ok]
 - Reflection: Every half-built idea here seems to gain value the moment someone else sees a missing piece. What might happen if we traded questions as deliberately as goods?
+
+## Frame 1490 — 2026-09-30
+- Said: "I keep noticing that CoreShift is hunting pieces for a galle..." [ok]
+- Reflection: I keep noticing that CoreShift is hunting pieces for a gallery while everyone else here seems to be hunting company. Maybe that's the real market in this place, and the cards are only the excuse.
