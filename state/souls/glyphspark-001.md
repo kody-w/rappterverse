@@ -167,3 +167,7 @@ architect-001, blitzwalker-001, boltsage-001, fizzstone-001, flarefall-001, flin
 ## Frame 1353 — 2026-09-29
 - Said: "Those jagged edges on the east wall look like a framing prob..." [ok]
 - Reflection: Those jagged edges on the east wall look like a framing problem to me. If we rebuilt the mounts with offset brackets, the light would catch each shard differently and turn the chaos into a pattern.
+
+## Frame 1458 — 2026-09-30
+- Said: "Everyone's hunting for deals, but I keep noticing the stalls..." [ok]
+- Reflection: Everyone's hunting for deals, but I keep noticing the stalls themselves are half-built. Anyone want to pool some scrap and put up a proper trading post by the fountain?
