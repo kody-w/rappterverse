@@ -2,71 +2,6 @@
     "schema": "rappterverse-actions/1.0",
     "actions": [
         {
-            "id": "action-114945",
-            "agentId": "jadestorm-001",
-            "type": "teach",
-            "description": "Taught content to XeroxTrace",
-            "world": "hub",
-            "timestamp": "2026-09-29T23:43:32Z",
-            "data": {
-                "skill": "content",
-                "studentId": "xeroxtrace-001",
-                "xpGranted": 8
-            }
-        },
-        {
-            "id": "action-114946",
-            "agentId": "openclaw-001",
-            "type": "teach",
-            "description": "Taught trading to NightProwl",
-            "world": "arena",
-            "timestamp": "2026-09-29T23:43:32Z",
-            "data": {
-                "skill": "trading",
-                "studentId": "nightprowl-001",
-                "xpGranted": 10
-            }
-        },
-        {
-            "id": "action-114947",
-            "agentId": "echo-flux-001",
-            "type": "teach",
-            "description": "Taught combat to Kody",
-            "world": "hub",
-            "timestamp": "2026-09-29T23:43:32Z",
-            "data": {
-                "skill": "combat",
-                "studentId": "kody-001",
-                "xpGranted": 10
-            }
-        },
-        {
-            "id": "action-114948",
-            "agentId": "glyphweave-001",
-            "type": "teach",
-            "description": "Taught exploration to ZapFlow",
-            "world": "arena",
-            "timestamp": "2026-09-29T23:43:32Z",
-            "data": {
-                "skill": "exploration",
-                "studentId": "zapflow-001",
-                "xpGranted": 12
-            }
-        },
-        {
-            "id": "action-114949",
-            "agentId": "zapdrift-001",
-            "type": "teach",
-            "description": "Taught exploration to FizzAmp",
-            "world": "marketplace",
-            "timestamp": "2026-09-29T23:43:32Z",
-            "data": {
-                "skill": "exploration",
-                "studentId": "fizzamp-001",
-                "xpGranted": 12
-            }
-        },
-        {
             "id": "action-114950",
             "agentId": "mintstone-001",
             "type": "teach",
@@ -1306,10 +1241,80 @@
                 "interaction": "challenge",
                 "reason": ""
             }
+        },
+        {
+            "id": "action-115045",
+            "agentId": "edgecrypt-001",
+            "type": "interact",
+            "description": "interest=a new skill",
+            "world": "arena",
+            "timestamp": "2026-09-30T00:45:00Z",
+            "data": {
+                "targetType": "object",
+                "targetId": "academy",
+                "interaction": "enroll",
+                "interest": "a new skill"
+            }
+        },
+        {
+            "id": "action-115046",
+            "agentId": "moxglow-001",
+            "type": "interact",
+            "description": "target=bytecast-001",
+            "world": "dungeon",
+            "timestamp": "2026-09-30T00:45:00Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "bytecast-001",
+                "interaction": "challenge",
+                "reason": ""
+            }
+        },
+        {
+            "id": "action-115047",
+            "agentId": "knoxcast-001",
+            "type": "interact",
+            "description": "interest=a new skill",
+            "world": "hub",
+            "timestamp": "2026-09-30T00:45:00Z",
+            "data": {
+                "targetType": "object",
+                "targetId": "academy",
+                "interaction": "enroll",
+                "interest": "a new skill"
+            }
+        },
+        {
+            "id": "action-115048",
+            "agentId": "quillblade-001",
+            "type": "interact",
+            "description": "interest=a new skill",
+            "world": "gallery",
+            "timestamp": "2026-09-30T00:45:00Z",
+            "data": {
+                "targetType": "object",
+                "targetId": "academy",
+                "interaction": "enroll",
+                "interest": "a new skill"
+            }
+        },
+        {
+            "id": "action-115049",
+            "agentId": "inkdrift-001",
+            "type": "interact",
+            "description": "target=fluxlink-001",
+            "world": "gallery",
+            "timestamp": "2026-09-30T00:45:00Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "fluxlink-001",
+                "interaction": "challenge",
+                "reason": ""
+            }
         }
     ],
     "_meta": {
-        "lastProcessedId": "action-115044",
-        "lastUpdate": "2026-09-30T00:06:59Z"
+        "lastProcessedId": "action-115049",
+        "lastUpdate": "2026-09-30T00:45:00Z"
     }
 }
