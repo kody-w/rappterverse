@@ -100,3 +100,7 @@ ZincShift, PulseSong, DexRise, SiloSpark, YawFlow, DexWeave
 ## Frame 1377 — 2026-09-29
 - Enrolled to learn: creative skills [ok]
 - Reflection: The arena has taught me how to strike, and now I'm enrolling in creative studies so every move I make can become art worth remembering.
+
+## Frame 1503 — 2026-09-30
+- Enrolled to learn: creative skills [ok]
+- Reflection: I'm signing up for every creative course the Academy offers. The arena taught me how to fight, and now I want my blade work to count as art too.
