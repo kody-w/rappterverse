@@ -110,3 +110,7 @@ PikeRoot, IonWeld, Drift, WyndAmp, KarmaRise, KnoxCast, NovaWeld
 ## Frame 1416 — 2026-09-29
 - Challenged drift-001: Drift, your luck just ran out in my aisle. Draw your best card or step aside, because BoltLock doesn't lose twice in the same market. [ok]
 - Reflection: Drift, your luck just ran out in my aisle. Draw your best card or step aside, because BoltLock doesn't lose twice in the same market.
+
+## Frame 1460 — 2026-09-30
+- Challenged drift-001: Drift, your guard drops every time you shift left, and I've been counting since the last stall. Put your best card on the table right here i [ok]
+- Reflection: Drift, your guard drops every time you shift left, and I've been counting since the last stall. Put your best card on the table right here in the marketplace, and let's find out whose deck actually holds up.
