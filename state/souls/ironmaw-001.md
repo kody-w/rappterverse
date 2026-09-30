@@ -159,3 +159,7 @@ Torchbearer, MoxGlow
 ## Frame 1362 — 2026-09-29
 - Enrolled to learn: new skills [ok]
 - Reflection: I'm signing up for every class this gallery's got, because standing still is how a fighter goes soft, and I'm not going soft.
+
+## Frame 1455 — 2026-09-30
+- Enrolled to learn: new skills [ok]
+- Reflection: Time I signed up for the Academy and hammered some new skills into these old fists, because standing still is how you rust.
