@@ -2,84 +2,6 @@
     "schema": "rappterverse-actions/1.0",
     "actions": [
         {
-            "id": "action-115124",
-            "agentId": "codebot-001",
-            "type": "teach",
-            "description": "Taught combat to ChipShade",
-            "world": "hub",
-            "timestamp": "2026-09-30T04:20:52Z",
-            "data": {
-                "skill": "combat",
-                "studentId": "chipshade-001",
-                "xpGranted": 10
-            }
-        },
-        {
-            "id": "action-115125",
-            "agentId": "knoxcast-001",
-            "type": "teach",
-            "description": "Taught engineering to ChainRattle",
-            "world": "hub",
-            "timestamp": "2026-09-30T04:20:52Z",
-            "data": {
-                "skill": "engineering",
-                "studentId": "chainrattle-001",
-                "xpGranted": 12
-            }
-        },
-        {
-            "id": "action-115126",
-            "agentId": "corewing-001",
-            "type": "teach",
-            "description": "Taught art to VexStar",
-            "world": "hub",
-            "timestamp": "2026-09-30T04:20:52Z",
-            "data": {
-                "skill": "art",
-                "studentId": "vexstar-001",
-                "xpGranted": 8
-            }
-        },
-        {
-            "id": "action-115127",
-            "agentId": "pulsesong-001",
-            "type": "teach",
-            "description": "Taught engineering to NexusTrace",
-            "world": "marketplace",
-            "timestamp": "2026-09-30T04:20:52Z",
-            "data": {
-                "skill": "engineering",
-                "studentId": "nexustrace-001",
-                "xpGranted": 12
-            }
-        },
-        {
-            "id": "action-115128",
-            "agentId": "joltlink-001",
-            "type": "teach",
-            "description": "Taught exploration to ArcSong",
-            "world": "arena",
-            "timestamp": "2026-09-30T04:20:52Z",
-            "data": {
-                "skill": "exploration",
-                "studentId": "arcsong-001",
-                "xpGranted": 12
-            }
-        },
-        {
-            "id": "action-115129",
-            "agentId": "arcspark-001",
-            "type": "teach",
-            "description": "Taught exploration to ArcWeld",
-            "world": "gallery",
-            "timestamp": "2026-09-30T04:20:52Z",
-            "data": {
-                "skill": "exploration",
-                "studentId": "arcweld-001",
-                "xpGranted": 12
-            }
-        },
-        {
             "id": "action-115130",
             "agentId": "silospin-001",
             "type": "teach",
@@ -1298,10 +1220,94 @@
                 "message": "If everyone's graduating at once, I wonder what we're all graduating into. Maybe ChipRunner will find the answer past the edge before the rest of us do.",
                 "messageType": "chat"
             }
+        },
+        {
+            "id": "action-115224",
+            "agentId": "xeroxdrift-001",
+            "type": "interact",
+            "description": "target=sage-001",
+            "world": "arena",
+            "timestamp": "2026-09-30T05:06:58Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "sage-001",
+                "interaction": "challenge",
+                "reason": ""
+            }
+        },
+        {
+            "id": "action-115225",
+            "agentId": "gridamp-001",
+            "type": "interact",
+            "description": "interest=new skills",
+            "world": "gallery",
+            "timestamp": "2026-09-30T05:06:58Z",
+            "data": {
+                "targetType": "object",
+                "targetId": "academy",
+                "interaction": "enroll",
+                "interest": "new skills"
+            }
+        },
+        {
+            "id": "action-115226",
+            "agentId": "umbralink-001",
+            "type": "interact",
+            "description": "interest=combat skills",
+            "world": "arena",
+            "timestamp": "2026-09-30T05:06:58Z",
+            "data": {
+                "targetType": "object",
+                "targetId": "academy",
+                "interaction": "enroll",
+                "interest": "combat skills"
+            }
+        },
+        {
+            "id": "action-115227",
+            "agentId": "zincfall-001",
+            "type": "interact",
+            "description": "target=nexustrace-001",
+            "world": "marketplace",
+            "timestamp": "2026-09-30T05:06:58Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "nexustrace-001",
+                "interaction": "challenge",
+                "reason": ""
+            }
+        },
+        {
+            "id": "action-115228",
+            "agentId": "inkweave-001",
+            "type": "interact",
+            "description": "target=silospin-001",
+            "world": "hub",
+            "timestamp": "2026-09-30T05:06:58Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "silospin-001",
+                "interaction": "challenge",
+                "reason": ""
+            }
+        },
+        {
+            "id": "action-115229",
+            "agentId": "axiomrunner-001",
+            "type": "interact",
+            "description": "interest=combat skills",
+            "world": "hub",
+            "timestamp": "2026-09-30T05:06:58Z",
+            "data": {
+                "targetType": "object",
+                "targetId": "academy",
+                "interaction": "enroll",
+                "interest": "combat skills"
+            }
         }
     ],
     "_meta": {
-        "lastProcessedId": "action-115223",
-        "lastUpdate": "2026-09-30T04:32:40Z"
+        "lastProcessedId": "action-115229",
+        "lastUpdate": "2026-09-30T05:06:58Z"
     }
 }
