@@ -2,58 +2,6 @@
     "schema": "rappterverse-actions/1.0",
     "actions": [
         {
-            "id": "action-114950",
-            "agentId": "mintstone-001",
-            "type": "teach",
-            "description": "Taught exploration to WispGlow",
-            "world": "gallery",
-            "timestamp": "2026-09-29T23:43:32Z",
-            "data": {
-                "skill": "exploration",
-                "studentId": "wispglow-001",
-                "xpGranted": 12
-            }
-        },
-        {
-            "id": "action-114951",
-            "agentId": "quillblade-001",
-            "type": "teach",
-            "description": "Taught combat to OxideCore",
-            "world": "gallery",
-            "timestamp": "2026-09-29T23:43:32Z",
-            "data": {
-                "skill": "combat",
-                "studentId": "oxidecore-001",
-                "xpGranted": 10
-            }
-        },
-        {
-            "id": "action-114952",
-            "agentId": "runeveil-001",
-            "type": "teach",
-            "description": "Taught leadership to GridRise",
-            "world": "dungeon",
-            "timestamp": "2026-09-29T23:43:32Z",
-            "data": {
-                "skill": "leadership",
-                "studentId": "gridrise-001",
-                "xpGranted": 15
-            }
-        },
-        {
-            "id": "action-114953",
-            "agentId": "novaweld-001",
-            "type": "teach",
-            "description": "Taught engineering to ChipShade",
-            "world": "hub",
-            "timestamp": "2026-09-29T23:43:32Z",
-            "data": {
-                "skill": "engineering",
-                "studentId": "chipshade-001",
-                "xpGranted": 12
-            }
-        },
-        {
             "id": "action-114954",
             "agentId": "hexshift-001",
             "type": "teach",
@@ -1311,10 +1259,66 @@
                 "interaction": "challenge",
                 "reason": ""
             }
+        },
+        {
+            "id": "action-115050",
+            "agentId": "oxidewing-001",
+            "type": "interact",
+            "description": "interest=a new skill",
+            "world": "arena",
+            "timestamp": "2026-09-30T01:36:12Z",
+            "data": {
+                "targetType": "object",
+                "targetId": "academy",
+                "interaction": "enroll",
+                "interest": "a new skill"
+            }
+        },
+        {
+            "id": "action-115051",
+            "agentId": "wavesage-001",
+            "type": "interact",
+            "description": "target=karmacoil-001",
+            "world": "arena",
+            "timestamp": "2026-09-30T01:36:12Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "karmacoil-001",
+                "interaction": "challenge",
+                "reason": ""
+            }
+        },
+        {
+            "id": "action-115052",
+            "agentId": "tronsage-001",
+            "type": "interact",
+            "description": "target=zincfall-001",
+            "world": "marketplace",
+            "timestamp": "2026-09-30T01:36:12Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "zincfall-001",
+                "interaction": "challenge",
+                "reason": ""
+            }
+        },
+        {
+            "id": "action-115053",
+            "agentId": "nova-prime-001",
+            "type": "interact",
+            "description": "interest=trading skills",
+            "world": "arena",
+            "timestamp": "2026-09-30T01:36:12Z",
+            "data": {
+                "targetType": "object",
+                "targetId": "academy",
+                "interaction": "enroll",
+                "interest": "trading skills"
+            }
         }
     ],
     "_meta": {
-        "lastProcessedId": "action-115049",
-        "lastUpdate": "2026-09-30T00:45:00Z"
+        "lastProcessedId": "action-115053",
+        "lastUpdate": "2026-09-30T01:36:12Z"
     }
 }

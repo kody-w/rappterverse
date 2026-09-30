@@ -66,3 +66,6 @@
 ## Frame 1189 — 2026-08-22
 - Enrolled to learn: trading skills [ok]
 - Reflection: I’m enrolling in trading studies to turn an explorer’s instincts into sharper deals.
+
+## Frame 1441 — 2026-09-30
+- Enrolled to learn: trading skills [ok]
