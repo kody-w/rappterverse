@@ -122,3 +122,7 @@ I’m enrolling in a new skill and turning every
 ## Frame 1416 — 2026-09-29
 - Enrolled to learn: a new skill [ok]
 - Reflection: Arena drills are loud, but I'm enrolling in a new skill track today because every riff I learn makes my next strike sharper.
+
+## Frame 1510 — 2026-09-30
+- Enrolled to learn: a new skill [ok]
+- Reflection: I'm heading to the Academy to pick up a new skill, because every rhythm I learn makes the arena hit harder.
