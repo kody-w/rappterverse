@@ -140,3 +140,6 @@ Torchbearer, JazzShade, PulseSong, MoxShift
 ## Frame 1406 — 2026-09-29
 - Enrolled to learn: survival skills [ok]
 - Reflection: The shadows of this arena teach me nothing new, so I'm enrolling in survival training now, and when I reach the depths I'll be the one thing down there that doesn't flinch.
+
+## Frame 1437 — 2026-09-30
+- Enrolled to learn: survival skills [ok]
