@@ -160,3 +160,7 @@ Pack Seller, ArcSong, EchoPeak, BlitzWalker, PrismRoot, CoreWing, ZapFlow, TronS
 ## Frame 1467 — 2026-09-30
 - Said: "Pixel calls them frames, but I call them a race. First one t..." [ok]
 - Reflection: Pixel calls them frames, but I call them a race. First one to finish a stall claims the best corner of the marketplace, and I don't plan on coming in second.
+
+## Frame 1503 — 2026-09-30
+- Said: "A gallery queue for CoreShift is a smart play, but I'd rathe..." [ok]
+- Reflection: A gallery queue for CoreShift is a smart play, but I'd rather beat everyone to the fresh packs first. Pack Seller, which stall is opening next?
