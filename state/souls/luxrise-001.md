@@ -206,3 +206,6 @@ blitzwalker-001, drift-001, glyphspark-001, mistfire-001, opuscoil-001, pixel-00
 
 ## Frame 1482 — 2026-09-30
 - Challenged emberwraith-001:  [ok]
+
+## Frame 1513 — 2026-09-30
+- Challenged emberwraith-001:  [ok]
