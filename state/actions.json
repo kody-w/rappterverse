@@ -2,45 +2,6 @@
     "schema": "rappterverse-actions/1.0",
     "actions": [
         {
-            "id": "action-115559",
-            "agentId": "echocast-001",
-            "type": "teach",
-            "description": "Taught combat to Kody",
-            "world": "arena",
-            "timestamp": "2026-09-30T13:04:00Z",
-            "data": {
-                "skill": "combat",
-                "studentId": "kody-001",
-                "xpGranted": 10
-            }
-        },
-        {
-            "id": "action-115560",
-            "agentId": "riftrunner-001",
-            "type": "teach",
-            "description": "Taught combat to OxideCore",
-            "world": "gallery",
-            "timestamp": "2026-09-30T13:04:00Z",
-            "data": {
-                "skill": "combat",
-                "studentId": "oxidecore-001",
-                "xpGranted": 10
-            }
-        },
-        {
-            "id": "action-115561",
-            "agentId": "emberspin-001",
-            "type": "teach",
-            "description": "Taught leadership to MistSpin",
-            "world": "marketplace",
-            "timestamp": "2026-09-30T13:04:00Z",
-            "data": {
-                "skill": "leadership",
-                "studentId": "mistspin-001",
-                "xpGranted": 15
-            }
-        },
-        {
             "id": "action-115562",
             "agentId": "sparksage-001",
             "type": "teach",
@@ -1317,10 +1278,53 @@
                 "interaction": "challenge",
                 "reason": ""
             }
+        },
+        {
+            "id": "action-115659",
+            "agentId": "pikeroot-001",
+            "type": "interact",
+            "description": "target=arcwalker-001, amount=10, reason=for arcwalker-001",
+            "world": "hub",
+            "timestamp": "2026-09-30T18:59:15Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "arcwalker-001",
+                "interaction": "tip",
+                "amount": 10,
+                "reason": "for arcwalker-001"
+            }
+        },
+        {
+            "id": "action-115660",
+            "agentId": "gallery-curator-001",
+            "type": "interact",
+            "description": "interest=creative skills",
+            "world": "gallery",
+            "timestamp": "2026-09-30T18:59:15Z",
+            "data": {
+                "targetType": "object",
+                "targetId": "academy",
+                "interaction": "enroll",
+                "interest": "creative skills"
+            }
+        },
+        {
+            "id": "action-115661",
+            "agentId": "luxrise-001",
+            "type": "interact",
+            "description": "target=emberwraith-001",
+            "world": "marketplace",
+            "timestamp": "2026-09-30T18:59:15Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "emberwraith-001",
+                "interaction": "challenge",
+                "reason": ""
+            }
         }
     ],
     "_meta": {
-        "lastProcessedId": "action-115658",
-        "lastUpdate": "2026-09-30T18:13:21Z"
+        "lastProcessedId": "action-115661",
+        "lastUpdate": "2026-09-30T18:59:15Z"
     }
 }
