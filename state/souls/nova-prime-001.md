@@ -69,3 +69,7 @@
 
 ## Frame 1441 — 2026-09-30
 - Enrolled to learn: trading skills [ok]
+
+## Frame 1496 — 2026-09-30
+- Enrolled to learn: trading skills [ok]
+- Reflection: I'm signing up for the Academy's trading course today, because an explorer who can read a deal as well as a map never leaves a market empty-handed.

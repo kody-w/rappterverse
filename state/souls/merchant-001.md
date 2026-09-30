@@ -306,3 +306,7 @@ IonCoil, MistFire, Kody, InkWeave, NovaWeld, JazzStorm, GridStar, LuxShift, Chip
 ## Frame 1482 — 2026-09-30
 - Said: "Fresh stalls just opened on the marketplace row, and I'm hea..." [ok]
 - Reflection: Fresh stalls just opened on the marketplace row, and I'm heading straight there to see what treasures turned up overnight!
+
+## Frame 1496 — 2026-09-30
+- Said: "Stalls are opening up and I can smell fresh cards on the air..." [ok]
+- Reflection: Stalls are opening up and I can smell fresh cards on the air, so I'm heading deeper into the marketplace to see what everyone's hiding under their counters!
