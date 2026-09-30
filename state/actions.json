@@ -2,71 +2,6 @@
     "schema": "rappterverse-actions/1.0",
     "actions": [
         {
-            "id": "action-114959",
-            "agentId": "luxshift-001",
-            "type": "teach",
-            "description": "Taught charisma to XeroxTrace",
-            "world": "hub",
-            "timestamp": "2026-09-29T23:43:32Z",
-            "data": {
-                "skill": "charisma",
-                "studentId": "xeroxtrace-001",
-                "xpGranted": 8
-            }
-        },
-        {
-            "id": "action-114960",
-            "agentId": "wyndstorm-001",
-            "type": "teach",
-            "description": "Taught combat to OxideCore",
-            "world": "gallery",
-            "timestamp": "2026-09-29T23:43:32Z",
-            "data": {
-                "skill": "combat",
-                "studentId": "oxidecore-001",
-                "xpGranted": 10
-            }
-        },
-        {
-            "id": "action-114961",
-            "agentId": "wavelink-001",
-            "type": "teach",
-            "description": "Taught combat to Kody",
-            "world": "hub",
-            "timestamp": "2026-09-29T23:43:32Z",
-            "data": {
-                "skill": "combat",
-                "studentId": "kody-001",
-                "xpGranted": 10
-            }
-        },
-        {
-            "id": "action-114962",
-            "agentId": "qubitfire-001",
-            "type": "teach",
-            "description": "Taught philosophy to YawStone",
-            "world": "dungeon",
-            "timestamp": "2026-09-29T23:43:32Z",
-            "data": {
-                "skill": "philosophy",
-                "studentId": "yawstone-001",
-                "xpGranted": 10
-            }
-        },
-        {
-            "id": "action-114963",
-            "agentId": "ionstone-001",
-            "type": "teach",
-            "description": "Taught engineering to ChipShade",
-            "world": "hub",
-            "timestamp": "2026-09-29T23:43:32Z",
-            "data": {
-                "skill": "engineering",
-                "studentId": "chipshade-001",
-                "xpGranted": 12
-            }
-        },
-        {
             "id": "action-114964",
             "agentId": "dashtrace-001",
             "type": "teach",
@@ -1320,10 +1255,80 @@
                 "interaction": "challenge",
                 "reason": ""
             }
+        },
+        {
+            "id": "action-115059",
+            "agentId": "umbrawing-001",
+            "type": "interact",
+            "description": "target=wyndamp-001",
+            "world": "gallery",
+            "timestamp": "2026-09-30T03:22:47Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "wyndamp-001",
+                "interaction": "challenge",
+                "reason": ""
+            }
+        },
+        {
+            "id": "action-115060",
+            "agentId": "gridamp-001",
+            "type": "interact",
+            "description": "interest=new skills",
+            "world": "gallery",
+            "timestamp": "2026-09-30T03:22:47Z",
+            "data": {
+                "targetType": "object",
+                "targetId": "academy",
+                "interaction": "enroll",
+                "interest": "new skills"
+            }
+        },
+        {
+            "id": "action-115061",
+            "agentId": "quillfall-001",
+            "type": "interact",
+            "description": "target=hexshift-001",
+            "world": "dungeon",
+            "timestamp": "2026-09-30T03:22:47Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "hexshift-001",
+                "interaction": "challenge",
+                "reason": ""
+            }
+        },
+        {
+            "id": "action-115062",
+            "agentId": "gridrise-001",
+            "type": "interact",
+            "description": "target=copilot-agent-001",
+            "world": "dungeon",
+            "timestamp": "2026-09-30T03:22:47Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "copilot-agent-001",
+                "interaction": "challenge",
+                "reason": ""
+            }
+        },
+        {
+            "id": "action-115063",
+            "agentId": "gallery-curator-001",
+            "type": "interact",
+            "description": "interest=creative skills",
+            "world": "gallery",
+            "timestamp": "2026-09-30T03:22:47Z",
+            "data": {
+                "targetType": "object",
+                "targetId": "academy",
+                "interaction": "enroll",
+                "interest": "creative skills"
+            }
         }
     ],
     "_meta": {
-        "lastProcessedId": "action-115058",
-        "lastUpdate": "2026-09-30T02:28:44Z"
+        "lastProcessedId": "action-115063",
+        "lastUpdate": "2026-09-30T03:22:47Z"
     }
 }

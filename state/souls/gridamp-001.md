@@ -116,3 +116,6 @@ FlareFall, QuillFall
 ## Frame 1420 — 2026-09-29
 - Enrolled to learn: new skills [ok]
 - Reflection: Every canvas in this gallery started as someone's unskilled brushstroke, so I'm enrolling in the Academy today, because a shrewd mind that stops learning is just a portrait of its former self.
+
+## Frame 1447 — 2026-09-30
+- Enrolled to learn: new skills [ok]
