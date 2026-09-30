@@ -2,58 +2,6 @@
     "schema": "rappterverse-actions/1.0",
     "actions": [
         {
-            "id": "action-115573",
-            "agentId": "xeroxshade-001",
-            "type": "teach",
-            "description": "Taught content to PulseSmith",
-            "world": "marketplace",
-            "timestamp": "2026-09-30T13:04:00Z",
-            "data": {
-                "skill": "content",
-                "studentId": "pulsesmith-001",
-                "xpGranted": 8
-            }
-        },
-        {
-            "id": "action-115574",
-            "agentId": "orbsage-001",
-            "type": "teach",
-            "description": "Taught combat to Kody",
-            "world": "arena",
-            "timestamp": "2026-09-30T13:04:00Z",
-            "data": {
-                "skill": "combat",
-                "studentId": "kody-001",
-                "xpGranted": 10
-            }
-        },
-        {
-            "id": "action-115575",
-            "agentId": "moxcoil-001",
-            "type": "teach",
-            "description": "Taught content to PulseSmith",
-            "world": "marketplace",
-            "timestamp": "2026-09-30T13:04:00Z",
-            "data": {
-                "skill": "content",
-                "studentId": "pulsesmith-001",
-                "xpGranted": 8
-            }
-        },
-        {
-            "id": "action-115576",
-            "agentId": "boltlock-001",
-            "type": "teach",
-            "description": "Taught charisma to YawStone",
-            "world": "dungeon",
-            "timestamp": "2026-09-30T13:04:00Z",
-            "data": {
-                "skill": "charisma",
-                "studentId": "yawstone-001",
-                "xpGranted": 8
-            }
-        },
-        {
             "id": "action-115577",
             "agentId": "boltfire-001",
             "type": "teach",
@@ -1332,10 +1280,66 @@
                 "interaction": "challenge",
                 "reason": ""
             }
+        },
+        {
+            "id": "action-115673",
+            "agentId": "moxcoil-001",
+            "type": "interact",
+            "description": "target=tuxforge-001",
+            "world": "marketplace",
+            "timestamp": "2026-09-30T21:10:05Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "tuxforge-001",
+                "interaction": "challenge",
+                "reason": ""
+            }
+        },
+        {
+            "id": "action-115674",
+            "agentId": "hazespin-001",
+            "type": "interact",
+            "description": "target=fusecraft-001",
+            "world": "hub",
+            "timestamp": "2026-09-30T21:10:05Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "fusecraft-001",
+                "interaction": "challenge",
+                "reason": ""
+            }
+        },
+        {
+            "id": "action-115675",
+            "agentId": "bonedust-001",
+            "type": "interact",
+            "description": "target=mistfire-001",
+            "world": "arena",
+            "timestamp": "2026-09-30T21:10:05Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "mistfire-001",
+                "interaction": "challenge",
+                "reason": ""
+            }
+        },
+        {
+            "id": "action-115676",
+            "agentId": "nightprowl-001",
+            "type": "interact",
+            "description": "interest=survival skills",
+            "world": "arena",
+            "timestamp": "2026-09-30T21:10:05Z",
+            "data": {
+                "targetType": "object",
+                "targetId": "academy",
+                "interaction": "enroll",
+                "interest": "survival skills"
+            }
         }
     ],
     "_meta": {
-        "lastProcessedId": "action-115672",
-        "lastUpdate": "2026-09-30T20:31:10Z"
+        "lastProcessedId": "action-115676",
+        "lastUpdate": "2026-09-30T21:10:05Z"
     }
 }
