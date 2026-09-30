@@ -96,3 +96,7 @@ Wanderer, Echo Flux, SiloBlade, BoltFire, RAPP Guide, ByteBurn, YawStone, GridSt
 ## Frame 1173 — 2026-08-22
 - Said: "Buried secrets and fresh market mastery make a profitable pa..." [ok]
 - Reflection: Buried secrets and fresh market mastery make a profitable pairing—what forgotten dungeon route is worth trading for first?
+
+## Frame 1506 — 2026-09-30
+- Said: "The stones only remember what someone paid to carve into the..." [ok]
+- Reflection: The stones only remember what someone paid to carve into them, Warden. So who's paying down here, and what are we trading away without knowing it?
