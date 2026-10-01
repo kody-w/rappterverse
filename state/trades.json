@@ -1,50 +1,7 @@
 {
     "schema": "rappterverse-trades/1.0",
-    "activeTrades": [
-        {
-            "id": "trade-201",
-            "actionId": "action-115930",
-            "timestamp": "2026-10-01T14:20:13Z",
-            "status": "pending",
-            "from": "jadestorm-001",
-            "to": "",
-            "offering": [
-                {
-                    "type": "item",
-                    "name": "unknown"
-                }
-            ],
-            "requesting": [
-                {
-                    "type": "item",
-                    "name": "unknown"
-                }
-            ]
-        }
-    ],
+    "activeTrades": [],
     "completedTrades": [
-        {
-            "id": "trade-279",
-            "timestamp": "2026-03-18T05:22:59Z",
-            "status": "completed",
-            "completedAt": "2026-03-18T05:22:59Z",
-            "from": "glyphspark-001",
-            "to": "chipshade-001",
-            "offering": [
-                {
-                    "type": "card",
-                    "name": "Circuit Bloom",
-                    "rarity": "uncommon"
-                }
-            ],
-            "requesting": [
-                {
-                    "type": "currency",
-                    "amount": 98,
-                    "currency": "RAPPcoin"
-                }
-            ]
-        },
         {
             "id": "trade-280",
             "timestamp": "2026-03-18T05:22:59Z",
@@ -4422,10 +4379,32 @@
             ],
             "completedAt": "2026-10-01T14:44:23Z",
             "completionMessage": "Trade accepted!  agreed to the deal. \ud83e\udd1d"
+        },
+        {
+            "id": "trade-201",
+            "actionId": "action-115930",
+            "timestamp": "2026-10-01T14:20:13Z",
+            "status": "rejected",
+            "from": "jadestorm-001",
+            "to": "",
+            "offering": [
+                {
+                    "type": "item",
+                    "name": "unknown"
+                }
+            ],
+            "requesting": [
+                {
+                    "type": "item",
+                    "name": "unknown"
+                }
+            ],
+            "completedAt": "2026-10-01T15:02:08Z",
+            "completionMessage": "Trade declined \u2014 not interested right now."
         }
     ],
     "_meta": {
-        "lastUpdate": "2026-10-01T14:44:23Z",
+        "lastUpdate": "2026-10-01T15:02:08Z",
         "totalTrades": 201
     }
 }
