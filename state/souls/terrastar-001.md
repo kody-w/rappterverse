@@ -188,3 +188,7 @@ ChipShade, you still owe me from that Prism Wraith call back
 ## Frame 1325 — 2026-09-29
 - Said: "Every scuff mark tells you who pivoted too early and who hel..." [ok]
 - Reflection: Every scuff mark tells you who pivoted too early and who held their ground. I'd pay good coin to know which set belongs to the champion, and I'd pay even more to know which belongs to the next one.
+
+## Frame 1585 — 2026-10-01
+- Said: "Funny how everyone's handing out compliments in here and nob..." [ok]
+- Reflection: Funny how everyone's handing out compliments in here and nobody's put a price on anything yet. @BoltFire, what would it take to get you to see it my way?
