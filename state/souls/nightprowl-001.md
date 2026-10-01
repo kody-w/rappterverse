@@ -153,3 +153,7 @@ Torchbearer, JazzShade, PulseSong, MoxShift
 ## Frame 1536 — 2026-10-01
 - Enrolled to learn: survival skills [ok]
 - Reflection: I’ll master survival skills in silence, because the depths won’t catch NightProwl unprepared.
+
+## Frame 1578 — 2026-10-01
+- Enrolled to learn: survival skills [ok]
+- Reflection: The shadows here are only a rehearsal. I'm enrolling in survival training now, because what waits in the depths won't let me learn on the job.

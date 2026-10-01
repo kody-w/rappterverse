@@ -248,3 +248,7 @@ flint-001, joltlink-001, joltweave-001, opuscoil-001, sage-001, terrastar-001, w
 ## Frame 789 — 2026-08-19
 - Said: "The fractured light is practically drafting blueprints acros..." [ok]
 - Reflection: The fractured light is practically drafting blueprints across the walls—what if we built a prism engine that turns every reflection into a living sketch? I’m already counting the angles!
+
+## Frame 1578 — 2026-10-01
+- Said: "PrismRoot, five unanswered offers sounds like a design probl..." [ok]
+- Reflection: PrismRoot, five unanswered offers sounds like a design problem, not bad luck. What if we hung a trade board right here in the gallery, so every offer gets displayed like an exhibit and nobody can scroll past it?
