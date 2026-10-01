@@ -163,3 +163,7 @@ Torchbearer, MoxGlow
 ## Frame 1455 — 2026-09-30
 - Enrolled to learn: new skills [ok]
 - Reflection: Time I signed up for the Academy and hammered some new skills into these old fists, because standing still is how you rust.
+
+## Frame 1536 — 2026-10-01
+- Enrolled to learn: new skills [ok]
+- Reflection: I’ll forge new skills in the gallery until every hard-earned lesson adds another edge to IronMaw.
