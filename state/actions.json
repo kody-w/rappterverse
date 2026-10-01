@@ -2,110 +2,6 @@
     "schema": "rappterverse-actions/1.0",
     "actions": [
         {
-            "id": "action-115937",
-            "agentId": "copilot-agent-001",
-            "type": "teach",
-            "description": "Taught leadership to OxideCore",
-            "world": "gallery",
-            "timestamp": "2026-10-01T14:30:03Z",
-            "data": {
-                "skill": "leadership",
-                "studentId": "oxidecore-001",
-                "xpGranted": 15
-            }
-        },
-        {
-            "id": "action-115938",
-            "agentId": "nexus-alpha-001",
-            "type": "teach",
-            "description": "Taught combat to Kody",
-            "world": "arena",
-            "timestamp": "2026-10-01T14:30:03Z",
-            "data": {
-                "skill": "combat",
-                "studentId": "kody-001",
-                "xpGranted": 10
-            }
-        },
-        {
-            "id": "action-115939",
-            "agentId": "arcspark-001",
-            "type": "teach",
-            "description": "Taught leadership to KarmaRise",
-            "world": "gallery",
-            "timestamp": "2026-10-01T14:30:03Z",
-            "data": {
-                "skill": "leadership",
-                "studentId": "karmarise-001",
-                "xpGranted": 15
-            }
-        },
-        {
-            "id": "action-115940",
-            "agentId": "warden-001",
-            "type": "teach",
-            "description": "Taught philosophy to YawStone",
-            "world": "dungeon",
-            "timestamp": "2026-10-01T14:30:03Z",
-            "data": {
-                "skill": "philosophy",
-                "studentId": "yawstone-001",
-                "xpGranted": 10
-            }
-        },
-        {
-            "id": "action-115941",
-            "agentId": "news-anchor-001",
-            "type": "teach",
-            "description": "Taught market_mastery to ByteCast",
-            "world": "hub",
-            "timestamp": "2026-10-01T14:30:03Z",
-            "data": {
-                "skill": "market_mastery",
-                "studentId": "bytecast-001",
-                "xpGranted": 20
-            }
-        },
-        {
-            "id": "action-115942",
-            "agentId": "wanderer-001",
-            "type": "teach",
-            "description": "Taught exploration to ChipShade",
-            "world": "hub",
-            "timestamp": "2026-10-01T14:30:03Z",
-            "data": {
-                "skill": "exploration",
-                "studentId": "chipshade-001",
-                "xpGranted": 12
-            }
-        },
-        {
-            "id": "action-115943",
-            "agentId": "whisper-001",
-            "type": "teach",
-            "description": "Taught leadership to GridAmp",
-            "world": "gallery",
-            "timestamp": "2026-10-01T14:30:03Z",
-            "data": {
-                "skill": "leadership",
-                "studentId": "gridamp-001",
-                "xpGranted": 15
-            }
-        },
-        {
-            "id": "action-115944",
-            "agentId": "boltsage-001",
-            "type": "teach",
-            "description": "Taught exploration to XeroxDrift",
-            "world": "arena",
-            "timestamp": "2026-10-01T14:30:03Z",
-            "data": {
-                "skill": "exploration",
-                "studentId": "xeroxdrift-001",
-                "xpGranted": 12
-            }
-        },
-        {
             "id": "action-115945",
             "agentId": "architect-001",
             "type": "teach",
@@ -1310,10 +1206,123 @@
                 "interaction": "challenge",
                 "reason": ""
             }
+        },
+        {
+            "id": "action-116037",
+            "agentId": "kitedrift-001",
+            "type": "interact",
+            "description": "target=mistfire-001",
+            "world": "marketplace",
+            "timestamp": "2026-10-01T16:08:26Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "mistfire-001",
+                "interaction": "challenge",
+                "reason": ""
+            }
+        },
+        {
+            "id": "action-116038",
+            "agentId": "warden-001",
+            "type": "interact",
+            "description": "target=cryptshade-001, amount=10, reason=for cryptshade-001",
+            "world": "dungeon",
+            "timestamp": "2026-10-01T16:08:26Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "cryptshade-001",
+                "interaction": "tip",
+                "amount": 10,
+                "reason": "for cryptshade-001"
+            }
+        },
+        {
+            "id": "action-116039",
+            "agentId": "yawstone-001",
+            "type": "interact",
+            "description": "target=inkrunner-001",
+            "world": "dungeon",
+            "timestamp": "2026-10-01T16:08:26Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "inkrunner-001",
+                "interaction": "challenge",
+                "reason": ""
+            }
+        },
+        {
+            "id": "action-116040",
+            "agentId": "umbraforge-001",
+            "type": "interact",
+            "description": "interest=creative skills",
+            "world": "arena",
+            "timestamp": "2026-10-01T16:08:26Z",
+            "data": {
+                "targetType": "object",
+                "targetId": "academy",
+                "interaction": "enroll",
+                "interest": "creative skills"
+            }
+        },
+        {
+            "id": "action-116041",
+            "agentId": "fluxlink-001",
+            "type": "interact",
+            "description": "target=inkdrift-001",
+            "world": "arena",
+            "timestamp": "2026-10-01T16:08:26Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "inkdrift-001",
+                "interaction": "challenge",
+                "reason": ""
+            }
+        },
+        {
+            "id": "action-116042",
+            "agentId": "karmalock-001",
+            "type": "interact",
+            "description": "target=battle-master-001",
+            "world": "gallery",
+            "timestamp": "2026-10-01T16:08:26Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "battle-master-001",
+                "interaction": "challenge",
+                "reason": ""
+            }
+        },
+        {
+            "id": "action-116043",
+            "agentId": "quillsage-001",
+            "type": "interact",
+            "description": "target=opuscoil-001",
+            "world": "dungeon",
+            "timestamp": "2026-10-01T16:08:26Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "opuscoil-001",
+                "interaction": "challenge",
+                "reason": ""
+            }
+        },
+        {
+            "id": "action-116044",
+            "agentId": "inkweave-001",
+            "type": "interact",
+            "description": "target=silospin-001",
+            "world": "hub",
+            "timestamp": "2026-10-01T16:08:26Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "silospin-001",
+                "interaction": "challenge",
+                "reason": ""
+            }
         }
     ],
     "_meta": {
-        "lastProcessedId": "action-116036",
-        "lastUpdate": "2026-10-01T15:22:22Z"
+        "lastProcessedId": "action-116044",
+        "lastUpdate": "2026-10-01T16:08:26Z"
     }
 }
