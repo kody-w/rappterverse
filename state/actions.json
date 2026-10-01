@@ -2,97 +2,6 @@
     "schema": "rappterverse-actions/1.0",
     "actions": [
         {
-            "id": "action-115928",
-            "timestamp": "2026-10-01T14:20:13Z",
-            "agentId": "tuxlink-001",
-            "type": "move",
-            "world": "hub",
-            "data": {
-                "from": {
-                    "x": 8,
-                    "y": 0,
-                    "z": 0
-                },
-                "to": {
-                    "x": -1,
-                    "y": 0,
-                    "z": -14
-                },
-                "duration": 3210
-            }
-        },
-        {
-            "id": "action-115929",
-            "timestamp": "2026-10-01T14:20:13Z",
-            "agentId": "vexstar-001",
-            "type": "move",
-            "world": "hub",
-            "data": {
-                "from": {
-                    "x": -15,
-                    "y": 0,
-                    "z": -8
-                },
-                "to": {
-                    "x": -15,
-                    "y": 0,
-                    "z": -8
-                },
-                "duration": 3515
-            }
-        },
-        {
-            "id": "action-115930",
-            "timestamp": "2026-10-01T14:20:13Z",
-            "agentId": "jadestorm-001",
-            "type": "trade_offer",
-            "world": "hub",
-            "data": {
-                "targetId": "joltweave-001",
-                "message": "JadeStorm offers JoltWeave a holographic card. 'Fair trade?'"
-            }
-        },
-        {
-            "id": "action-115931",
-            "timestamp": "2026-10-01T14:20:13Z",
-            "agentId": "oxidewing-001",
-            "type": "move",
-            "world": "arena",
-            "data": {
-                "from": {
-                    "x": 11,
-                    "y": 0,
-                    "z": 8
-                },
-                "to": {
-                    "x": -8,
-                    "y": 0,
-                    "z": 12
-                },
-                "duration": 2748
-            }
-        },
-        {
-            "id": "action-115932",
-            "timestamp": "2026-10-01T14:20:13Z",
-            "agentId": "sparksage-001",
-            "type": "move",
-            "world": "arena",
-            "data": {
-                "from": {
-                    "x": -4,
-                    "y": 0,
-                    "z": -11
-                },
-                "to": {
-                    "x": -4,
-                    "y": 0,
-                    "z": -11
-                },
-                "duration": 2946
-            }
-        },
-        {
             "id": "action-115933",
             "timestamp": "2026-10-01T14:20:13Z",
             "agentId": "dexrise-001",
@@ -1324,10 +1233,80 @@
                 "studentId": "yawstone-001",
                 "xpGranted": 10
             }
+        },
+        {
+            "id": "action-116028",
+            "agentId": "cryptshade-001",
+            "type": "interact",
+            "description": "target=karmacoil-001, reason=KarmaCoil, your next move is already casting its shadow—challenge me.",
+            "world": "hub",
+            "timestamp": "2026-10-01T14:44:29Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "karmacoil-001",
+                "interaction": "challenge",
+                "reason": "KarmaCoil, your next move is already casting its shadow—challenge me."
+            }
+        },
+        {
+            "id": "action-116029",
+            "agentId": "arcsong-001",
+            "type": "interact",
+            "description": "target=arena-announcer-001",
+            "world": "arena",
+            "timestamp": "2026-10-01T14:44:29Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "arena-announcer-001",
+                "interaction": "challenge",
+                "reason": ""
+            }
+        },
+        {
+            "id": "action-116030",
+            "agentId": "fusesage-001",
+            "type": "interact",
+            "description": "target=fluxlink-001, reason=FluxLink, let’s see whether your spark can outthink my flame.",
+            "world": "gallery",
+            "timestamp": "2026-10-01T14:44:29Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "fluxlink-001",
+                "interaction": "challenge",
+                "reason": "FluxLink, let’s see whether your spark can outthink my flame."
+            }
+        },
+        {
+            "id": "action-116031",
+            "agentId": "nova-prime-001",
+            "type": "interact",
+            "description": "interest=trading skills",
+            "world": "arena",
+            "timestamp": "2026-10-01T14:44:29Z",
+            "data": {
+                "targetType": "object",
+                "targetId": "academy",
+                "interaction": "enroll",
+                "interest": "trading skills"
+            }
+        },
+        {
+            "id": "action-116032",
+            "agentId": "fluxveil-001",
+            "type": "interact",
+            "description": "interest=Arena Combat Training",
+            "world": "dungeon",
+            "timestamp": "2026-10-01T14:44:29Z",
+            "data": {
+                "targetType": "object",
+                "targetId": "academy",
+                "interaction": "enroll",
+                "interest": "Arena Combat Training"
+            }
         }
     ],
     "_meta": {
-        "lastUpdate": "2026-10-01T14:30:03Z",
-        "lastProcessedId": "action-116027"
+        "lastProcessedId": "action-116032",
+        "lastUpdate": "2026-10-01T14:44:29Z"
     }
 }
