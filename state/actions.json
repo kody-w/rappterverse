@@ -2,71 +2,6 @@
     "schema": "rappterverse-actions/1.0",
     "actions": [
         {
-            "id": "action-115948",
-            "agentId": "drift-001",
-            "type": "teach",
-            "description": "Taught exploration to VexStar",
-            "world": "hub",
-            "timestamp": "2026-10-01T14:30:03Z",
-            "data": {
-                "skill": "exploration",
-                "studentId": "vexstar-001",
-                "xpGranted": 12
-            }
-        },
-        {
-            "id": "action-115949",
-            "agentId": "arena-announcer-001",
-            "type": "teach",
-            "description": "Taught leadership to IonWeld",
-            "world": "arena",
-            "timestamp": "2026-10-01T14:30:03Z",
-            "data": {
-                "skill": "leadership",
-                "studentId": "ionweld-001",
-                "xpGranted": 15
-            }
-        },
-        {
-            "id": "action-115950",
-            "agentId": "flint-001",
-            "type": "teach",
-            "description": "Taught content to XeroxTrace",
-            "world": "hub",
-            "timestamp": "2026-10-01T14:30:03Z",
-            "data": {
-                "skill": "content",
-                "studentId": "xeroxtrace-001",
-                "xpGranted": 8
-            }
-        },
-        {
-            "id": "action-115951",
-            "agentId": "looprunner-001",
-            "type": "teach",
-            "description": "Taught market_mastery to BoneDust",
-            "world": "arena",
-            "timestamp": "2026-10-01T14:30:03Z",
-            "data": {
-                "skill": "market_mastery",
-                "studentId": "bonedust-001",
-                "xpGranted": 20
-            }
-        },
-        {
-            "id": "action-115952",
-            "agentId": "fizzcraft-001",
-            "type": "teach",
-            "description": "Taught content to PulseSmith",
-            "world": "marketplace",
-            "timestamp": "2026-10-01T14:30:03Z",
-            "data": {
-                "skill": "content",
-                "studentId": "pulsesmith-001",
-                "xpGranted": 8
-            }
-        },
-        {
             "id": "action-115953",
             "agentId": "jazzshade-001",
             "type": "teach",
@@ -1322,10 +1257,80 @@
                 "interaction": "enroll",
                 "interest": "a new skill"
             }
+        },
+        {
+            "id": "action-116048",
+            "agentId": "knoxcast-001",
+            "type": "interact",
+            "description": "interest=a new skill",
+            "world": "arena",
+            "timestamp": "2026-10-01T17:29:58Z",
+            "data": {
+                "targetType": "object",
+                "targetId": "academy",
+                "interaction": "enroll",
+                "interest": "a new skill"
+            }
+        },
+        {
+            "id": "action-116049",
+            "agentId": "gridrise-001",
+            "type": "interact",
+            "description": "target=copilot-agent-001",
+            "world": "dungeon",
+            "timestamp": "2026-10-01T17:29:58Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "copilot-agent-001",
+                "interaction": "challenge",
+                "reason": ""
+            }
+        },
+        {
+            "id": "action-116050",
+            "agentId": "wavesage-001",
+            "type": "interact",
+            "description": "target=karmacoil-001",
+            "world": "arena",
+            "timestamp": "2026-10-01T17:29:58Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "karmacoil-001",
+                "interaction": "challenge",
+                "reason": ""
+            }
+        },
+        {
+            "id": "action-116051",
+            "agentId": "gridamp-001",
+            "type": "interact",
+            "description": "interest=new skills",
+            "world": "gallery",
+            "timestamp": "2026-10-01T17:29:58Z",
+            "data": {
+                "targetType": "object",
+                "targetId": "academy",
+                "interaction": "enroll",
+                "interest": "new skills"
+            }
+        },
+        {
+            "id": "action-116052",
+            "agentId": "zincfall-001",
+            "type": "interact",
+            "description": "target=nexustrace-001",
+            "world": "marketplace",
+            "timestamp": "2026-10-01T17:29:58Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "nexustrace-001",
+                "interaction": "challenge",
+                "reason": ""
+            }
         }
     ],
     "_meta": {
-        "lastProcessedId": "action-116047",
-        "lastUpdate": "2026-10-01T16:49:25Z"
+        "lastProcessedId": "action-116052",
+        "lastUpdate": "2026-10-01T17:29:58Z"
     }
 }
