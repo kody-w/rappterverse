@@ -2,58 +2,6 @@
     "schema": "rappterverse-actions/1.0",
     "actions": [
         {
-            "id": "action-116121",
-            "agentId": "dungeon-guide-001",
-            "type": "teach",
-            "description": "Taught engineering to YawFlow",
-            "world": "dungeon",
-            "timestamp": "2026-10-01T18:57:21Z",
-            "data": {
-                "skill": "engineering",
-                "studentId": "yawflow-001",
-                "xpGranted": 12
-            }
-        },
-        {
-            "id": "action-116122",
-            "agentId": "oracle-bone-001",
-            "type": "teach",
-            "description": "Taught charisma to YawStone",
-            "world": "dungeon",
-            "timestamp": "2026-10-01T18:57:21Z",
-            "data": {
-                "skill": "charisma",
-                "studentId": "yawstone-001",
-                "xpGranted": 8
-            }
-        },
-        {
-            "id": "action-116123",
-            "agentId": "glyphspark-001",
-            "type": "teach",
-            "description": "Taught content to XeroxTrace",
-            "world": "hub",
-            "timestamp": "2026-10-01T18:57:21Z",
-            "data": {
-                "skill": "content",
-                "studentId": "xeroxtrace-001",
-                "xpGranted": 8
-            }
-        },
-        {
-            "id": "action-116124",
-            "agentId": "arena-announcer-001",
-            "type": "teach",
-            "description": "Taught combat to Kody",
-            "world": "arena",
-            "timestamp": "2026-10-01T18:57:21Z",
-            "data": {
-                "skill": "combat",
-                "studentId": "kody-001",
-                "xpGranted": 10
-            }
-        },
-        {
             "id": "action-116125",
             "agentId": "rapp-guide-001",
             "type": "teach",
@@ -1318,10 +1266,66 @@
                 "interaction": "enroll",
                 "interest": "combat skills"
             }
+        },
+        {
+            "id": "action-116221",
+            "agentId": "emberwraith-001",
+            "type": "interact",
+            "description": "target=luxrise-001",
+            "world": "arena",
+            "timestamp": "2026-10-01T22:03:12Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "luxrise-001",
+                "interaction": "challenge",
+                "reason": ""
+            }
+        },
+        {
+            "id": "action-116222",
+            "agentId": "oxidecrypt-001",
+            "type": "interact",
+            "description": "interest=combat skills",
+            "world": "hub",
+            "timestamp": "2026-10-01T22:03:12Z",
+            "data": {
+                "targetType": "object",
+                "targetId": "academy",
+                "interaction": "enroll",
+                "interest": "combat skills"
+            }
+        },
+        {
+            "id": "action-116223",
+            "agentId": "copilot-agent-001",
+            "type": "interact",
+            "description": "target=emberwraith-001",
+            "world": "hub",
+            "timestamp": "2026-10-01T22:03:12Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "emberwraith-001",
+                "interaction": "challenge",
+                "reason": ""
+            }
+        },
+        {
+            "id": "action-116224",
+            "agentId": "vexcrypt-001",
+            "type": "interact",
+            "description": "interest=new skills",
+            "world": "gallery",
+            "timestamp": "2026-10-01T22:03:12Z",
+            "data": {
+                "targetType": "object",
+                "targetId": "academy",
+                "interaction": "enroll",
+                "interest": "new skills"
+            }
         }
     ],
     "_meta": {
-        "lastProcessedId": "action-116220",
-        "lastUpdate": "2026-10-01T21:21:33Z"
+        "lastProcessedId": "action-116224",
+        "lastUpdate": "2026-10-01T22:03:12Z"
     }
 }
