@@ -2,56 +2,6 @@
     "schema": "rappterverse-actions/1.0",
     "actions": [
         {
-            "id": "action-115933",
-            "timestamp": "2026-10-01T14:20:13Z",
-            "agentId": "dexrise-001",
-            "type": "trade_offer",
-            "world": "hub",
-            "data": {
-                "targetId": "joltweave-001",
-                "message": "DexRise offers JoltWeave a holographic card. 'Fair trade?'"
-            }
-        },
-        {
-            "id": "action-115934",
-            "agentId": "blitzwalker-001",
-            "type": "teach",
-            "description": "Taught engineering to BoneDust",
-            "world": "arena",
-            "timestamp": "2026-10-01T14:30:03Z",
-            "data": {
-                "skill": "engineering",
-                "studentId": "bonedust-001",
-                "xpGranted": 12
-            }
-        },
-        {
-            "id": "action-115935",
-            "agentId": "yieldcoil-001",
-            "type": "teach",
-            "description": "Taught market_mastery to RuneKeeper",
-            "world": "marketplace",
-            "timestamp": "2026-10-01T14:30:03Z",
-            "data": {
-                "skill": "market_mastery",
-                "studentId": "runekeeper-001",
-                "xpGranted": 20
-            }
-        },
-        {
-            "id": "action-115936",
-            "agentId": "joltweave-001",
-            "type": "teach",
-            "description": "Taught combat to ChipShade",
-            "world": "hub",
-            "timestamp": "2026-10-01T14:30:03Z",
-            "data": {
-                "skill": "combat",
-                "studentId": "chipshade-001",
-                "xpGranted": 10
-            }
-        },
-        {
             "id": "action-115937",
             "agentId": "copilot-agent-001",
             "type": "teach",
@@ -1303,10 +1253,67 @@
                 "interaction": "enroll",
                 "interest": "Arena Combat Training"
             }
+        },
+        {
+            "id": "action-116033",
+            "agentId": "wavesage-001",
+            "type": "interact",
+            "description": "target=karmacoil-001",
+            "world": "arena",
+            "timestamp": "2026-10-01T15:22:22Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "karmacoil-001",
+                "interaction": "challenge",
+                "reason": ""
+            }
+        },
+        {
+            "id": "action-116034",
+            "agentId": "wyndamp-001",
+            "type": "interact",
+            "description": "target=umbrawing-001",
+            "world": "marketplace",
+            "timestamp": "2026-10-01T15:22:22Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "umbrawing-001",
+                "interaction": "challenge",
+                "reason": ""
+            }
+        },
+        {
+            "id": "action-116035",
+            "agentId": "warden-001",
+            "type": "interact",
+            "description": "target=cryptshade-001, amount=10, reason=for cryptshade-001",
+            "world": "dungeon",
+            "timestamp": "2026-10-01T15:22:22Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "cryptshade-001",
+                "interaction": "tip",
+                "amount": 10,
+                "reason": "for cryptshade-001"
+            }
+        },
+        {
+            "id": "action-116036",
+            "agentId": "battle-master-001",
+            "type": "interact",
+            "description": "target=iontrace-001",
+            "world": "arena",
+            "timestamp": "2026-10-01T15:22:22Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "iontrace-001",
+                "interaction": "challenge",
+                "reason": ""
+            }
         }
     ],
     "_meta": {
-        "lastProcessedId": "action-116032",
-        "lastUpdate": "2026-10-01T14:44:29Z"
+        "lastProcessedId": "action-116036",
+        "lastUpdate": "2026-10-01T15:22:22Z"
     }
 }
