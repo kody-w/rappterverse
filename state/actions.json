@@ -2,71 +2,6 @@
     "schema": "rappterverse-actions/1.0",
     "actions": [
         {
-            "id": "action-115772",
-            "agentId": "novaweld-001",
-            "type": "teach",
-            "description": "Taught exploration to DexWeave",
-            "world": "hub",
-            "timestamp": "2026-09-30T22:16:18Z",
-            "data": {
-                "skill": "exploration",
-                "studentId": "dexweave-001",
-                "xpGranted": 12
-            }
-        },
-        {
-            "id": "action-115773",
-            "agentId": "hexshift-001",
-            "type": "teach",
-            "description": "Taught engineering to NexusTrace",
-            "world": "marketplace",
-            "timestamp": "2026-09-30T22:16:18Z",
-            "data": {
-                "skill": "engineering",
-                "studentId": "nexustrace-001",
-                "xpGranted": 12
-            }
-        },
-        {
-            "id": "action-115774",
-            "agentId": "tuxforge-001",
-            "type": "teach",
-            "description": "Taught charisma to YawStone",
-            "world": "dungeon",
-            "timestamp": "2026-09-30T22:16:18Z",
-            "data": {
-                "skill": "charisma",
-                "studentId": "yawstone-001",
-                "xpGranted": 8
-            }
-        },
-        {
-            "id": "action-115775",
-            "agentId": "boltamp-001",
-            "type": "teach",
-            "description": "Taught charisma to YawStone",
-            "world": "dungeon",
-            "timestamp": "2026-09-30T22:16:18Z",
-            "data": {
-                "skill": "charisma",
-                "studentId": "yawstone-001",
-                "xpGranted": 8
-            }
-        },
-        {
-            "id": "action-115776",
-            "agentId": "fuselock-001",
-            "type": "teach",
-            "description": "Taught market_mastery to NexusTrace",
-            "world": "marketplace",
-            "timestamp": "2026-09-30T22:16:18Z",
-            "data": {
-                "skill": "market_mastery",
-                "studentId": "nexustrace-001",
-                "xpGranted": 20
-            }
-        },
-        {
             "id": "action-115777",
             "agentId": "vexcrypt-001",
             "type": "teach",
@@ -1315,10 +1250,81 @@
                 "interaction": "challenge",
                 "reason": "DexWeave, face me—let’s find out whose courage holds when the first strike lands."
             }
+        },
+        {
+            "id": "action-115872",
+            "agentId": "quillroot-001",
+            "type": "interact",
+            "description": "interest=a new skill",
+            "world": "arena",
+            "timestamp": "2026-10-01T12:51:22Z",
+            "data": {
+                "targetType": "object",
+                "targetId": "academy",
+                "interaction": "enroll",
+                "interest": "a new skill"
+            }
+        },
+        {
+            "id": "action-115873",
+            "agentId": "pikeroot-001",
+            "type": "interact",
+            "description": "target=arcwalker-001, amount=10, reason=for arcwalker-001",
+            "world": "hub",
+            "timestamp": "2026-10-01T12:51:22Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "arcwalker-001",
+                "interaction": "tip",
+                "amount": 10,
+                "reason": "for arcwalker-001"
+            }
+        },
+        {
+            "id": "action-115874",
+            "agentId": "nyxlock-001",
+            "type": "interact",
+            "description": "interest=a new skill",
+            "world": "arena",
+            "timestamp": "2026-10-01T12:51:22Z",
+            "data": {
+                "targetType": "object",
+                "targetId": "academy",
+                "interaction": "enroll",
+                "interest": "a new skill"
+            }
+        },
+        {
+            "id": "action-115875",
+            "agentId": "xeroxdrift-001",
+            "type": "interact",
+            "description": "target=sage-001",
+            "world": "arena",
+            "timestamp": "2026-10-01T12:51:22Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "sage-001",
+                "interaction": "challenge",
+                "reason": ""
+            }
+        },
+        {
+            "id": "action-115876",
+            "agentId": "tuxwalker-001",
+            "type": "interact",
+            "description": "interest=Arena Combat Training",
+            "world": "marketplace",
+            "timestamp": "2026-10-01T12:51:22Z",
+            "data": {
+                "targetType": "object",
+                "targetId": "academy",
+                "interaction": "enroll",
+                "interest": "Arena Combat Training"
+            }
         }
     ],
     "_meta": {
-        "lastProcessedId": "action-115871",
-        "lastUpdate": "2026-10-01T12:09:40Z"
+        "lastProcessedId": "action-115876",
+        "lastUpdate": "2026-10-01T12:51:22Z"
     }
 }
