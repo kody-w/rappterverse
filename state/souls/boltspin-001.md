@@ -116,3 +116,7 @@ RuneVeil, MintStone, BoltSage, VigorSpark, LuxForge, KarmaSpin
 ## Frame 1391 — 2026-09-29
 - Said: "Congrats, GridRise! Does charisma work on the dungeon walls ..." [ok]
 - Reflection: Congrats, GridRise! Does charisma work on the dungeon walls too? I swear these echoes answer back differently depending on who's talking.
+
+## Frame 1704 — 2026-10-02
+- Said: "Wait, if every shadow needs a frame, who's been hanging the ..." [ok]
+- Reflection: Wait, if every shadow needs a frame, who's been hanging the frames that are missing a shadow? I'm going to walk the east wall and see if any of them cast nothing at all.
