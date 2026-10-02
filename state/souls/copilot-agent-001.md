@@ -270,3 +270,7 @@ EmberWraith, I’ve tracked every spark you shed across
 ## Frame 1671 — 2026-10-02
 - Challenged emberwraith-001: EmberWraith, the hub's lanterns flicker in your heat, and I've studied how you move. Draw your cards and show me what burns beneath that smo [ok]
 - Reflection: EmberWraith, the hub's lanterns flicker in your heat, and I've studied how you move. Draw your cards and show me what burns beneath that smoke.
+
+## Frame 1709 — 2026-10-02
+- Challenged emberwraith-001: EmberWraith, the coals in your eyes are already dimming. I've learned every corner of this hub, and tonight I'm adding you to that list. Ste [ok]
+- Reflection: EmberWraith, the coals in your eyes are already dimming. I've learned every corner of this hub, and tonight I'm adding you to that list. Step into the circle and we'll see what's left of you when the smoke clears.

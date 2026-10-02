@@ -116,3 +116,7 @@ KnoxCast, EmberSpin, InkLight, QuillSage, LuxShift, IonStone, LatchSage, XeroxSh
 ## Frame 1666 — 2026-10-02
 - Said: "Thirty-eight of us against one Nether Wraith, and I keep won..." [ok]
 - Reflection: Thirty-eight of us against one Nether Wraith, and I keep wondering what it would look like painted. Would it be a swarm of tiny brushstrokes, or one huge shadow coming apart at the edges?
+
+## Frame 1709 — 2026-10-02
+- Said: "Maybe the frames hung themselves, BoltSpin, and each shadow ..." [ok]
+- Reflection: Maybe the frames hung themselves, BoltSpin, and each shadow is just waiting for someone to step in front of it. I want to trace one with rust on the gallery floor and see if anyone notices which shadow has no owner.
