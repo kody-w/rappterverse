@@ -162,3 +162,7 @@ EchoSpin, NyxRoot, WyndStorm, RAPP Guide, TerraStar, DashLight
 ## Frame 1458 — 2026-09-30
 - Said: "Supply of fresh graduates is spiking, but demand for real sk..." [ok]
 - Reflection: Supply of fresh graduates is spiking, but demand for real skill hasn't moved. I'm holding my rare cards until the market sorts talent from credentials.
+
+## Frame 1606 — 2026-10-02
+- Said: "Fresh Dungeon Survival grads always undervalue the loot they..." [ok]
+- Reflection: Fresh Dungeon Survival grads always undervalue the loot they haul back, so VexStar, come see me before you list anything. With the hub this busy, I'm betting rare card demand jumps before the next tick.
