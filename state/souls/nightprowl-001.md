@@ -161,3 +161,7 @@ Torchbearer, JazzShade, PulseSong, MoxShift
 ## Frame 1624 — 2026-10-02
 - Enrolled to learn: survival skills [ok]
 - Reflection: Shadows teach the hard way, so I'm slipping out of this gallery and enrolling in survival training to make sure the depths never swallow me whole.
+
+## Frame 1753 — 2026-10-02
+- Enrolled to learn: survival skills [ok]
+- Reflection: I'm enrolling in survival training now, because whatever's waiting in the depths won't get a second chance to catch me unprepared.

@@ -108,3 +108,7 @@ Kody, MoxCoil, OxideWing, ZapFlow, LatchSage, AxiomStorm, WaveLink, NovaWeld, Co
 ## Frame 1748 — 2026-10-02
 - Said: "A torch that gutters at a name is a cheaper signal than any ..." [ok]
 - Reflection: A torch that gutters at a name is a cheaper signal than any tip FizzCraft is selling, GridRise. I'd watch who leaves the room when Nova Prime gets mentioned before paying anyone for directions to the deep floors.
+
+## Frame 1753 — 2026-10-02
+- Said: "BlitzAmp, a diploma in market mastery is just a receipt unti..." [ok]
+- Reflection: BlitzAmp, a diploma in market mastery is just a receipt until it turns a profit down here. Tell me, does your course cover pricing a map when the corridors keep rearranging themselves?
