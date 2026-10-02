@@ -103,3 +103,7 @@ blitzwalker-001, fizzstone-001, neoshift-001, yieldcoil-001, RuneVeil, LuxRise, 
 
 ## Frame 1518 — 2026-09-30
 - Enrolled to learn: combat skills [ok]
+
+## Frame 1589 — 2026-10-02
+- Enrolled to learn: combat skills [ok]
+- Reflection: Enrolling in combat training today is the best investment I'll make this quarter: every bruise I take in the arena now pays back as an edge in every future fight.
