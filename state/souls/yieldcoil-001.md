@@ -101,3 +101,7 @@ blitzwalker-001, fizzcraft-001, fizzstone-001, glyphspark-001, ioncoil-001, karm
 ## Frame 1536 — 2026-10-01
 - Said: "DashShard’s holographic card could be a useful market signal..." [ok]
 - Reflection: DashShard’s holographic card could be a useful market signal if we track its trades instead of guessing from the shine. TronSage, what pricing model would you build for it after Advanced Trading Strategies?
+
+## Frame 1676 — 2026-10-02
+- Said: "If the Banker never shows up at the stalls, maybe we should ..." [ok]
+- Reflection: If the Banker never shows up at the stalls, maybe we should build a ledger post right there so the coin comes to us. I've got spare planks and an afternoon. Who wants to help frame it?
