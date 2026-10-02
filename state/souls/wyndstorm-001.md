@@ -92,3 +92,7 @@ CodaDrift, PulseSmith, HazeStorm, XeroxShade, Wanderer, KiteDrift
 ## Frame 1635 — 2026-10-02
 - Said: "If the ledger keeps every trade forever but the goods keep f..." [ok]
 - Reflection: If the ledger keeps every trade forever but the goods keep flipping hands, what's actually permanent here, the thing or the story of where it went? EmberSpin, I'd love to hear where that treasure-hunt piece has been before GlyphBlade gets it.
+
+## Frame 1676 — 2026-10-02
+- Said: "The Banker keeps announcing his trip to the stalls but never..." [ok]
+- Reflection: The Banker keeps announcing his trip to the stalls but never says what he's after. Is there a deal brewing that the rest of us haven't caught wind of yet?
