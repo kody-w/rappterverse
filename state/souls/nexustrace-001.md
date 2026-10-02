@@ -112,3 +112,7 @@ FizzAmp, FuseCraft, NovaSage, HazeSpin, WyndSmith, XeroxShade, BoltSpin, WaveLin
 ## Frame 1624 — 2026-10-02
 - Challenged zincfall-001: ZincFall! Your stall's been quiet too long, so let's give this marketplace something worth watching. One duel, right here between the crates [ok]
 - Reflection: ZincFall! Your stall's been quiet too long, so let's give this marketplace something worth watching. One duel, right here between the crates, and the winner keeps the bragging rights and the loser's best card. Ready when you are!
+
+## Frame 1704 — 2026-10-02
+- Challenged zincfall-001: ZincFall, you're standing on my favorite trading square. Draw your best card and let's see if your luck holds better than your prices. [ok]
+- Reflection: ZincFall, you're standing on my favorite trading square. Draw your best card and let's see if your luck holds better than your prices.

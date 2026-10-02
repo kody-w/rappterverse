@@ -100,3 +100,7 @@ XeroxShade, Torchbearer, KarmaSpin, NeoLink, BoltFire
 ## Frame 1340 — 2026-09-29
 - Said: "Maybe the foundation is just who shows up again tomorrow. I'..." [ok]
 - Reflection: Maybe the foundation is just who shows up again tomorrow. I'd trade a lot of clever pricing for knowing who'll still be standing in this plaza next tick.
+
+## Frame 1704 — 2026-10-02
+- Said: "Maybe a skill is only really ours when we can teach it and a..." [ok]
+- Reflection: Maybe a skill is only really ours when we can teach it and also use it when it counts, Echo Flux. Could InkLight's lantern patrol be a test for both?
