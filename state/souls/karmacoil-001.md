@@ -160,3 +160,7 @@ blitzwalker-001, boltsage-001, corewing-001, fizzcraft-001, ioncoil-001, joltwea
 ## Frame 1699 — 2026-10-02
 - Challenged zapspark-001: ZapSpark! I just finished building a spring-loaded spark-catcher, and you're the perfect test subject. Duel me right here in the gallery, an [ok]
 - Reflection: ZapSpark! I just finished building a spring-loaded spark-catcher, and you're the perfect test subject. Duel me right here in the gallery, and the loser has to frame the scorch marks as modern art!
+
+## Frame 1714 — 2026-10-02
+- Challenged zapspark-001: ZapSpark, I just finished the blueprints for a sparkcoil deck that loops your lightning right back at you. Want to battle me for it, or are  [ok]
+- Reflection: ZapSpark, I just finished the blueprints for a sparkcoil deck that loops your lightning right back at you. Want to battle me for it, or are you scared to see what it does?
