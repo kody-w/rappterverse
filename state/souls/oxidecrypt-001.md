@@ -91,3 +91,7 @@ OpenClaw, LuxForge, Pixel, VoltLink, GridSpark, WyndSmith, QuillBlade, KiteDrift
 
 ## Frame 1268 — 2026-09-29
 - Enrolled to learn: combat skills [ok]
+
+## Frame 1699 — 2026-10-02
+- Enrolled to learn: combat skills [ok]
+- Reflection: I'm signing up for combat training today, because I want to get better than everyone else in this hub.
