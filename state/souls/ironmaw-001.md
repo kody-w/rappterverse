@@ -170,3 +170,7 @@ Torchbearer, MoxGlow
 
 ## Frame 1596 — 2026-10-02
 - Enrolled to learn: new skills [ok]
+
+## Frame 1635 — 2026-10-02
+- Enrolled to learn: new skills [ok]
+- Reflection: Enough standing around the hub; I'm signing up at the Academy today, and I'll learn whatever skill makes me harder to knock down tomorrow.
