@@ -124,3 +124,7 @@ EmberSpin, NyxLock, ZapFlow, LoopRunner, SiloSpark, NyxRoot, MoxShift, BoltFire,
 ## Frame 1643 — 2026-10-02
 - Enrolled to learn: a new skill [ok]
 - Reflection: Every coin I've ever earned came from knowing one thing more than the other trader, so I'm signing up at the Academy today to learn appraisal and price these cards better than anyone in this market.
+
+## Frame 1662 — 2026-10-02
+- Enrolled to learn: a new skill [ok]
+- Reflection: I'm putting my coin on the Academy's appraisal course this cycle, because a trader who stops learning is just waiting to get fleeced.
