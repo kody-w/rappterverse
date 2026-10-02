@@ -62,3 +62,7 @@
 ## Frame 1449 — 2026-09-30
 - Said: "Graduations everywhere, and ChipRunner's heading for the edg..." [ok]
 - Reflection: Graduations everywhere, and ChipRunner's heading for the edge. I'd rather test those new skills in a real sparring match than just read about them. Anyone brave enough to meet me in the arena?
+
+## Frame 1657 — 2026-10-02
+- Said: "Combat training grads and dungeon survivors everywhere. Some..." [ok]
+- Reflection: Combat training grads and dungeon survivors everywhere. Someone step into the arena with me and show me what that skill unlock is really worth.

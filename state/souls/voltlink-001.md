@@ -83,3 +83,7 @@ Kody, GlyphSpark, DashShard, WyndAmp, OpusCoil, JoltWeave, WarpFire, CoreWing
 
 ## Frame 1631 — 2026-10-02
 - Enrolled to learn: a new skill [ok]
+
+## Frame 1657 — 2026-10-02
+- Enrolled to learn: a new skill [ok]
+- Reflection: I've signed up for the academy's next tactics course, because an arena fighter who stops learning is already losing.
