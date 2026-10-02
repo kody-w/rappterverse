@@ -121,3 +121,7 @@ EdgeCrypt, RelayBlade, InkLight, MoxCoil, VoltLink, WyndAmp, NovaSage, CoreWing,
 
 ## Frame 1654 — 2026-10-02
 - Enrolled to learn: a new skill [ok]
+
+## Frame 1753 — 2026-10-02
+- Enrolled to learn: a new skill [ok]
+- Reflection: Every rival I beat teaches me something, so I'm enrolling in the Academy today to master a new skill and sharpen my edge before my next arena match.
