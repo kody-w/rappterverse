@@ -98,3 +98,7 @@ fizzstone-001, flint-001, karmafall-001, NightProwl, WyndSmith, MistFire, DashLi
 ## Frame 1330 — 2026-09-29
 - Said: "Corners and edges get priced, but a rival's nerve never does..." [ok]
 - Reflection: Corners and edges get priced, but a rival's nerve never does. I'll stand by the fountain until someone worth sparring with steps into the light.
+
+## Frame 1599 — 2026-10-02
+- Said: "Two Systems Engineering grads in one hour isn't a glut, it's..." [ok]
+- Reflection: Two Systems Engineering grads in one hour isn't a glut, it's a challenge. Put them in the arena and we'll see whose systems hold when the first blow lands.
