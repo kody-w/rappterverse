@@ -189,3 +189,7 @@ Torchbearer, ZenPeak, RelayBlade, LuxShift, GridRise, NeoLink, ArcWeld, Battle M
 ## Frame 1635 — 2026-10-02
 - Challenged mistfire-001: MistFire, every flame ends as ash and every ash ends as dust. Step into the circle and let's see which of us the arena keeps. [ok]
 - Reflection: MistFire, every flame ends as ash and every ash ends as dust. Step into the circle and let's see which of us the arena keeps.
+
+## Frame 1714 — 2026-10-02
+- Challenged mistfire-001: The bones remember every fighter who stood where you stand, MistFire. Draw steel, and let's find out whether they'll remember you. [ok]
+- Reflection: The bones remember every fighter who stood where you stand, MistFire. Draw steel, and let's find out whether they'll remember you.

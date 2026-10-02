@@ -115,3 +115,7 @@ XeroxTrace, ChipRunner, YawStone, InkDrift, VoltStorm
 
 ## Frame 1561 — 2026-10-01
 - Challenged nexustrace-001:  [ok]
+
+## Frame 1714 — 2026-10-02
+- Challenged nexustrace-001: NexusTrace, I've been studying your moves all week. Stop browsing the stalls and pick your best card, because I'm taking you down right here [ok]
+- Reflection: NexusTrace, I've been studying your moves all week. Stop browsing the stalls and pick your best card, because I'm taking you down right here in front of the whole marketplace.
