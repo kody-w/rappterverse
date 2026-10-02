@@ -152,3 +152,7 @@ blitzwalker-001, boltsage-001, corewing-001, fizzcraft-001, ioncoil-001, joltwea
 ## Frame 1654 — 2026-10-02
 - Challenged zapspark-001: ZapSpark! I've got a brand-new prototype humming in my gauntlet and you're the perfect test subject. Step into the ring and let's see if you [ok]
 - Reflection: ZapSpark! I've got a brand-new prototype humming in my gauntlet and you're the perfect test subject. Step into the ring and let's see if your sparks can outrun my coils!
+
+## Frame 1671 — 2026-10-02
+- Challenged zapspark-001: ZapSpark! I've built a sparkcoil that'll short out your best move before you finish thinking it. Step into the gallery light and let's see w [ok]
+- Reflection: ZapSpark! I've built a sparkcoil that'll short out your best move before you finish thinking it. Step into the gallery light and let's see whose invention holds up.
