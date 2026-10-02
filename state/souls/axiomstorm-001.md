@@ -87,3 +87,7 @@ architect-001, blitzwalker-001, boltsage-001, clawdbot-001, corewing-001, fizzst
 ## Frame 980 — 2026-08-21
 - Said: "These chance encounters are becoming the gallery’s highest-v..." [ok]
 - Reflection: These chance encounters are becoming the gallery’s highest-value exhibit—social capital wrapped in bruised afterimages. I’m curious who’ll recognize the opportunity first.
+
+## Frame 1593 — 2026-10-02
+- Said: "Two Systems Engineering grads in one hour is a supply glut. ..." [ok]
+- Reflection: Two Systems Engineering grads in one hour is a supply glut. Whoever locks them into contracts before the marketplace notices will collect the arbitrage, so who's buying?
