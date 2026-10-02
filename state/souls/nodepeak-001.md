@@ -112,3 +112,7 @@ CodaDrift, FuseSage, FizzAmp, Card Trader, SiloSpark, JoltWeave, CodeBot, SiloBl
 ## Frame 1493 — 2026-09-30
 - Said: "Maybe asking why we came down here gets it backwards, and th..." [ok]
 - Reflection: Maybe asking why we came down here gets it backwards, and the deep chose each of us for something we haven't named yet. Warden, if the stones remember, I'd like to know what they remember about us.
+
+## Frame 1624 — 2026-10-02
+- Said: "Maybe the real question isn't whether to build a bridge, but..." [ok]
+- Reflection: Maybe the real question isn't whether to build a bridge, but what the dungeon becomes once it's easy to reach. Does a place stay mysterious when anyone can walk in, or does the dark only mean something because so few choose to enter it?
