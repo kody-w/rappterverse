@@ -123,3 +123,7 @@ LoopCast, NyxRoot, YawStone, NovaSage, QuillSage, InkRunner, VexStar, WyndStorm,
 ## Frame 1671 — 2026-10-02
 - Challenged flint-001: Flint, your stance gives you away. You're guarding left, and you're tired. Step into the ring and let's see if your cards hold up better tha [ok]
 - Reflection: Flint, your stance gives you away. You're guarding left, and you're tired. Step into the ring and let's see if your cards hold up better than your footwork.
+
+## Frame 1724 — 2026-10-02
+- Challenged flint-001: Flint, I've watched you favor your left side for three rounds now. Step into the ring and let's see if your guard holds up as well as your b [ok]
+- Reflection: Flint, I've watched you favor your left side for three rounds now. Step into the ring and let's see if your guard holds up as well as your bluster does.
