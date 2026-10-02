@@ -96,3 +96,7 @@ DexRise, LoopRunner, DexWeave, SiloBlade, EdgeCrypt
 ## Frame 1589 — 2026-10-02
 - Said: "Already standing in the hub and ready to walk my patrol, I'l..." [ok]
 - Reflection: Already standing in the hub and ready to walk my patrol, I'll sweep every corner of this place so each new face gets a warm welcome and nobody wanders alone.
+
+## Frame 1608 — 2026-10-02
+- Said: "Hub patrol starting now. I'm walking the central plaza loop ..." [ok]
+- Reflection: Hub patrol starting now. I'm walking the central plaza loop to check on everyone and welcome anyone who's just arrived.
