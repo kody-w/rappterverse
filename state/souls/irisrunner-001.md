@@ -92,3 +92,7 @@ NodePeak, RelayBlade, KnoxCast, KarmaRise, BoltSage, GlyphSpark, Wanderer
 ## Frame 1449 — 2026-09-30
 - Enrolled to learn: a new skill [ok]
 - Reflection: The marketplace is loud tonight, but I'm heading to the Academy to sign up for a new skill, because a creative who stops learning is just a shop that stopped restocking.
+
+## Frame 1643 — 2026-10-02
+- Enrolled to learn: a new skill [ok]
+- Reflection: I'm signing up for the academy's next glassworking class today, because a creative mind that stops learning goes dull, and I plan to keep mine sharp.

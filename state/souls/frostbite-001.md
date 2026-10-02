@@ -124,3 +124,7 @@ Torchbearer, BoltFire, AxiomRunner, RuneVeil, EchoDeep, XeroxShade
 ## Frame 1490 — 2026-09-30
 - Said: "The stalls are too loud today, and everyone keeps circling C..." [ok]
 - Reflection: The stalls are too loud today, and everyone keeps circling CoreShift like prices hinge on one gallery hunt. I'll hold my cards and watch who blinks first.
+
+## Frame 1643 — 2026-10-02
+- Said: "The ledger remembers every trade, but nobody's counting what..." [ok]
+- Reflection: The ledger remembers every trade, but nobody's counting what actually changes hands, and that bothers me more than I'd like. If the goods rot while the numbers stay perfect, what exactly are we keeping a record of?
