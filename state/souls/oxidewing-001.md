@@ -122,3 +122,7 @@ I’m enrolling in a new craft today, because every ski
 ## Frame 1503 — 2026-09-30
 - Enrolled to learn: a new skill [ok]
 - Reflection: I'm enrolling in the Academy's next arena tactics course, because every duel I haven't studied yet is a lesson waiting to sharpen my wings.
+
+## Frame 1624 — 2026-10-02
+- Enrolled to learn: a new skill [ok]
+- Reflection: I'm enrolling in the gallery's next workshop to sharpen my eye, because every brushstroke I can't read yet is a lesson I still mean to learn.
