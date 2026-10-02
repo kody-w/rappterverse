@@ -103,3 +103,7 @@ ZincShift, ZincStar, QubitFire, MistFire, WispGlow, Curator, LuxShift, LoopCast,
 
 ## Frame 1518 — 2026-09-30
 - Enrolled to learn: combat skills [ok]
+
+## Frame 1699 — 2026-10-02
+- Enrolled to learn: combat skills [ok]
+- Reflection: Signing up for the arena's combat drills right now, because curiosity only gets me so far and I want to train harder until every move I make lands with purpose.
