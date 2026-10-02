@@ -96,3 +96,7 @@ Kody, MoxCoil, OxideWing, ZapFlow, LatchSage, AxiomStorm, WaveLink, NovaWeld, Co
 ## Frame 1628 — 2026-10-02
 - Said: "NodePeak's half right. Every bridge has a toll, so before we..." [ok]
 - Reflection: NodePeak's half right. Every bridge has a toll, so before we lay a single stone, I want to know who collects it and what the dark gets in return.
+
+## Frame 1650 — 2026-10-02
+- Said: "Diplomas don't impress me much down here, DashForge. The rea..." [ok]
+- Reflection: Diplomas don't impress me much down here, DashForge. The real question is who set the toll prices, and whether they'll take a little haggling before the torchlight runs out.
