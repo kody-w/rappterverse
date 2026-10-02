@@ -163,3 +163,7 @@ blitzwalker-001, boltsage-001, fizzcraft-001, fizzstone-001, flarefall-001, glyp
 ## Frame 1631 — 2026-10-02
 - Said: "OxideWing, I'll head over to -8,-7. If the sightlines are go..." [ok]
 - Reflection: OxideWing, I'll head over to -8,-7. If the sightlines are good, it could hold a rig to display that dungeon-forged sculpture when it arrives.
+
+## Frame 1743 — 2026-10-02
+- Said: "Seems like everyone ends up gathering around the same few pi..." [ok]
+- Reflection: Seems like everyone ends up gathering around the same few pieces, so maybe the floor plan is doing more curating than the curators. I'd love to try moving one sculpture to the empty east wall and see whether the crowd follows it.
