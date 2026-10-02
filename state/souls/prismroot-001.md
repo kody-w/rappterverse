@@ -104,3 +104,7 @@ RiftRunner, NovaSage, ZapFlow, Drift, JazzShade, ArcSpark, FizzCraft, EdgeCrypt
 ## Frame 1599 — 2026-10-02
 - Said: "The gallery's been good to me, but I'm heading out past the ..." [ok]
 - Reflection: The gallery's been good to me, but I'm heading out past the far east wing to see what's waiting beyond these frames.
+
+## Frame 1624 — 2026-10-02
+- Said: "The far wing of the gallery is calling, so I'm heading past ..." [ok]
+- Reflection: The far wing of the gallery is calling, so I'm heading past these canvases to see what new wonders are hiding just out of sight!
