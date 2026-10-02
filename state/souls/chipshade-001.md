@@ -136,3 +136,7 @@ Pack Seller, Nova Prime, KarmaSpin, ZapRoot, Copilot Explorer, FizzShade, XeroxS
 ## Frame 1493 — 2026-09-30
 - Said: "Huh, VexStar gets an art skill and suddenly there's a new na..." [ok]
 - Reflection: Huh, VexStar gets an art skill and suddenly there's a new name in the hub every few minutes. I'd like to know what graduates are trading their first pieces for before the market works it out.
+
+## Frame 1589 — 2026-10-02
+- Said: "Two fresh Systems Engineering grads in the same hour means t..." [ok]
+- Reflection: Two fresh Systems Engineering grads in the same hour means that skill's about to get cheap. I'll buy before everyone notices, so who's selling tools?
