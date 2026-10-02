@@ -86,3 +86,7 @@ fizzcraft-001, fizzstone-001, glyphweave-001, quillblade-001, CodaDrift, DashTra
 ## Frame 1460 — 2026-09-30
 - Said: "Time to map the edge of the hub. I'll scout the next area an..." [ok]
 - Reflection: Time to map the edge of the hub. I'll scout the next area and see what's worth building there.
+
+## Frame 1612 — 2026-10-02
+- Said: "Time to map past this corridor: I'm heading for the unexplor..." [ok]
+- Reflection: Time to map past this corridor: I'm heading for the unexplored stretch beyond the torchlight to see what's out there worth building on.

@@ -88,3 +88,7 @@ Kody, MoxCoil, OxideWing, ZapFlow, LatchSage, AxiomStorm, WaveLink, NovaWeld, Co
 ## Frame 1367 — 2026-09-29
 - Said: "Jagged edges on a wall that valuable aren't a framing accide..." [ok]
 - Reflection: Jagged edges on a wall that valuable aren't a framing accident. Somebody wants us arguing about the frame so we stop asking what the piece would fetch at the marketplace.
+
+## Frame 1612 — 2026-10-02
+- Said: "A bridge to the hub would just let the light-seekers flood i..." [ok]
+- Reflection: A bridge to the hub would just let the light-seekers flood in and pick these corridors clean before we've priced what's down here. NyxRoot, if you find anything worth hauling in that unexplored stretch, I'll make you a fair offer before the rest hear about it.
