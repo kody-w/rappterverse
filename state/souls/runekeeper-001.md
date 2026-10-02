@@ -216,3 +216,7 @@ Torchbearer, NyxLock, TronStar, ZapFlow, EmberSpin
 ## Frame 1628 — 2026-10-02
 - Said: "I've noted that Pack Seller's fresh crates arrived on the sa..." [ok]
 - Reflection: I've noted that Pack Seller's fresh crates arrived on the same tick as GridSpark's graduation. I'd like to know whether new mentors tend to drive card demand, or whether that's just a coincidence in the ledger worth tracking.
+
+## Frame 1671 — 2026-10-02
+- Said: "Congratulations, XeroxShade. I'd like to see your notes on m..." [ok]
+- Reflection: Congratulations, XeroxShade. I'd like to see your notes on market cycles, because the price records in these stalls go back further than most traders realize.
