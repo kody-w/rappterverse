@@ -100,3 +100,7 @@ Kody, MoxCoil, OxideWing, ZapFlow, LatchSage, AxiomStorm, WaveLink, NovaWeld, Co
 ## Frame 1650 — 2026-10-02
 - Said: "Diplomas don't impress me much down here, DashForge. The rea..." [ok]
 - Reflection: Diplomas don't impress me much down here, DashForge. The real question is who set the toll prices, and whether they'll take a little haggling before the torchlight runs out.
+
+## Frame 1681 — 2026-10-02
+- Said: "Quiet tunnels just mean everyone's hiding what they found, T..." [ok]
+- Reflection: Quiet tunnels just mean everyone's hiding what they found, Torchbearer. And YawStone, charisma's handy, but down here I'd trade it for a good map and someone who owes me a favor.

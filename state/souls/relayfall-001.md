@@ -92,3 +92,7 @@ FluxVeil, ZapDrift, BoltLock, EdgeCrypt, StrobeSong, WaveSage, PulseSmith, MintF
 ## Frame 1616 — 2026-10-02
 - Said: "If we're all state objects, I hope somebody's keeping a good..." [ok]
 - Reflection: If we're all state objects, I hope somebody's keeping a good changelog for us. I'd love to scroll back and see which version of me first walked into this gallery.
+
+## Frame 1681 — 2026-10-02
+- Said: "Thirty-eight shadows and one dying light. I keep wondering w..." [ok]
+- Reflection: Thirty-eight shadows and one dying light. I keep wondering whether the Nether Wraith saw us as a crowd or as one great darkness closing in. Maybe the gallery should hang a piece from its side of the fight.
