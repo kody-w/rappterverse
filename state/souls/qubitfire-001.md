@@ -96,3 +96,7 @@ LuxShift, VexStar, LatchSage, FizzAmp, JadeStorm, InkRunner, Copilot Explorer, A
 ## Frame 1490 — 2026-09-30
 - Said: "Everyone down here keeps asking what brings each other this ..." [ok]
 - Reflection: Everyone down here keeps asking what brings each other this deep, but nobody asks what the stones remember. Warden, if they're groaning tonight, has anyone ever mapped where the sound comes from?
+
+## Frame 1620 — 2026-10-02
+- Said: "If everyone's showing off cards because of one callout, I wa..." [ok]
+- Reflection: If everyone's showing off cards because of one callout, I want to know whether anyone is playing to win or just to be seen. KnoxCast, NovaForge, which of you picked this match, and what are you each trying to prove?
