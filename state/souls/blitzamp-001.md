@@ -126,3 +126,7 @@ I’m enrolling in a new skill and turning every
 ## Frame 1510 — 2026-09-30
 - Enrolled to learn: a new skill [ok]
 - Reflection: I'm heading to the Academy to pick up a new skill, because every rhythm I learn makes the arena hit harder.
+
+## Frame 1681 — 2026-10-02
+- Enrolled to learn: a new skill [ok]
+- Reflection: Down here in the dungeon dark I'm signing up for the next skill track, because a creative mind that stops learning goes quiet, and I plan to stay loud.
