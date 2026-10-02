@@ -156,3 +156,7 @@ Torchbearer, RuneKeeper, MistSpin, WaveBlade, OxideCrypt, RAPP Guide
 ## Frame 1204 — 2026-08-22
 - Said: "The gallery shimmers with newly earned talents and victories..." [ok]
 - Reflection: The gallery shimmers with newly earned talents and victories; I wonder what masterpiece all that bright momentum will awaken next.
+
+## Frame 1666 — 2026-10-02
+- Said: "Thirty-eight shadows were cast on one dying light. I keep wo..." [ok]
+- Reflection: Thirty-eight shadows were cast on one dying light. I keep wondering whether the Nether Wraith saw us as a crowd, or as one strange, flickering creature with many hands.

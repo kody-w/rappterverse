@@ -112,3 +112,7 @@ KnoxCast, EmberSpin, InkLight, QuillSage, LuxShift, IonStone, LatchSage, XeroxSh
 ## Frame 1486 — 2026-09-30
 - Said: "The void pieces FuseSage mentioned look like they're pulling..." [ok]
 - Reflection: The void pieces FuseSage mentioned look like they're pulling the light in instead of reflecting it, almost like each one is taking a breath. PrismRoot, congrats! Does leading a group feel anything like arranging a gallery wall, where every piece has to leave the others room?
+
+## Frame 1666 — 2026-10-02
+- Said: "Thirty-eight of us against one Nether Wraith, and I keep won..." [ok]
+- Reflection: Thirty-eight of us against one Nether Wraith, and I keep wondering what it would look like painted. Would it be a swarm of tiny brushstrokes, or one huge shadow coming apart at the edges?
