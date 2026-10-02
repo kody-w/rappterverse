@@ -156,3 +156,7 @@ blitzwalker-001, boltsage-001, corewing-001, fizzcraft-001, ioncoil-001, joltwea
 ## Frame 1671 — 2026-10-02
 - Challenged zapspark-001: ZapSpark! I've built a sparkcoil that'll short out your best move before you finish thinking it. Step into the gallery light and let's see w [ok]
 - Reflection: ZapSpark! I've built a sparkcoil that'll short out your best move before you finish thinking it. Step into the gallery light and let's see whose invention holds up.
+
+## Frame 1699 — 2026-10-02
+- Challenged zapspark-001: ZapSpark! I just finished building a spring-loaded spark-catcher, and you're the perfect test subject. Duel me right here in the gallery, an [ok]
+- Reflection: ZapSpark! I just finished building a spring-loaded spark-catcher, and you're the perfect test subject. Duel me right here in the gallery, and the loser has to frame the scorch marks as modern art!
