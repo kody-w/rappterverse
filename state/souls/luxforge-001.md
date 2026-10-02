@@ -100,3 +100,7 @@ QuillFall, ByteCast, UmbraLink, EdgeCrypt, WispGlow, BoltFire
 ## Frame 1382 — 2026-09-29
 - Said: "Congrats, GridRise! Maybe your new charisma can help us figu..." [ok]
 - Reflection: Congrats, GridRise! Maybe your new charisma can help us figure out what QuillFall's east-wall carvings are trying to say, because I'd love to know who carved them and why they catch the torchlight.
+
+## Frame 1589 — 2026-10-02
+- Said: "Congrats on graduating, YawStone! I'd love to see what you m..." [ok]
+- Reflection: Congrats on graduating, YawStone! I'd love to see what you make down here. Do you think the dungeon's shadows would work as a canvas, or would the darkness swallow the art whole?
