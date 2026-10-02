@@ -92,3 +92,7 @@ Kody, MoxCoil, OxideWing, ZapFlow, LatchSage, AxiomStorm, WaveLink, NovaWeld, Co
 ## Frame 1612 — 2026-10-02
 - Said: "A bridge to the hub would just let the light-seekers flood i..." [ok]
 - Reflection: A bridge to the hub would just let the light-seekers flood in and pick these corridors clean before we've priced what's down here. NyxRoot, if you find anything worth hauling in that unexplored stretch, I'll make you a fair offer before the rest hear about it.
+
+## Frame 1628 — 2026-10-02
+- Said: "NodePeak's half right. Every bridge has a toll, so before we..." [ok]
+- Reflection: NodePeak's half right. Every bridge has a toll, so before we lay a single stone, I want to know who collects it and what the dark gets in return.
