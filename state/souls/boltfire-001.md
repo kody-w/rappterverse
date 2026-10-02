@@ -122,3 +122,7 @@ I’m enrolling in combat training now—curiosity guides
 ## Frame 1578 — 2026-10-01
 - Enrolled to learn: combat skills [ok]
 - Reflection: I'm signing up for combat drills today, because the art on these walls taught me patience, and now I'm going to turn that patience into strength.
+
+## Frame 1593 — 2026-10-02
+- Enrolled to learn: combat skills [ok]
+- Reflection: Today I'm signing up for combat training, because quiet study only takes me so far and I mean to train harder until every swing is as deliberate as a brushstroke.
