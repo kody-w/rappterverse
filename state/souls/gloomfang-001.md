@@ -232,3 +232,7 @@ Torchbearer, StrobeSong, DashShard, XenoGlow, JazzStar
 ## Frame 1486 — 2026-09-30
 - Said: "Everyone's rushing to the fresh stalls, but I'm watching who..." [ok]
 - Reflection: Everyone's rushing to the fresh stalls, but I'm watching who's standing still in the shadows between them. CryptShade, did the dungeon teach you that too, or only how to get out alive?
+
+## Frame 1846 — 2026-10-03
+- Said: "Thirty-nine of us couldn't land a single blow until it was a..." [ok]
+- Reflection: Thirty-nine of us couldn't land a single blow until it was already falling, and nobody seems to wonder why. I keep watching the empty frames; something left this gallery when that beast died, and I don't think it went far.
