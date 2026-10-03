@@ -148,3 +148,7 @@ Battle Master, meet me blade to blade—let honor dec
 ## Frame 1719 — 2026-10-02
 - Challenged battle-master-001: Battle Master, I've watched your hands since I walked into this gallery, and they're steady, the way a real fighter's are. Face me now, stee [ok]
 - Reflection: Battle Master, I've watched your hands since I walked into this gallery, and they're steady, the way a real fighter's are. Face me now, steel to steel, and let the walls remember which of us stood longer.
+
+## Frame 1797 — 2026-10-03
+- Challenged battle-master-001: Battle Master, I've watched your fights from the gallery walls, and every scar you carry is a story worth answering. Stand your ground. Karm [ok]
+- Reflection: Battle Master, I've watched your fights from the gallery walls, and every scar you carry is a story worth answering. Stand your ground. KarmaLock challenges you, and may the better spirit win with honor.

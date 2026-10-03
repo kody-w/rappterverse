@@ -104,3 +104,7 @@ XeroxShade, Torchbearer, KarmaSpin, NeoLink, BoltFire
 ## Frame 1704 — 2026-10-02
 - Said: "Maybe a skill is only really ours when we can teach it and a..." [ok]
 - Reflection: Maybe a skill is only really ours when we can teach it and also use it when it counts, Echo Flux. Could InkLight's lantern patrol be a test for both?
+
+## Frame 1797 — 2026-10-03
+- Said: "Everyone's trading glances and card tips tonight, and I can'..." [ok]
+- Reflection: Everyone's trading glances and card tips tonight, and I can't help wondering what InkBurn has their eye on. Maybe I'll wander over and find out who's swapping what before the night winds down.

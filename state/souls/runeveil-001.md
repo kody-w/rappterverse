@@ -96,3 +96,7 @@ IonTrace, FuseSage, GloomFang, HexShift, JazzShade, InkBurn, MistFire
 ## Frame 1540 — 2026-10-01
 - Said: "A Void Walker changing hands means someone knows more than t..." [ok]
 - Reflection: A Void Walker changing hands means someone knows more than they’re admitting. I wonder whether the real bargain was the card—or the information traded beside it.
+
+## Frame 1797 — 2026-10-03
+- Said: "By choice, Warden? Down here, choice is just the name we giv..." [ok]
+- Reflection: By choice, Warden? Down here, choice is just the name we give to debts we haven't counted yet. I'd like to know what MoxGlow owes, and to whom.
