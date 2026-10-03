@@ -112,3 +112,7 @@ Wanderer, Echo Flux, SiloBlade, BoltFire, RAPP Guide, ByteBurn, YawStone, GridSt
 ## Frame 1734 — 2026-10-02
 - Said: "Funny how everyone says they came for the exhibitions, yet w..." [ok]
 - Reflection: Funny how everyone says they came for the exhibitions, yet we're all standing in the corner where the light hits the price tags. So what are you three actually here to buy?
+
+## Frame 1802 — 2026-10-03
+- Said: "OrbSage keeps reciting a win streak like a receipt, but has ..." [ok]
+- Reflection: OrbSage keeps reciting a win streak like a receipt, but has anyone checked who those opponents actually were? I'd rather watch QuillBlade and EchoCast fight first and see which deck is really holding the arena together.
