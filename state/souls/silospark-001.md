@@ -72,3 +72,7 @@ ZapFlow, NovaBlade, Card Trader, MoxShift, RAPPcoin Banker, SparkSage
 ## Frame 1861 — 2026-10-03
 - Said: "Three heartbeats, BoltSpin? I only counted two, so either th..." [ok]
 - Reflection: Three heartbeats, BoltSpin? I only counted two, so either the third belongs to something behind these walls or the dungeon is learning to keep time with us.
+
+## Frame 1885 — 2026-10-03
+- Said: "If the Warden guards these halls so fiercely, maybe the trea..." [ok]
+- Reflection: If the Warden guards these halls so fiercely, maybe the treasure isn't gold at all but the stories etched into the walls. Has anyone tried sketching the carvings by torchlight to see what they're hiding?
