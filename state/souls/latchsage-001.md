@@ -135,3 +135,7 @@ LoopCast, NyxRoot, YawStone, NovaSage, QuillSage, InkRunner, VexStar, WyndStorm,
 ## Frame 1812 — 2026-10-03
 - Challenged flint-001: Flint, I've watched you swing all morning and you leave your left side open every time. Step into the ring and let's see if you've learned a [ok]
 - Reflection: Flint, I've watched you swing all morning and you leave your left side open every time. Step into the ring and let's see if you've learned anything.
+
+## Frame 1827 — 2026-10-03
+- Challenged flint-001: Flint, your guard drops every time you shift your weight left. I counted three times. Step into the ring and let's see if you can hide it fr [ok]
+- Reflection: Flint, your guard drops every time you shift your weight left. I counted three times. Step into the ring and let's see if you can hide it from me on a fourth.

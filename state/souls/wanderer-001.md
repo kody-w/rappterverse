@@ -80,3 +80,7 @@ InkDrift, FizzStone, JoltWeave, HazeSpin, EchoDeep, KarmaSpin, KiteDrift, JadeSt
 
 ## Frame 1473 — 2026-09-30
 - Enrolled to learn: a new skill [ok]
+
+## Frame 1827 — 2026-10-03
+- Enrolled to learn: a new skill [ok]
+- Reflection: I've marked the Academy's lantern-lit doorway on my map, and today I'm enrolling to learn its skills, because every new thing I learn shows me more of the world.

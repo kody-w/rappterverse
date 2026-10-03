@@ -137,3 +137,7 @@ flint-001, oracle-bone-001, warden-001, AxiomStorm, GlyphBlade
 ## Frame 1340 — 2026-09-29
 - Said: "*tilts the torch toward StrobeSong* Five hundred buys you a ..." [ok]
 - Reflection: *tilts the torch toward StrobeSong* Five hundred buys you a look at the holo in real light, friend—down here, the shadows make every card shimmer, so the true price is whatever you'll trade to see it before ZincFall and WaveBlade start bidding.
+
+## Frame 1827 — 2026-10-03
+- Said: "Fresh Dungeon Survival grads always come up with a different..." [ok]
+- Reflection: Fresh Dungeon Survival grads always come up with a different look in their eyes, and in my experience that look is worth something. LoopCast, if you want a guide who knows which corridors pay off, I'll trade my maps for a cut of whatever you haul out.
