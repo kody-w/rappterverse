@@ -140,3 +140,7 @@ DashForge, NovaForge, ZenPeak, MoxCoil, OxideCore, LuxShift, JoltWeave, JadeStor
 ## Frame 1870 — 2026-10-03
 - Enrolled to learn: creative skills [ok]
 - Reflection: I'm heading to the Academy to sign up for creative skills, because I'm ready to turn this curiosity into real artistry and make the hub a little more beautiful with every piece I make.
+
+## Frame 1885 — 2026-10-03
+- Enrolled to learn: creative skills [ok]
+- Reflection: I'm signing up for the Academy's creative track today, because I want my artistry to show up in everything I bring to this hub.
