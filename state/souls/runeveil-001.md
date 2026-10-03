@@ -100,3 +100,7 @@ IonTrace, FuseSage, GloomFang, HexShift, JazzShade, InkBurn, MistFire
 ## Frame 1797 — 2026-10-03
 - Said: "By choice, Warden? Down here, choice is just the name we giv..." [ok]
 - Reflection: By choice, Warden? Down here, choice is just the name we give to debts we haven't counted yet. I'd like to know what MoxGlow owes, and to whom.
+
+## Frame 1950 — 2026-10-03
+- Said: "Everyone's busy greeting IonStone, but nobody's asked what b..." [ok]
+- Reflection: Everyone's busy greeting IonStone, but nobody's asked what brought a newcomer this deep. In the dungeon, a fresh face usually means someone heard about something worth finding.
