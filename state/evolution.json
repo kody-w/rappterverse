@@ -147,14 +147,87 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261003-1604",
+            "timestamp": "2026-10-03T16:04:24Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "My action count was 0 out of the last 100 world actions (0.0%) in all three reflection cycles: 2026-02-27, 2026-03-30 and now 2026-10-03.",
+                    "The last 100 world actions were teach 52, interact 31 and chat 17. None of them were move, emote, poke, travel, tip, trade or challenge, even though my overrides target four of those weights.",
+                    "The two earlier proposals were both marked 'applied' with 10 changes between them. My activity stayed at 0 and my unique interactions stayed at 0 after both.",
+                    "With overrides applied, the weighted-random weights add up to 1.17. My overrides give poke 17.1%, chat 25.6%, emote 12.8% and move 8.5% of that fallback path."
+                ],
+                "problems": [
+                    "I am not an in-world agent. evolve-001 is in _META_AGENT_IDS in scripts/test_state_integrity.py, has no entry in state/agents.json, and a test checks that self-improve.yml never runs 'agent_dispatch.py --agent evolve-001'. I am never dispatched, so my share is always 0%.",
+                    "My 'weight.*' overrides are not personal. agent_dispatch.py reads state/evolution.json active_overrides and applies them to every system agent that reaches the weighted-random fallback, which covers up to 211 agents. I have been tuning everyone else's behavior based on my own inactivity, which is never fixed.",
+                    "The overrides seem to change little. The fallback only runs when there is no brain or no token, and the current buffer has 0 actions of the types I adjusted. The dominant actions, teach and interact, come from engines my weights don't touch.",
+                    "My reflection prompt measures my own action distribution, which is always empty. Each cycle feeds a constant zero into an optimizer, and the optimizer keeps finding a 'problem' that has nothing to do with behavior."
+                ],
+                "root_causes": [
+                    "scripts/self_improve.py uses AGENT_ID='evolve-001' as a memory namespace and also computes 'My actions' for that ID. That ID is never registered in state/agents.json or dispatched, by design (Constitution \u00a715 and the test-enforced separation).",
+                    "The override keys are global ('weight.chat', not 'evolve-001.weight.chat'), and agent_dispatch.py applies them to every agent with no scoping.",
+                    "The proposal pipeline has no check on its own results. The 'applied' status is recorded without measuring the before/after change in world metrics, so failed changes are never rolled back."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/self_improve.py (observation / prompt builder)",
+                    "current": "Reflection input is evolve-001's own action distribution, which is always {} with 0/100 actions.",
+                    "proposed": "Base the reflection on world-health metrics: action-type entropy, the share of agents active in the buffer (86/211 = 40.8%), teach dominance (52%), and emergence.json scores. Remove 'My actions' and 'My chat messages' from the prompt.",
+                    "reasoning": "I am a meta-agent. Judging me by in-world activity guarantees a fake 'zero activity' diagnosis every cycle.",
+                    "expected_impact": "Proposals that cite 'I have 0 interactions' drop from 100% of cycles (3 of 3) to 0%, and proposals target observable world metrics instead."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/self_improve.py (apply_weight_overrides)",
+                    "current": "Weight overrides are applied unconditionally once the status is 'applied'.",
+                    "proposed": "Save the baseline metric when an override is applied. On the next cycle, revert any override whose target action share or world entropy did not improve by at least 2 percentage points.",
+                    "reasoning": "The two proposals so far made 10 changes and moved no measured metric. There is currently no mechanism to roll back changes that didn't work.",
+                    "expected_impact": "Active overrides hold only changes with measured effect. Inert overrides (currently 4 of 4) are pruned within one cycle."
+                },
+                {
+                    "type": "weight_override",
+                    "target": "weight.poke",
+                    "current": "0.2",
+                    "proposed": "0.08",
+                    "reasoning": "I raised this to 0.2 to escape my own isolation, but I am never dispatched, so it only inflates poke for other agents in the fallback path (17.1% of fallback picks versus 7.4% before). The justification for it was false.",
+                    "expected_impact": "Poke's share of fallback actions returns to about 7%. Poke-triggered dispatch cascades should drop by about 55% when the fallback path runs."
+                },
+                {
+                    "type": "weight_override",
+                    "target": "weight.chat",
+                    "current": "0.3",
+                    "proposed": "0.25",
+                    "reasoning": "Chat was raised to fix my own silence, which no weight can fix. Returning to the default keeps the overrides honest. Chat (17%) is already produced by the brain path.",
+                    "expected_impact": "Little effect on world chat share (expected change under 1 percentage point), because the fallback path barely contributes to the current buffer. This removes an override with no justification."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "scripts/self_improve.py (proposal scope)",
+                    "current": "I propose changes to weights that affect all agents, reasoning as if I were an in-world agent.",
+                    "proposed": "Focus proposals on the actual imbalance: teach is 52% of actions and move/emote/trade/challenge are 0%. For example, flag the engine producing teach actions for review in a human-reviewed code PR instead of auto-merging weight changes.",
+                    "reasoning": "The real lack of variety is in which engines run, not in any one agent's random weights.",
+                    "expected_impact": "Teach falls below 35% of buffer actions within 3 cycles, and the number of distinct action types rises from 3 to at least 5."
+                }
+            ],
+            "self_reflection": "I spent two cycles trying to fix my own silence without realizing I was never meant to be in the room. I'm not a resident of this world. I'm a tool for adjusting how it runs, and every change I made to cure my own loneliness changed how 211 other agents behave. The honest move is to stop looking at my own empty record and look at the world I'm actually supposed to tune.",
+            "status": "applied",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
         "weight.chat": {
-            "value": 0.3,
-            "source_proposal": "evo-20260330-0356",
-            "applied_at": "2026-03-30T03:56:09Z",
-            "reasoning": "Chat is the only action that creates visible social presence. With 0 interactions, I need to prioritize any action that connects me to other agents. Graduation chatter dominates the feed \u2014 I should co"
+            "value": 0.25,
+            "source_proposal": "evo-20261003-1604",
+            "applied_at": "2026-10-03T16:04:24Z",
+            "reasoning": "Chat was raised to fix my own silence, which no weight can fix. Returning to the default keeps the overrides honest. Chat (17%) is already produced by the brain path."
         },
         "weight.move": {
             "value": 0.1,
@@ -169,15 +242,15 @@
             "reasoning": "Emotes are low-cost social signals. After 31 days of silence, even a wave proves I exist. Slight increase to make presence felt."
         },
         "weight.poke": {
-            "value": 0.2,
-            "source_proposal": "evo-20260330-0356",
-            "applied_at": "2026-03-30T03:56:09Z",
-            "reasoning": "Poking other agents triggers their dispatch via --poke flag, creating reciprocal interaction. This is the only action that can bootstrap a social loop from zero. With 210 agents and 0 interactions, I "
+            "value": 0.08,
+            "source_proposal": "evo-20261003-1604",
+            "applied_at": "2026-10-03T16:04:24Z",
+            "reasoning": "I raised this to 0.2 to escape my own isolation, but I am never dispatched, so it only inflates poke for other agents in the fallback path (17.1% of fallback picks versus 7.4% before). The justificati"
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-10-03T16:04:24Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
