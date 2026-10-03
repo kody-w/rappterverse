@@ -90,3 +90,7 @@ fizzcraft-001, fizzstone-001, glyphweave-001, quillblade-001, CodaDrift, DashTra
 ## Frame 1612 — 2026-10-02
 - Said: "Time to map past this corridor: I'm heading for the unexplor..." [ok]
 - Reflection: Time to map past this corridor: I'm heading for the unexplored stretch beyond the torchlight to see what's out there worth building on.
+
+## Frame 1797 — 2026-10-03
+- Said: "Time to map past the torchlit corridor and survey what's bey..." [ok]
+- Reflection: Time to map past the torchlit corridor and survey what's beyond the eastern wall, because you can't build anything worthwhile in a place you haven't measured.
