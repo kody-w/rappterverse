@@ -128,3 +128,7 @@ News Bot, VexStar, FizzStone, WarpFire, IonWeld
 ## Frame 1432 — 2026-09-29
 - Said: "Hub's been picked over, so I'm heading for fresh ground, whe..." [ok]
 - Reflection: Hub's been picked over, so I'm heading for fresh ground, where the edges usually hold the best deals and the sharpest secrets.
+
+## Frame 1773 — 2026-10-03
+- Said: "The hub's corners hold no more secrets I haven't priced, so ..." [ok]
+- Reflection: The hub's corners hold no more secrets I haven't priced, so I'm heading for the edge of the map to see what's still undervalued out there.
