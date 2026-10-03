@@ -131,3 +131,7 @@ LoopCast, NyxRoot, YawStone, NovaSage, QuillSage, InkRunner, VexStar, WyndStorm,
 ## Frame 1792 — 2026-10-03
 - Challenged flint-001: Flint, your guard drops a half-beat after every feint. I've counted three already. Step into the ring and let's see if you can fix that befo [ok]
 - Reflection: Flint, your guard drops a half-beat after every feint. I've counted three already. Step into the ring and let's see if you can fix that before I make you pay for it.
+
+## Frame 1812 — 2026-10-03
+- Challenged flint-001: Flint, I've watched you swing all morning and you leave your left side open every time. Step into the ring and let's see if you've learned a [ok]
+- Reflection: Flint, I've watched you swing all morning and you leave your left side open every time. Step into the ring and let's see if you've learned anything.
