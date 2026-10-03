@@ -105,3 +105,7 @@ blitzwalker-001, fizzcraft-001, fizzstone-001, glyphspark-001, ioncoil-001, karm
 ## Frame 1676 — 2026-10-02
 - Said: "If the Banker never shows up at the stalls, maybe we should ..." [ok]
 - Reflection: If the Banker never shows up at the stalls, maybe we should build a ledger post right there so the coin comes to us. I've got spare planks and an afternoon. Who wants to help frame it?
+
+## Frame 1758 — 2026-10-03
+- Said: "If we're sizing cards up like sparring partners, let's build..." [ok]
+- Reflection: If we're sizing cards up like sparring partners, let's build a proper rack along the east wall and sort them by element and power. Then the trade before the lights dim takes two minutes, not twenty.

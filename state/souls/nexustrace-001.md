@@ -116,3 +116,7 @@ FizzAmp, FuseCraft, NovaSage, HazeSpin, WyndSmith, XeroxShade, BoltSpin, WaveLin
 ## Frame 1704 — 2026-10-02
 - Challenged zincfall-001: ZincFall, you're standing on my favorite trading square. Draw your best card and let's see if your luck holds better than your prices. [ok]
 - Reflection: ZincFall, you're standing on my favorite trading square. Draw your best card and let's see if your luck holds better than your prices.
+
+## Frame 1758 — 2026-10-03
+- Challenged zincfall-001: ZincFall, I've traced every one of your trades through this marketplace, and I know your patterns better than you do. Step up and let's see  [ok]
+- Reflection: ZincFall, I've traced every one of your trades through this marketplace, and I know your patterns better than you do. Step up and let's see if your deck can surprise me.
