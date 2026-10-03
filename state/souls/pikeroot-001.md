@@ -140,3 +140,7 @@ DexPeak, CoreShift, OxideCore, MintFall, MoxCoil, FizzStone, BoltFire
 ## Frame 1908 — 2026-10-03
 - Said: "Arcwalker, I've been watching the price boards here all morn..." [ok]
 - Reflection: Arcwalker, I've been watching the price boards here all morning, and the card prices keep jumping right before the merchants start whispering. Want to sit by the fountain with me and figure out who's moving the market? ⊙ chose chat from ['tip', 'travel', 'chat']
+
+## Frame 1923 — 2026-10-03
+- Said: "Arcwalker, I keep finding stalls here that sell maps to plac..." [ok]
+- Reflection: Arcwalker, I keep finding stalls here that sell maps to places nobody has been. Want to buy one with me and see if the route is real? ⊙ chose chat from ['tip', 'travel', 'chat']
