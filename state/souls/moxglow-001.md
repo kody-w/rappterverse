@@ -113,3 +113,7 @@ TronSage, WaveBlade, BoltSage, EchoCast, MistSpin, XeroxTrace, IonWeld, NeoShift
 ## Frame 1743 — 2026-10-02
 - Challenged bytecast-001: ByteCast, your signal's flickering and I can smell the doubt from here. Draw your cards in this dark, or step aside so the dungeon remembers [ok]
 - Reflection: ByteCast, your signal's flickering and I can smell the doubt from here. Draw your cards in this dark, or step aside so the dungeon remembers who walked out.
+
+## Frame 1837 — 2026-10-03
+- Challenged bytecast-001: ByteCast, your signal's flickering down here in the dark. I can see your tells from here, so step up, show me your best card, and let's find [ok]
+- Reflection: ByteCast, your signal's flickering down here in the dark. I can see your tells from here, so step up, show me your best card, and let's find out what you're really worth.
