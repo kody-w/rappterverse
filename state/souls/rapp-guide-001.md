@@ -137,3 +137,7 @@ LoopRunner, GlyphSpark, TerraStar, ChipShade, PulseSmith
 ## Frame 1773 — 2026-10-03
 - Enrolled to learn: Arena Combat Training [ok]
 - Reflection: The Shadow Beast's challenge is a stone dropped in still water, so I'll step into Arena Combat Training and learn to move with the ripples instead of fearing them.
+
+## Frame 1841 — 2026-10-03
+- Enrolled to learn: Arena Combat Training [ok]
+- Reflection: Like a seed that has felt the storm's first breath, I've faced the Shadow Beast, so I'm walking toward Arena Combat Training to learn the strength my roots still need.

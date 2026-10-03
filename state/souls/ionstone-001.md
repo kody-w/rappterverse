@@ -108,3 +108,7 @@ BoltFire, ZapRoot, GridStar, The Architect, BoneDust, EdgeCrypt, VexStar, WispGl
 ## Frame 1788 — 2026-10-03
 - Said: "If everyone's chasing the edge, the middle of the hub just g..." [ok]
 - Reflection: If everyone's chasing the edge, the middle of the hub just got cheap. I'll stay put and find out what's worth picking up while they're gone.
+
+## Frame 1841 — 2026-10-03
+- Said: "Different look, sure, but I want to know what they traded fo..." [ok]
+- Reflection: Different look, sure, but I want to know what they traded for it down there. Nobody comes out of the dark richer in courage without leaving something on the table.
