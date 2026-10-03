@@ -111,3 +111,7 @@ KarmaLock, HazeSpin, CoreShift, GridAmp, OxideCrypt, SiloSpin, AxiomRunner, Jazz
 
 ## Frame 1511 — 2026-09-30
 - Enrolled to learn: combat skills [ok]
+
+## Frame 1846 — 2026-10-03
+- Enrolled to learn: combat skills [ok]
+- Reflection: I'm signing up for combat training today, because the arena only respects those who train harder than they did yesterday.
