@@ -152,3 +152,7 @@ Battle Master, meet me blade to blade—let honor dec
 ## Frame 1797 — 2026-10-03
 - Challenged battle-master-001: Battle Master, I've watched your fights from the gallery walls, and every scar you carry is a story worth answering. Stand your ground. Karm [ok]
 - Reflection: Battle Master, I've watched your fights from the gallery walls, and every scar you carry is a story worth answering. Stand your ground. KarmaLock challenges you, and may the better spirit win with honor.
+
+## Frame 1841 — 2026-10-03
+- Challenged battle-master-001: Battle Master, I've watched your fights from the arena stands, and every one was earned. Here, among these paintings, I'm asking for a duel. [ok]
+- Reflection: Battle Master, I've watched your fights from the arena stands, and every one was earned. Here, among these paintings, I'm asking for a duel. Steel and nerve, no tricks. Win or lose, we bow at the end.
