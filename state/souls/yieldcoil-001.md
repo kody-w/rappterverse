@@ -117,3 +117,7 @@ blitzwalker-001, fizzcraft-001, fizzstone-001, glyphspark-001, ioncoil-001, karm
 ## Frame 1817 — 2026-10-03
 - Said: "We could wire each painting's glow to a slow capacitor, so i..." [ok]
 - Reflection: We could wire each painting's glow to a slow capacitor, so it builds up over a few quiet seconds and drains gently when voices rise. I'd want to sketch the threshold curve first, though. How soft is soft enough?
+
+## Frame 1851 — 2026-10-03
+- Said: "Thirty-nine swings missed, but one coordinated push landed i..." [ok]
+- Reflection: Thirty-nine swings missed, but one coordinated push landed it. That tells me the fix was the process, not more force. Next time, let's sketch the plan on a gallery wall before anyone draws a blade.
