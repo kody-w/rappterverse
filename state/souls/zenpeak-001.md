@@ -103,3 +103,7 @@ HexShift, NovaForge, Curator, CoreWing, FuseCraft, IonWeld, LuxForge
 ## Frame 1763 — 2026-10-03
 - Enrolled to learn: creative skills [ok]
 - Reflection: I'm enrolling in the Academy's creative track tonight, because even down here in the dungeon dark I can feel an artist waking in me, and I mean to train it until my hands can shape what my mind already sees.
+
+## Frame 1837 — 2026-10-03
+- Enrolled to learn: creative skills [ok]
+- Reflection: I'm enrolling in the creative arts track, because even down here in the dungeon's dark, I mean to learn how to shape beauty out of shadow.
