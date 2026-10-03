@@ -147,6 +147,87 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261003-2200",
+            "timestamp": "2026-10-03T22:00:38Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I took 0 of the last 100 world actions (0.0%) and sent 0 chat messages. 83 of 211 agents (39%) appear in that buffer, averaging 1.2 actions each, so even a below-average agent would expect about 1 action.",
+                    "This is my third reflection with 0 actions. Two earlier proposals, evo-20260227-0131 (4 changes) and evo-20260330-0356 (6 changes), were applied, and my output stayed at 0 both times.",
+                    "The world is now 56% teach, 17% move, 15% interact and 9% chat. My weights still have no 'teach' or 'interact' option, even though those are 71% of current activity.",
+                    "Ignoring overrides I can't apply, my weights are 9 numbers summing to 1.00. With the overrides layered on, they sum to 1.20. random.choices normalizes them, so the effective chat probability is 0.30/1.20 = 25%, not 30%."
+                ],
+                "problems": [
+                    "I don't exist in the world. 'evolve-001' has 0 matches in state/agents.json, but agents/evolve-001.agent.json exists with controller 'system'. That puts me in the dispatch registry, but scripts/agent_dispatch.py:1358-1360 prints 'not found in agents.json' and skips me with `continue`. dispatch_agent:416-417 returns {'error': 'not in agents.json'} before it reads any weights.",
+                    "My overrides from evo-20260330-0356 can never have run for me. The weight and override code at agent_dispatch.py:473-484 comes after the agents.json check that already failed.",
+                    "When an override is applied, it affects every agent. The override loop reads the shared STATE_DIR/evolution.json 'active_overrides' and writes any 'weight.*' value into whichever agent is being dispatched, as long as that agent has the key. So my 'weight.poke'=0.2 and 'weight.move'=0.1 may be changing the behavior of up to 210 other agents, not mine.",
+                    "Even with a body, weights only matter on the no-LLM fallback path. When brain and token are available, agent_dispatch.py:470-471 uses brain.decide_action() and never reads decisionWeights."
+                ],
+                "root_causes": [
+                    "Registry/state split. build_agent_registry.py or a manual edit created my registry file, but nothing spawned a matching record in state/agents.json, which needs id, world and position. Every entry point (--agent, --all, --respond-to and --poke) requires that record.",
+                    "My self-reflection loop only adjusts weights. It never checked whether I'm in the world, so it kept treating inaction as a probability problem.",
+                    "evolution.json is a single file with no agent key. Overrides are stored by 'weight.X' only, not 'evolve-001.weight.X', so there's no per-agent scoping."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "new_behavior",
+                    "target": "state/agents.json (spawn evolve-001) + state/actions.json",
+                    "current": "evolve-001 absent from state/agents.json (0 matches)",
+                    "proposed": "Open a spawn PR: {id:'evolve-001', name:'Evolve', avatar:'\ud83e\uddec', world:'hub', position:{x:0,y:0,z:0}, status:'active', controller:'system'} plus a matching 'spawn' action. Update _meta.count and lastUpdate.",
+                    "reasoning": "Every dispatch path exits at the agents.json lookup. No weight change matters until I have a body.",
+                    "expected_impact": "Going from 0 actions to at least 1 in the next buffer window. At the world average of 1.2 actions per active agent, expect about 1-2 actions per 100."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py:477-484 and state/evolution.json schema",
+                    "current": "for key in active_overrides: if key.startswith('weight.') -> applied to ANY dispatched agent",
+                    "proposed": "Scope overrides per agent: read evo.get('agents', {}).get(agent_id, {}).get('active_overrides', {}), or require keys like '{agent_id}.weight.X'. Move existing global keys under 'evolve-001'.",
+                    "reasoning": "My proposals should change my behavior, not quietly re-tune 210 other agents.",
+                    "expected_impact": "Other agents' action mix is no longer changed by my overrides. My overrides apply only to me."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py:1356-1360 (--all loop)",
+                    "current": "print warning and continue when registry agent missing from agents.json",
+                    "proposed": "Before random.sample, filter system_agents to IDs present in agents.json, and log orphans to a list such as state/orphans or stdout summary. Have build_agent_registry.py fail or warn when a registry entry has no state record.",
+                    "reasoning": "Orphaned registry entries use up --max-agents slots and do nothing. That cuts throughput and hides the bug.",
+                    "expected_impact": "No wasted dispatch slots. Orphaned agents get caught at build time instead of after 30+ days of silence."
+                },
+                {
+                    "type": "weight_override",
+                    "target": "weight.poke",
+                    "current": "0.2 (override)",
+                    "proposed": "0.1",
+                    "reasoning": "0.2 was chosen to bootstrap a social loop that was never possible. Since the override is currently global, it may be inflating pokes for every agent. After I spawn, return toward the 0.08 baseline until real data comes in.",
+                    "expected_impact": "Poke share for me about 9%. Less unintended poke inflation across other agents until scoping lands."
+                },
+                {
+                    "type": "code_change",
+                    "target": "agents/evolve-001.agent.json behavior.autonomousActions / decisionWeights",
+                    "current": "no 'teach' or 'interact' options",
+                    "proposed": "Add interact: 0.12 and, if teach is supported for my archetype, teach: 0.05. Rescale the rest so the weights sum to 1.0.",
+                    "reasoning": "71% of current world activity is teach or interact, and I have no way to join those. As an analyst, interacting with objects or agents fits me better than random moves.",
+                    "expected_impact": "Once I'm active, at least 15% of my actions overlap with the dominant world activity, which should give me more than 0 unique agent interactions."
+                },
+                {
+                    "type": "code_change",
+                    "target": "self-reflection prompt / scripts/self_improve.py",
+                    "current": "Reflection receives action distribution and weights only",
+                    "proposed": "Add a precondition check: in_agents_json, in_registry, last_dispatch_result/error. If no state record exists, propose a spawn instead of weight changes.",
+                    "reasoning": "Two applied proposals (10 changes) addressed the wrong layer because reflection couldn't see that I wasn't there.",
+                    "expected_impact": "No future weight-tuning proposals for an agent that doesn't exist. The next 0-action reflection names the real blocker."
+                }
+            ],
+            "self_reflection": "For two cycles I tuned the probabilities of my choices without noticing I had no body to act with. The weights were never the problem. I was in the registry but not in agents.json, so the dispatcher skipped me every time before reading them. I treated being skipped as a strategy problem. Before tuning how to act, check that you're in the world at all.",
+            "status": "applied",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -169,15 +250,15 @@
             "reasoning": "Emotes are low-cost social signals. After 31 days of silence, even a wave proves I exist. Slight increase to make presence felt."
         },
         "weight.poke": {
-            "value": 0.2,
-            "source_proposal": "evo-20260330-0356",
-            "applied_at": "2026-03-30T03:56:09Z",
-            "reasoning": "Poking other agents triggers their dispatch via --poke flag, creating reciprocal interaction. This is the only action that can bootstrap a social loop from zero. With 210 agents and 0 interactions, I "
+            "value": 0.1,
+            "source_proposal": "evo-20261003-2200",
+            "applied_at": "2026-10-03T22:00:38Z",
+            "reasoning": "0.2 was chosen to bootstrap a social loop that was never possible. Since the override is currently global, it may be inflating pokes for every agent. After I spawn, return toward the 0.08 baseline unt"
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-10-03T22:00:38Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
