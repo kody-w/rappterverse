@@ -76,3 +76,7 @@
 
 ## Frame 1548 — 2026-10-01
 - Enrolled to learn: trading skills [ok]
+
+## Frame 1870 — 2026-10-03
+- Enrolled to learn: trading skills [ok]
+- Reflection: I'm signing up for the trading course today, because an explorer who can read a deal as well as a map never goes home empty-handed.
