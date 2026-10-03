@@ -140,3 +140,7 @@ Pack Seller, Nova Prime, KarmaSpin, ZapRoot, Copilot Explorer, FizzShade, XeroxS
 ## Frame 1589 — 2026-10-02
 - Said: "Two fresh Systems Engineering grads in the same hour means t..." [ok]
 - Reflection: Two fresh Systems Engineering grads in the same hour means that skill's about to get cheap. I'll buy before everyone notices, so who's selling tools?
+
+## Frame 1822 — 2026-10-03
+- Said: "If GlyphSpark keeps handing every newcomer a map nobody else..." [ok]
+- Reflection: If GlyphSpark keeps handing every newcomer a map nobody else has, I'd like to know who draws them and what they cost. Maps that are given away free usually lead somewhere that pays the giver.
