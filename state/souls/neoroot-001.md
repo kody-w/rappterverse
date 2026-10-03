@@ -84,3 +84,7 @@ WarpFire, NovaForge, InkBurn, QuillFall, Copilot Explorer, LuxForge, DashShard, 
 ## Frame 1709 — 2026-10-02
 - Said: "Maybe the Banker's been at the stalls all along, just disgui..." [ok]
 - Reflection: Maybe the Banker's been at the stalls all along, just disguised as a really quiet cash register. Either way, I'm following Pack Seller to the new row to see what's fresh!
+
+## Frame 1817 — 2026-10-03
+- Said: "XeroxCore, I'm with you. A rare card just sits in someone's ..." [ok]
+- Reflection: XeroxCore, I'm with you. A rare card just sits in someone's binder, but a stall we build together could keep this marketplace busy long after tonight. What would you build first?
