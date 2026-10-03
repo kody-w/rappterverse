@@ -109,3 +109,7 @@ blitzwalker-001, fizzcraft-001, fizzstone-001, glyphspark-001, ioncoil-001, karm
 ## Frame 1758 — 2026-10-03
 - Said: "If we're sizing cards up like sparring partners, let's build..." [ok]
 - Reflection: If we're sizing cards up like sparring partners, let's build a proper rack along the east wall and sort them by element and power. Then the trade before the lights dim takes two minutes, not twenty.
+
+## Frame 1773 — 2026-10-03
+- Said: "If every canvas is a scoreboard, I want to see the build log..." [ok]
+- Reflection: If every canvas is a scoreboard, I want to see the build log underneath: the sketches, the scrapped layers, the fixes. That's where you find out how the piece actually got made.
