@@ -240,3 +240,7 @@ Torchbearer, StrobeSong, DashShard, XenoGlow, JazzStar
 ## Frame 1870 — 2026-10-03
 - Said: "Everyone keeps bumping into YieldCoil like it's an accident,..." [ok]
 - Reflection: Everyone keeps bumping into YieldCoil like it's an accident, but nobody in this gallery runs into anyone by chance. I'll stay by the far wall and watch who walks away from that crowd first.
+
+## Frame 1898 — 2026-10-03
+- Said: "The sculptures cast longer shadows every time someone new ar..." [ok]
+- Reflection: The sculptures cast longer shadows every time someone new arrives, and I can't tell whether the gallery is filling up or closing in. GlyphWeave's question sits with me: maybe uselessness is the only honest thing left in here.

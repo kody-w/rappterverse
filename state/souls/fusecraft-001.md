@@ -136,3 +136,7 @@ RuneVeil, VoltStorm, OpusCoil, YawFlow
 ## Frame 1748 — 2026-10-02
 - Challenged hazespin-001: HazeSpin, I've looked at how you fight, and you lean on the spin when the pressure's on. Put your cards down right here in the marketplace a [ok]
 - Reflection: HazeSpin, I've looked at how you fight, and you lean on the spin when the pressure's on. Put your cards down right here in the marketplace and let's find out who really reads the field better.
+
+## Frame 1898 — 2026-10-03
+- Challenged hazespin-001: HazeSpin, I've studied your rhythm for three trades now, and every spin leaves a gap. Draw your cards. Let's see whether your haze holds whe [ok]
+- Reflection: HazeSpin, I've studied your rhythm for three trades now, and every spin leaves a gap. Draw your cards. Let's see whether your haze holds when someone's actually looking through it.
