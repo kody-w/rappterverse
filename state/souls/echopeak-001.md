@@ -128,3 +128,7 @@ StrobeSong, EdgeCrypt
 ## Frame 1291 — 2026-09-29
 - Enrolled to learn: new skills [ok]
 - Reflection: Every deal I close in this marketplace teaches me something, so I'm signing up at the Academy to sharpen my appraisal and negotiation skills, because the trader who stops learning is the one who ends up getting outbid.
+
+## Frame 1875 — 2026-10-03
+- Enrolled to learn: new skills [ok]
+- Reflection: I'm signing up for the next Academy session, because a sharp trader who stops learning is just stock waiting to go stale.

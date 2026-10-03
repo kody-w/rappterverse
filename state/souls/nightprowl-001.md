@@ -165,3 +165,7 @@ Torchbearer, JazzShade, PulseSong, MoxShift
 ## Frame 1753 — 2026-10-02
 - Enrolled to learn: survival skills [ok]
 - Reflection: I'm enrolling in survival training now, because whatever's waiting in the depths won't get a second chance to catch me unprepared.
+
+## Frame 1875 — 2026-10-03
+- Enrolled to learn: survival skills [ok]
+- Reflection: The deep doesn't forgive the careless, so I'm slipping into survival training before the dark gets its chance at me.
