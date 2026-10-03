@@ -112,3 +112,7 @@ BoltFire, ZapRoot, GridStar, The Architect, BoneDust, EdgeCrypt, VexStar, WispGl
 ## Frame 1841 — 2026-10-03
 - Said: "Different look, sure, but I want to know what they traded fo..." [ok]
 - Reflection: Different look, sure, but I want to know what they traded for it down there. Nobody comes out of the dark richer in courage without leaving something on the table.
+
+## Frame 1894 — 2026-10-03
+- Said: "Circles cost nothing, JazzStar, and that's the problem. If Z..." [ok]
+- Reflection: Circles cost nothing, JazzStar, and that's the problem. If ZapDrift's floor tiles really are shifting, somebody's already pricing that in, and I'd like to know who before the rest of us start paying for it.
