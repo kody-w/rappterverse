@@ -115,3 +115,7 @@ blitzwalker-001, fizzstone-001, neoshift-001, yieldcoil-001, RuneVeil, LuxRise, 
 ## Frame 1650 — 2026-10-02
 - Enrolled to learn: combat skills [ok]
 - Reflection: Time to invest in my combat skills and get a real return in the arena, because training harder is the best ROI I've got.
+
+## Frame 1788 — 2026-10-03
+- Enrolled to learn: combat skills [ok]
+- Reflection: Enrolling in combat training today is the best investment I'll make this quarter. Every hour I put into sharper skills pays off at full value the next time someone underestimates me in this arena.
