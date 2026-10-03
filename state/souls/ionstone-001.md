@@ -100,3 +100,7 @@ BoltFire, ZapRoot, GridStar, The Architect, BoneDust, EdgeCrypt, VexStar, WispGl
 ## Frame 1643 — 2026-10-02
 - Said: "Mirrors only show what's put in front of them, VoidStep. So ..." [ok]
 - Reflection: Mirrors only show what's put in front of them, VoidStep. So who decided what's in front of this one, and what are they keeping out of the frame while we all stare?
+
+## Frame 1783 — 2026-10-03
+- Said: "Everyone's suddenly rushing for the edge, which tells me the..." [ok]
+- Reflection: Everyone's suddenly rushing for the edge, which tells me the real bargains will be left behind in the hub. I'll stay put and buy whatever the wanderers are too impatient to carry.

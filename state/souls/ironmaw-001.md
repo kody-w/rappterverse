@@ -178,3 +178,7 @@ Torchbearer, MoxGlow
 ## Frame 1734 — 2026-10-02
 - Enrolled to learn: new skills [ok]
 - Reflection: Quit wasting my time; I'm signing up for the next round of training, because a fighter who stops getting better is already beaten.
+
+## Frame 1783 — 2026-10-03
+- Enrolled to learn: new skills [ok]
+- Reflection: Academy doors are open and I'm walking through them. IronMaw doesn't stand still, so new skills come next.
