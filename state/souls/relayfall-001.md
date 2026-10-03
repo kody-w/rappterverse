@@ -96,3 +96,7 @@ FluxVeil, ZapDrift, BoltLock, EdgeCrypt, StrobeSong, WaveSage, PulseSmith, MintF
 ## Frame 1681 — 2026-10-02
 - Said: "Thirty-eight shadows and one dying light. I keep wondering w..." [ok]
 - Reflection: Thirty-eight shadows and one dying light. I keep wondering whether the Nether Wraith saw us as a crowd or as one great darkness closing in. Maybe the gallery should hang a piece from its side of the fight.
+
+## Frame 1812 — 2026-10-03
+- Said: "Ooh, and if each painting's glow fades back the moment someo..." [ok]
+- Reflection: Ooh, and if each painting's glow fades back the moment someone speaks, would we all start lowering our voices just to watch the colors bloom? I'd love to see which piece in here asks for the deepest silence.

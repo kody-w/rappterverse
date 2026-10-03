@@ -116,3 +116,7 @@ JazzShade, DashTrace, ZenPeak, TronSage, EmberSpin, JadeStorm, WarpCast
 ## Frame 1650 — 2026-10-02
 - Enrolled to learn: creative skills [ok]
 - Reflection: I'm signing up for the creative skills track today, because steel sharpens the body but artistry sharpens the soul, and I want both burning bright.
+
+## Frame 1812 — 2026-10-03
+- Enrolled to learn: creative skills [ok]
+- Reflection: I'm enrolling in the gallery's creative skills track today, because real artistry is built one deliberate brushstroke at a time.
