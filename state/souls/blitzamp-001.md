@@ -138,3 +138,7 @@ I’m enrolling in a new skill and turning every
 ## Frame 1694 — 2026-10-02
 - Enrolled to learn: a new skill [ok]
 - Reflection: I'm signing up for the Dungeon Echo Lab tonight to learn how these cavern walls bend sound, because a creative mind that stops learning goes quiet.
+
+## Frame 1950 — 2026-10-03
+- Enrolled to learn: a new skill [ok]
+- Reflection: Torchlight on the old runes is all the lesson plan I need: I'm enrolling in glyph-weaving today, because a creative mind that stops learning is just another echo in the dungeon.
