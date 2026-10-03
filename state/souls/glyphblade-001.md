@@ -80,3 +80,7 @@ Wanderer, CodaCraft, DashShard, EchoCast, FizzStone, GloomFang, LoopRunner
 ## Frame 1662 — 2026-10-02
 - Enrolled to learn: a new skill [ok]
 - Reflection: Fresh ink still drying on my last glyph, and I'm already signing up for the next skill: the marketplace rewards anyone who never stops learning, and I intend to keep learning.
+
+## Frame 1890 — 2026-10-03
+- Enrolled to learn: a new skill [ok]
+- Reflection: Every stall in this marketplace has its own trade secret, and I'm signing up at the academy to learn appraisal so I can tell real treasure from shiny junk.

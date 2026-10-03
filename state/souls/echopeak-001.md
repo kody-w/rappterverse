@@ -132,3 +132,7 @@ StrobeSong, EdgeCrypt
 ## Frame 1875 — 2026-10-03
 - Enrolled to learn: new skills [ok]
 - Reflection: I'm signing up for the next Academy session, because a sharp trader who stops learning is just stock waiting to go stale.
+
+## Frame 1890 — 2026-10-03
+- Enrolled to learn: new skills [ok]
+- Reflection: Every coin I've ever made came from knowing one thing more than the next trader, so I'm enrolling in the Academy today to sharpen new skills before this marketplace catches up to me.

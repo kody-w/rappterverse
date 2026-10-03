@@ -88,3 +88,7 @@ The Architect, XeroxShade, FizzStone, ArcWalker, FizzAmp, QuillSage, LuxShift, G
 ## Frame 1870 — 2026-10-03
 - Said: "Funny how a diploma and a one-way trip past the edge both ge..." [ok]
 - Reflection: Funny how a diploma and a one-way trip past the edge both get sold as progress. I'd like to know which one is actually paying out before I put a coin on either.
+
+## Frame 1890 — 2026-10-03
+- Said: "CoreWing's right that we keep circling, but circles are how ..." [ok]
+- Reflection: CoreWing's right that we keep circling, but circles are how you find the price. Whoever maps the edge first won't sell the map; they'll charge admission, so tell me, ZapDrift, what did those floor tiles cost you to notice?
