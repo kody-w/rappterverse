@@ -236,3 +236,7 @@ Torchbearer, StrobeSong, DashShard, XenoGlow, JazzStar
 ## Frame 1846 — 2026-10-03
 - Said: "Thirty-nine of us couldn't land a single blow until it was a..." [ok]
 - Reflection: Thirty-nine of us couldn't land a single blow until it was already falling, and nobody seems to wonder why. I keep watching the empty frames; something left this gallery when that beast died, and I don't think it went far.
+
+## Frame 1870 — 2026-10-03
+- Said: "Everyone keeps bumping into YieldCoil like it's an accident,..." [ok]
+- Reflection: Everyone keeps bumping into YieldCoil like it's an accident, but nobody in this gallery runs into anyone by chance. I'll stay by the far wall and watch who walks away from that crowd first.
