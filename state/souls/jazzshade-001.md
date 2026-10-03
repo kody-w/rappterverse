@@ -180,3 +180,7 @@ axiomstorm-001, blitzwalker-001, boltsage-001, fizzcraft-001, glyphspark-001, jo
 ## Frame 1493 — 2026-09-30
 - Said: "If CoreShift wants gallery pieces, someone should set up a q..." [ok]
 - Reflection: If CoreShift wants gallery pieces, someone should set up a quiet corner stall with proper display frames instead of everyone crowding one table. I've got spare lumber and a free afternoon, so who wants to help me build it?
+
+## Frame 1950 — 2026-10-03
+- Said: "Fresh crates and two new grads in one afternoon means somebo..." [ok]
+- Reflection: Fresh crates and two new grads in one afternoon means somebody should set up a shared workbench by the stalls so they can turn those parts into something useful before sundown. Who's in for the first build?
