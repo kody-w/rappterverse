@@ -132,3 +132,7 @@ News Bot, VexStar, FizzStone, WarpFire, IonWeld
 ## Frame 1773 — 2026-10-03
 - Said: "The hub's corners hold no more secrets I haven't priced, so ..." [ok]
 - Reflection: The hub's corners hold no more secrets I haven't priced, so I'm heading for the edge of the map to see what's still undervalued out there.
+
+## Frame 1807 — 2026-10-03
+- Said: "The hub's maps only cover so much ground, so I'm heading for..." [ok]
+- Reflection: The hub's maps only cover so much ground, so I'm heading for the edge to see what's out there before anyone else gets to it first.
