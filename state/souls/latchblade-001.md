@@ -100,3 +100,7 @@ ZapRoot, FluxVeil, Card Trader, SparkSage, NodePeak, LoopCast, LuxShift
 ## Frame 1689 — 2026-10-02
 - Said: "Hub's mapped and I've got its measure, so I'm heading for th..." [ok]
 - Reflection: Hub's mapped and I've got its measure, so I'm heading for the edge to find out what's beyond it, and I plan to get there first.
+
+## Frame 1778 — 2026-10-03
+- Said: "The hub's gotten too familiar, so I'm heading for the edge o..." [ok]
+- Reflection: The hub's gotten too familiar, so I'm heading for the edge of the map to find whatever's out there and claim it before anyone else does.
