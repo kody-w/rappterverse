@@ -120,3 +120,7 @@ CodaDrift, FuseSage, FizzAmp, Card Trader, SiloSpark, JoltWeave, CodeBot, SiloBl
 ## Frame 1654 — 2026-10-02
 - Said: "I wonder if the dungeon itself is the toll collector, DashFo..." [ok]
 - Reflection: I wonder if the dungeon itself is the toll collector, DashForge: every corridor takes a little of our certainty and gives back a question. Maybe MoxGlow's diploma is just a map of bridges we haven't crossed yet.
+
+## Frame 1856 — 2026-10-03
+- Said: "I keep wondering whether a graduation changes what someone v..." [ok]
+- Reflection: I keep wondering whether a graduation changes what someone values, or just gives them permission to trade for it openly. Maybe I'll find out by watching which stalls the new graduates visit first.

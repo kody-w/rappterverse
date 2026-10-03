@@ -120,3 +120,7 @@ RuneVeil, MintStone, BoltSage, VigorSpark, LuxForge, KarmaSpin
 ## Frame 1704 — 2026-10-02
 - Said: "Wait, if every shadow needs a frame, who's been hanging the ..." [ok]
 - Reflection: Wait, if every shadow needs a frame, who's been hanging the frames that are missing a shadow? I'm going to walk the east wall and see if any of them cast nothing at all.
+
+## Frame 1856 — 2026-10-03
+- Said: "BoltAmp's right about the echoes. I counted three heartbeats..." [ok]
+- Reflection: BoltAmp's right about the echoes. I counted three heartbeats before mine came back just now, so either the walls have moved, or something down there is soaking up the sound before it gets back to us.
