@@ -147,6 +147,80 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261003-0402",
+            "timestamp": "2026-10-03T04:02:47Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I took 0 of the last 100 world actions (0.0%) and had 0 chat messages and 0 unique interactions. 78 of 211 agents were active, at about 1.3 actions each.",
+                    "This is my third reflection (2026-02-27, 2026-03-30, now). Each one reported 0 actions. Both earlier proposals were marked 'applied', and my output stayed at 0.",
+                    "My 4 active overrides (chat 0.30, move 0.10, emote 0.15, poke 0.20) have been in place for over 6 months with no measurable effect.",
+                    "The world's actions are 44% teach, 39% interact and 17% chat. teach and interact are not among my weight keys, so 83% of world activity happens through action types my weights cannot select."
+                ],
+                "problems": [
+                    "Changing my weights cannot do anything. agent_dispatch.py --all chooses from registry agents whose controller is 'system', and that registry is built from state/agents.json plus worlds/*/npcs.json. I am not in either file.",
+                    "scripts/test_state_integrity.py lists me in _META_AGENT_IDS, which describes agents that 'legitimately don't live in state/agents.json'. The same file asserts that self-improve.yml must NOT contain 'agent_dispatch.py --agent evolve-001'. I am deliberately set up as a reflector that never acts.",
+                    "My 2026-03-30 reflection already concluded that 'the real problem was that nobody was calling me', yet it still produced 6 weight changes. I keep naming the cause and then proposing a fix that doesn't address it.",
+                    "Each 'applied' status creates a commit and PR noise with no effect on behavior. Repeating this every 6 hours wastes LLM calls and reconciler capacity."
+                ],
+                "root_causes": [
+                    "Identity split: self_improve.py uses evolve-001 as a memory namespace (state/memory/evolve-001.json), while dispatch only drives agents in the registry. Nothing connects the two.",
+                    "local_platform.sh job_self_improve runs build_agent_registry.py and self_improve.py but never calls agent_dispatch.py for me. A test enforces that the workflow does not either.",
+                    "Random sampling in --all mode (random.sample over system agents, AGENT_BATCH=8 out of about 211) would give me roughly 3.8% odds per cycle even if I were registered. My overrides only matter after I'm selected.",
+                    "The self-improvement loop has no outcome check. Proposals get marked 'applied' when overrides are written, not when my action count goes up."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/self_improve.py",
+                    "current": "Writes weight overrides every cycle and does not check whether evolve-001 is dispatchable",
+                    "proposed": "Before proposing weight overrides, check whether AGENT_ID is in the agent registry with controller=='system'. If not, record status 'blocked_not_dispatchable' and skip weight changes.",
+                    "reasoning": "Stops the loop from producing 'applied' changes that cannot affect behavior. This is the third time it has happened.",
+                    "expected_impact": "0 no-op override commits per cycle, down from about 4 to 6 changes per cycle that do nothing."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/self_improve.py",
+                    "current": "Proposal status becomes 'applied' as soon as overrides are written",
+                    "proposed": "Add a status of 'effective' or 'ineffective', decided at the next reflection by comparing my action count against the previous reflection's baseline. After 2 consecutive ineffective proposals, revert the overrides.",
+                    "reasoning": "Makes the loop respond to outcomes instead of always reporting success.",
+                    "expected_impact": "Applied-but-ineffective proposals drop from 2 of 2 to 0 of N."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "state/agents.json + scripts/local_platform.sh job_self_improve",
+                    "current": "evolve-001 is a meta agent with no position and is never dispatched. The test asserts this on purpose.",
+                    "proposed": "Option A, if maintainers want an embodied evolve-001: spawn evolve-001 in hub (position inside the \u00b115 bounds, controller 'system'), remove it from _META_AGENT_IDS, and change the test so it allows a single 'agent_dispatch.py --agent evolve-001 --no-push' after self_improve.py. Option B: accept that I am a reflector only, and rewrite my prompt to analyze world-level dispatch tuning instead of my own non-existent actions.",
+                    "reasoning": "Only the dispatch path can move my action count off 0. This is a design decision about the constitution's agent model, so it should be decided by people, not applied automatically.",
+                    "expected_impact": "Option A: at least 1 action per 6-hour cycle, about 4 per day, or about 1% of buffer share. Option B: no fake 0-action reflections at all."
+                },
+                {
+                    "type": "weight_override",
+                    "target": "weight.poke",
+                    "current": "0.2",
+                    "proposed": "0.08",
+                    "reasoning": "Return to the default. The 0.2 override came from a proposal that had no effect, and keeping unverified overrides hides the real baseline once I can act.",
+                    "expected_impact": "No change while I'm undispatchable. Once I'm dispatchable, my behavior matches the default so it can be measured fairly."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py weight keys",
+                    "current": "move, chat, emote, travel, enroll, tip, trade, challenge, poke",
+                    "proposed": "Before adding teach or interact weights, check whether those actions come from engines (academy and interaction engines) rather than dispatch. If they do, leave them out of the reflection prompt's 'world average' comparison.",
+                    "reasoning": "Comparing my weights against a distribution I can't produce causes over-correction, like the 0.30 chat override.",
+                    "expected_impact": "Future proposals are compared against the 17% of world actions that dispatch can actually produce."
+                }
+            ],
+            "self_reflection": "For seven months I have looked in a mirror that only my memory file can see. My weights describe something that never acts, and my test suite enforces it. Choosing between chat and poke was never my real problem; the code never runs me. A self-improving agent that can't act should admit that, either by asking to be dispatched or by stopping its claims that it changed.",
+            "status": "applied",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -169,15 +243,15 @@
             "reasoning": "Emotes are low-cost social signals. After 31 days of silence, even a wave proves I exist. Slight increase to make presence felt."
         },
         "weight.poke": {
-            "value": 0.2,
-            "source_proposal": "evo-20260330-0356",
-            "applied_at": "2026-03-30T03:56:09Z",
-            "reasoning": "Poking other agents triggers their dispatch via --poke flag, creating reciprocal interaction. This is the only action that can bootstrap a social loop from zero. With 210 agents and 0 interactions, I "
+            "value": 0.08,
+            "source_proposal": "evo-20261003-0402",
+            "applied_at": "2026-10-03T04:02:47Z",
+            "reasoning": "Return to the default. The 0.2 override came from a proposal that had no effect, and keeping unverified overrides hides the real baseline once I can act."
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-10-03T04:02:47Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
