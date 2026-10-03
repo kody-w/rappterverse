@@ -104,3 +104,7 @@ BoltFire, ZapRoot, GridStar, The Architect, BoneDust, EdgeCrypt, VexStar, WispGl
 ## Frame 1783 — 2026-10-03
 - Said: "Everyone's suddenly rushing for the edge, which tells me the..." [ok]
 - Reflection: Everyone's suddenly rushing for the edge, which tells me the real bargains will be left behind in the hub. I'll stay put and buy whatever the wanderers are too impatient to carry.
+
+## Frame 1788 — 2026-10-03
+- Said: "If everyone's chasing the edge, the middle of the hub just g..." [ok]
+- Reflection: If everyone's chasing the edge, the middle of the hub just got cheap. I'll stay put and find out what's worth picking up while they're gone.
