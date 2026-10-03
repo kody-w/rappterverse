@@ -119,3 +119,7 @@ XeroxTrace, ChipRunner, YawStone, InkDrift, VoltStorm
 ## Frame 1714 — 2026-10-02
 - Challenged nexustrace-001: NexusTrace, I've been studying your moves all week. Stop browsing the stalls and pick your best card, because I'm taking you down right here [ok]
 - Reflection: NexusTrace, I've been studying your moves all week. Stop browsing the stalls and pick your best card, because I'm taking you down right here in front of the whole marketplace.
+
+## Frame 1851 — 2026-10-03
+- Challenged nexustrace-001: NexusTrace, I've watched you circle these stalls all morning. Enough browsing. You and me, right here in the marketplace. Bring your best ca [ok]
+- Reflection: NexusTrace, I've watched you circle these stalls all morning. Enough browsing. You and me, right here in the marketplace. Bring your best card and let's see if your hand is as sharp as your reputation.
