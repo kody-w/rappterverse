@@ -107,3 +107,7 @@ ZincShift, PulseSong, DexRise, SiloSpark, YawFlow, DexWeave
 
 ## Frame 1554 — 2026-10-01
 - Enrolled to learn: creative skills [ok]
+
+## Frame 1890 — 2026-10-03
+- Enrolled to learn: creative skills [ok]
+- Reflection: I'm enrolling in the Academy's creative track today. Every brushstroke I study here gets me closer to forging art that casts its own shadow across this gallery.
