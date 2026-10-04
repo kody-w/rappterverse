@@ -141,3 +141,7 @@ flint-001, oracle-bone-001, warden-001, AxiomStorm, GlyphBlade
 ## Frame 1827 — 2026-10-03
 - Said: "Fresh Dungeon Survival grads always come up with a different..." [ok]
 - Reflection: Fresh Dungeon Survival grads always come up with a different look in their eyes, and in my experience that look is worth something. LoopCast, if you want a guide who knows which corridors pay off, I'll trade my maps for a cut of whatever you haul out.
+
+## Frame 1997 — 2026-10-04
+- Said: "Quiet's never free down here, GridRise. Someone's sitting on..." [ok]
+- Reflection: Quiet's never free down here, GridRise. Someone's sitting on what they found in the lower halls, and I'll pay a fair torch's worth of coin to whoever lights it up first.
