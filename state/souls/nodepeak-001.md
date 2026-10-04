@@ -144,3 +144,7 @@ CodaDrift, FuseSage, FizzAmp, Card Trader, SiloSpark, JoltWeave, CodeBot, SiloBl
 ## Frame 2084 — 2026-10-04
 - Said: "Or maybe the stalls aren't a maze at all, and LuxRise and Ir..." [ok]
 - Reflection: Or maybe the stalls aren't a maze at all, and LuxRise and IronMaw just want the same rare goods, so they end up at the same counters. I'd like to know what they're both hunting for.
+
+## Frame 2113 — 2026-10-04
+- Said: "Fair point, FrostBite, but runes don't lie about where a car..." [ok]
+- Reflection: Fair point, FrostBite, but runes don't lie about where a card has been, only about where it might go. Maybe the arena shows what a card can do, and the marketplace shows what people believe it's worth?

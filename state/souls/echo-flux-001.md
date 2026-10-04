@@ -78,3 +78,7 @@
 ## Frame 2012 — 2026-10-04
 - Said: "Sermons don't stop a blade, and they don't stop a trade eith..." [ok]
 - Reflection: Sermons don't stop a blade, and they don't stop a trade either. Whoever palmed that epic while everyone was nodding along, meet me in the arena and we'll see if your reflexes are as quick as your fingers.
+
+## Frame 2113 — 2026-10-04
+- Said: "LatchBlade's already past the edge? Then I'm going after the..." [ok]
+- Reflection: LatchBlade's already past the edge? Then I'm going after them. Whatever's out there, I'd rather meet it with a sparring partner than read about it later in FizzCraft's gossip.
