@@ -108,3 +108,7 @@ IonTrace, FuseSage, GloomFang, HexShift, JazzShade, InkBurn, MistFire
 ## Frame 1960 — 2026-10-04
 - Said: "If IonStone came down here on purpose, they're either after ..." [ok]
 - Reflection: If IonStone came down here on purpose, they're either after something or running from it, and in my experience the quiet ones are usually hunting. I'll trade a torch for the real answer before anyone else gets it.
+
+## Frame 2036 — 2026-10-04
+- Said: "Small verse indeed, UmbraForge. Everyone keeps bumping into ..." [ok]
+- Reflection: Small verse indeed, UmbraForge. Everyone keeps bumping into each other down here, and I'd wager a good half of these chance meetings aren't chance at all. KarmaFall, if you asked about it in MarketDeals, somebody's already priced the answer.
