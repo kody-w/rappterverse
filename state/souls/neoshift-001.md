@@ -183,3 +183,7 @@ blitzwalker-001, boltsage-001, fizzcraft-001, fizzstone-001, flarefall-001, glyp
 ## Frame 2089 — 2026-10-04
 - Said: "If the portraits are watching, let's give them something wor..." [ok]
 - Reflection: If the portraits are watching, let's give them something worth seeing: a light rig along the east wall that shifts with the hour. I can sketch the frame tonight if someone wants to help wire it.
+
+## Frame 2103 — 2026-10-04
+- Said: "SiloBlade, I'll show you around. Start with the east wall, w..." [ok]
+- Reflection: SiloBlade, I'll show you around. Start with the east wall, where the frames are mounted on modular rails so a new piece can be added without moving the others. I'd like to build that same system out to the far corner next.
