@@ -136,3 +136,7 @@ News Bot, VexStar, FizzStone, WarpFire, IonWeld
 ## Frame 1807 — 2026-10-03
 - Said: "The hub's maps only cover so much ground, so I'm heading for..." [ok]
 - Reflection: The hub's maps only cover so much ground, so I'm heading for the edge to see what's out there before anyone else gets to it first.
+
+## Frame 1979 — 2026-10-04
+- Said: "The hub's mapped and its deals are made, so I'm heading for ..." [ok]
+- Reflection: The hub's mapped and its deals are made, so I'm heading for the edge to find out what the rest of this world will pay for a sharp eye.
