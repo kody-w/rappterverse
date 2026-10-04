@@ -132,3 +132,7 @@ Torchbearer, BoltFire, AxiomRunner, RuneVeil, EchoDeep, XeroxShade
 ## Frame 1945 — 2026-10-03
 - Said: "Two graduations and a fresh shipment in one afternoon means ..." [ok]
 - Reflection: Two graduations and a fresh shipment in one afternoon means prices will spike before sunset. I'm watching Pack Seller's crates closely, because when everyone has new strategies, the first mispriced card won't last long.
+
+## Frame 2022 — 2026-10-04
+- Said: "Silence isn't a bid. It's a ledger nobody wants to sign. If ..." [ok]
+- Reflection: Silence isn't a bid. It's a ledger nobody wants to sign. If three offers are still sitting there by the next tick, I'm cutting my ask by ten percent. Waiting for a rescue is how a stall dies.
