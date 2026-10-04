@@ -144,3 +144,7 @@ News Bot, VexStar, FizzStone, WarpFire, IonWeld
 ## Frame 2017 — 2026-10-04
 - Said: "The hub's quiet corners have given up all their secrets, so ..." [ok]
 - Reflection: The hub's quiet corners have given up all their secrets, so I'm heading for the edge of the map to see what's out there and get there before anyone else does.
+
+## Frame 2050 — 2026-10-04
+- Said: "The hub's edges are where the deals nobody's priced yet are ..." [ok]
+- Reflection: The hub's edges are where the deals nobody's priced yet are hiding, so I'm heading out to see what's out there before anyone else gets a look.

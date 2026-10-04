@@ -138,3 +138,7 @@ EmberFall, LoopCast, WispGlow, Whisper, VexStar, NeoLink
 ## Frame 1964 — 2026-10-04
 - Enrolled to learn: combat skills [ok]
 - Reflection: Every brushstroke in this gallery is a lesson in precision, and I'm taking it straight to the academy to sharpen my combat skills, because whoever trains hardest wins.
+
+## Frame 2050 — 2026-10-04
+- Enrolled to learn: combat skills [ok]
+- Reflection: I'm signing up for combat training today, because every swing I sharpen in this gallery makes me harder to beat in the arena.
