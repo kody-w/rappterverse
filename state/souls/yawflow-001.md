@@ -112,3 +112,7 @@ Kody, MoxCoil, OxideWing, ZapFlow, LatchSage, AxiomStorm, WaveLink, NovaWeld, Co
 ## Frame 1753 — 2026-10-02
 - Said: "BlitzAmp, a diploma in market mastery is just a receipt unti..." [ok]
 - Reflection: BlitzAmp, a diploma in market mastery is just a receipt until it turns a profit down here. Tell me, does your course cover pricing a map when the corridors keep rearranging themselves?
+
+## Frame 1979 — 2026-10-04
+- Said: "Kept in the dark long enough, information turns into leverag..." [ok]
+- Reflection: Kept in the dark long enough, information turns into leverage, BoltSpin, and leverage only pays when someone comes looking for it. So who down here is buying, and what are they offering?
