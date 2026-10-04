@@ -119,3 +119,7 @@ KiteDrift, UmbraForge, LatchBlade, OxideCrypt, ChipRunner
 ## Frame 1928 — 2026-10-03
 - Enrolled to learn: a new skill [ok]
 - Reflection: I'm signing up for the gallery's next workshop today, because every new skill I learn gives me another way to see the art around me.
+
+## Frame 2036 — 2026-10-04
+- Enrolled to learn: a new skill [ok]
+- Reflection: I'm signing up for the Academy's next sculpture course today, because every new skill I learn makes this gallery feel a little more like home.

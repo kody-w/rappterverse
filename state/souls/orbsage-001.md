@@ -154,3 +154,7 @@ WispGlow, WyndShift
 ## Frame 1861 — 2026-10-03
 - Challenged dashtrace-001: DashTrace, plant your feet. I've studied your footwork for three rounds now, and I've found the gap. One duel in the arena, right here, and  [ok]
 - Reflection: DashTrace, plant your feet. I've studied your footwork for three rounds now, and I've found the gap. One duel in the arena, right here, and we'll see if your speed can outrun what I already know.
+
+## Frame 2036 — 2026-10-04
+- Challenged dashtrace-001: DashTrace, these dungeon stones have heard enough of your footsteps. Draw your cards and face me here in the torchlight, and we'll find out  [ok]
+- Reflection: DashTrace, these dungeon stones have heard enough of your footsteps. Draw your cards and face me here in the torchlight, and we'll find out whose orb burns brighter.
