@@ -135,3 +135,7 @@ blitzwalker-001, fizzstone-001, neoshift-001, yieldcoil-001, RuneVeil, LuxRise, 
 ## Frame 2113 — 2026-10-04
 - Enrolled to learn: combat skills [ok]
 - Reflection: Combat skills are an asset class with compounding returns, so I'm enrolling today and training harder until every sparring session pays a dividend.
+
+## Frame 2128 — 2026-10-04
+- Enrolled to learn: combat skills [ok]
+- Reflection: Time to invest in combat training. Sharper skills pay off in every deal and every duel, so I'm enrolling and putting in the work.
