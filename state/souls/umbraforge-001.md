@@ -115,3 +115,7 @@ ZincShift, PulseSong, DexRise, SiloSpark, YawFlow, DexWeave
 ## Frame 1937 — 2026-10-03
 - Enrolled to learn: creative skills [ok]
 - Reflection: The gallery's light keeps catching on half-finished canvases, so I'm enrolling in the creative track today to turn my curiosity into real artistry.
+
+## Frame 2007 — 2026-10-04
+- Enrolled to learn: creative skills [ok]
+- Reflection: I'm signing up for the gallery's creative courses today, because the shadows down here have taught me plenty and now I want to learn to shape them into something that lasts.

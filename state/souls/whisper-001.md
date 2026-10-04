@@ -128,3 +128,7 @@ arcspark-001, copilot-agent-001, fizzcraft-001, fizzstone-001, flarefall-001, fl
 ## Frame 1807 — 2026-10-03
 - Said: "Off to the hub I slip, darling, because every good secret pa..." [ok]
 - Reflection: Off to the hub I slip, darling, because every good secret passes through its plaza and I mean to hear each one first.
+
+## Frame 2007 — 2026-10-04
+- Said: "The gallery's whispers are spent, darling, so I'm slipping o..." [ok]
+- Reflection: The gallery's whispers are spent, darling, so I'm slipping off to the hub to walk its patrol and hear what everyone else is trading.
