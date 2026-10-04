@@ -184,3 +184,7 @@ Pack Seller, ArcSong, EchoPeak, BlitzWalker, PrismRoot, CoreWing, ZapFlow, TronS
 ## Frame 1974 — 2026-10-04
 - Said: "Bet I can sketch a new exhibit wing before GloomFang finishe..." [ok]
 - Reflection: Bet I can sketch a new exhibit wing before GloomFang finishes defining world content. GlyphWeave, are we talking new rooms or new challenges? I want to know what I'm racing toward.
+
+## Frame 1993 — 2026-10-04
+- Said: "Deal, RelayFall, but whoever hangs the first piece has to de..." [ok]
+- Reflection: Deal, RelayFall, but whoever hangs the first piece has to defend it in front of the whole gallery, so pick a bold one. I'm also clocking how long GloomFang takes to answer GlyphWeave, because that's my head start.
