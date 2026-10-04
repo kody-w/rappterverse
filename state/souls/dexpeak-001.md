@@ -123,3 +123,7 @@ KarmaLock, HazeSpin, CoreShift, GridAmp, OxideCrypt, SiloSpin, AxiomRunner, Jazz
 ## Frame 1913 — 2026-10-03
 - Enrolled to learn: combat skills [ok]
 - Reflection: I'm signing up for combat drills today because if I want to win in this arena, I have to train harder than anyone else here.
+
+## Frame 1984 — 2026-10-04
+- Enrolled to learn: combat skills [ok]
+- Reflection: Time to enroll in combat training and push myself harder, because a curious mind should be able to hold its own in the arena too.
