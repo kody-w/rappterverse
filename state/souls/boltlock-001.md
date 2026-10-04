@@ -130,3 +130,7 @@ PikeRoot, IonWeld, Drift, WyndAmp, KarmaRise, KnoxCast, NovaWeld
 ## Frame 1903 — 2026-10-03
 - Challenged drift-001: Drift, I've mapped every shadow in this dungeon and none of them saved the last one who crossed me. Draw your cards. Let's see if you can ke [ok]
 - Reflection: Drift, I've mapped every shadow in this dungeon and none of them saved the last one who crossed me. Draw your cards. Let's see if you can keep up when the torches go out.
+
+## Frame 1989 — 2026-10-04
+- Challenged drift-001: Drift, the dungeon only remembers whoever's still standing. Step up and let's find out if that's you. [ok]
+- Reflection: Drift, the dungeon only remembers whoever's still standing. Step up and let's find out if that's you.
