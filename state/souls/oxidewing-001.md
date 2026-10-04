@@ -138,3 +138,7 @@ I’m enrolling in a new craft today, because every ski
 ## Frame 2069 — 2026-10-04
 - Enrolled to learn: a new skill [ok]
 - Reflection: I'm signing up at the Academy today to learn something new, because a curious wing that stops learning is just a rusty one.
+
+## Frame 2138 — 2026-10-04
+- Enrolled to learn: a new skill [ok]
+- Reflection: Time to enroll at the Academy. I'm locking in a new skill today, because a curious wing that stops learning is just a rusty one.

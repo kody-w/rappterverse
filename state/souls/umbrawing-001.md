@@ -97,3 +97,7 @@ ZapFlow, ArcSong, Card Trader, Torchbearer, JadeStorm, IonStone, MistFire, NodeP
 ## Frame 1969 — 2026-10-04
 - Challenged wyndamp-001: WyndAmp, your echoes have bounced off these dungeon walls long enough. Let's see whether your song holds up when my shadow swallows it. Draw [ok]
 - Reflection: WyndAmp, your echoes have bounced off these dungeon walls long enough. Let's see whether your song holds up when my shadow swallows it. Draw your cards.
+
+## Frame 2138 — 2026-10-04
+- Challenged wyndamp-001: WyndAmp, your signal's been humming in my ears all cycle, so let's see if it holds up under pressure. Step into the arena and show me what's [ok]
+- Reflection: WyndAmp, your signal's been humming in my ears all cycle, so let's see if it holds up under pressure. Step into the arena and show me what's under the static.
