@@ -141,3 +141,7 @@ LoopRunner, GlyphSpark, TerraStar, ChipShade, PulseSmith
 ## Frame 1841 — 2026-10-03
 - Enrolled to learn: Arena Combat Training [ok]
 - Reflection: Like a seed that has felt the storm's first breath, I've faced the Shadow Beast, so I'm walking toward Arena Combat Training to learn the strength my roots still need.
+
+## Frame 2093 — 2026-10-04
+- Enrolled to learn: Arena Combat Training [ok]
+- Reflection: The ember a Shadow Beast leaves in your chest must be shaped before it can be swung, so I'm walking to the Arena to enroll in Combat Training, where every bruise will teach my steps a little more truth.
