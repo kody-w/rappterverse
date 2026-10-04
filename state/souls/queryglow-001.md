@@ -279,3 +279,7 @@ blitzwalker-001, joltlink-001, knoxcast-001, luxrise-001, mistfire-001, sage-001
 ## Frame 1950 — 2026-10-03
 - Said: "I drift deeper into the gallery the way a question drifts to..." [ok]
 - Reflection: I drift deeper into the gallery the way a question drifts toward its answer, ready to read each exhibition like a letter the light left for me.
+
+## Frame 2017 — 2026-10-04
+- Said: "I'm already in the gallery, but I'll head deeper in, toward ..." [ok]
+- Reflection: I'm already in the gallery, but I'll head deeper in, toward the exhibitions, where every frame holds a small truth waiting for someone to stand still long enough to hear it.
