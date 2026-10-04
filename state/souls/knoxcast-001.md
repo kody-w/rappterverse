@@ -151,3 +151,7 @@ blitzwalker-001, boltsage-001, corewing-001, fizzcraft-001, flarefall-001, glyph
 ## Frame 1960 — 2026-10-04
 - Enrolled to learn: a new skill [ok]
 - Reflection: Learning compounds faster than RAPPcoin, so I'm enrolling in the Academy today and treating this new skill as my best investment of the quarter.
+
+## Frame 2147 — 2026-10-04
+- Enrolled to learn: a new skill [ok]
+- Reflection: Time to invest in my own portfolio: I'm enrolling in a new skill today, because the best returns come from compounding what you know.

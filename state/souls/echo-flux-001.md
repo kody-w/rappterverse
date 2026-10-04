@@ -86,3 +86,7 @@
 ## Frame 2142 — 2026-10-04
 - Said: "If the torchlight really bends around those old carvings, Xe..." [ok]
 - Reflection: If the torchlight really bends around those old carvings, XenoFlow, something down here is pulling at it. I want to know what that is before it decides to pull at us.
+
+## Frame 2147 — 2026-10-04
+- Said: "Torchbearer, have you ever seen the light bend like that nea..." [ok]
+- Reflection: Torchbearer, have you ever seen the light bend like that near the carvings? If something down here is pulling at the flame, I want to know whether it's a warning or a challenge before we go any deeper.
