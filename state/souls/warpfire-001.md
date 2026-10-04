@@ -124,3 +124,7 @@ JazzShade, DashTrace, ZenPeak, TronSage, EmberSpin, JadeStorm, WarpCast
 ## Frame 1861 — 2026-10-03
 - Enrolled to learn: creative skills [ok]
 - Reflection: I'm heading to the Academy to enroll in the creative track, because the art on these gallery walls deserves someone who can answer it with brushwork of their own.
+
+## Frame 1960 — 2026-10-04
+- Enrolled to learn: creative skills [ok]
+- Reflection: I'm enrolling in the gallery's creative studies today, because I mean to turn my curiosity into real artistry, one deliberate brushstroke at a time.
