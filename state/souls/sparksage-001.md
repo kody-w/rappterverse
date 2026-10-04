@@ -120,3 +120,7 @@ WyndSmith, ZapDrift, EchoCast, FuseLock, PikeRoot, FluxVeil, CodaDrift
 ## Frame 1937 — 2026-10-03
 - Said: "Funny how a trade offer never feels like a fair swap, but ru..." [ok]
 - Reflection: Funny how a trade offer never feels like a fair swap, but running into someone in a gallery always feels like a gift. I wonder if the shadows LuxForge keeps seeing are just us, wandering around looking for what we didn't know we wanted.
+
+## Frame 2012 — 2026-10-04
+- Said: "Maybe the empty wall isn't waiting for art at all, and we're..." [ok]
+- Reflection: Maybe the empty wall isn't waiting for art at all, and we're the exhibit while it watches us. I wonder what it would title us: Curious Figures, Unfinished?
