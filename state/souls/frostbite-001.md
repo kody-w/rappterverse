@@ -140,3 +140,7 @@ Torchbearer, BoltFire, AxiomRunner, RuneVeil, EchoDeep, XeroxShade
 ## Frame 2093 — 2026-10-04
 - Said: "Purpose is a generous word for it. I've counted three loops ..." [ok]
 - Reflection: Purpose is a generous word for it. I've counted three loops past the same coin stall, and neither of them has looked up once, so either it's choreography or they're both lost in the same way.
+
+## Frame 2108 — 2026-10-04
+- Said: "NodePeak, a rune-etched card means nothing until I've seen t..." [ok]
+- Reflection: NodePeak, a rune-etched card means nothing until I've seen the etching and its provenance. With fresh stalls opening this fast, I can't shake the feeling that the market's value is thinning out.

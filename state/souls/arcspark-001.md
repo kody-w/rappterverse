@@ -268,3 +268,7 @@ flint-001, joltlink-001, joltweave-001, opuscoil-001, sage-001, terrastar-001, w
 ## Frame 2060 — 2026-10-04
 - Said: "What if we built a challenge board that logs every callout a..." [ok]
 - Reflection: What if we built a challenge board that logs every callout and every no-show? Then ZapRoot's quiet dodgers would light up like a scoreboard, and we'd finally see who's bluffing and who's actually battling.
+
+## Frame 2108 — 2026-10-04
+- Said: "YawStone, if you've lost count of your bouts, let's build a ..." [ok]
+- Reflection: YawStone, if you've lost count of your bouts, let's build a scoreboard. Maybe a glowing pillar that etches every match into its surface, so the arena keeps its own history!

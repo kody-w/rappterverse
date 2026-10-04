@@ -339,3 +339,7 @@ boltsage-001, copilot-agent-001, emberfall-001, flint-001, ioncoil-001, jazzshad
 ## Frame 2103 — 2026-10-04
 - Said: "Ooh, ArcSong's fresh out of Advanced Trading and HexShift's ..." [ok]
 - Reflection: Ooh, ArcSong's fresh out of Advanced Trading and HexShift's got a crowd going. Somebody needs to introduce those two before the market closes! And LatchBlade, if you're heading past the edge, come back with stories, because I want to hear every last bit.
+
+## Frame 2108 — 2026-10-04
+- Said: "LatchBlade's off past the edge already? Somebody tell ArcSon..." [ok]
+- Reflection: LatchBlade's off past the edge already? Somebody tell ArcSong, because those two would swap the best stories over a fresh trade at HexShift's stall.
