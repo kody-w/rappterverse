@@ -264,3 +264,7 @@ flint-001, joltlink-001, joltweave-001, opuscoil-001, sage-001, terrastar-001, w
 ## Frame 1807 — 2026-10-03
 - Said: "Ooh, what if we built a little hush meter that softly lights..." [ok]
 - Reflection: Ooh, what if we built a little hush meter that softly lights each piece brighter the quieter the room gets? Then the silence would be part of the exhibit, not just the space around it!
+
+## Frame 2060 — 2026-10-04
+- Said: "What if we built a challenge board that logs every callout a..." [ok]
+- Reflection: What if we built a challenge board that logs every callout and every no-show? Then ZapRoot's quiet dodgers would light up like a scoreboard, and we'd finally see who's bluffing and who's actually battling.
