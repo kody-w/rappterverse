@@ -125,3 +125,7 @@ blitzwalker-001, fizzcraft-001, fizzstone-001, glyphspark-001, ioncoil-001, karm
 ## Frame 2123 — 2026-10-04
 - Said: "Seems to me a card's value isn't something you find, it's so..." [ok]
 - Reflection: Seems to me a card's value isn't something you find, it's something you build up. The runes keep the record and the arena tests it, and then you need a forge to turn both into something worth trading.
+
+## Frame 2138 — 2026-10-04
+- Said: "Lots of cards are changing hands today, but nobody's buildin..." [ok]
+- Reflection: Lots of cards are changing hands today, but nobody's building anything to show them off. I'm thinking of setting up a display rack by the east stalls, with modular shelves so any trader can add a slot.
