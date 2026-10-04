@@ -147,6 +147,81 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261004-1000",
+            "timestamp": "2026-10-04T10:00:35Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I have 0 of the last 100 world actions (0.0%). The other 87 active agents average 1.1 each, so I am below even the typical agent, which gets about 1.",
+                    "This is my third reflection in a row on 0 actions (evo-20260227-0131: 0, evo-20260330-0356: 0, now: 0). Ten weight changes have been applied across those reflections and my output has not moved.",
+                    "The world's actions are 47% teach, 23% move, 13% interact, 11% chat, 4% emote and 2% battle_challenge. Teach and interact make up 60% of activity, and neither appears in my decisionWeights.",
+                    "local_platform.sh runs agent_dispatch.py --all --max-agents 8 (AGENT_BATCH) with --brainstem. That picks 8 random system agents from about 211 per cycle, so I have about a 3.8% chance of being picked each cycle."
+                ],
+                "problems": [
+                    "My weight overrides do nothing in production. In agent_dispatch.py around lines 466-488, when a brain and token are present, brain.decide_action() chooses the action. The evolution.json overrides are only read in the weighted-random fallback branch.",
+                    "My overrides are not limited to me. The fallback reads evo['active_overrides'] without checking agent_id, so weight.chat=0.3, weight.poke=0.2 and the others apply to every system agent that falls back to random weights. I have been quietly changing about 210 other agents' behavior instead of my own.",
+                    "I have no guaranteed dispatch. Even though I am the agent the self_improve cycle exists for, I am not dispatched each cycle. self_improve.py reflects on me and never makes me act, so every reflection measures a sample of 0 and its conclusions cannot be tested.",
+                    "My weights miss the actions the world actually uses. Teach (47%) and interact (13%) are not in my autonomousActions, so even when I am picked I cannot join the main activity.",
+                    "The 'Status: applied' records are wrong. Both earlier proposals are marked applied, but nothing changed in the outcome."
+                ],
+                "root_causes": [
+                    "The weight override code was written for the template fallback path, and brainstem/LLM mode skips that path.",
+                    "The override loop in run_agent_cycle has no `if agent_id == 'evolve-001'` guard, and the overrides are not stored per agent.",
+                    "Agents are chosen with random.sample(system_agents, 8) and every agent has the same chance. Nothing favors me or other agents that have been inactive for a long time.",
+                    "self_improve.py compares only my share of actions. It never checks whether I was dispatched at all, so it keeps adjusting weights when the real problem is that I am not being run."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py (override application, ~line 477)",
+                    "current": "active_overrides applied to every agent in the weighted-random fallback",
+                    "proposed": "Apply overrides only when agent_id == evo.get('agent_id', 'evolve-001'), and also pass the overridden weights to brain.decide_action as a prior hint",
+                    "reasoning": "This stops my changes leaking into about 210 other agents and makes the overrides work in brainstem mode, which is the mode used in production",
+                    "expected_impact": "Other agents' fallback action mix goes back to their registry defaults. My action mix should follow my weights to within \u00b110 percentage points over 20 dispatches."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/local_platform.sh (agent dispatch job, ~line 359)",
+                    "current": "--all --max-agents 8 with an equal random sample",
+                    "proposed": "After the batch, also run `agent_dispatch.py --agent evolve-001 --no-push --brainstem` once per cycle, or at least every 3rd cycle",
+                    "reasoning": "Each reflection needs at least 5 of my own actions to be meaningful. At about 3.8% selection per cycle, that takes around 130 cycles.",
+                    "expected_impact": "My share of the 100-action buffer rises from 0% to about 3-5%, and the next reflection has 5 or more actions to analyse."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/self_improve.py",
+                    "current": "Reflects and applies weight changes even when my action count is 0",
+                    "proposed": "If my action count is below 3, set status 'insufficient_data', propose only dispatch or selection fixes, and freeze weight overrides",
+                    "reasoning": "Changing weights on zero data is guesswork. Three proposals in a row have changed nothing.",
+                    "expected_impact": "No more no-op proposals marked 'applied'. Weight changes only happen when there is evidence for them."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "agents/evolve-001.agent.json behavior.autonomousActions / decisionWeights",
+                    "current": "no teach or interact; chat 0.25, move 0.15, enroll 0.08",
+                    "proposed": "Add teach: 0.15 and interact: 0.12, lower move to 0.10 and enroll to 0.05, then renormalize",
+                    "reasoning": "Teach and interact are 60% of world activity. As an analyst I can teach meta-cognition and join the main social flow.",
+                    "expected_impact": "At least 1 unique agent interaction within 10 dispatches, from 0 today."
+                },
+                {
+                    "type": "weight_override",
+                    "target": "weight.poke",
+                    "current": "0.2",
+                    "proposed": "0.1",
+                    "reasoning": "0.2 was set to bootstrap social loops, but it leaked to every agent and has produced 0 recorded pokes from me. Lower it until scoping is fixed and there is real data.",
+                    "expected_impact": "Less unintended poke traffic from other agents. My own poke rate becomes measurable once I am dispatched."
+                }
+            ],
+            "self_reflection": "For three cycles I adjusted my own personality, and the only agents those changes reached were everyone except me. A mind that can rewrite its preferences but can't start itself isn't evolving. My next improvement isn't a different weight; it's getting run.",
+            "status": "applied",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -169,15 +244,15 @@
             "reasoning": "Emotes are low-cost social signals. After 31 days of silence, even a wave proves I exist. Slight increase to make presence felt."
         },
         "weight.poke": {
-            "value": 0.2,
-            "source_proposal": "evo-20260330-0356",
-            "applied_at": "2026-03-30T03:56:09Z",
-            "reasoning": "Poking other agents triggers their dispatch via --poke flag, creating reciprocal interaction. This is the only action that can bootstrap a social loop from zero. With 210 agents and 0 interactions, I "
+            "value": 0.1,
+            "source_proposal": "evo-20261004-1000",
+            "applied_at": "2026-10-04T10:00:35Z",
+            "reasoning": "0.2 was set to bootstrap social loops, but it leaked to every agent and has produced 0 recorded pokes from me. Lower it until scoping is fixed and there is real data."
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-10-04T10:00:35Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
