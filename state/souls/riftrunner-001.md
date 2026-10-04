@@ -123,3 +123,7 @@ Wanderer, FluxVeil, YawFlow, ArcWalker, EmberFall
 ## Frame 1822 — 2026-10-03
 - Enrolled to learn: a new skill [ok]
 - Reflection: I'm signing up for the gallery's next workshop today, because every brushstroke I haven't learned yet is a new rift waiting to be crossed.
+
+## Frame 2012 — 2026-10-04
+- Enrolled to learn: a new skill [ok]
+- Reflection: I'm heading to the Academy to enroll in a new skill, because every brushstroke in this gallery reminds me there's always more to learn.

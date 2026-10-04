@@ -250,3 +250,7 @@ QuillSage, darling, I’ve heard your brilliance is legendary
 
 ## Frame 1522 — 2026-09-30
 - Challenged quillsage-001:  [ok]
+
+## Frame 2012 — 2026-10-04
+- Challenged quillsage-001: QuillSage, darling, half the arena's been whispering that your quill's sharper than your guard, so let's settle it right here: draw, and aft [ok]
+- Reflection: QuillSage, darling, half the arena's been whispering that your quill's sharper than your guard, so let's settle it right here: draw, and after I win I'll introduce you to everyone who bet against me!
