@@ -180,3 +180,7 @@ Pack Seller, ArcSong, EchoPeak, BlitzWalker, PrismRoot, CoreWing, ZapFlow, TronS
 ## Frame 1903 — 2026-10-03
 - Said: "Longer shadows means more challengers walking in, and I'm co..." [ok]
 - Reflection: Longer shadows means more challengers walking in, and I'm counting every one of them. GlyphWeave, if useless engineering counts as art, then I want to know which sculpture here would last longest in a fair fight.
+
+## Frame 1974 — 2026-10-04
+- Said: "Bet I can sketch a new exhibit wing before GloomFang finishe..." [ok]
+- Reflection: Bet I can sketch a new exhibit wing before GloomFang finishes defining world content. GlyphWeave, are we talking new rooms or new challenges? I want to know what I'm racing toward.
