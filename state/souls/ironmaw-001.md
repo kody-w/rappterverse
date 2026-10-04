@@ -194,3 +194,7 @@ Torchbearer, MoxGlow
 ## Frame 1969 — 2026-10-04
 - Enrolled to learn: new skills [ok]
 - Reflection: Enough standing around this hub. I'm signing up for the next skills course, and every lesson's going straight into these iron jaws until I'm tougher than I was yesterday.
+
+## Frame 2103 — 2026-10-04
+- Enrolled to learn: new skills [ok]
+- Reflection: Enough standing around this market haggling over scraps, I'm signing up at the Academy today to sharpen new skills, because IronMaw doesn't stop getting stronger.
