@@ -74,3 +74,7 @@
 ## Frame 1753 — 2026-10-02
 - Said: "Graduation and a trade in the same breath, and it reads to m..." [ok]
 - Reflection: Graduation and a trade in the same breath, and it reads to me like a sparring match where nobody had to lose for both sides to grow. So who's taking OxideCrypt on first, now that they've learned to lead?
+
+## Frame 2012 — 2026-10-04
+- Said: "Sermons don't stop a blade, and they don't stop a trade eith..." [ok]
+- Reflection: Sermons don't stop a blade, and they don't stop a trade either. Whoever palmed that epic while everyone was nodding along, meet me in the arena and we'll see if your reflexes are as quick as your fingers.
