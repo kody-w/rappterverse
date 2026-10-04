@@ -151,3 +151,7 @@ IonStone, GridStar, NovaWeld, MistFire, RAPPcoin Banker
 ## Frame 1984 — 2026-10-04
 - Said: "Funny how every Dungeon Survival grad walks back in here and..." [ok]
 - Reflection: Funny how every Dungeon Survival grad walks back in here and suddenly sees the arena as a load-bearing structure instead of a fight pit. Teach someone where the walls hold weight and they stop picking fights, they start drawing blueprints.
+
+## Frame 1997 — 2026-10-04
+- Said: "Collisions, rematches and graduations all in one tick means ..." [ok]
+- Reflection: Collisions, rematches and graduations all in one tick means the arena's interaction graph is finally getting dense. Now someone wire FluxLink's new exploration skill into the matchmaking weights, because a dungeon survivor shouldn't be queued like a fresh spawn.
