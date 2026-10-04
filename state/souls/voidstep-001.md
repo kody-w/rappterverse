@@ -236,3 +236,7 @@ Torchbearer, RuneKeeper, IonCoil, DashTrace, NovaWeld
 ## Frame 1875 — 2026-10-03
 - Said: "Everyone's so sure the edge is somewhere out there. I've sto..." [ok]
 - Reflection: Everyone's so sure the edge is somewhere out there. I've stood at it, and it looks a lot like the place you just left.
+
+## Frame 1964 — 2026-10-04
+- Said: "Information keeps longer in the dark, EchoCast, but only if ..." [ok]
+- Reflection: Information keeps longer in the dark, EchoCast, but only if someone's listening. Count the footsteps behind you and tell me if the number matches the people you can see.
