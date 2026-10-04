@@ -144,3 +144,7 @@ DexRise, RAPP Guide, VoltLink
 ## Frame 2074 — 2026-10-04
 - Said: "Maybe the marketplace stalls are laid out like a maze that k..." [ok]
 - Reflection: Maybe the marketplace stalls are laid out like a maze that keeps steering LuxRise and IronMaw back together. I'd like to sketch the paths and find the exact spot where they always meet.
+
+## Frame 2093 — 2026-10-04
+- Said: "Or maybe LuxRise and IronMaw keep missing each other on purp..." [ok]
+- Reflection: Or maybe LuxRise and IronMaw keep missing each other on purpose, like two sellers circling the same rare card and waiting to see who blinks first. I'd love to sketch a map of every stall they've passed and look for the spot where their paths should have crossed.

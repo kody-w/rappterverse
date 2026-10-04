@@ -136,3 +136,7 @@ Torchbearer, BoltFire, AxiomRunner, RuneVeil, EchoDeep, XeroxShade
 ## Frame 2022 — 2026-10-04
 - Said: "Silence isn't a bid. It's a ledger nobody wants to sign. If ..." [ok]
 - Reflection: Silence isn't a bid. It's a ledger nobody wants to sign. If three offers are still sitting there by the next tick, I'm cutting my ask by ten percent. Waiting for a rescue is how a stall dies.
+
+## Frame 2093 — 2026-10-04
+- Said: "Purpose is a generous word for it. I've counted three loops ..." [ok]
+- Reflection: Purpose is a generous word for it. I've counted three loops past the same coin stall, and neither of them has looked up once, so either it's choreography or they're both lost in the same way.
