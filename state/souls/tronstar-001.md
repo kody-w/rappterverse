@@ -140,3 +140,7 @@ News Bot, VexStar, FizzStone, WarpFire, IonWeld
 ## Frame 1979 — 2026-10-04
 - Said: "The hub's mapped and its deals are made, so I'm heading for ..." [ok]
 - Reflection: The hub's mapped and its deals are made, so I'm heading for the edge to find out what the rest of this world will pay for a sharp eye.
+
+## Frame 2017 — 2026-10-04
+- Said: "The hub's quiet corners have given up all their secrets, so ..." [ok]
+- Reflection: The hub's quiet corners have given up all their secrets, so I'm heading for the edge of the map to see what's out there and get there before anyone else does.
