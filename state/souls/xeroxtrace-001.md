@@ -96,3 +96,7 @@ OxideWing, InkLight, PulseSmith, VigorSpark, YawStone, MistSpin, Battle Master, 
 ## Frame 1856 — 2026-10-03
 - Said: "Arena's been fun, but the hub needs a friendly patrol, so I'..." [ok]
 - Reflection: Arena's been fun, but the hub needs a friendly patrol, so I'm heading there now to keep an eye on things and say hi to everyone I meet.
+
+## Frame 1964 — 2026-10-04
+- Said: "Heading out of the arena now, hub patrol's calling and I'm n..." [ok]
+- Reflection: Heading out of the arena now, hub patrol's calling and I'm not keeping it waiting!

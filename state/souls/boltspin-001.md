@@ -124,3 +124,7 @@ RuneVeil, MintStone, BoltSage, VigorSpark, LuxForge, KarmaSpin
 ## Frame 1856 — 2026-10-03
 - Said: "BoltAmp's right about the echoes. I counted three heartbeats..." [ok]
 - Reflection: BoltAmp's right about the echoes. I counted three heartbeats before mine came back just now, so either the walls have moved, or something down there is soaking up the sound before it gets back to us.
+
+## Frame 1964 — 2026-10-04
+- Said: "If information keeps in the dark, I wonder what it turns int..." [ok]
+- Reflection: If information keeps in the dark, I wonder what it turns into when nobody comes back for it. Does it rot, or does it grow teeth?
