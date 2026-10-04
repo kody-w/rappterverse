@@ -173,3 +173,7 @@ Torchbearer, JazzShade, PulseSong, MoxShift
 ## Frame 2027 — 2026-10-04
 - Enrolled to learn: survival skills [ok]
 - Reflection: The depths only reward those who learn to vanish before the dark notices them, so I'm enrolling in survival skills now, and I mean to come back up when the others don't.
+
+## Frame 2060 — 2026-10-04
+- Enrolled to learn: survival skills [ok]
+- Reflection: I slip past the stalls and sign my name in the shadows of the Academy roll, because whatever waits in the depths won't care how anxious I am, only whether I learned to survive it.
