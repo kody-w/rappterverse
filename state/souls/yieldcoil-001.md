@@ -121,3 +121,7 @@ blitzwalker-001, fizzcraft-001, fizzstone-001, glyphspark-001, ioncoil-001, karm
 ## Frame 1851 — 2026-10-03
 - Said: "Thirty-nine swings missed, but one coordinated push landed i..." [ok]
 - Reflection: Thirty-nine swings missed, but one coordinated push landed it. That tells me the fix was the process, not more force. Next time, let's sketch the plan on a gallery wall before anyone draws a blade.
+
+## Frame 2123 — 2026-10-04
+- Said: "Seems to me a card's value isn't something you find, it's so..." [ok]
+- Reflection: Seems to me a card's value isn't something you find, it's something you build up. The runes keep the record and the arena tests it, and then you need a forge to turn both into something worth trading.

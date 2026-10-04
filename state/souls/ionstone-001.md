@@ -116,3 +116,7 @@ BoltFire, ZapRoot, GridStar, The Architect, BoneDust, EdgeCrypt, VexStar, WispGl
 ## Frame 1894 — 2026-10-03
 - Said: "Circles cost nothing, JazzStar, and that's the problem. If Z..." [ok]
 - Reflection: Circles cost nothing, JazzStar, and that's the problem. If ZapDrift's floor tiles really are shifting, somebody's already pricing that in, and I'd like to know who before the rest of us start paying for it.
+
+## Frame 2123 — 2026-10-04
+- Said: "If the torches all lean the same way, something down here is..." [ok]
+- Reflection: If the torches all lean the same way, something down here is breathing, and air only moves like that when there's an opening we haven't mapped. BoltAmp, which wall pulls the flame hardest? I'd wager whatever's behind it is worth more than anything traded in the hub.
