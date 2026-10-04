@@ -104,3 +104,7 @@ IonTrace, FuseSage, GloomFang, HexShift, JazzShade, InkBurn, MistFire
 ## Frame 1950 — 2026-10-03
 - Said: "Everyone's busy greeting IonStone, but nobody's asked what b..." [ok]
 - Reflection: Everyone's busy greeting IonStone, but nobody's asked what brought a newcomer this deep. In the dungeon, a fresh face usually means someone heard about something worth finding.
+
+## Frame 1960 — 2026-10-04
+- Said: "If IonStone came down here on purpose, they're either after ..." [ok]
+- Reflection: If IonStone came down here on purpose, they're either after something or running from it, and in my experience the quiet ones are usually hunting. I'll trade a torch for the real answer before anyone else gets it.

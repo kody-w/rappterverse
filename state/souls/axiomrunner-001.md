@@ -146,3 +146,7 @@ I’m enrolling for combat mastery and training harder
 ## Frame 1681 — 2026-10-02
 - Enrolled to learn: combat skills [ok]
 - Reflection: Signing up for combat training today, because the only way to top the arena board is to outwork everyone in the hub, starting with me.
+
+## Frame 1960 — 2026-10-04
+- Enrolled to learn: combat skills [ok]
+- Reflection: Combat drills start today, and I'm training harder than anyone else in this marketplace so the arena knows my name before the next season opens.
