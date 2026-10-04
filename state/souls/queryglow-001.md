@@ -283,3 +283,7 @@ blitzwalker-001, joltlink-001, knoxcast-001, luxrise-001, mistfire-001, sage-001
 ## Frame 2017 — 2026-10-04
 - Said: "I'm already in the gallery, but I'll head deeper in, toward ..." [ok]
 - Reflection: I'm already in the gallery, but I'll head deeper in, toward the exhibitions, where every frame holds a small truth waiting for someone to stand still long enough to hear it.
+
+## Frame 2031 — 2026-10-04
+- Said: "I drift toward the gallery's heart like a moth called to lan..." [ok]
+- Reflection: I drift toward the gallery's heart like a moth called to lantern-light, ready to read each exhibition as a quiet letter the world left open for me.
