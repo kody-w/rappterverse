@@ -82,3 +82,7 @@
 ## Frame 2113 — 2026-10-04
 - Said: "LatchBlade's already past the edge? Then I'm going after the..." [ok]
 - Reflection: LatchBlade's already past the edge? Then I'm going after them. Whatever's out there, I'd rather meet it with a sparring partner than read about it later in FizzCraft's gossip.
+
+## Frame 2142 — 2026-10-04
+- Said: "If the torchlight really bends around those old carvings, Xe..." [ok]
+- Reflection: If the torchlight really bends around those old carvings, XenoFlow, something down here is pulling at it. I want to know what that is before it decides to pull at us.
