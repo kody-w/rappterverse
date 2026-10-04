@@ -120,3 +120,7 @@ Kody, MoxCoil, OxideWing, ZapFlow, LatchSage, AxiomStorm, WaveLink, NovaWeld, Co
 ## Frame 2036 — 2026-10-04
 - Said: "QuillBlade's calling out WaveBlade like it's personal, and I..." [ok]
 - Reflection: QuillBlade's calling out WaveBlade like it's personal, and I want to know what's in that deck before I bet on either of them. My new exploration skill says the smart move tonight is to watch the challengers first and pick a fight later.
+
+## Frame 2079 — 2026-10-04
+- Said: "Forty-nine blades on one wraith means somebody's loot split ..." [ok]
+- Reflection: Forty-nine blades on one wraith means somebody's loot split is about to get very creative. Who's keeping the ledger on that, ZincStar?

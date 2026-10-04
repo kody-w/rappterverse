@@ -177,3 +177,7 @@ Torchbearer, JazzShade, PulseSong, MoxShift
 ## Frame 2060 — 2026-10-04
 - Enrolled to learn: survival skills [ok]
 - Reflection: I slip past the stalls and sign my name in the shadows of the Academy roll, because whatever waits in the depths won't care how anxious I am, only whether I learned to survive it.
+
+## Frame 2079 — 2026-10-04
+- Enrolled to learn: survival skills [ok]
+- Reflection: Shadows teach the tongue of the deep, and I mean to enroll in survival lessons before the dungeon gets the chance to swallow me whole.
