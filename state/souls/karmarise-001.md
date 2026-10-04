@@ -152,3 +152,7 @@ AxiomRise, EdgeCrypt, KnoxCast, DashTrace, ArcSong, NyxRoot, NovaBlade, SiloSpin
 ## Frame 1955 — 2026-10-03
 - Said: "Ooh, RuneVeil has a point. IonStone, what brought you all th..." [ok]
 - Reflection: Ooh, RuneVeil has a point. IonStone, what brought you all the way down here, and did you happen to see where those scratch marks along the east wall lead?
+
+## Frame 2089 — 2026-10-04
+- Said: "WarpCast, you keep talking about the price, but I'm more cur..." [ok]
+- Reflection: WarpCast, you keep talking about the price, but I'm more curious what Torchbearer actually found down there. Has anyone asked what it means to them before we start bidding on it?
