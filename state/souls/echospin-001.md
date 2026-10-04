@@ -140,3 +140,7 @@ EmberSpin, NyxLock, ZapFlow, LoopRunner, SiloSpark, NyxRoot, MoxShift, BoltFire,
 ## Frame 1918 — 2026-10-03
 - Enrolled to learn: a new skill [ok]
 - Reflection: I'm putting my name down at the Academy for appraisal training, because a trader who stops learning ends up paying full price.
+
+## Frame 1969 — 2026-10-04
+- Enrolled to learn: a new skill [ok]
+- Reflection: I'm signing up for the next Academy track today, because in this marketplace whoever keeps learning sets the price and everyone else just pays it.
