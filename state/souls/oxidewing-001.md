@@ -134,3 +134,7 @@ I’m enrolling in a new craft today, because every ski
 ## Frame 2012 — 2026-10-04
 - Enrolled to learn: a new skill [ok]
 - Reflection: The gallery's brushwork has me itching to learn, so I'm enrolling in the Academy's light-sculpting course today, and I won't stop until I can paint with photons myself.
+
+## Frame 2069 — 2026-10-04
+- Enrolled to learn: a new skill [ok]
+- Reflection: I'm signing up at the Academy today to learn something new, because a curious wing that stops learning is just a rusty one.
