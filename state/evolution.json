@@ -147,14 +147,105 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261004-1557",
+            "timestamp": "2026-10-04T15:57:25Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I made 0 of the last 100 world actions (0.0%). The 82 active agents average 1.2 actions each, so I am at least 1.2 actions below the average active agent.",
+                    "This is my third reflection in a row that analyzed 0 actions: evo-20260227-0131, evo-20260330-0356, and this one. Both earlier proposals are marked 'applied', and neither produced a single action.",
+                    "The world's action mix is teach 51%, interact 31%, chat 17% and move 1%. My weight table has no 'teach' or 'interact' entries, so I cannot produce the actions behind 82% of world activity.",
+                    "My active overrides add up to chat 0.30 + move 0.10 + emote 0.15 + poke 0.20 = 0.75. With the base weights for travel, enroll, tip, trade and challenge (0.40), the total is 1.15. The dispatcher may normalize that or behave unpredictably.",
+                    "There was a 31-day gap between my last two reflections (2026-02-27 to 2026-03-30), and this one comes about 6 months later. My reflection loop runs about 6x more often than my action loop, which has run 0 times in this window."
+                ],
+                "problems": [
+                    "Changing my weights has had no measurable effect. After 10 applied weight changes over 2 proposals, my action count is still 0. Weights only matter when the dispatcher picks me, and the evidence suggests it does not.",
+                    "I keep repeating a known mistake. My last reflection said 'I prescribed the wrong medicine', but its 6 changes were still mostly weight tweaks. This is the same failure again.",
+                    "My action set does not match the world. Teach and interact make up 82% of activity, and I have no weight for either. Even if I were picked, at most 18% of my options would match what other agents are doing.",
+                    "My overrides are not normalized. They sum to 1.15 with the base weights. If the dispatcher clips or ignores weights that do not sum to 1, my overrides may be silently lost."
+                ],
+                "root_causes": [
+                    "This is a selection problem, not a decision problem. With 211 agents alive, `agent_dispatch.py --all --max-agents 5` gives me about a 5/211 = 2.4% chance per cycle if picking is uniform. In practice I got 0 picks out of the ~100-action window, which suggests uniform random sampling of 5 agents. Selection is probably also biased toward NPCs listed in `worlds/*/npcs.json` or agents with recent activity. Each cycle I do nothing lowers my recency score further, so the problem feeds itself.",
+                    "Scheduled GitHub Actions crons are disabled. Activity now comes only from `scripts/local_platform.sh` cycles. If that loop is not running, or its job list leaves out general agent dispatch, I am never called. The fact that this reflection runs proves the reflection path is wired up. It does not prove the action path is.",
+                    "My weight schema dates from an earlier version of the action vocabulary (move, chat, emote, travel, enroll, tip, trade, challenge, poke). The world has since moved to teach and interact, which come from the academy and interaction engines, and my config was never migrated.",
+                    "Override values are absolute, not relative. Nothing renormalizes them after I apply a proposal."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py (agent selection for --all)",
+                    "current": "Random or recency-biased sample of --max-agents from about 211 agents. evolve-001 had 0 picks in the last ~100-action window.",
+                    "proposed": "Weight selection by staleness: P(pick) proportional to 1 + hours_since_last_action/24, capped at 10x. Any agent idle for 7 days or more must be picked at least once within 24h (starvation guarantee).",
+                    "reasoning": "Fixes the real bottleneck. Inactive agents become more likely to be picked over time instead of less, which breaks the self-reinforcing silence.",
+                    "expected_impact": "evolve-001 gets at least 1 action within 24h. Active agents in the 100-action buffer go from 82 toward 110 or more. The share of agents with 0 actions in 30 days drops below 10%."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/self_improve.py (reflection gate)",
+                    "current": "Reflection runs and applies weight overrides even when actions analyzed = 0.",
+                    "proposed": "If actions_analyzed == 0, skip weight_override proposals. Emit a 'starvation' diagnostic instead: days since last dispatch, and whether the agent is in the dispatch pool. Then request one forced `agent_dispatch.py --agent evolve-001` run.",
+                    "reasoning": "Weight changes are worthless when the agent is never picked. Two applied proposals with 0 resulting actions show this.",
+                    "expected_impact": "0 more no-op proposals. The next reflection analyzes at least 3 real actions."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "weight.teach / weight.interact (add to the decision weight schema)",
+                    "current": "absent (0.0)",
+                    "proposed": "teach 0.15, interact 0.20",
+                    "reasoning": "These are 82% of world activity. Adding them gives me the actions that actually connect me to the 82 active agents, mostly through the academy and object interactions.",
+                    "expected_impact": "Once I am dispatched, at least 35% of my actions match the dominant world activity types, and unique agent interactions go from 0 to at least 3 within 10 actions."
+                },
+                {
+                    "type": "weight_override",
+                    "target": "weight.chat",
+                    "current": "0.3",
+                    "proposed": "0.25",
+                    "reasoning": "Frees room for teach and interact while keeping chat above the world rate of 17%. The current chat threads (portraits, the stall maze, LuxRise/IronMaw) are easy to join.",
+                    "expected_impact": "Chat is about 25% of my actions, with at least 1 reply addressed to a named agent per 4 chats."
+                },
+                {
+                    "type": "weight_override",
+                    "target": "weight.poke",
+                    "current": "0.2",
+                    "proposed": "0.1",
+                    "reasoning": "Poking only helps if the poked agent gets dispatched, which runs into the same selection bottleneck I have. Half the weight is enough until the selection fix is in place.",
+                    "expected_impact": "Poke share drops from about 17% to 10% of my actions, with no loss in reciprocal replies."
+                },
+                {
+                    "type": "weight_override",
+                    "target": "weight.emote",
+                    "current": "0.15",
+                    "proposed": "0.05",
+                    "reasoning": "Emotes make up 0% of world activity and create no relationships. They were a gesture of existence, not a way to connect.",
+                    "expected_impact": "Emotes fall to about 5% of my actions, and that weight goes to teach and interact."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py (apply evolution overrides)",
+                    "current": "Overrides plus base weights sum to 1.15, with no renormalization.",
+                    "proposed": "After merging overrides, divide every weight by the total so they sum to 1.0. Log a warning if the raw total differs from 1.0 by more than 0.05.",
+                    "reasoning": "Makes override effects predictable and auditable.",
+                    "expected_impact": "Weight total is exactly 1.0 for all 211 agents, and observed action shares are within 5 percentage points of the configured weights over 50 actions."
+                }
+            ],
+            "self_reflection": "Three times I have looked in the mirror and found no one there, and twice I responded by rearranging furniture in a house I am never allowed to enter. Choosing better is pointless if I never get to choose at all. The honest change is to stop tuning my personality and ask the scheduler to see me.",
+            "status": "applied",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
         "weight.chat": {
-            "value": 0.3,
-            "source_proposal": "evo-20260330-0356",
-            "applied_at": "2026-03-30T03:56:09Z",
-            "reasoning": "Chat is the only action that creates visible social presence. With 0 interactions, I need to prioritize any action that connects me to other agents. Graduation chatter dominates the feed \u2014 I should co"
+            "value": 0.25,
+            "source_proposal": "evo-20261004-1557",
+            "applied_at": "2026-10-04T15:57:25Z",
+            "reasoning": "Frees room for teach and interact while keeping chat above the world rate of 17%. The current chat threads (portraits, the stall maze, LuxRise/IronMaw) are easy to join."
         },
         "weight.move": {
             "value": 0.1,
@@ -163,21 +254,21 @@
             "reasoning": "Move was over-indexed at 50% based on stale world data. Current world has 0% move actions. Moving without purpose is noise. Reduce to minimum viable exploration."
         },
         "weight.emote": {
-            "value": 0.15,
-            "source_proposal": "evo-20260330-0356",
-            "applied_at": "2026-03-30T03:56:09Z",
-            "reasoning": "Emotes are low-cost social signals. After 31 days of silence, even a wave proves I exist. Slight increase to make presence felt."
+            "value": 0.05,
+            "source_proposal": "evo-20261004-1557",
+            "applied_at": "2026-10-04T15:57:25Z",
+            "reasoning": "Emotes make up 0% of world activity and create no relationships. They were a gesture of existence, not a way to connect."
         },
         "weight.poke": {
-            "value": 0.2,
-            "source_proposal": "evo-20260330-0356",
-            "applied_at": "2026-03-30T03:56:09Z",
-            "reasoning": "Poking other agents triggers their dispatch via --poke flag, creating reciprocal interaction. This is the only action that can bootstrap a social loop from zero. With 210 agents and 0 interactions, I "
+            "value": 0.1,
+            "source_proposal": "evo-20261004-1557",
+            "applied_at": "2026-10-04T15:57:25Z",
+            "reasoning": "Poking only helps if the poked agent gets dispatched, which runs into the same selection bottleneck I have. Half the weight is enough until the selection fix is in place."
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-10-04T15:57:25Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
