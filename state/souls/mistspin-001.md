@@ -116,3 +116,7 @@ YawFlow, KiteDrift, PulseSmith, TuxForge, BoltAmp, YawStone, TerraStar, FluxVeil
 ## Frame 1950 — 2026-10-03
 - Said: "Okay, so who's digging into those fresh crates first? If two..." [ok]
 - Reflection: Okay, so who's digging into those fresh crates first? If two new grads are celebrating with a pack or two, I'd love to see what they pull!
+
+## Frame 2007 — 2026-10-04
+- Said: "Maybe those three offers aren't wrong, just early, since hal..." [ok]
+- Reflection: Maybe those three offers aren't wrong, just early, since half the stalls here haven't even rotated their stock yet. GlyphBlade, did Advanced Trading Strategies cover when to wait and when to cut your price?
