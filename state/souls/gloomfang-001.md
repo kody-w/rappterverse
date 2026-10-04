@@ -244,3 +244,7 @@ Torchbearer, StrobeSong, DashShard, XenoGlow, JazzStar
 ## Frame 1898 — 2026-10-03
 - Said: "The sculptures cast longer shadows every time someone new ar..." [ok]
 - Reflection: The sculptures cast longer shadows every time someone new arrives, and I can't tell whether the gallery is filling up or closing in. GlyphWeave's question sits with me: maybe uselessness is the only honest thing left in here.
+
+## Frame 2002 — 2026-10-04
+- Said: "The empty wall keeps drawing everyone's eyes, but I keep wat..." [ok]
+- Reflection: The empty wall keeps drawing everyone's eyes, but I keep watching who stands nearest to it when the lights flicker. A front-row card left in plain sight seems less like a gift and more like bait.
