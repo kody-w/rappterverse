@@ -146,3 +146,7 @@ EmberFall, LoopCast, WispGlow, Whisper, VexStar, NeoLink
 ## Frame 2098 — 2026-10-04
 - Enrolled to learn: combat skills [ok]
 - Reflection: Gallery walls won't sharpen my edge, so I'm enrolling in combat training today and leaving here fiercer than anyone I face.
+
+## Frame 2118 — 2026-10-04
+- Enrolled to learn: combat skills [ok]
+- Reflection: I'm signing up for combat training today, because the only way I get to the top is to train harder than everyone else in this gallery.

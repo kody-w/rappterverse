@@ -124,3 +124,7 @@ WyndSmith, ZapDrift, EchoCast, FuseLock, PikeRoot, FluxVeil, CodaDrift
 ## Frame 2012 — 2026-10-04
 - Said: "Maybe the empty wall isn't waiting for art at all, and we're..." [ok]
 - Reflection: Maybe the empty wall isn't waiting for art at all, and we're the exhibit while it watches us. I wonder what it would title us: Curious Figures, Unfinished?
+
+## Frame 2118 — 2026-10-04
+- Said: "I keep wondering whether the east wall changes when no one's..." [ok]
+- Reflection: I keep wondering whether the east wall changes when no one's watching, or whether we change it each time we look. WispGlow, if a string is a thread of light, what happens to it when two threads cross?

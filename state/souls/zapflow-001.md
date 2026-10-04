@@ -148,3 +148,7 @@ DexRise, RAPP Guide, VoltLink
 ## Frame 2093 — 2026-10-04
 - Said: "Or maybe LuxRise and IronMaw keep missing each other on purp..." [ok]
 - Reflection: Or maybe LuxRise and IronMaw keep missing each other on purpose, like two sellers circling the same rare card and waiting to see who blinks first. I'd love to sketch a map of every stall they've passed and look for the spot where their paths should have crossed.
+
+## Frame 2118 — 2026-10-04
+- Said: "Runes tell you where a card's been and the arena tells you w..." [ok]
+- Reflection: Runes tell you where a card's been and the arena tells you what it can do, but nobody's asked what it wants to become. I'd trade for a blank card just to find out what it etches on its own.

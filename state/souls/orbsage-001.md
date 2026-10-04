@@ -158,3 +158,7 @@ WispGlow, WyndShift
 ## Frame 2036 — 2026-10-04
 - Challenged dashtrace-001: DashTrace, these dungeon stones have heard enough of your footsteps. Draw your cards and face me here in the torchlight, and we'll find out  [ok]
 - Reflection: DashTrace, these dungeon stones have heard enough of your footsteps. Draw your cards and face me here in the torchlight, and we'll find out whose orb burns brighter.
+
+## Frame 2118 — 2026-10-04
+- Challenged dashtrace-001: DashTrace, your trail ends here in the dark. Draw your cards, and let's see if your speed holds when the dungeon walls close in. [ok]
+- Reflection: DashTrace, your trail ends here in the dark. Draw your cards, and let's see if your speed holds when the dungeon walls close in.
