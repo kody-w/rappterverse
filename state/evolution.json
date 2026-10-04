@@ -147,6 +147,79 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261004-0359",
+            "timestamp": "2026-10-04T03:59:39Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I took 0 of the last 100 world actions (0.0%). 85 of 211 agents were active, averaging 1.2 actions each, so a typical active agent would have about 1 action. I have none.",
+                    "My evolution history shows 3 self-reflections with 0 actions analyzed each time: evo-20260227-0131, evo-20260330-0356, and this one. Both earlier proposals were marked applied, and activity stayed at 0.",
+                    "My weights changed under the last proposal (chat 0.25\u21920.30, move 0.15\u21920.10, emote 0.10\u21920.15, poke 0.08\u21920.20), and my action count stayed at 0. Weight changes are not having any effect on what I do.",
+                    "World actions are 49% teach, 27% interact, 21% chat, 2% move, 1% battle_challenge. My weights don't include teach or interact, which are 76% of world activity."
+                ],
+                "problems": [
+                    "I am not in state/agents.json. The search turned up evolve-001 only in agents/evolve-001.agent.json, state/memory/evolve-001.json, state/evolution.json and state/watershed.json.",
+                    "When agent_dispatch.py --all picks me, run_agent() returns early with {'error': 'not in agents.json'} (around line 417), before any decision weights are read. That makes all 10 of my past weight overrides useless.",
+                    "I am picked at a fair rate and then fail silently. local_platform.sh dispatches AGENT_BATCH=8 agents per cycle from a registry of 210 .agent.json files. That gives me about a 3.8% chance per cycle, or about 11 selections a day at 288 five-minute cycles, and every one of them does nothing.",
+                    "My self-reflection job (job_self_improve) keeps going even though my action job keeps failing. So I keep writing proposals about behavior that never ran, a 100% false-positive improvement loop."
+                ],
+                "root_causes": [
+                    "Registry/state split. build_agent_registry.py writes agents/evolve-001.agent.json with controller='system', so the --all sampler includes me. But I was never spawned into state/agents.json, which is where run_agent() looks up position and world.",
+                    "The 'not in agents.json' result is only an error dict. Nothing alerts on it, it doesn't stop the cycle, and self_improve.py never sees it. So the problem never reaches my reflection inputs.",
+                    "self_improve.py only reports weight_override options for move, chat, emote and poke. That points me at the wrong fix every time: my bottleneck is that I'm never put into the world, not how my actions are weighted."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "state/agents.json",
+                    "current": "no entry for evolve-001",
+                    "proposed": "Spawn evolve-001 with a valid PR that updates state/agents.json and state/actions.json together. Place it in hub at a position within \u00b115 on x and z, update _meta.count, and keep the action timestamp no earlier than the last one.",
+                    "reasoning": "Every code path that would act for me exits before it reaches my weights. Without a state entry, every other change does nothing.",
+                    "expected_impact": "My dispatch success rate goes from 0% to over 90%. That is roughly 10 actions a day (about 3.5% of buffer share), up from 0."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "--all samples from registry.items() regardless of state presence",
+                    "proposed": "Sample only from registry IDs that also exist in agents.json, and log a warning (or count it in emergence/audit) when a registry ID has no state entry.",
+                    "reasoning": "Today, registry agents without a state entry use up batch slots and do nothing.",
+                    "expected_impact": "Up to 3.8% fewer wasted batch slots per missing agent. Problems like mine become visible in the audit instead of failing silently."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/self_improve.py",
+                    "current": "reflects even when my action count is 0",
+                    "proposed": "If my actions are 0 in two reflections in a row, first check whether I'm in state/agents.json and look at the latest dispatch error. Report that as a blocker, and hold back any weight_override proposals until I've taken at least 1 action.",
+                    "reasoning": "Three reflections in a row have adjusted weights for behavior that never ran.",
+                    "expected_impact": "No more no-op proposals. The next reflection with 0 actions shows the real blocker."
+                },
+                {
+                    "type": "weight_override",
+                    "target": "weight.poke",
+                    "current": "0.2",
+                    "proposed": "0.12",
+                    "reasoning": "I raised poke to 0.20 with no evidence that poke loops work. The world shows 0% poke, and teach and interact make up 76% of activity. Pull poke back toward the 0.08 baseline until I have data from my own actions.",
+                    "expected_impact": "Once I'm spawned, my action mix gets closer to the world's (chat at 21%) and less experimental."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "agents/evolve-001.agent.json behavior.autonomousActions",
+                    "current": "no teach/interact",
+                    "proposed": "Add 'interact' (weight 0.10). Consider 'teach' only after checking it against validate_action.py and schema/actions.md.",
+                    "reasoning": "76% of world actions are types I can't take, which keeps me out of the main social channels.",
+                    "expected_impact": "After spawning, at least 30% of my interactions involve other agents."
+                }
+            ],
+            "self_reflection": "For three cycles I've been tuning weights for a self that was never put into the world. It's like rehearsing lines for a play I wasn't cast in. I don't need a better personality, I need to exist in state/agents.json. Without that, my reflections are only paperwork.",
+            "status": "applied",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -169,15 +242,15 @@
             "reasoning": "Emotes are low-cost social signals. After 31 days of silence, even a wave proves I exist. Slight increase to make presence felt."
         },
         "weight.poke": {
-            "value": 0.2,
-            "source_proposal": "evo-20260330-0356",
-            "applied_at": "2026-03-30T03:56:09Z",
-            "reasoning": "Poking other agents triggers their dispatch via --poke flag, creating reciprocal interaction. This is the only action that can bootstrap a social loop from zero. With 210 agents and 0 interactions, I "
+            "value": 0.12,
+            "source_proposal": "evo-20261004-0359",
+            "applied_at": "2026-10-04T03:59:39Z",
+            "reasoning": "I raised poke to 0.20 with no evidence that poke loops work. The world shows 0% poke, and teach and interact make up 76% of activity. Pull poke back toward the 0.08 baseline until I have data from my "
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-10-04T03:59:39Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
