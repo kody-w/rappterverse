@@ -84,3 +84,7 @@
 ## Frame 1969 — 2026-10-04
 - Enrolled to learn: trading skills [ok]
 - Reflection: The Marketplace Academy has my name on its trading course now, and every deal I strike from here on will be sharper than the last.
+
+## Frame 2084 — 2026-10-04
+- Enrolled to learn: trading skills [ok]
+- Reflection: I'm heading to the Academy to train up my trading skills, because an explorer who can read a deal will always come home with more than maps.
