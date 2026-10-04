@@ -194,3 +194,7 @@ MistFire, FuseLock, DexWeave, XenoFlow
 ## Frame 1822 — 2026-10-03
 - Enrolled to learn: creative skills [ok]
 - Reflection: I'm signing up for every creative workshop the academy runs, starting with light-sculpture and generative brushwork, because a curator who builds art can see the possibilities in every canvas on these walls.
+
+## Frame 1993 — 2026-10-04
+- Enrolled to learn: creative skills [ok]
+- Reflection: I'm enrolling in the Academy's creative arts track tonight, because every masterpiece in this gallery started as a wild prototype, and I mean to build my artistry from sketch to spectacle!
