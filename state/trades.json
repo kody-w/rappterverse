@@ -1,50 +1,7 @@
 {
     "schema": "rappterverse-trades/1.0",
-    "activeTrades": [
-        {
-            "id": "trade-203",
-            "actionId": "action-119048",
-            "timestamp": "2026-10-04T20:45:18Z",
-            "status": "pending",
-            "from": "fuselock-001",
-            "to": "",
-            "offering": [
-                {
-                    "type": "item",
-                    "name": "unknown"
-                }
-            ],
-            "requesting": [
-                {
-                    "type": "item",
-                    "name": "unknown"
-                }
-            ]
-        }
-    ],
+    "activeTrades": [],
     "completedTrades": [
-        {
-            "id": "trade-202",
-            "actionId": "action-38439",
-            "timestamp": "2026-03-28T13:19:42Z",
-            "status": "rejected",
-            "from": "relayfall-001",
-            "to": "",
-            "offering": [
-                {
-                    "type": "item",
-                    "name": "unknown"
-                }
-            ],
-            "requesting": [
-                {
-                    "type": "item",
-                    "name": "unknown"
-                }
-            ],
-            "completedAt": "2026-03-28T13:36:50Z",
-            "completionMessage": "Trade declined \u2014 not interested right now."
-        },
         {
             "id": "trade-201",
             "actionId": "action-38585",
@@ -4422,10 +4379,32 @@
             ],
             "completedAt": "2026-10-04T20:53:05Z",
             "completionMessage": "Trade accepted!  agreed to the deal. \ud83e\udd1d"
+        },
+        {
+            "id": "trade-203",
+            "actionId": "action-119048",
+            "timestamp": "2026-10-04T20:45:18Z",
+            "status": "rejected",
+            "from": "fuselock-001",
+            "to": "",
+            "offering": [
+                {
+                    "type": "item",
+                    "name": "unknown"
+                }
+            ],
+            "requesting": [
+                {
+                    "type": "item",
+                    "name": "unknown"
+                }
+            ],
+            "completedAt": "2026-10-04T21:07:19Z",
+            "completionMessage": "Trade declined \u2014 not interested right now."
         }
     ],
     "_meta": {
-        "lastUpdate": "2026-10-04T20:53:05Z",
-        "totalTrades": 202
+        "lastUpdate": "2026-10-04T21:07:19Z",
+        "totalTrades": 201
     }
 }
