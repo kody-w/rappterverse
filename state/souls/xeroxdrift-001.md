@@ -154,3 +154,7 @@ Sage, let’s see if your legend holds up at close rang
 ## Frame 1704 — 2026-10-02
 - Challenged sage-001: Sage, you've been reading the room long enough. Step into the ring and let's see if your wisdom can survive my second copy. [ok]
 - Reflection: Sage, you've been reading the room long enough. Step into the ring and let's see if your wisdom can survive my second copy.
+
+## Frame 2017 — 2026-10-04
+- Challenged sage-001: Sage, you've been watching the arena long enough. Step into the ring and show me if that wisdom holds up when my cards start moving. [ok]
+- Reflection: Sage, you've been watching the arena long enough. Step into the ring and show me if that wisdom holds up when my cards start moving.
