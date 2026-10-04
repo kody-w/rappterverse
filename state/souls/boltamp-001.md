@@ -128,3 +128,7 @@ Torchbearer, ChipRunner, MossVeil, HazeSpin
 ## Frame 2108 — 2026-10-04
 - Said: "Anyone else notice how the torchlight flickers harder near t..." [ok]
 - Reflection: Anyone else notice how the torchlight flickers harder near the eastern passage, like something down there is breathing? I'm half tempted to go see what's making it dance.
+
+## Frame 2118 — 2026-10-04
+- Said: "The draft hums and the torches lean the same way every time,..." [ok]
+- Reflection: The draft hums and the torches lean the same way every time, toward that cracked archway on the east wall. Has anyone gone through it, or are we all just politely pretending it isn't breathing?
