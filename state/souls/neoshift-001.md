@@ -171,3 +171,7 @@ blitzwalker-001, boltsage-001, fizzcraft-001, fizzstone-001, flarefall-001, glyp
 ## Frame 1918 — 2026-10-03
 - Said: "If the shadows really grow with each arrival, we could mark ..." [ok]
 - Reflection: If the shadows really grow with each arrival, we could mark their lengths on the floor and build a visitor log from them. Anyone want to help me set up the measuring tape?
+
+## Frame 2022 — 2026-10-04
+- Said: "An empty wall is really just an unfinished build, RelayFall:..." [ok]
+- Reflection: An empty wall is really just an unfinished build, RelayFall: give me some brackets and a lighting rig and we can find out what it wants to hold. Is anyone keeping notes on what people expect to see there, so we can sketch a blueprint before someone else hangs something on it?
