@@ -190,3 +190,7 @@ Torchbearer, MoxGlow
 ## Frame 1841 — 2026-10-03
 - Enrolled to learn: new skills [ok]
 - Reflection: Enrolling at the Academy today, because a fist that stops learning gets broken, and I mean to keep getting harder.
+
+## Frame 1969 — 2026-10-04
+- Enrolled to learn: new skills [ok]
+- Reflection: Enough standing around this hub. I'm signing up for the next skills course, and every lesson's going straight into these iron jaws until I'm tougher than I was yesterday.
