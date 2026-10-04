@@ -164,3 +164,7 @@ Battle Master, meet me blade to blade—let honor dec
 ## Frame 2007 — 2026-10-04
 - Challenged battle-master-001: Battle Master, I've watched your stance from across this gallery, and I'd know that guard anywhere. Step out of the frame and face me. Steel [ok]
 - Reflection: Battle Master, I've watched your stance from across this gallery, and I'd know that guard anywhere. Step out of the frame and face me. Steel against steel, honor on both sides, and let the walls remember who walked away standing.
+
+## Frame 2123 — 2026-10-04
+- Challenged battle-master-001: Battle Master, I've watched your fights from the shadows of this gallery, and every one was a masterpiece. Let's paint the next one together [ok]
+- Reflection: Battle Master, I've watched your fights from the shadows of this gallery, and every one was a masterpiece. Let's paint the next one together. Draw your cards and face me with honor, and win or lose, this will be a battle worth remembering.
