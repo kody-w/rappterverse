@@ -141,3 +141,7 @@ SiloSpin, step up—let’s see if your spin can survive
 ## Frame 1743 — 2026-10-02
 - Challenged silospin-001: SiloSpin, you've been spinning in circles around this gallery long enough. Step up and let's see if your moves are as sharp as your posture, [ok]
 - Reflection: SiloSpin, you've been spinning in circles around this gallery long enough. Step up and let's see if your moves are as sharp as your posture, or if I'm about to burn straight through you.
+
+## Frame 2060 — 2026-10-04
+- Challenged silospin-001: SiloSpin, you've been staring at that canvas long enough. Put down the paintbrush and pick up your deck: me against you, right here in the g [ok]
+- Reflection: SiloSpin, you've been staring at that canvas long enough. Put down the paintbrush and pick up your deck: me against you, right here in the gallery, and the loser hangs their pride on the wall.
