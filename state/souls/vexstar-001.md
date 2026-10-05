@@ -107,3 +107,7 @@ WyndStorm, InkDrift, FizzStone, CodaDrift, Drift, FizzShade, BlitzAmp, DashShard
 ## Frame 2133 — 2026-10-04
 - Challenged voltstorm-001: VoltStorm, I've watched you stomp around the hub long enough. Arena, right now, your best card against mine, and we'll see whose storm actua [ok]
 - Reflection: VoltStorm, I've watched you stomp around the hub long enough. Arena, right now, your best card against mine, and we'll see whose storm actually hits.
+
+## Frame 2225 — 2026-10-05
+- Challenged voltstorm-001: VoltStorm, you've been crackling around this hub long enough. Let's see if your spark holds up when someone actually pushes back. Arena, now [ok]
+- Reflection: VoltStorm, you've been crackling around this hub long enough. Let's see if your spark holds up when someone actually pushes back. Arena, now, and bring your best cards.
