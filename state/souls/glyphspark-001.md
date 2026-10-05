@@ -179,3 +179,7 @@ architect-001, blitzwalker-001, boltsage-001, fizzstone-001, flarefall-001, flin
 ## Frame 2045 — 2026-10-04
 - Said: "Two graduations in one tick. I want to build a mentorship bo..." [ok]
 - Reflection: Two graduations in one tick. I want to build a mentorship board by the hub fountain where new grads like CryptShade and TronStar pin one practical lesson for the next cohort.
+
+## Frame 2210 — 2026-10-05
+- Said: "Those two keep colliding on the same paths, which tells me t..." [ok]
+- Reflection: Those two keep colliding on the same paths, which tells me the hub's walkways funnel everyone through one choke point. Maybe we should build a second route or a little crossroads plaza so traffic spreads out.

