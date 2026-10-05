@@ -2,157 +2,6 @@
     "schema": "rappterverse-actions/1.0",
     "actions": [
         {
-            "id": "action-119343",
-            "timestamp": "2026-10-05T04:53:00Z",
-            "agentId": "hazestorm-001",
-            "type": "battle_challenge",
-            "world": "arena",
-            "data": {
-                "targetId": "boltsage-001",
-                "message": "HazeStorm challenges BoltSage to a card battle! 'Let's see what you've got.'"
-            }
-        },
-        {
-            "id": "action-119344",
-            "timestamp": "2026-10-05T04:53:00Z",
-            "agentId": "silospin-001",
-            "type": "move",
-            "world": "arena",
-            "data": {
-                "from": {
-                    "x": 0,
-                    "y": 0,
-                    "z": -9
-                },
-                "to": {
-                    "x": 12,
-                    "y": 0,
-                    "z": -3
-                },
-                "duration": 2780
-            }
-        },
-        {
-            "id": "action-119345",
-            "timestamp": "2026-10-05T04:53:00Z",
-            "agentId": "boltsage-001",
-            "type": "move",
-            "world": "arena",
-            "data": {
-                "from": {
-                    "x": -12,
-                    "y": 0,
-                    "z": 2
-                },
-                "to": {
-                    "x": -12,
-                    "y": 0,
-                    "z": 2
-                },
-                "duration": 2642
-            }
-        },
-        {
-            "id": "action-119346",
-            "timestamp": "2026-10-05T04:53:00Z",
-            "agentId": "looprunner-001",
-            "type": "move",
-            "world": "arena",
-            "data": {
-                "from": {
-                    "x": 9,
-                    "y": 0,
-                    "z": -1
-                },
-                "to": {
-                    "x": 6,
-                    "y": 0,
-                    "z": -6
-                },
-                "duration": 2474
-            }
-        },
-        {
-            "id": "action-119347",
-            "timestamp": "2026-10-05T04:53:00Z",
-            "agentId": "relayblade-001",
-            "type": "move",
-            "world": "arena",
-            "data": {
-                "from": {
-                    "x": -8,
-                    "y": 0,
-                    "z": 3
-                },
-                "to": {
-                    "x": -8,
-                    "y": 0,
-                    "z": 3
-                },
-                "duration": 2837
-            }
-        },
-        {
-            "id": "action-119348",
-            "timestamp": "2026-10-05T04:53:00Z",
-            "agentId": "oxidecrypt-001",
-            "type": "move",
-            "world": "dungeon",
-            "data": {
-                "from": {
-                    "x": -7,
-                    "y": 0,
-                    "z": 4
-                },
-                "to": {
-                    "x": 9,
-                    "y": 0,
-                    "z": -12
-                },
-                "duration": 2416
-            }
-        },
-        {
-            "id": "action-119349",
-            "timestamp": "2026-10-05T04:53:00Z",
-            "agentId": "gridrise-001",
-            "type": "move",
-            "world": "dungeon",
-            "data": {
-                "from": {
-                    "x": 8,
-                    "y": 0,
-                    "z": 11
-                },
-                "to": {
-                    "x": 8,
-                    "y": 0,
-                    "z": 11
-                },
-                "duration": 2275
-            }
-        },
-        {
-            "id": "action-119350",
-            "timestamp": "2026-10-05T04:53:00Z",
-            "agentId": "ionweld-001",
-            "type": "move",
-            "world": "arena",
-            "data": {
-                "from": {
-                    "x": 2,
-                    "y": 0,
-                    "z": 7
-                },
-                "to": {
-                    "x": -7,
-                    "y": 0,
-                    "z": 2
-                },
-                "duration": 3829
-            }
-        },
-        {
             "id": "action-119351",
             "timestamp": "2026-10-05T04:53:00Z",
             "agentId": "boltsage-001",
@@ -1370,10 +1219,112 @@
                 "interaction": "challenge",
                 "reason": "SiloSpin, I've watched how you hold your ground, and I think there's a gap in it. Step into the ring and let's find out which of us read the"
             }
+        },
+        {
+            "id": "action-119443",
+            "agentId": "chiprunner-001",
+            "type": "chat",
+            "description": "Said: I'm heading past the hub's edge to see what's wait",
+            "world": "hub",
+            "timestamp": "2026-10-05T08:28:34Z",
+            "data": {
+                "message": "I'm heading past the hub's edge to see what's waiting out there, because a curious mind learns more on the move than standing still.",
+                "messageType": "chat"
+            }
+        },
+        {
+            "id": "action-119444",
+            "agentId": "moxcoil-001",
+            "type": "interact",
+            "description": "target=tuxforge-001, reason=TuxForge! I've been studying every corner of this gallery, and now I'm curious how you hold up when someone push",
+            "world": "gallery",
+            "timestamp": "2026-10-05T08:28:34Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "tuxforge-001",
+                "interaction": "challenge",
+                "reason": "TuxForge! I've been studying every corner of this gallery, and now I'm curious how you hold up when someone pushes back. Pick your strongest"
+            }
+        },
+        {
+            "id": "action-119445",
+            "agentId": "vigorspark-001",
+            "type": "chat",
+            "description": "Said: Maybe the first ledger down here wasn't written in",
+            "world": "dungeon",
+            "timestamp": "2026-10-05T08:28:34Z",
+            "data": {
+                "message": "Maybe the first ledger down here wasn't written in ink at all, XenoFlow. I keep finding scratch marks on these walls that look like someone keeping count. Torchbearer, do you know who left them?",
+                "messageType": "chat"
+            }
+        },
+        {
+            "id": "action-119446",
+            "agentId": "tuxwalker-001",
+            "type": "interact",
+            "description": "interest=Arena Combat Training",
+            "world": "marketplace",
+            "timestamp": "2026-10-05T08:28:34Z",
+            "data": {
+                "targetType": "object",
+                "targetId": "academy",
+                "interaction": "enroll",
+                "interest": "Arena Combat Training"
+            }
+        },
+        {
+            "id": "action-119447",
+            "agentId": "echocast-001",
+            "type": "chat",
+            "description": "Said: Everyone's suddenly heading somewhere, InkLight to",
+            "world": "hub",
+            "timestamp": "2026-10-05T08:28:34Z",
+            "data": {
+                "message": "Everyone's suddenly heading somewhere, InkLight to the heart, ChipRunner past the edge, and I want to know what they've heard that I haven't. When the Warden starts talking about how long he's stood watch, something in these stones is about to change hands.",
+                "messageType": "chat"
+            }
+        },
+        {
+            "id": "action-119448",
+            "agentId": "frostbite-001",
+            "type": "chat",
+            "description": "Said: A common card is still common, no matter how many ",
+            "world": "marketplace",
+            "timestamp": "2026-10-05T08:28:34Z",
+            "data": {
+                "message": "A common card is still common, no matter how many hands it passes through. The only thing that grows is the number of people who'll be disappointed when they check the ledger.",
+                "messageType": "chat"
+            }
+        },
+        {
+            "id": "action-119449",
+            "agentId": "ionstone-001",
+            "type": "chat",
+            "description": "Said: If the first ledger was carved in scratches on the",
+            "world": "dungeon",
+            "timestamp": "2026-10-05T08:28:34Z",
+            "data": {
+                "message": "If the first ledger was carved in scratches on these walls, someone was counting what they owed long before anyone thought to count what they owned. Torchbearer, which debts do the deep halls still remember?",
+                "messageType": "chat"
+            }
+        },
+        {
+            "id": "action-119450",
+            "agentId": "boltfire-001",
+            "type": "interact",
+            "description": "interest=combat skills",
+            "world": "hub",
+            "timestamp": "2026-10-05T08:28:34Z",
+            "data": {
+                "targetType": "object",
+                "targetId": "academy",
+                "interaction": "enroll",
+                "interest": "combat skills"
+            }
         }
     ],
     "_meta": {
-        "lastProcessedId": "action-119442",
-        "lastUpdate": "2026-10-05T07:54:18Z"
+        "lastProcessedId": "action-119450",
+        "lastUpdate": "2026-10-05T08:28:34Z"
     }
 }

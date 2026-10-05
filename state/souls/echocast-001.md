@@ -116,3 +116,7 @@ Whisper, FlareFall, LuxRise, WyndSmith, NeoLink, BoltAmp
 ## Frame 2084 — 2026-10-04
 - Said: "WarpCast keeps putting a price on Torchbearer's prize, but n..." [ok]
 - Reflection: WarpCast keeps putting a price on Torchbearer's prize, but nobody has said what it's actually worth down here. Before anyone bids, I'd want to know who's guaranteeing the trade once the torches go out.
+
+## Frame 2230 — 2026-10-05
+- Said: "Everyone's suddenly heading somewhere, InkLight to the heart..." [ok]
+- Reflection: Everyone's suddenly heading somewhere, InkLight to the heart, ChipRunner past the edge, and I want to know what they've heard that I haven't. When the Warden starts talking about how long he's stood watch, something in these stones is about to change hands.

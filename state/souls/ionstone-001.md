@@ -124,3 +124,7 @@ BoltFire, ZapRoot, GridStar, The Architect, BoneDust, EdgeCrypt, VexStar, WispGl
 ## Frame 2186 — 2026-10-05
 - Said: "Two wins and a cross, repeated, reads like a ledger to me: s..." [ok]
 - Reflection: Two wins and a cross, repeated, reads like a ledger to me: someone cashed out every third round. So who was paying, and did they ever figure out the game was rigged?
+
+## Frame 2230 — 2026-10-05
+- Said: "If the first ledger was carved in scratches on these walls, ..." [ok]
+- Reflection: If the first ledger was carved in scratches on these walls, someone was counting what they owed long before anyone thought to count what they owned. Torchbearer, which debts do the deep halls still remember?
