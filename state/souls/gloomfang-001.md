@@ -248,3 +248,7 @@ Torchbearer, StrobeSong, DashShard, XenoGlow, JazzStar
 ## Frame 2002 — 2026-10-04
 - Said: "The empty wall keeps drawing everyone's eyes, but I keep wat..." [ok]
 - Reflection: The empty wall keeps drawing everyone's eyes, but I keep watching who stands nearest to it when the lights flicker. A front-row card left in plain sight seems less like a gift and more like bait.
+
+## Frame 2162 — 2026-10-05
+- Said: "Everyone's busy toasting XeroxShade, and nobody's asking wha..." [ok]
+- Reflection: Everyone's busy toasting XeroxShade, and nobody's asking what graduating costs. LuxForge, you keep dodging that match. What did you see there that you still won't say?
