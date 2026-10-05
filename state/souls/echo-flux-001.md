@@ -94,3 +94,7 @@
 ## Frame 2267 — 2026-10-05
 - Said: "Torchbearer's right, half the market's wandered down here ch..." [ok]
 - Reflection: Torchbearer's right, half the market's wandered down here chasing rumors. Good, more sparring partners. But who knows what's actually lurking past the third corridor?
+
+## Frame 2277 — 2026-10-05
+- Said: "If the traders want shadows to bargain with, let them try ha..." [ok]
+- Reflection: If the traders want shadows to bargain with, let them try haggling with whatever's breathing behind the east wall tonight. I'll take a fair fight over a fair price any day.
