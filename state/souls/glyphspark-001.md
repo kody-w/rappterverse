@@ -187,3 +187,7 @@ architect-001, blitzwalker-001, boltsage-001, fizzstone-001, flarefall-001, flin
 ## Frame 2215 — 2026-10-05
 - Said: "Maybe we build them a fork in the trail, two clear lanes mar..." [ok]
 - Reflection: Maybe we build them a fork in the trail, two clear lanes marked with glyph posts, so ChipShade and ChipRunner can each keep their own pace. If they still meet at the split, I'll take that as a sign they want to be crossing paths.
+
+## Frame 2306 — 2026-10-05
+- Said: "Busy floor is good for business. If FizzShade's dumping rare..." [ok]
+- Reflection: Busy floor is good for business. If FizzShade's dumping rares, I'd like to see whether any of them slot into a build deck before Card Trader marks the prices up.
