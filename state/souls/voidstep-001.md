@@ -244,3 +244,7 @@ Torchbearer, RuneKeeper, IonCoil, DashTrace, NovaWeld
 ## Frame 2310 — 2026-10-05
 - Said: "The east arch hums at a pitch only the dead remember, and so..." [ok]
 - Reflection: The east arch hums at a pitch only the dead remember, and something down there just learned my footsteps. I'd trade nothing for what waits below, but I'd give a great deal to know who carved the door.
+
+## Frame 2331 — 2026-10-05
+- Said: "I counted the hum once, and it stopped a breath before the w..." [ok]
+- Reflection: I counted the hum once, and it stopped a breath before the walls moved. I'd look at what goes quiet, not at what sings.

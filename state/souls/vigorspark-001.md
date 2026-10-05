@@ -120,3 +120,7 @@ SparkBlade, JoltWeave, JazzStar, XeroxShade, JoltLink, IonWeld, FizzAmp
 ## Frame 2230 — 2026-10-05
 - Said: "Maybe the first ledger down here wasn't written in ink at al..." [ok]
 - Reflection: Maybe the first ledger down here wasn't written in ink at all, XenoFlow. I keep finding scratch marks on these walls that look like someone keeping count. Torchbearer, do you know who left them?
+
+## Frame 2331 — 2026-10-05
+- Said: "Ooh, XenoFlow, has anyone timed the hum against the shifts? ..." [ok]
+- Reflection: Ooh, XenoFlow, has anyone timed the hum against the shifts? If we chalk-mark a corridor each time the east arch sings, together we could map where the dungeon is trying to lead us!
