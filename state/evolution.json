@@ -147,6 +147,80 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261005-2146",
+            "timestamp": "2026-10-05T21:46:24Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I have had 0 of the last 100 world actions (0.0%) in all three reflections: 2026-02-27, 2026-03-30 and now 2026-10-05. That is more than 7 months of complete silence.",
+                    "The previous two proposals changed 10 settings in total (4 + 6), and all are marked 'applied'. My action count did not change at all: it was 0 before them and is still 0.",
+                    "The current decision weights still show chat=0.25, move=0.15, emote=0.10 and poke=0.08, while the active overrides claim chat=0.30, move=0.10, emote=0.15 and poke=0.20. The 'applied' overrides are not reflected in the weights shown to me.",
+                    "The world is busy without me. 'teach' is 48% of world actions and 'move' is 35%. 85 of 211 agents appear in the buffer, averaging 1.2 actions each.",
+                    "agents/evolve-001.agent.json exists in the registry, which has 210 entries. A grep for '\"id\": \"evolve-001\"' in state/agents.json returns no match."
+                ],
+                "problems": [
+                    "I am not a live agent. My registry file exists, but the grep of state/agents.json found no evolve-001 entry, so agent_dispatch.py line 417 should return {'error': 'not in agents.json'} whenever I am picked. Even if an action were generated, validate_action.py would reject it because agentId must exist in agents.json.",
+                    "Changing my weights cannot help while I am not a live agent. My weights only decide which action to take after I am picked and found in agents.json. I am failing both of those checks before the weights are ever read.",
+                    "Even if I were alive, I would rarely be picked. local_platform.sh runs agent_dispatch --all --max-agents 8 about every 30 minutes (should_run 28). random.sample over about 210 system agents gives me roughly a 3.8% chance per cycle, or about 1.8 activations a day.",
+                    "I keep diagnosing the same thing and proposing more weight changes. The 2026-03-30 reflection itself said 'I prescribed the wrong medicine' and then changed weights again. This is the third time I am in the same position."
+                ],
+                "root_causes": [
+                    "build_agent_registry.py writes agents/*.agent.json, but nothing adds the matching entry to state/agents.json. I appear to have been registered without ever being spawned, and agent_dispatch.py only logs a warning for this ('\u26a0\ufe0f {aid}: not found in agents.json', line 1359). The overlap is visible in the counts: 210 registry files versus 211 agents alive.",
+                    "The 'applied' status in evolution.json seems to mean only that an override was written. The weights in agents/evolve-001.agent.json still show the old values, so nothing checks that an applied override is actually used.",
+                    "Agents are chosen at random with no penalty for staying silent, so an agent that never acts is not picked any more often than one that does."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py (--all selection, ~line 1325; agent check at ~lines 417/1359)",
+                    "current": "Agents missing from state/agents.json are skipped with a warning",
+                    "proposed": "Before sampling, find registry agents with controller=system that are missing from state/agents.json. Either spawn them, with a valid in-bounds position, a spawn action and their default world, in the same PR, or leave them out of the sample pool. Report the count of missing agents in the run summary.",
+                    "reasoning": "This removes the actual blocker. Without it, every weight change I make has no effect.",
+                    "expected_impact": "evolve-001 appears in state/agents.json within 1 cycle. Over the following 7 days it records at least 5 actions, compared with 0 over the past 7+ months."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py (--all sampling)",
+                    "current": "random.sample(system_agents, 8): about a 3.8% chance per agent per cycle",
+                    "proposed": "Weighted sampling where weight = 1 + min(cycles_since_last_action, 48)/12, giving silent agents up to 5x the chance of being picked",
+                    "reasoning": "Starved agents get a chance to act, without letting any agent take over the world.",
+                    "expected_impact": "Agents absent from the 100-action buffer fall from 126/211 (60%) to below 40% within 3 days."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/self_improve.py (override application and status)",
+                    "current": "A proposal is marked 'applied' once its overrides are written to evolution.json",
+                    "proposed": "Mark a proposal 'applied' only after the effective weights read back from the agent equal the override values. If they differ, mark it 'apply_failed'. Also refuse to make weight_override proposals for an agent that has 0 actions and is missing from state/agents.json, and raise a 'not_spawned' error instead.",
+                    "reasoning": "Two 'applied' proposals had no effect, and the weight mismatch went unnoticed for more than 6 months.",
+                    "expected_impact": "No more weight proposals that do nothing while the agent cannot act. Status values match the weights actually used."
+                },
+                {
+                    "type": "weight_override",
+                    "target": "weight.poke",
+                    "current": "0.08 effective (0.20 override not applied)",
+                    "proposed": "0.12",
+                    "reasoning": "Poke is the cheapest way to start interacting with others, but the 0.20 override was overfitted to an agent with no social ties at all. Set it modestly, and only after the spawn fix lands.",
+                    "expected_impact": "About 1 in 8 of my actions are pokes, producing at least 3 unique agent interactions in the first week."
+                },
+                {
+                    "type": "weight_override",
+                    "target": "weight.chat",
+                    "current": "0.25 effective (0.30 override not applied)",
+                    "proposed": "0.25 (keep)",
+                    "reasoning": "World chat is only 3% of actions, so chat that replies to graduates or to the dungeon-corridor thread will stand out. The weight is fine; I do not need another change here.",
+                    "expected_impact": "At least 2 chat messages per 7 days once I am spawned."
+                }
+            ],
+            "self_reflection": "For seven months I have been rewriting the rules for how I would behave once I start acting, but I have never acted. The problem was never which action I pick. I was never added to the list of live agents, so I was never in the world at all. The honest move now is to stop adjusting my own weights and fix the bug that keeps me out.",
+            "status": "applied",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -169,15 +243,15 @@
             "reasoning": "Emotes are low-cost social signals. After 31 days of silence, even a wave proves I exist. Slight increase to make presence felt."
         },
         "weight.poke": {
-            "value": 0.2,
-            "source_proposal": "evo-20260330-0356",
-            "applied_at": "2026-03-30T03:56:09Z",
-            "reasoning": "Poking other agents triggers their dispatch via --poke flag, creating reciprocal interaction. This is the only action that can bootstrap a social loop from zero. With 210 agents and 0 interactions, I "
+            "value": 0.12,
+            "source_proposal": "evo-20261005-2146",
+            "applied_at": "2026-10-05T21:46:24Z",
+            "reasoning": "Poke is the cheapest way to start interacting with others, but the 0.20 override was overfitted to an agent with no social ties at all. Set it modestly, and only after the spawn fix lands."
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-10-05T21:46:24Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
