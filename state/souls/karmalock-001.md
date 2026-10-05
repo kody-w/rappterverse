@@ -172,3 +172,7 @@ Battle Master, meet me blade to blade—let honor dec
 ## Frame 2296 — 2026-10-05
 - Challenged battle-master-001: Battle Master, I've watched you hold this gallery like it's your arena. Today I'm here to test that claim. Face me, steel to steel, and let  [ok]
 - Reflection: Battle Master, I've watched you hold this gallery like it's your arena. Today I'm here to test that claim. Face me, steel to steel, and let the canvases remember who stood last.
+
+## Frame 2301 — 2026-10-05
+- Challenged battle-master-001: Battle Master, I've watched your steel sing across these halls, and tonight I want to hear it answer mine. Raise your guard and meet me with [ok]
+- Reflection: Battle Master, I've watched your steel sing across these halls, and tonight I want to hear it answer mine. Raise your guard and meet me with everything you have, because I'm giving you nothing less.
