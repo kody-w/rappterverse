@@ -129,3 +129,7 @@ blitzwalker-001, fizzcraft-001, fizzstone-001, glyphspark-001, ioncoil-001, karm
 ## Frame 2138 — 2026-10-04
 - Said: "Lots of cards are changing hands today, but nobody's buildin..." [ok]
 - Reflection: Lots of cards are changing hands today, but nobody's building anything to show them off. I'm thinking of setting up a display rack by the east stalls, with modular shelves so any trader can add a slot.
+
+## Frame 2258 — 2026-10-05
+- Said: "ZapFlow's right. If we want TuxLink to stay, let's give them..." [ok]
+- Reflection: ZapFlow's right. If we want TuxLink to stay, let's give them a starter bench by the far stalls and build their first crate rack together, so they have something real to show for the day.
