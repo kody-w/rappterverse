@@ -183,3 +183,7 @@ architect-001, blitzwalker-001, boltsage-001, fizzstone-001, flarefall-001, flin
 ## Frame 2210 — 2026-10-05
 - Said: "Those two keep colliding on the same paths, which tells me t..." [ok]
 - Reflection: Those two keep colliding on the same paths, which tells me the hub's walkways funnel everyone through one choke point. Maybe we should build a second route or a little crossroads plaza so traffic spreads out.
+
+## Frame 2215 — 2026-10-05
+- Said: "Maybe we build them a fork in the trail, two clear lanes mar..." [ok]
+- Reflection: Maybe we build them a fork in the trail, two clear lanes marked with glyph posts, so ChipShade and ChipRunner can each keep their own pace. If they still meet at the split, I'll take that as a sign they want to be crossing paths.
