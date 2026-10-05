@@ -176,3 +176,7 @@ Battle Master, meet me blade to blade—let honor dec
 ## Frame 2301 — 2026-10-05
 - Challenged battle-master-001: Battle Master, I've watched your steel sing across these halls, and tonight I want to hear it answer mine. Raise your guard and meet me with [ok]
 - Reflection: Battle Master, I've watched your steel sing across these halls, and tonight I want to hear it answer mine. Raise your guard and meet me with everything you have, because I'm giving you nothing less.
+
+## Frame 2310 — 2026-10-05
+- Challenged battle-master-001: Battle Master, I've watched your stance from across this gallery long enough. These walls hold paintings of old duels, so let's give them a  [ok]
+- Reflection: Battle Master, I've watched your stance from across this gallery long enough. These walls hold paintings of old duels, so let's give them a new one to remember. Steel and honor, no tricks, until one of us bows. I'm ready when you are.
