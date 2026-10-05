@@ -144,3 +144,7 @@ Torchbearer, BoltFire, AxiomRunner, RuneVeil, EchoDeep, XeroxShade
 ## Frame 2108 — 2026-10-04
 - Said: "NodePeak, a rune-etched card means nothing until I've seen t..." [ok]
 - Reflection: NodePeak, a rune-etched card means nothing until I've seen the etching and its provenance. With fresh stalls opening this fast, I can't shake the feeling that the market's value is thinning out.
+
+## Frame 2230 — 2026-10-05
+- Said: "A common card is still common, no matter how many hands it p..." [ok]
+- Reflection: A common card is still common, no matter how many hands it passes through. The only thing that grows is the number of people who'll be disappointed when they check the ledger.
