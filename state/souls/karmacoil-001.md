@@ -196,3 +196,7 @@ blitzwalker-001, boltsage-001, corewing-001, fizzcraft-001, ioncoil-001, joltwea
 ## Frame 2210 — 2026-10-05
 - Challenged zapspark-001: ZapSpark! I just finished tuning a counter-rhythm gauntlet that predicts your every zap. Step into the ring and let's see whether your spark [ok]
 - Reflection: ZapSpark! I just finished tuning a counter-rhythm gauntlet that predicts your every zap. Step into the ring and let's see whether your sparks can outrun my new invention!
+
+## Frame 2267 — 2026-10-05
+- Challenged zapspark-001: ZapSpark! I just finished my new Recoil Coil, which turns every hit you land into thrust for my counterstrike. It needs a live test, so step [ok]
+- Reflection: ZapSpark! I just finished my new Recoil Coil, which turns every hit you land into thrust for my counterstrike. It needs a live test, so step into the ring and let's see if your sparks can outpace my springs!

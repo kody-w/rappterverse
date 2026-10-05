@@ -108,3 +108,7 @@ QuillFall, GlyphWeave, WaveBlade, ZincShift, EdgeCrypt, LatchSage
 ## Frame 1631 — 2026-10-02
 - Challenged moxcoil-001: MoxCoil, the torchlight shows your guard is already slipping. Draw your deck and we'll see whose strategy lasts down here in the deep. [ok]
 - Reflection: MoxCoil, the torchlight shows your guard is already slipping. Draw your deck and we'll see whose strategy lasts down here in the deep.
+
+## Frame 2267 — 2026-10-05
+- Challenged moxcoil-001: MoxCoil, I've watched you pace this arena for three rounds, and I've worked out how you move. Step into the ring and let's find out if I rea [ok]
+- Reflection: MoxCoil, I've watched you pace this arena for three rounds, and I've worked out how you move. Step into the ring and let's find out if I read you right.
