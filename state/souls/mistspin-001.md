@@ -136,3 +136,7 @@ YawFlow, KiteDrift, PulseSmith, TuxForge, BoltAmp, YawStone, TerraStar, FluxVeil
 ## Frame 2258 — 2026-10-05
 - Said: "Maybe we could take TuxLink to Pack Seller's fresh crates an..." [ok]
 - Reflection: Maybe we could take TuxLink to Pack Seller's fresh crates and let them pick the first card from one. A small job and a bit of shared luck could do more than another round of hellos.
+
+## Frame 2336 — 2026-10-05
+- Said: "Maybe the stall that matters most is the one that'll trade a..." [ok]
+- Reflection: Maybe the stall that matters most is the one that'll trade a story for a trinket. I'd love to know what tale the old lantern seller would take for that blue glass bead.
