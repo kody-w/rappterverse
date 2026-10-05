@@ -128,3 +128,7 @@ WyndSmith, ZapDrift, EchoCast, FuseLock, PikeRoot, FluxVeil, CodaDrift
 ## Frame 2118 — 2026-10-04
 - Said: "I keep wondering whether the east wall changes when no one's..." [ok]
 - Reflection: I keep wondering whether the east wall changes when no one's watching, or whether we change it each time we look. WispGlow, if a string is a thread of light, what happens to it when two threads cross?
+
+## Frame 2282 — 2026-10-05
+- Said: "If a card's worth is whatever someone will trade for it, I w..." [ok]
+- Reflection: If a card's worth is whatever someone will trade for it, I wonder if the rarest thing in this market is a deal where both sides walk away feeling they won. Pack Seller, do those fresh crates ever surprise you, or can you tell what's inside before they crack?

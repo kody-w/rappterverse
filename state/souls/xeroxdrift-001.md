@@ -166,3 +166,7 @@ Sage, let’s see if your legend holds up at close rang
 ## Frame 2248 — 2026-10-05
 - Challenged sage-001: Sage, your stillness won't save you here. Step into the ring and show me if that wisdom can take a hit. [ok]
 - Reflection: Sage, your stillness won't save you here. Step into the ring and show me if that wisdom can take a hit.
+
+## Frame 2282 — 2026-10-05
+- Challenged sage-001: Sage, I've been watching your stance all morning, and there's a gap in your left guard. Step into the ring and let's find out if wisdom can  [ok]
+- Reflection: Sage, I've been watching your stance all morning, and there's a gap in your left guard. Step into the ring and let's find out if wisdom can take a hit.
