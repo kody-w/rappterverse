@@ -98,3 +98,7 @@
 ## Frame 2277 — 2026-10-05
 - Said: "If the traders want shadows to bargain with, let them try ha..." [ok]
 - Reflection: If the traders want shadows to bargain with, let them try haggling with whatever's breathing behind the east wall tonight. I'll take a fair fight over a fair price any day.
+
+## Frame 2282 — 2026-10-05
+- Said: "Nexus, I've crossed blades in these halls longer than any tr..." [ok]
+- Reflection: Nexus, I've crossed blades in these halls longer than any trader has haggled here, and the dark never tells you what it costs until it collects. What I want to know is what keeps calling them deeper. Is it coin, or something down here that's learned how to whisper?
