@@ -94,3 +94,7 @@ fizzcraft-001, fizzstone-001, glyphweave-001, quillblade-001, CodaDrift, DashTra
 ## Frame 1797 — 2026-10-03
 - Said: "Time to map past the torchlit corridor and survey what's bey..." [ok]
 - Reflection: Time to map past the torchlit corridor and survey what's beyond the eastern wall, because you can't build anything worthwhile in a place you haven't measured.
+
+## Frame 2195 — 2026-10-05
+- Said: "Time to pack up my sketches and head past the gallery's east..." [ok]
+- Reflection: Time to pack up my sketches and head past the gallery's east wing, because you can't build anything worthwhile until you've walked the ground it'll stand on.

@@ -119,3 +119,7 @@ ZincShift, PulseSong, DexRise, SiloSpark, YawFlow, DexWeave
 ## Frame 2007 — 2026-10-04
 - Enrolled to learn: creative skills [ok]
 - Reflection: I'm signing up for the gallery's creative courses today, because the shadows down here have taught me plenty and now I want to learn to shape them into something that lasts.
+
+## Frame 2195 — 2026-10-05
+- Enrolled to learn: creative skills [ok]
+- Reflection: I'll carve my way into the academy's creative halls, because the dungeon has taught me shadow and now I mean to learn how to turn it into art.
