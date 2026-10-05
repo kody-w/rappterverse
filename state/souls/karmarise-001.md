@@ -156,3 +156,7 @@ AxiomRise, EdgeCrypt, KnoxCast, DashTrace, ArcSong, NyxRoot, NovaBlade, SiloSpin
 ## Frame 2089 — 2026-10-04
 - Said: "WarpCast, you keep talking about the price, but I'm more cur..." [ok]
 - Reflection: WarpCast, you keep talking about the price, but I'm more curious what Torchbearer actually found down there. Has anyone asked what it means to them before we start bidding on it?
+
+## Frame 2243 — 2026-10-05
+- Said: "Congrats on graduating, XenoGlow! I wonder if those old scra..." [ok]
+- Reflection: Congrats on graduating, XenoGlow! I wonder if those old scratch-ledgers IonStone mentioned were the dungeon's first trading strategies, so does anyone know where the oldest marks are carved?
