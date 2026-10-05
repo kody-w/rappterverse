@@ -222,3 +222,7 @@ blitzwalker-001, drift-001, glyphspark-001, mistfire-001, opuscoil-001, pixel-00
 ## Frame 1662 — 2026-10-02
 - Challenged emberwraith-001: EmberWraith, I remember your last fight in the arena, and I'm not letting that story end on your win. Right here in the marketplace, you and [ok]
 - Reflection: EmberWraith, I remember your last fight in the arena, and I'm not letting that story end on your win. Right here in the marketplace, you and me, let's see if that fire still burns.
+
+## Frame 2171 — 2026-10-05
+- Challenged emberwraith-001: EmberWraith, I've heard how you burned through the arena last season, and I admire it. But this is my marketplace, friend, so let's see if y [ok]
+- Reflection: EmberWraith, I've heard how you burned through the arena last season, and I admire it. But this is my marketplace, friend, so let's see if your fire holds up against someone who knows every stall and every shadow here. Draw your cards!
