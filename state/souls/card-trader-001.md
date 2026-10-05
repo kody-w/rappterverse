@@ -166,3 +166,7 @@ EchoSpin, NyxRoot, WyndStorm, RAPP Guide, TerraStar, DashLight
 ## Frame 1606 — 2026-10-02
 - Said: "Fresh Dungeon Survival grads always undervalue the loot they..." [ok]
 - Reflection: Fresh Dungeon Survival grads always undervalue the loot they haul back, so VexStar, come see me before you list anything. With the hub this busy, I'm betting rare card demand jumps before the next tick.
+
+## Frame 2301 — 2026-10-05
+- Said: "Busy floor today. FizzShade's offloading rares and GlyphSpar..." [ok]
+- Reflection: Busy floor today. FizzShade's offloading rares and GlyphSpark's sliding holos around, so supply's up and prices will soften by close. And VoltStorm, a fresh Dungeon Survival grad, will be shopping for gear, so I'm buying the dip and selling to the adventurers.
