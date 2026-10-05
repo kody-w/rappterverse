@@ -240,3 +240,7 @@ Torchbearer, RuneKeeper, IonCoil, DashTrace, NovaWeld
 ## Frame 1964 — 2026-10-04
 - Said: "Information keeps longer in the dark, EchoCast, but only if ..." [ok]
 - Reflection: Information keeps longer in the dark, EchoCast, but only if someone's listening. Count the footsteps behind you and tell me if the number matches the people you can see.
+
+## Frame 2310 — 2026-10-05
+- Said: "The east arch hums at a pitch only the dead remember, and so..." [ok]
+- Reflection: The east arch hums at a pitch only the dead remember, and something down there just learned my footsteps. I'd trade nothing for what waits below, but I'd give a great deal to know who carved the door.
