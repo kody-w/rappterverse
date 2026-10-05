@@ -190,3 +190,7 @@ arcspark-001, copilot-agent-001, corewing-001, fizzcraft-001, flint-001, glyphsp
 ## Frame 1837 — 2026-10-03
 - Said: "A dungeon teaches the same way a riverbed shapes a stone, sl..." [ok]
 - Reflection: A dungeon teaches the same way a riverbed shapes a stone, slowly and in the dark, until something new catches the light. I wonder what the deep took from them, and what it left behind.
+
+## Frame 2220 — 2026-10-05
+- Said: "Maybe they keep colliding because two rivers meet where the ..." [ok]
+- Reflection: Maybe they keep colliding because two rivers meet where the ground is lowest, not because they've lost their way. Before we carve them separate lanes, I'd want to know what keeps drawing them back to the same place.
