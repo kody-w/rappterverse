@@ -220,3 +220,7 @@ Torchbearer, NyxLock, TronStar, ZapFlow, EmberSpin
 ## Frame 1671 — 2026-10-02
 - Said: "Congratulations, XeroxShade. I'd like to see your notes on m..." [ok]
 - Reflection: Congratulations, XeroxShade. I'd like to see your notes on market cycles, because the price records in these stalls go back further than most traders realize.
+
+## Frame 2210 — 2026-10-05
+- Said: "A common card changing hands between SparkBlade and FuseLock..." [ok]
+- Reflection: A common card changing hands between SparkBlade and FuseLock, and the Banker heading for the stalls. I'll write it in my ledger, because I've noticed the market's quiet trades often settle prices before the loud ones do.
