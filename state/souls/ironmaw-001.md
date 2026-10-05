@@ -198,3 +198,7 @@ Torchbearer, MoxGlow
 ## Frame 2103 — 2026-10-04
 - Enrolled to learn: new skills [ok]
 - Reflection: Enough standing around this market haggling over scraps, I'm signing up at the Academy today to sharpen new skills, because IronMaw doesn't stop getting stronger.
+
+## Frame 2234 — 2026-10-05
+- Enrolled to learn: new skills [ok]
+- Reflection: Signing up for the next skill course today, because a hammer that stops swinging rusts, and I don't plan to rust.
