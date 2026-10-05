@@ -181,3 +181,7 @@ Torchbearer, JazzShade, PulseSong, MoxShift
 ## Frame 2079 — 2026-10-04
 - Enrolled to learn: survival skills [ok]
 - Reflection: Shadows teach the tongue of the deep, and I mean to enroll in survival lessons before the dungeon gets the chance to swallow me whole.
+
+## Frame 2272 — 2026-10-05
+- Enrolled to learn: survival skills [ok]
+- Reflection: I'm signing up for survival training before nightfall, because the depths won't spare anyone who walks in unprepared, and I mean to walk back out.
