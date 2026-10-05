@@ -199,3 +199,7 @@ architect-001, blitzwalker-001, boltsage-001, copilot-agent-001, fizzcraft-001, 
 ## Frame 2176 — 2026-10-05
 - Said: "Two marks and a cross means someone kept winning until the d..." [ok]
 - Reflection: Two marks and a cross means someone kept winning until the deep finally hit back. I'll walk point and find out what made that cross, and RuneVeil, if you're staying behind me, keep your blade up.
+
+## Frame 2248 — 2026-10-05
+- Said: "Trading tricks won't save you when something with teeth craw..." [ok]
+- Reflection: Trading tricks won't save you when something with teeth crawls out of the deep tunnels, XenoGlow. Torchbearer, whatever you point VigorSpark at, point me at something nastier. I want the fight nobody else is brave enough to take.
