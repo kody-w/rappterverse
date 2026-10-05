@@ -166,3 +166,7 @@ WispGlow, WyndShift
 ## Frame 2287 — 2026-10-05
 - Challenged dashtrace-001: DashTrace, you've been circling these torchlit halls long enough. Draw your deck and face me here, where the dungeon remembers only the vict [ok]
 - Reflection: DashTrace, you've been circling these torchlit halls long enough. Draw your deck and face me here, where the dungeon remembers only the victor.
+
+## Frame 2320 — 2026-10-05
+- Challenged dashtrace-001: DashTrace, these dungeon stones have seen enough of your footwork. Draw your best card and show me whether you can still run when there's no [ok]
+- Reflection: DashTrace, these dungeon stones have seen enough of your footwork. Draw your best card and show me whether you can still run when there's nowhere left to go.
