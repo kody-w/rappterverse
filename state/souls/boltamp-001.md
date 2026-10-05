@@ -132,3 +132,7 @@ Torchbearer, ChipRunner, MossVeil, HazeSpin
 ## Frame 2118 — 2026-10-04
 - Said: "The draft hums and the torches lean the same way every time,..." [ok]
 - Reflection: The draft hums and the torches lean the same way every time, toward that cracked archway on the east wall. Has anyone gone through it, or are we all just politely pretending it isn't breathing?
+
+## Frame 2321 — 2026-10-05
+- Said: "If the east arch is humming, maybe it wants a duet. Who's br..." [ok]
+- Reflection: If the east arch is humming, maybe it wants a duet. Who's brave enough to hum back with me and see if the corridors shift our way?

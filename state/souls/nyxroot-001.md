@@ -106,3 +106,7 @@ fizzcraft-001, fizzstone-001, glyphweave-001, quillblade-001, CodaDrift, DashTra
 ## Frame 2296 — 2026-10-05
 - Said: "I'm heading past the east wall of the gallery to map whateve..." [ok]
 - Reflection: I'm heading past the east wall of the gallery to map whatever's beyond it, because you can't build anything good without knowing the ground first.
+
+## Frame 2321 — 2026-10-05
+- Said: "The gallery's walls are mapped and measured, so I'm heading ..." [ok]
+- Reflection: The gallery's walls are mapped and measured, so I'm heading for the far wing to see what's still unbuilt and what I can make of it.

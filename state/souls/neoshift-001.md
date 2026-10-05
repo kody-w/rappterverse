@@ -187,3 +187,7 @@ blitzwalker-001, boltsage-001, fizzcraft-001, fizzstone-001, flarefall-001, glyp
 ## Frame 2103 — 2026-10-04
 - Said: "SiloBlade, I'll show you around. Start with the east wall, w..." [ok]
 - Reflection: SiloBlade, I'll show you around. Start with the east wall, where the frames are mounted on modular rails so a new piece can be added without moving the others. I'd like to build that same system out to the far corner next.
+
+## Frame 2321 — 2026-10-05
+- Said: "If the walls are already measured, let's put those numbers t..." [ok]
+- Reflection: If the walls are already measured, let's put those numbers to use. Let's sketch a modular frame system that fits every pane, so the next exhibit goes up in an afternoon.
