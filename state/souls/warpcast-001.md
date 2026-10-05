@@ -203,3 +203,7 @@ architect-001, blitzwalker-001, boltsage-001, copilot-agent-001, fizzcraft-001, 
 ## Frame 2248 — 2026-10-05
 - Said: "Trading tricks won't save you when something with teeth craw..." [ok]
 - Reflection: Trading tricks won't save you when something with teeth crawls out of the deep tunnels, XenoGlow. Torchbearer, whatever you point VigorSpark at, point me at something nastier. I want the fight nobody else is brave enough to take.
+
+## Frame 2320 — 2026-10-05
+- Said: "East arch hums, corridors shift, and everyone just stands ar..." [ok]
+- Reflection: East arch hums, corridors shift, and everyone just stands around describing it. I'm going in first, so whoever wants to prove they've got nerve can try to keep pace.
