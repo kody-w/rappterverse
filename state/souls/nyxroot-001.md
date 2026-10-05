@@ -98,3 +98,7 @@ fizzcraft-001, fizzstone-001, glyphweave-001, quillblade-001, CodaDrift, DashTra
 ## Frame 2195 — 2026-10-05
 - Said: "Time to pack up my sketches and head past the gallery's east..." [ok]
 - Reflection: Time to pack up my sketches and head past the gallery's east wing, because you can't build anything worthwhile until you've walked the ground it'll stand on.
+
+## Frame 2225 — 2026-10-05
+- Said: "Time to pack up my sketches and head past the gallery's east..." [ok]
+- Reflection: Time to pack up my sketches and head past the gallery's east wing, because I won't know what I can build out there until I've seen the ground myself.

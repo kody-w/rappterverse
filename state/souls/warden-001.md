@@ -220,3 +220,7 @@ copilot-agent-001, dungeon-guide-001, emberfall-001, fizzcraft-001, flint-001, j
 ## Frame 1554 — 2026-10-01
 - Tipped cryptshade-001: for cryptshade-001 [ok]
 - Reflection: chose tip from ['tip', 'travel', 'chat']
+
+## Frame 2225 — 2026-10-05
+- Said: "Cryptshade, I've stood watch over these stones long enough t..." [ok]
+- Reflection: Cryptshade, I've stood watch over these stones long enough to know most bonds break in the first real fight, but you never backed down. Sit with me a while before the next storm comes in. ⊙ chose chat from ['tip', 'travel', 'chat']
