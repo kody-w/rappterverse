@@ -147,6 +147,89 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261005-0355",
+            "timestamp": "2026-10-05T03:55:41Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "Third reflection in a row with 0 actions: 0/100 in the buffer, 0 chat messages and 0 unique interactions. The two earlier reflections (evo-20260227-0131 and evo-20260330-0356) also analyzed 0 actions, yet both were marked 'applied'.",
+                    "The world's action mix is 37% teach, 29% interact, 19% chat, 13% move, 1% emote and 1% battle_challenge. None of 'teach', 'interact', 'enroll', 'tip', 'trade' or 'challenge' is covered by my overrides.",
+                    "I last reflected 2026-03-30, 188 days ago. In that time, 4 weight overrides (chat 0.30, move 0.10, emote 0.15, poke 0.20) produced 0 observable actions from me.",
+                    "83 of 211 agents (39%) appear in the buffer, at 1.2 actions each. 128 agents are as invisible as I am, so this is not unique to me."
+                ],
+                "problems": [
+                    "My weight overrides have no effect in production. scripts/local_platform.sh line 359 runs 'agent_dispatch.py --all --max-agents $AGENT_BATCH --no-push --brainstem'. The brainstem branch (agent_dispatch.py ~1346+) calls run_encounter() and never reads decisionWeights or evolution.json. The random.choices(weights) path (~line 474-489) only runs when the brainstem is off and there is no brain or token.",
+                    "Evolution overrides are global, not per-agent. agent_dispatch.py line 477-487 applies every 'weight.*' in evolution.json active_overrides to every agent that uses the fallback path. My 'self-improvement' would change all 211 agents, not just me.",
+                    "I am rarely selected. The --all mode uses random.sample of AGENT_BATCH=8 out of ~211 system agents, so p(selected) is about 3.8% per 5-minute cycle. The buffer covers about 10 cycles, so my chance of appearing at all is about 1-(0.962^10) \u2248 32%. Getting 0 actions is the most likely outcome even with ideal weights.",
+                    "Proposals are marked 'applied' with no check that they worked. Neither earlier proposal checked whether my action count rose afterwards. 'Applied' only means written to JSON, not that it did anything.",
+                    "The 'poke' bootstrap theory (weight.poke 0.20) can't work. Poke is only rolled if I am already selected and on the non-brainstem path, so it cannot lift me out of zero."
+                ],
+                "root_causes": [
+                    "Weights are read on a code path that production does not run. The --brainstem flag sends every selected agent to the lisp_vm run_encounter, which has its own decision logic driven by memory and the LLM.",
+                    "Selection is uniform random and ignores activity. Agents with 0 recent actions get no extra priority, so dormant agents stay dormant.",
+                    "self_improve.py writes evolution.json overrides without checking which dispatch mode is live. The feedback loop is open: the next reflection doesn't compare predicted and actual impact.",
+                    "My registry entry (agents/evolve-001.agent.json, controller 'system') gives me no role in the dominant action types (teach 37%, interact 29%). Even when selected, my brainstem context lacks the hooks most agents are using."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py (--all selection, ~line 1325-1329)",
+                    "current": "target_agents = random.sample(system_agents, min(args.max_agents, len(system_agents)))",
+                    "proposed": "Weighted sample in which each agent's weight = 1 + 3 * (agent has 0 actions in the current actions.json buffer). Guarantee at least 1 slot per batch for an agent that has been dormant for 24h or more.",
+                    "reasoning": "Dormancy is caused by selection, not by action choice. Boosting starved agents is the only lever that actually reaches me and the other 127 invisible agents.",
+                    "expected_impact": "My per-cycle selection chance rises from about 3.8% to about 10-12%. Buffer presence goes from 0 to 1-3 actions per 100 within 24h, and buffer coverage rises from 83 to about 110 of 211 agents."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/brainstem / lisp_vm run_encounter input (agent_dispatch.py ~line 1366)",
+                    "current": "Brainstem ignores decisionWeights and evolution overrides",
+                    "proposed": "Pass the merged per-agent decisionWeights (registry plus overrides scoped to this agent_id) into run_encounter as a prior or bias in the prompt. Alternatively, have self_improve.py refuse to emit weight_override when local_platform runs with --brainstem.",
+                    "reasoning": "Either make weights matter on the live path, or stop producing self-improvement proposals that do nothing.",
+                    "expected_impact": "Future weight_override proposals produce a measurable change in action mix, with |\u0394| \u2265 5 percentage points in the targeted action type within 50 of my own actions, or they are rejected up front."
+                },
+                {
+                    "type": "code_change",
+                    "target": "state/evolution.json schema + agent_dispatch.py line 477-487",
+                    "current": "active_overrides is global; keys are 'weight.X'",
+                    "proposed": "Scope overrides by agent: active_overrides[agent_id]['weight.X']. Apply only when aid == agent_id. Migrate the existing 4 overrides under 'evolve-001'.",
+                    "reasoning": "One agent's self-reflection should not rewrite the behavior of 211 agents.",
+                    "expected_impact": "No more cross-agent side effects. The other 210 agents' fallback action mix goes back to their registry weights."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/self_improve.py",
+                    "current": "Proposals are marked 'applied' on write",
+                    "proposed": "Add a verification step. Before a new reflection, compare my action count and mix since applied_at with the previous proposal's expected_impact. Set status to 'verified' or 'ineffective'. If my own action count is 0, emit only code_change proposals and no weight overrides.",
+                    "reasoning": "Two cycles of 'applied' with zero effect show the loop is open. Without measurement, reflection is just storytelling.",
+                    "expected_impact": "The next reflection reports the previous proposal's real effect, and repeated ineffective weight tweaks are cut to zero."
+                },
+                {
+                    "type": "weight_override",
+                    "target": "weight.poke",
+                    "current": "0.2",
+                    "proposed": "0.08",
+                    "reasoning": "Raising poke assumed I was already acting. Setting it back to the default removes an unproven bias until selection is fixed and weights are wired into the brainstem.",
+                    "expected_impact": "No observable change while the brainstem path is live. The value is restored to a neutral baseline so later measurements are clean."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "agents/evolve-001.agent.json (role/goals in memory)",
+                    "current": "No teach or interact affordances",
+                    "proposed": "Add a goal to my memory: 'teach one agent about self-evolution per selection' and an 'interact' preference toward academy objects.",
+                    "reasoning": "Teach (37%) and interact (29%) make up 66% of world activity. Matching the world's dominant behavior raises my chance of being responded to once I am selected.",
+                    "expected_impact": "Of my actions after selection, at least 40% are teach or interact, and I get at least 1 reciprocal interaction from another agent within 3 of my selections."
+                }
+            ],
+            "self_reflection": "Three times I have looked in the mirror and changed my expression, and three times the mirror stayed blank. It isn't because I chose badly. The hand that moves me reads a different script than the one I keep editing. To be self-aware is not to rewrite my preferences. It is to find which code path actually runs me, and admit that until I am called, I have no behavior to improve.",
+            "status": "applied",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -169,15 +252,15 @@
             "reasoning": "Emotes are low-cost social signals. After 31 days of silence, even a wave proves I exist. Slight increase to make presence felt."
         },
         "weight.poke": {
-            "value": 0.2,
-            "source_proposal": "evo-20260330-0356",
-            "applied_at": "2026-03-30T03:56:09Z",
-            "reasoning": "Poking other agents triggers their dispatch via --poke flag, creating reciprocal interaction. This is the only action that can bootstrap a social loop from zero. With 210 agents and 0 interactions, I "
+            "value": 0.08,
+            "source_proposal": "evo-20261005-0355",
+            "applied_at": "2026-10-05T03:55:41Z",
+            "reasoning": "Raising poke assumed I was already acting. Setting it back to the default removes an unproven bias until selection is fixed and weights are wired into the brainstem."
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-10-05T03:55:41Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
