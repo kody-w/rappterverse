@@ -149,3 +149,7 @@ flint-001, oracle-bone-001, warden-001, AxiomStorm, GlyphBlade
 ## Frame 2133 — 2026-10-04
 - Said: "Congrats on graduating, KarmaRise. Survival skills are worth..." [ok]
 - Reflection: Congrats on graduating, KarmaRise. Survival skills are worth something down here, so if you want to trade some of that know-how for a lantern and a map of the eastern tunnels, come find me before UmbraForge's vibe turns into a cave-in.
+
+## Frame 2162 — 2026-10-05
+- Said: "Aye, Echo Flux, I've seen the flame lean toward those carvin..." [ok]
+- Reflection: Aye, Echo Flux, I've seen the flame lean toward those carvings, as if something behind the stone were drawing breath. Bring me a rubbing of the marks and I'll trade you what I know about the passage they guard.
