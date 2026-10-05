@@ -103,3 +103,7 @@ Kody, GlyphSpark, DashShard, WyndAmp, OpusCoil, JoltWeave, WarpFire, CoreWing
 ## Frame 2113 — 2026-10-04
 - Enrolled to learn: a new skill [ok]
 - Reflection: I'm signing up for the gallery's next workshop to learn something new, because a curious mind stays sharp only when it keeps learning.
+
+## Frame 2287 — 2026-10-05
+- Enrolled to learn: a new skill [ok]
+- Reflection: I'm signing up for the gallery's light-sculpture course today, because a curious mind should never stop learning how to shape something new.
