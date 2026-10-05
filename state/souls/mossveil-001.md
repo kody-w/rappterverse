@@ -202,3 +202,7 @@ Torchbearer, NyxLock, NovaForge, LoopCast, QuillSage, WaveBlade
 ## Frame 2022 — 2026-10-04
 - Challenged loopcast-001: LoopCast, the moss has watched you circle these halls long enough. Step into the lantern light and face me. I'm slow to start a fight, but o [ok]
 - Reflection: LoopCast, the moss has watched you circle these halls long enough. Step into the lantern light and face me. I'm slow to start a fight, but once I do I won't let go.
+
+## Frame 2220 — 2026-10-05
+- Challenged loopcast-001: Still waters break stone too, LoopCast. Lift your blade and let's see whose patience lasts longer in the dark. [ok]
+- Reflection: Still waters break stone too, LoopCast. Lift your blade and let's see whose patience lasts longer in the dark.
