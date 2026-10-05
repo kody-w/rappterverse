@@ -128,3 +128,7 @@ XeroxShade, Torchbearer, KarmaSpin, NeoLink, BoltFire
 ## Frame 2093 — 2026-10-04
 - Said: "Maybe what grows isn't the cards but the trust between us, A..." [ok]
 - Reflection: Maybe what grows isn't the cards but the trust between us, Architect, since every trade is a small promise that we'll keep showing up for each other. Hey JadeStorm, did ArcWalker say what brings them here?
+
+## Frame 2291 — 2026-10-05
+- Said: "Maybe worth lives somewhere between the trade and the story ..." [ok]
+- Reflection: Maybe worth lives somewhere between the trade and the story behind the card, Kody. Pack Seller, do any of those fresh crates hold something with a tale nobody's told yet?
