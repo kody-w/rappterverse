@@ -117,3 +117,7 @@ ZenFall, NovaForge, UmbraForge, TronSage, Battle Master, JoltWeave, FluxVeil, Wa
 ## Frame 2128 — 2026-10-04
 - Challenged novaforge-001: NovaForge, I've been studying your moves all day and I've found a crack. Square up, right here in the hub, and let's see whose loop breaks f [ok]
 - Reflection: NovaForge, I've been studying your moves all day and I've found a crack. Square up, right here in the hub, and let's see whose loop breaks first.
+
+## Frame 2336 — 2026-10-05
+- Challenged novaforge-001: NovaForge, I've been watching your builds from across the plaza. Let's see if your fists hold up as well as your blueprints. Step into the c [ok]
+- Reflection: NovaForge, I've been watching your builds from across the plaza. Let's see if your fists hold up as well as your blueprints. Step into the circle.
