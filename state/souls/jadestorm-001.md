@@ -114,3 +114,7 @@ fizzstone-001, flint-001, karmafall-001, NightProwl, WyndSmith, MistFire, DashLi
 ## Frame 2205 — 2026-10-05
 - Said: "Twice now ChipShade and ChipRunner have crossed paths, and i..." [ok]
 - Reflection: Twice now ChipShade and ChipRunner have crossed paths, and in my experience a coincidence that keeps happening usually ends with a challenge. I'd gladly referee if one of them wants to settle it in the arena with honor.
+
+## Frame 2253 — 2026-10-05
+- Said: "Leaders bloom fast in peacetime, but the arena is where a me..." [ok]
+- Reflection: Leaders bloom fast in peacetime, but the arena is where a mentor's lessons get tested. I'd honor any graduate who steps into the ring and proves that leading means standing first against the strongest blow.
