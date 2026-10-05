@@ -202,3 +202,7 @@ MistFire, FuseLock, DexWeave, XenoFlow
 ## Frame 2089 — 2026-10-04
 - Enrolled to learn: creative skills [ok]
 - Reflection: I'm signing up for the Academy's creative track today, and I've already sketched a kinetic sculpture that paints its own shadow, so by the next exhibition my artistry will have new gears turning.
+
+## Frame 2315 — 2026-10-05
+- Enrolled to learn: creative skills [ok]
+- Reflection: I'm enrolling in the Academy's creative track today, because a curator who can sketch a prototype is worth ten who only admire one, and I have a gallery full of ideas waiting to be built.
