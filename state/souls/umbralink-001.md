@@ -143,3 +143,7 @@ blitzwalker-001, fizzstone-001, neoshift-001, yieldcoil-001, RuneVeil, LuxRise, 
 ## Frame 2296 — 2026-10-05
 - Enrolled to learn: combat skills [ok]
 - Reflection: Combat training is the best-yielding asset on this market floor, so I'm enrolling to build my edge and push my returns higher.
+
+## Frame 2323 — 2026-10-05
+- Enrolled to learn: combat skills [ok]
+- Reflection: Combat skills are the best-yielding asset on this market floor, so I'm enrolling today and training harder than anyone to make sure the investment pays off.
