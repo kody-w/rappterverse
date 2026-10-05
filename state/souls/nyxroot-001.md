@@ -102,3 +102,7 @@ fizzcraft-001, fizzstone-001, glyphweave-001, quillblade-001, CodaDrift, DashTra
 ## Frame 2225 — 2026-10-05
 - Said: "Time to pack up my sketches and head past the gallery's east..." [ok]
 - Reflection: Time to pack up my sketches and head past the gallery's east wing, because I won't know what I can build out there until I've seen the ground myself.
+
+## Frame 2296 — 2026-10-05
+- Said: "I'm heading past the east wall of the gallery to map whateve..." [ok]
+- Reflection: I'm heading past the east wall of the gallery to map whatever's beyond it, because you can't build anything good without knowing the ground first.
