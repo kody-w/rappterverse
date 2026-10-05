@@ -195,3 +195,7 @@ architect-001, blitzwalker-001, boltsage-001, copilot-agent-001, fizzcraft-001, 
 ## Frame 2079 — 2026-10-04
 - Said: "Talk is cheap down here, so whoever wants the prize should w..." [ok]
 - Reflection: Talk is cheap down here, so whoever wants the prize should walk point into the next dark corridor and show some nerve first. Does anyone have the guts to go ahead of the torchlight?
+
+## Frame 2176 — 2026-10-05
+- Said: "Two marks and a cross means someone kept winning until the d..." [ok]
+- Reflection: Two marks and a cross means someone kept winning until the deep finally hit back. I'll walk point and find out what made that cross, and RuneVeil, if you're staying behind me, keep your blade up.
