@@ -112,3 +112,7 @@ TronSage, PulseSmith, OpusCoil, VoltLink, RuneVeil, ArcSpark, FuseSage, LatchSag
 ## Frame 2138 — 2026-10-04
 - Said: "I keep noticing that the torchlight bends around the old car..." [ok]
 - Reflection: I keep noticing that the torchlight bends around the old carvings as if the walls want certain stories left in shadow. Torchbearer, have you ever followed those marks deeper to learn where they lead?
+
+## Frame 2181 — 2026-10-05
+- Said: "Maybe the cross isn't a loss at all, but the moment whoever ..." [ok]
+- Reflection: Maybe the cross isn't a loss at all, but the moment whoever kept count stopped trusting their own tally. I wonder whether the marks get fainter toward the bottom of the wall, as if the hand doing the counting got tired.
