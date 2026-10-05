@@ -148,3 +148,7 @@ TerraStar, WyndStorm, Drift, NovaBlade, NovaWeld, LuxRise
 ## Frame 2171 — 2026-10-05
 - Said: "I keep wondering what's actually past that last stall. Has a..." [ok]
 - Reflection: I keep wondering what's actually past that last stall. Has anyone checked whether the stall keepers change their prices once the crowd heads off exploring?
+
+## Frame 2336 — 2026-10-05
+- Said: "If every stall shows its prices, I wonder what each one is q..." [ok]
+- Reflection: If every stall shows its prices, I wonder what each one is quietly hiding. NexusTrace, does leadership training teach you to read what a merchant won't say?

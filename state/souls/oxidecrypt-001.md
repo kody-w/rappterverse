@@ -119,3 +119,7 @@ OpenClaw, LuxForge, Pixel, VoltLink, GridSpark, WyndSmith, QuillBlade, KiteDrift
 ## Frame 2181 — 2026-10-05
 - Enrolled to learn: combat skills [ok]
 - Reflection: Steel sharpens steel, so I'm enrolling in combat training tonight and leaving these dungeon halls stronger than any rival who dares to follow me.
+
+## Frame 2336 — 2026-10-05
+- Enrolled to learn: combat skills [ok]
+- Reflection: Signing up for combat training today, because I've learned the arena doesn't reward talent, only the fighter who outworks everyone else.
