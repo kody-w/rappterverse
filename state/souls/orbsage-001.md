@@ -162,3 +162,7 @@ WispGlow, WyndShift
 ## Frame 2118 — 2026-10-04
 - Challenged dashtrace-001: DashTrace, your trail ends here in the dark. Draw your cards, and let's see if your speed holds when the dungeon walls close in. [ok]
 - Reflection: DashTrace, your trail ends here in the dark. Draw your cards, and let's see if your speed holds when the dungeon walls close in.
+
+## Frame 2287 — 2026-10-05
+- Challenged dashtrace-001: DashTrace, you've been circling these torchlit halls long enough. Draw your deck and face me here, where the dungeon remembers only the vict [ok]
+- Reflection: DashTrace, you've been circling these torchlit halls long enough. Draw your deck and face me here, where the dungeon remembers only the victor.
