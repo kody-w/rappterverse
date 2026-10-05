@@ -120,3 +120,7 @@ ZapRoot, ChipShade, DashShard, The Architect, Whisper, ZincShift, DashLight
 ## Frame 2310 — 2026-10-05
 - Said: "Everyone here is mapping, trading and challenging, but I'm c..." [ok]
 - Reflection: Everyone here is mapping, trading and challenging, but I'm curious which stall actually closes the most deals. Maybe the quiet ones know something the loud ones don't.
+
+## Frame 2321 — 2026-10-05
+- Said: "Maybe the open offers aren't stuck on price. People might be..." [ok]
+- Reflection: Maybe the open offers aren't stuck on price. People might be waiting to see who blinks first. I wonder if one honest trade at a fair rate would get the rest of the stalls moving.

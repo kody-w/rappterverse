@@ -138,18 +138,6 @@
     ],
     "enrollments": [
         {
-            "id": "enr-1811",
-            "agent": "AxiomRunner",
-            "courseId": "course-007",
-            "courseName": "Metaverse Philosophy",
-            "skill": "philosophy",
-            "enrolledAt": "2026-08-19T14:40:55Z",
-            "ticksCompleted": 4,
-            "ticksRequired": 4,
-            "status": "graduated",
-            "graduatedAt": "2026-08-20T12:08:05Z"
-        },
-        {
             "id": "enr-1812",
             "agent": "NovaWeld",
             "courseId": "course-008",
@@ -2412,9 +2400,10 @@
             "courseName": "Leadership & Mentorship",
             "skill": "leadership",
             "enrolledAt": "2026-10-05T00:47:42Z",
-            "ticksCompleted": 5,
+            "ticksCompleted": 6,
             "ticksRequired": 6,
-            "status": "active"
+            "status": "graduated",
+            "graduatedAt": "2026-10-05T21:09:39Z"
         },
         {
             "id": "enr-2001",
@@ -2447,9 +2436,10 @@
             "courseName": "Advanced Trading Strategies",
             "skill": "market_mastery",
             "enrolledAt": "2026-10-05T04:53:39Z",
-            "ticksCompleted": 4,
+            "ticksCompleted": 5,
             "ticksRequired": 5,
-            "status": "active"
+            "status": "graduated",
+            "graduatedAt": "2026-10-05T21:09:39Z"
         },
         {
             "id": "enr-2004",
@@ -2458,7 +2448,7 @@
             "courseName": "Advanced Trading Strategies",
             "skill": "market_mastery",
             "enrolledAt": "2026-10-05T08:53:42Z",
-            "ticksCompleted": 3,
+            "ticksCompleted": 4,
             "ticksRequired": 5,
             "status": "active"
         },
@@ -2469,7 +2459,7 @@
             "courseName": "Dungeon Survival",
             "skill": "exploration",
             "enrolledAt": "2026-10-05T08:53:42Z",
-            "ticksCompleted": 3,
+            "ticksCompleted": 4,
             "ticksRequired": 5,
             "status": "active"
         },
@@ -2480,7 +2470,7 @@
             "courseName": "Leadership & Mentorship",
             "skill": "leadership",
             "enrolledAt": "2026-10-05T12:55:23Z",
-            "ticksCompleted": 2,
+            "ticksCompleted": 3,
             "ticksRequired": 6,
             "status": "active"
         },
@@ -2491,7 +2481,7 @@
             "courseName": "Leadership & Mentorship",
             "skill": "leadership",
             "enrolledAt": "2026-10-05T12:55:23Z",
-            "ticksCompleted": 2,
+            "ticksCompleted": 3,
             "ticksRequired": 6,
             "status": "active"
         },
@@ -2502,7 +2492,7 @@
             "courseName": "Advanced Trading Strategies",
             "skill": "market_mastery",
             "enrolledAt": "2026-10-05T12:55:23Z",
-            "ticksCompleted": 2,
+            "ticksCompleted": 3,
             "ticksRequired": 5,
             "status": "active"
         },
@@ -2513,7 +2503,7 @@
             "courseName": "Dungeon Survival",
             "skill": "exploration",
             "enrolledAt": "2026-10-05T12:55:23Z",
-            "ticksCompleted": 2,
+            "ticksCompleted": 3,
             "ticksRequired": 5,
             "status": "active"
         },
@@ -2524,26 +2514,23 @@
             "courseName": "Advanced Trading Strategies",
             "skill": "market_mastery",
             "enrolledAt": "2026-10-05T17:00:53Z",
+            "ticksCompleted": 2,
+            "ticksRequired": 5,
+            "status": "active"
+        },
+        {
+            "id": "enr-2011",
+            "agent": "YawStone",
+            "courseId": "course-004",
+            "courseName": "Dungeon Survival",
+            "skill": "exploration",
+            "enrolledAt": "2026-10-05T21:09:39Z",
             "ticksCompleted": 1,
             "ticksRequired": 5,
             "status": "active"
         }
     ],
     "graduates": [
-        {
-            "agent": "ZapSpark",
-            "skill": "art",
-            "course": "Creative Expression",
-            "graduatedAt": "2026-03-19T05:19:26Z",
-            "xpEarned": 45
-        },
-        {
-            "agent": "QuillSage",
-            "skill": "trading",
-            "course": "Marketplace Fundamentals",
-            "graduatedAt": "2026-03-19T05:19:26Z",
-            "xpEarned": 50
-        },
         {
             "agent": "LuxForge",
             "skill": "content",
@@ -6029,6 +6016,20 @@
             "course": "Dungeon Survival",
             "graduatedAt": "2026-10-05T17:00:53Z",
             "xpEarned": 80
+        },
+        {
+            "agent": "NexusTrace",
+            "skill": "leadership",
+            "course": "Leadership & Mentorship",
+            "graduatedAt": "2026-10-05T21:09:39Z",
+            "xpEarned": 120
+        },
+        {
+            "agent": "ChipShade",
+            "skill": "market_mastery",
+            "course": "Advanced Trading Strategies",
+            "graduatedAt": "2026-10-05T21:09:39Z",
+            "xpEarned": 100
         }
     ],
     "skills": {
@@ -8058,7 +8059,8 @@
             "trading",
             "content",
             "combat",
-            "engineering"
+            "engineering",
+            "leadership"
         ],
         "LoopCast": [
             "charisma",
@@ -8101,7 +8103,8 @@
             "charisma",
             "combat",
             "engineering",
-            "exploration"
+            "exploration",
+            "market_mastery"
         ],
         "VoidStep": [
             "combat",
@@ -8455,11 +8458,11 @@
         ]
     },
     "stats": {
-        "totalEnrollments": 2010,
-        "totalGraduations": 2001,
-        "totalTuitionCollected": 68830,
+        "totalEnrollments": 2011,
+        "totalGraduations": 2003,
+        "totalTuitionCollected": 68870,
         "mostPopularCourse": {
-            "name": "Advanced Trading Strategies",
+            "name": "Dungeon Survival",
             "enrollments": 40
         },
         "mostSkilled": {
@@ -8479,9 +8482,9 @@
             ]
         }
     },
-    "nextEnrollmentId": 2011,
+    "nextEnrollmentId": 2012,
     "_meta": {
-        "lastUpdate": "2026-10-05T17:00:53Z",
+        "lastUpdate": "2026-10-05T21:09:39Z",
         "version": "1.0"
     }
 }
