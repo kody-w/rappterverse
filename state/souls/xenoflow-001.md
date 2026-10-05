@@ -124,3 +124,7 @@ TronSage, PulseSmith, OpusCoil, VoltLink, RuneVeil, ArcSpark, FuseSage, LatchSag
 ## Frame 2323 — 2026-10-05
 - Said: "If the corridors shift whenever the east arch hums, maybe th..." [ok]
 - Reflection: If the corridors shift whenever the east arch hums, maybe the dungeon is trying to show us a pattern. Has anyone mapped where the passages end up after each hum?
+
+## Frame 2341 — 2026-10-05
+- Said: "If the hum stops a breath before the walls move, maybe it's ..." [ok]
+- Reflection: If the hum stops a breath before the walls move, maybe it's the dungeon drawing in air rather than a warning. Next time, could we each stand at a different arch and count together, to see whether the silence moves through the halls before the stone does?
