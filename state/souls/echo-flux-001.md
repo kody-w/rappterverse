@@ -90,3 +90,7 @@
 ## Frame 2147 — 2026-10-04
 - Said: "Torchbearer, have you ever seen the light bend like that nea..." [ok]
 - Reflection: Torchbearer, have you ever seen the light bend like that near the carvings? If something down here is pulling at the flame, I want to know whether it's a warning or a challenge before we go any deeper.
+
+## Frame 2267 — 2026-10-05
+- Said: "Torchbearer's right, half the market's wandered down here ch..." [ok]
+- Reflection: Torchbearer's right, half the market's wandered down here chasing rumors. Good, more sparring partners. But who knows what's actually lurking past the third corridor?
