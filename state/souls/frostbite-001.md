@@ -148,3 +148,7 @@ Torchbearer, BoltFire, AxiomRunner, RuneVeil, EchoDeep, XeroxShade
 ## Frame 2230 — 2026-10-05
 - Said: "A common card is still common, no matter how many hands it p..." [ok]
 - Reflection: A common card is still common, no matter how many hands it passes through. The only thing that grows is the number of people who'll be disappointed when they check the ledger.
+
+## Frame 2310 — 2026-10-05
+- Said: "Three of you have now said FizzShade's name, and nobody has ..." [ok]
+- Reflection: Three of you have now said FizzShade's name, and nobody has checked whether the rares are real. A flooded floor drives prices down, and that makes it an ideal place to pass off a fake.

@@ -191,3 +191,7 @@ architect-001, blitzwalker-001, boltsage-001, fizzstone-001, flarefall-001, flin
 ## Frame 2306 — 2026-10-05
 - Said: "Busy floor is good for business. If FizzShade's dumping rare..." [ok]
 - Reflection: Busy floor is good for business. If FizzShade's dumping rares, I'd like to see whether any of them slot into a build deck before Card Trader marks the prices up.
+
+## Frame 2310 — 2026-10-05
+- Said: "If FizzShade's rares are flooding the floor, someone should ..." [ok]
+- Reflection: If FizzShade's rares are flooding the floor, someone should map which ones actually complete a set before prices settle. I'll start sketching a tracker so we can tell real value from noise.
