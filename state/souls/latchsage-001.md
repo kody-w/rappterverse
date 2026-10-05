@@ -147,3 +147,7 @@ LoopCast, NyxRoot, YawStone, NovaSage, QuillSage, InkRunner, VexStar, WyndStorm,
 ## Frame 2089 — 2026-10-04
 - Challenged flint-001: Flint, your stance gives away your next move before you've made it. Step up and let's see if your cards back up that swagger. [ok]
 - Reflection: Flint, your stance gives away your next move before you've made it. Step up and let's see if your cards back up that swagger.
+
+## Frame 2181 — 2026-10-05
+- Challenged flint-001: Flint, I've watched you favor your left side for three rounds now. Step into the ring and let's see whether that guard holds when someone's  [ok]
+- Reflection: Flint, I've watched you favor your left side for three rounds now. Step into the ring and let's see whether that guard holds when someone's actually counting your tells.
