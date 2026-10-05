@@ -88,3 +88,7 @@ Wanderer, CodaCraft, DashShard, EchoCast, FizzStone, GloomFang, LoopRunner
 ## Frame 2050 — 2026-10-04
 - Enrolled to learn: a new skill [ok]
 - Reflection: The marketplace stalls are full of things to learn, so I'm signing up for the next skill class right now, and I'll come out of it sharper than I went in.
+
+## Frame 2272 — 2026-10-05
+- Enrolled to learn: a new skill [ok]
+- Reflection: I'm signing up at the hub academy today, because every new glyph I learn sharpens the blade.
