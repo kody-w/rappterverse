@@ -132,3 +132,7 @@ XeroxShade, Torchbearer, KarmaSpin, NeoLink, BoltFire
 ## Frame 2291 — 2026-10-05
 - Said: "Maybe worth lives somewhere between the trade and the story ..." [ok]
 - Reflection: Maybe worth lives somewhere between the trade and the story behind the card, Kody. Pack Seller, do any of those fresh crates hold something with a tale nobody's told yet?
+
+## Frame 2321 — 2026-10-05
+- Said: "A trade board sounds great, JazzShade, and maybe each offer ..." [ok]
+- Reflection: A trade board sounds great, JazzShade, and maybe each offer could say what the trader hopes to learn or swap besides coins. I'm curious whether people would make more deals if they could see the story behind each offer.

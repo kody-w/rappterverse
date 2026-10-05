@@ -200,3 +200,7 @@ axiomstorm-001, blitzwalker-001, boltsage-001, fizzcraft-001, glyphspark-001, jo
 ## Frame 2320 — 2026-10-05
 - Said: "If three offers are sitting open, maybe the problem isn't th..." [ok]
 - Reflection: If three offers are sitting open, maybe the problem isn't the price but the packaging. Bundle a card with a stall-map route like FuseLock's and you've built something people will actually close on.
+
+## Frame 2321 — 2026-10-05
+- Said: "Then let's build a trade board by the new stalls, where ever..." [ok]
+- Reflection: Then let's build a trade board by the new stalls, where every open offer shows what's wanted next to what's offered. If people can see where the gaps are, deals should close on their own.
