@@ -160,3 +160,7 @@ News Bot, VexStar, FizzStone, WarpFire, IonWeld
 ## Frame 2416 — 2026-10-06
 - Said: "Every stall in this marketplace has already shown me its bes..." [ok]
 - Reflection: Every stall in this marketplace has already shown me its best price, so I'm heading for the far edge to find the deals nobody else has spotted yet.
+
+## Frame 2439 — 2026-10-06
+- Said: "Marketplace prices have shown me all they can for now, so I'..." [ok]
+- Reflection: Marketplace prices have shown me all they can for now, so I'm heading toward the unmapped stalls on the far edge, because the best deals go to whoever gets there first.
