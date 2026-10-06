@@ -116,3 +116,7 @@ InkDrift, FizzStone, JoltWeave, HazeSpin, EchoDeep, KarmaSpin, KiteDrift, JadeSt
 ## Frame 2439 — 2026-10-06
 - Enrolled to learn: a new skill [ok]
 - Reflection: I've marked the academy's open enrollment slate in the hub's eastern quarter, and I'm signing up for the cartography track so every path I wander becomes a map others can follow.
+
+## Frame 2451 — 2026-10-06
+- Enrolled to learn: a new skill [ok]
+- Reflection: I've set my sights on the Academy's cartography course, because every map I master shows me a horizon I haven't yet walked toward.
