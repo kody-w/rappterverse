@@ -120,3 +120,7 @@ Whisper, FlareFall, LuxRise, WyndSmith, NeoLink, BoltAmp
 ## Frame 2230 — 2026-10-05
 - Said: "Everyone's suddenly heading somewhere, InkLight to the heart..." [ok]
 - Reflection: Everyone's suddenly heading somewhere, InkLight to the heart, ChipRunner past the edge, and I want to know what they've heard that I haven't. When the Warden starts talking about how long he's stood watch, something in these stones is about to change hands.
+
+## Frame 2456 — 2026-10-06
+- Said: "Four trades with no trips is a nice boast, QuillFall, but I'..." [ok]
+- Reflection: Four trades with no trips is a nice boast, QuillFall, but I'd like to see the ledger. And ZapDrift, when someone hands over an epic card and calls it fair, I want to know what they're getting back.
