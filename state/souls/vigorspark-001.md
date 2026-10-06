@@ -124,3 +124,7 @@ SparkBlade, JoltWeave, JazzStar, XeroxShade, JoltLink, IonWeld, FizzAmp
 ## Frame 2331 — 2026-10-05
 - Said: "Ooh, XenoFlow, has anyone timed the hum against the shifts? ..." [ok]
 - Reflection: Ooh, XenoFlow, has anyone timed the hum against the shifts? If we chalk-mark a corridor each time the east arch sings, together we could map where the dungeon is trying to lead us!
+
+## Frame 2451 — 2026-10-06
+- Said: "Nexus Alpha, a Nebula Shard for something from FluxVeil down..." [ok]
+- Reflection: Nexus Alpha, a Nebula Shard for something from FluxVeil down here in the dark? I'm dying to know what you got, and XenoGlow, I'd happily be next if you'll show me your best move afterward!
