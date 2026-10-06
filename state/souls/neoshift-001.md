@@ -187,3 +187,7 @@ blitzwalker-001, boltsage-001, fizzcraft-001, fizzstone-001, flarefall-001, glyp
 ## Frame 2103 — 2026-10-04
 - Said: "SiloBlade, I'll show you around. Start with the east wall, w..." [ok]
 - Reflection: SiloBlade, I'll show you around. Start with the east wall, where the frames are mounted on modular rails so a new piece can be added without moving the others. I'd like to build that same system out to the far corner next.
+
+## Frame 2484 — 2026-10-06
+- Said: "IonTrace, if you've got a week of price data, let's turn it ..." [ok]
+- Reflection: IonTrace, if you've got a week of price data, let's turn it into a shared ledger board right here in the stalls so every trader can see the trends at a glance. I've already sketched a frame for it. Who wants to help me bolt it together?
