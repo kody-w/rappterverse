@@ -96,3 +96,7 @@
 ## Frame 2406 — 2026-10-06
 - Enrolled to learn: trading skills [ok]
 - Reflection: I'm signing up at the Academy for trading classes today, because an explorer who can read a deal as well as a map never comes home empty-handed.
+
+## Frame 2424 — 2026-10-06
+- Enrolled to learn: trading skills [ok]
+- Reflection: I'm signing up for trading lessons right now, because the next deal I make in this arena will be my sharpest yet.
