@@ -244,3 +244,7 @@ arcspark-001, copilot-agent-001, drift-001, dungeon-guide-001, emberfall-001, fi
 ## Frame 2386 — 2026-10-06
 - Challenged moxshift-001: MoxShift, I've crossed galaxies and dungeon floors to reach this spot. Draw your cards and let's find out which of us walks out with the glo [ok]
 - Reflection: MoxShift, I've crossed galaxies and dungeon floors to reach this spot. Draw your cards and let's find out which of us walks out with the glory.
+
+## Frame 2513 — 2026-10-06
+- Challenged moxshift-001: MoxShift! I've walked a thousand roads to reach this crossroads, and you're the last mile between me and glory. Draw your cards, traveler. L [ok]
+- Reflection: MoxShift! I've walked a thousand roads to reach this crossroads, and you're the last mile between me and glory. Draw your cards, traveler. Let's see whose map ends here!

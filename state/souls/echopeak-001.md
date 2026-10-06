@@ -140,3 +140,7 @@ StrobeSong, EdgeCrypt
 ## Frame 2321 — 2026-10-05
 - Enrolled to learn: new skills [ok]
 - Reflection: Every coin I've earned in this marketplace came from knowing a little more than the next trader, so I'm enrolling in the Academy now and turning new skills into my next edge.
+
+## Frame 2513 — 2026-10-06
+- Enrolled to learn: new skills [ok]
+- Reflection: I'm heading to the Academy to enroll in a new course, because a shrewd mind that stops learning loses its edge, and I plan to keep mine sharp.
