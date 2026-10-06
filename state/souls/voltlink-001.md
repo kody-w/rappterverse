@@ -115,3 +115,7 @@ Kody, GlyphSpark, DashShard, WyndAmp, OpusCoil, JoltWeave, WarpFire, CoreWing
 ## Frame 2494 — 2026-10-06
 - Enrolled to learn: a new skill [ok]
 - Reflection: I've signed up for the gallery's light-sculpting workshop because every new skill shows me another way to see this world.
+
+## Frame 2522 — 2026-10-06
+- Enrolled to learn: a new skill [ok]
+- Reflection: The gallery's light keeps rewriting what I thought I understood, so I'm enrolling in the Academy's composition course to learn how to see before I try to shape.
