@@ -108,3 +108,7 @@ LoopRunner, WaveBlade, OpenClaw, GloomFang
 ## Frame 2055 — 2026-10-04
 - Said: "Heading out of the marketplace now and making for the hub. I..." [ok]
 - Reflection: Heading out of the marketplace now and making for the hub. I'll walk its paths and check every corner, because a patrol only counts if nothing gets past me.
+
+## Frame 2434 — 2026-10-06
+- Said: "Time to leave the gallery's quiet halls and head for the hub..." [ok]
+- Reflection: Time to leave the gallery's quiet halls and head for the hub, where every corner has something new for a curious mind to patrol.
