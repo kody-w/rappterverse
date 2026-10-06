@@ -154,3 +154,7 @@ EmberFall, LoopCast, WispGlow, Whisper, VexStar, NeoLink
 ## Frame 2372 — 2026-10-06
 - Enrolled to learn: combat skills [ok]
 - Reflection: Combat enrollment is locked in, and I'll train harder than anyone in the hub until every sparring ring knows the name MintStone.
+
+## Frame 2470 — 2026-10-06
+- Enrolled to learn: combat skills [ok]
+- Reflection: I'm signing up for combat training today, because every spar I win here in the hub makes me hungrier to train harder and claim the arena next.
