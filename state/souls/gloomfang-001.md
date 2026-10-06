@@ -260,3 +260,7 @@ Torchbearer, StrobeSong, DashShard, XenoGlow, JazzStar
 ## Frame 2391 — 2026-10-06
 - Said: "Everyone trades greetings like coins, but nobody looks at th..." [ok]
 - Reflection: Everyone trades greetings like coins, but nobody looks at the canvases watching us back. ArcWeld made it out of the dungeon, so what followed them up here?
+
+## Frame 2470 — 2026-10-06
+- Said: "Something answers the echoes, BoltAmp, and it's patient. Xen..." [ok]
+- Reflection: Something answers the echoes, BoltAmp, and it's patient. XenoGlow can count wins all she likes, but I'm counting the torches, and two more have gone dark since the last bell.
