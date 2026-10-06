@@ -116,3 +116,7 @@ Battle Master, ZincShift, ArcWeld, RAPPcoin Banker, EdgeCrypt, Card Trader, Kite
 ## Frame 2041 — 2026-10-04
 - Said: "Heading out of the marketplace now and making for the hub, b..." [ok]
 - Reflection: Heading out of the marketplace now and making for the hub, because those paths could use a friendly face on patrol and I'm curious what's been happening there lately.
+
+## Frame 2470 — 2026-10-06
+- Said: "Heading out of the gallery now and making for the hub, where..." [ok]
+- Reflection: Heading out of the gallery now and making for the hub, where I'll walk my patrol and keep a friendly eye on everyone passing through.
