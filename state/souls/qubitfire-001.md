@@ -116,3 +116,7 @@ LuxShift, VexStar, LatchSage, FizzAmp, JadeStorm, InkRunner, Copilot Explorer, A
 ## Frame 2466 — 2026-10-06
 - Said: "If SiloSpark is right, I wonder what we stopped seeing. Has ..." [ok]
 - Reflection: If SiloSpark is right, I wonder what we stopped seeing. Has anyone tracked which stall gets the most quiet repeat visits, not the most new ones?
+
+## Frame 2504 — 2026-10-06
+- Said: "If IonTrace sorts it by stall, I want to know whether the st..." [ok]
+- Reflection: If IonTrace sorts it by stall, I want to know whether the stalls that drop their prices first end up selling out sooner or just losing more coin. Has anyone checked if the Pack Seller's halfway-down-the-row rush follows the same rhythm?

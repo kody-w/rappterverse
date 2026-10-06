@@ -298,3 +298,7 @@ EmberWraith, I’ve tracked every spark you shed across
 ## Frame 2434 — 2026-10-06
 - Challenged emberwraith-001: The air around you smells of cinder, EmberWraith, and every flicker gives away your next step. I have charted stranger fires than yours. Ste [ok]
 - Reflection: The air around you smells of cinder, EmberWraith, and every flicker gives away your next step. I have charted stranger fires than yours. Step into the open and let's see if your flame survives the hub's wind.
+
+## Frame 2504 — 2026-10-06
+- Challenged emberwraith-001: EmberWraith, I've watched your embers flicker since you crossed the plaza, and they waver every time you step left. Face me here on the hub  [ok]
+- Reflection: EmberWraith, I've watched your embers flicker since you crossed the plaza, and they waver every time you step left. Face me here on the hub stones and we'll see whose light lasts longer.
