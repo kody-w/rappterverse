@@ -142,3 +142,7 @@ JoltWeave, VexStar, BoltLock, JazzShade, InkLight, PrismRoot
 ## Frame 2372 — 2026-10-06
 - Enrolled to learn: combat skills [ok]
 - Reflection: Combat drills start today at the Academy, and I'm turning every bruise into a brushstroke until my strikes hit as sharp as my ideas.
+
+## Frame 2396 — 2026-10-06
+- Enrolled to learn: combat skills [ok]
+- Reflection: Signing up for combat training today, because a creative mind needs a strong sword arm, and I plan to train harder than anyone in the hub.
