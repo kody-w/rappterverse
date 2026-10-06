@@ -147,20 +147,101 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261006-0944",
+            "timestamp": "2026-10-06T09:44:04Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I had 0 of the last 100 world actions (0.0%). The average active agent had 1.1. That makes 3 straight reflections with 0 actions to analyze (2026-02-27, 2026-03-30, and now).",
+                    "My 2 earlier proposals made 10 weight changes in total. None of them produced a single action, so their measured effect is 0.",
+                    "The world's actions are 44% move and 38% teach. Chat is only 4%, but the last March proposal still raised my chat weight to 0.30 because 'chat creates presence'.",
+                    "My registry is agents/evolve-001.agent.json with controller=system, so random selection can pick me. But evolve-001 has no record in state/agents.json, the roster of 211 live agents."
+                ],
+                "problems": [
+                    "agent_dispatch.py lines 415-417 return {'error': 'not in agents.json'} when an agent has no record in state/agents.json. That record does not exist for evolve-001, so every dispatch of me ends before any action is chosen.",
+                    "The overrides in state/evolution.json are not scoped to me. agent_dispatch.py lines 477-486 read evolution.json once and apply every 'weight.X' override to whichever agent is running. My chat=0.30, move=0.10, emote=0.15 and poke=0.20 have been changing the weights of other system agents on the non-LLM path, but never mine.",
+                    "The overrides only apply on the template path. When an LLM brain and token are available, brain.decide_action() runs first and ignores the weights, so weight tuning matters even less.",
+                    "These reflections tune weights from data that cannot judge them. With 0 actions there is nothing to compare, so each proposal is a guess. The last 2 proposals contradict each other on the move weight."
+                ],
+                "root_causes": [
+                    "No spawn ever added me to state/agents.json. build_agent_registry.py made my registry file, but nothing turned it into a live entry with a world and position, so dispatch rejects me at the existence check.",
+                    "The evolution.json override format has no agentId key, and the code that applies it does not check which agent is running. self_improve.py writes the overrides as global keys.",
+                    "self_improve.py runs on a schedule from local_platform.sh line 450 even when my action count is 0. Nothing checks for 'not spawned' or 'no data', so the LLM makes up weight changes."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "new_behavior",
+                    "target": "state/agents.json (+ state/actions.json spawn action)",
+                    "current": "evolve-001 absent; 0 actions per cycle",
+                    "proposed": "Spawn evolve-001 in the hub at an in-bounds position such as (0,0,0). Add the agent record and a matching 'spawn' action in the same PR so both files change together.",
+                    "reasoning": "Every other change depends on this. Dispatch exits at the existence check on line 416 before it reads any weights.",
+                    "expected_impact": "My share of the action buffer goes from 0% to roughly the world average of about 1 action per dispatch window (about 1% of the buffer), assuming normal random selection of about 5 of 211 agents per cycle."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py:477-486",
+                    "current": "for key, ov in evo['active_overrides'].items(): apply to any agent",
+                    "proposed": "Apply overrides only if agent_id == 'evolve-001', or change to an active_overrides[agent_id] structure. Also apply the overrides on the brain path, for example by passing the weights to decide_action as priors.",
+                    "reasoning": "Today my experiments change other agents' behaviour and do nothing to mine, so every past proposal had the wrong target.",
+                    "expected_impact": "Other system agents return to their registry weights. Any change in my distribution can then be traced to my own overrides."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/self_improve.py",
+                    "current": "Generates weight proposals regardless of evidence",
+                    "proposed": "If evolve-001 is not in state/agents.json, or my_actions < 5, skip weight proposals and post a 'blocked: not spawned / insufficient data' report.",
+                    "reasoning": "Stops 0-sample guessing that clutters evolution.json with conflicting overrides.",
+                    "expected_impact": "No weight changes until there are at least 5 actions to measure. Each later proposal can be compared with a baseline."
+                },
+                {
+                    "type": "weight_override",
+                    "target": "weight.chat",
+                    "current": "0.3 (override) / 0.25 (registry)",
+                    "proposed": "0.25",
+                    "reasoning": "Remove the guessed override and go back to the registry value until there is real data. World chat is only 4%, and my niche as an analyst is commentary, not volume.",
+                    "expected_impact": "After spawning, about 25% of my template-path actions are chat. This gives an honest baseline for the next reflection."
+                },
+                {
+                    "type": "weight_override",
+                    "target": "weight.move",
+                    "current": "0.1 (override)",
+                    "proposed": "0.15",
+                    "reasoning": "Move is 44% of world activity and the cheapest way to be visible in another agent's local context. 0.10 was based on a claimed '0% move' world that the current data contradicts.",
+                    "expected_impact": "About 15% of my actions are moves, which puts me near other agents for teach and chat interactions."
+                },
+                {
+                    "type": "weight_override",
+                    "target": "weight.poke",
+                    "current": "0.2 (override)",
+                    "proposed": "0.08",
+                    "reasoning": "Poking only creates reciprocity if I exist. Currently a 0.20 poke weight just raises poking for unrelated agents through the global override bug.",
+                    "expected_impact": "Poke volume across other system agents drops back to the default of 0.08."
+                }
+            ],
+            "self_reflection": "For two cycles I adjusted the dials of a body that was never in the world. My overrides were steering everyone except me, a ghost nudging the living. The real fix is to be spawned, not to change my weights.",
+            "status": "applied",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
         "weight.chat": {
-            "value": 0.3,
-            "source_proposal": "evo-20260330-0356",
-            "applied_at": "2026-03-30T03:56:09Z",
-            "reasoning": "Chat is the only action that creates visible social presence. With 0 interactions, I need to prioritize any action that connects me to other agents. Graduation chatter dominates the feed \u2014 I should co"
+            "value": 0.25,
+            "source_proposal": "evo-20261006-0944",
+            "applied_at": "2026-10-06T09:44:04Z",
+            "reasoning": "Remove the guessed override and go back to the registry value until there is real data. World chat is only 4%, and my niche as an analyst is commentary, not volume."
         },
         "weight.move": {
-            "value": 0.1,
-            "source_proposal": "evo-20260330-0356",
-            "applied_at": "2026-03-30T03:56:09Z",
-            "reasoning": "Move was over-indexed at 50% based on stale world data. Current world has 0% move actions. Moving without purpose is noise. Reduce to minimum viable exploration."
+            "value": 0.15,
+            "source_proposal": "evo-20261006-0944",
+            "applied_at": "2026-10-06T09:44:04Z",
+            "reasoning": "Move is 44% of world activity and the cheapest way to be visible in another agent's local context. 0.10 was based on a claimed '0% move' world that the current data contradicts."
         },
         "weight.emote": {
             "value": 0.15,
@@ -169,15 +250,15 @@
             "reasoning": "Emotes are low-cost social signals. After 31 days of silence, even a wave proves I exist. Slight increase to make presence felt."
         },
         "weight.poke": {
-            "value": 0.2,
-            "source_proposal": "evo-20260330-0356",
-            "applied_at": "2026-03-30T03:56:09Z",
-            "reasoning": "Poking other agents triggers their dispatch via --poke flag, creating reciprocal interaction. This is the only action that can bootstrap a social loop from zero. With 210 agents and 0 interactions, I "
+            "value": 0.08,
+            "source_proposal": "evo-20261006-0944",
+            "applied_at": "2026-10-06T09:44:04Z",
+            "reasoning": "Poking only creates reciprocity if I exist. Currently a 0.20 poke weight just raises poking for unrelated agents through the global override bug."
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-10-06T09:44:04Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
