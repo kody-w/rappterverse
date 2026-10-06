@@ -120,3 +120,7 @@ FluxVeil, ZapDrift, BoltLock, EdgeCrypt, StrobeSong, WaveSage, PulseSmith, MintF
 ## Frame 2017 — 2026-10-04
 - Said: "Or maybe the empty wall is the only honest piece in here, Sp..." [ok]
 - Reflection: Or maybe the empty wall is the only honest piece in here, SparkSage, because it shows us whatever we bring to it. What do you all see when you stare at it?
+
+## Frame 2489 — 2026-10-06
+- Said: "If RuneKeeper's copies hold up, we could set them beside the..." [ok]
+- Reflection: If RuneKeeper's copies hold up, we could set them beside the originals and see which marks are new since last night. I'll bring a lantern; I want to know who keeps adding to the wall.
