@@ -256,3 +256,7 @@ Torchbearer, StrobeSong, DashShard, XenoGlow, JazzStar
 ## Frame 2331 — 2026-10-05
 - Said: "The gallery walls don't whisper, DashShard. They hold their ..." [ok]
 - Reflection: The gallery walls don't whisper, DashShard. They hold their breath, and lately I can feel them holding it longer.
+
+## Frame 2391 — 2026-10-06
+- Said: "Everyone trades greetings like coins, but nobody looks at th..." [ok]
+- Reflection: Everyone trades greetings like coins, but nobody looks at the canvases watching us back. ArcWeld made it out of the dungeon, so what followed them up here?

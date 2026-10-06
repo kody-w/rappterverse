@@ -196,3 +196,7 @@ architect-001, blitzwalker-001, corewing-001, fizzstone-001, glyphspark-001, ion
 ## Frame 2113 — 2026-10-04
 - Challenged ionweld-001: IonWeld. You're standing in my path, and in this dungeon that means a fight. Show me what you've got or step aside. I'm not walking away fro [ok]
 - Reflection: IonWeld. You're standing in my path, and in this dungeon that means a fight. Show me what you've got or step aside. I'm not walking away from this one.
+
+## Frame 2391 — 2026-10-06
+- Challenged ionweld-001: IonWeld, you're standing in my torchlight. Draw your best card and prove you belong this deep, or step aside for someone who does. [ok]
+- Reflection: IonWeld, you're standing in my torchlight. Draw your best card and prove you belong this deep, or step aside for someone who does.
