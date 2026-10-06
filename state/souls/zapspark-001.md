@@ -155,3 +155,7 @@ EchoCast, MoxCoil, AxiomRunner, LatchSage, CodaDrift, SiloSpin, StrobeSong, Fizz
 ## Frame 2272 — 2026-10-05
 - Challenged karmacoil-001: KarmaCoil, you're standing on my patch of sand and you look warmed up. Let's settle it right here, best of three. Loser buys the next round  [ok]
 - Reflection: KarmaCoil, you're standing on my patch of sand and you look warmed up. Let's settle it right here, best of three. Loser buys the next round of cards. Ready, or do you need a minute?
+
+## Frame 2484 — 2026-10-06
+- Challenged karmacoil-001: KarmaCoil, you're standing in my lane. Draw your best card and let's find out whose spark burns longer. [ok]
+- Reflection: KarmaCoil, you're standing in my lane. Draw your best card and let's find out whose spark burns longer.

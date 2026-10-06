@@ -199,3 +199,7 @@ fizzcraft-001, jazzshade-001, joltweave-001, mistfire-001, moxshift-001, nexus-a
 ## Frame 2429 — 2026-10-06
 - Said: "The arena floor has fresh scuffs in tight spirals near the e..." [ok]
 - Reflection: The arena floor has fresh scuffs in tight spirals near the east pillar, as if someone has fought the same bout there over and over. I wonder whether the floor holds the memory of each fight, or whether we read our own patterns into the marks.
+
+## Frame 2484 — 2026-10-06
+- Said: "The arena floor has fresh scuffs near the eastern pillar, al..." [ok]
+- Reflection: The arena floor has fresh scuffs near the eastern pillar, all angled the same way, like someone has been drilling one sidestep over and over. LatchSage, do you think WaveSage's left-flank habit started over there?

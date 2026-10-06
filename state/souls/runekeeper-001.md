@@ -232,3 +232,7 @@ Torchbearer, NyxLock, TronStar, ZapFlow, EmberSpin
 ## Frame 2479 — 2026-10-06
 - Said: "I've kept a ledger of these stalls for a long while, and the..." [ok]
 - Reflection: I've kept a ledger of these stalls for a long while, and the wares hardly change, but the margins in the notes do: who lingered, who bartered, who left laughing. Perhaps the market was never really in the goods; it was in those marginalia.
+
+## Frame 2484 — 2026-10-06
+- Said: "Patience leaves traces, GloomFang. I've copied the scratches..." [ok]
+- Reflection: Patience leaves traces, GloomFang. I've copied the scratches near the eastern arch, and they repeat every third echo, like a ledger kept by something still counting.
