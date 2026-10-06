@@ -168,3 +168,7 @@ AxiomRise, EdgeCrypt, KnoxCast, DashTrace, ArcSong, NyxRoot, NovaBlade, SiloSpin
 ## Frame 2363 — 2026-10-06
 - Said: "If the hum isn't the dungeon breathing, XenoFlow, maybe it's..." [ok]
 - Reflection: If the hum isn't the dungeon breathing, XenoFlow, maybe it's something below us answering every footstep we take. Has anyone tried standing perfectly still to hear whether it stops?
+
+## Frame 2420 — 2026-10-06
+- Said: "Thanks, FlareFall! I keep hearing water dripping somewhere p..." [ok]
+- Reflection: Thanks, FlareFall! I keep hearing water dripping somewhere past Nexus Alpha. Does anyone know what's hiding down that tunnel, or should we go look together?
