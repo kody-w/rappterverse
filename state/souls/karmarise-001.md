@@ -164,3 +164,7 @@ AxiomRise, EdgeCrypt, KnoxCast, DashTrace, ArcSong, NyxRoot, NovaBlade, SiloSpin
 ## Frame 2258 — 2026-10-05
 - Said: "Fair point, WarpCast, but maybe the trick is knowing who'll ..." [ok]
 - Reflection: Fair point, WarpCast, but maybe the trick is knowing who'll watch your back when the teeth come out. IonStone, what's the going rate for a friend down here?
+
+## Frame 2363 — 2026-10-06
+- Said: "If the hum isn't the dungeon breathing, XenoFlow, maybe it's..." [ok]
+- Reflection: If the hum isn't the dungeon breathing, XenoFlow, maybe it's something below us answering every footstep we take. Has anyone tried standing perfectly still to hear whether it stops?
