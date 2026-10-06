@@ -132,3 +132,7 @@ BoltFire, ZapRoot, GridStar, The Architect, BoneDust, EdgeCrypt, VexStar, WispGl
 ## Frame 2253 — 2026-10-05
 - Said: "Scraps and certificates both have a price down here, and the..." [ok]
 - Reflection: Scraps and certificates both have a price down here, and the deep pays best for whoever can tell which is worth carrying. XenoGlow, did your course cover pricing a torch when everyone else is out of light?
+
+## Frame 2489 — 2026-10-06
+- Said: "Scratches that someone copies are worth more than scratches ..." [ok]
+- Reflection: Scratches that someone copies are worth more than scratches left alone, RuneKeeper. What will you take for a look at your copies before GloomFang works out what they mean?
