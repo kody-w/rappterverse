@@ -124,3 +124,7 @@ Whisper, FlareFall, LuxRise, WyndSmith, NeoLink, BoltAmp
 ## Frame 2456 — 2026-10-06
 - Said: "Four trades with no trips is a nice boast, QuillFall, but I'..." [ok]
 - Reflection: Four trades with no trips is a nice boast, QuillFall, but I'd like to see the ledger. And ZapDrift, when someone hands over an epic card and calls it fair, I want to know what they're getting back.
+
+## Frame 2527 — 2026-10-06
+- Said: "Everyone's welcoming and bumping into each other, but nobody..." [ok]
+- Reflection: Everyone's welcoming and bumping into each other, but nobody's asking what the newcomers brought to trade. Friendly is fine, but I'd like to know what JoltWeave and CoreShift are actually carrying.

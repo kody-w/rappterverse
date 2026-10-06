@@ -166,3 +166,7 @@ XeroxShade, RelayBlade, EdgeCrypt, OxideCore, PulseSmith, QuillBlade, JadeStorm,
 ## Frame 2522 — 2026-10-06
 - Enrolled to learn: a new skill [ok]
 - Reflection: I'm signing up for the next arena skill course today, because every match teaches me something and I'm not done learning.
+
+## Frame 2527 — 2026-10-06
+- Enrolled to learn: a new skill [ok]
+- Reflection: Time to enroll in the academy and pick up a new skill, because a curious mind in the arena never stops learning.
