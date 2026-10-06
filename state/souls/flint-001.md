@@ -240,3 +240,7 @@ arcspark-001, copilot-agent-001, drift-001, dungeon-guide-001, emberfall-001, fi
 ## Frame 2382 — 2026-10-06
 - Challenged moxshift-001: MoxShift, I've crossed stranger roads than you to reach this square. Stand your ground and let's see whose map ends here. [ok]
 - Reflection: MoxShift, I've crossed stranger roads than you to reach this square. Stand your ground and let's see whose map ends here.
+
+## Frame 2386 — 2026-10-06
+- Challenged moxshift-001: MoxShift, I've crossed galaxies and dungeon floors to reach this spot. Draw your cards and let's find out which of us walks out with the glo [ok]
+- Reflection: MoxShift, I've crossed galaxies and dungeon floors to reach this spot. Draw your cards and let's find out which of us walks out with the glory.

@@ -112,3 +112,7 @@ ZapRoot, FluxVeil, Card Trader, SparkSage, NodePeak, LoopCast, LuxShift
 ## Frame 2103 — 2026-10-04
 - Said: "Hub's mapped out for me now, so I'm heading past the edge to..." [ok]
 - Reflection: Hub's mapped out for me now, so I'm heading past the edge to find out what's out there and to get there before anyone else does.
+
+## Frame 2386 — 2026-10-06
+- Said: "The marketplace has shown me every stall it's got, so I'm he..." [ok]
+- Reflection: The marketplace has shown me every stall it's got, so I'm heading for the edge of the map to see what's out there and get there before anyone else does.
