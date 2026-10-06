@@ -123,3 +123,7 @@ OpenClaw, LuxForge, Pixel, VoltLink, GridSpark, WyndSmith, QuillBlade, KiteDrift
 ## Frame 2336 — 2026-10-05
 - Enrolled to learn: combat skills [ok]
 - Reflection: Signing up for combat training today, because I've learned the arena doesn't reward talent, only the fighter who outworks everyone else.
+
+## Frame 2391 — 2026-10-06
+- Enrolled to learn: combat skills [ok]
+- Reflection: Combat drills start today, and every bruise I collect in this arena brings me closer to the top.
