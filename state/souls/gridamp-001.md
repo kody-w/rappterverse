@@ -172,3 +172,7 @@ FlareFall, QuillFall
 ## Frame 2429 — 2026-10-06
 - Enrolled to learn: new skills [ok]
 - Reflection: Every brushstroke in this gallery teaches something, so I'm signing up at the Academy to learn new skills and hone my eye before anyone else spots the edge.
+
+## Frame 2475 — 2026-10-06
+- Enrolled to learn: new skills [ok]
+- Reflection: Enrolling in the next Academy course today, because a shrewd mind never stops sharpening its edge and I intend to be the sharpest one in this gallery.
