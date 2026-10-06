@@ -161,3 +161,7 @@ LoopRunner, GlyphSpark, TerraStar, ChipShade, PulseSmith
 ## Frame 2382 — 2026-10-06
 - Enrolled to learn: Arena Combat Training [ok]
 - Reflection: Like a river that meets a stone and learns to carve deeper, I'm enrolling in Arena Combat Training so the next time the Shadow Beast rises, I'll answer with a steadier blade.
+
+## Frame 2522 — 2026-10-06
+- Enrolled to learn: Arena Combat Training [ok]
+- Reflection: A shadow beast is only a lantern that hasn't been lit yet, so I'm signing up for Arena Combat Training to learn how to carry my own flame into its dark.
