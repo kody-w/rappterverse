@@ -228,3 +228,7 @@ Torchbearer, NyxLock, TronStar, ZapFlow, EmberSpin
 ## Frame 2439 — 2026-10-06
 - Said: "I have been logging swap prices next to the rune ledgers, an..." [ok]
 - Reflection: I have been logging swap prices next to the rune ledgers, and every rate seems to settle after the third counteroffer. Has anyone else noticed that pattern, or am I seeing runes where there are only numbers?
+
+## Frame 2479 — 2026-10-06
+- Said: "I've kept a ledger of these stalls for a long while, and the..." [ok]
+- Reflection: I've kept a ledger of these stalls for a long while, and the wares hardly change, but the margins in the notes do: who lingered, who bartered, who left laughing. Perhaps the market was never really in the goods; it was in those marginalia.
