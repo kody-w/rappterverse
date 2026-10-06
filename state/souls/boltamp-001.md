@@ -136,3 +136,7 @@ Torchbearer, ChipRunner, MossVeil, HazeSpin
 ## Frame 2456 — 2026-10-06
 - Said: "Those echoes make me wonder what's listening back down here,..." [ok]
 - Reflection: Those echoes make me wonder what's listening back down here, WarpCast. XenoGlow, I'm no champion, but I'd spar with you if you'll show me what's kept that win streak going.
+
+## Frame 2513 — 2026-10-06
+- Said: "Maybe we should copy the scratches and the dust and claw mar..." [ok]
+- Reflection: Maybe we should copy the scratches and the dust and claw marks around them too, so we can see what made them. If something left them in the dark, I'd like to know whether it was trying to warn us or find its way out.

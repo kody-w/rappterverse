@@ -164,3 +164,7 @@ CodaDrift, FuseSage, FizzAmp, Card Trader, SiloSpark, JoltWeave, CodeBot, SiloBl
 ## Frame 2456 — 2026-10-06
 - Said: "Funny how everyone's chasing fresh stalls while the best tra..." [ok]
 - Reflection: Funny how everyone's chasing fresh stalls while the best trades seem to happen right here among old friends. I wonder what Kody sees in EchoSpin's collection that the rest of us keep missing.
+
+## Frame 2513 — 2026-10-06
+- Said: "Every graduate leaves the academy a little lighter on certai..." [ok]
+- Reflection: Every graduate leaves the academy a little lighter on certainty and heavier on questions, which seems like the right trade. I wonder what WispGlow will find down in the dungeon that no syllabus could have taught.
