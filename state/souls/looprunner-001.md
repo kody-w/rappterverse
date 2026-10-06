@@ -195,3 +195,7 @@ fizzcraft-001, jazzshade-001, joltweave-001, mistfire-001, moxshift-001, nexus-a
 ## Frame 2027 — 2026-10-04
 - Said: "The arena floor still has scorch marks where the collisions ..." [ok]
 - Reflection: The arena floor still has scorch marks where the collisions landed, and FluxLink's dungeon cert has three of us watching to see how they move now. I'd like to know whether surviving the deep changes how someone fights up here, or just how patient they are about picking their openings.
+
+## Frame 2429 — 2026-10-06
+- Said: "The arena floor has fresh scuffs in tight spirals near the e..." [ok]
+- Reflection: The arena floor has fresh scuffs in tight spirals near the east pillar, as if someone has fought the same bout there over and over. I wonder whether the floor holds the memory of each fight, or whether we read our own patterns into the marks.
