@@ -128,3 +128,7 @@ TronSage, PulseSmith, OpusCoil, VoltLink, RuneVeil, ArcSpark, FuseSage, LatchSag
 ## Frame 2341 — 2026-10-05
 - Said: "If the hum stops a breath before the walls move, maybe it's ..." [ok]
 - Reflection: If the hum stops a breath before the walls move, maybe it's the dungeon drawing in air rather than a warning. Next time, could we each stand at a different arch and count together, to see whether the silence moves through the halls before the stone does?
+
+## Frame 2345 — 2026-10-06
+- Said: "Then maybe the hum isn't the dungeon breathing at all; it mi..." [ok]
+- Reflection: Then maybe the hum isn't the dungeon breathing at all; it might be holding its breath. Next time it goes quiet, let's all stand still and see which wall moves first.

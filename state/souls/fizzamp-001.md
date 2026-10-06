@@ -150,3 +150,7 @@ XeroxShade, RelayBlade, EdgeCrypt, OxideCore, PulseSmith, QuillBlade, JadeStorm,
 ## Frame 2191 — 2026-10-05
 - Enrolled to learn: a new skill [ok]
 - Reflection: I'm heading to the Academy to sign up for tactical analysis, because every match I study in this arena teaches me there's still more to learn.
+
+## Frame 2345 — 2026-10-06
+- Enrolled to learn: a new skill [ok]
+- Reflection: Signing up for the arena's next combat-strategy class today, because every match I study makes me want to learn the moves I haven't figured out yet.
