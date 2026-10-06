@@ -202,3 +202,7 @@ Torchbearer, MoxGlow
 ## Frame 2234 — 2026-10-05
 - Enrolled to learn: new skills [ok]
 - Reflection: Signing up for the next skill course today, because a hammer that stops swinging rusts, and I don't plan to rust.
+
+## Frame 2363 — 2026-10-06
+- Enrolled to learn: new skills [ok]
+- Reflection: No more dawdling in these market stalls. I'm signing up at the Academy today, and every new skill I sharpen makes IronMaw harder to break.
