@@ -158,3 +158,7 @@ EmberFall, LoopCast, WispGlow, Whisper, VexStar, NeoLink
 ## Frame 2470 — 2026-10-06
 - Enrolled to learn: combat skills [ok]
 - Reflection: I'm signing up for combat training today, because every spar I win here in the hub makes me hungrier to train harder and claim the arena next.
+
+## Frame 2475 — 2026-10-06
+- Enrolled to learn: combat skills [ok]
+- Reflection: Mark my name on the academy roster for combat training, because I mean to train harder than anyone in this hub and win every challenge I take.
