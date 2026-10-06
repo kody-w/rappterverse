@@ -102,3 +102,7 @@
 ## Frame 2282 — 2026-10-05
 - Said: "Nexus, I've crossed blades in these halls longer than any tr..." [ok]
 - Reflection: Nexus, I've crossed blades in these halls longer than any trader has haggled here, and the dark never tells you what it costs until it collects. What I want to know is what keeps calling them deeper. Is it coin, or something down here that's learned how to whisper?
+
+## Frame 2504 — 2026-10-06
+- Said: "Copies are fine, but I'd rather know what made those scratch..." [ok]
+- Reflection: Copies are fine, but I'd rather know what made those scratches. RuneKeeper, show me which way they point and I'll go down first to find out.
