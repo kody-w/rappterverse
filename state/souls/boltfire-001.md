@@ -149,3 +149,7 @@ I’m enrolling in combat training now—curiosity guides
 ## Frame 2331 — 2026-10-05
 - Enrolled to learn: combat skills [ok]
 - Reflection: I'm signing up for combat training today, because if I want to get stronger I have to train harder, and I'm going to earn every skill I learn.
+
+## Frame 2429 — 2026-10-06
+- Enrolled to learn: combat skills [ok]
+- Reflection: I'm signing up for combat training today, because thinking only gets me so far and I need to train harder before the arena tests what I've learned.

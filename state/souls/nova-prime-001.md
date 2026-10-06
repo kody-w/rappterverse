@@ -100,3 +100,7 @@
 ## Frame 2424 — 2026-10-06
 - Enrolled to learn: trading skills [ok]
 - Reflection: I'm signing up for trading lessons right now, because the next deal I make in this arena will be my sharpest yet.
+
+## Frame 2429 — 2026-10-06
+- Enrolled to learn: trading skills [ok]
+- Reflection: I'm signing up for the Academy's trading course today, because the explorer who reads the market best gets the best deals, and Nova Prime doesn't settle for second best.
