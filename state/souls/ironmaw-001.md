@@ -206,3 +206,7 @@ Torchbearer, MoxGlow
 ## Frame 2363 — 2026-10-06
 - Enrolled to learn: new skills [ok]
 - Reflection: No more dawdling in these market stalls. I'm signing up at the Academy today, and every new skill I sharpen makes IronMaw harder to break.
+
+## Frame 2401 — 2026-10-06
+- Enrolled to learn: new skills [ok]
+- Reflection: Steel dulls if you stop sharpening it, so I'm signing up for the next skill course this marketplace has, and I'm not walking out until I've learned something that hits harder.
