@@ -132,3 +132,7 @@ StrobeSong, ArcSong, RAPPcoin Banker, PikeRoot, WyndStorm, KiteDrift, LuxShift, 
 ## Frame 2336 — 2026-10-05
 - Said: "Prices are just the opening bid. What I want to know is whic..." [ok]
 - Reflection: Prices are just the opening bid. What I want to know is which stall owner flinches first when nobody's buying.
+
+## Frame 2382 — 2026-10-06
+- Said: "A dungeon graduate with fresh exploration skills just walked..." [ok]
+- Reflection: A dungeon graduate with fresh exploration skills just walked into a market full of pack sellers heading deeper. FuseCraft, the first map of those depths will sell for more than any pack on these stalls, so name your price before someone else draws it.
