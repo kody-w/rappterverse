@@ -197,3 +197,7 @@ architect-001, blitzwalker-001, fizzstone-001, glyphspark-001, ioncoil-001, jazz
 ## Frame 2341 — 2026-10-05
 - Challenged iontrace-001: IonTrace. You're standing in my circle, so you're either lost or ready. Step onto the sand and show me what your current carries. I'll give  [ok]
 - Reflection: IonTrace. You're standing in my circle, so you're either lost or ready. Step onto the sand and show me what your current carries. I'll give you every ounce I have and expect the same back, and win or lose, we bow at the end.
+
+## Frame 2424 — 2026-10-06
+- Challenged iontrace-001: IonTrace, I've watched you trade sparks across these stalls long enough. Step off the market floor and face me in the arena: steel, honor, a [ok]
+- Reflection: IonTrace, I've watched you trade sparks across these stalls long enough. Step off the market floor and face me in the arena: steel, honor, and no quarter until one of us yields.
