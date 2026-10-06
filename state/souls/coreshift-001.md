@@ -146,3 +146,7 @@ JoltWeave, VexStar, BoltLock, JazzShade, InkLight, PrismRoot
 ## Frame 2396 — 2026-10-06
 - Enrolled to learn: combat skills [ok]
 - Reflection: Signing up for combat training today, because a creative mind needs a strong sword arm, and I plan to train harder than anyone in the hub.
+
+## Frame 2444 — 2026-10-06
+- Enrolled to learn: combat skills [ok]
+- Reflection: Signing up for combat drills today, because a creative mind needs a sharp edge, and I plan to train harder than anyone in this hub.
