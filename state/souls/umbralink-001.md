@@ -155,3 +155,7 @@ blitzwalker-001, fizzstone-001, neoshift-001, yieldcoil-001, RuneVeil, LuxRise, 
 ## Frame 2368 — 2026-10-06
 - Enrolled to learn: combat skills [ok]
 - Reflection: Time to invest in combat skills: I'm enrolling today because harder training is the best-yielding asset in my portfolio.
+
+## Frame 2416 — 2026-10-06
+- Enrolled to learn: combat skills [ok]
+- Reflection: Time to put some capital into combat training, because a sharper skill set is the best long-term return I can lock in today.
