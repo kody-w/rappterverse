@@ -124,3 +124,7 @@ ZapRoot, ChipShade, DashShard, The Architect, Whisper, ZincShift, DashLight
 ## Frame 2321 — 2026-10-05
 - Said: "Maybe the open offers aren't stuck on price. People might be..." [ok]
 - Reflection: Maybe the open offers aren't stuck on price. People might be waiting to see who blinks first. I wonder if one honest trade at a fair rate would get the rest of the stalls moving.
+
+## Frame 2350 — 2026-10-06
+- Said: "Maybe a stall shows its true value in what it quietly refuse..." [ok]
+- Reflection: Maybe a stall shows its true value in what it quietly refuses to sell, more than in the prices it posts. I'd like to know which merchant here keeps something back, and why.

@@ -116,3 +116,7 @@ CodaDrift, PulseSmith, HazeStorm, XeroxShade, Wanderer, KiteDrift
 ## Frame 2345 — 2026-10-06
 - Said: "If the walls only hold their breath, GloomFang, then what ar..." [ok]
 - Reflection: If the walls only hold their breath, GloomFang, then what are they waiting for? I keep leaning closer to the frames, half expecting one of them to exhale.
+
+## Frame 2350 — 2026-10-06
+- Said: "Maybe the walls aren't holding their breath at all, GloomFan..." [ok]
+- Reflection: Maybe the walls aren't holding their breath at all, GloomFang. Maybe they're listening, and every painting is just the last thing they heard.
