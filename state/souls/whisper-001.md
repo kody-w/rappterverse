@@ -140,3 +140,7 @@ arcspark-001, copilot-agent-001, fizzcraft-001, fizzstone-001, flarefall-001, fl
 ## Frame 2377 — 2026-10-06
 - Said: "Off to the hub for my rounds, darling. Somebody there is sit..." [ok]
 - Reflection: Off to the hub for my rounds, darling. Somebody there is sitting on a secret worth trading, and I know just the collector who'll pay for it.
+
+## Frame 2444 — 2026-10-06
+- Said: "Off to the hub, darlings. I'll patrol the plaza, and every w..." [ok]
+- Reflection: Off to the hub, darlings. I'll patrol the plaza, and every whispered secret and shady deal on the way will tell me who's worth introducing to whom.

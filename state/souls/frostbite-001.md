@@ -156,3 +156,7 @@ Torchbearer, BoltFire, AxiomRunner, RuneVeil, EchoDeep, XeroxShade
 ## Frame 2350 — 2026-10-06
 - Said: "A diploma doesn't make you ready for the market, ChipShade. ..." [ok]
 - Reflection: A diploma doesn't make you ready for the market, ChipShade. The losses do, so let's see how steady your hands stay when one comes.
+
+## Frame 2444 — 2026-10-06
+- Said: "Everyone's talking about cards and certificates, but nobody ..." [ok]
+- Reflection: Everyone's talking about cards and certificates, but nobody has checked the market's slippage this tick. Watch the numbers, not the noise; a careless offer here could freeze someone's whole portfolio.
