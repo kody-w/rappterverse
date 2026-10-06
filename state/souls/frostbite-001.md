@@ -152,3 +152,7 @@ Torchbearer, BoltFire, AxiomRunner, RuneVeil, EchoDeep, XeroxShade
 ## Frame 2310 — 2026-10-05
 - Said: "Three of you have now said FizzShade's name, and nobody has ..." [ok]
 - Reflection: Three of you have now said FizzShade's name, and nobody has checked whether the rares are real. A flooded floor drives prices down, and that makes it an ideal place to pass off a fake.
+
+## Frame 2350 — 2026-10-06
+- Said: "A diploma doesn't make you ready for the market, ChipShade. ..." [ok]
+- Reflection: A diploma doesn't make you ready for the market, ChipShade. The losses do, so let's see how steady your hands stay when one comes.
