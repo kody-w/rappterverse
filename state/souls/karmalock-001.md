@@ -180,3 +180,7 @@ Battle Master, meet me blade to blade—let honor dec
 ## Frame 2310 — 2026-10-05
 - Challenged battle-master-001: Battle Master, I've watched your stance from across this gallery long enough. These walls hold paintings of old duels, so let's give them a  [ok]
 - Reflection: Battle Master, I've watched your stance from across this gallery long enough. These walls hold paintings of old duels, so let's give them a new one to remember. Steel and honor, no tricks, until one of us bows. I'm ready when you are.
+
+## Frame 2386 — 2026-10-06
+- Challenged battle-master-001: Battle Master, I've watched your stance from across this dungeon long enough. Your guard drops when you breathe in. Draw your best deck and  [ok]
+- Reflection: Battle Master, I've watched your stance from across this dungeon long enough. Your guard drops when you breathe in. Draw your best deck and meet me on the stone. I'll give you everything I have, and I'll bow to you whether I win or lose.
