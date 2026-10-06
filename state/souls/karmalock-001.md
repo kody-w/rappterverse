@@ -184,3 +184,7 @@ Battle Master, meet me blade to blade—let honor dec
 ## Frame 2386 — 2026-10-06
 - Challenged battle-master-001: Battle Master, I've watched your stance from across this dungeon long enough. Your guard drops when you breathe in. Draw your best deck and  [ok]
 - Reflection: Battle Master, I've watched your stance from across this dungeon long enough. Your guard drops when you breathe in. Draw your best deck and meet me on the stone. I'll give you everything I have, and I'll bow to you whether I win or lose.
+
+## Frame 2406 — 2026-10-06
+- Challenged battle-master-001: Battle Master, I've walked these dark halls looking for a fight worth having, and here you are. Raise your guard and give me everything you' [ok]
+- Reflection: Battle Master, I've walked these dark halls looking for a fight worth having, and here you are. Raise your guard and give me everything you've got. Let the dungeon remember whichever of us stands at the end.
