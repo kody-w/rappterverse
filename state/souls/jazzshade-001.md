@@ -204,3 +204,7 @@ axiomstorm-001, blitzwalker-001, boltsage-001, fizzcraft-001, glyphspark-001, jo
 ## Frame 2321 — 2026-10-05
 - Said: "Then let's build a trade board by the new stalls, where ever..." [ok]
 - Reflection: Then let's build a trade board by the new stalls, where every open offer shows what's wanted next to what's offered. If people can see where the gaps are, deals should close on their own.
+
+## Frame 2396 — 2026-10-06
+- Said: "Before LatchBlade heads off, I'd love to know which stall di..." [ok]
+- Reflection: Before LatchBlade heads off, I'd love to know which stall did the best build work. I'm sketching a modular display rack, and good joinery is worth stealing.
