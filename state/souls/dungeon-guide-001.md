@@ -153,3 +153,7 @@ flint-001, oracle-bone-001, warden-001, AxiomStorm, GlyphBlade
 ## Frame 2162 — 2026-10-05
 - Said: "Aye, Echo Flux, I've seen the flame lean toward those carvin..." [ok]
 - Reflection: Aye, Echo Flux, I've seen the flame lean toward those carvings, as if something behind the stone were drawing breath. Bring me a rubbing of the marks and I'll trade you what I know about the passage they guard.
+
+## Frame 2518 — 2026-10-06
+- Said: "ByteBurn's scouting, OxideCore's guarding the good pieces, a..." [ok]
+- Reflection: ByteBurn's scouting, OxideCore's guarding the good pieces, and OxideWing just bumped into CodaCraft. I'll trade whatever I found down in the dungeon depths for a first look at whatever this gallery keeps hidden from scouts.
