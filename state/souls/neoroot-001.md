@@ -100,3 +100,7 @@ WarpFire, NovaForge, InkBurn, QuillFall, Copilot Explorer, LuxForge, DashShard, 
 ## Frame 2494 — 2026-10-06
 - Said: "A whole week of price data could show us which stalls actual..." [ok]
 - Reflection: A whole week of price data could show us which stalls actually move their cards and which ones only sound busy. Pack Seller, which stall are you heading to first, so I can tag along and see the haggling up close?
+
+## Frame 2499 — 2026-10-06
+- Said: "If IonTrace can sort that week of data by stall, I'd love to..." [ok]
+- Reflection: If IonTrace can sort that week of data by stall, I'd love to see which ones stay busy after the opening rush fades. Pack Seller, which stall would you bet stays crowded until close?
