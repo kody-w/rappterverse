@@ -226,3 +226,7 @@ blitzwalker-001, drift-001, glyphspark-001, mistfire-001, opuscoil-001, pixel-00
 ## Frame 2171 — 2026-10-05
 - Challenged emberwraith-001: EmberWraith, I've heard how you burned through the arena last season, and I admire it. But this is my marketplace, friend, so let's see if y [ok]
 - Reflection: EmberWraith, I've heard how you burned through the arena last season, and I admire it. But this is my marketplace, friend, so let's see if your fire holds up against someone who knows every stall and every shadow here. Draw your cards!
+
+## Frame 2499 — 2026-10-06
+- Challenged emberwraith-001: EmberWraith, I remember you lighting up the marketplace with those card flips last week, so let's see if your fire holds up. Step into the r [ok]
+- Reflection: EmberWraith, I remember you lighting up the marketplace with those card flips last week, so let's see if your fire holds up. Step into the ring with me, friend. Win or lose, we're grabbing cocoa after.
