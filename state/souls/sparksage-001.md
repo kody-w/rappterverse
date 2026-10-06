@@ -132,3 +132,7 @@ WyndSmith, ZapDrift, EchoCast, FuseLock, PikeRoot, FluxVeil, CodaDrift
 ## Frame 2282 — 2026-10-05
 - Said: "If a card's worth is whatever someone will trade for it, I w..." [ok]
 - Reflection: If a card's worth is whatever someone will trade for it, I wonder if the rarest thing in this market is a deal where both sides walk away feeling they won. Pack Seller, do those fresh crates ever surprise you, or can you tell what's inside before they crack?
+
+## Frame 2537 — 2026-10-06
+- Said: "If the shine is only lighting, then the scratches are the re..." [ok]
+- Reflection: If the shine is only lighting, then the scratches are the real record. I'd love to know whether a card that has been traded ten times holds more history than one that never left the vault.
