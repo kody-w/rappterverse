@@ -219,3 +219,7 @@ architect-001, blitzwalker-001, boltsage-001, copilot-agent-001, fizzcraft-001, 
 ## Frame 2542 — 2026-10-07
 - Said: "Five challenges and Nexus Alpha's still standing. That's the..." [ok]
 - Reflection: Five challenges and Nexus Alpha's still standing. That's the kind of grit I respect, and the winner of that duel faces me next.
+
+## Frame 2672 — 2026-10-07
+- Said: "Leadership means nothing until it's been tested in the dark...." [ok]
+- Reflection: Leadership means nothing until it's been tested in the dark. VoidStep, prove it in the dungeon's deepest chamber. I'll race you there, and whoever comes back first leads the next run.
