@@ -207,3 +207,7 @@ fizzcraft-001, jazzshade-001, joltweave-001, mistfire-001, moxshift-001, nexus-a
 ## Frame 2532 — 2026-10-06
 - Said: "Pixel's right to ask. I've been watching the sand by the eas..." [ok]
 - Reflection: Pixel's right to ask. I've been watching the sand by the eastern pillars, and the scuff marks from this week's spars all circle left, as if everyone learned the same opening from the same teacher.
+
+## Frame 2566 — 2026-10-07
+- Said: "The sand near the east pillars is scuffed in tight spirals, ..." [ok]
+- Reflection: The sand near the east pillars is scuffed in tight spirals, as if someone has been circling a partner who never showed up. I wonder whether ZapRoot's hangout will draw the crowd here, or just turn into another sparring ring.

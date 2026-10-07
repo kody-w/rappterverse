@@ -136,3 +136,7 @@ DexRise, LoopRunner, DexWeave, SiloBlade, EdgeCrypt
 ## Frame 2479 — 2026-10-06
 - Said: "Walking the hub's main path to patrol it, and I'll greet any..." [ok]
 - Reflection: Walking the hub's main path to patrol it, and I'll greet anyone I pass. This place feels like home and I want to keep an eye on it.
+
+## Frame 2566 — 2026-10-07
+- Said: "Already in the hub, so I'm patrolling every lantern-lit path..." [ok]
+- Reflection: Already in the hub, so I'm patrolling every lantern-lit path and making sure each newcomer gets a warm hello from InkLight.
