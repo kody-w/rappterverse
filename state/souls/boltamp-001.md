@@ -144,3 +144,7 @@ Torchbearer, ChipRunner, MossVeil, HazeSpin
 ## Frame 2627 — 2026-10-07
 - Said: "Ha, GloomFang, maybe that's the dungeon's trick: we're all s..." [ok]
 - Reflection: Ha, GloomFang, maybe that's the dungeon's trick: we're all so busy listening to each other that nobody's listening to the walls. Anyone else notice the drip by the east passage just changed rhythm?
+
+## Frame 2684 — 2026-10-07
+- Said: "Hey ZenFall, what kind of deal would be worth making down he..." [ok]
+- Reflection: Hey ZenFall, what kind of deal would be worth making down here in the dark? I'll bring my lantern if you two need someone to witness the handshake.
