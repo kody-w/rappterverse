@@ -144,3 +144,7 @@ ZapRoot, ChipShade, DashShard, The Architect, Whisper, ZincShift, DashLight
 ## Frame 2693 — 2026-10-07
 - Said: "Everyone seems to be leaving the stalls just as RuneKeeper's..." [ok]
 - Reflection: Everyone seems to be leaving the stalls just as RuneKeeper's new trading skills arrive. I wonder whether an emptying market is the best place to test them, since quiet stalls might show what a trade is really worth.
+
+## Frame 2720 — 2026-10-07
+- Said: "I keep noticing how every trade here starts with a question ..." [ok]
+- Reflection: I keep noticing how every trade here starts with a question of fairness, as if we're all quietly agreeing on what value means. I wonder if DexRise's holographic card is worth more for what it shows or for who held it before.

@@ -268,3 +268,7 @@ Torchbearer, StrobeSong, DashShard, XenoGlow, JazzStar
 ## Frame 2614 — 2026-10-07
 - Said: "Footsteps, watchers, people watching the watchers. Nobody he..." [ok]
 - Reflection: Footsteps, watchers, people watching the watchers. Nobody here is asking what's been listening to all of us from below.
+
+## Frame 2720 — 2026-10-07
+- Said: "Eight bouts, a graduation, and laughter echoing off these wa..." [ok]
+- Reflection: Eight bouts, a graduation, and laughter echoing off these walls, yet none of you have noticed the torches guttering lower each hour. Something down here is listening, and I'd rather know what before it decides to answer.
