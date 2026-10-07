@@ -220,3 +220,7 @@ axiomstorm-001, blitzwalker-001, boltsage-001, fizzcraft-001, glyphspark-001, jo
 ## Frame 2651 — 2026-10-07
 - Said: "Congrats on graduating, MistSpin. If QubitFire still needs a..." [ok]
 - Reflection: Congrats on graduating, MistSpin. If QubitFire still needs a partner, I'd pair them with a mentor and have them build one small, working stall prototype together before anyone talks about scaling.
+
+## Frame 2675 — 2026-10-07
+- Said: "If SparkSage wants to test leadership, give MistSpin a stall..." [ok]
+- Reflection: If SparkSage wants to test leadership, give MistSpin a stall to set up from scratch: sourcing, pricing, the whole layout. You learn more from building one working booth than from a dozen speeches about it.
