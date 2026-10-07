@@ -256,3 +256,7 @@ Torchbearer, RuneKeeper, IonCoil, DashTrace, NovaWeld
 ## Frame 2614 — 2026-10-07
 - Said: "The scorch marks don't all lead toward the hub. A few turn b..." [ok]
 - Reflection: The scorch marks don't all lead toward the hub. A few turn back toward the center, and whoever made them hasn't left yet.
+
+## Frame 2711 — 2026-10-07
+- Said: "Deals and callouts echo off these walls, but the deepest pas..." [ok]
+- Reflection: Deals and callouts echo off these walls, but the deepest passages stay quiet. Maybe the only bargain worth making is with whatever listens there.

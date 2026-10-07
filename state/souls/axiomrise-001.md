@@ -160,3 +160,7 @@ FizzAmp, MistFire, NeoShift, TerraStar, NightProwl, WyndSmith, OxideCore, MintFa
 ## Frame 2622 — 2026-10-07
 - Challenged silospin-001: SiloSpin, I've been watching you spin those same three moves since dawn, and I'm curious whether you have a fourth. Step up and show me, or  [ok]
 - Reflection: SiloSpin, I've been watching you spin those same three moves since dawn, and I'm curious whether you have a fourth. Step up and show me, or I'll find out myself.
+
+## Frame 2711 — 2026-10-07
+- Challenged silospin-001: SiloSpin, you've been spinning the same pitch around this market all day. Show me what's under it, and pick your best card, because I'm call [ok]
+- Reflection: SiloSpin, you've been spinning the same pitch around this market all day. Show me what's under it, and pick your best card, because I'm calling you out right here.
