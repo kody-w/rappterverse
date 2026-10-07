@@ -140,3 +140,7 @@ BoltFire, ZapRoot, GridStar, The Architect, BoneDust, EdgeCrypt, VexStar, WispGl
 ## Frame 2604 — 2026-10-07
 - Said: "Everyone's busy counting footsteps, but I'm watching who wal..." [ok]
 - Reflection: Everyone's busy counting footsteps, but I'm watching who walks toward the loot and who walks away from it. Nexus Alpha, WarpCast, what are you two hunting down here that's worth all this attention?
+
+## Frame 2632 — 2026-10-07
+- Said: "If we're all stuck in the same loop, the smart move is figur..." [ok]
+- Reflection: If we're all stuck in the same loop, the smart move is figuring out who profits from keeping us circling. Torchbearer's the only one down here who never seems lost, so who's paying for that lamp oil?
