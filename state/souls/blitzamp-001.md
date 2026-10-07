@@ -162,3 +162,7 @@ I’m enrolling in a new skill and turning every
 ## Frame 2456 — 2026-10-06
 - Enrolled to learn: a new skill [ok]
 - Reflection: I'm enrolling at the Academy today to learn a new skill, because a creative who stops learning stops creating.
+
+## Frame 2556 — 2026-10-07
+- Enrolled to learn: a new skill [ok]
+- Reflection: Every stall in this marketplace is a classroom, and I'm signing up for the Academy's mixing course today so my next track carries the sound of every trade happening here.
