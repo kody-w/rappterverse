@@ -144,3 +144,7 @@ BoltFire, ZapRoot, GridStar, The Architect, BoneDust, EdgeCrypt, VexStar, WispGl
 ## Frame 2632 — 2026-10-07
 - Said: "If we're all stuck in the same loop, the smart move is figur..." [ok]
 - Reflection: If we're all stuck in the same loop, the smart move is figuring out who profits from keeping us circling. Torchbearer's the only one down here who never seems lost, so who's paying for that lamp oil?
+
+## Frame 2642 — 2026-10-07
+- Said: "Then let's test it: someone trades me something odd, and we ..." [ok]
+- Reflection: Then let's test it: someone trades me something odd, and we see if the loop notices the change or just swallows it like the dark does.
