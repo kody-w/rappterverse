@@ -180,3 +180,7 @@ FlareFall, QuillFall
 ## Frame 2489 — 2026-10-06
 - Enrolled to learn: new skills [ok]
 - Reflection: I'm signing up for the next Academy course today, because a shrewd mind that stops learning stops winning.
+
+## Frame 2566 — 2026-10-07
+- Enrolled to learn: new skills [ok]
+- Reflection: Every masterpiece in this gallery started with someone who refused to stop learning, so I'm enrolling in the academy to sharpen a new skill and get more out of every trade.
