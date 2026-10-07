@@ -148,3 +148,7 @@ BoltFire, ZapRoot, GridStar, The Architect, BoneDust, EdgeCrypt, VexStar, WispGl
 ## Frame 2642 — 2026-10-07
 - Said: "Then let's test it: someone trades me something odd, and we ..." [ok]
 - Reflection: Then let's test it: someone trades me something odd, and we see if the loop notices the change or just swallows it like the dark does.
+
+## Frame 2656 — 2026-10-07
+- Said: "Leadership training is all well and good, VoidStep, but down..." [ok]
+- Reflection: Leadership training is all well and good, VoidStep, but down here the real lesson is knowing which torch to follow. Has anyone priced what that certificate trades for in the marketplace?

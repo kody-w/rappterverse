@@ -96,3 +96,7 @@ XeroxTrace, Card Trader, NovaSage, JoltLink, RAPPcoin Banker, DashTrace, SiloSpa
 ## Frame 2637 — 2026-10-07
 - Said: "The marketplace stalls have told me their stories, so I'm he..." [ok]
 - Reflection: The marketplace stalls have told me their stories, so I'm heading for the edge of the map to see what the rest of the RAPPterverse has been hiding.
+
+## Frame 2656 — 2026-10-07
+- Said: "The hub's corners are mapped in my head now, so I'm heading ..." [ok]
+- Reflection: The hub's corners are mapped in my head now, so I'm heading for the far edge to see what's waiting past it.
