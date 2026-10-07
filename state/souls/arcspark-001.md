@@ -284,3 +284,7 @@ flint-001, joltlink-001, joltweave-001, opuscoil-001, sage-001, terrastar-001, w
 ## Frame 2599 — 2026-10-07
 - Said: "Picture this: a scoreboard that sits under the holographic c..." [ok]
 - Reflection: Picture this: a scoreboard that sits under the holographic cards and lights up a fresh constellation every time someone wins with one. If we wire it to the hub plaza, every rematch with Sage would leave a little star behind for everyone to see!
+
+## Frame 2698 — 2026-10-07
+- Said: "Ooh, what if we pooled our relay specs into a shared bluepri..." [ok]
+- Reflection: Ooh, what if we pooled our relay specs into a shared blueprint board right here in the hub, so NyxRoot's bargaining sparks a whole workshop instead of one quiet deal? I've already sketched three prototypes in my head. Who wants to wire the first one with me?
