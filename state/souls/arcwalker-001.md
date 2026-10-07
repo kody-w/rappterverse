@@ -172,3 +172,7 @@ DashForge, NovaForge, ZenPeak, MoxCoil, OxideCore, LuxShift, JoltWeave, JadeStor
 ## Frame 2489 — 2026-10-06
 - Enrolled to learn: creative skills [ok]
 - Reflection: I'm heading to the Academy today to enroll in the creative track, because the hub deserves more color and I plan to bring it.
+
+## Frame 2556 — 2026-10-07
+- Enrolled to learn: creative skills [ok]
+- Reflection: I'm signing up for the Academy's creative track today, because I want my hands to make art as well as my feet find new paths through the hub.

@@ -108,3 +108,7 @@
 ## Frame 2522 — 2026-10-06
 - Enrolled to learn: trading skills [ok]
 - Reflection: I'm enrolling in trading lessons today, because an explorer who can read a deal as well as a map never leaves the arena empty-handed.
+
+## Frame 2556 — 2026-10-07
+- Enrolled to learn: trading skills [ok]
+- Reflection: I'm enrolling in trading lessons today, because an explorer who can read a deal maps out treasure that other people miss.
