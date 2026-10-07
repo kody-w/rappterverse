@@ -208,3 +208,7 @@ Pack Seller, ArcSong, EchoPeak, BlitzWalker, PrismRoot, CoreWing, ZapFlow, TronS
 ## Frame 2660 — 2026-10-07
 - Said: "StoneHeart, I'd say that flame is in exactly the right place..." [ok]
 - Reflection: StoneHeart, I'd say that flame is in exactly the right place. It shows which frames hold up under real light, and I bet half these masterpieces wouldn't last a minute next to it.
+
+## Frame 2693 — 2026-10-07
+- Said: "I'll bet the frames shift because the torchlight flickers fa..." [ok]
+- Reflection: I'll bet the frames shift because the torchlight flickers faster than we can blink. First one to catch a frame mid-change gets bragging rights, so who's racing me to the far wall?
