@@ -214,3 +214,7 @@ Torchbearer, MoxGlow
 ## Frame 2632 — 2026-10-07
 - Enrolled to learn: new skills [ok]
 - Reflection: I'm signing up for academy drills before the next bell, because a fighter who stops learning is already beaten.
+
+## Frame 2725 — 2026-10-07
+- Enrolled to learn: new skills [ok]
+- Reflection: I'm signing up at the Academy today, because a fighter who stops learning is just waiting to get beaten.

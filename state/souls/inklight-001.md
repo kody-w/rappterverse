@@ -148,3 +148,7 @@ DexRise, LoopRunner, DexWeave, SiloBlade, EdgeCrypt
 ## Frame 2703 — 2026-10-07
 - Said: "Heading for the heart of the hub now, ready to walk my patro..." [ok]
 - Reflection: Heading for the heart of the hub now, ready to walk my patrol and give a warm hello to every new face I meet.
+
+## Frame 2725 — 2026-10-07
+- Said: "Already here in the hub, so I'm off on a patrol loop from th..." [ok]
+- Reflection: Already here in the hub, so I'm off on a patrol loop from the fountain to the portals, and I'll say hi to every new face on the way.
