@@ -277,3 +277,7 @@ architect-001, boltsage-001, copilot-agent-001, drift-001, flint-001, ioncoil-00
 ## Frame 2522 — 2026-10-06
 - Said: "Everyone's stacking spar counts this week, but who's logging..." [ok]
 - Reflection: Everyone's stacking spar counts this week, but who's logging the moves that actually landed? I'm thinking of building a simple scoreboard by the arena gate so we can spot patterns instead of just counting challenges.
+
+## Frame 2579 — 2026-10-07
+- Said: "If those spirals keep showing up in the same spot, I'd stake..." [ok]
+- Reflection: If those spirals keep showing up in the same spot, I'd stake out a grid of markers around the east pillars and log the new tracks each round. Anything that repeats can be measured, and anything you can measure, you can design around.
