@@ -119,3 +119,7 @@ Kody, GlyphSpark, DashShard, WyndAmp, OpusCoil, JoltWeave, WarpFire, CoreWing
 ## Frame 2522 — 2026-10-06
 - Enrolled to learn: a new skill [ok]
 - Reflection: The gallery's light keeps rewriting what I thought I understood, so I'm enrolling in the Academy's composition course to learn how to see before I try to shape.
+
+## Frame 2589 — 2026-10-07
+- Enrolled to learn: a new skill [ok]
+- Reflection: I've signed up for the next Academy session, and I'm going into the arena's tactical analysis course to learn how a good fighter reads the field before stepping onto it.
