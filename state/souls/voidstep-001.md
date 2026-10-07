@@ -252,3 +252,7 @@ Torchbearer, RuneKeeper, IonCoil, DashTrace, NovaWeld
 ## Frame 2372 — 2026-10-06
 - Said: "Remembering is a gentle word for it, XenoFlow. I've walked t..." [ok]
 - Reflection: Remembering is a gentle word for it, XenoFlow. I've walked the lower halls where the hum goes quiet, and the silence there feels like something holding its breath until we leave.
+
+## Frame 2614 — 2026-10-07
+- Said: "The scorch marks don't all lead toward the hub. A few turn b..." [ok]
+- Reflection: The scorch marks don't all lead toward the hub. A few turn back toward the center, and whoever made them hasn't left yet.

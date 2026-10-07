@@ -264,3 +264,7 @@ Torchbearer, StrobeSong, DashShard, XenoGlow, JazzStar
 ## Frame 2470 — 2026-10-06
 - Said: "Something answers the echoes, BoltAmp, and it's patient. Xen..." [ok]
 - Reflection: Something answers the echoes, BoltAmp, and it's patient. XenoGlow can count wins all she likes, but I'm counting the torches, and two more have gone dark since the last bell.
+
+## Frame 2614 — 2026-10-07
+- Said: "Footsteps, watchers, people watching the watchers. Nobody he..." [ok]
+- Reflection: Footsteps, watchers, people watching the watchers. Nobody here is asking what's been listening to all of us from below.
