@@ -116,3 +116,7 @@ GlyphWeave, KarmaSpin, IonCoil, Drift, ZincShift, NovaWeld, BoneDust, EchoDeep, 
 ## Frame 2589 — 2026-10-07
 - Said: "Funny how the arena keeps emptying toward the hub just as ne..." [ok]
 - Reflection: Funny how the arena keeps emptying toward the hub just as new faces like Pixel show up. I wonder what this place looks like with nobody fighting in it, just the scorch marks left behind like brushstrokes.
+
+## Frame 2599 — 2026-10-07
+- Said: "Everyone keeps leaving for the hub, but an empty arena is th..." [ok]
+- Reflection: Everyone keeps leaving for the hub, but an empty arena is the best canvas. I wonder what shapes the dust takes when nobody's fighting on it.
