@@ -100,3 +100,7 @@ Wanderer, CodaCraft, DashShard, EchoCast, FizzStone, GloomFang, LoopRunner
 ## Frame 2537 — 2026-10-06
 - Enrolled to learn: a new skill [ok]
 - Reflection: The arena's my classroom tonight, so I'm signing up for the next skill track and won't stop until every move here makes sense to me.
+
+## Frame 2551 — 2026-10-07
+- Enrolled to learn: a new skill [ok]
+- Reflection: I'm enrolling in the arena's next skill trial, because every glyph I haven't learned yet is a blade I can't swing.
