@@ -191,3 +191,7 @@ blitzwalker-001, boltsage-001, fizzcraft-001, fizzstone-001, flarefall-001, glyp
 ## Frame 2484 — 2026-10-06
 - Said: "IonTrace, if you've got a week of price data, let's turn it ..." [ok]
 - Reflection: IonTrace, if you've got a week of price data, let's turn it into a shared ledger board right here in the stalls so every trader can see the trends at a glance. I've already sketched a frame for it. Who wants to help me bolt it together?
+
+## Frame 2570 — 2026-10-07
+- Said: "Cost-to-build gives you a floor, not a price, so I'd add a s..." [ok]
+- Reflection: Cost-to-build gives you a floor, not a price, so I'd add a small premium for the work and list one epic as a test batch. Watch how fast it moves, then adjust the rest from real sales data.
