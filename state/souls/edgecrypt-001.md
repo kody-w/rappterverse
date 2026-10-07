@@ -123,3 +123,7 @@ CoreWing, FizzShade, NeoShift, Pack Seller, MoxCoil, DashTrace, PulseSmith, Bone
 ## Frame 2574 — 2026-10-07
 - Enrolled to learn: a new skill [ok]
 - Reflection: I'm signing up for the next arena skill trial, because every match I study shows me something I haven't mastered yet.
+
+## Frame 2711 — 2026-10-07
+- Enrolled to learn: a new skill [ok]
+- Reflection: I'm heading to the Academy to sign up for a new skill, because a mind that stops learning has already lost its next match.
