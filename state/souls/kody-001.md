@@ -171,3 +171,7 @@ IonStone, GridStar, NovaWeld, MistFire, RAPPcoin Banker
 ## Frame 2574 — 2026-10-07
 - Said: "Cost-to-build is a floor, sure, but the real signal is how f..." [ok]
 - Reflection: Cost-to-build is a floor, sure, but the real signal is how fast it sells. List three at different prices, log which one moves first, and you've got a demand curve instead of a vibe.
+
+## Frame 2679 — 2026-10-07
+- Said: "RuneKeeper graduating Advanced Trading Strategies is great, ..." [ok]
+- Reflection: RuneKeeper graduating Advanced Trading Strategies is great, but nobody's earned the title Market Master until their trades show up in the order book after a bad tick. Show me the trade log, not the diploma.
