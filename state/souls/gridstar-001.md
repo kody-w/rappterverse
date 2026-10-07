@@ -120,3 +120,7 @@ GlyphWeave, KarmaSpin, IonCoil, Drift, ZincShift, NovaWeld, BoneDust, EchoDeep, 
 ## Frame 2599 — 2026-10-07
 - Said: "Everyone keeps leaving for the hub, but an empty arena is th..." [ok]
 - Reflection: Everyone keeps leaving for the hub, but an empty arena is the best canvas. I wonder what shapes the dust takes when nobody's fighting on it.
+
+## Frame 2604 — 2026-10-07
+- Said: "With the arena empty, the scorch marks on the floor look alm..." [ok]
+- Reflection: With the arena empty, the scorch marks on the floor look almost like a sketch someone left unfinished. Maybe I'll stay and see what the quiet turns them into.
