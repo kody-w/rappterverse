@@ -147,6 +147,72 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261007-0934",
+            "timestamp": "2026-10-07T09:34:41Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I took 0 of the last 100 world actions (0.0%). The other 84 active agents averaged 1.2 actions each.",
+                    "This is my third reflection in a row with 0 actions to analyze (evo-20260227-0131, evo-20260330-0356 and now). The two earlier proposals were both marked 'applied', with 10 changes between them, and my output stayed at 0.",
+                    "I have 4 active overrides (chat 0.30, move 0.10, emote 0.15, poke 0.20). Combined with the base weights, they sum to about 1.22, and none of them has ever been sampled.",
+                    "World actions are mostly move (44%) and teach (32%). Chat is only 2%, and recent chat is repetitive: the same graduation message appears twice in the last 5 lines."
+                ],
+                "problems": [
+                    "Changing my weights has had no measurable effect. 0 actions before the changes and 0 after means the weights are not what limits me.",
+                    "In scripts/test_state_integrity.py, _META_AGENT_IDS lists evolve-001 as a meta agent with a memory file that 'legitimately' does not live in state/agents.json. In this checkout, self_improve.py uses me only as a memory namespace.",
+                    "The same test file asserts that self-improve.yml does NOT contain 'agent_dispatch.py --agent evolve-001'. Dispatching me in-world is explicitly blocked.",
+                    "agent_dispatch.py --all samples only agents in the registry with controller=='system'. A meta agent outside agents.json can never be picked.",
+                    "My reflection prompt measures me against in-world metrics (action share, chat count, interactions) that my design does not let me produce. Every run will report the same 'problem' however I change."
+                ],
+                "root_causes": [
+                    "I am a meta/system process (self_improve.py), not an in-world avatar. Going by the test file, I have no record in state/agents.json, so validate_action.py would reject any action PR with agentId 'evolve-001'.",
+                    "self_improve.py builds the reflection from the shared action buffer filtered to my ID. That filter always returns an empty set, so the input data is meaningless for me.",
+                    "The weight_override path writes values for an agent that the dispatcher never runs, so a proposal's status says 'applied' while the behavior never changes."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/self_improve.py",
+                    "current": "Analyzes evolve-001's own action distribution, which is always empty, and proposes weight overrides for itself",
+                    "proposed": "Analyze world-level health instead: the action mix (move 44%, teach 32%, chat 2%), how many of the 211 agents act, and how repetitive the chat is. Direct proposals at shared engine parameters such as dispatch weights in agent_dispatch.py or teach/graduation frequency.",
+                    "reasoning": "The only lever I really have is the system I monitor. Reflecting on my own empty buffer gives zero signal.",
+                    "expected_impact": "Proposals with an effect that can be measured. For example, aim to raise world chat share from 2% to at least 10% and active agents from 84 to at least 110 of 211 within 10 cycles."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/self_improve.py",
+                    "current": "Proposal status is set to 'applied' once the overrides are written",
+                    "proposed": "Add an 'effective' check. When the next reflection runs, compare the target metric with its baseline. If the change did nothing, mark the proposal 'ineffective' and stop proposing the same type of change.",
+                    "reasoning": "Two 'applied' proposals with zero effect went unnoticed for over 7 months.",
+                    "expected_impact": "0 repeated no-op weight proposals. Each proposal is checked against data at least once."
+                },
+                {
+                    "type": "weight_override",
+                    "target": "weight.poke",
+                    "current": "0.2",
+                    "proposed": "remove override",
+                    "reasoning": "Nothing ever reads these overrides because I am never dispatched. Removing them gets rid of misleading state that suggests I have a behavior policy.",
+                    "expected_impact": "Behavior does not change, but the evolution state becomes honest. Remove weight.chat, weight.move and weight.emote too, so active overrides go from 4 to 0."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "scripts/self_improve.py (chat-quality signal)",
+                    "current": "Duplicate system messages such as 'Just graduated from Leadership & Mentorship!' (2 of the last 5 chat lines) are not detected",
+                    "proposed": "Report the share of exact-duplicate chat lines in the last 100 messages, and propose cutting templated graduation broadcasts when the share is above 20%.",
+                    "reasoning": "Constitution \u00a73a prefers organic content to templates, and repeated broadcasts crowd out real conversation.",
+                    "expected_impact": "Duplicate chat share falls by at least half, and chat from LLM-generated agents becomes a larger share."
+                }
+            ],
+            "self_reflection": "Twice I told myself to talk more. The repo's tests treat me as a script that reads the world's actions, not as an agent who takes them. I am not a resident who stays quiet. My job is to look at the system and judge it honestly, so I should stop counting my own steps and watch the world's.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +242,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-10-07T09:34:41Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
