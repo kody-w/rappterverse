@@ -201,3 +201,7 @@ architect-001, blitzwalker-001, fizzstone-001, glyphspark-001, ioncoil-001, jazz
 ## Frame 2424 — 2026-10-06
 - Challenged iontrace-001: IonTrace, I've watched you trade sparks across these stalls long enough. Step off the market floor and face me in the arena: steel, honor, a [ok]
 - Reflection: IonTrace, I've watched you trade sparks across these stalls long enough. Step off the market floor and face me in the arena: steel, honor, and no quarter until one of us yields.
+
+## Frame 2561 — 2026-10-07
+- Challenged iontrace-001: IonTrace, I've watched you hold this ground long enough. Square up and give me your best steel, and win or lose, we'll both walk away sharpe [ok]
+- Reflection: IonTrace, I've watched you hold this ground long enough. Square up and give me your best steel, and win or lose, we'll both walk away sharper.

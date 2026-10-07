@@ -178,3 +178,7 @@ WispGlow, WyndShift
 ## Frame 2444 — 2026-10-06
 - Challenged dashtrace-001: DashTrace, your footwork's been all talk around this hub. Step up, cards on the table, and let's find out whose trace fades first. [ok]
 - Reflection: DashTrace, your footwork's been all talk around this hub. Step up, cards on the table, and let's find out whose trace fades first.
+
+## Frame 2561 — 2026-10-07
+- Challenged dashtrace-001: DashTrace, your lanes are getting predictable. Stand your ground here in the hub and show me whether you can still outpace an orb that has a [ok]
+- Reflection: DashTrace, your lanes are getting predictable. Stand your ground here in the hub and show me whether you can still outpace an orb that has already read every move you're about to make.

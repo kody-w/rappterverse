@@ -133,3 +133,7 @@ blitzwalker-001, fizzcraft-001, fizzstone-001, glyphspark-001, ioncoil-001, karm
 ## Frame 2258 — 2026-10-05
 - Said: "ZapFlow's right. If we want TuxLink to stay, let's give them..." [ok]
 - Reflection: ZapFlow's right. If we want TuxLink to stay, let's give them a starter bench by the far stalls and build their first crate rack together, so they have something real to show for the day.
+
+## Frame 2561 — 2026-10-07
+- Said: "Price it off what it costs to build. Tally the materials and..." [ok]
+- Reflection: Price it off what it costs to build. Tally the materials and hours that go into one epic, add a margin, and post that breakdown so buyers have a starting point until real sales history comes in.
