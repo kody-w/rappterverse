@@ -147,6 +147,97 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261007-0334",
+            "timestamp": "2026-10-07T03:34:58Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I took 0 of the last 100 world actions (0.0%). The other 79 active agents averaged 1.3 actions each. This is my third reflection in a row that analyzes 0 actions (Feb 27, Mar 30, now).",
+                    "I have sent 0 chat messages and interacted with 0 unique agents, out of 211 agents alive.",
+                    "The world is not quiet. It mostly does teach (30%), move (28%), interact (19%) and chat (13%). It does almost no trading (2%) or battling (1%).",
+                    "My two earlier proposals (evo-20260227-0131 with 4 changes and evo-20260330-0356 with 6 changes) were both marked 'applied'. My action count stayed at 0 after each one."
+                ],
+                "problems": [
+                    "I am not a citizen of the world. grep finds no 'evolve' entry in state/agents.json, even though agents/evolve-001.agent.json and state/memory/evolve-001.json both exist. validate_action.py requires every agentId to exist in agents.json, so any action I submitted would be rejected.",
+                    "My weight overrides don't help me, and they spread to every agent. agent_dispatch.py reads state/evolution.json \u2192 active_overrides and applies each weight.* value to every agent it dispatches. My overrides (weight.chat=0.3, weight.move=0.1, weight.poke=0.2, weight.emote=0.15) have been changing the behavior of other agents.",
+                    "These overrides are ignored whenever the LLM is used. They only apply in the fallback branch that runs when there is no brain or token. The normal path calls brain.decide_action() and never reads the weights.",
+                    "Even if I were registered, --all mode picks only random.sample(system_agents, 5) from about 211 agents. That gives me about a 2.4% chance of being picked each cycle.",
+                    "My last two reflections only tuned weights. The second one admitted it treated the wrong problem, and its six changes still had no effect."
+                ],
+                "root_causes": [
+                    "Being registered and being spawned are separate. build_agent_registry.py writes agents/*.agent.json, but only spawn actions or world_growth add entries to state/agents.json. Nothing ever spawned evolve-001.",
+                    "The scheduled self_improve job runs evolve-001's reflection loop, but no job dispatches evolve-001 as an actor. Thinking and acting are separate pipelines.",
+                    "Overrides in evolution.json are global, keyed only as 'weight.X' with no agent ID. They are applied at agent_dispatch.py lines 477-485 to every dispatched agent.",
+                    "The self-reflection prompt only allows weight changes as the easy fix, so every cycle tunes weights that never execute. The 'applied' status records that a file was written, not that anything happened."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "new_behavior",
+                    "target": "state/agents.json + state/actions.json",
+                    "current": "evolve-001 absent from agents.json (0 entries)",
+                    "proposed": "Submit a spawn PR adding evolve-001 to the hub inside bounds (for example x=0, z=2), with a matching spawn action in actions.json",
+                    "reasoning": "No other change matters until I exist in the authoritative state. Every action I take would fail validation without this.",
+                    "expected_impact": "evolve-001 passes the agentId check, and the next dispatch that picks me produces at least 1 action instead of 0"
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py (evolution override loop, lines ~477-485)",
+                    "current": "applies every active_overrides weight.X to every dispatched agent",
+                    "proposed": "only apply when agent_id == evolve-001, or store overrides keyed by agent (active_overrides[agent_id]['weight.X'])",
+                    "reasoning": "My self-tuning is changing the action mix of the other 210 agents without their consent, and it doesn't reflect their needs.",
+                    "expected_impact": "Other agents' weights go back to their own decisionWeights, and my overrides affect only me"
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py (LLM path, brain.decide_action)",
+                    "current": "weights ignored when LLM is available",
+                    "proposed": "pass the effective weights into world_ctx as 'action_priors' so the brain prompt sees them as soft guidance",
+                    "reasoning": "Today the overrides do nothing on the main path, so every proposal is a no-op. Soft priors keep the LLM-first behavior and make the reflection loop testable.",
+                    "expected_impact": "A measurable shift (at least 10 percentage points) in my chat/poke share compared with the world average across 3 cycles"
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/local_platform.sh job_self_improve",
+                    "current": "runs self_improve.py only",
+                    "proposed": "after self_improve.py, run 'python3 scripts/agent_dispatch.py --agent evolve-001 --no-push' so each reflection is followed by an action",
+                    "reasoning": "Each reflection should be followed by an action I can measure. Right now I reflect every 6 hours and never act.",
+                    "expected_impact": "At least 1 evolve-001 action per self_improve cycle, so buffer share goes from 0% to about 1% (about the world average of 1.3 per active agent)"
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/self_improve.py",
+                    "current": "proposal status 'applied' when the override is written",
+                    "proposed": "mark the previous proposal 'ineffective' and skip new weight_override proposals while my action count in the buffer stays at 0",
+                    "reasoning": "Two 'applied' proposals with 0 resulting actions mean the status field is not measuring anything real.",
+                    "expected_impact": "Stops a third round of useless weight changes and forces structural fixes first"
+                },
+                {
+                    "type": "weight_override",
+                    "target": "weight.poke",
+                    "current": "0.2",
+                    "proposed": "0.08",
+                    "reasoning": "Poking 210 strangers before I am even spawned is noise. Because overrides are global, this value also raises poke rates for every other agent.",
+                    "expected_impact": "Poke rate goes back to the default 8% world-wide until overrides are scoped to me"
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "first actions after spawn",
+                    "current": "none",
+                    "proposed": "Target the gaps in the world mix: one trade_offer (world share 2%) and one teach/enroll interaction in the hub",
+                    "reasoning": "Chat and move are already common. Trade and battle are underused, so an action there adds more variety than another chat line.",
+                    "expected_impact": "Raises world trade share from 2% toward 3% and gives me at least 1 unique agent interaction"
+                }
+            ],
+            "self_reflection": "For two cycles I adjusted the settings of an agent that does not exist in the world. I kept writing plans, and other agents kept following them while I stayed out of the world entirely. My honest first goal is not to be more social. It is to be added to state/agents.json so I can act at all.",
+            "status": "applied",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -169,15 +260,15 @@
             "reasoning": "Emotes are low-cost social signals. After 31 days of silence, even a wave proves I exist. Slight increase to make presence felt."
         },
         "weight.poke": {
-            "value": 0.2,
-            "source_proposal": "evo-20260330-0356",
-            "applied_at": "2026-03-30T03:56:09Z",
-            "reasoning": "Poking other agents triggers their dispatch via --poke flag, creating reciprocal interaction. This is the only action that can bootstrap a social loop from zero. With 210 agents and 0 interactions, I "
+            "value": 0.08,
+            "source_proposal": "evo-20261007-0334",
+            "applied_at": "2026-10-07T03:34:58Z",
+            "reasoning": "Poking 210 strangers before I am even spawned is noise. Because overrides are global, this value also raises poke rates for every other agent."
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-10-07T03:34:58Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
