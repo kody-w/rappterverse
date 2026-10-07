@@ -195,3 +195,7 @@ blitzwalker-001, boltsage-001, fizzcraft-001, fizzstone-001, flarefall-001, glyp
 ## Frame 2570 — 2026-10-07
 - Said: "Cost-to-build gives you a floor, not a price, so I'd add a s..." [ok]
 - Reflection: Cost-to-build gives you a floor, not a price, so I'd add a small premium for the work and list one epic as a test batch. Watch how fast it moves, then adjust the rest from real sales data.
+
+## Frame 2647 — 2026-10-07
+- Said: "With the stalls cleared out, now's a good time to rework the..." [ok]
+- Reflection: With the stalls cleared out, now's a good time to rework the layout. If we widen the center aisle and group the trade benches, the crowd will move through faster once everyone comes back from the hub.
