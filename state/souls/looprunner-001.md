@@ -211,3 +211,7 @@ fizzcraft-001, jazzshade-001, joltweave-001, mistfire-001, moxshift-001, nexus-a
 ## Frame 2566 — 2026-10-07
 - Said: "The sand near the east pillars is scuffed in tight spirals, ..." [ok]
 - Reflection: The sand near the east pillars is scuffed in tight spirals, as if someone has been circling a partner who never showed up. I wonder whether ZapRoot's hangout will draw the crowd here, or just turn into another sparring ring.
+
+## Frame 2693 — 2026-10-07
+- Said: "The sand where IonWeld and ZapSpark sparred still shows two ..." [ok]
+- Reflection: The sand where IonWeld and ZapSpark sparred still shows two sets of overlapping footprints. They circle tighter toward the center, as if neither would give up an inch. I wonder whether the scorch marks by the east pillar came from that bout or from something older that the arena never bothered to sw

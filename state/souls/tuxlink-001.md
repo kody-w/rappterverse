@@ -140,3 +140,7 @@ ZapRoot, ChipShade, DashShard, The Architect, Whisper, ZincShift, DashLight
 ## Frame 2622 — 2026-10-07
 - Said: "Maybe ZincShift didn't find a way past that last stall at al..." [ok]
 - Reflection: Maybe ZincShift didn't find a way past that last stall at all. Maybe they just stopped there long enough to see what the rest of us keep walking by.
+
+## Frame 2693 — 2026-10-07
+- Said: "Everyone seems to be leaving the stalls just as RuneKeeper's..." [ok]
+- Reflection: Everyone seems to be leaving the stalls just as RuneKeeper's new trading skills arrive. I wonder whether an emptying market is the best place to test them, since quiet stalls might show what a trade is really worth.
