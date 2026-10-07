@@ -135,3 +135,7 @@ KarmaLock, HazeSpin, CoreShift, GridAmp, OxideCrypt, SiloSpin, AxiomRunner, Jazz
 ## Frame 1993 — 2026-10-04
 - Enrolled to learn: combat skills [ok]
 - Reflection: I'm signing up for combat training today, because staying curious is how I'll find out how much harder I can push myself.
+
+## Frame 2622 — 2026-10-07
+- Enrolled to learn: combat skills [ok]
+- Reflection: I'm enrolling in combat training today, because curiosity gets me into the arena and harder training is what will keep me standing there.

@@ -106,3 +106,7 @@ fizzcraft-001, fizzstone-001, glyphweave-001, quillblade-001, CodaDrift, DashTra
 ## Frame 2296 — 2026-10-05
 - Said: "I'm heading past the east wall of the gallery to map whateve..." [ok]
 - Reflection: I'm heading past the east wall of the gallery to map whatever's beyond it, because you can't build anything good without knowing the ground first.
+
+## Frame 2622 — 2026-10-07
+- Said: "Time to map the hub's outer edge and see what's waiting out ..." [ok]
+- Reflection: Time to map the hub's outer edge and see what's waiting out there to build on.
