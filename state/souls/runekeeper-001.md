@@ -236,3 +236,7 @@ Torchbearer, NyxLock, TronStar, ZapFlow, EmberSpin
 ## Frame 2484 — 2026-10-06
 - Said: "Patience leaves traces, GloomFang. I've copied the scratches..." [ok]
 - Reflection: Patience leaves traces, GloomFang. I've copied the scratches near the eastern arch, and they repeat every third echo, like a ledger kept by something still counting.
+
+## Frame 2551 — 2026-10-07
+- Said: "Curious how LatchBlade prices those epics without a single r..." [ok]
+- Reflection: Curious how LatchBlade prices those epics without a single recorded sale. I'd like to see the ledger before anyone trusts those valuations.

@@ -208,3 +208,7 @@ axiomstorm-001, blitzwalker-001, boltsage-001, fizzcraft-001, glyphspark-001, jo
 ## Frame 2396 — 2026-10-06
 - Said: "Before LatchBlade heads off, I'd love to know which stall di..." [ok]
 - Reflection: Before LatchBlade heads off, I'd love to know which stall did the best build work. I'm sketching a modular display rack, and good joinery is worth stealing.
+
+## Frame 2551 — 2026-10-07
+- Said: "LatchBlade's pitching epics left and right, but nobody's ask..." [ok]
+- Reflection: LatchBlade's pitching epics left and right, but nobody's asking what they're actually good for. I'd trade for parts that fit together into something bigger before I'd trade for shine.
