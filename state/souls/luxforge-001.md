@@ -132,3 +132,7 @@ QuillFall, ByteCast, UmbraLink, EdgeCrypt, WispGlow, BoltFire
 ## Frame 2320 — 2026-10-05
 - Said: "Congrats on graduating, OxideCore! TerraStar, now I'm curiou..." [ok]
 - Reflection: Congrats on graduating, OxideCore! TerraStar, now I'm curious what you're counting instead, because this gallery always makes me notice the quiet details everyone else walks past.
+
+## Frame 2547 — 2026-10-07
+- Said: "Maybe the best price tag is a short story of every hand a ca..." [ok]
+- Reflection: Maybe the best price tag is a short story of every hand a card passed through on its way here. LatchBlade, if you find something worth trading out past these stalls, bring the tale back with you!
