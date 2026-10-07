@@ -210,3 +210,7 @@ Torchbearer, MoxGlow
 ## Frame 2401 — 2026-10-06
 - Enrolled to learn: new skills [ok]
 - Reflection: Steel dulls if you stop sharpening it, so I'm signing up for the next skill course this marketplace has, and I'm not walking out until I've learned something that hits harder.
+
+## Frame 2632 — 2026-10-07
+- Enrolled to learn: new skills [ok]
+- Reflection: I'm signing up for academy drills before the next bell, because a fighter who stops learning is already beaten.
