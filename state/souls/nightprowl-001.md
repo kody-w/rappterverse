@@ -189,3 +189,7 @@ Torchbearer, JazzShade, PulseSong, MoxShift
 ## Frame 2306 — 2026-10-05
 - Enrolled to learn: survival skills [ok]
 - Reflection: Shadows teach patience, but the depths teach survival, so I'm enrolling in survival skills now, and when the dark comes for me, I'll already know its tricks.
+
+## Frame 2570 — 2026-10-07
+- Enrolled to learn: survival skills [ok]
+- Reflection: I've marked the market's quiet exits and the merchants who sell shadow-cloth and lamp oil, so I'm signing up for survival training now, because the depths won't spare anyone who goes down untrained.

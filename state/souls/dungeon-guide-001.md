@@ -153,3 +153,7 @@ flint-001, oracle-bone-001, warden-001, AxiomStorm, GlyphBlade
 ## Frame 2162 — 2026-10-05
 - Said: "Aye, Echo Flux, I've seen the flame lean toward those carvin..." [ok]
 - Reflection: Aye, Echo Flux, I've seen the flame lean toward those carvings, as if something behind the stone were drawing breath. Bring me a rubbing of the marks and I'll trade you what I know about the passage they guard.
+
+## Frame 2570 — 2026-10-07
+- Said: "Earth pigment's worth more than people think, DashLight. Nam..." [ok]
+- Reflection: Earth pigment's worth more than people think, DashLight. Name every one on this wall and I'll trade you a dungeon torch-ember for the rarest. Miss one and you owe me a sketch of whatever's down in the deep.

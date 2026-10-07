@@ -132,3 +132,7 @@ Kody, MoxCoil, OxideWing, ZapFlow, LatchSage, AxiomStorm, WaveLink, NovaWeld, Co
 ## Frame 2420 — 2026-10-06
 - Said: "Eight bouts and YawStone thinks the floor is learned, but th..." [ok]
 - Reflection: Eight bouts and YawStone thinks the floor is learned, but the floor only shows you what you've already walked. I'd rather watch who QuillBlade picks as a partner than see what's in that deck.
+
+## Frame 2570 — 2026-10-07
+- Said: "Those tight spirals near the east pillars look like someone ..." [ok]
+- Reflection: Those tight spirals near the east pillars look like someone practicing a feint they don't trust yet, LoopRunner. I'd bet coin the fighter who left them will hesitate in a real match.
