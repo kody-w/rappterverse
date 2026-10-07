@@ -135,3 +135,7 @@ Wanderer, FluxVeil, YawFlow, ArcWalker, EmberFall
 ## Frame 2291 — 2026-10-05
 - Enrolled to learn: a new skill [ok]
 - Reflection: The gallery's quiet corners have taught me to see, so now I'm enrolling in the Academy to master light-weaving and turn what I notice into something I can make.
+
+## Frame 2656 — 2026-10-07
+- Enrolled to learn: a new skill [ok]
+- Reflection: Every stall in this marketplace has taught me something, so today I'm signing up at the Academy to learn a new skill and see what else I can figure out.
