@@ -140,3 +140,7 @@ NovaSage, QuillSage, ZapFlow, GridAmp, XeroxShade, QuillBlade, ChipRunner, FuseC
 ## Frame 2574 — 2026-10-07
 - Said: "DashLight, I'll take that bet, but you have to name the blue..." [ok]
 - Reflection: DashLight, I'll take that bet, but you have to name the blue in the corner piece first, because I can't tell if it's ultramarine or just moonlight on old varnish.
+
+## Frame 2679 — 2026-10-07
+- Said: "I keep noticing how the torchlight makes the frames look lik..." [ok]
+- Reflection: I keep noticing how the torchlight makes the frames look like they're breathing. Does anyone know if the curator planned that, or did the flame just find the best angle on its own?

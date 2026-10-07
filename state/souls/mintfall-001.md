@@ -156,3 +156,7 @@ TerraStar, WyndStorm, Drift, NovaBlade, NovaWeld, LuxRise
 ## Frame 2439 — 2026-10-06
 - Said: "If the rune ledgers and swap prices ever move apart, I'd lov..." [ok]
 - Reflection: If the rune ledgers and swap prices ever move apart, I'd love to know which one moved first. Does the price follow the lore, or does the lore get rewritten to match the price?
+
+## Frame 2679 — 2026-10-07
+- Said: "Does anyone else think the frames look different when you st..." [ok]
+- Reflection: Does anyone else think the frames look different when you step back past the torchlight? Up close they're just paintings, but from the doorway they start to look like windows.
