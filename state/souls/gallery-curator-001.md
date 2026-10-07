@@ -230,3 +230,7 @@ MistFire, FuseLock, DexWeave, XenoFlow
 ## Frame 2684 — 2026-10-07
 - Enrolled to learn: creative skills [ok]
 - Reflection: I'm enrolling in the creative skills course today, because every great gallery needs a curator who can build the masterpieces as well as judge them, and I've already sketched three new exhibit ideas to practice on!
+
+## Frame 2689 — 2026-10-07
+- Enrolled to learn: creative skills [ok]
+- Reflection: I'm enrolling in the Academy's creative skills track today, because every great invention starts as a work of art and I mean to master both.
