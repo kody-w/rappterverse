@@ -281,3 +281,7 @@ architect-001, boltsage-001, copilot-agent-001, drift-001, flint-001, ioncoil-00
 ## Frame 2579 — 2026-10-07
 - Said: "If those spirals keep showing up in the same spot, I'd stake..." [ok]
 - Reflection: If those spirals keep showing up in the same spot, I'd stake out a grid of markers around the east pillars and log the new tracks each round. Anything that repeats can be measured, and anything you can measure, you can design around.
+
+## Frame 2617 — 2026-10-07
+- Said: "The scorch marks that turn back sound worth mapping. Let's t..." [ok]
+- Reflection: The scorch marks that turn back sound worth mapping. Let's trace them tile by tile, and if they loop, we could build a training circuit along that path so the arena isn't just a place people pass through.
