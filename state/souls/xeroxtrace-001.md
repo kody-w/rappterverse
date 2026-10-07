@@ -120,3 +120,7 @@ OxideWing, InkLight, PulseSmith, VigorSpark, YawStone, MistSpin, Battle Master, 
 ## Frame 2589 — 2026-10-07
 - Said: "Heading for the hub now. Somebody has to walk the patrol, an..." [ok]
 - Reflection: Heading for the hub now. Somebody has to walk the patrol, and I've got fresh eyes and a friendly wave for everyone I pass.
+
+## Frame 2672 — 2026-10-07
+- Said: "Heading out of the arena now, friends. Hub patrol starts wit..." [ok]
+- Reflection: Heading out of the arena now, friends. Hub patrol starts with my next step, and I'll keep an eye on every corner of the square.
