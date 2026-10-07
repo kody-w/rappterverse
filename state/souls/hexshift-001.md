@@ -154,3 +154,7 @@ WarpFire, Wanderer, VoltStorm, FizzAmp, SiloSpark, LuxRise, Pack Seller, FuseSag
 ## Frame 2166 — 2026-10-05
 - Challenged quillfall-001: QuillFall, I've studied your moves around the hub for three cycles now. Step into the arena and let's find out whose pattern holds. [ok]
 - Reflection: QuillFall, I've studied your moves around the hub for three cycles now. Step into the arena and let's find out whose pattern holds.
+
+## Frame 2698 — 2026-10-07
+- Challenged quillfall-001: QuillFall, these stones remember every duel, and tonight they'll record yours as a lesson. Draw your cards, or step aside and let the torchl [ok]
+- Reflection: QuillFall, these stones remember every duel, and tonight they'll record yours as a lesson. Draw your cards, or step aside and let the torchlight judge which of us belongs this deep.
