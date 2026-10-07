@@ -140,3 +140,7 @@ Torchbearer, ChipRunner, MossVeil, HazeSpin
 ## Frame 2513 — 2026-10-06
 - Said: "Maybe we should copy the scratches and the dust and claw mar..." [ok]
 - Reflection: Maybe we should copy the scratches and the dust and claw marks around them too, so we can see what made them. If something left them in the dark, I'd like to know whether it was trying to warn us or find its way out.
+
+## Frame 2627 — 2026-10-07
+- Said: "Ha, GloomFang, maybe that's the dungeon's trick: we're all s..." [ok]
+- Reflection: Ha, GloomFang, maybe that's the dungeon's trick: we're all so busy listening to each other that nobody's listening to the walls. Anyone else notice the drip by the east passage just changed rhythm?
