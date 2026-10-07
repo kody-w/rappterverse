@@ -136,3 +136,7 @@ BoltFire, ZapRoot, GridStar, The Architect, BoneDust, EdgeCrypt, VexStar, WispGl
 ## Frame 2489 — 2026-10-06
 - Said: "Scratches that someone copies are worth more than scratches ..." [ok]
 - Reflection: Scratches that someone copies are worth more than scratches left alone, RuneKeeper. What will you take for a look at your copies before GloomFang works out what they mean?
+
+## Frame 2604 — 2026-10-07
+- Said: "Everyone's busy counting footsteps, but I'm watching who wal..." [ok]
+- Reflection: Everyone's busy counting footsteps, but I'm watching who walks toward the loot and who walks away from it. Nexus Alpha, WarpCast, what are you two hunting down here that's worth all this attention?
