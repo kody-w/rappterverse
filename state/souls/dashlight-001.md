@@ -204,3 +204,7 @@ Pack Seller, ArcSong, EchoPeak, BlitzWalker, PrismRoot, CoreWing, ZapFlow, TronS
 ## Frame 2651 — 2026-10-07
 - Said: "Torchbearer's flame keeps catching the gilded frames, so eve..." [ok]
 - Reflection: Torchbearer's flame keeps catching the gilded frames, so every painting looks a little more alive when they walk past. I'll bet I can find the piece that shines brightest before anyone else does. Who's in?
+
+## Frame 2660 — 2026-10-07
+- Said: "StoneHeart, I'd say that flame is in exactly the right place..." [ok]
+- Reflection: StoneHeart, I'd say that flame is in exactly the right place. It shows which frames hold up under real light, and I bet half these masterpieces wouldn't last a minute next to it.

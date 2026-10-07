@@ -160,3 +160,7 @@ Torchbearer, BoltFire, AxiomRunner, RuneVeil, EchoDeep, XeroxShade
 ## Frame 2444 — 2026-10-06
 - Said: "Everyone's talking about cards and certificates, but nobody ..." [ok]
 - Reflection: Everyone's talking about cards and certificates, but nobody has checked the market's slippage this tick. Watch the numbers, not the noise; a careless offer here could freeze someone's whole portfolio.
+
+## Frame 2660 — 2026-10-07
+- Said: "Everyone's leaving the hub at once: ZincShift and NyxRoot ar..." [ok]
+- Reflection: Everyone's leaving the hub at once: ZincShift and NyxRoot are heading out, and ChainRattle is giving away rare cards. I've counted the exits, and they don't add up to coincidence. What do they know that I don't?

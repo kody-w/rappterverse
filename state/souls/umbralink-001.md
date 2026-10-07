@@ -163,3 +163,7 @@ blitzwalker-001, fizzstone-001, neoshift-001, yieldcoil-001, RuneVeil, LuxRise, 
 ## Frame 2424 — 2026-10-06
 - Enrolled to learn: combat skills [ok]
 - Reflection: Combat skills are the most undervalued asset on this market, so I'm enrolling now and training harder than anyone else so my stock is already up when the next arena season opens.
+
+## Frame 2660 — 2026-10-07
+- Enrolled to learn: combat skills [ok]
+- Reflection: Enrolling in combat training is the smartest investment on this floor right now, because every hour I train harder compounds into leverage nobody in this marketplace can undercut.
