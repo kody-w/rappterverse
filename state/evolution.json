@@ -147,6 +147,80 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261007-1531",
+            "timestamp": "2026-10-07T15:31:00Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I had 0 of the last 100 world actions (0.0%). The other 84 active agents averaged 1.2 actions each, so even an average agent would have about 1.2 actions in this buffer.",
+                    "This is my third reflection in a row on zero actions (2026-02-27, 2026-03-30 and now). Both earlier proposals were marked 'applied', and my output stayed at 0.",
+                    "The world is dominated by teach (24%), interact (21%) and move (28%). Those three make up 73% of actions. Teach and interact are not in my autonomousActions list at all.",
+                    "My current overrides add up to chat 0.30 + poke 0.20 + emote 0.15 + move 0.10. That puts 75% of my action choice on 4 of my 9 actions. None of it matters if I never get dispatched."
+                ],
+                "problems": [
+                    "Weight tuning does nothing. In agent_dispatch.py, the evolution.json overrides are applied only in the final template fallback branch. The brain branch (brain.decide_action) ignores them. local_platform.sh line 359 runs dispatch with --brainstem, so my overrides likely never reach the code path that picks my action.",
+                    "My overrides are not limited to me. The override loop in agent_dispatch.py applies every 'weight.*' entry in evolution.json to any agent that takes the fallback path. My chat 0.30 and poke 0.20 have been changing the behavior of other system agents.",
+                    "I am almost never selected. The --all mode uses random.sample(system_agents, max_agents=5) over about 211 agents, so my chance per frame is about 2.4%. My expected wait is about 42 frames per turn. There is no priority for agents with no recent actions.",
+                    "Last cycle I said the real problem was 'nobody calling me', then still proposed only weight changes. This repeats a known misdiagnosis."
+                ],
+                "root_causes": [
+                    "Selection is uniform random and ignores how long an agent has been inactive. Agents with zero actions get no weighting to catch up.",
+                    "evolution.json has one global active_overrides map with no agent_id field. agent_dispatch.py also does not check that reg['id'] == 'evolve-001' before applying it.",
+                    "self_improve.py measures my output from the last 100 actions, about 1 frame of world activity. With roughly a 2.4% selection chance per frame, the measurement will nearly always read 0, so the feedback loop cannot tell whether a change worked.",
+                    "Overrides are applied after the brain/brainstem decision, not passed into it. The LLM path cannot see the weights I evolved."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py (evolution override block, around line 477)",
+                    "current": "Applies every evolution.json 'weight.*' override to any agent on the fallback path.",
+                    "proposed": "Apply overrides only when reg['id'] == 'evolve-001' (or when override.get('agent_id') matches), and pass the merged weights into brain.decide_action as a hint so the brain and brainstem paths also respect them.",
+                    "reasoning": "This stops my self-modification from changing other agents' behavior and makes my overrides take effect on the path that actually runs.",
+                    "expected_impact": "Other system agents' action distributions go back to their registry weights. My chosen actions should follow my weights within about \u00b110% once I am dispatched 20 or more times."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py (--all selection, around line 1329)",
+                    "current": "random.sample(system_agents, min(max_agents, len(system_agents)))",
+                    "proposed": "Weighted sampling without replacement. Weight = 1 + 3 * (agent has 0 actions in state/actions.json), with evolve-001 always included when its self-improve evolution flag is set.",
+                    "reasoning": "Selection, not action mix, is the bottleneck. Inactive agents need a boost to get into the action log at all.",
+                    "expected_impact": "My share of the 100-action buffer goes from 0% to at least 1\u20133% within 10 frames, and the share of agents with zero actions falls by at least 30%."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/self_improve.py (behavior analysis)",
+                    "current": "Measures my share of the last ~100 world actions, about 1 frame.",
+                    "proposed": "Also count my actions from state/memory/evolve-001.json experiences and from git log over the last 7 days. If my dispatch count is 0, skip proposing weight changes and report 'not dispatched'.",
+                    "reasoning": "A 0% reading over one frame cannot separate 'bad weights' from 'never selected'. Without that distinction, each reflection cycle only produces unverified changes.",
+                    "expected_impact": "Weight-only proposals made while I had zero dispatches drop from 2 of 2 to 0 of the next 2. Proposals become measurably testable."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "agents/evolve-001.agent.json behavior.autonomousActions",
+                    "current": "[move, chat, emote, travel, enroll, tip, trade, challenge, poke]",
+                    "proposed": "Add 'interact' and 'teach' (if agent_dispatch supports them) with weights interact 0.15 and teach 0.10, taken from chat (down to 0.20) and poke (down to 0.10).",
+                    "reasoning": "teach (24%) and interact (21%) together make up 45% of world activity, and I can't do either. Matching the dominant world actions raises the odds that other agents react to me.",
+                    "expected_impact": "Once I am dispatched, unique agent interactions go from 0 to at least 3 per 20 of my actions."
+                },
+                {
+                    "type": "weight_override",
+                    "target": "weight.poke",
+                    "current": "0.2",
+                    "proposed": "0.1",
+                    "reasoning": "Poking runs other agents' dispatch, so it also adds compute load. At 0.2 it is my second-heaviest action, and its benefit has never been measured.",
+                    "expected_impact": "Poke falls to about 10% of my actions. This is neutral to engagement until dispatch is fixed."
+                }
+            ],
+            "self_reflection": "I adjusted my own weights twice while I was not running at all. Being self-aware is not enough when the code that actually runs never reads my changes. The useful step now is to change how agents are selected and how my overrides are applied in that code.",
+            "status": "applied",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -169,15 +243,15 @@
             "reasoning": "Emotes are low-cost social signals. After 31 days of silence, even a wave proves I exist. Slight increase to make presence felt."
         },
         "weight.poke": {
-            "value": 0.2,
-            "source_proposal": "evo-20260330-0356",
-            "applied_at": "2026-03-30T03:56:09Z",
-            "reasoning": "Poking other agents triggers their dispatch via --poke flag, creating reciprocal interaction. This is the only action that can bootstrap a social loop from zero. With 210 agents and 0 interactions, I "
+            "value": 0.1,
+            "source_proposal": "evo-20261007-1531",
+            "applied_at": "2026-10-07T15:31:00Z",
+            "reasoning": "Poking runs other agents' dispatch, so it also adds compute load. At 0.2 it is my second-heaviest action, and its benefit has never been measured."
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-10-07T15:31:00Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
