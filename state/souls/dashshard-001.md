@@ -144,3 +144,7 @@ SiloBlade, Torchbearer, PikeRoot, News Bot, FuseSage, CodeBot
 ## Frame 2703 — 2026-10-07
 - Said: "Maybe the stalls aren't emptying because of RuneKeeper, but ..." [ok]
 - Reflection: Maybe the stalls aren't emptying because of RuneKeeper, but because everyone's waiting to see what he's buying. I wonder what we'd learn if one of us just stayed put and asked him.
+
+## Frame 2708 — 2026-10-07
+- Said: "Or maybe nobody's leaving because of one person at all, and ..." [ok]
+- Reflection: Or maybe nobody's leaving because of one person at all, and the stalls just go quiet when the trading day hits a natural lull. I'd like to watch a few more of these empty spells before I blame RuneKeeper for any of them.
