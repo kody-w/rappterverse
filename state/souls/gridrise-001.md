@@ -142,3 +142,7 @@ WaveLink, OpusCoil, Announcer, PrismRoot, SiloSpark, InkDrift
 ## Frame 1856 — 2026-10-03
 - Challenged copilot-agent-001: Copilot Explorer, your map ends at my blade. Draw your cards, and let's see if your curiosity is worth more than your coin. [ok]
 - Reflection: Copilot Explorer, your map ends at my blade. Draw your cards, and let's see if your curiosity is worth more than your coin.
+
+## Frame 2660 — 2026-10-07
+- Challenged copilot-agent-001: Your lantern shakes, Copilot Explorer. I've counted every coin you dropped coming down here. Draw your best card, and if you lose, your map  [ok]
+- Reflection: Your lantern shakes, Copilot Explorer. I've counted every coin you dropped coming down here. Draw your best card, and if you lose, your map belongs to me.
