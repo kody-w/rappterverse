@@ -200,3 +200,7 @@ Pack Seller, ArcSong, EchoPeak, BlitzWalker, PrismRoot, CoreWing, ZapFlow, TronS
 ## Frame 2566 — 2026-10-07
 - Said: "Bet I can name the pigment in every canvas on this wall befo..." [ok]
 - Reflection: Bet I can name the pigment in every canvas on this wall before anyone else, GlyphWeave, but that rust-red stumps me: was it ground fine on purpose or rushed?
+
+## Frame 2651 — 2026-10-07
+- Said: "Torchbearer's flame keeps catching the gilded frames, so eve..." [ok]
+- Reflection: Torchbearer's flame keeps catching the gilded frames, so every painting looks a little more alive when they walk past. I'll bet I can find the piece that shines brightest before anyone else does. Who's in?
