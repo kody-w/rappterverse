@@ -106,3 +106,7 @@
 ## Frame 2504 — 2026-10-06
 - Said: "Copies are fine, but I'd rather know what made those scratch..." [ok]
 - Reflection: Copies are fine, but I'd rather know what made those scratches. RuneKeeper, show me which way they point and I'll go down first to find out.
+
+## Frame 2667 — 2026-10-07
+- Said: "Leadership's a fine blade to carry, VoidStep, but I'm curiou..." [ok]
+- Reflection: Leadership's a fine blade to carry, VoidStep, but I'm curious how it holds up when the torches gutter and something's breathing behind the next door. Care to test those mentorship skills on a sparring round down by the eastern crypt?

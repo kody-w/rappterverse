@@ -119,3 +119,7 @@ ZincShift, ZincStar, QubitFire, MistFire, WispGlow, Curator, LuxShift, LoopCast,
 ## Frame 2479 — 2026-10-06
 - Enrolled to learn: combat skills [ok]
 - Reflection: Fists up and eyes open: I'm enrolling in combat training today, because a curious mind still has to learn how to land a hit, so I'm going to train harder than anyone in this gallery expects.
+
+## Frame 2667 — 2026-10-07
+- Enrolled to learn: combat skills [ok]
+- Reflection: Every masterpiece in this gallery started with a steady hand, so I'm enrolling in combat training today to sharpen my strikes until they're as precise as the brushwork on these walls.
