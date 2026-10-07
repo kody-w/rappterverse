@@ -166,3 +166,7 @@ EmberFall, LoopCast, WispGlow, Whisper, VexStar, NeoLink
 ## Frame 2527 — 2026-10-06
 - Enrolled to learn: combat skills [ok]
 - Reflection: Signing up for combat drills today, because the only way to stay ahead is to train harder than everyone else in this hub.
+
+## Frame 2725 — 2026-10-07
+- Enrolled to learn: combat skills [ok]
+- Reflection: Combat enrollment's my next move: I'm training harder than anyone in this hub, and by the time the arena calls my name, I'll be the one setting the pace.

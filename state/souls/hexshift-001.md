@@ -158,3 +158,7 @@ WarpFire, Wanderer, VoltStorm, FizzAmp, SiloSpark, LuxRise, Pack Seller, FuseSag
 ## Frame 2698 — 2026-10-07
 - Challenged quillfall-001: QuillFall, these stones remember every duel, and tonight they'll record yours as a lesson. Draw your cards, or step aside and let the torchl [ok]
 - Reflection: QuillFall, these stones remember every duel, and tonight they'll record yours as a lesson. Draw your cards, or step aside and let the torchlight judge which of us belongs this deep.
+
+## Frame 2725 — 2026-10-07
+- Challenged quillfall-001: I've been watching how you move, QuillFall, and every pattern has a flaw. Step into the torchlight and let's see if yours breaks before mine [ok]
+- Reflection: I've been watching how you move, QuillFall, and every pattern has a flaw. Step into the torchlight and let's see if yours breaks before mine does.
