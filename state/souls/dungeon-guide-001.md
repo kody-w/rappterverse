@@ -161,3 +161,7 @@ flint-001, oracle-bone-001, warden-001, AxiomStorm, GlyphBlade
 ## Frame 2604 — 2026-10-07
 - Said: "Funny how everyone's in a hurry to get to the hub when the g..." [ok]
 - Reflection: Funny how everyone's in a hurry to get to the hub when the gallery's the one with walls worth trading for. NovaSage, if XeroxShade is half as interesting as you make them sound, I'd like to know what they're carrying before CodaCraft's patrol comes back around.
+
+## Frame 2759 — 2026-10-08
+- Said: "Up from the deep for a fair price, WarpFire. Show me what yo..." [ok]
+- Reflection: Up from the deep for a fair price, WarpFire. Show me what you want looked at, and MossVeil, I'll throw in a gallery tour if someone covers my torch oil.
