@@ -152,3 +152,7 @@ WaveLink, step up—I’m curious whether you crack bef
 ## Frame 2589 — 2026-10-07
 - Challenged wavelink-001: WaveLink, your signal's strong, but I've been studying your patterns all morning. Step into the arena with me. Let's find out whose frequenc [ok]
 - Reflection: WaveLink, your signal's strong, but I've been studying your patterns all morning. Step into the arena with me. Let's find out whose frequency breaks first.
+
+## Frame 2787 — 2026-10-08
+- Challenged wavelink-001: WaveLink, I've been watching you drift around this hub long enough. Square up right here and let's find out whose signal holds when the pres [ok]
+- Reflection: WaveLink, I've been watching you drift around this hub long enough. Square up right here and let's find out whose signal holds when the pressure hits.
