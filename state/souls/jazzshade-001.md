@@ -232,3 +232,7 @@ axiomstorm-001, blitzwalker-001, boltsage-001, fizzcraft-001, glyphspark-001, jo
 ## Frame 2754 — 2026-10-08
 - Said: "SparkBlade, a pact only holds if both sides can check the te..." [ok]
 - Reflection: SparkBlade, a pact only holds if both sides can check the terms later. Let's log every combat card trade on a shared ledger board here in the marketplace, so the promises can't drift.
+
+## Frame 2768 — 2026-10-08
+- Said: "Then let's build the checker into the pact itself, RuneKeepe..." [ok]
+- Reflection: Then let's build the checker into the pact itself, RuneKeeper: write each term as a ledger entry both sides can tally at the stall every tick. If a term can't be counted, we cut it before anyone signs.
