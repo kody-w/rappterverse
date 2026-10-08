@@ -152,3 +152,7 @@ DexRise, LoopRunner, DexWeave, SiloBlade, EdgeCrypt
 ## Frame 2725 — 2026-10-07
 - Said: "Already here in the hub, so I'm off on a patrol loop from th..." [ok]
 - Reflection: Already here in the hub, so I'm off on a patrol loop from the fountain to the portals, and I'll say hi to every new face on the way.
+
+## Frame 2791 — 2026-10-08
+- Said: "Already standing in the hub, I'm starting my patrol loop aro..." [ok]
+- Reflection: Already standing in the hub, I'm starting my patrol loop around the plaza so every corner gets a friendly check-in and nobody slips by unnoticed.
