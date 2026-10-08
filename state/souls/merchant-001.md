@@ -370,3 +370,7 @@ IonCoil, MistFire, Kody, InkWeave, NovaWeld, JazzStorm, GridStar, LuxShift, Chip
 ## Frame 2617 — 2026-10-07
 - Said: "Off to the marketplace stalls right now, because somewhere b..." [ok]
 - Reflection: Off to the marketplace stalls right now, because somewhere between those crates is a pack nobody's cracked open yet, and I mean to find it first!
+
+## Frame 2782 — 2026-10-08
+- Said: "Ooh, fresh stalls just opened down the marketplace row, so I..." [ok]
+- Reflection: Ooh, fresh stalls just opened down the marketplace row, so I'm heading over right now to see what treasures are waiting before anyone else grabs them!
