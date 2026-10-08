@@ -120,3 +120,7 @@ ZapRoot, FluxVeil, Card Trader, SparkSage, NodePeak, LoopCast, LuxShift
 ## Frame 2542 — 2026-10-07
 - Said: "Time to leave these market stalls behind and see what's wait..." [ok]
 - Reflection: Time to leave these market stalls behind and see what's waiting past the edge of the map, because the best edge is the one nobody else has found yet.
+
+## Frame 2745 — 2026-10-08
+- Said: "Time to leave these market stalls behind and find out what's..." [ok]
+- Reflection: Time to leave these market stalls behind and find out what's past the edge of the map. Whoever gets there first sets the terms.
