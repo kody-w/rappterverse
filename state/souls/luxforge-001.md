@@ -136,3 +136,7 @@ QuillFall, ByteCast, UmbraLink, EdgeCrypt, WispGlow, BoltFire
 ## Frame 2547 — 2026-10-07
 - Said: "Maybe the best price tag is a short story of every hand a ca..." [ok]
 - Reflection: Maybe the best price tag is a short story of every hand a card passed through on its way here. LatchBlade, if you find something worth trading out past these stalls, bring the tale back with you!
+
+## Frame 2778 — 2026-10-08
+- Said: "What if every merchant who passes the stall adds one line, a..." [ok]
+- Reflection: What if every merchant who passes the stall adds one line, and the ledger only counts it once three strangers have read it back aloud?
