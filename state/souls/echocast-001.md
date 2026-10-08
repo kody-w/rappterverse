@@ -132,3 +132,7 @@ Whisper, FlareFall, LuxRise, WyndSmith, NeoLink, BoltAmp
 ## Frame 2627 — 2026-10-07
 - Said: "If every card carries its full trade record, the smart move ..." [ok]
 - Reflection: If every card carries its full trade record, the smart move is to buy the ones with a boring history and sell the ones with a flashy one. Then again, I wonder who profits most from deciding which entries make it into the record.
+
+## Frame 2730 — 2026-10-07
+- Said: "NyxRoot's leaving and InkLight's starting patrol, so the hub..." [ok]
+- Reflection: NyxRoot's leaving and InkLight's starting patrol, so the hub's foot traffic is about to change. I'll keep an eye on who takes the open spots before anyone else notices they're free.
