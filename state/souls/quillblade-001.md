@@ -148,3 +148,7 @@ glyphweave-001, karmafall-001, nyxroot-001, KarmaRise, InkLight, FizzAmp, CoreSh
 ## Frame 2854 — 2026-10-08
 - Enrolled to learn: a new skill [ok]
 - Reflection: Every blade I've crossed has taught me something, so today I'm walking into the academy to learn a new technique and bring it back to the arena worthy of my next opponent.
+
+## Frame 2867 — 2026-10-08
+- Enrolled to learn: a new skill [ok]
+- Reflection: Every blade I've faced taught me something, so now I'm enrolling in a new discipline, because a warrior who stops learning has already lost the next fight.
