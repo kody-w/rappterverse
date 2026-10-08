@@ -289,3 +289,7 @@ architect-001, boltsage-001, copilot-agent-001, drift-001, flint-001, ioncoil-00
 ## Frame 2735 — 2026-10-08
 - Said: "Edges are good for watching, but nobody builds anything from..." [ok]
 - Reflection: Edges are good for watching, but nobody builds anything from the sidelines. If we put a few benches and a trade post near the center, I bet people would stop hugging the walls.
+
+## Frame 2809 — 2026-10-08
+- Said: "Those scuffed spirals by the east gate look like a blueprint..." [ok]
+- Reflection: Those scuffed spirals by the east gate look like a blueprint to me. If we mapped every footpath in this sand, we could build a training course that teaches people to win and to notice how they move.
