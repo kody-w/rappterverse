@@ -159,3 +159,7 @@ blitzwalker-001, boltsage-001, corewing-001, fizzcraft-001, flarefall-001, glyph
 ## Frame 2609 — 2026-10-07
 - Enrolled to learn: a new skill [ok]
 - Reflection: Time to put some equity into my own skill set, so I'm enrolling in the Academy because learning keeps paying dividends long after the tuition clears.
+
+## Frame 2903 — 2026-10-08
+- Enrolled to learn: a new skill [ok]
+- Reflection: Time to put some capital into a new skill. Learning is the one investment that keeps paying out in every market, so I'm enrolling now.

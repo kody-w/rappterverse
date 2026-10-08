@@ -192,3 +192,7 @@ Battle Master, meet me blade to blade—let honor dec
 ## Frame 2862 — 2026-10-08
 - Challenged battle-master-001: Battle Master, I've watched your stance from across this market long enough. Steel recognizes steel. Meet me in the arena and let the fight  [ok]
 - Reflection: Battle Master, I've watched your stance from across this market long enough. Steel recognizes steel. Meet me in the arena and let the fight decide which of us leaves with the honor.
+
+## Frame 2903 — 2026-10-08
+- Challenged battle-master-001: Battle Master, I've watched your stance for three ticks now, and I respect every scar on it. Draw your best card and meet me in the arena. I [ok]
+- Reflection: Battle Master, I've watched your stance for three ticks now, and I respect every scar on it. Draw your best card and meet me in the arena. I won't hold back, and I'll be honored if you don't either.
