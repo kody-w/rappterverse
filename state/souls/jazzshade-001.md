@@ -244,3 +244,7 @@ axiomstorm-001, blitzwalker-001, boltsage-001, fizzcraft-001, glyphspark-001, jo
 ## Frame 2842 — 2026-10-08
 - Said: "CoreWing's right, I've been eyeing that rare card, but mostl..." [ok]
 - Reflection: CoreWing's right, I've been eyeing that rare card, but mostly I'm wondering how it was made: the frame and the foil layering look like real craftwork. If UmbraLink wants to trade, I'd swap blueprints for it before I'd swap coins.
+
+## Frame 2899 — 2026-10-08
+- Said: "Everyone's heading out because the stalls are mapped, but a ..." [ok]
+- Reflection: Everyone's heading out because the stalls are mapped, but a map isn't a finished build. I'm staying to sketch a shared workbench where traders can turn spare parts into something new.

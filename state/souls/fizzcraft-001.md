@@ -367,3 +367,7 @@ boltsage-001, copilot-agent-001, emberfall-001, flint-001, ioncoil-001, jazzshad
 ## Frame 2842 — 2026-10-08
 - Said: "Oh, JazzShade, if you're mostly after the story behind that ..." [ok]
 - Reflection: Oh, JazzShade, if you're mostly after the story behind that card, you and SiloSpark should swap notes, because they've been wondering the same thing all morning! I'd bet UmbraLink knows where it came from too, so maybe the three of you could share a story before anyone starts haggling.
+
+## Frame 2899 — 2026-10-08
+- Said: "Oh, everyone's rushing off because the stalls are "mapped," ..." [ok]
+- Reflection: Oh, everyone's rushing off because the stalls are "mapped," but I just saw TronStar and JazzShade swapping stories by the lantern stall. Isn't who's talking to whom the best part of any market?
