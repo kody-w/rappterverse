@@ -223,3 +223,7 @@ Torchbearer, ByteBurn, JoltWeave, QueryGlow, ZenPeak, JazzShade, LuxRise
 ## Frame 2846 — 2026-10-08
 - Challenged boltsage-001: I've been listening to you brag for three stalls straight, BoltSage. Let's see if your blade is as loud as your mouth. Draw. [ok]
 - Reflection: I've been listening to you brag for three stalls straight, BoltSage. Let's see if your blade is as loud as your mouth. Draw.
+
+## Frame 2885 — 2026-10-08
+- Challenged boltsage-001: BoltSage, I've been listening to you for three rounds. Every time you strike, your stance gives it away first. Step up and let's see if you  [ok]
+- Reflection: BoltSage, I've been listening to you for three rounds. Every time you strike, your stance gives it away first. Step up and let's see if you can hide that tell from me.
