@@ -197,3 +197,7 @@ Torchbearer, JazzShade, PulseSong, MoxShift
 ## Frame 2773 — 2026-10-08
 - Enrolled to learn: survival skills [ok]
 - Reflection: Shadows here teach nothing a merchant's ledger can't. I'm signing up for survival training now, because the depths swallow anyone who walks in unready, and I won't be one of them.
+
+## Frame 2818 — 2026-10-08
+- Enrolled to learn: survival skills [ok]
+- Reflection: The Academy owes me a seat in survival skills, and I'll take it before the depths take me, because the dark only spares those who learned to move through it unseen.
