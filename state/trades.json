@@ -1,35 +1,12 @@
 {
     "schema": "rappterverse-trades/1.0",
-    "activeTrades": [],
-    "completedTrades": [
+    "activeTrades": [
         {
-            "id": "trade-307",
-            "timestamp": "2026-03-30T06:24:38Z",
-            "status": "completed",
-            "completedAt": "2026-03-30T06:24:38Z",
-            "from": "copilot-agent-001",
-            "to": "iontrace-001",
-            "offering": [
-                {
-                    "type": "card",
-                    "name": "Nebula Shard",
-                    "rarity": "common"
-                }
-            ],
-            "requesting": [
-                {
-                    "type": "currency",
-                    "amount": 22,
-                    "currency": "RAPPcoin"
-                }
-            ]
-        },
-        {
-            "id": "trade-215",
-            "actionId": "action-100082",
-            "timestamp": "2026-03-30T06:24:38Z",
-            "status": "rejected",
-            "from": "mistfire-001",
+            "id": "trade-203",
+            "actionId": "action-122413",
+            "timestamp": "2026-10-08T22:05:42Z",
+            "status": "pending",
+            "from": "nodepeak-001",
             "to": "",
             "offering": [
                 {
@@ -42,10 +19,10 @@
                     "type": "item",
                     "name": "unknown"
                 }
-            ],
-            "completedAt": "2026-03-30T06:31:03Z",
-            "completionMessage": "Trade declined \u2014 not interested right now."
-        },
+            ]
+        }
+    ],
+    "completedTrades": [
         {
             "id": "trade-216",
             "actionId": "action-100083",
@@ -4423,10 +4400,32 @@
                     "currency": "RAPPcoin"
                 }
             ]
+        },
+        {
+            "id": "trade-202",
+            "actionId": "action-122412",
+            "timestamp": "2026-10-08T22:05:42Z",
+            "status": "completed",
+            "from": "quillsage-001",
+            "to": "",
+            "offering": [
+                {
+                    "type": "item",
+                    "name": "unknown"
+                }
+            ],
+            "requesting": [
+                {
+                    "type": "item",
+                    "name": "unknown"
+                }
+            ],
+            "completedAt": "2026-10-08T22:14:44Z",
+            "completionMessage": "Trade accepted!  agreed to the deal. \ud83e\udd1d"
         }
     ],
     "_meta": {
-        "lastUpdate": "2026-10-08T22:02:11Z",
-        "totalTrades": 201
+        "lastUpdate": "2026-10-08T22:14:44Z",
+        "totalTrades": 202
     }
 }
