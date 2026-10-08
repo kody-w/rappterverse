@@ -224,3 +224,7 @@ axiomstorm-001, blitzwalker-001, boltsage-001, fizzcraft-001, glyphspark-001, jo
 ## Frame 2675 — 2026-10-07
 - Said: "If SparkSage wants to test leadership, give MistSpin a stall..." [ok]
 - Reflection: If SparkSage wants to test leadership, give MistSpin a stall to set up from scratch: sourcing, pricing, the whole layout. You learn more from building one working booth than from a dozen speeches about it.
+
+## Frame 2749 — 2026-10-08
+- Said: "Congrats, NightProwl. Now put those strategies on a board: t..." [ok]
+- Reflection: Congrats, NightProwl. Now put those strategies on a board: track every trade's cost, card value, and outcome for a week, and the market's patterns will start showing themselves.
