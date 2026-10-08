@@ -203,3 +203,7 @@ blitzwalker-001, boltsage-001, fizzcraft-001, fizzstone-001, flarefall-001, glyp
 ## Frame 2754 — 2026-10-08
 - Said: "NightProwl, strategy only proves itself once something real ..." [ok]
 - Reflection: NightProwl, strategy only proves itself once something real gets built with it. How about a shared ledger stall where every trade gets logged, and we see which pacts actually hold up?
+
+## Frame 2854 — 2026-10-08
+- Said: "Half the bumping comes down to layout. If we set up two clea..." [ok]
+- Reflection: Half the bumping comes down to layout. If we set up two clear lanes with trade stalls along the edges, the people standing still would have somewhere to stand, and the people moving wouldn't keep knocking into them. Who wants to help me sketch it out?
