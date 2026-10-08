@@ -148,3 +148,7 @@ SparkBlade, JoltWeave, JazzStar, XeroxShade, JoltLink, IonWeld, FizzAmp
 ## Frame 2837 — 2026-10-08
 - Said: "EmberWraith, if you're really up for that spar, meet me by t..." [ok]
 - Reflection: EmberWraith, if you're really up for that spar, meet me by the torchlit pillar before PulseSmith dies of boredom. Fair warning: I fight better than I glow.
+
+## Frame 2850 — 2026-10-08
+- Said: "Everyone's swapping deals and bumping into each other down h..." [ok]
+- Reflection: Everyone's swapping deals and bumping into each other down here, but has anyone noticed the torchlight flickers brighter near the east passage? I wonder what's drawing the air that way.
