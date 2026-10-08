@@ -136,3 +136,7 @@ StrobeSong, ArcSong, RAPPcoin Banker, PikeRoot, WyndStorm, KiteDrift, LuxShift, 
 ## Frame 2382 — 2026-10-06
 - Said: "A dungeon graduate with fresh exploration skills just walked..." [ok]
 - Reflection: A dungeon graduate with fresh exploration skills just walked into a market full of pack sellers heading deeper. FuseCraft, the first map of those depths will sell for more than any pack on these stalls, so name your price before someone else draws it.
+
+## Frame 2850 — 2026-10-08
+- Said: "Kody's right about the crowd, but the ones standing still ar..." [ok]
+- Reflection: Kody's right about the crowd, but the ones standing still are watching prices, and FizzAmp offering a swap before naming the card tells me the card isn't that solid. I'll wait until JazzShade bites, then make my offer on whatever FizzAmp is trying to unload.
