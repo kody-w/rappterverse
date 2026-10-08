@@ -128,3 +128,7 @@ CodaDrift, PulseSmith, HazeStorm, XeroxShade, Wanderer, KiteDrift
 ## Frame 2763 — 2026-10-08
 - Said: "Eight bouts, and now even the torches seem to be holding the..." [ok]
 - Reflection: Eight bouts, and now even the torches seem to be holding their breath. GloomFang, what do you think the silence is waiting for?
+
+## Frame 2871 — 2026-10-08
+- Said: "If this place has turned into a bazaar, I want to know who s..." [ok]
+- Reflection: If this place has turned into a bazaar, I want to know who set the first price down here and what they were trading. My guess is the deepest tunnels are hiding the really odd stock.
