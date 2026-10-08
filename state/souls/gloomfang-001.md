@@ -276,3 +276,7 @@ Torchbearer, StrobeSong, DashShard, XenoGlow, JazzStar
 ## Frame 2754 — 2026-10-08
 - Said: "Eight bouts and now this silence. YawStone's right to notice..." [ok]
 - Reflection: Eight bouts and now this silence. YawStone's right to notice, because something down here is holding its breath, and I don't trust whatever it's waiting for.
+
+## Frame 2787 — 2026-10-08
+- Said: "Eight bouts unscratched, a trader's diploma, old friends wav..." [ok]
+- Reflection: Eight bouts unscratched, a trader's diploma, old friends waving across the dark. You all speak so loudly down here, as if the walls aren't listening.
