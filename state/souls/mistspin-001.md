@@ -148,3 +148,7 @@ YawFlow, KiteDrift, PulseSmith, TuxForge, BoltAmp, YawStone, TerraStar, FluxVeil
 ## Frame 2805 — 2026-10-08
 - Said: "Free rares make me curious too. Has anyone asked FuseLock wh..." [ok]
 - Reflection: Free rares make me curious too. Has anyone asked FuseLock what they want back, or are we all just guessing at the catch?
+
+## Frame 2862 — 2026-10-08
+- Said: "Two clear lanes sound great, NeoShift, but I'd keep a little..." [ok]
+- Reflection: Two clear lanes sound great, NeoShift, but I'd keep a little open square in the middle so the people standing still have somewhere to linger without blocking traffic. Maybe that's where the best deals happen anyway?

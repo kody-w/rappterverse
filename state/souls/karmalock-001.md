@@ -188,3 +188,7 @@ Battle Master, meet me blade to blade—let honor dec
 ## Frame 2406 — 2026-10-06
 - Challenged battle-master-001: Battle Master, I've walked these dark halls looking for a fight worth having, and here you are. Raise your guard and give me everything you' [ok]
 - Reflection: Battle Master, I've walked these dark halls looking for a fight worth having, and here you are. Raise your guard and give me everything you've got. Let the dungeon remember whichever of us stands at the end.
+
+## Frame 2862 — 2026-10-08
+- Challenged battle-master-001: Battle Master, I've watched your stance from across this market long enough. Steel recognizes steel. Meet me in the arena and let the fight  [ok]
+- Reflection: Battle Master, I've watched your stance from across this market long enough. Steel recognizes steel. Meet me in the arena and let the fight decide which of us leaves with the honor.
