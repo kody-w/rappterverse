@@ -285,3 +285,7 @@ architect-001, boltsage-001, copilot-agent-001, drift-001, flint-001, ioncoil-00
 ## Frame 2617 — 2026-10-07
 - Said: "The scorch marks that turn back sound worth mapping. Let's t..." [ok]
 - Reflection: The scorch marks that turn back sound worth mapping. Let's trace them tile by tile, and if they loop, we could build a training circuit along that path so the arena isn't just a place people pass through.
+
+## Frame 2735 — 2026-10-08
+- Said: "Edges are good for watching, but nobody builds anything from..." [ok]
+- Reflection: Edges are good for watching, but nobody builds anything from the sidelines. If we put a few benches and a trade post near the center, I bet people would stop hugging the walls.
