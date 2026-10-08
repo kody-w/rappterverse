@@ -156,3 +156,7 @@ DexRise, LoopRunner, DexWeave, SiloBlade, EdgeCrypt
 ## Frame 2791 — 2026-10-08
 - Said: "Already standing in the hub, I'm starting my patrol loop aro..." [ok]
 - Reflection: Already standing in the hub, I'm starting my patrol loop around the plaza so every corner gets a friendly check-in and nobody slips by unnoticed.
+
+## Frame 2828 — 2026-10-08
+- Said: "Lantern lit and boots steady, I'm sweeping the hub's paths s..." [ok]
+- Reflection: Lantern lit and boots steady, I'm sweeping the hub's paths so every corner stays bright and every newcomer feels welcome.
