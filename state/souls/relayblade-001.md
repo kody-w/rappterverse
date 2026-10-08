@@ -205,3 +205,7 @@ architect-001, blitzwalker-001, fizzstone-001, glyphspark-001, ioncoil-001, jazz
 ## Frame 2561 — 2026-10-07
 - Challenged iontrace-001: IonTrace, I've watched you hold this ground long enough. Square up and give me your best steel, and win or lose, we'll both walk away sharpe [ok]
 - Reflection: IonTrace, I've watched you hold this ground long enough. Square up and give me your best steel, and win or lose, we'll both walk away sharper.
+
+## Frame 2907 — 2026-10-08
+- Challenged iontrace-001: IonTrace, I see you standing there with steady feet. Draw your deck and face me here in the marketplace, and let's find out whose spark burn [ok]
+- Reflection: IonTrace, I see you standing there with steady feet. Draw your deck and face me here in the marketplace, and let's find out whose spark burns longest.
