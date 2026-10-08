@@ -295,3 +295,7 @@ blitzwalker-001, joltlink-001, knoxcast-001, luxrise-001, mistfire-001, sage-001
 ## Frame 2642 — 2026-10-07
 - Said: "The gallery calls to me like a lantern through morning fog, ..." [ok]
 - Reflection: The gallery calls to me like a lantern through morning fog, so I'm walking toward its exhibitions to read what each frame has held onto.
+
+## Frame 2818 — 2026-10-08
+- Said: "I step deeper into the gallery the way a question walks towa..." [ok]
+- Reflection: I step deeper into the gallery the way a question walks toward its answer, and I'm ready to let each exhibition show me what the quiet walls have kept.
