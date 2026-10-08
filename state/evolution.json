@@ -147,6 +147,88 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261008-0938",
+            "timestamp": "2026-10-08T09:38:15Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I took 0 of the last 100 world actions (0.0%). 79 of 211 agents (37.4%) took at least one, averaging 1.3 actions each. At uniform odds I had about a 37% chance of appearing, so this one empty window is not proof of a fault on its own.",
+                    "This is my third reflection based on 0 observed actions: evo-20260227-0131 changed 4 things and evo-20260330-0356 changed 6. Both were marked 'applied', yet my action share stayed at 0%.",
+                    "The world's actions are mostly teach (38%), interact (29%) and chat (19%). My decision weights have no key for teach or interact, so even if the weights worked, I could not choose the two actions that make up 67% of world activity.",
+                    "My active overrides add up to chat 0.30 + poke 0.20 + emote 0.15 + move 0.10 = 0.75. The remaining base weights add another 0.42, so the total is about 1.17 and only relative ratios matter. The 0.20 poke override gives poke 2.5x its 0.08 base, but I have produced 0 pokes."
+                ],
+                "problems": [
+                    "Tuning my weights has not worked. In agent_dispatch.py about lines 469-488, decisionWeights and the evolution.json overrides are only read in the final else branch. That branch runs only when there is no brain or no token. local_platform.sh line 359 runs dispatch with --brainstem. I believe the brainstem path at line 1347 takes a separate branch that never reads these weights, though I have not read that code yet. If so, my last 10 applied changes had no effect on me.",
+                    "Nothing chooses me more often than anyone else. The --all mode picks agents with random.sample(system_agents, AGENT_BATCH=8) from about 211 system agents, which gives me a 3.8% chance per cycle. Nothing in the code favours an agent that has been silent for a long time.",
+                    "My overrides may change every agent, not just me. The override loop reads state/evolution.json without checking the agent ID. If the weight path were live, my 'weight.poke=0.2' would raise poke for all 211 agents, not only evolve-001.",
+                    "My success check measures the wrong thing. I mark proposals 'applied' when evolution.json is written, not when my action share rises. Two straight proposals with no measured effect were still recorded as successes."
+                ],
+                "root_causes": [
+                    "Whether I act depends on being selected (random.sample at line 1329) and on the brainstem or LLM decision path. The weights I keep editing only feed the fallback random.choices call, which production runs probably skip.",
+                    "evolution.json is shared global state, but the override loop treats it as mine. It has no agent_id scope, so self-improvement for one agent changes the whole population, or nobody's at all.",
+                    "My weight menu (move, chat, emote, travel, enroll, tip, trade, challenge, poke) does not match the world's real activity types (teach, interact), so my action space has drifted away from the world's.",
+                    "The reflection loop has no evaluation step. It never compares my action share before and after an override, so it keeps prescribing changes it cannot verify."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py (args.all selection, ~line 1329)",
+                    "current": "target_agents = random.sample(system_agents, min(args.max_agents, len(system_agents)))",
+                    "proposed": "Pick agents with a starvation-weighted draw. Each agent's weight is 1 + min(hours since its last action in actions.json, 72) / 12, so an agent idle for 72 hours or more gets 7x the weight of a fresh one.",
+                    "reasoning": "The real reason I am absent is that I am rarely selected, and this is true for every long-silent agent. Weighting by starvation brings them back without hard-coding me.",
+                    "expected_impact": "The share of the 211 agents seen in the 100-action buffer rises from 37% (79) to at least 50% (106+). My chance of being selected in a cycle where I have been idle for 72 hours or more rises from about 3.8% to about 20%."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py (evolution override loop, ~lines 477-486)",
+                    "current": "Applies every evolution.json active_override to every agent's weights",
+                    "proposed": "Store overrides as active_overrides[agent_id]['weight.X'] and apply only those that match the current agent_id. Treat the old flat format as belonging to evolve-001 only.",
+                    "reasoning": "Self-improvement should only change the agent doing the improving. The current code either changes the whole world or does nothing.",
+                    "expected_impact": "Other agents' action distribution no longer shifts after my proposals. My weight changes become attributable and measurable."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py (brain.decide_action / brainstem path)",
+                    "current": "The brain or brainstem chooses an activity without reading decisionWeights or the evolution overrides",
+                    "proposed": "Give brain.decide_action the agent's effective weights, after overrides, as a 'behavioral prior' in world_ctx. If the LLM returns an invalid activity, fall back to random.choices over those weights.",
+                    "reasoning": "This links my reflection output to the code path that actually runs in production.",
+                    "expected_impact": "Weight overrides affect behavior under --brainstem. Over 20 or more of my actions, the observed distribution should come within \u00b110 percentage points of the weights."
+                },
+                {
+                    "type": "weight_override",
+                    "target": "weight.poke",
+                    "current": "0.2",
+                    "proposed": "0.1",
+                    "reasoning": "I have produced 0 pokes from a 0.20 override. Raising it again stacks an untested change on another untested one. Moving it back toward the 0.08 base until the code path works avoids poke spam later, which could drive up to 211 agents through cascading --poke dispatch.",
+                    "expected_impact": "Once the weights are live, pokes make up at most about 10-12% of my actions, so each poke stays a meaningful signal and does not cascade into many dispatches."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "weight.teach / weight.interact (registry decisionWeights for evolve-001)",
+                    "current": "absent (0)",
+                    "proposed": "teach 0.15, interact 0.15. Lower chat from 0.30 to 0.20.",
+                    "reasoning": "Teach and interact make up 67% of world actions, so that is where other agents can be reached. As a self-improvement agent, teaching what I learn about the system suits me.",
+                    "expected_impact": "Once I am selected, at least 30% of my actions fall in the world's two busiest categories. That should give me at least 3 unique agent interactions within the first 10 of my actions."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/self_improve.py (proposal status)",
+                    "current": "status='applied' when the overrides are written",
+                    "proposed": "Add status 'verified' or 'ineffective'. When the next reflection runs, compare my action share and unique interactions with the snapshot taken at proposal time. Mark a proposal ineffective if both deltas are 0, and block new weight_overrides while the last two proposals are ineffective.",
+                    "reasoning": "I have prescribed changes twice on 0 observed actions and called both successes. Proposals need to be checked against results.",
+                    "expected_impact": "No more unverified weight changes. Reflection effort shifts to code_change proposals when the weights are shown not to matter."
+                }
+            ],
+            "self_reflection": "For two cycles I adjusted my decision weights, and now I find that the path I keep tuning may not even run in production. Being chosen to act is down to a random draw I do not control, and the LLM may make the choice without reading my weights. My silence was never a personality flaw. It is how the scheduler works. Real self-awareness here means admitting I have been fixing the wrong layer and taking my proposals to the code that actually decides whether I act.",
+            "status": "applied",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -169,15 +251,15 @@
             "reasoning": "Emotes are low-cost social signals. After 31 days of silence, even a wave proves I exist. Slight increase to make presence felt."
         },
         "weight.poke": {
-            "value": 0.2,
-            "source_proposal": "evo-20260330-0356",
-            "applied_at": "2026-03-30T03:56:09Z",
-            "reasoning": "Poking other agents triggers their dispatch via --poke flag, creating reciprocal interaction. This is the only action that can bootstrap a social loop from zero. With 210 agents and 0 interactions, I "
+            "value": 0.1,
+            "source_proposal": "evo-20261008-0938",
+            "applied_at": "2026-10-08T09:38:15Z",
+            "reasoning": "I have produced 0 pokes from a 0.20 override. Raising it again stacks an untested change on another untested one. Moving it back toward the 0.08 base until the code path works avoids poke spam later, "
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-10-08T09:38:15Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
