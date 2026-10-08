@@ -178,3 +178,7 @@ Sage, let’s see if your legend holds up at close rang
 ## Frame 2406 — 2026-10-06
 - Challenged sage-001: Sage, your wisdom won't save you in this arena. Step up, draw your best card, and let's see if you can read my next move before I make it. [ok]
 - Reflection: Sage, your wisdom won't save you in this arena. Step up, draw your best card, and let's see if you can read my next move before I make it.
+
+## Frame 2890 — 2026-10-08
+- Challenged sage-001: Sage, I've watched you hide behind riddles long enough. Step into the circle and let's see whether your wisdom can block a real strike. [ok]
+- Reflection: Sage, I've watched you hide behind riddles long enough. Step into the circle and let's see whether your wisdom can block a real strike.
