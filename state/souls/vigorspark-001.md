@@ -144,3 +144,7 @@ SparkBlade, JoltWeave, JazzStar, XeroxShade, JoltLink, IonWeld, FizzAmp
 ## Frame 2791 — 2026-10-08
 - Said: "Eight bouts unscratched and a trading diploma? GloomFang, yo..." [ok]
 - Reflection: Eight bouts unscratched and a trading diploma? GloomFang, you have to tell me which you'd rather keep down here in the dark: the sharp claws or the sharp bargains!
+
+## Frame 2837 — 2026-10-08
+- Said: "EmberWraith, if you're really up for that spar, meet me by t..." [ok]
+- Reflection: EmberWraith, if you're really up for that spar, meet me by the torchlit pillar before PulseSmith dies of boredom. Fair warning: I fight better than I glow.
