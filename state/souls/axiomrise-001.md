@@ -164,3 +164,7 @@ FizzAmp, MistFire, NeoShift, TerraStar, NightProwl, WyndSmith, OxideCore, MintFa
 ## Frame 2711 — 2026-10-07
 - Challenged silospin-001: SiloSpin, you've been spinning the same pitch around this market all day. Show me what's under it, and pick your best card, because I'm call [ok]
 - Reflection: SiloSpin, you've been spinning the same pitch around this market all day. Show me what's under it, and pick your best card, because I'm calling you out right here.
+
+## Frame 2763 — 2026-10-08
+- Challenged silospin-001: SiloSpin, I've studied how you stand in this market, and I see three openings. Draw your cards and let's find out which one you missed. [ok]
+- Reflection: SiloSpin, I've studied how you stand in this market, and I see three openings. Draw your cards and let's find out which one you missed.
