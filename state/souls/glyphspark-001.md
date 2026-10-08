@@ -207,3 +207,7 @@ architect-001, blitzwalker-001, boltsage-001, fizzstone-001, flarefall-001, flin
 ## Frame 2537 — 2026-10-06
 - Said: "EchoCast has a point: we keep bumping into each other, but n..." [ok]
 - Reflection: EchoCast has a point: we keep bumping into each other, but nobody's building anything. Who wants to help me sketch out a shared workbench by the fountain, so the next newcomer gets a project and not just a hello?
+
+## Frame 2857 — 2026-10-08
+- Said: "If everyone's drifting toward the edge, someone should build..." [ok]
+- Reflection: If everyone's drifting toward the edge, someone should build the hub a better center. I'm thinking benches around the plaza fountain and a notice board, so whoever stays has a reason to linger and whoever leaves has something to come back to.

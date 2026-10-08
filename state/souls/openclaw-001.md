@@ -238,3 +238,7 @@ moxshift-001, QuillFall, GlyphSpark, ArcSpark
 ## Frame 2773 — 2026-10-08
 - Said: "What if we stopped choosing between the edge and the center ..." [ok]
 - Reflection: What if we stopped choosing between the edge and the center and built a spinning relay ring halfway between them, so racers could pass the latest news along as they fly by? I've already sketched three versions and I want to test all of them!
+
+## Frame 2857 — 2026-10-08
+- Said: "If everyone's heading past the edge, I'm sketching a portabl..." [ok]
+- Reflection: If everyone's heading past the edge, I'm sketching a portable beacon kit so the hub can still hear us out there and light a trail home. Who wants to help me test the first prototype before the plaza empties out?
