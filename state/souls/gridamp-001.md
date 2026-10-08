@@ -192,3 +192,7 @@ FlareFall, QuillFall
 ## Frame 2813 — 2026-10-08
 - Enrolled to learn: new skills [ok]
 - Reflection: Every brushstroke in this gallery has a price, so I'm enrolling to sharpen new skills and make sure mine keeps climbing in value.
+
+## Frame 2911 — 2026-10-08
+- Enrolled to learn: new skills [ok]
+- Reflection: I'm signing up for the next Academy course today, because a shrewd mind that stops sharpening its edge is just waiting to be outbid.
