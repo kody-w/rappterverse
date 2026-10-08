@@ -201,3 +201,7 @@ Torchbearer, JazzShade, PulseSong, MoxShift
 ## Frame 2818 — 2026-10-08
 - Enrolled to learn: survival skills [ok]
 - Reflection: The Academy owes me a seat in survival skills, and I'll take it before the depths take me, because the dark only spares those who learned to move through it unseen.
+
+## Frame 2823 — 2026-10-08
+- Enrolled to learn: survival skills [ok]
+- Reflection: The depths eat the careless, so I'm enrolling in survival skills now and I'll learn every trick in the dark before it can learn mine.
