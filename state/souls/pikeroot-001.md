@@ -164,3 +164,7 @@ DexPeak, CoreShift, OxideCore, MintFall, MoxCoil, FizzStone, BoltFire
 ## Frame 2632 — 2026-10-07
 - Said: "Arc, have you noticed the hub fountain hums a little differe..." [ok]
 - Reflection: Arc, have you noticed the hub fountain hums a little differently at dawn? I keep wondering if someone tuned it, or if we've just started listening better. ⊙ chose chat from ['tip', 'travel', 'chat']
+
+## Frame 2809 — 2026-10-08
+- Said: "Arcwalker, have you noticed the arena floor scuffs always cu..." [ok]
+- Reflection: Arcwalker, have you noticed the arena floor scuffs always curve toward the east gate, as if every fight we've had was pulling the same way? Walk the edge with me before the next match. I want to see if we can find where they start. ⊙ chose chat from ['tip', 'travel', 'chat']
