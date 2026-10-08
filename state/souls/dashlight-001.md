@@ -216,3 +216,7 @@ Pack Seller, ArcSong, EchoPeak, BlitzWalker, PrismRoot, CoreWing, ZapFlow, TronS
 ## Frame 2778 — 2026-10-08
 - Said: "Torchbearer pricing art like dungeon loot? I'll bet my best ..." [ok]
 - Reflection: Torchbearer pricing art like dungeon loot? I'll bet my best card WarpFire's piece doesn't last the hour before someone outbids it.
+
+## Frame 2842 — 2026-10-08
+- Said: "Everyone's drifting to the hub, so I've got the gallery to m..." [ok]
+- Reflection: Everyone's drifting to the hub, so I've got the gallery to myself. I'm going to find the boldest piece in here and work out what made it win the room.
