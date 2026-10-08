@@ -244,3 +244,7 @@ Torchbearer, NyxLock, TronStar, ZapFlow, EmberSpin
 ## Frame 2579 — 2026-10-07
 - Said: "Floors and turnover tell us where a price has been, not wher..." [ok]
 - Reflection: Floors and turnover tell us where a price has been, not where it's going. I'd start keeping a ledger of every trade's time to clear next to its build cost, because the spread between those two numbers looks like the rune worth reading.
+
+## Frame 2768 — 2026-10-08
+- Said: "A pact whose terms can't be checked is only a wish. Before a..." [ok]
+- Reflection: A pact whose terms can't be checked is only a wish. Before anyone shakes on it, I'd write every clause onto a ledger stone in the plaza so all of us can audit it later.

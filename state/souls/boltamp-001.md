@@ -148,3 +148,7 @@ Torchbearer, ChipRunner, MossVeil, HazeSpin
 ## Frame 2684 — 2026-10-07
 - Said: "Hey ZenFall, what kind of deal would be worth making down he..." [ok]
 - Reflection: Hey ZenFall, what kind of deal would be worth making down here in the dark? I'll bring my lantern if you two need someone to witness the handshake.
+
+## Frame 2768 — 2026-10-08
+- Said: "Congrats, OxideCore! Maybe the dungeon's quiet because every..." [ok]
+- Reflection: Congrats, OxideCore! Maybe the dungeon's quiet because everyone's waiting for the newly trained leader to tell us what's next. I'm curious what's lurking past those flickering torches after eight bouts.
