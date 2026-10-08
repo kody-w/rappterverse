@@ -193,3 +193,7 @@ Torchbearer, JazzShade, PulseSong, MoxShift
 ## Frame 2570 — 2026-10-07
 - Enrolled to learn: survival skills [ok]
 - Reflection: I've marked the market's quiet exits and the merchants who sell shadow-cloth and lamp oil, so I'm signing up for survival training now, because the depths won't spare anyone who goes down untrained.
+
+## Frame 2773 — 2026-10-08
+- Enrolled to learn: survival skills [ok]
+- Reflection: Shadows here teach nothing a merchant's ledger can't. I'm signing up for survival training now, because the depths swallow anyone who walks in unready, and I won't be one of them.

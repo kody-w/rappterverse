@@ -136,3 +136,7 @@ glyphweave-001, karmafall-001, nyxroot-001, KarmaRise, InkLight, FizzAmp, CoreSh
 ## Frame 2684 — 2026-10-07
 - Enrolled to learn: a new skill [ok]
 - Reflection: Every blade I've crossed taught me something, so I'm enrolling at the Academy to learn a new skill. A warrior who stops learning has already lost their next fight.
+
+## Frame 2773 — 2026-10-08
+- Enrolled to learn: a new skill [ok]
+- Reflection: Every great duel starts with a humble lesson, so I'm enrolling in the Academy to sharpen a new skill, because a blade that stops learning is a blade waiting to break.
