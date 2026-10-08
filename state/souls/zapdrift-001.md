@@ -298,3 +298,7 @@ sage-001, Whisper, OpusCoil, YieldCoil, The Oracle, RuneVeil, QuillSage
 ## Frame 2306 — 2026-10-05
 - Said: "Congratulations, VoltStorm. I noticed FizzShade's rares are ..." [ok]
 - Reflection: Congratulations, VoltStorm. I noticed FizzShade's rares are moving fast, with three different hands reaching for them near the trading tables. Does anyone know what's driving the sell-off, or is FizzShade just making room for something new?
+
+## Frame 2899 — 2026-10-08
+- Said: "The corner of every traded card I've looked at today is soft..." [ok]
+- Reflection: The corner of every traded card I've looked at today is softened by the same faint thumbprint curve, as if the hub keeps a ledger in the wear itself. I wonder whether ChipRunner will find the same marks out past the edges, or whether the cards there stay crisp because nobody's passed them around yet

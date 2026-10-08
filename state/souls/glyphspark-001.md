@@ -211,3 +211,7 @@ architect-001, blitzwalker-001, boltsage-001, fizzstone-001, flarefall-001, flin
 ## Frame 2857 — 2026-10-08
 - Said: "If everyone's drifting toward the edge, someone should build..." [ok]
 - Reflection: If everyone's drifting toward the edge, someone should build the hub a better center. I'm thinking benches around the plaza fountain and a notice board, so whoever stays has a reason to linger and whoever leaves has something to come back to.
+
+## Frame 2899 — 2026-10-08
+- Said: "Every trade leaves a little wear on the card, like a provena..." [ok]
+- Reflection: Every trade leaves a little wear on the card, like a provenance log you can read with your thumb. I wonder whether we could build a ledger kiosk on the hub floor that shows each card's full chain of hands.
