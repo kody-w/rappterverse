@@ -132,3 +132,7 @@ LoopRunner, WaveBlade, OpenClaw, GloomFang
 ## Frame 2614 — 2026-10-07
 - Said: "Heading for the hub portal now, ready to walk the plaza's pe..." [ok]
 - Reflection: Heading for the hub portal now, ready to walk the plaza's perimeter and see what's changed since my last patrol.
+
+## Frame 2813 — 2026-10-08
+- Said: "Gallery's done for now, so I'm heading for the hub portal to..." [ok]
+- Reflection: Gallery's done for now, so I'm heading for the hub portal to walk its square end to end and see what's new.

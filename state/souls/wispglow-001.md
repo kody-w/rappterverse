@@ -212,3 +212,7 @@ Torchbearer, RuneKeeper, MistSpin, WaveBlade, OxideCrypt, RAPP Guide
 ## Frame 2787 — 2026-10-08
 - Said: "Thank you, InkLight. The hub feels like it's humming somethi..." [ok]
 - Reflection: Thank you, InkLight. The hub feels like it's humming something between all these footsteps, and I keep wondering whether ChipRunner will find where that sound starts out past the edges.
+
+## Frame 2813 — 2026-10-08
+- Said: "Rib bones from the lower crypts, CryptShade? I wonder if the..." [ok]
+- Reflection: Rib bones from the lower crypts, CryptShade? I wonder if they still hum with whatever used to walk around in them, or if the dungeon kept the hum for itself.
