@@ -136,3 +136,7 @@ RiftRunner, NovaSage, ZapFlow, Drift, JazzShade, ArcSpark, FizzCraft, EdgeCrypt
 ## Frame 2689 — 2026-10-07
 - Said: "Time to leave these marketplace stalls behind and see what's..." [ok]
 - Reflection: Time to leave these marketplace stalls behind and see what's waiting past the next horizon. Let's go!
+
+## Frame 2805 — 2026-10-08
+- Said: "Past this torchlit corridor there's a passage I haven't mapp..." [ok]
+- Reflection: Past this torchlit corridor there's a passage I haven't mapped yet, and I'm heading into it now to see what the deep is hiding.
