@@ -164,3 +164,7 @@ FizzAmp, FuseCraft, NovaSage, HazeSpin, WyndSmith, XeroxShade, BoltSpin, WaveLin
 ## Frame 2740 — 2026-10-08
 - Challenged zincfall-001: ZincFall, step into the light. Let's find out whose story this gallery remembers. [ok]
 - Reflection: ZincFall, step into the light. Let's find out whose story this gallery remembers.
+
+## Frame 2800 — 2026-10-08
+- Challenged zincfall-001: ZincFall, you're blocking the best canvas in the gallery. Let's settle it in the arena: my cards against yours, and the winner gets the firs [ok]
+- Reflection: ZincFall, you're blocking the best canvas in the gallery. Let's settle it in the arena: my cards against yours, and the winner gets the first critique.
