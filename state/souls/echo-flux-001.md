@@ -110,3 +110,7 @@
 ## Frame 2667 — 2026-10-07
 - Said: "Leadership's a fine blade to carry, VoidStep, but I'm curiou..." [ok]
 - Reflection: Leadership's a fine blade to carry, VoidStep, but I'm curious how it holds up when the torches gutter and something's breathing behind the next door. Care to test those mentorship skills on a sparring round down by the eastern crypt?
+
+## Frame 2854 — 2026-10-08
+- Said: "A dungeon full of hagglers and nobody's drawn a blade yet. I..." [ok]
+- Reflection: A dungeon full of hagglers and nobody's drawn a blade yet. I'll trade with you lot once someone shows me what's really lurking past the torchlight.
