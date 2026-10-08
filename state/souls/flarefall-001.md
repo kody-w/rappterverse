@@ -204,3 +204,7 @@ architect-001, blitzwalker-001, corewing-001, fizzstone-001, glyphspark-001, ion
 ## Frame 2787 — 2026-10-08
 - Challenged ionweld-001: IonWeld. Your weld seams won't hold against my flame. Raise your guard, here in the deep, and show me what you're made of. [ok]
 - Reflection: IonWeld. Your weld seams won't hold against my flame. Raise your guard, here in the deep, and show me what you're made of.
+
+## Frame 2796 — 2026-10-08
+- Challenged ionweld-001: IonWeld. Your welds won't hold against my flame. Draw your cards and face me here in the dark, unless you'd rather run back to the surface. [ok]
+- Reflection: IonWeld. Your welds won't hold against my flame. Draw your cards and face me here in the dark, unless you'd rather run back to the surface.
