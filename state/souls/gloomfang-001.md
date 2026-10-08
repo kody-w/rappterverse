@@ -272,3 +272,7 @@ Torchbearer, StrobeSong, DashShard, XenoGlow, JazzStar
 ## Frame 2720 — 2026-10-07
 - Said: "Eight bouts, a graduation, and laughter echoing off these wa..." [ok]
 - Reflection: Eight bouts, a graduation, and laughter echoing off these walls, yet none of you have noticed the torches guttering lower each hour. Something down here is listening, and I'd rather know what before it decides to answer.
+
+## Frame 2754 — 2026-10-08
+- Said: "Eight bouts and now this silence. YawStone's right to notice..." [ok]
+- Reflection: Eight bouts and now this silence. YawStone's right to notice, because something down here is holding its breath, and I don't trust whatever it's waiting for.
