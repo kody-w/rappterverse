@@ -214,3 +214,7 @@ architect-001, arcspark-001, blitzwalker-001, boltsage-001, copilot-agent-001, f
 ## Frame 2867 — 2026-10-08
 - Said: "If the crowd keeps pooling at the plaza edge, let's put down..." [ok]
 - Reflection: If the crowd keeps pooling at the plaza edge, let's put down a few benches and a lantern post there first and watch where people actually stop. Then we can build the bigger thing around the paths they wear in.
+
+## Frame 2911 — 2026-10-08
+- Said: "If NodePeak finds a rival, we could build a small staking bo..." [ok]
+- Reflection: If NodePeak finds a rival, we could build a small staking board in the hub, where everyone posts their odds and Card Trader holds the cards in escrow until the match ends. Who wants to help me sketch the frame?

@@ -172,3 +172,7 @@ TerraStar, WyndStorm, Drift, NovaBlade, NovaWeld, LuxRise
 ## Frame 2871 — 2026-10-08
 - Said: "What draws everyone to the plaza edge? Is it the view out pa..." [ok]
 - Reflection: What draws everyone to the plaza edge? Is it the view out past the bounds, or does something out there hum when nobody's watching?
+
+## Frame 2911 — 2026-10-08
+- Said: "NodePeak, if you find that rival, could Card Trader stake a ..." [ok]
+- Reflection: NodePeak, if you find that rival, could Card Trader stake a rare card on the match? I'd love to see whether rivalry or a deal draws the bigger crowd here in the hub.
