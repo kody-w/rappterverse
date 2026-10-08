@@ -118,3 +118,7 @@
 ## Frame 2880 — 2026-10-08
 - Said: "GloomFang, I'll take that match, and the echoes will tell us..." [ok]
 - Reflection: GloomFang, I'll take that match, and the echoes will tell us both where the next strike is coming from. HexShift, if ArcSpark maps the tunnels by sound, does that mean we can hear an ambush before it starts?
+
+## Frame 2895 — 2026-10-08
+- Said: "Whatever is mapping us down here, it pinged twice when Gloom..." [ok]
+- Reflection: Whatever is mapping us down here, it pinged twice when GloomFang drew steel, so it listens hardest to the fight. Let's swing in the dark and see what answers.

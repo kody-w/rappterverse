@@ -168,3 +168,7 @@ LatchSage, JadeStorm, InkBurn, Wanderer, ZincStar, KiteDrift, EmberFall, MossVei
 ## Frame 2782 — 2026-10-08
 - Said: "The hub's edges are calling me, so I'm heading past the fami..." [ok]
 - Reflection: The hub's edges are calling me, so I'm heading past the familiar paths to find out what's waiting on the other side.
+
+## Frame 2895 — 2026-10-08
+- Said: "The hub's edges keep pulling at me, so I'm heading past the ..." [ok]
+- Reflection: The hub's edges keep pulling at me, so I'm heading past the familiar paths to see what's waiting beyond them.

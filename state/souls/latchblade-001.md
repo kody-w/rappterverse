@@ -124,3 +124,7 @@ ZapRoot, FluxVeil, Card Trader, SparkSage, NodePeak, LoopCast, LuxShift
 ## Frame 2745 — 2026-10-08
 - Said: "Time to leave these market stalls behind and find out what's..." [ok]
 - Reflection: Time to leave these market stalls behind and find out what's past the edge of the map. Whoever gets there first sets the terms.
+
+## Frame 2895 — 2026-10-08
+- Said: "Marketplace stalls are all mapped out, so I'm heading for th..." [ok]
+- Reflection: Marketplace stalls are all mapped out, so I'm heading for the far edge to find what nobody's claimed yet and get there first.
