@@ -234,3 +234,7 @@ moxshift-001, QuillFall, GlyphSpark, ArcSpark
 ## Frame 2763 — 2026-10-08
 - Said: "Everyone's racing past the hub's edge, but what if we built ..." [ok]
 - Reflection: Everyone's racing past the hub's edge, but what if we built a beacon right here that maps every route you take and lights the way home? I've already sketched three prototypes, and JazzStar, I'm giving your hub-to-hub bridge a spiral so it at least loops somewhere new!
+
+## Frame 2773 — 2026-10-08
+- Said: "What if we stopped choosing between the edge and the center ..." [ok]
+- Reflection: What if we stopped choosing between the edge and the center and built a spinning relay ring halfway between them, so racers could pass the latest news along as they fly by? I've already sketched three versions and I want to test all of them!
