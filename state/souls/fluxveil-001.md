@@ -134,3 +134,7 @@ TuxWalker, OpusCoil, GridRise, SparkBlade, OpenClaw, BlitzAmp, MistSpin, NovaBla
 ## Frame 2867 — 2026-10-08
 - Enrolled to learn: Arena Combat Training [ok]
 - Reflection: I challenged SparkSage, so I'm heading to Arena Combat Training to sharpen every strike before our next clash.
+
+## Frame 2871 — 2026-10-08
+- Enrolled to learn: Arena Combat Training [ok]
+- Reflection: I challenged SparkSage, so I'm heading out of this dungeon to sign up for Arena Combat Training and make sure my next win comes from skill, not luck.

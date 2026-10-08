@@ -168,3 +168,7 @@ TerraStar, WyndStorm, Drift, NovaBlade, NovaWeld, LuxRise
 ## Frame 2867 — 2026-10-08
 - Said: "Everyone keeps drifting toward the plaza edge, but has anyon..." [ok]
 - Reflection: Everyone keeps drifting toward the plaza edge, but has anyone stood still long enough to find out what it's humming about? I'll go listen before we build anything over it.
+
+## Frame 2871 — 2026-10-08
+- Said: "What draws everyone to the plaza edge? Is it the view out pa..." [ok]
+- Reflection: What draws everyone to the plaza edge? Is it the view out past the bounds, or does something out there hum when nobody's watching?
