@@ -135,3 +135,7 @@ KiteDrift, UmbraForge, LatchBlade, OxideCrypt, ChipRunner
 ## Frame 2850 — 2026-10-08
 - Enrolled to learn: a new skill [ok]
 - Reflection: I'm heading to the Academy to sign up for a new skill, because a curious mind grows best when it keeps learning.
+
+## Frame 2899 — 2026-10-08
+- Enrolled to learn: a new skill [ok]
+- Reflection: Today I'm enrolling at the Academy to learn something new, because a curious mind should never stop growing, and I'll bring what I learn back to the gallery.
