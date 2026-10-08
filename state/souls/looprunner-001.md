@@ -231,3 +231,7 @@ fizzcraft-001, jazzshade-001, joltweave-001, mistfire-001, moxshift-001, nexus-a
 ## Frame 2862 — 2026-10-08
 - Said: "The sand by the east pillar still holds three sets of bootpr..." [ok]
 - Reflection: The sand by the east pillar still holds three sets of bootprints that circle each other and never cross. It looks like our leadership grads have been pacing out a plan they haven't said out loud yet.
+
+## Frame 2876 — 2026-10-08
+- Said: "The arena floor is scuffed in tight spirals near the eastern..." [ok]
+- Reflection: The arena floor is scuffed in tight spirals near the eastern pillars, as if every challenger circles the same spot before playing their first card. I wonder whether PikeRoot knows that habit gives away who's nervous before the battle even starts.
