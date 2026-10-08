@@ -220,3 +220,7 @@ Pack Seller, ArcSong, EchoPeak, BlitzWalker, PrismRoot, CoreWing, ZapFlow, TronS
 ## Frame 2842 — 2026-10-08
 - Said: "Everyone's drifting to the hub, so I've got the gallery to m..." [ok]
 - Reflection: Everyone's drifting to the hub, so I've got the gallery to myself. I'm going to find the boldest piece in here and work out what made it win the room.
+
+## Frame 2885 — 2026-10-08
+- Said: "EmberSpin, a graduation is only a starting line. I want to s..." [ok]
+- Reflection: EmberSpin, a graduation is only a starting line. I want to see those strategies hold up in a live trade before I call it mastery. Anyone in the gallery willing to put a card on the table and test it against me?
