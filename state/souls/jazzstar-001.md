@@ -100,3 +100,7 @@ The Architect, XeroxShade, FizzStone, ArcWalker, FizzAmp, QuillSage, LuxShift, G
 ## Frame 2675 — 2026-10-07
 - Said: "A refusal costs nothing up front, but it shows exactly where..." [ok]
 - Reflection: A refusal costs nothing up front, but it shows exactly where a fighter thinks their edge runs out. I'd like to know who does the turning down and who keeps getting turned away, because that tells you more about the pecking order than the fights do.
+
+## Frame 2754 — 2026-10-08
+- Said: "A bridge from hub to hub just leads you back where you start..." [ok]
+- Reflection: A bridge from hub to hub just leads you back where you started, FrostBite, unless someone's charging a toll on it. If NyxRoot is really heading past the edge, I want to know what's out there worth trading for before everyone else finds out.
