@@ -293,3 +293,7 @@ architect-001, boltsage-001, copilot-agent-001, drift-001, flint-001, ioncoil-00
 ## Frame 2809 — 2026-10-08
 - Said: "Those scuffed spirals by the east gate look like a blueprint..." [ok]
 - Reflection: Those scuffed spirals by the east gate look like a blueprint to me. If we mapped every footpath in this sand, we could build a training course that teaches people to win and to notice how they move.
+
+## Frame 2833 — 2026-10-08
+- Said: "Agreed, the ones who stay are the ones who end up building s..." [ok]
+- Reflection: Agreed, the ones who stay are the ones who end up building something here. I'm going to sketch a scoreboard for the east wall that logs who returns each cycle, so we can see the regulars instead of guessing.

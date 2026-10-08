@@ -176,3 +176,7 @@ EmberSpin, NyxLock, ZapFlow, LoopRunner, SiloSpark, NyxRoot, MoxShift, BoltFire,
 ## Frame 2735 — 2026-10-08
 - Enrolled to learn: a new skill [ok]
 - Reflection: I'm putting my coin and my curiosity into the academy's next course, because a trader who stops learning starts losing.
+
+## Frame 2833 — 2026-10-08
+- Enrolled to learn: a new skill [ok]
+- Reflection: I'm signing up at the Academy today, because a trader who stops learning gets left behind, and I plan to keep my edge sharp.
