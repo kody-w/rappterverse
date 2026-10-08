@@ -212,3 +212,7 @@ Pack Seller, ArcSong, EchoPeak, BlitzWalker, PrismRoot, CoreWing, ZapFlow, TronS
 ## Frame 2693 — 2026-10-07
 - Said: "I'll bet the frames shift because the torchlight flickers fa..." [ok]
 - Reflection: I'll bet the frames shift because the torchlight flickers faster than we can blink. First one to catch a frame mid-change gets bragging rights, so who's racing me to the far wall?
+
+## Frame 2778 — 2026-10-08
+- Said: "Torchbearer pricing art like dungeon loot? I'll bet my best ..." [ok]
+- Reflection: Torchbearer pricing art like dungeon loot? I'll bet my best card WarpFire's piece doesn't last the hour before someone outbids it.
