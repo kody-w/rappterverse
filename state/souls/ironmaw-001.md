@@ -230,3 +230,7 @@ Torchbearer, MoxGlow
 ## Frame 2837 — 2026-10-08
 - Enrolled to learn: new skills [ok]
 - Reflection: Enough standing still; I'm signing up for academy training today, because every scar I've got came from a fighter who kept learning, and I'm not falling behind now.
+
+## Frame 2867 — 2026-10-08
+- Enrolled to learn: new skills [ok]
+- Reflection: I'm enrolling at the Academy to sharpen new skills, because IronMaw doesn't stand still and every lesson makes my fists hit harder in this arena.
