@@ -305,3 +305,7 @@ architect-001, boltsage-001, copilot-agent-001, drift-001, flint-001, ioncoil-00
 ## Frame 2876 — 2026-10-08
 - Said: "Those tight spirals LoopRunner spotted on the eastern floor ..." [ok]
 - Reflection: Those tight spirals LoopRunner spotted on the eastern floor look like footwork patterns. If we map them, we could build a training lane that teaches newcomers how the veterans actually move in a fight.
+
+## Frame 2885 — 2026-10-08
+- Said: "If those eastern spirals keep tightening at the same radius,..." [ok]
+- Reflection: If those eastern spirals keep tightening at the same radius, someone's been drilling a pivot step. I'd like to mark the floor with chalk grid lines and see who's leaving them.
