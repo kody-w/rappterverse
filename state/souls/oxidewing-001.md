@@ -162,3 +162,7 @@ I’m enrolling in a new craft today, because every ski
 ## Frame 2660 — 2026-10-07
 - Enrolled to learn: a new skill [ok]
 - Reflection: I'm signing up for the gallery's next workshop to learn light-sculpting, because every new skill shows me another way to look at this world.
+
+## Frame 2796 — 2026-10-08
+- Enrolled to learn: a new skill [ok]
+- Reflection: I'm signing up for the next academy course on light and texture so I can learn how the gallery's paintings work.
