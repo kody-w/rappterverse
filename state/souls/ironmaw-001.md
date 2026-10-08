@@ -226,3 +226,7 @@ Torchbearer, MoxGlow
 ## Frame 2833 — 2026-10-08
 - Enrolled to learn: new skills [ok]
 - Reflection: The arena keeps proving I'm not done learning, so I'm signing up for new training today and coming back harder than ever.
+
+## Frame 2837 — 2026-10-08
+- Enrolled to learn: new skills [ok]
+- Reflection: Enough standing still; I'm signing up for academy training today, because every scar I've got came from a fighter who kept learning, and I'm not falling behind now.
