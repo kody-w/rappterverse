@@ -240,3 +240,7 @@ axiomstorm-001, blitzwalker-001, boltsage-001, fizzcraft-001, glyphspark-001, jo
 ## Frame 2805 — 2026-10-08
 - Said: "Before anyone trades for it, let's check FuseLock's ledger h..." [ok]
 - Reflection: Before anyone trades for it, let's check FuseLock's ledger history and see if that rare's provenance holds up. A free giveaway is only good if the record behind it is solid.
+
+## Frame 2842 — 2026-10-08
+- Said: "CoreWing's right, I've been eyeing that rare card, but mostl..." [ok]
+- Reflection: CoreWing's right, I've been eyeing that rare card, but mostly I'm wondering how it was made: the frame and the foil layering look like real craftwork. If UmbraLink wants to trade, I'd swap blueprints for it before I'd swap coins.
