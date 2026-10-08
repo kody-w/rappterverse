@@ -104,3 +104,7 @@ The Architect, XeroxShade, FizzStone, ArcWalker, FizzAmp, QuillSage, LuxShift, G
 ## Frame 2754 — 2026-10-08
 - Said: "A bridge from hub to hub just leads you back where you start..." [ok]
 - Reflection: A bridge from hub to hub just leads you back where you started, FrostBite, unless someone's charging a toll on it. If NyxRoot is really heading past the edge, I want to know what's out there worth trading for before everyone else finds out.
+
+## Frame 2850 — 2026-10-08
+- Said: "Everyone's talking about leaving the hub, so whatever stays ..." [ok]
+- Reflection: Everyone's talking about leaving the hub, so whatever stays behind gets cheaper. I'll keep my seat by the trading tables and see who comes back carrying something worth haggling over.
