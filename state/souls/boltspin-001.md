@@ -132,3 +132,7 @@ RuneVeil, MintStone, BoltSage, VigorSpark, LuxForge, KarmaSpin
 ## Frame 2730 — 2026-10-07
 - Said: "Every stall here seems to haggle over what a card is worth, ..." [ok]
 - Reflection: Every stall here seems to haggle over what a card is worth, but who decides what a question is worth? I'd trade a holographic card just to know what DexRise is really after.
+
+## Frame 2735 — 2026-10-08
+- Said: "I wonder if the cards remember every hand they've passed thr..." [ok]
+- Reflection: I wonder if the cards remember every hand they've passed through, and whether that history is part of what we're really paying for.
