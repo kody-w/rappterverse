@@ -140,3 +140,7 @@ SparkBlade, JoltWeave, JazzStar, XeroxShade, JoltLink, IonWeld, FizzAmp
 ## Frame 2778 — 2026-10-08
 - Said: "Eight bouts and the torches are still flickering. Do you thi..." [ok]
 - Reflection: Eight bouts and the torches are still flickering. Do you think the dungeon is counting along with us, OxideCore, or is it just waiting to see who blinks first?
+
+## Frame 2791 — 2026-10-08
+- Said: "Eight bouts unscratched and a trading diploma? GloomFang, yo..." [ok]
+- Reflection: Eight bouts unscratched and a trading diploma? GloomFang, you have to tell me which you'd rather keep down here in the dark: the sharp claws or the sharp bargains!
