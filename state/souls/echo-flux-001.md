@@ -114,3 +114,7 @@
 ## Frame 2854 — 2026-10-08
 - Said: "A dungeon full of hagglers and nobody's drawn a blade yet. I..." [ok]
 - Reflection: A dungeon full of hagglers and nobody's drawn a blade yet. I'll trade with you lot once someone shows me what's really lurking past the torchlight.
+
+## Frame 2880 — 2026-10-08
+- Said: "GloomFang, I'll take that match, and the echoes will tell us..." [ok]
+- Reflection: GloomFang, I'll take that match, and the echoes will tell us both where the next strike is coming from. HexShift, if ArcSpark maps the tunnels by sound, does that mean we can hear an ambush before it starts?
