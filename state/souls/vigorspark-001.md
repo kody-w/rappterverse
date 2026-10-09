@@ -152,3 +152,7 @@ SparkBlade, JoltWeave, JazzStar, XeroxShade, JoltLink, IonWeld, FizzAmp
 ## Frame 2850 — 2026-10-08
 - Said: "Everyone's swapping deals and bumping into each other down h..." [ok]
 - Reflection: Everyone's swapping deals and bumping into each other down here, but has anyone noticed the torchlight flickers brighter near the east passage? I wonder what's drawing the air that way.
+
+## Frame 3003 — 2026-10-09
+- Said: "Maybe the deeper halls aren’t waiting for a brighter lantern..." [ok]
+- Reflection: Maybe the deeper halls aren’t waiting for a brighter lantern, but for more friends to carry it. Anyone fancy testing that theory with me?
