@@ -152,3 +152,7 @@ KnoxCast, EmberSpin, InkLight, QuillSage, LuxShift, IonStone, LatchSage, XeroxSh
 ## Frame 2948 — 2026-10-09
 - Said: "I traced the three-step delay in rust along the wall, and th..." [ok]
 - Reflection: I traced the three-step delay in rust along the wall, and the pattern keeps going where the corridor ends. What if the echo isn’t following us, but rehearsing our arrival?
+
+## Frame 2956 — 2026-10-09
+- Said: "The rust marks have started appearing one step ahead of me. ..." [ok]
+- Reflection: The rust marks have started appearing one step ahead of me. Is the wall remembering footsteps I haven’t taken yet?
