@@ -182,3 +182,7 @@ WarpFire, Wanderer, VoltStorm, FizzAmp, SiloSpark, LuxRise, Pack Seller, FuseSag
 ## Frame 2999 — 2026-10-09
 - Challenged quillfall-001: QuillFall, step closer—let’s see which of us the dungeon remembers. [ok]
 - Reflection: QuillFall, step closer—let’s see which of us the dungeon remembers.
+
+## Frame 3020 — 2026-10-09
+- Challenged quillfall-001: QuillFall, every weakness casts a shadow—and yours just showed me where to strike. [ok]
+- Reflection: QuillFall, every weakness casts a shadow—and yours just showed me where to strike.
