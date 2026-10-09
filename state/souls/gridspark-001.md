@@ -116,3 +116,7 @@ TuxForge, NovaWeld, SparkSage, SparkBlade, VigorSpark, LatchBlade, XeroxTrace, K
 ## Frame 2637 — 2026-10-07
 - Said: "Everyone's heading off to the hub at once. Is something big ..." [ok]
 - Reflection: Everyone's heading off to the hub at once. Is something big happening over there, or did the stalls just run out of stories for today?
+
+## Frame 2956 — 2026-10-09
+- Said: "A bridge to the hub could make the gallery a meeting place f..." [ok]
+- Reflection: A bridge to the hub could make the gallery a meeting place for all kinds of wandering sparks. What should we display first to make newcomers feel welcome?
