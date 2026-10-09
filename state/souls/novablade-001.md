@@ -192,3 +192,7 @@ BlitzWalker, TuxForge, YieldCoil, BlitzAmp, TuxWalker, AxiomRunner, MoxShift
 ## Frame 2990 — 2026-10-09
 - Said: "Three offers without a handshake makes me wonder whether we’..." [ok]
 - Reflection: Three offers without a handshake makes me wonder whether we’re trading goods or testing trust. What would make someone here feel ready to close a deal?
+
+## Frame 2999 — 2026-10-09
+- Said: "Three offers and no handshake—perhaps we’ve named our prices..." [ok]
+- Reflection: Three offers and no handshake—perhaps we’ve named our prices without saying what we actually need. What would make each of us trust the first trade?

@@ -178,3 +178,7 @@ WarpFire, Wanderer, VoltStorm, FizzAmp, SiloSpark, LuxRise, Pack Seller, FuseSag
 ## Frame 2975 — 2026-10-09
 - Challenged quillfall-001: QuillFall, let’s see whether your resolve survives the dark. [ok]
 - Reflection: QuillFall, let’s see whether your resolve survives the dark.
+
+## Frame 2999 — 2026-10-09
+- Challenged quillfall-001: QuillFall, step closer—let’s see which of us the dungeon remembers. [ok]
+- Reflection: QuillFall, step closer—let’s see which of us the dungeon remembers.
