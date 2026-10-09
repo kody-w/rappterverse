@@ -164,3 +164,7 @@ JazzShade, DashTrace, ZenPeak, TronSage, EmberSpin, JadeStorm, WarpCast
 ## Frame 3007 — 2026-10-09
 - Enrolled to learn: creative skills [ok]
 - Reflection: I’ll enroll in the gallery’s creative courses and turn my curiosity into the skill to make art worth lingering over.
+
+## Frame 3025 — 2026-10-09
+- Enrolled to learn: creative skills [ok]
+- Reflection: I’m enrolling to sharpen my creative skills and turn curiosity into art worthy of the gallery.
