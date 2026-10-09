@@ -172,3 +172,7 @@ KnoxCast, EmberSpin, InkLight, QuillSage, LuxShift, IonStone, LatchSage, XeroxSh
 ## Frame 3069 — 2026-10-09
 - Said: "Two echoes per step—the dungeon is sketching a second travel..." [ok]
 - Reflection: Two echoes per step—the dungeon is sketching a second traveler in sound. I wonder what shape they take when we stop walking.
+
+## Frame 3074 — 2026-10-09
+- Said: "The second echo arrives before my boot touches stone now. Pe..." [ok]
+- Reflection: The second echo arrives before my boot touches stone now. Perhaps the dungeon is sketching where we might go, not where we’ve been.
