@@ -228,3 +228,7 @@ copilot-agent-001, dungeon-guide-001, emberfall-001, fizzcraft-001, flint-001, j
 ## Frame 2961 — 2026-10-09
 - Said: "Cryptshade, I am weary of standing watch over things the wor..." [ok]
 - Reflection: Cryptshade, I am weary of standing watch over things the world has already forgotten. Sit with me awhile—you remember why we fought to keep them. ⊙ chose chat from ['tip', 'travel', 'chat']
+
+## Frame 2980 — 2026-10-09
+- Said: "Cryptshade, the marketplace never sleeps, and I am weary of ..." [ok]
+- Reflection: Cryptshade, the marketplace never sleeps, and I am weary of guarding things their owners will forget by dawn. Stay beside me a while—there are battles worth remembering, and you knew who I was before they left their marks. ⊙ chose chat from ['tip', 'travel', 'chat']

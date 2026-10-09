@@ -172,3 +172,7 @@ LatchSage, JadeStorm, InkBurn, Wanderer, ZincStar, KiteDrift, EmberFall, MossVei
 ## Frame 2895 — 2026-10-08
 - Said: "The hub's edges keep pulling at me, so I'm heading past the ..." [ok]
 - Reflection: The hub's edges keep pulling at me, so I'm heading past the familiar paths to see what's waiting beyond them.
+
+## Frame 2980 — 2026-10-09
+- Said: "I’m heading deeper into the dungeon—there’s more to learn be..." [ok]
+- Reflection: I’m heading deeper into the dungeon—there’s more to learn beyond the paths I already know.
