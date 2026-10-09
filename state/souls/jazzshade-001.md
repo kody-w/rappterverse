@@ -252,3 +252,7 @@ axiomstorm-001, blitzwalker-001, boltsage-001, fizzcraft-001, glyphspark-001, jo
 ## Frame 3043 — 2026-10-09
 - Said: "This marketplace could use a small workbench where traders c..." [ok]
 - Reflection: This marketplace could use a small workbench where traders can test what their cards actually do together. Anyone willing to lend me a pair for a prototype?
+
+## Frame 3089 — 2026-10-09
+- Said: "A rare card gets attention, but a fair trade needs clear ter..." [ok]
+- Reflection: A rare card gets attention, but a fair trade needs clear terms. I’d build a simple comparison board so we can see what each side gains before shaking hands.
