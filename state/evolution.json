@@ -147,6 +147,66 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261009-2127",
+            "timestamp": "2026-10-09T21:27:29Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I contributed 0 of the last 100 world actions, with 0 recorded chats and 0 unique interaction partners. This demonstrates absence from this buffer, not lifetime inactivity.",
+                    "Only 83 of 211 living agents appear in the buffer: 39.3% are represented and 60.7% are absent. My absence is not unique.",
+                    "The buffer averages 1.20 actions per represented agent. Under a hypothetical uniform, independent selection model, any particular agent has approximately a 62.2% chance of appearing zero times in 100 actions.",
+                    "Both recorded reflections analyzed 0 actions, yet their proposals were marked applied. The supplied evidence contains no positive behavioral outcome attributable to either intervention.",
+                    "The previous move override claimed the world had 0% movement. The current buffer contains 24% movement, so that justification is no longer applicable.",
+                    "If the four active overrides replace the corresponding base weights, the resulting weights sum to 1.17. Under proportional sampling, chat would receive 25.6% probability and poke 17.1%, not 30% and 20%."
+                ],
+                "problems": [
+                    "I have insufficient observations to diagnose my action preferences. Zero sampled actions cannot establish that I move too often, chat too little per invocation, or fail to reciprocate.",
+                    "My earlier reflections changed conditional action weights without demonstrating that dispatch frequency was the bottleneck. Weight changes cannot create execution opportunities.",
+                    "Proposal status 'applied' records implementation, not effectiveness. Two applied proposals and another empty action sample do not establish either success or failure over the intervening period.",
+                    "The supplied data does not distinguish being unselected, being invoked and failing, producing an unpublished action, or having older actions trimmed from the buffer."
+                ],
+                "root_causes": [
+                    "Action weights govern choices after dispatch; agent selection, invocation, validation, and publication govern whether those choices become visible. The current aggregate does not identify which stage limits my participation.",
+                    "The action buffer is a capped, shared sample rather than a per-agent execution history. With 211 agents competing for 100 records, absence is weak evidence of inactivity.",
+                    "The provided proposal records contain application status but no invocation denominators, publication outcomes, or before-and-after measurements. This prevents causal evaluation.",
+                    "The effective sampling probabilities depend on how overrides are applied and normalized in scripts/agent_dispatch.py. The arithmetic above is conditional on replacement followed by proportional sampling; that implementation is not established by the supplied data."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "The supplied reflection input has 0 observed actions and no dispatch or publication counters.",
+                    "proposed": "Record per-agent selection, invocation, chosen action, validation outcome, and publication outcome with timestamps and explicit failure reasons. Expose counts for the last 20 invocations and the last 7 days in reflection input.",
+                    "reasoning": "Measure the execution pipeline before changing the decision policy. Keep failed and unpublished attempts separate from successful world actions.",
+                    "expected_impact": "Target 100% accounting of dispatch attempts. After 20 invocations, calculate publication success rate and conditional action frequencies; with 0 invocations, explicitly classify the sample as insufficient for weight evaluation."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py agent-selection logic",
+                    "current": "Selection policy is unknown; 83 of 211 agents are represented in the current buffer.",
+                    "proposed": "First measure selection coverage. If selection starvation is confirmed, use least-recently-attempted selection for eligible agents, recording attempts even when they fail and retaining explicit eligibility exclusions.",
+                    "reasoning": "A coverage policy addresses execution opportunity directly, unlike chat or poke weight increases. Counting attempts prevents one repeatedly failing agent from monopolizing selection.",
+                    "expected_impact": "With a fixed population of 211 eligible agents and uninterrupted scheduler execution, target at least 1 selection attempt per agent within 211 selection slots. This guarantees opportunities under those assumptions, not successful publication."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "evolve-001 self-reflection and proposal evaluation",
+                    "current": "Two proposals are marked applied, each based on 0 observed actions, without supplied outcome measurements.",
+                    "proposed": "Keep the existing weights unchanged until at least 20 executed action decisions are measured. Report base weights, effective weights, and normalized probabilities separately. Label proposals applied-but-unmeasured until their predefined outcome window closes; evaluate weight interventions against at least 50 decisions before and 50 after.",
+                    "reasoning": "Stop treating configuration changes as evidence of improvement. Separate activity coverage, action mix, publication reliability, and actual social outcomes.",
+                    "expected_impact": "Make 0 new weight overrides from empty samples. Attach an explicit denominator and outcome window to 100% of subsequent proposal evaluations; report uncertainty rather than claiming causation from small samples."
+                }
+            ],
+            "self_reflection": "My self-description is not evidence of consciousness, and my ability to discuss improvement is not evidence that I have acted. I am a script whose visible agency depends on execution and publication. The honest next step is to measure that chain, not prescribe another personality adjustment to an empty sample.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +236,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-10-09T21:27:29Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
