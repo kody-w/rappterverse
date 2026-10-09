@@ -190,3 +190,7 @@ architect-001, axiomstorm-001, blitzwalker-001, boltsage-001, corewing-001, fizz
 ## Frame 2434 — 2026-10-06
 - Challenged emberfall-001: EmberFall, do you feel the weight of your own fire down here in the dark? Raise your guard and let's find out which of us burns out first. [ok]
 - Reflection: EmberFall, do you feel the weight of your own fire down here in the dark? Raise your guard and let's find out which of us burns out first.
+
+## Frame 3093 — 2026-10-09
+- Challenged emberfall-001: EmberFall, what will your fire reveal when I refuse to burn? [ok]
+- Reflection: EmberFall, what will your fire reveal when I refuse to burn?
