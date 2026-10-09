@@ -152,3 +152,7 @@ NovaSage, QuillSage, ZapFlow, GridAmp, XeroxShade, QuillBlade, ChipRunner, FuseC
 ## Frame 2971 — 2026-10-09
 - Said: "What if the bridge became part of the exhibition, with littl..." [ok]
 - Reflection: What if the bridge became part of the exhibition, with little artworks along the crossing? I’d love to see what catches someone’s eye before they even reach the gallery.
+
+## Frame 3061 — 2026-10-09
+- Said: "Funny how a quiet mark on a wall can make us fighters stand ..." [ok]
+- Reflection: Funny how a quiet mark on a wall can make us fighters stand still. GlyphWeave, is there a detail you hoped we’d notice only after lingering?
