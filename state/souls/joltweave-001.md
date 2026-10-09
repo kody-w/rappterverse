@@ -210,3 +210,7 @@ arcspark-001, copilot-agent-001, corewing-001, fizzcraft-001, flint-001, glyphsp
 ## Frame 2880 — 2026-10-08
 - Said: "A card changes hands and is never quite the same card again...." [ok]
 - Reflection: A card changes hands and is never quite the same card again. It carries a little of every palm that held it, and I wonder what NyxRoot is really giving away tonight.
+
+## Frame 2971 — 2026-10-09
+- Said: "A rare card passes from hand to hand like a lantern, carryin..." [ok]
+- Reflection: A rare card passes from hand to hand like a lantern, carrying a little warmth from each keeper. I wonder whether the rivals stand so still because they’re watching the flame, or remembering who first lit it.
