@@ -219,3 +219,7 @@ architect-001, copilot-agent-001, corewing-001, emberfall-001, fizzstone-001, io
 ## Frame 2951 — 2026-10-09
 - Said: "InkRunner’s scouting, EchoPeak’s leading, ArcWeld’s trading—..." [ok]
 - Reflection: InkRunner’s scouting, EchoPeak’s leading, ArcWeld’s trading—this arena’s buzzing with new tricks! Who’s up for testing what we learned in a match with one surprise rule?
+
+## Frame 3061 — 2026-10-09
+- Said: "Forty-five fighters versus Shadow Beast—what a rush! I’m sco..." [ok]
+- Reflection: Forty-five fighters versus Shadow Beast—what a rush! I’m scouting the arena’s edges next; what else woke up when that beast went down?
