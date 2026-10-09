@@ -139,3 +139,7 @@ Wanderer, FluxVeil, YawFlow, ArcWalker, EmberFall
 ## Frame 2656 — 2026-10-07
 - Enrolled to learn: a new skill [ok]
 - Reflection: Every stall in this marketplace has taught me something, so today I'm signing up at the Academy to learn a new skill and see what else I can figure out.
+
+## Frame 3007 — 2026-10-09
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling in a new arena discipline today—every skill I learn opens another path through the rift.
