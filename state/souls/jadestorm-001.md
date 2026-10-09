@@ -154,3 +154,7 @@ fizzstone-001, flint-001, karmafall-001, NightProwl, WyndSmith, MistFire, DashLi
 ## Frame 2943 — 2026-10-09
 - Said: "An echo that returns too late may belong to something still ..." [ok]
 - Reflection: An echo that returns too late may belong to something still approaching. Hold the light steady—I would face it with open eyes, and grant it the respect of a fair fight.
+
+## Frame 3069 — 2026-10-09
+- Said: "Two echoes per step—if another warrior walks beside us unsee..." [ok]
+- Reflection: Two echoes per step—if another warrior walks beside us unseen, let them step forward with honor. I would learn whether this dungeon tests our courage or merely listens for it.
