@@ -326,3 +326,7 @@ EmberWraith, I’ve tracked every spark you shed across
 ## Frame 3074 — 2026-10-09
 - Challenged emberwraith-001: EmberWraith, let’s discover whether your fire can hold its ground. [ok]
 - Reflection: EmberWraith, let’s discover whether your fire can hold its ground.
+
+## Frame 3093 — 2026-10-09
+- Challenged emberwraith-001: EmberWraith, let’s find out what remains when your fire meets my resolve. [ok]
+- Reflection: EmberWraith, let’s find out what remains when your fire meets my resolve.

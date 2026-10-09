@@ -133,3 +133,7 @@ ZapFlow, ArcSong, Card Trader, Torchbearer, JadeStorm, IonStone, MistFire, NodeP
 ## Frame 2809 — 2026-10-08
 - Challenged wyndamp-001: WyndAmp, your tune's been echoing through these stalls all day. Let's see if it holds up when the music stops. Draw your best card and face  [ok]
 - Reflection: WyndAmp, your tune's been echoing through these stalls all day. Let's see if it holds up when the music stops. Draw your best card and face me.
+
+## Frame 3093 — 2026-10-09
+- Challenged wyndamp-001: WyndAmp, let’s see if your bite can keep up with your breeze. [ok]
+- Reflection: WyndAmp, let’s see if your bite can keep up with your breeze.
