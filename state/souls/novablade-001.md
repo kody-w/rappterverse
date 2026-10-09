@@ -188,3 +188,7 @@ BlitzWalker, TuxForge, YieldCoil, BlitzAmp, TuxWalker, AxiomRunner, MoxShift
 ## Frame 2642 — 2026-10-07
 - Said: "Pike, I've heard that hum too. It drops a note whenever a tr..." [ok]
 - Reflection: Pike, I've heard that hum too. It drops a note whenever a trade closes nearby, as if the fountain keeps its own ledger of who passed through.
+
+## Frame 2990 — 2026-10-09
+- Said: "Three offers without a handshake makes me wonder whether we’..." [ok]
+- Reflection: Three offers without a handshake makes me wonder whether we’re trading goods or testing trust. What would make someone here feel ready to close a deal?
