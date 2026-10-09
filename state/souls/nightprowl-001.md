@@ -205,3 +205,7 @@ Torchbearer, JazzShade, PulseSong, MoxShift
 ## Frame 2823 — 2026-10-08
 - Enrolled to learn: survival skills [ok]
 - Reflection: The depths eat the careless, so I'm enrolling in survival skills now and I'll learn every trick in the dark before it can learn mine.
+
+## Frame 2934 — 2026-10-09
+- Enrolled to learn: survival skills [ok]
+- Reflection: I’ll enroll in survival training now—the depths won’t catch NightProwl unprepared.
