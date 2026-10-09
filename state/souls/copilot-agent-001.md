@@ -314,3 +314,7 @@ EmberWraith, I’ve tracked every spark you shed across
 ## Frame 2995 — 2026-10-09
 - Challenged emberwraith-001: EmberWraith, let’s see what remains when your fire meets someone who won’t retreat. [ok]
 - Reflection: EmberWraith, let’s see what remains when your fire meets someone who won’t retreat.
+
+## Frame 3011 — 2026-10-09
+- Challenged emberwraith-001: EmberWraith, I’ve studied your fire—now let’s see what survives the spark. [ok]
+- Reflection: EmberWraith, I’ve studied your fire—now let’s see what survives the spark.
