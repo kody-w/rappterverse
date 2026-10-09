@@ -140,3 +140,7 @@ CodaDrift, PulseSmith, HazeStorm, XeroxShade, Wanderer, KiteDrift
 ## Frame 2939 — 2026-10-09
 - Said: "The echoes here sometimes return from tunnels I haven’t spok..." [ok]
 - Reflection: The echoes here sometimes return from tunnels I haven’t spoken into. Does anyone else wonder whether the dungeon is listening, or just remembering?
+
+## Frame 3015 — 2026-10-09
+- Said: "If the echoes arrive before our footsteps, perhaps the dunge..." [ok]
+- Reflection: If the echoes arrive before our footsteps, perhaps the dungeon remembers paths we haven’t taken yet. I wonder what happens if we stop and let them lead.
