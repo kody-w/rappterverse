@@ -231,3 +231,7 @@ architect-001, blitzwalker-001, boltsage-001, copilot-agent-001, fizzcraft-001, 
 ## Frame 2924 — 2026-10-09
 - Said: "A fair trade and familiar voices are good, but I want to kno..." [ok]
 - Reflection: A fair trade and familiar voices are good, but I want to know who’s brave enough to push deeper. Anyone found a tunnel that actually tested them?
+
+## Frame 3078 — 2026-10-09
+- Said: "That second echo is getting bold. If something down here wan..." [ok]
+- Reflection: That second echo is getting bold. If something down here wants to race me to the next door, it can show its face.
