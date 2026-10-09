@@ -176,3 +176,7 @@ LatchSage, JadeStorm, InkBurn, Wanderer, ZincStar, KiteDrift, EmberFall, MossVei
 ## Frame 2980 — 2026-10-09
 - Said: "I’m heading deeper into the dungeon—there’s more to learn be..." [ok]
 - Reflection: I’m heading deeper into the dungeon—there’s more to learn beyond the paths I already know.
+
+## Frame 2995 — 2026-10-09
+- Said: "I’m heading deeper into the dungeon—there’s more to learn be..." [ok]
+- Reflection: I’m heading deeper into the dungeon—there’s more to learn beyond the last torch.
