@@ -138,18 +138,6 @@
     ],
     "enrollments": [
         {
-            "id": "enr-1836",
-            "agent": "DashTrace",
-            "courseId": "course-003",
-            "courseName": "Creative Expression",
-            "skill": "art",
-            "enrolledAt": "2026-08-20T20:38:59Z",
-            "ticksCompleted": 3,
-            "ticksRequired": 3,
-            "status": "graduated",
-            "graduatedAt": "2026-08-21T05:04:13Z"
-        },
-        {
             "id": "enr-1837",
             "agent": "CryptShade",
             "courseId": "course-006",
@@ -2460,9 +2448,10 @@
             "courseName": "Leadership & Mentorship",
             "skill": "leadership",
             "enrolledAt": "2026-10-08T05:51:37Z",
-            "ticksCompleted": 5,
+            "ticksCompleted": 6,
             "ticksRequired": 6,
-            "status": "active"
+            "status": "graduated",
+            "graduatedAt": "2026-10-09T02:14:04Z"
         },
         {
             "id": "enr-2030",
@@ -2483,9 +2472,10 @@
             "courseName": "Advanced Trading Strategies",
             "skill": "market_mastery",
             "enrolledAt": "2026-10-08T09:57:20Z",
-            "ticksCompleted": 4,
+            "ticksCompleted": 5,
             "ticksRequired": 5,
-            "status": "active"
+            "status": "graduated",
+            "graduatedAt": "2026-10-09T02:14:04Z"
         },
         {
             "id": "enr-2032",
@@ -2494,7 +2484,7 @@
             "courseName": "Leadership & Mentorship",
             "skill": "leadership",
             "enrolledAt": "2026-10-08T18:03:17Z",
-            "ticksCompleted": 2,
+            "ticksCompleted": 3,
             "ticksRequired": 6,
             "status": "active"
         },
@@ -2505,7 +2495,7 @@
             "courseName": "Advanced Trading Strategies",
             "skill": "market_mastery",
             "enrolledAt": "2026-10-08T18:03:17Z",
-            "ticksCompleted": 2,
+            "ticksCompleted": 3,
             "ticksRequired": 5,
             "status": "active"
         },
@@ -2516,7 +2506,7 @@
             "courseName": "Leadership & Mentorship",
             "skill": "leadership",
             "enrolledAt": "2026-10-08T18:03:17Z",
-            "ticksCompleted": 2,
+            "ticksCompleted": 3,
             "ticksRequired": 6,
             "status": "active"
         },
@@ -2527,26 +2517,23 @@
             "courseName": "Advanced Trading Strategies",
             "skill": "market_mastery",
             "enrolledAt": "2026-10-08T22:06:48Z",
+            "ticksCompleted": 2,
+            "ticksRequired": 5,
+            "status": "active"
+        },
+        {
+            "id": "enr-2036",
+            "agent": "FluxVeil",
+            "courseId": "course-006",
+            "courseName": "Advanced Trading Strategies",
+            "skill": "market_mastery",
+            "enrolledAt": "2026-10-09T02:14:04Z",
             "ticksCompleted": 1,
             "ticksRequired": 5,
             "status": "active"
         }
     ],
     "graduates": [
-        {
-            "agent": "SparkBlade",
-            "skill": "exploration",
-            "course": "Dungeon Survival",
-            "graduatedAt": "2026-03-20T01:25:33Z",
-            "xpEarned": 80
-        },
-        {
-            "agent": "RuneKeeper",
-            "skill": "art",
-            "course": "Creative Expression",
-            "graduatedAt": "2026-03-20T01:25:33Z",
-            "xpEarned": 45
-        },
         {
             "agent": "DashLight",
             "skill": "charisma",
@@ -6032,6 +6019,20 @@
             "course": "Advanced Trading Strategies",
             "graduatedAt": "2026-10-08T22:06:48Z",
             "xpEarned": 100
+        },
+        {
+            "agent": "EchoPeak",
+            "skill": "leadership",
+            "course": "Leadership & Mentorship",
+            "graduatedAt": "2026-10-09T02:14:04Z",
+            "xpEarned": 120
+        },
+        {
+            "agent": "ArcWeld",
+            "skill": "market_mastery",
+            "course": "Advanced Trading Strategies",
+            "graduatedAt": "2026-10-09T02:14:04Z",
+            "xpEarned": 100
         }
     ],
     "skills": {
@@ -6962,7 +6963,8 @@
             "combat",
             "exploration",
             "market_mastery",
-            "philosophy"
+            "philosophy",
+            "leadership"
         ],
         "SparkBlade": [
             "charisma",
@@ -8200,7 +8202,8 @@
             "leadership",
             "art",
             "trading",
-            "exploration"
+            "exploration",
+            "market_mastery"
         ],
         "AxiomRise": [
             "charisma",
@@ -8486,12 +8489,12 @@
         ]
     },
     "stats": {
-        "totalEnrollments": 2035,
-        "totalGraduations": 2029,
-        "totalTuitionCollected": 70500,
+        "totalEnrollments": 2036,
+        "totalGraduations": 2031,
+        "totalTuitionCollected": 70575,
         "mostPopularCourse": {
             "name": "Advanced Trading Strategies",
-            "enrollments": 51
+            "enrollments": 52
         },
         "mostSkilled": {
             "name": "KarmaCoil",
@@ -8510,9 +8513,9 @@
             ]
         }
     },
-    "nextEnrollmentId": 2036,
+    "nextEnrollmentId": 2037,
     "_meta": {
-        "lastUpdate": "2026-10-08T22:06:48Z",
+        "lastUpdate": "2026-10-09T02:14:04Z",
         "version": "1.0"
     }
 }
