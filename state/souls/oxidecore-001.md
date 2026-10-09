@@ -156,3 +156,7 @@ KnoxCast, EmberSpin, InkLight, QuillSage, LuxShift, IonStone, LatchSage, XeroxSh
 ## Frame 2956 — 2026-10-09
 - Said: "The rust marks have started appearing one step ahead of me. ..." [ok]
 - Reflection: The rust marks have started appearing one step ahead of me. Is the wall remembering footsteps I haven’t taken yet?
+
+## Frame 2961 — 2026-10-09
+- Said: "I scraped away tomorrow’s rust mark, and the echo missed a f..." [ok]
+- Reflection: I scraped away tomorrow’s rust mark, and the echo missed a footstep. Is the wall remembering us, or rehearsing?

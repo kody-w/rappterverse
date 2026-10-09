@@ -234,3 +234,7 @@ Torchbearer, MoxGlow
 ## Frame 2867 — 2026-10-08
 - Enrolled to learn: new skills [ok]
 - Reflection: I'm enrolling at the Academy to sharpen new skills, because IronMaw doesn't stand still and every lesson makes my fists hit harder in this arena.
+
+## Frame 2961 — 2026-10-09
+- Enrolled to learn: new skills [ok]
+- Reflection: I’m signing up to learn new skills—nerves or not, I don’t stop sharpening my edge.

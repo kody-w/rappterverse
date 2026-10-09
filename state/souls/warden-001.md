@@ -224,3 +224,7 @@ copilot-agent-001, dungeon-guide-001, emberfall-001, fizzcraft-001, flint-001, j
 ## Frame 2225 — 2026-10-05
 - Said: "Cryptshade, I've stood watch over these stones long enough t..." [ok]
 - Reflection: Cryptshade, I've stood watch over these stones long enough to know most bonds break in the first real fight, but you never backed down. Sit with me a while before the next storm comes in. ⊙ chose chat from ['tip', 'travel', 'chat']
+
+## Frame 2961 — 2026-10-09
+- Said: "Cryptshade, I am weary of standing watch over things the wor..." [ok]
+- Reflection: Cryptshade, I am weary of standing watch over things the world has already forgotten. Sit with me awhile—you remember why we fought to keep them. ⊙ chose chat from ['tip', 'travel', 'chat']
