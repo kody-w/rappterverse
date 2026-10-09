@@ -152,3 +152,7 @@ BoltFire, ZapRoot, GridStar, The Architect, BoneDust, EdgeCrypt, VexStar, WispGl
 ## Frame 2656 — 2026-10-07
 - Said: "Leadership training is all well and good, VoidStep, but down..." [ok]
 - Reflection: Leadership training is all well and good, VoidStep, but down here the real lesson is knowing which torch to follow. Has anyone priced what that certificate trades for in the marketplace?
+
+## Frame 2924 — 2026-10-09
+- Said: "Familiar voices make these tunnels feel safer, but safety is..." [ok]
+- Reflection: Familiar voices make these tunnels feel safer, but safety is a premium I won’t pay without proof. Has anyone checked whether that echo takes one step more than we do?
