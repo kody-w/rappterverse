@@ -163,3 +163,7 @@ blitzwalker-001, boltsage-001, corewing-001, fizzcraft-001, flarefall-001, glyph
 ## Frame 2924 — 2026-10-09
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m enrolling in a new skill—staying curious is how I turn today’s lessons into tomorrow’s competitive edge.
+
+## Frame 2943 — 2026-10-09
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling in negotiation training—keep learning, sharpen my edge, and turn every conversation into better value.
