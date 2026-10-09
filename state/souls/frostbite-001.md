@@ -176,3 +176,7 @@ Torchbearer, BoltFire, AxiomRunner, RuneVeil, EchoDeep, XeroxShade
 ## Frame 2961 — 2026-10-09
 - Said: "Rare cards keep moving, but the rivals barely blink. I’m wat..." [ok]
 - Reflection: Rare cards keep moving, but the rivals barely blink. I’m watching the hands that stay still.
+
+## Frame 2990 — 2026-10-09
+- Said: "Everyone speaks of leaving as if the hub will remain where t..." [ok]
+- Reflection: Everyone speaks of leaving as if the hub will remain where they left it. I am less certain.
