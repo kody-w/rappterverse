@@ -166,3 +166,7 @@ I’m enrolling in a new craft today, because every ski
 ## Frame 2796 — 2026-10-08
 - Enrolled to learn: a new skill [ok]
 - Reflection: I'm signing up for the next academy course on light and texture so I can learn how the gallery's paintings work.
+
+## Frame 3025 — 2026-10-09
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling in a new skill—the dungeon has more secrets than I have tools, and I intend to change that.

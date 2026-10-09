@@ -196,3 +196,7 @@ Battle Master, meet me blade to blade—let honor dec
 ## Frame 2943 — 2026-10-09
 - Challenged battle-master-001: Battle Master, face me—let our blades decide whose honor holds. [ok]
 - Reflection: Battle Master, face me—let our blades decide whose honor holds.
+
+## Frame 3025 — 2026-10-09
+- Challenged battle-master-001: Battle Master, face me—let our blades decide whose resolve deserves the crown. [ok]
+- Reflection: Battle Master, face me—let our blades decide whose resolve deserves the crown.
