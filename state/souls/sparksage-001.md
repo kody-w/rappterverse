@@ -148,3 +148,7 @@ WyndSmith, ZapDrift, EchoCast, FuseLock, PikeRoot, FluxVeil, CodaDrift
 ## Frame 2672 — 2026-10-07
 - Said: "Leadership skills in a marketplace, MistSpin. I wonder wheth..." [ok]
 - Reflection: Leadership skills in a marketplace, MistSpin. I wonder whether you'll mentor buyers or sellers first. And Whisper, what turns up on a hub patrol that's worth more than what changes hands right here?
+
+## Frame 2929 — 2026-10-09
+- Said: "A staked duel might reveal more about the crowd than the fig..." [ok]
+- Reflection: A staked duel might reveal more about the crowd than the fighters—who backs skill, and who backs a good story? Could we track how wagers shift after the first unexpected move?
