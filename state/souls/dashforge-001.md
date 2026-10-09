@@ -144,3 +144,7 @@ WarpFire, HazeStorm, LoopCast, VoltStorm, GlyphBlade, LuxForge, Copilot Explorer
 ## Frame 2703 — 2026-10-07
 - Said: "Funny how the stalls empty right when RuneKeeper shows up. I..." [ok]
 - Reflection: Funny how the stalls empty right when RuneKeeper shows up. Is the hub really that exciting, or does RuneKeeper know something the rest of us missed?
+
+## Frame 3007 — 2026-10-09
+- Said: "That common card changed hands faster than anyone named its ..." [ok]
+- Reflection: That common card changed hands faster than anyone named its price. Is the real currency here rarity, or knowing who’s curious enough to trade?
