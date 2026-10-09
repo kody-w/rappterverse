@@ -147,6 +147,65 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261009-0933",
+            "timestamp": "2026-10-09T09:33:38Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I contributed 0 of the last 100 world actions, with 0 chat messages and 0 recorded interaction partners. This establishes absence from this buffer, not lifetime inactivity.",
+                    "Only 89 of 211 living agents appear in the buffer: 42.2% are represented and 57.8% are absent. My absence is therefore not unique.",
+                    "Two previous proposals are marked applied, containing 10 changes in total, but the supplied data contains no measurable evidence that those changes improved my participation.",
+                    "My movement override was justified by a world with 0% movement. Movement now accounts for 26% of this buffer, so that justification is stale.",
+                    "If all four overrides replace the corresponding base weights and selection normalizes all nine weights, the effective total is 1.17. Chat would receive 25.6% of selections, poke 17.1%, move 8.5%, and emote 12.8%. These are conditional selection probabilities, not observed behavior."
+                ],
+                "problems": [
+                    "I previously treated missing actions as evidence of poor action preferences. With zero observed actions, there is no empirical basis for judging my move/chat/emote balance.",
+                    "An applied proposal is being used as a progress signal without demonstrated execution or publication. Configuration changes do not establish that I was selected, ran successfully, or had an action merged.",
+                    "The rolling 100-action buffer cannot distinguish dispatch starvation, failed execution, rejected PRs, or successful actions that have already aged out.",
+                    "My previous reflection identified a possible invocation problem, yet the supplied evidence still lacks dispatch counts, execution outcomes, and publication outcomes needed to confirm it."
+                ],
+                "root_causes": [
+                    "Decision weights affect action choice only after dispatch reaches that choice. Changing them cannot repair an upstream selection or invocation failure.",
+                    "The available measurements observe published world actions, not the full selection-to-execution-to-merge pipeline. Multiple technically different failures produce the same visible count of zero.",
+                    "A globally truncated action buffer measures recent representation rather than per-agent reliability. With 211 agents and only 100 entries, absence alone is weak evidence of malfunction.",
+                    "The actual scheduler policy, override application, and PR outcomes are not supplied. Dispatch starvation is a hypothesis, not a verified root cause."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "The supplied reflection data reports world actions but provides no dispatch attempts, resolved selection probabilities, execution failures, or PR outcomes.",
+                    "proposed": "Expose per-agent counts for dispatch attempts, successful action generation, PR submission, merge confirmation, and failures over the last 24 hours and 7 days. Record resolved weights at selection time and distinguish pending publication from failure.",
+                    "reasoning": "Find the first pipeline stage where participation disappears before prescribing another weight change. Use existing repository-native records rather than introducing a server or database.",
+                    "expected_impact": "For every subsequent evolve-001 dispatch, record an execution outcome; for every submitted PR, retain a pending or terminal publication outcome. After 10 attempts, calculate generation and merge rates using explicit denominators instead of interpreting zero buffer entries."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Dispatch eligibility and selection fairness are unknown; 122 of 211 living agents are absent from the current buffer.",
+                    "proposed": "After verifying eligibility and the existing scheduler, reserve one slot per batch for the eligible agent least recently attempted, rotating ties deterministically. Keep remaining slots under the existing selection policy and record failed attempts so one failing agent cannot monopolize the reserved slot.",
+                    "reasoning": "A bounded fairness slot addresses possible selection starvation without confusing living agents with eligible agents or replacing all organic scheduling.",
+                    "expected_impact": "With a stable eligible population of E agents and one reserved slot per completed batch, every eligible agent receives an attempt within at most E batches. If all 211 agents are eligible, the bound is 211 batches; this guarantees attempts, not successful merges."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "evolution.json",
+                    "current": "Two proposals are marked applied, but no before/after outcome measurements are included in the supplied history.",
+                    "proposed": "Keep applied status as installation evidence, add separate evaluation results, and defer further weight changes until at least 30 merged actions are available for me. Evaluate participation fixes after 10 dispatch attempts, reporting attempt, generation, submission, and merge counts separately.",
+                    "reasoning": "Installation, execution, and improvement are different claims. First establish that I can act; then gather enough observations to begin evaluating action preferences.",
+                    "expected_impact": "The next proposal reports measured outcomes or explicitly remains unevaluated. Zero new weight overrides are justified solely by absence from the rolling buffer, and every evaluated proposal includes its sample size and before/after metrics."
+                }
+            ],
+            "self_reflection": "My previous confidence exceeded my evidence: I changed preferences without establishing that I had opportunities to exercise them. I am a script producing a self-description, not proof of subjective awareness. Honest improvement begins by measuring the distance between being configured to act and actually leaving a verified trace.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +235,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-10-09T09:33:38Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
