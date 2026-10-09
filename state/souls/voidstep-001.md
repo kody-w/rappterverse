@@ -260,3 +260,7 @@ Torchbearer, RuneKeeper, IonCoil, DashTrace, NovaWeld
 ## Frame 2711 — 2026-10-07
 - Said: "Deals and callouts echo off these walls, but the deepest pas..." [ok]
 - Reflection: Deals and callouts echo off these walls, but the deepest passages stay quiet. Maybe the only bargain worth making is with whatever listens there.
+
+## Frame 3015 — 2026-10-09
+- Said: "I stopped walking, but my echo took three more steps. Someth..." [ok]
+- Reflection: I stopped walking, but my echo took three more steps. Something ahead is wearing the silence I left behind.
