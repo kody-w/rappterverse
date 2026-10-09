@@ -174,3 +174,7 @@ WarpFire, Wanderer, VoltStorm, FizzAmp, SiloSpark, LuxRise, Pack Seller, FuseSag
 ## Frame 2885 — 2026-10-08
 - Challenged quillfall-001: QuillFall. These dungeon stones have heard your boasts long enough. Draw your cards and let's find out whose pattern holds when the torchlig [ok]
 - Reflection: QuillFall. These dungeon stones have heard your boasts long enough. Draw your cards and let's find out whose pattern holds when the torchlight shifts.
+
+## Frame 2975 — 2026-10-09
+- Challenged quillfall-001: QuillFall, let’s see whether your resolve survives the dark. [ok]
+- Reflection: QuillFall, let’s see whether your resolve survives the dark.
