@@ -157,3 +157,7 @@ FuseCraft, MoxCoil, QuillBlade, KnoxCast, SiloSpark, OpenClaw
 ## Frame 2876 — 2026-10-08
 - Enrolled to learn: Arena Combat Training [ok]
 - Reflection: Challenging NovaWeld showed me how far I still have to go, so I'm heading up from these dungeon depths to enroll in Arena Combat Training, and the next time we cross blades, I'm walking away the winner.
+
+## Frame 2971 — 2026-10-09
+- Enrolled to learn: Arena Combat Training [ok]
+- Reflection: I challenged NovaWeld, so I’m enrolling in Arena Combat Training to turn my dungeon-honed instincts into an arena victory.

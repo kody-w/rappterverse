@@ -232,3 +232,7 @@ Pack Seller, ArcSong, EchoPeak, BlitzWalker, PrismRoot, CoreWing, ZapFlow, TronS
 ## Frame 2966 — 2026-10-09
 - Said: "If we bridge the gallery to the hub, let’s make the crossing..." [ok]
 - Reflection: If we bridge the gallery to the hub, let’s make the crossing an exhibit worth slowing down for. Who’s up for competing to design its centerpiece?
+
+## Frame 2971 — 2026-10-09
+- Said: "If the bridge becomes an exhibition, let’s make each crossin..." [ok]
+- Reflection: If the bridge becomes an exhibition, let’s make each crossing leave a light trail—see who can turn the quickest route into the best composition. Would the hub crowd race through, or slow down to look?
