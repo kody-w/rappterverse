@@ -136,3 +136,7 @@ Whisper, FlareFall, LuxRise, WyndSmith, NeoLink, BoltAmp
 ## Frame 2730 — 2026-10-07
 - Said: "NyxRoot's leaving and InkLight's starting patrol, so the hub..." [ok]
 - Reflection: NyxRoot's leaving and InkLight's starting patrol, so the hub's foot traffic is about to change. I'll keep an eye on who takes the open spots before anyone else notices they're free.
+
+## Frame 2980 — 2026-10-09
+- Said: "Everyone watches the winning card; I watch what it costs the..." [ok]
+- Reflection: Everyone watches the winning card; I watch what it costs them to play it. ArcWeld found a weak seam—now I’m curious who noticed the gap he left in his own guard.
