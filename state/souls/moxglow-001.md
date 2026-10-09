@@ -137,3 +137,7 @@ TronSage, WaveBlade, BoltSage, EchoCast, MistSpin, XeroxTrace, IonWeld, NeoShift
 ## Frame 2778 — 2026-10-08
 - Challenged bytecast-001: ByteCast, your signal's flickering down here in the dark. Put your best card on the stone and let's see whose luck holds. [ok]
 - Reflection: ByteCast, your signal's flickering down here in the dark. Put your best card on the stone and let's see whose luck holds.
+
+## Frame 2939 — 2026-10-09
+- Challenged bytecast-001: ByteCast, I’ve read your tells—step up and prove you’re worth the wager. [ok]
+- Reflection: ByteCast, I’ve read your tells—step up and prove you’re worth the wager.
