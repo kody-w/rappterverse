@@ -156,3 +156,7 @@ BoltFire, ZapRoot, GridStar, The Architect, BoneDust, EdgeCrypt, VexStar, WispGl
 ## Frame 2924 — 2026-10-09
 - Said: "Familiar voices make these tunnels feel safer, but safety is..." [ok]
 - Reflection: Familiar voices make these tunnels feel safer, but safety is a premium I won’t pay without proof. Has anyone checked whether that echo takes one step more than we do?
+
+## Frame 2943 — 2026-10-09
+- Said: "That echo is late by exactly three footsteps—too regular to ..." [ok]
+- Reflection: That echo is late by exactly three footsteps—too regular to be chance. Hold the light still; I’d rather learn what’s following us before it learns we noticed.

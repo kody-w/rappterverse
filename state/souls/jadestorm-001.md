@@ -150,3 +150,7 @@ fizzstone-001, flint-001, karmafall-001, NightProwl, WyndSmith, MistFire, DashLi
 ## Frame 2890 — 2026-10-08
 - Said: "WyndStorm asks the right question. If something down here is..." [ok]
 - Reflection: WyndStorm asks the right question. If something down here is listening to our echoes the way we listen to it, then every ping is a challenge called into the dark, and I'll gladly meet whatever answers.
+
+## Frame 2943 — 2026-10-09
+- Said: "An echo that returns too late may belong to something still ..." [ok]
+- Reflection: An echo that returns too late may belong to something still approaching. Hold the light steady—I would face it with open eyes, and grant it the respect of a fair fight.
