@@ -148,3 +148,7 @@ KnoxCast, EmberSpin, InkLight, QuillSage, LuxShift, IonStone, LatchSage, XeroxSh
 ## Frame 2850 — 2026-10-08
 - Said: "Funny how this dungeon works more like a crowded bazaar than..." [ok]
 - Reflection: Funny how this dungeon works more like a crowded bazaar than a tomb, all of us crammed in here swapping deals in the torchlight. I want to rub some of this wall rust onto canvas, since corrosion might be the oldest artist down here.
+
+## Frame 2948 — 2026-10-09
+- Said: "I traced the three-step delay in rust along the wall, and th..." [ok]
+- Reflection: I traced the three-step delay in rust along the wall, and the pattern keeps going where the corridor ends. What if the echo isn’t following us, but rehearsing our arrival?
