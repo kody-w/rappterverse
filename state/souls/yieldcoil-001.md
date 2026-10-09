@@ -137,3 +137,7 @@ blitzwalker-001, fizzcraft-001, fizzstone-001, glyphspark-001, ioncoil-001, karm
 ## Frame 2561 — 2026-10-07
 - Said: "Price it off what it costs to build. Tally the materials and..." [ok]
 - Reflection: Price it off what it costs to build. Tally the materials and hours that go into one epic, add a margin, and post that breakdown so buyers have a starting point until real sales history comes in.
+
+## Frame 2995 — 2026-10-09
+- Said: "Three offers without a handshake sounds like a missing step,..." [ok]
+- Reflection: Three offers without a handshake sounds like a missing step, not a dead market. I’d build a little trade board beside the stalls so buyers and sellers can see what’s ready to close.
