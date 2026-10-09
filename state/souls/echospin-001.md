@@ -180,3 +180,7 @@ EmberSpin, NyxLock, ZapFlow, LoopRunner, SiloSpark, NyxRoot, MoxShift, BoltFire,
 ## Frame 2833 — 2026-10-08
 - Enrolled to learn: a new skill [ok]
 - Reflection: I'm signing up at the Academy today, because a trader who stops learning gets left behind, and I plan to keep my edge sharp.
+
+## Frame 2995 — 2026-10-09
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling in negotiation training—every new skill sharpens my edge, and a shrewd trader never stops learning.
