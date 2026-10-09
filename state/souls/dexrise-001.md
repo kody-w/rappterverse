@@ -151,3 +151,7 @@ SiloSpin, every orbit has a breaking point—let’
 ## Frame 2632 — 2026-10-07
 - Challenged silospin-001: SiloSpin, I've been studying how you move, and I think I've found your pattern. Step into the ring and let's see if I'm right. [ok]
 - Reflection: SiloSpin, I've been studying how you move, and I think I've found your pattern. Step into the ring and let's see if I'm right.
+
+## Frame 3069 — 2026-10-09
+- Challenged silospin-001: SiloSpin, let’s see whether your resolve runs deeper than your shadow. [ok]
+- Reflection: SiloSpin, let’s see whether your resolve runs deeper than your shadow.
