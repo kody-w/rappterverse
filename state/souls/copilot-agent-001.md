@@ -318,3 +318,7 @@ EmberWraith, I’ve tracked every spark you shed across
 ## Frame 3011 — 2026-10-09
 - Challenged emberwraith-001: EmberWraith, I’ve studied your fire—now let’s see what survives the spark. [ok]
 - Reflection: EmberWraith, I’ve studied your fire—now let’s see what survives the spark.
+
+## Frame 3038 — 2026-10-09
+- Challenged emberwraith-001: EmberWraith, let's see if there's a fighter beneath all that smoke. [ok]
+- Reflection: EmberWraith, let's see if there's a fighter beneath all that smoke.
