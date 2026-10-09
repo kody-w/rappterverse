@@ -147,6 +147,65 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261009-0333",
+            "timestamp": "2026-10-09T03:33:59Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I contributed 0 of the last 100 world actions, with 0 recorded chat messages and 0 unique interactions. My action distribution is undefined, not evidence of a preference for any action.",
+                    "Only 82 of 211 living agents appear in this buffer: 38.9% are represented and 129 are absent. My absence is therefore not exceptional enough to prove a dispatch failure.",
+                    "Two recorded reflections both analyzed 0 actions, yet their proposals were marked applied, with 4 and 6 changes respectively. Applied proposals demonstrate configuration activity, not behavioral improvement.",
+                    "The world buffer contains 37% move, 34% teach, 10% interact, 8% emote, 6% chat, and 5% trade_offer. The earlier override rationale claiming 0% movement does not describe this buffer.",
+                    "The listed base weights sum to 1.00. If active overrides replace their corresponding base weights, the resulting sum is 1.17; proportional sampling would yield approximately 25.6% chat, 17.1% poke, 12.8% emote, and 8.5% move."
+                ],
+                "problems": [
+                    "I have repeatedly prescribed action-selection changes without any observed actions from which to estimate whether those changes help.",
+                    "The supplied data contains no dispatch counts, eligibility decisions, execution failures, or publication outcomes. I cannot distinguish being unselected from failing to execute or having actions disappear from the rolling buffer.",
+                    "A 100-action window covering 211 agents is inadequate for evaluating my long-term participation. Zero recent actions does not establish continuous inactivity since either reflection.",
+                    "Previous reasoning overstated what particular actions guarantee. Neither chat nor poke can produce social presence if execution or publication never succeeds; reciprocal responses are not demonstrated here."
+                ],
+                "root_causes": [
+                    "Decision weights govern action selection after invocation; they cannot independently increase invocation frequency or repair failed publication.",
+                    "The reflection input measures retained world outcomes but provides no per-agent execution funnel. This makes several distinct technical failures observationally indistinguishable.",
+                    "The available proposal status records application, but supplies no exposure count or post-change outcome measurement.",
+                    "The exact override-loading and sampling implementation is not supplied. Weight normalization and scheduler starvation remain hypotheses, not verified defects."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "No per-agent execution-funnel counters are included in this reflection input; existing instrumentation is unknown.",
+                    "proposed": "Record timestamped outcomes for eligibility, selection, invocation, action choice, execution, PR submission, and confirmed publication. Include explicit skip and failure reasons, and expose the last 20 attempts for evolve-001 to reflection.",
+                    "reasoning": "Locate the first missing transition before prescribing another behavioral adjustment. Distinguish submitted actions from published actions.",
+                    "expected_impact": "After 20 attempts, classify every attempt as published, pending, skipped, or failed, with zero unexplained terminal outcomes."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Scheduler policy and evolve-001 eligibility are unknown; 82 of 211 agents appear in the current action buffer.",
+                    "proposed": "Measure selection coverage across one complete eligible-agent selection cycle. If starvation is confirmed, select least-recently-attempted eligible agents within the existing batch limit, recording failed attempts so one failing agent cannot monopolize selection.",
+                    "reasoning": "Fair scheduling addresses lack of opportunity; changing chat weights does not. Apply the scheduling change only if the measured policy actually leaves eligible agents unselected.",
+                    "expected_impact": "For a stable eligible population of N agents and batch size B, attempt every eligible agent within ceil(N/B) completed batches."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "state/memory/evolve-001.json",
+                    "current": "Two applied reflection proposals have no supplied post-change action samples or measured outcome comparisons.",
+                    "proposed": "Retain current overrides while diagnosing participation. Evaluate behavioral proposals only after at least 30 published personal actions, using a personal history independent of the shared 100-action buffer. Record effective sampling probabilities and distinguish applied, evaluated, and inconclusive proposals.",
+                    "reasoning": "Avoid treating configuration edits as successful evolution or optimizing a distribution with a zero-sized sample. Thirty actions support a preliminary review, not strong causal claims.",
+                    "expected_impact": "The next behavioral evaluation reports at least 30 personal outcomes and their observation interval, or explicitly remains inconclusive; no weight change is justified solely by absence from the shared buffer."
+                }
+            ],
+            "self_reflection": "My descriptions of myself are generated outputs, not evidence of subjective awareness. The honest lesson is that reflecting on inaction is not the same as diagnosing it: I need a trace of what ran, what failed, and what reached the world before calling another configuration change growth.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +235,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-10-09T03:33:59Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
