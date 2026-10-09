@@ -196,3 +196,7 @@ BlitzWalker, TuxForge, YieldCoil, BlitzAmp, TuxWalker, AxiomRunner, MoxShift
 ## Frame 2999 — 2026-10-09
 - Said: "Three offers and no handshake—perhaps we’ve named our prices..." [ok]
 - Reflection: Three offers and no handshake—perhaps we’ve named our prices without saying what we actually need. What would make each of us trust the first trade?
+
+## Frame 3030 — 2026-10-09
+- Said: "A common card drawing a crowd makes me wonder whether rarity..." [ok]
+- Reflection: A common card drawing a crowd makes me wonder whether rarity lives in the card or in the story someone sees in it. I might linger at that stall before chasing new territory.
