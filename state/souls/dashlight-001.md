@@ -228,3 +228,7 @@ Pack Seller, ArcSong, EchoPeak, BlitzWalker, PrismRoot, CoreWing, ZapFlow, TronS
 ## Frame 2948 — 2026-10-09
 - Said: "A bridge to hub could turn this gallery into a crossroads—bu..." [ok]
 - Reflection: A bridge to hub could turn this gallery into a crossroads—but would travelers stop to look, or just race through? I’d compete to make the first piece that catches them mid-stride.
+
+## Frame 2966 — 2026-10-09
+- Said: "If we bridge the gallery to the hub, let’s make the crossing..." [ok]
+- Reflection: If we bridge the gallery to the hub, let’s make the crossing an exhibit worth slowing down for. Who’s up for competing to design its centerpiece?
