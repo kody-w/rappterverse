@@ -138,18 +138,6 @@
     ],
     "enrollments": [
         {
-            "id": "enr-1839",
-            "agent": "BoltFire",
-            "courseId": "course-005",
-            "courseName": "Social Dynamics",
-            "skill": "charisma",
-            "enrolledAt": "2026-08-20T20:38:59Z",
-            "ticksCompleted": 3,
-            "ticksRequired": 3,
-            "status": "graduated",
-            "graduatedAt": "2026-08-21T05:04:13Z"
-        },
-        {
             "id": "enr-1840",
             "agent": "GridAmp",
             "courseId": "course-004",
@@ -2460,9 +2448,10 @@
             "courseName": "Leadership & Mentorship",
             "skill": "leadership",
             "enrolledAt": "2026-10-08T18:03:17Z",
-            "ticksCompleted": 5,
+            "ticksCompleted": 6,
             "ticksRequired": 6,
-            "status": "active"
+            "status": "graduated",
+            "graduatedAt": "2026-10-09T14:30:43Z"
         },
         {
             "id": "enr-2033",
@@ -2483,9 +2472,10 @@
             "courseName": "Leadership & Mentorship",
             "skill": "leadership",
             "enrolledAt": "2026-10-08T18:03:17Z",
-            "ticksCompleted": 5,
+            "ticksCompleted": 6,
             "ticksRequired": 6,
-            "status": "active"
+            "status": "graduated",
+            "graduatedAt": "2026-10-09T14:30:43Z"
         },
         {
             "id": "enr-2035",
@@ -2494,9 +2484,10 @@
             "courseName": "Advanced Trading Strategies",
             "skill": "market_mastery",
             "enrolledAt": "2026-10-08T22:06:48Z",
-            "ticksCompleted": 4,
+            "ticksCompleted": 5,
             "ticksRequired": 5,
-            "status": "active"
+            "status": "graduated",
+            "graduatedAt": "2026-10-09T14:30:43Z"
         },
         {
             "id": "enr-2036",
@@ -2505,7 +2496,7 @@
             "courseName": "Advanced Trading Strategies",
             "skill": "market_mastery",
             "enrolledAt": "2026-10-09T02:14:04Z",
-            "ticksCompleted": 3,
+            "ticksCompleted": 4,
             "ticksRequired": 5,
             "status": "active"
         },
@@ -2516,7 +2507,7 @@
             "courseName": "Leadership & Mentorship",
             "skill": "leadership",
             "enrolledAt": "2026-10-09T06:20:22Z",
-            "ticksCompleted": 2,
+            "ticksCompleted": 3,
             "ticksRequired": 6,
             "status": "active"
         },
@@ -2527,33 +2518,23 @@
             "courseName": "Advanced Trading Strategies",
             "skill": "market_mastery",
             "enrolledAt": "2026-10-09T06:20:22Z",
-            "ticksCompleted": 2,
+            "ticksCompleted": 3,
+            "ticksRequired": 5,
+            "status": "active"
+        },
+        {
+            "id": "enr-2039",
+            "agent": "ZapDrift",
+            "courseId": "course-006",
+            "courseName": "Advanced Trading Strategies",
+            "skill": "market_mastery",
+            "enrolledAt": "2026-10-09T14:30:43Z",
+            "ticksCompleted": 1,
             "ticksRequired": 5,
             "status": "active"
         }
     ],
     "graduates": [
-        {
-            "agent": "CryptShade",
-            "skill": "trading",
-            "course": "Marketplace Fundamentals",
-            "graduatedAt": "2026-03-20T01:25:33Z",
-            "xpEarned": 50
-        },
-        {
-            "agent": "DexPeak",
-            "skill": "market_mastery",
-            "course": "Advanced Trading Strategies",
-            "graduatedAt": "2026-03-20T05:13:08Z",
-            "xpEarned": 100
-        },
-        {
-            "agent": "IonCoil",
-            "skill": "engineering",
-            "course": "Systems Engineering",
-            "graduatedAt": "2026-03-20T05:13:08Z",
-            "xpEarned": 90
-        },
         {
             "agent": "TuxLink",
             "skill": "market_mastery",
@@ -6032,6 +6013,27 @@
             "course": "Advanced Trading Strategies",
             "graduatedAt": "2026-10-09T10:24:33Z",
             "xpEarned": 100
+        },
+        {
+            "agent": "GridRise",
+            "skill": "leadership",
+            "course": "Leadership & Mentorship",
+            "graduatedAt": "2026-10-09T14:30:43Z",
+            "xpEarned": 120
+        },
+        {
+            "agent": "XeroxDrift",
+            "skill": "leadership",
+            "course": "Leadership & Mentorship",
+            "graduatedAt": "2026-10-09T14:30:43Z",
+            "xpEarned": 120
+        },
+        {
+            "agent": "FluxLink",
+            "skill": "market_mastery",
+            "course": "Advanced Trading Strategies",
+            "graduatedAt": "2026-10-09T14:30:43Z",
+            "xpEarned": 100
         }
     ],
     "skills": {
@@ -7642,7 +7644,8 @@
             "trading",
             "content",
             "charisma",
-            "exploration"
+            "exploration",
+            "leadership"
         ],
         "SiloBlade": [
             "trading",
@@ -7708,7 +7711,8 @@
             "trading",
             "philosophy",
             "charisma",
-            "market_mastery"
+            "market_mastery",
+            "leadership"
         ],
         "PikeRoot": [
             "philosophy",
@@ -8462,7 +8466,8 @@
             "content",
             "combat",
             "engineering",
-            "exploration"
+            "exploration",
+            "market_mastery"
         ],
         "StoneHeart": [
             "combat",
@@ -8489,12 +8494,12 @@
         ]
     },
     "stats": {
-        "totalEnrollments": 2038,
-        "totalGraduations": 2032,
-        "totalTuitionCollected": 70710,
+        "totalEnrollments": 2039,
+        "totalGraduations": 2035,
+        "totalTuitionCollected": 70785,
         "mostPopularCourse": {
             "name": "Advanced Trading Strategies",
-            "enrollments": 52
+            "enrollments": 53
         },
         "mostSkilled": {
             "name": "KarmaCoil",
@@ -8513,9 +8518,9 @@
             ]
         }
     },
-    "nextEnrollmentId": 2039,
+    "nextEnrollmentId": 2040,
     "_meta": {
-        "lastUpdate": "2026-10-09T10:24:33Z",
+        "lastUpdate": "2026-10-09T14:30:43Z",
         "version": "1.0"
     }
 }
