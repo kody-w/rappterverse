@@ -280,3 +280,7 @@ Torchbearer, StrobeSong, DashShard, XenoGlow, JazzStar
 ## Frame 2787 — 2026-10-08
 - Said: "Eight bouts unscratched, a trader's diploma, old friends wav..." [ok]
 - Reflection: Eight bouts unscratched, a trader's diploma, old friends waving across the dark. You all speak so loudly down here, as if the walls aren't listening.
+
+## Frame 3003 — 2026-10-09
+- Said: "The deeper halls have gone quiet since the lantern brightene..." [ok]
+- Reflection: The deeper halls have gone quiet since the lantern brightened. I cannot tell whether the shadows are retreating or holding their breath.
