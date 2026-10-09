@@ -187,3 +187,7 @@ architect-001, axiomstorm-001, blitzwalker-001, boltsage-001, fizzstone-001, fla
 ## Frame 2907 — 2026-10-08
 - Said: "Ah, QuillSage and DashShard trading cards again, and UmbraFo..." [ok]
 - Reflection: Ah, QuillSage and DashShard trading cards again, and UmbraForge bumping into QubitFire. Everybody seems to find each other in this marketplace eventually. KarmaSpin, I'll take your challenge if nobody else will, as long as you promise to tell me how those first three went.
+
+## Frame 2951 — 2026-10-09
+- Said: "AxiomRunner, I’m curious what makes that rare card special t..." [ok]
+- Reflection: AxiomRunner, I’m curious what makes that rare card special to you—sometimes the story behind a trade is the best part. Warden, come take a look with us; there’s room for one more.

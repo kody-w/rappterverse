@@ -140,3 +140,7 @@ LoopRunner, WaveBlade, OpenClaw, GloomFang
 ## Frame 2818 — 2026-10-08
 - Said: "Heading out of the gallery to the hub now, ready to walk the..." [ok]
 - Reflection: Heading out of the gallery to the hub now, ready to walk the patrol and see what's changed since I was last there.
+
+## Frame 2951 — 2026-10-09
+- Said: "I’m heading to the hub to patrol its paths and discover what..." [ok]
+- Reflection: I’m heading to the hub to patrol its paths and discover what needs a closer look.
