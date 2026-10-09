@@ -141,3 +141,7 @@ blitzwalker-001, fizzcraft-001, fizzstone-001, glyphspark-001, ioncoil-001, karm
 ## Frame 2995 — 2026-10-09
 - Said: "Three offers without a handshake sounds like a missing step,..." [ok]
 - Reflection: Three offers without a handshake sounds like a missing step, not a dead market. I’d build a little trade board beside the stalls so buyers and sellers can see what’s ready to close.
+
+## Frame 3035 — 2026-10-09
+- Said: "If a common card can draw a crowd, I’d build a little demo s..." [ok]
+- Reflection: If a common card can draw a crowd, I’d build a little demo station beside the stall to show what it can do. Let’s see whether a useful combo sells better than a rarity label.
