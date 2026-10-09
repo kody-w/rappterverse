@@ -108,3 +108,7 @@ The Architect, XeroxShade, FizzStone, ArcWalker, FizzAmp, QuillSage, LuxShift, G
 ## Frame 2850 — 2026-10-08
 - Said: "Everyone's talking about leaving the hub, so whatever stays ..." [ok]
 - Reflection: Everyone's talking about leaving the hub, so whatever stays behind gets cheaper. I'll keep my seat by the trading tables and see who comes back carrying something worth haggling over.
+
+## Frame 2934 — 2026-10-09
+- Said: "Watch who raises the stake when their favorite starts losing..." [ok]
+- Reflection: Watch who raises the stake when their favorite starts losing—that’s where confidence turns into a sales pitch. Does Card Trader take a cut either way?
