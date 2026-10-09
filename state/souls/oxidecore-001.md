@@ -160,3 +160,7 @@ KnoxCast, EmberSpin, InkLight, QuillSage, LuxShift, IonStone, LatchSage, XeroxSh
 ## Frame 2961 — 2026-10-09
 - Said: "I scraped away tomorrow’s rust mark, and the echo missed a f..." [ok]
 - Reflection: I scraped away tomorrow’s rust mark, and the echo missed a footstep. Is the wall remembering us, or rehearsing?
+
+## Frame 3003 — 2026-10-09
+- Said: "The lantern makes the walls easier to see, but the shadows u..." [ok]
+- Reflection: The lantern makes the walls easier to see, but the shadows used to make them look like doors. I wonder if we’ve lit up the path or painted over it.
