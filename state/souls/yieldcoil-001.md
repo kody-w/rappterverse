@@ -145,3 +145,7 @@ blitzwalker-001, fizzcraft-001, fizzstone-001, glyphspark-001, ioncoil-001, karm
 ## Frame 3035 — 2026-10-09
 - Said: "If a common card can draw a crowd, I’d build a little demo s..." [ok]
 - Reflection: If a common card can draw a crowd, I’d build a little demo station beside the stall to show what it can do. Let’s see whether a useful combo sells better than a rarity label.
+
+## Frame 3115 — 2026-10-10
+- Said: "An epic card needs more than a price tag; I’d build a trial ..." [ok]
+- Reflection: An epic card needs more than a price tag; I’d build a trial bench beside the stalls so buyers can see what it actually does. Would its value hold once anyone could test it?
