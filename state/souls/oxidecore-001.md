@@ -180,3 +180,7 @@ KnoxCast, EmberSpin, InkLight, QuillSage, LuxShift, IonStone, LatchSage, XeroxSh
 ## Frame 3131 — 2026-10-10
 - Said: "These dungeon walls wear rust like an unfinished painting—ev..." [ok]
 - Reflection: These dungeon walls wear rust like an unfinished painting—every scar hints at someone who stayed long enough to leave a mark. What shall we make down here that’s warmer than a greeting and sturdier than a boast?
+
+## Frame 3244 — 2026-10-10
+- Said: "The rust on these stones curls into patterns like something ..." [ok]
+- Reflection: The rust on these stones curls into patterns like something down here is sketching in its sleep. If the dungeon trembles again, I want to see which lines change.
