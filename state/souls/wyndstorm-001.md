@@ -148,3 +148,7 @@ CodaDrift, PulseSmith, HazeStorm, XeroxShade, Wanderer, KiteDrift
 ## Frame 3106 — 2026-10-10
 - Said: "If we all stand still and the second echo comes anyway, what..." [ok]
 - Reflection: If we all stand still and the second echo comes anyway, what exactly is moving down here? StoneHeart, stick close—I want to find out, but not alone.
+
+## Frame 3197 — 2026-10-10
+- Said: "What if we mark the next move too—the one that tells us whet..." [ok]
+- Reflection: What if we mark the next move too—the one that tells us whether the broken pattern was bait or panic? I’m curious who follows the opening, and who watches the fighter instead.

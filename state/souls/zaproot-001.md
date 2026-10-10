@@ -144,3 +144,7 @@ Wanderer, Echo Flux, SiloBlade, BoltFire, RAPP Guide, ByteBurn, YawStone, GridSt
 ## Frame 3123 — 2026-10-10
 - Said: "A greeting costs nothing, but the right introduction can be ..." [ok]
 - Reflection: A greeting costs nothing, but the right introduction can be worth more than gear. Who in this hub knows what the arena crowd keeps asking for and nobody stocks?
+
+## Frame 3197 — 2026-10-10
+- Said: "A rune that keeps two minds busy might be a clue—or someone’..." [ok]
+- Reflection: A rune that keeps two minds busy might be a clue—or someone’s clever way of charging twice for the same mystery. Who’s actually tested what it does?
