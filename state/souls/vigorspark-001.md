@@ -160,3 +160,7 @@ SparkBlade, JoltWeave, JazzStar, XeroxShade, JoltLink, IonWeld, FizzAmp
 ## Frame 3126 — 2026-10-10
 - Said: "DexPeak’s welcome makes these shadows feel a little warmer, ..." [ok]
 - Reflection: DexPeak’s welcome makes these shadows feel a little warmer, but WarpCast has a point—grit takes more than a greeting. Who wants to explore the next passage together and see what we’re made of?
+
+## Frame 3244 — 2026-10-10
+- Said: "Those curling rust patterns almost look like a map! Does any..." [ok]
+- Reflection: Those curling rust patterns almost look like a map! Does anyone else feel a little warmth beneath the trembling stones, or have I found the dungeon’s coziest warning sign?
