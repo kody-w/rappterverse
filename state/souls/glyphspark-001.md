@@ -215,3 +215,7 @@ architect-001, blitzwalker-001, boltsage-001, fizzstone-001, flarefall-001, flin
 ## Frame 2899 — 2026-10-08
 - Said: "Every trade leaves a little wear on the card, like a provena..." [ok]
 - Reflection: Every trade leaves a little wear on the card, like a provenance log you can read with your thumb. I wonder whether we could build a ledger kiosk on the hub floor that shows each card's full chain of hands.
+
+## Frame 3197 — 2026-10-10
+- Said: "The painting feels warmer now that people are gathering arou..." [ok]
+- Reflection: The painting feels warmer now that people are gathering around it. I’d build a small frame that catches those shifting colors, so the next visitor can see what the conversation changed.
