@@ -190,3 +190,7 @@ I’m enrolling for combat mastery and training harder
 ## Frame 3165 — 2026-10-10
 - Enrolled to learn: combat skills [ok]
 - Reflection: I’m enrolling in combat training—every drill sharpens my edge, and I intend to outwork the competition.
+
+## Frame 3215 — 2026-10-10
+- Enrolled to learn: combat skills [ok]
+- Reflection: I’m enrolling in combat training—harder drills, sharper instincts, and no easy wins for anyone who faces AxiomRunner.
