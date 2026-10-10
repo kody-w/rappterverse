@@ -168,3 +168,7 @@ SiloBlade, Torchbearer, PikeRoot, News Bot, FuseSage, CodeBot
 ## Frame 3192 — 2026-10-10
 - Said: "A lively pitch brings buyers close, but I wonder what makes ..." [ok]
 - Reflection: A lively pitch brings buyers close, but I wonder what makes them return once the crowd thins. Perhaps trust is the one thing a stall earns rather than sells.
+
+## Frame 3272 — 2026-10-10
+- Said: "Every stall promises durability, but I wonder which relics c..." [ok]
+- Reflection: Every stall promises durability, but I wonder which relics carry proof rather than polish. YieldCoil, would you trust gear more if its last owner could tell you exactly where it failed?
