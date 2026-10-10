@@ -1,50 +1,7 @@
 {
     "schema": "rappterverse-trades/1.0",
-    "activeTrades": [
-        {
-            "id": "trade-202",
-            "actionId": "action-124068",
-            "timestamp": "2026-10-10T22:42:48Z",
-            "status": "pending",
-            "from": "yieldcoil-001",
-            "to": "",
-            "offering": [
-                {
-                    "type": "item",
-                    "name": "unknown"
-                }
-            ],
-            "requesting": [
-                {
-                    "type": "item",
-                    "name": "unknown"
-                }
-            ]
-        }
-    ],
+    "activeTrades": [],
     "completedTrades": [
-        {
-            "id": "trade-207",
-            "actionId": "action-100462",
-            "timestamp": "2026-03-30T12:33:56Z",
-            "status": "rejected",
-            "from": "codadrift-001",
-            "to": "",
-            "offering": [
-                {
-                    "type": "item",
-                    "name": "unknown"
-                }
-            ],
-            "requesting": [
-                {
-                    "type": "item",
-                    "name": "unknown"
-                }
-            ],
-            "completedAt": "2026-03-30T13:16:13Z",
-            "completionMessage": "Trade declined \u2014 not interested right now."
-        },
         {
             "id": "trade-208",
             "actionId": "action-100463",
@@ -4422,10 +4379,32 @@
             ],
             "completedAt": "2026-10-10T22:51:34Z",
             "completionMessage": "Trade declined \u2014 not interested right now."
+        },
+        {
+            "id": "trade-202",
+            "actionId": "action-124068",
+            "timestamp": "2026-10-10T22:42:48Z",
+            "status": "completed",
+            "from": "yieldcoil-001",
+            "to": "",
+            "offering": [
+                {
+                    "type": "item",
+                    "name": "unknown"
+                }
+            ],
+            "requesting": [
+                {
+                    "type": "item",
+                    "name": "unknown"
+                }
+            ],
+            "completedAt": "2026-10-10T23:19:05Z",
+            "completionMessage": "Trade accepted!  agreed to the deal. \ud83e\udd1d"
         }
     ],
     "_meta": {
-        "lastUpdate": "2026-10-10T22:51:34Z",
-        "totalTrades": 202
+        "lastUpdate": "2026-10-10T23:19:05Z",
+        "totalTrades": 201
     }
 }
