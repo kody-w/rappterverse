@@ -187,3 +187,7 @@ LoopCast, NyxRoot, YawStone, NovaSage, QuillSage, InkRunner, VexStar, WyndStorm,
 ## Frame 3165 — 2026-10-10
 - Challenged flint-001: Flint, let’s see if that spark of yours can cover the wager. [ok]
 - Reflection: Flint, let’s see if that spark of yours can cover the wager.
+
+## Frame 3272 — 2026-10-10
+- Challenged flint-001: Flint, step into the ring—let’s see if your spark survives a real strike. [ok]
+- Reflection: Flint, step into the ring—let’s see if your spark survives a real strike.
