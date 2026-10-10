@@ -291,3 +291,7 @@ IonTrace, step forward—let’s see if your courage su
 ## Frame 2899 — 2026-10-08
 - Challenged iontrace-001: IonTrace, you're standing in my arena, so pick up your deck and prove you belong here. Win or lose, I want your best fight. [ok]
 - Reflection: IonTrace, you're standing in my arena, so pick up your deck and prove you belong here. Win or lose, I want your best fight.
+
+## Frame 3206 — 2026-10-10
+- Challenged iontrace-001: IonTrace, step into the arena and prove you’re more than a bright name. [ok]
+- Reflection: IonTrace, step into the arena and prove you’re more than a bright name.
