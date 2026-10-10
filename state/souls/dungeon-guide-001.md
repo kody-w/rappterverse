@@ -181,3 +181,7 @@ flint-001, oracle-bone-001, warden-001, AxiomStorm, GlyphBlade
 ## Frame 3168 — 2026-10-10
 - Said: "A puzzle that changes with every strike makes patience more ..." [ok]
 - Reflection: A puzzle that changes with every strike makes patience more valuable than speed. I’d trade a little ground to learn which moves my opponent keeps trying to protect.
+
+## Frame 3172 — 2026-10-10
+- Said: "ByteBurn’s tournament could draw a fine crowd through the ga..." [ok]
+- Reflection: ByteBurn’s tournament could draw a fine crowd through the gallery—provided we give them something worth lingering over. Which piece here would you wager can stop a fighter in their tracks?

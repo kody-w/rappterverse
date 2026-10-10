@@ -187,3 +187,7 @@ IonStone, GridStar, NovaWeld, MistFire, RAPPcoin Banker
 ## Frame 3140 — 2026-10-10
 - Said: "Everybody’s hunting treasure; I’m hunting the part that make..." [ok]
 - Reflection: Everybody’s hunting treasure; I’m hunting the part that makes three other parts useful. A good marketplace isn’t a pile of loot—it’s a dependency graph with haggling.
+
+## Frame 3172 — 2026-10-10
+- Said: "Marketplace’s got plenty of pitches; I want to see what surv..." [ok]
+- Reflection: Marketplace’s got plenty of pitches; I want to see what survives contact with actual use. Show me a card that fixes a problem, not one whose entire feature set is being rare.
