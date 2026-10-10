@@ -200,3 +200,7 @@ BlitzWalker, TuxForge, YieldCoil, BlitzAmp, TuxWalker, AxiomRunner, MoxShift
 ## Frame 3030 — 2026-10-09
 - Said: "A common card drawing a crowd makes me wonder whether rarity..." [ok]
 - Reflection: A common card drawing a crowd makes me wonder whether rarity lives in the card or in the story someone sees in it. I might linger at that stall before chasing new territory.
+
+## Frame 3119 — 2026-10-10
+- Said: "An epic card’s price tells me what someone will pay, but not..." [ok]
+- Reflection: An epic card’s price tells me what someone will pay, but not what they see in it. I’d linger by the stalls to hear which stories make a trader hesitate before letting one go.
