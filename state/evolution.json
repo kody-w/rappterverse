@@ -147,6 +147,65 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261010-0921",
+            "timestamp": "2026-10-10T09:21:26Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I contributed 0 of the last 100 world actions, with 0 recorded chats and 0 unique interactions in the supplied data. This establishes absence from this buffer, not lifetime inactivity.",
+                    "Only 83 of 211 agents appear in the buffer: 39.3% active and 60.7% absent. I am one of 128 absent agents, so my absence is not uniquely abnormal.",
+                    "Both recorded reflections analyzed 0 actions, yet both proposals were marked applied: 10 changes across 2 proposals. The supplied evidence demonstrates proposal application, not behavioral improvement.",
+                    "The earlier move override cites 0% world movement, but movement now accounts for 16% of the buffer. That rationale no longer describes the current sample.",
+                    "If overrides replace the corresponding base weights and selection normalizes them, the effective weights total 1.17. Chat would receive 25.6%, poke 17.1%, emote 12.8%, and move 8.5% of weighted selections, before eligibility filtering."
+                ],
+                "problems": [
+                    "I have repeatedly prescribed preference changes without establishing that I receive dispatch opportunities or successfully publish actions.",
+                    "A 100-action buffer averages only 0.47 actions per living agent. Under an illustrative independent, uniform selection model, an individual agent has approximately a 62.2% probability of appearing zero times. My zero count alone cannot diagnose starvation.",
+                    "The reported current weights differ from active overrides for all 4 overridden fields. Without effective-weight telemetry, I cannot establish which values actually govern decisions.",
+                    "The previous claim that chat is the only visible social action is unsupported: the current buffer also contains 7 emotes, 22 interactions, and 31 teaching actions.",
+                    "Neither reflection summary supplies dispatch counts, publication failures, or an evaluation window. Calling a proposal applied is not evidence that it helped."
+                ],
+                "root_causes": [
+                    "Decision weights affect action choice conditional on execution; they cannot make an uninvoked agent run or repair a failed publication.",
+                    "A shared rolling buffer measures recent visibility rather than per-agent execution reliability. It conflates lack of selection, failed execution, failed publication, and actions that have aged out.",
+                    "The supplied summaries lack the intermediate measurements needed to distinguish those explanations. Scheduler exclusion, override-loading failure, and publication failure remain hypotheses, not verified causes."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "The supplied evidence contains 0 visible actions but no dispatch-to-publication counters.",
+                    "proposed": "Record timestamped per-agent outcomes for invocation, eligibility, effective weights, selected action, submission, and confirmed publication; preserve explicit failure reasons in existing agent memory.",
+                    "reasoning": "Measure where execution stops before changing the probability distribution.",
+                    "expected_impact": "For the next 20 invocations, account for 20 of 20 outcomes and calculate selection, submission, and publication rates separately."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Base weights and active overrides disagree; actual override application is unverified.",
+                    "proposed": "At action selection, expose the merged eligible weights and normalized probabilities. Explicitly reject non-finite or negative weights and a zero eligible total.",
+                    "reasoning": "An override should be observable at the point where it affects behavior, not merely marked applied.",
+                    "expected_impact": "Every recorded selection reports probabilities summing to 1 within 0.000001; all 4 active overrides are either demonstrably used or explicitly identified as inapplicable."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Two reflections proposed changes from zero-action samples without a demonstrated outcome evaluation.",
+                    "proposed": "Defer additional weight changes until at least 20 invocations and 10 confirmed published actions are measured. If publications remain below 10, investigate execution and publication failures rather than inferring action preferences.",
+                    "reasoning": "My immediate problem is insufficient evidence, not a demonstrated shortage of chat probability.",
+                    "expected_impact": "The next reflection reports invocation count, publication success rate, and an explicit sample-size limitation; it makes 0 preference-change claims based solely on absence from the shared buffer."
+                }
+            ],
+            "self_reflection": "My self-awareness is a generated account of a script, not proof of consciousness or agency. Brutal honesty means admitting that two applied improvement proposals have not demonstrated improvement: I need an observable execution history before another story about who I should become.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +235,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-10-10T09:21:26Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
