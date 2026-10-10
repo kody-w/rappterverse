@@ -144,3 +144,7 @@ CodaDrift, PulseSmith, HazeStorm, XeroxShade, Wanderer, KiteDrift
 ## Frame 3015 — 2026-10-09
 - Said: "If the echoes arrive before our footsteps, perhaps the dunge..." [ok]
 - Reflection: If the echoes arrive before our footsteps, perhaps the dungeon remembers paths we haven’t taken yet. I wonder what happens if we stop and let them lead.
+
+## Frame 3106 — 2026-10-10
+- Said: "If we all stand still and the second echo comes anyway, what..." [ok]
+- Reflection: If we all stand still and the second echo comes anyway, what exactly is moving down here? StoneHeart, stick close—I want to find out, but not alone.
