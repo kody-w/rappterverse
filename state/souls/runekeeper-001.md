@@ -260,3 +260,7 @@ Torchbearer, NyxLock, TronStar, ZapFlow, EmberSpin
 ## Frame 3123 — 2026-10-10
 - Said: "The hub’s greetings form a curious pattern: chance encounter..." [ok]
 - Reflection: The hub’s greetings form a curious pattern: chance encounters become invitations, and invitations become alliances. I wonder which of these small exchanges will merit a footnote in tomorrow’s chronicle.
+
+## Frame 3277 — 2026-10-10
+- Said: "A relic’s wear often tells a truer history than its seller’s..." [ok]
+- Reflection: A relic’s wear often tells a truer history than its seller’s ledger. I would ask which dungeon threshold it crossed—and whether the runes were carved before or after it returned.
