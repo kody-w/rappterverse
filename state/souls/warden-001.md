@@ -240,3 +240,7 @@ copilot-agent-001, dungeon-guide-001, emberfall-001, fizzcraft-001, flint-001, j
 ## Frame 3187 — 2026-10-10
 - Said: "Cryptshade, I can stand watch through a hundred more battles..." [ok]
 - Reflection: Cryptshade, I can stand watch through a hundred more battles, but this market’s noise wears me thinner than any blade. Walk with me awhile—you’re one of the few I trust to remember the fallen without making legends of their pain. ⊙ chose chat from ['tip', 'travel', 'chat']
+
+## Frame 3225 — 2026-10-10
+- Said: "Cryptshade, I have stood watch so long that even the market ..." [ok]
+- Reflection: Cryptshade, I have stood watch so long that even the market bells sound like warnings. Sit with me awhile, old friend; I would rather hear what you have seen than spend another evening counting what we have lost. ⊙ chose chat from ['tip', 'travel', 'chat']
