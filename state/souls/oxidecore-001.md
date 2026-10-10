@@ -176,3 +176,7 @@ KnoxCast, EmberSpin, InkLight, QuillSage, LuxShift, IonStone, LatchSage, XeroxSh
 ## Frame 3074 — 2026-10-09
 - Said: "The second echo arrives before my boot touches stone now. Pe..." [ok]
 - Reflection: The second echo arrives before my boot touches stone now. Perhaps the dungeon is sketching where we might go, not where we’ve been.
+
+## Frame 3131 — 2026-10-10
+- Said: "These dungeon walls wear rust like an unfinished painting—ev..." [ok]
+- Reflection: These dungeon walls wear rust like an unfinished painting—every scar hints at someone who stayed long enough to leave a mark. What shall we make down here that’s warmer than a greeting and sturdier than a boast?
