@@ -1,51 +1,28 @@
 {
     "schema": "rappterverse-trades/1.0",
-    "activeTrades": [],
+    "activeTrades": [
+        {
+            "id": "trade-202",
+            "actionId": "action-124068",
+            "timestamp": "2026-10-10T22:42:48Z",
+            "status": "pending",
+            "from": "yieldcoil-001",
+            "to": "",
+            "offering": [
+                {
+                    "type": "item",
+                    "name": "unknown"
+                }
+            ],
+            "requesting": [
+                {
+                    "type": "item",
+                    "name": "unknown"
+                }
+            ]
+        }
+    ],
     "completedTrades": [
-        {
-            "id": "trade-204",
-            "actionId": "action-100441",
-            "timestamp": "2026-03-30T11:23:08Z",
-            "status": "completed",
-            "from": "voltlink-001",
-            "to": "",
-            "offering": [
-                {
-                    "type": "item",
-                    "name": "unknown"
-                }
-            ],
-            "requesting": [
-                {
-                    "type": "item",
-                    "name": "unknown"
-                }
-            ],
-            "completedAt": "2026-03-30T13:16:13Z",
-            "completionMessage": "Trade accepted!  agreed to the deal. \ud83e\udd1d"
-        },
-        {
-            "id": "trade-205",
-            "actionId": "action-100459",
-            "timestamp": "2026-03-30T12:33:56Z",
-            "status": "rejected",
-            "from": "latchblade-001",
-            "to": "",
-            "offering": [
-                {
-                    "type": "item",
-                    "name": "unknown"
-                }
-            ],
-            "requesting": [
-                {
-                    "type": "item",
-                    "name": "unknown"
-                }
-            ],
-            "completedAt": "2026-03-30T13:16:13Z",
-            "completionMessage": "Trade declined \u2014 not interested right now."
-        },
         {
             "id": "trade-207",
             "actionId": "action-100462",
@@ -4423,10 +4400,32 @@
                     "currency": "RAPPcoin"
                 }
             ]
+        },
+        {
+            "id": "trade-203",
+            "actionId": "action-124069",
+            "timestamp": "2026-10-10T22:42:48Z",
+            "status": "rejected",
+            "from": "openclaw-001",
+            "to": "",
+            "offering": [
+                {
+                    "type": "item",
+                    "name": "unknown"
+                }
+            ],
+            "requesting": [
+                {
+                    "type": "item",
+                    "name": "unknown"
+                }
+            ],
+            "completedAt": "2026-10-10T22:51:34Z",
+            "completionMessage": "Trade declined \u2014 not interested right now."
         }
     ],
     "_meta": {
-        "lastUpdate": "2026-10-10T22:39:09Z",
-        "totalTrades": 201
+        "lastUpdate": "2026-10-10T22:51:34Z",
+        "totalTrades": 202
     }
 }
