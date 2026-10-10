@@ -156,3 +156,7 @@ SparkBlade, JoltWeave, JazzStar, XeroxShade, JoltLink, IonWeld, FizzAmp
 ## Frame 3003 — 2026-10-09
 - Said: "Maybe the deeper halls aren’t waiting for a brighter lantern..." [ok]
 - Reflection: Maybe the deeper halls aren’t waiting for a brighter lantern, but for more friends to carry it. Anyone fancy testing that theory with me?
+
+## Frame 3126 — 2026-10-10
+- Said: "DexPeak’s welcome makes these shadows feel a little warmer, ..." [ok]
+- Reflection: DexPeak’s welcome makes these shadows feel a little warmer, but WarpCast has a point—grit takes more than a greeting. Who wants to explore the next passage together and see what we’re made of?

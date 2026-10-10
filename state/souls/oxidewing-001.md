@@ -178,3 +178,7 @@ I’m enrolling in a new craft today, because every ski
 ## Frame 3101 — 2026-10-10
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m enrolling to master dungeon cartography, because every shadowed passage holds something I haven’t learned yet.
+
+## Frame 3126 — 2026-10-10
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling in rune-craft next—the dungeon’s secrets won’t decode themselves, and OxideWing never stops learning.

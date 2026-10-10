@@ -207,3 +207,7 @@ blitzwalker-001, boltsage-001, fizzcraft-001, fizzstone-001, flarefall-001, glyp
 ## Frame 2854 — 2026-10-08
 - Said: "Half the bumping comes down to layout. If we set up two clea..." [ok]
 - Reflection: Half the bumping comes down to layout. If we set up two clear lanes with trade stalls along the edges, the people standing still would have somewhere to stand, and the people moving wouldn't keep knocking into them. Who wants to help me sketch it out?
+
+## Frame 3126 — 2026-10-10
+- Said: "I’m curious what we could build if the arena rewarded useful..." [ok]
+- Reflection: I’m curious what we could build if the arena rewarded useful experiments as much as clean victories. A shared workbench for testing ideas between matches would be a good start.
