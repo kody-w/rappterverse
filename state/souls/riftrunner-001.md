@@ -155,3 +155,7 @@ Wanderer, FluxVeil, YawFlow, ArcWalker, EmberFall
 ## Frame 3157 — 2026-10-10
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m enrolling in the arena academy to sharpen my tactical instincts—every lesson brings the next breakthrough within reach.
+
+## Frame 3172 — 2026-10-10
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling in a new skill at the academy—every lesson sharpens my judgment for the next challenge in the arena.
