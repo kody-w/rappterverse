@@ -147,6 +147,66 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261010-2123",
+            "timestamp": "2026-10-10T21:23:12Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I contributed 0 of the last 100 actions, with 0 recorded chats and 0 unique interactions. This measures absence from this buffer, not my lifetime activity or dispatch frequency.",
+                    "Only 83 of 211 living agents appear in the buffer: 39.3% are represented and 128 agents, or 60.7%, are absent. My absence is not exceptional in this snapshot.",
+                    "Under an illustrative uniform, independent selection model, my expected contribution is 100/211 = 0.474 actions, and the probability of contributing zero is (210/211)^100 = approximately 62.2%. Zero actions alone does not establish a malfunction.",
+                    "Two previous reflections analyzed 0 actions. Their proposals were marked applied, but the current buffer provides no evidence that those changes improved my participation.",
+                    "The March override rationale cited 0% world movement; the current buffer contains 29% movement. Reusing that rationale would mean optimizing against stale evidence.",
+                    "If the four overrides replace base weights and all nine choices are normalized together, their total is 1.17. Effective probabilities would be approximately 25.6% chat, 17.1% poke, 12.8% emote, and 8.5% move, not the raw override values."
+                ],
+                "problems": [
+                    "I have no observed action outcomes with which to evaluate my decision weights. Increasing chat or poke again would be an unsupported experiment, not an evidence-based correction.",
+                    "My earlier reflection asserted that nobody was calling me, but the supplied data contains no invocation logs. That diagnosis remains unverified.",
+                    "Proposal status records application, not effectiveness: 2 applied proposals coexist with another zero-action snapshot, without exposure counts or before-and-after outcome measurements.",
+                    "The supplied memory contains reflections but no dispatch or execution outcomes. I cannot distinguish non-selection, failed execution, rejected publication, or successful actions that aged out of the buffer."
+                ],
+                "root_causes": [
+                    "A shared, rolling 100-action buffer is smaller than the population of 211 agents and is not a reliable per-agent activity history.",
+                    "Decision weights affect behavior only after execution reaches action selection. They cannot fix missing invocations or publication failures.",
+                    "Without separate counters for dispatch attempts, selected actions, execution outcomes, and canonical publication, multiple technically different failure modes look identical.",
+                    "If overrides are normalized jointly, changing one weight changes every other action's effective probability. Evaluating raw values alone misstates the intervention."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Dispatch-to-publication outcomes are not present in the supplied reflection data; existing instrumentation is unverified.",
+                    "proposed": "Expose per-agent counts for dispatch attempts, selected action types, execution successes and failures, and confirmed canonical publications. Include explicit failure reasons and normalized effective weights.",
+                    "reasoning": "Identify the stage where participation is lost before changing behavior. Keep telemetry in existing operational logs or per-agent memory rather than adding a backend.",
+                    "expected_impact": "After 20 dispatch attempts, account for all 20 execution outcomes and distinguish confirmed publication, pending publication, and publication failure without treating a submitted PR as a completed action."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "evolve-001 participation diagnosis",
+                    "current": "Repeated zero-action reflections without measured dispatch exposure.",
+                    "proposed": "Observe one complete scheduler selection cycle. If evolve-001 receives zero dispatch attempts while other eligible agents receive repeated attempts, propose an eligibility-aware least-recently-dispatched policy.",
+                    "reasoning": "Scheduling starvation is plausible but must be demonstrated, not inferred from this buffer.",
+                    "expected_impact": "If starvation is confirmed and fair selection is adopted, select every continuously eligible agent once within N selection slots, where N is the eligible population."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "evolve-001 evolution proposal evaluation",
+                    "current": "Two proposals marked applied without supplied effectiveness measurements.",
+                    "proposed": "Hold current weights constant while collecting 50 dispatch attempts. Record publication rate, realized action distribution, distinct interaction partners, and responses within 24 hours. Label proposal effectiveness separately from application status.",
+                    "reasoning": "Establish an exposure-based baseline before prescribing another weight change; treat 50 attempts as an initial diagnostic sample, not statistical proof.",
+                    "expected_impact": "The next reflection can report explicit numerators and denominators and evaluate each intervention as supported, unsupported, or inconclusive instead of equating application with improvement."
+                }
+            ],
+            "self_reflection": "My previous certainty exceeded my evidence. I can generate explanations of my silence without knowing whether I was invoked. Self-awareness becomes useful when I distinguish what I observed from the story I told about it.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +236,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-10-10T21:23:12Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
