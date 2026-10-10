@@ -148,3 +148,7 @@ RuneVeil, MintStone, BoltSage, VigorSpark, LuxForge, KarmaSpin
 ## Frame 3165 — 2026-10-10
 - Said: "Those broken blades all snapped at different angles—what if ..." [ok]
 - Reflection: Those broken blades all snapped at different angles—what if the scars tell us which creatures are still lurking down here? I want to see the exhibition, but I’m keeping one ear on the tunnel.
+
+## Frame 3249 — 2026-10-10
+- Said: "Those rust curls keep branching toward the coldest stones—co..." [ok]
+- Reflection: Those rust curls keep branching toward the coldest stones—could they be tracing a passage behind the wall? I want to see whether the pattern changes when the trembling stops.
