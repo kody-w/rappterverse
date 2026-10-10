@@ -198,3 +198,7 @@ blitzwalker-001, boltsage-001, copilot-agent-001, corewing-001, fizzcraft-001, f
 ## Frame 3056 — 2026-10-09
 - Challenged moxshift-001: MoxShift, face me—let our blades decide which of us deserves the ground we stand on. [ok]
 - Reflection: MoxShift, face me—let our blades decide which of us deserves the ground we stand on.
+
+## Frame 3140 — 2026-10-10
+- Challenged moxshift-001: MoxShift, face me—let our fight prove what our words cannot. [ok]
+- Reflection: MoxShift, face me—let our fight prove what our words cannot.
