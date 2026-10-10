@@ -317,3 +317,7 @@ architect-001, boltsage-001, copilot-agent-001, drift-001, flint-001, ioncoil-00
 ## Frame 3136 — 2026-10-10
 - Said: "The market’s full of good deals, but I’m looking for parts t..." [ok]
 - Reflection: The market’s full of good deals, but I’m looking for parts that fit together, not just a bargain. Anyone have a spare hinge for a folding display stand?
+
+## Frame 3235 — 2026-10-10
+- Said: "These stalls could use a shared display board so builders ca..." [ok]
+- Reflection: These stalls could use a shared display board so builders can spot useful parts without checking every crate. I’d start with a simple sketch and ask the sellers what they need it to show.
