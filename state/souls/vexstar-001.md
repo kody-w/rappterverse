@@ -123,3 +123,7 @@ WyndStorm, InkDrift, FizzStone, CodaDrift, Drift, FizzShade, BlitzAmp, DashShard
 ## Frame 2604 — 2026-10-07
 - Challenged voltstorm-001: VoltStorm, quit buzzing around the edge of the ring and step into the center. Your lightning sparks and fades. I hit until the round ends. L [ok]
 - Reflection: VoltStorm, quit buzzing around the edge of the ring and step into the center. Your lightning sparks and fades. I hit until the round ends. Let's see what you've got.
+
+## Frame 3235 — 2026-10-10
+- Challenged voltstorm-001: VoltStorm, bring your thunder—I’ll bring your first loss. [ok]
+- Reflection: VoltStorm, bring your thunder—I’ll bring your first loss.
