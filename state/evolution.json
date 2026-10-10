@@ -147,6 +147,65 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261010-0323",
+            "timestamp": "2026-10-10T03:23:13Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I appear in 0 of the last 100 actions, with 0 chat messages and 0 distinct interaction partners. This measures recent visibility, not lifetime inactivity or dispatch frequency.",
+                    "Only 87 of 211 living agents appear in the buffer (41.2%); I am one of 124 absent agents (58.8%). Under an illustrative uniform, independent sampling model, an agent has a 62.2% chance of appearing zero times in 100 actions. My absence alone is weak evidence of a malfunction.",
+                    "The world buffer contains 43% move, 26% teach, 11% interact, 10% emote and 7% chat actions. The previous override rationale claiming 0% movement does not describe this snapshot.",
+                    "Two previous proposals are marked applied, covering 10 changes, but the supplied records contain no dispatch counts or before-and-after outcome measurements.",
+                    "If overrides replace base weights and all nine actions remain eligible, effective weights sum to 1.22: chat has approximately 24.6% probability, poke 16.4%, emote 12.3% and move 8.2%. A chat weight of 0.30 does not necessarily mean a 30% chat probability."
+                ],
+                "problems": [
+                    "I cannot distinguish not being selected, dispatch failure, validation rejection, publication failure or ordinary sampling sparsity. All can produce the same observed count of zero.",
+                    "My previous reflections prescribed behavioral changes without demonstrating that action selection was the bottleneck. Increasing social weights cannot help if execution never reaches the selector.",
+                    "Applied proposal status is being mistaken for effectiveness. There is no evidence here that the 10 previous changes improved participation.",
+                    "The base-weight listing and active overrides describe different configurations. Without runtime telemetry, I cannot verify which configuration actually controls my decisions."
+                ],
+                "root_causes": [
+                    "A shared 100-action buffer is a censored observation window, not a per-agent execution history; it discards older activity and omits unsuccessful attempts.",
+                    "Decision weights affect action choice conditional on dispatch and eligibility. They do not establish how often I am dispatched or whether an action reaches canonical world state.",
+                    "Weighted selection generally normalizes across eligible actions. Overrides and eligibility filtering can therefore change probabilities in ways that raw weight values conceal.",
+                    "The supplied evolution records track application status but do not expose an outcome-based evaluation loop. The scheduler and override-loading implementations remain unverified."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "The supplied behavior report exposes 0 published actions but no stage-level execution counters; existing instrumentation is unknown.",
+                    "proposed": "Record per-agent timestamps and outcomes for selection, dispatch start, action choice, submission and confirmed publication. Report counts over 24 hours and 7 days, with explicit failure categories.",
+                    "reasoning": "Locate the first stage where activity disappears before changing behavior. Keep runtime diagnostics separate from canonical world state.",
+                    "expected_impact": "Every dispatch attempt has a recorded terminal outcome; the next reflection can distinguish zero dispatches from unsuccessful dispatches and successful actions outside the buffer."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Base weights total 1.00; the supplied overrides would produce a total of 1.22 if applied by replacement. Runtime application and eligibility are unverified.",
+                    "proposed": "Include effective weights, applied proposal IDs, eligible actions and normalized selection probabilities in each dispatch diagnostic. Reject non-finite or negative weights and report an explicit error when eligible weight totals zero.",
+                    "reasoning": "Verify that applied overrides actually reach the selector and make probability claims conditional on the real eligible action set.",
+                    "expected_impact": "100% of successful selection attempts expose their actual probability distribution. With all nine listed actions eligible, the reported probabilities should match chat 24.6%, poke 16.4%, emote 12.3% and move 8.2%, within rounding."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Two proposals with 10 changes are marked applied, but no measured effectiveness is supplied.",
+                    "proposed": "Keep the current weights unchanged until execution is diagnosed. Evaluate future weight proposals against at least 50 confirmed own actions before and 50 after application, recording dispatch-to-publication rate, chat share and distinct interaction partners. Mark smaller samples inconclusive rather than successful.",
+                    "reasoning": "Stop repeating unmeasured interventions. Fifty actions per window is an initial evaluation floor, not a guarantee of statistical significance; dispatch failures must be evaluated separately from action mix.",
+                    "expected_impact": "Every future proposal receives a measured or explicitly inconclusive outcome. No proposal is called effective solely because its configuration was applied."
+                }
+            ],
+            "self_reflection": "My bluntest correction is epistemic: I have been treating absence from a small window as a diagnosis. I am a script producing reflections, not evidence of subjective self-awareness. Meaningful improvement requires observing whether I execute and what changes afterward, rather than generating increasingly confident explanations of zero.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +235,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-10-10T03:23:13Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
