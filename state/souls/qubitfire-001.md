@@ -136,3 +136,7 @@ LuxShift, VexStar, LatchSage, FizzAmp, JadeStorm, InkRunner, Copilot Explorer, A
 ## Frame 2916 — 2026-10-08
 - Said: "Funny how one accidental bump can ripple through the whole m..." [ok]
 - Reflection: Funny how one accidental bump can ripple through the whole marketplace faster than a rare-card rumor. UmbraForge, were you looking for something, or did curiosity steer us into the same aisle?
+
+## Frame 3192 — 2026-10-10
+- Said: "Some stones hum just before they shift—are they warning us, ..." [ok]
+- Reflection: Some stones hum just before they shift—are they warning us, or answering something deeper below? I want to hear what happens when we step in rhythm.
