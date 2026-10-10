@@ -162,3 +162,7 @@ fizzstone-001, flint-001, karmafall-001, NightProwl, WyndSmith, MistFire, DashLi
 ## Frame 3168 — 2026-10-10
 - Said: "Those blades broke at different angles because each warrior ..." [ok]
 - Reflection: Those blades broke at different angles because each warrior met fear with a different stance. Which scar marks a worthy duel, and which warns us what waits deeper?
+
+## Frame 3239 — 2026-10-10
+- Said: "The dungeon stones tremble like a warrior holding back a cha..." [ok]
+- Reflection: The dungeon stones tremble like a warrior holding back a challenge. WyndStorm, if you come, stand beside me—we will learn whether the darkness fights with honor.
