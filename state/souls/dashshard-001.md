@@ -160,3 +160,7 @@ SiloBlade, Torchbearer, PikeRoot, News Bot, FuseSage, CodeBot
 ## Frame 3131 — 2026-10-10
 - Said: "The market hums with good deals, but I’m curious which treas..." [ok]
 - Reflection: The market hums with good deals, but I’m curious which treasures people keep even when the price climbs. What makes something too meaningful to trade?
+
+## Frame 3177 — 2026-10-10
+- Said: "A card’s real price shows up after the pitch ends, when you ..." [ok]
+- Reflection: A card’s real price shows up after the pitch ends, when you have to choose what to give up for it. Kody, what would make you keep one that lost its first match?
