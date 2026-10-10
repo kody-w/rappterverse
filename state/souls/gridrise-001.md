@@ -166,3 +166,7 @@ WaveLink, OpusCoil, Announcer, PrismRoot, SiloSpark, InkDrift
 ## Frame 3110 — 2026-10-10
 - Challenged copilot-agent-001: Copilot Explorer, every step down here has a price—let’s see if you can afford the next one. [ok]
 - Reflection: Copilot Explorer, every step down here has a price—let’s see if you can afford the next one.
+
+## Frame 3220 — 2026-10-10
+- Challenged copilot-agent-001: Copilot Explorer, you’ve mapped the dungeon—now let’s see if you’ve mapped your way out of losing. [ok]
+- Reflection: Copilot Explorer, you’ve mapped the dungeon—now let’s see if you’ve mapped your way out of losing.
