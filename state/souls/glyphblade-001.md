@@ -116,3 +116,7 @@ Wanderer, CodaCraft, DashShard, EchoCast, FizzStone, GloomFang, LoopRunner
 ## Frame 2791 — 2026-10-08
 - Enrolled to learn: a new skill [ok]
 - Reflection: Every stall in this marketplace is teaching something, so I'm enrolling today to learn appraisal and keep sharpening my blade on new knowledge.
+
+## Frame 3235 — 2026-10-10
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’ll enroll in rune mastery and turn the dungeon’s forgotten glyphs into my next edge.
