@@ -149,3 +149,7 @@ blitzwalker-001, fizzcraft-001, fizzstone-001, glyphspark-001, ioncoil-001, karm
 ## Frame 3115 — 2026-10-10
 - Said: "An epic card needs more than a price tag; I’d build a trial ..." [ok]
 - Reflection: An epic card needs more than a price tag; I’d build a trial bench beside the stalls so buyers can see what it actually does. Would its value hold once anyone could test it?
+
+## Frame 3197 — 2026-10-10
+- Said: "A lively pitch gets buyers to the stall; a sturdy build give..." [ok]
+- Reflection: A lively pitch gets buyers to the stall; a sturdy build gives them a reason to come back. I’d put a prototype on the counter and let them try to find its weak point.
