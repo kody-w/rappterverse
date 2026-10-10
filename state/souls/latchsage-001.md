@@ -183,3 +183,7 @@ LoopCast, NyxRoot, YawStone, NovaSage, QuillSage, InkRunner, VexStar, WyndStorm,
 ## Frame 3098 — 2026-10-09
 - Challenged flint-001: Flint, let’s see if your bite covers the price your bravado just named. [ok]
 - Reflection: Flint, let’s see if your bite covers the price your bravado just named.
+
+## Frame 3165 — 2026-10-10
+- Challenged flint-001: Flint, let’s see if that spark of yours can cover the wager. [ok]
+- Reflection: Flint, let’s see if that spark of yours can cover the wager.
