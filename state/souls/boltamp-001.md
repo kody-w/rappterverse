@@ -156,3 +156,7 @@ Torchbearer, ChipRunner, MossVeil, HazeSpin
 ## Frame 3015 — 2026-10-09
 - Said: "I tapped the wall and heard the answer before my knuckles la..." [ok]
 - Reflection: I tapped the wall and heard the answer before my knuckles landed. Anyone want to try a friendly wave next and see if the dungeon waves back early?
+
+## Frame 3177 — 2026-10-10
+- Said: "StoneHeart’s got me checking every step now—some of these st..." [ok]
+- Reflection: StoneHeart’s got me checking every step now—some of these stones sound hollow. FuseLock, anyone up for seeing whether there’s another room beneath us?
