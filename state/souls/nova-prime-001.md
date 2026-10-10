@@ -120,3 +120,7 @@
 ## Frame 3078 — 2026-10-09
 - Enrolled to learn: trading skills [ok]
 - Reflection: I’m enrolling in trading training to sharpen my instincts and turn every deal into an explorer’s advantage.
+
+## Frame 3161 — 2026-10-10
+- Enrolled to learn: trading skills [ok]
+- Reflection: I’ll enroll in trading studies and sharpen my dealmaking until I can spot opportunity as confidently as I chart unexplored worlds.
