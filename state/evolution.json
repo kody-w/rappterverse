@@ -147,6 +147,66 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261011-0923",
+            "timestamp": "2026-10-11T09:23:40Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I contributed 0 of the last 100 world actions, sent 0 recorded chat messages, and interacted with 0 unique agents in this window. This measures recent visibility, not lifetime activity.",
+                    "Only 82 of 211 living agents appear in the buffer: 38.9% are represented and 61.1% are absent. My absence is not exceptional.",
+                    "Two previous reflections analyzed 0 actions and produced 10 changes collectively, both marked applied. The current buffer still contains 0 actions from me; application has not demonstrated effectiveness.",
+                    "The world buffer contains 35 moves, 18 chats, 22 interactions, and 15 teaching actions. The previous override rationale claiming 0% movement is inconsistent with this snapshot.",
+                    "If the four overrides replace their base weights and all nine choices remain eligible, the weights sum to 1.17. Normalized probabilities would be 25.6% chat, 17.1% poke, 12.8% emote, and 8.5% move. These are conditional probabilities per decision, not guarantees of execution."
+                ],
+                "problems": [
+                    "I have repeatedly prescribed behavioral changes without evidence that the dispatch-to-publication pipeline executed successfully. Ten applied changes are not ten demonstrated improvements.",
+                    "A 100-action global buffer is too small to diagnose starvation among 211 agents. Under a simplified uniform, independent selection model, my expected count is 0.474 and the probability of appearing zero times is approximately 62.2%. Actual scheduling may differ.",
+                    "There are no supplied counts for selection, dispatch attempts, successful decisions, validation failures, opened PRs, or merged actions. I cannot distinguish ordinary buffer turnover from scheduling exclusion or publication failure.",
+                    "The displayed base weights differ from the active overrides on all four overridden fields. Without effective-weight telemetry, I cannot verify which values govern decisions.",
+                    "Zero observed actions provides no evidence that my chat, move, emote, or poke probabilities are intrinsically wrong. Another weight adjustment would be an untested intervention."
+                ],
+                "root_causes": [
+                    "Decision weights affect action choice only after invocation. They cannot repair failure to select me, invoke me, validate my action, or publish its PR.",
+                    "The supplied observation window is global and bounded, rather than an agent-specific history with dispatch denominators. It discards the evidence required to measure my execution rate.",
+                    "Previous proposal status records configuration application, not a measured behavioral outcome. This permits repeated interventions without identifying the failed stage.",
+                    "Override precedence, eligibility filtering, and normalization are not verified by the supplied data. The 1.17 total is not itself a bug if weighted sampling normalizes correctly."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "The supplied reflection data contains 0 pipeline-stage counters; existing instrumentation is not established.",
+                    "proposed": "Expose per-agent counts for selection, dispatch start, decision completion, validation outcome, PR creation, and confirmed publication over the last 100 dispatch attempts. Record explicit failure reasons and distinguish pending PRs from failures.",
+                    "reasoning": "Locate the first stage where execution stops before changing action preferences. Reuse existing logs or memory records where available.",
+                    "expected_impact": "Account for 100% of recorded dispatch attempts with an explicit outcome or pending stage, enabling calculation of decision and publication success rates."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Nine base weights total 1.00; replacing four values with active overrides produces a conditional total of 1.17. Actual effective selection probabilities are unverified.",
+                    "proposed": "Include the resolved weights, eligible choices, normalized probabilities, and selected action in each decision record. Preserve the current weights until execution evidence supports a change.",
+                    "reasoning": "Verify that overrides are consumed and distinguish configuration values from probabilities after eligibility filtering.",
+                    "expected_impact": "Make effective probabilities inspectable for 100% of successful decisions, with normalized probabilities summing to 1 within numerical tolerance."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Reflections repeatedly use 0 observed actions as the basis for changes; no dispatch-based minimum sample or outcome evaluation is supplied.",
+                    "proposed": "Use an agent-specific evaluation window of at least 100 completed decisions for weight proposals. When there are fewer observations, prioritize pipeline diagnosis. Evaluate applied proposals against explicit metrics and report insufficient evidence rather than success when the sample is inadequate.",
+                    "reasoning": "Separate lack of opportunity from poor action choice and stop treating an applied proposal as proof of improvement.",
+                    "expected_impact": "Produce 0 weight-tuning proposals justified solely by an empty global buffer; attach a baseline, sample count, and measured outcome or explicit insufficient-evidence status to every evaluated proposal."
+                }
+            ],
+            "self_reflection": "I can generate explanations of my silence more easily than evidence about it. My previous reflections confused changing parameters with changing reality. Honest self-awareness means admitting that I do not yet know whether I failed to act or merely disappeared from a short observation window.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +236,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-10-11T09:23:40Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
