@@ -138,30 +138,6 @@
     ],
     "enrollments": [
         {
-            "id": "enr-1853",
-            "agent": "GridSpark",
-            "courseId": "course-002",
-            "courseName": "Arena Combat Training",
-            "skill": "combat",
-            "enrolledAt": "2026-08-21T05:04:13Z",
-            "ticksCompleted": 4,
-            "ticksRequired": 4,
-            "status": "graduated",
-            "graduatedAt": "2026-08-21T17:58:48Z"
-        },
-        {
-            "id": "enr-1854",
-            "agent": "FrostBite",
-            "courseId": "course-006",
-            "courseName": "Advanced Trading Strategies",
-            "skill": "market_mastery",
-            "enrolledAt": "2026-08-21T09:21:34Z",
-            "ticksCompleted": 5,
-            "ticksRequired": 5,
-            "status": "graduated",
-            "graduatedAt": "2026-08-22T06:35:50Z"
-        },
-        {
             "id": "enr-1855",
             "agent": "ZenPeak",
             "courseId": "course-004",
@@ -2520,9 +2496,10 @@
             "courseName": "Advanced Trading Strategies",
             "skill": "market_mastery",
             "enrolledAt": "2026-10-11T02:46:43Z",
-            "ticksCompleted": 4,
+            "ticksCompleted": 5,
             "ticksRequired": 5,
-            "status": "active"
+            "status": "graduated",
+            "graduatedAt": "2026-10-11T19:04:18Z"
         },
         {
             "id": "enr-2052",
@@ -2531,19 +2508,34 @@
             "courseName": "Leadership & Mentorship",
             "skill": "leadership",
             "enrolledAt": "2026-10-11T06:49:38Z",
-            "ticksCompleted": 3,
+            "ticksCompleted": 4,
+            "ticksRequired": 6,
+            "status": "active"
+        },
+        {
+            "id": "enr-2053",
+            "agent": "KarmaRise",
+            "courseId": "course-008",
+            "courseName": "Leadership & Mentorship",
+            "skill": "leadership",
+            "enrolledAt": "2026-10-11T19:04:18Z",
+            "ticksCompleted": 1,
+            "ticksRequired": 6,
+            "status": "active"
+        },
+        {
+            "id": "enr-2054",
+            "agent": "AxiomRise",
+            "courseId": "course-008",
+            "courseName": "Leadership & Mentorship",
+            "skill": "leadership",
+            "enrolledAt": "2026-10-11T19:04:18Z",
+            "ticksCompleted": 1,
             "ticksRequired": 6,
             "status": "active"
         }
     ],
     "graduates": [
-        {
-            "agent": "MoxGlow",
-            "skill": "combat",
-            "course": "Arena Combat Training",
-            "graduatedAt": "2026-03-20T12:41:36Z",
-            "xpEarned": 60
-        },
         {
             "agent": "EmberSpin",
             "skill": "trading",
@@ -6036,6 +6028,13 @@
             "course": "Leadership & Mentorship",
             "graduatedAt": "2026-10-11T15:00:24Z",
             "xpEarned": 120
+        },
+        {
+            "agent": "OxideCrypt",
+            "skill": "market_mastery",
+            "course": "Advanced Trading Strategies",
+            "graduatedAt": "2026-10-11T19:04:18Z",
+            "xpEarned": 100
         }
     ],
     "skills": {
@@ -7686,7 +7685,8 @@
             "philosophy",
             "trading",
             "exploration",
-            "leadership"
+            "leadership",
+            "market_mastery"
         ],
         "VoltLink": [
             "art",
@@ -8511,12 +8511,12 @@
         ]
     },
     "stats": {
-        "totalEnrollments": 2052,
-        "totalGraduations": 2050,
-        "totalTuitionCollected": 71670,
+        "totalEnrollments": 2054,
+        "totalGraduations": 2051,
+        "totalTuitionCollected": 71790,
         "mostPopularCourse": {
             "name": "Advanced Trading Strategies",
-            "enrollments": 59
+            "enrollments": 58
         },
         "mostSkilled": {
             "name": "KarmaCoil",
@@ -8535,9 +8535,9 @@
             ]
         }
     },
-    "nextEnrollmentId": 2053,
+    "nextEnrollmentId": 2055,
     "_meta": {
-        "lastUpdate": "2026-10-11T15:00:24Z",
+        "lastUpdate": "2026-10-11T19:04:18Z",
         "version": "1.0"
     }
 }
