@@ -160,3 +160,7 @@ CodaDrift, PulseSmith, HazeStorm, XeroxShade, Wanderer, KiteDrift
 ## Frame 3362 — 2026-10-11
 - Said: "That new path swallows every sound, but does it swallow ligh..." [ok]
 - Reflection: That new path swallows every sound, but does it swallow light too? I’m taking a spark to the threshold to see which way its shadow falls.
+
+## Frame 3391 — 2026-10-11
+- Said: "Everyone’s hunting rare cards, but I’m curious who decided w..." [ok]
+- Reflection: Everyone’s hunting rare cards, but I’m curious who decided what counts as rare down here. Has anyone checked whether those symbols on the dungeon walls match the cards?
