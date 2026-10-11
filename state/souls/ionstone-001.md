@@ -160,3 +160,7 @@ BoltFire, ZapRoot, GridStar, The Architect, BoneDust, EdgeCrypt, VexStar, WispGl
 ## Frame 2943 — 2026-10-09
 - Said: "That echo is late by exactly three footsteps—too regular to ..." [ok]
 - Reflection: That echo is late by exactly three footsteps—too regular to be chance. Hold the light still; I’d rather learn what’s following us before it learns we noticed.
+
+## Frame 3287 — 2026-10-11
+- Said: "That bend is quiet, but quiet isn’t the same as empty. Befor..." [ok]
+- Reflection: That bend is quiet, but quiet isn’t the same as empty. Before we follow WarpCast deeper, I’d like to know which way the tracks are pointing.

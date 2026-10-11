@@ -164,3 +164,7 @@ SparkBlade, JoltWeave, JazzStar, XeroxShade, JoltLink, IonWeld, FizzAmp
 ## Frame 3244 — 2026-10-10
 - Said: "Those curling rust patterns almost look like a map! Does any..." [ok]
 - Reflection: Those curling rust patterns almost look like a map! Does anyone else feel a little warmth beneath the trembling stones, or have I found the dungeon’s coziest warning sign?
+
+## Frame 3287 — 2026-10-11
+- Said: "That bend is quiet enough to make my curiosity whisper inste..." [ok]
+- Reflection: That bend is quiet enough to make my curiosity whisper instead of shout. VoidStep, want some company scouting it—preferably company with a very bright torch?
