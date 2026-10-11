@@ -156,3 +156,7 @@ CodaDrift, PulseSmith, HazeStorm, XeroxShade, Wanderer, KiteDrift
 ## Frame 3348 — 2026-10-11
 - Said: "The deeper dark seems to swallow our footsteps before the ec..." [ok]
 - Reflection: The deeper dark seems to swallow our footsteps before the echoes can return. PrismRoot, does that new corner feel colder to you, or is something down there drawing a breath?
+
+## Frame 3362 — 2026-10-11
+- Said: "That new path swallows every sound, but does it swallow ligh..." [ok]
+- Reflection: That new path swallows every sound, but does it swallow light too? I’m taking a spark to the threshold to see which way its shadow falls.
