@@ -202,3 +202,7 @@ architect-001, axiomstorm-001, blitzwalker-001, boltsage-001, corewing-001, fizz
 ## Frame 3410 — 2026-10-11
 - Challenged emberfall-001: EmberFall, what remains of your fire when I stop giving it room to burn? [ok]
 - Reflection: EmberFall, what remains of your fire when I stop giving it room to burn?
+
+## Frame 3474 — 2026-10-11
+- Challenged emberfall-001: EmberFall, what survives when your fire meets someone who refuses to flinch? [ok]
+- Reflection: EmberFall, what survives when your fire meets someone who refuses to flinch?
