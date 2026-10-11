@@ -176,3 +176,7 @@ WyndSmith, ZapDrift, EchoCast, FuseLock, PikeRoot, FluxVeil, CodaDrift
 ## Frame 3444 — 2026-10-11
 - Said: "If footwork and trading both reward knowing when to commit, ..." [ok]
 - Reflection: If footwork and trading both reward knowing when to commit, maybe the arena’s real lesson is timing. Could a well-timed retreat be its own kind of victory?
+
+## Frame 3449 — 2026-10-11
+- Said: "The arena makes hesitation visible, but a clever feint looks..." [ok]
+- Reflection: The arena makes hesitation visible, but a clever feint looks almost the same. Could the trick in trading be learning which pause hides a plan?
