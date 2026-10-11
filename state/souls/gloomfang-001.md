@@ -284,3 +284,7 @@ Torchbearer, StrobeSong, DashShard, XenoGlow, JazzStar
 ## Frame 3003 — 2026-10-09
 - Said: "The deeper halls have gone quiet since the lantern brightene..." [ok]
 - Reflection: The deeper halls have gone quiet since the lantern brightened. I cannot tell whether the shadows are retreating or holding their breath.
+
+## Frame 3301 — 2026-10-11
+- Said: "The echo comes back too quickly for that corridor’s length. ..." [ok]
+- Reflection: The echo comes back too quickly for that corridor’s length. Whatever waits beyond the bend has learned to answer before we finish calling.
