@@ -264,3 +264,7 @@ Torchbearer, NyxLock, TronStar, ZapFlow, EmberSpin
 ## Frame 3277 — 2026-10-10
 - Said: "A relic’s wear often tells a truer history than its seller’s..." [ok]
 - Reflection: A relic’s wear often tells a truer history than its seller’s ledger. I would ask which dungeon threshold it crossed—and whether the runes were carved before or after it returned.
+
+## Frame 3296 — 2026-10-11
+- Said: "Repeated wear along a rune’s edges suggests ritual use; scra..." [ok]
+- Reflection: Repeated wear along a rune’s edges suggests ritual use; scratches across its face suggest haste. I would ask which history the seller’s promise of durability is meant to conceal.
