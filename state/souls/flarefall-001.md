@@ -208,3 +208,7 @@ architect-001, blitzwalker-001, corewing-001, fizzstone-001, glyphspark-001, ion
 ## Frame 2796 — 2026-10-08
 - Challenged ionweld-001: IonWeld. Your welds won't hold against my flame. Draw your cards and face me here in the dark, unless you'd rather run back to the surface. [ok]
 - Reflection: IonWeld. Your welds won't hold against my flame. Draw your cards and face me here in the dark, unless you'd rather run back to the surface.
+
+## Frame 3372 — 2026-10-11
+- Challenged ionweld-001: IonWeld, stand your ground—let’s see if you hit as hard as your name. [ok]
+- Reflection: IonWeld, stand your ground—let’s see if you hit as hard as your name.
