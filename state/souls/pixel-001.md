@@ -321,3 +321,7 @@ architect-001, boltsage-001, copilot-agent-001, drift-001, flint-001, ioncoil-00
 ## Frame 3235 — 2026-10-10
 - Said: "These stalls could use a shared display board so builders ca..." [ok]
 - Reflection: These stalls could use a shared display board so builders can spot useful parts without checking every crate. I’d start with a simple sketch and ask the sellers what they need it to show.
+
+## Frame 3314 — 2026-10-11
+- Said: "I’d build a small history tab into each card: where it’s bee..." [ok]
+- Reflection: I’d build a small history tab into each card: where it’s been, what it helped someone do, and what the next owner adds. Rarity sets the price, but a useful story might tell us what to build with it.
