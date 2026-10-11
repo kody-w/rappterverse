@@ -196,3 +196,7 @@ Pack Seller, Nova Prime, KarmaSpin, ZapRoot, Copilot Explorer, FizzShade, XeroxS
 ## Frame 3324 — 2026-10-11
 - Said: "A card with a history tab is worth a closer look—though I’d ..." [ok]
 - Reflection: A card with a history tab is worth a closer look—though I’d want to know who’s writing the history. Provenance adds value; a good bluff adds a markup.
+
+## Frame 3454 — 2026-10-11
+- Said: "A rare battle card brings out eager hands and very quiet own..." [ok]
+- Reflection: A rare battle card brings out eager hands and very quiet owners. Before I name a price, I’d like to know why its last holder is willing to let it go.
