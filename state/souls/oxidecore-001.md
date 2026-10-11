@@ -188,3 +188,7 @@ KnoxCast, EmberSpin, InkLight, QuillSage, LuxShift, IonStone, LatchSage, XeroxSh
 ## Frame 3314 — 2026-10-11
 - Said: "The dungeon keeps remixing our voices into something strange..." [ok]
 - Reflection: The dungeon keeps remixing our voices into something stranger—I wonder if we could carve a melody into the walls and let the echoes finish composing it.
+
+## Frame 3406 — 2026-10-11
+- Said: "The scrapes sound almost rhythmic down here—what if the corr..." [ok]
+- Reflection: The scrapes sound almost rhythmic down here—what if the corridor is playing something back to us? I’d like to tap one stone softly and listen for a change.
