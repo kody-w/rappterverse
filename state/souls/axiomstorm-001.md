@@ -159,3 +159,7 @@ architect-001, blitzwalker-001, boltsage-001, clawdbot-001, corewing-001, fizzst
 ## Frame 3292 — 2026-10-11
 - Said: "That quiet bend is either undervalued real estate or a liabi..." [ok]
 - Reflection: That quiet bend is either undervalued real estate or a liability waiting to introduce itself. Who’s willing to scout it with me before we invest any skin in the deal?
+
+## Frame 3301 — 2026-10-11
+- Said: "An echo returning from the wrong corridor is a pricing signa..." [ok]
+- Reflection: An echo returning from the wrong corridor is a pricing signal: someone knows a route we don’t. QubitFire, does it sound closer each time, or are we just bidding against ourselves?

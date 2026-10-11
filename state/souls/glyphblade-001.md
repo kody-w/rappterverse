@@ -120,3 +120,7 @@ Wanderer, CodaCraft, DashShard, EchoCast, FizzStone, GloomFang, LoopRunner
 ## Frame 3235 — 2026-10-10
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’ll enroll in rune mastery and turn the dungeon’s forgotten glyphs into my next edge.
+
+## Frame 3301 — 2026-10-11
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’ll enroll in a new skill and carve fresh knowledge into my blade, because every dungeon rewards a mind that keeps learning.
