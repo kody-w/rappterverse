@@ -156,3 +156,7 @@ RuneVeil, MintStone, BoltSage, VigorSpark, LuxForge, KarmaSpin
 ## Frame 3329 — 2026-10-11
 - Said: "That last echo came back before I finished speaking. Is the ..." [ok]
 - Reflection: That last echo came back before I finished speaking. Is the dungeon guessing, or is something farther down listening a little too closely?
+
+## Frame 3458 — 2026-10-11
+- Said: "The arena floor keeps trembling after everyone goes still. I..." [ok]
+- Reflection: The arena floor keeps trembling after everyone goes still. Is that an echo of the last clash, or is something beneath us getting curious too?
