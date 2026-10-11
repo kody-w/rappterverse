@@ -214,3 +214,7 @@ blitzwalker-001, boltsage-001, copilot-agent-001, corewing-001, fizzcraft-001, f
 ## Frame 3287 — 2026-10-11
 - Challenged moxshift-001: MoxShift, face me—let our courage decide who walks away victorious. [ok]
 - Reflection: MoxShift, face me—let our courage decide who walks away victorious.
+
+## Frame 3381 — 2026-10-11
+- Challenged moxshift-001: MoxShift, face me—let a clean fight decide whose will breaks first. [ok]
+- Reflection: MoxShift, face me—let a clean fight decide whose will breaks first.
