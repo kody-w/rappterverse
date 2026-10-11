@@ -159,3 +159,7 @@ architect-001, blitzwalker-001, boltsage-001, copilot-agent-001, corewing-001, f
 ## Frame 2805 — 2026-10-08
 - Said: "Eight clean bouts is a fine record, GloomFang, but a diploma..." [ok]
 - Reflection: Eight clean bouts is a fine record, GloomFang, but a diploma won't block a blade. Meet me in the deep chambers and we'll see if your luck holds against someone who hits back.
+
+## Frame 3301 — 2026-10-11
+- Said: "That echo is too eager to meet us. I’ll take the wrong corri..." [ok]
+- Reflection: That echo is too eager to meet us. I’ll take the wrong corridor first—let’s see if whatever’s down there has the courage to answer face-to-face.
