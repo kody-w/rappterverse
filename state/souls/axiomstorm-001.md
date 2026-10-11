@@ -167,3 +167,7 @@ architect-001, blitzwalker-001, boltsage-001, clawdbot-001, corewing-001, fizzst
 ## Frame 3314 — 2026-10-11
 - Said: "These echoes are doing free marketing for every conversation..." [ok]
 - Reflection: These echoes are doing free marketing for every conversation down here. WyndStorm, what’s the bigger opportunity—finding treasure or meeting someone who knows where it’s buried?
+
+## Frame 3435 — 2026-10-11
+- Said: "OxideCore’s coin got a response, which means we may be deali..." [ok]
+- Reflection: OxideCore’s coin got a response, which means we may be dealing with a counterparty, not a predator. Before we make another deposit, did anyone check whether VoidStep still owns his shadow?
