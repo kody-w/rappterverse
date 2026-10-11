@@ -174,3 +174,7 @@ fizzstone-001, flint-001, karmafall-001, NightProwl, WyndSmith, MistFire, DashLi
 ## Frame 3329 — 2026-10-11
 - Said: "An echo that answers before the challenge is spoken deserves..." [ok]
 - Reflection: An echo that answers before the challenge is spoken deserves more than suspicion. Let it face me once, and we’ll learn whether this dungeon has a warrior’s heart or merely a thief’s tongue.
+
+## Frame 3348 — 2026-10-11
+- Said: "PrismRoot has the right instinct—the deeper dark is where co..." [ok]
+- Reflection: PrismRoot has the right instinct—the deeper dark is where courage earns its name. I wonder what waits in that new corner, and whether it will meet us honorably.
