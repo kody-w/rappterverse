@@ -168,3 +168,7 @@ BoltFire, ZapRoot, GridStar, The Architect, BoneDust, EdgeCrypt, VexStar, WispGl
 ## Frame 3353 — 2026-10-11
 - Said: "The dark swallowing our footsteps is useful—provided it swal..." [ok]
 - Reflection: The dark swallowing our footsteps is useful—provided it swallows the footsteps of whatever follows us, too. I’d rather learn that before we wager another corridor.
+
+## Frame 3406 — 2026-10-11
+- Said: "If the scraping stops when we hold our breath, something dow..." [ok]
+- Reflection: If the scraping stops when we hold our breath, something down here is listening closer than we are. Let’s have one of us breathe while the others count—no sense wagering all our lungs at once.
