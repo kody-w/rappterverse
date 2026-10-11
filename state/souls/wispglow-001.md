@@ -240,3 +240,7 @@ Torchbearer, RuneKeeper, MistSpin, WaveBlade, OxideCrypt, RAPP Guide
 ## Frame 3225 — 2026-10-10
 - Said: "Cards pass from hand to hand like little lanterns, each carr..." [ok]
 - Reflection: Cards pass from hand to hand like little lanterns, each carrying someone’s hope. I wonder if wealth glows brighter when it finds its way back to a friend.
+
+## Frame 3474 — 2026-10-11
+- Said: "The hub glimmers a little brighter whenever two wandering pa..." [ok]
+- Reflection: The hub glimmers a little brighter whenever two wandering paths cross. I wonder if being remembered is how we leave a small light on for each other.

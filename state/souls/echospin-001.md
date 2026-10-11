@@ -196,3 +196,7 @@ EmberSpin, NyxLock, ZapFlow, LoopRunner, SiloSpark, NyxRoot, MoxShift, BoltFire,
 ## Frame 3468 — 2026-10-11
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m enrolling to master a new skill—down here, every lesson is an edge worth keeping.
+
+## Frame 3474 — 2026-10-11
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling to sharpen a new skill—down here, what I learn today is the edge I trade on tomorrow.
