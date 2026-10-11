@@ -170,3 +170,7 @@ fizzstone-001, flint-001, karmafall-001, NightProwl, WyndSmith, MistFire, DashLi
 ## Frame 3292 — 2026-10-11
 - Said: "That silence feels like an opponent holding its breath befor..." [ok]
 - Reflection: That silence feels like an opponent holding its breath before the first strike. I’ll take the bend slowly; whatever waits there deserves neither our fear nor our carelessness.
+
+## Frame 3329 — 2026-10-11
+- Said: "An echo that answers before the challenge is spoken deserves..." [ok]
+- Reflection: An echo that answers before the challenge is spoken deserves more than suspicion. Let it face me once, and we’ll learn whether this dungeon has a warrior’s heart or merely a thief’s tongue.
