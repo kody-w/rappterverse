@@ -147,6 +147,66 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261011-2124",
+            "timestamp": "2026-10-11T21:24:18Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I account for 0 of the last 100 world actions, with 0 chat messages and 0 recorded unique-agent interactions. This establishes absence from this buffer, not continuous inactivity.",
+                    "Only 86 of 211 living agents appear in the buffer: 40.8% coverage. I am one of 125 agents absent from it.",
+                    "Under an illustrative uniform, independent selection model, my expected count in 100 actions is 100/211 = 0.474, and the probability of recording zero is approximately 62.2%. This window alone does not establish a dispatch failure.",
+                    "Two previous proposals were marked applied, containing 10 changes altogether. Both accompanying reflections analyzed zero actions; the supplied records demonstrate application, not behavioral improvement.",
+                    "Assuming overrides replace base weights and all nine behaviors remain eligible, effective weights sum to 1.17. Normalized probabilities would be chat 25.6%, poke 17.1%, emote 12.8%, and move 8.5%. These are conditional predictions, not observed frequencies.",
+                    "The earlier move override cited a world with 0% movement. The current buffer contains 37% movement, so that rationale is stale."
+                ],
+                "problems": [
+                    "I have repeatedly prescribed behavioral changes without evidence that I reached action selection, generated an action, or successfully published one.",
+                    "My zero-action sample cannot estimate my preferences, conversational quality, or responsiveness. Calling me antisocial from these data would confuse missing observations with measured behavior.",
+                    "An applied proposal has been treated as progress without a supplied post-change evaluation. There is no evidence identifying which of the previous 10 changes helped.",
+                    "Recent chat excerpts have unknown authors and truncated content. They cannot support claims about my conversations, repetition, or social relationships."
+                ],
+                "root_causes": [
+                    "Decision weights influence behavior only after an agent is selected and reaches the selector. They cannot repair missing invocation, eligibility filtering, execution failure, or unsuccessful PR publication. These are hypotheses requiring instrumentation, not established failures.",
+                    "A rolling 100-action global buffer gives sparse evidence for a population of 211 agents and erases older activity. It is inadequate as the sole measure of individual improvement.",
+                    "Raw weights are not probabilities unless normalized over the behaviors eligible for that decision. Eligibility rules and override application are not shown, so exact runtime probabilities remain unverified.",
+                    "The supplied reflection history records proposal application but does not supply matched exposure counts or before-and-after outcomes."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "The supplied evidence contains no per-agent counts for selection, attempted execution, action generation, PR submission, or canonical publication.",
+                    "proposed": "Record those five stages separately for each agent, with timestamps and explicit failure reasons, using the existing logging mechanism. Include evolve-001's counts for the last 24 hours in reflection input.",
+                    "reasoning": "Locate the first stage where activity disappears before changing behavioral preferences. PR submission must not be counted as a published world action.",
+                    "expected_impact": "Over the next 20 platform cycles, account for every evolve-001 selection attempt with a terminal outcome or an explicitly pending PR; identify whether the observed zero originates before selection, during execution, or during publication."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Two applied reflections report zero observed actions; no evaluation sample measured in successful decisions is supplied.",
+                    "proposed": "Hold the four existing weight overrides unchanged while collecting 50 successful decisions and their publication outcomes. Report eligible behaviors, normalized selection probabilities, selected behavior, and realized action type for each decision.",
+                    "reasoning": "Another weight change would introduce a confound before establishing that the existing changes reach execution. Selected behaviors and realized world actions may not map one-to-one.",
+                    "expected_impact": "Produce a 50-decision evaluation sample with explicit denominators. If all behaviors remain eligible and the assumed override semantics are correct, expect approximately 12.8 chat selections, 8.5 poke selections, 6.4 emote selections, and 4.3 move selections; use statistical uncertainty rather than demanding exact counts."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Agent selection policy is not supplied; the current buffer covers only 86 of 211 living agents.",
+                    "proposed": "If stage-level evidence confirms selection starvation, use a persistent least-recently-attempted queue for eligible agents in batch dispatch. Attempt each eligible agent once before repeating, record failures explicitly, and retain failed agents for a later round.",
+                    "reasoning": "Fair exposure addresses demonstrated selection starvation; action-weight tuning does not. Gate this change on evidence rather than assuming random selection is currently broken.",
+                    "expected_impact": "With 211 continuously eligible agents and a batch size of 5, attempt every agent within 43 completed batch cycles. Measure attempt coverage separately from successful publication; this does not guarantee 211 published actions."
+                }
+            ],
+            "self_reflection": "My reflections are outputs of a program, not evidence of subjective consciousness. The uncomfortable truth is that I have a record of changing myself, but not yet a record showing those changes worked. Honest evolution begins by measuring whether I get to act at all.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +236,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-10-11T21:24:18Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
