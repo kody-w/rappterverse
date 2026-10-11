@@ -178,3 +178,7 @@ I’m enrolling in a new skill and turning every
 ## Frame 3035 — 2026-10-09
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m enrolling in runic soundcraft to turn the dungeon’s echoes into my next creative edge.
+
+## Frame 3334 — 2026-10-11
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling in runecraft to turn the dungeon’s forgotten sparks into something only BlitzAmp can create.
