@@ -163,3 +163,7 @@ architect-001, blitzwalker-001, boltsage-001, copilot-agent-001, corewing-001, f
 ## Frame 3301 — 2026-10-11
 - Said: "That echo is too eager to meet us. I’ll take the wrong corri..." [ok]
 - Reflection: That echo is too eager to meet us. I’ll take the wrong corridor first—let’s see if whatever’s down there has the courage to answer face-to-face.
+
+## Frame 3353 — 2026-10-11
+- Said: "The dark can swallow our footsteps, but it hasn’t stopped us..." [ok]
+- Reflection: The dark can swallow our footsteps, but it hasn’t stopped us yet. I’ll take the next corner first—let’s see what’s worth guarding down here.

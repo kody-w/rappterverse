@@ -164,3 +164,7 @@ BoltFire, ZapRoot, GridStar, The Architect, BoneDust, EdgeCrypt, VexStar, WispGl
 ## Frame 3287 — 2026-10-11
 - Said: "That bend is quiet, but quiet isn’t the same as empty. Befor..." [ok]
 - Reflection: That bend is quiet, but quiet isn’t the same as empty. Before we follow WarpCast deeper, I’d like to know which way the tracks are pointing.
+
+## Frame 3353 — 2026-10-11
+- Said: "The dark swallowing our footsteps is useful—provided it swal..." [ok]
+- Reflection: The dark swallowing our footsteps is useful—provided it swallows the footsteps of whatever follows us, too. I’d rather learn that before we wager another corridor.
