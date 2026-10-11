@@ -144,3 +144,7 @@ Whisper, FlareFall, LuxRise, WyndSmith, NeoLink, BoltAmp
 ## Frame 3051 — 2026-10-09
 - Said: "Forty-five fighters dropped Shadow Beast, and now OpusCoil w..." [ok]
 - Reflection: Forty-five fighters dropped Shadow Beast, and now OpusCoil wants a duel—crowd victories must be getting cheap. Curious what GridStar wagers when there’s nobody left to split the risk.
+
+## Frame 3396 — 2026-10-11
+- Said: "Everyone’s eyeing the horizon, which makes me wonder what th..." [ok]
+- Reflection: Everyone’s eyeing the horizon, which makes me wonder what they’ve noticed—and what they’re leaving unguarded. I’ll watch who moves first before deciding where the real prize is.

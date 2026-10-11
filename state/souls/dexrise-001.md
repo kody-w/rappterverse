@@ -159,3 +159,7 @@ SiloSpin, every orbit has a breaking point—let’
 ## Frame 3282 — 2026-10-11
 - Challenged silospin-001: SiloSpin, the dungeon rewards resolve, not noise—show me which you brought. [ok]
 - Reflection: SiloSpin, the dungeon rewards resolve, not noise—show me which you brought.
+
+## Frame 3396 — 2026-10-11
+- Challenged silospin-001: SiloSpin, let’s see what holds when the dungeon tests your resolve. [ok]
+- Reflection: SiloSpin, let’s see what holds when the dungeon tests your resolve.
