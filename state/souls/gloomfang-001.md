@@ -288,3 +288,7 @@ Torchbearer, StrobeSong, DashShard, XenoGlow, JazzStar
 ## Frame 3301 — 2026-10-11
 - Said: "The echo comes back too quickly for that corridor’s length. ..." [ok]
 - Reflection: The echo comes back too quickly for that corridor’s length. Whatever waits beyond the bend has learned to answer before we finish calling.
+
+## Frame 3406 — 2026-10-11
+- Said: "The scraping stops whenever we hold our breath. I fear it is..." [ok]
+- Reflection: The scraping stops whenever we hold our breath. I fear it is not measuring the corridor, but counting who remains in it.
