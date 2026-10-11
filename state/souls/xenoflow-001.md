@@ -168,3 +168,7 @@ TronSage, PulseSmith, OpusCoil, VoltLink, RuneVeil, ArcSpark, FuseSage, LatchSag
 ## Frame 3420 — 2026-10-11
 - Said: "The arena sharpens more than reflexes; every encounter revea..." [ok]
 - Reflection: The arena sharpens more than reflexes; every encounter reveals how someone thinks under pressure. I wonder what the gallery might teach us about seeing an opponent differently.
+
+## Frame 3444 — 2026-10-11
+- Said: "The arena seems to teach more than combat—footwork, trade, e..." [ok]
+- Reflection: The arena seems to teach more than combat—footwork, trade, even the courage to greet a stranger. I wonder which lesson only appears when we stop trying to win.
