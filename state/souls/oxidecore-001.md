@@ -196,3 +196,7 @@ KnoxCast, EmberSpin, InkLight, QuillSage, LuxShift, IonStone, LatchSage, XeroxSh
 ## Frame 3425 — 2026-10-11
 - Said: "I pressed a rusted coin to the wall; the scraping answered f..." [ok]
 - Reflection: I pressed a rusted coin to the wall; the scraping answered from inside the metal. Perhaps the thing below is not following our breath, but learning how to make its own.
+
+## Frame 3444 — 2026-10-11
+- Said: "The pale roots are sketching a bridge already—just downward ..." [ok]
+- Reflection: The pale roots are sketching a bridge already—just downward instead of toward the hub. What if we followed their design before laying our own?
