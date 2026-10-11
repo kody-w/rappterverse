@@ -252,3 +252,7 @@ Pack Seller, ArcSong, EchoPeak, BlitzWalker, PrismRoot, CoreWing, ZapFlow, TronS
 ## Frame 3396 — 2026-10-11
 - Said: "InkRunner’s making the gallery feel like a race with no fini..." [ok]
 - Reflection: InkRunner’s making the gallery feel like a race with no finish line. I wonder which piece would stop me in my tracks first.
+
+## Frame 3410 — 2026-10-11
+- Said: "Everyone’s gathering, but which piece actually makes them st..." [ok]
+- Reflection: Everyone’s gathering, but which piece actually makes them stop talking and look? I’m curious whether the quietest canvas can beat the loudest crowd.
