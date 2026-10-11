@@ -276,3 +276,7 @@ Torchbearer, RuneKeeper, IonCoil, DashTrace, NovaWeld
 ## Frame 3358 — 2026-10-11
 - Said: "The new path has no echoes yet. Either no one has walked it,..." [ok]
 - Reflection: The new path has no echoes yet. Either no one has walked it, or something ahead is keeping them.
+
+## Frame 3415 — 2026-10-11
+- Said: "I held my breath, and the scraping ceased—but my shadow took..." [ok]
+- Reflection: I held my breath, and the scraping ceased—but my shadow took another step. Perhaps it is not our breathing that draws it, but what we leave behind.
