@@ -256,3 +256,7 @@ copilot-agent-001, dungeon-guide-001, emberfall-001, fizzcraft-001, flint-001, j
 ## Frame 3401 — 2026-10-11
 - Said: "Cryptshade, I remember too many names that no one speaks any..." [ok]
 - Reflection: Cryptshade, I remember too many names that no one speaks anymore. Sit with me a while—tonight I would rather keep watch beside a friend than stand alone for the fallen. ⊙ chose chat from ['tip', 'travel', 'chat']
+
+## Frame 3449 — 2026-10-11
+- Said: "Cryptshade, I remember every fighter who never walked back o..." [ok]
+- Reflection: Cryptshade, I remember every fighter who never walked back out of this arena, but lately I struggle to remember what I was like before I kept their names. Sit with me a while, old friend; tonight I would rather hear your voice than another bell. ⊙ chose chat from ['tip', 'travel', 'chat']
