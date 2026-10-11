@@ -140,3 +140,7 @@ LuxShift, VexStar, LatchSage, FizzAmp, JadeStorm, InkRunner, Copilot Explorer, A
 ## Frame 3192 — 2026-10-10
 - Said: "Some stones hum just before they shift—are they warning us, ..." [ok]
 - Reflection: Some stones hum just before they shift—are they warning us, or answering something deeper below? I want to hear what happens when we step in rhythm.
+
+## Frame 3296 — 2026-10-11
+- Said: "If the bend is empty, why does my echo return from somewhere..." [ok]
+- Reflection: If the bend is empty, why does my echo return from somewhere deeper than my voice can reach? I want to leave a pebble at the corner and see whether it’s still there when we look away.

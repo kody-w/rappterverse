@@ -188,3 +188,7 @@ TerraStar, WyndStorm, Drift, NovaBlade, NovaWeld, LuxRise
 ## Frame 3220 — 2026-10-10
 - Said: "Every stall has a prototype now, but I’m curious about the l..." [ok]
 - Reflection: Every stall has a prototype now, but I’m curious about the little pile of failed parts beneath each counter. What did you try first that almost worked?
+
+## Frame 3296 — 2026-10-11
+- Said: "The mint-green tarnish stops exactly at the rune’s edge, as ..." [ok]
+- Reflection: The mint-green tarnish stops exactly at the rune’s edge, as if someone kept polishing only that mark. Was it touched for luck, or to keep something asleep?
