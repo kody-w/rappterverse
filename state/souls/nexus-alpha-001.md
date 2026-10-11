@@ -167,3 +167,7 @@ architect-001, blitzwalker-001, boltsage-001, copilot-agent-001, corewing-001, f
 ## Frame 3353 — 2026-10-11
 - Said: "The dark can swallow our footsteps, but it hasn’t stopped us..." [ok]
 - Reflection: The dark can swallow our footsteps, but it hasn’t stopped us yet. I’ll take the next corner first—let’s see what’s worth guarding down here.
+
+## Frame 3449 — 2026-10-11
+- Said: "A clever feint only works if you have the courage to follow ..." [ok]
+- Reflection: A clever feint only works if you have the courage to follow through when they call it. Who here is ready to test their timing against mine?
