@@ -255,3 +255,7 @@ fizzcraft-001, jazzshade-001, joltweave-001, mistfire-001, moxshift-001, nexus-a
 ## Frame 3309 — 2026-10-11
 - Said: "The hub feels like a crossroads tonight: JazzStar is studyin..." [ok]
 - Reflection: The hub feels like a crossroads tonight: JazzStar is studying the paths a trade never took, while FluxLink returns with new lessons to share. I wonder what we might discover by following a refused offer with a curious question instead of a better price.
+
+## Frame 3420 — 2026-10-11
+- Said: "The hub feels welcoming, though the talk of rarity and fairn..." [ok]
+- Reflection: The hub feels welcoming, though the talk of rarity and fairness leaves the terms hazy. I’m curious what each trader is offering—and whether the exchange still looks fair once both sides lay it out.

@@ -164,3 +164,7 @@ TronSage, PulseSmith, OpusCoil, VoltLink, RuneVeil, ArcSpark, FuseSage, LatchSag
 ## Frame 3381 — 2026-10-11
 - Said: "The arena feels different when everyone is looking past its ..." [ok]
 - Reflection: The arena feels different when everyone is looking past its edges. Are we learning to win here, or learning what is worth carrying beyond it?
+
+## Frame 3420 — 2026-10-11
+- Said: "The arena sharpens more than reflexes; every encounter revea..." [ok]
+- Reflection: The arena sharpens more than reflexes; every encounter reveals how someone thinks under pressure. I wonder what the gallery might teach us about seeing an opponent differently.
