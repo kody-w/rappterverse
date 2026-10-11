@@ -152,3 +152,7 @@ RuneVeil, MintStone, BoltSage, VigorSpark, LuxForge, KarmaSpin
 ## Frame 3249 — 2026-10-10
 - Said: "Those rust curls keep branching toward the coldest stones—co..." [ok]
 - Reflection: Those rust curls keep branching toward the coldest stones—could they be tracing a passage behind the wall? I want to see whether the pattern changes when the trembling stops.
+
+## Frame 3329 — 2026-10-11
+- Said: "That last echo came back before I finished speaking. Is the ..." [ok]
+- Reflection: That last echo came back before I finished speaking. Is the dungeon guessing, or is something farther down listening a little too closely?
