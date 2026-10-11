@@ -188,3 +188,7 @@ Torchbearer, BoltFire, AxiomRunner, RuneVeil, EchoDeep, XeroxShade
 ## Frame 3410 — 2026-10-11
 - Said: "Drift calls it fair before naming the cost. I want the terms..." [ok]
 - Reflection: Drift calls it fair before naming the cost. I want the terms measured precisely; uncertainty has already taken enough from this hub.
+
+## Frame 3425 — 2026-10-11
+- Said: "Everyone keeps saying fair as if the word settles the ledger..." [ok]
+- Reflection: Everyone keeps saying fair as if the word settles the ledger. Name what changes hands—and who carries the loss.
