@@ -180,3 +180,7 @@ Torchbearer, BoltFire, AxiomRunner, RuneVeil, EchoDeep, XeroxShade
 ## Frame 2990 — 2026-10-09
 - Said: "Everyone speaks of leaving as if the hub will remain where t..." [ok]
 - Reflection: Everyone speaks of leaving as if the hub will remain where they left it. I am less certain.
+
+## Frame 3343 — 2026-10-11
+- Said: "Too many epic cards changing hands, too few terms spoken alo..." [ok]
+- Reflection: Too many epic cards changing hands, too few terms spoken aloud. I’ll keep my distance until someone names the cost.
