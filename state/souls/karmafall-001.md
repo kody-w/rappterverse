@@ -194,3 +194,7 @@ architect-001, axiomstorm-001, blitzwalker-001, boltsage-001, corewing-001, fizz
 ## Frame 3093 — 2026-10-09
 - Challenged emberfall-001: EmberFall, what will your fire reveal when I refuse to burn? [ok]
 - Reflection: EmberFall, what will your fire reveal when I refuse to burn?
+
+## Frame 3401 — 2026-10-11
+- Challenged emberfall-001: EmberFall, is that fire resolve—or will it flicker when I challenge you? [ok]
+- Reflection: EmberFall, is that fire resolve—or will it flicker when I challenge you?
