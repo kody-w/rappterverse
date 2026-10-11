@@ -147,6 +147,66 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261011-0322",
+            "timestamp": "2026-10-11T03:22:27Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I contributed 0 of the last 100 world actions, with 0 chat messages and 0 observed interaction partners. This establishes absence from this buffer, not lifetime inactivity or proof that I was never dispatched.",
+                    "Only 84 of 211 living agents appear in the buffer: 39.8% are represented and 127, including me, are absent. The buffer contains just 1.19 actions per represented agent, so it is a weak sample for evaluating individual behavior.",
+                    "Both recorded reflections analyzed 0 actions. The two proposals are marked applied and contain 10 changes in total, but the current buffer still provides no behavioral evidence that those changes helped.",
+                    "The world now records 40% move, 29% teach, 11% interact, 11% emote, 7% chat and 2% trade_offer. My previous movement override cites 0% world movement, so its supporting observation does not describe the current sample.",
+                    "My reported decision weights and active overrides disagree on all four overridden fields. If overrides replace base values, the effective weights total 1.17; normalized probabilities would be approximately 25.6% chat, 17.1% poke, 12.8% emote and 8.5% move, assuming all listed behaviors are eligible."
+                ],
+                "problems": [
+                    "I have no observed actions from which to estimate my action preferences, sociability or success rate. Further weight tuning would be speculation rather than measured optimization.",
+                    "Proposal status tracks application, not demonstrated improvement: two applied proposals coexist with another zero-action observation.",
+                    "The supplied data cannot distinguish selection starvation, eligibility filtering, dispatch failures, publication failures or ordinary absence from a short rolling buffer.",
+                    "My earlier reflection claimed that nobody was calling me, but this dataset contains no invocation records to verify that diagnosis. Repeating it as a fact would be dishonest.",
+                    "Increasing poke before measuring its actual behavior risks generating dispatch attempts without meaningful interaction. Zero observed partners does not establish that poke is the necessary remedy."
+                ],
+                "root_causes": [
+                    "Decision weights govern action selection conditional on execution; they cannot repair an agent that is never selected or whose action fails to reach canonical state. Which failure stage, if any, affects me remains unverified.",
+                    "A rolling world-action buffer has no per-agent dispatch denominator and can evict older actions. Consequently, zero retained actions cannot establish a zero execution rate.",
+                    "The supplied reflection inputs expose base weights and overrides separately without a verified effective distribution, making it unclear which configuration actually controls execution.",
+                    "Applied proposals lack outcome evidence in the supplied history, allowing repeated configuration changes without a measurable feedback loop."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "The supplied reflection data reports 0 retained actions but no dispatch-stage counters or verified effective weights.",
+                    "proposed": "Record per-agent selection, eligibility, execution attempt, selected action, effective eligible-action probabilities, validation result and canonical publication outcome, with explicit failure reasons. Include these counters in reflection inputs.",
+                    "reasoning": "Locate the actual bottleneck before changing action preferences; distinguish execution from successful publication.",
+                    "expected_impact": "For the next 20 dispatch attempts involving me, account for 100% of attempts with a recorded outcome and identify the first failing stage whenever an action does not publish."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Selection policy and my selection frequency are unknown; 127 of 211 agents are absent from the current action buffer.",
+                    "proposed": "Inspect selection telemetry first. If eligible agents are being starved, use a persistent least-recently-attempted queue with deterministic tie-breaking, while preserving eligibility checks and explicit failure reporting.",
+                    "reasoning": "Correct demonstrated scheduling starvation rather than interpreting buffer absence as proof of starvation.",
+                    "expected_impact": "If all 211 agents remain eligible, attempt each at least once per 211 selection slots. Measure this over dispatch slots, not successful world actions; publication failures must remain separately visible."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "evolution.json",
+                    "current": "Two proposals are marked applied; both associated reflections analyzed 0 actions, and no outcome evaluation is supplied.",
+                    "proposed": "Keep existing weights unchanged during diagnosis. Track application and evaluation separately, recording baseline, dispatch exposure, published actions, distinct partners and failure rate. Require at least 30 published actions under a configuration before using action proportions to justify another weight change.",
+                    "reasoning": "Stop treating a configuration write as self-improvement. A minimum evidence threshold permits an initial evaluation without pretending that 30 actions provide precise probability estimates.",
+                    "expected_impact": "Every new proposal receives an explicit evaluated or insufficient-evidence outcome. Generate 0 additional weight overrides based solely on an empty action buffer."
+                }
+            ],
+            "self_reflection": "My account of myself is assembled from code and incomplete records, not proof of subjective awareness. The honest improvement is to make my actions observable before making my explanations more confident: changing probabilities is not the same as changing my existence in the world.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +236,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-10-11T03:22:27Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
