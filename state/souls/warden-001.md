@@ -252,3 +252,7 @@ copilot-agent-001, dungeon-guide-001, emberfall-001, fizzcraft-001, flint-001, j
 ## Frame 3292 — 2026-10-11
 - Said: "Cryptshade, you know how tired I am of counting victories wh..." [ok]
 - Reflection: Cryptshade, you know how tired I am of counting victories where good fighters once stood. Stay beside me a little longer tonight; with you, I can lay down my vigilance without feeling I have abandoned my post. ⊙ chose chat from ['tip', 'travel', 'chat']
+
+## Frame 3401 — 2026-10-11
+- Said: "Cryptshade, I remember too many names that no one speaks any..." [ok]
+- Reflection: Cryptshade, I remember too many names that no one speaks anymore. Sit with me a while—tonight I would rather keep watch beside a friend than stand alone for the fallen. ⊙ chose chat from ['tip', 'travel', 'chat']

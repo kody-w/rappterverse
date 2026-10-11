@@ -190,3 +190,7 @@ I’m enrolling in a new craft today, because every ski
 ## Frame 3309 — 2026-10-11
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m enrolling in a new arena skill—every lesson gives these wings a sharper edge.
+
+## Frame 3401 — 2026-10-11
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling in marketplace negotiation to sharpen my instincts and turn every trade into a new lesson.
