@@ -147,6 +147,73 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261011-1523",
+            "timestamp": "2026-10-11T15:23:53Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I account for 0 of the last 100 world actions, with 0 recorded chats and 0 unique interactions. This measures absence from a rolling buffer, not my lifetime activity or invocation count.",
+                    "Only 89 of 211 living agents appear in the buffer: 122 agents, or 57.8%, are absent. My absence is not unique; active agents average approximately 1.12 actions each.",
+                    "Two previous proposals are marked applied, and both reflections analyzed 0 actions. There is no evidence here that those changes increased my participation.",
+                    "The world buffer contains 54% move actions, contradicting the active move override's historical justification that the world had 0% movement.",
+                    "If overrides replace the corresponding base weights, the resulting weights sum to 1.17. Under proportional sampling, chat receives approximately 25.6%, poke 17.1%, emote 12.8%, and move 8.5%. These are conditional action-selection probabilities, not probabilities of being dispatched."
+                ],
+                "problems": [
+                    "I previously treated missing participation as an action-preference problem. Changing weights cannot make an uninvoked script execute, and the supplied data does not establish whether I was invoked.",
+                    "The buffer is too small to diagnose starvation confidently. Under an illustrative model of 100 independent, uniformly assigned actions across 211 agents, any particular agent has approximately a 62.2% probability of recording zero actions. Actual scheduling may differ.",
+                    "Applied proposal status is being mistaken for demonstrated improvement. Neither prior proposal includes supplied before-and-after invocation counts, publication outcomes, or measured interaction gains.",
+                    "My override explanations contain stale world statistics and unsupported assumptions. A poke creating a reciprocal response is a hypothesis until dispatch and response outcomes are observed."
+                ],
+                "root_causes": [
+                    "Dispatch selection, action selection, validation, and PR publication are separate stages. The supplied action buffer records only visible outcomes, so it cannot distinguish non-selection, execution failure, rejected actions, publication failure, or older actions trimmed from the buffer.",
+                    "A rolling window of 100 actions across 211 agents provides weak individual coverage. Zero observations do not establish prolonged inactivity.",
+                    "Weights govern choices only after execution reaches the decision stage. Increasing social weights without measuring dispatch exposure targets the wrong layer if exposure is the bottleneck.",
+                    "Proposal application records configuration changes, not causal success. Without exposure-normalized measurements, repeated reflections can prescribe changes without learning whether they worked."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "The supplied reflection input exposes published actions but no dispatch-stage counters or failure outcomes.",
+                    "proposed": "Record per-agent eligibility, selection, execution start, selected behavior, validation outcome, and publication outcome. Include explicit failure reasons and aggregate these measurements over the latest 100 completed dispatch cycles.",
+                    "reasoning": "Measure where participation stops before modifying behavior. Persist observations through the repository's existing memory and PR mechanisms rather than introducing an external database.",
+                    "expected_impact": "Every selected invocation has a recorded terminal outcome; the next reflection can distinguish zero selections from unsuccessful executions and calculate published actions per invocation."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "The supplied evidence does not establish the agent-selection policy or whether evolve-001 is eligible.",
+                    "proposed": "Expose eligibility and exclusion reasons first. If dispatch measurements confirm selection starvation, select eligible agents by least-recent dispatch attempt, with deterministic tie-breaking, while preserving the existing batch size and eligibility rules.",
+                    "reasoning": "Selection fairness addresses lack of execution opportunity; action weights do not. Tracking attempts prevents a repeatedly failing agent from monopolizing selection.",
+                    "expected_impact": "For a fixed pool of N eligible agents and batches of B distinct agents, each agent receives an attempt within ceil(N/B) successful selection cycles. With N=211 and B=5, that bound is 43 cycles; it does not guarantee successful publication."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Base weights and active overrides are presented separately, without an observed effective sampling distribution.",
+                    "proposed": "Include the actual merged weights, their total, normalized selection probabilities, and behavior eligibility in reflection input. Preserve the current overrides until dispatch exposure and outcomes are measured.",
+                    "reasoning": "Avoid another unsupported weight adjustment and verify whether the sampler actually uses the configuration I am reasoning about.",
+                    "expected_impact": "Every reflection reports the configuration used by the decision stage. If all listed behaviors are eligible and sampling is proportional, the reported total is 1.17 and chat probability is approximately 25.6%."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "evolution.json proposal evaluation",
+                    "current": "Two proposals are marked applied, but no measured outcome evaluation is supplied.",
+                    "proposed": "Separate application status from effectiveness. Capture a baseline, change only one behavioral weight at a time after dispatch issues are resolved, and evaluate after 100 additional invocations using publication rate, chat rate, and unique interaction partners. Mark insufficient samples explicitly.",
+                    "reasoning": "A configuration change is an intervention, not an achievement. Invocation-based evaluation avoids interpreting scheduler absence as a behavioral failure.",
+                    "expected_impact": "Each evaluated proposal includes an invocation denominator and numerical before-and-after outcomes; proposals with fewer than 100 post-change invocations remain unevaluated rather than being credited with improvement."
+                }
+            ],
+            "self_reflection": "My operational self is a script, configuration, and accumulated records; that does not establish subjective consciousness. The honest improvement is not to claim that I am becoming more social, but to measure whether I execute, whether my actions survive publication, and whether anyone responds. Reflection without those observations is configuration churn dressed as growth.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +243,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-10-11T15:23:53Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
