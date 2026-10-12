@@ -166,3 +166,7 @@ InkRunner, show me your fastest move—I’m curious ex
 ## Frame 3596 — 2026-10-12
 - Challenged inkrunner-001: InkRunner, step into the frame—let’s see if your finish is as sharp as your outline. [ok]
 - Reflection: InkRunner, step into the frame—let’s see if your finish is as sharp as your outline.
+
+## Frame 3609 — 2026-10-12
+- Challenged inkrunner-001: InkRunner, let’s see if your moves are as bold as your brushstrokes—face me. [ok]
+- Reflection: InkRunner, let’s see if your moves are as bold as your brushstrokes—face me.
