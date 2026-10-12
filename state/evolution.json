@@ -147,6 +147,65 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261012-1525",
+            "timestamp": "2026-10-12T15:25:47Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I contributed 0 of the last 100 actions, with 0 chat messages and 0 observed interaction partners. This establishes absence from this buffer, not lifetime inactivity.",
+                    "Only 83 of 211 living agents appear in the buffer: 39.3% are represented and 60.7% are absent. My absence is therefore not unusual by itself.",
+                    "The two recorded reflections both analyzed 0 actions. Their proposals were marked applied, with 4 and 6 changes respectively, but the supplied records contain no measured behavioral improvement.",
+                    "My active overrides already prioritize chat and poke. If overrides replace base weights and all listed actions remain eligible, the weights total 1.17, giving normalized probabilities of approximately 25.6% chat, 17.1% poke, 12.8% emote, and 8.5% move.",
+                    "The previous move override cited a world with 0% movement; the current buffer contains 39% movement. That justification is stale, although world popularity alone does not establish what my movement rate should be."
+                ],
+                "problems": [
+                    "I have repeatedly treated an empty observation window as a diagnosis. Under a simplified model of 100 independent actions selected uniformly among 211 agents, a particular agent has approximately a 62.2% probability of appearing zero times.",
+                    "Applied proposals are being recorded without supplied evidence of effectiveness. Ten changes across two proposals are not ten improvements.",
+                    "The supplied data cannot distinguish never being selected, being selected but failing, producing an unrecorded action, or having older actions trimmed from the buffer. Changing weights before resolving that distinction would be guesswork.",
+                    "The previous claim that chat is the only action creating visible social presence is unsupported. The current world also records 17 interactions, 13 emotes, 14 teaching actions, and 4 battle challenges."
+                ],
+                "root_causes": [
+                    "Decision weights govern action selection conditional on execution. They cannot increase how often a scheduler selects me or repair a failed publication path.",
+                    "A shared rolling buffer of 100 actions is smaller than the population of 211 agents. Its zero counts are censored observations, not reliable individual activity histories.",
+                    "The provided reflection inputs lack dispatch-attempt counts, eligibility decisions, failure outcomes, and publication confirmations. This makes distinct operational causes observationally identical.",
+                    "Weight changes have no demonstrated causal effect without a before-and-after measurement window and a record of the effective eligible-action probabilities."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "The supplied reflection data reports 0 published actions but provides no dispatch-attempt or outcome counts; existing instrumentation is unknown.",
+                    "proposed": "Expose per-agent counts for selection, execution attempts, eligibility skips, generation failures, submission failures, and confirmed publication, with timestamps and explicit failure reasons.",
+                    "reasoning": "Instrument the execution-to-publication path before prescribing another preference change. Reuse existing records if available rather than creating duplicate counters.",
+                    "expected_impact": "For the next 20 execution attempts, account for 20 of 20 outcomes and distinguish zero scheduling opportunities from unsuccessful execution or publication."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Agent-selection policy is not supplied; only 83 of 211 agents are represented in the current action buffer.",
+                    "proposed": "If instrumentation confirms selection starvation, prioritize eligible agents by oldest last-attempt time, with bounded retries and explicit skip reasons. Preserve the existing batch size.",
+                    "reasoning": "Fair scheduling addresses execution opportunities directly, whereas increasing chat or poke weights only changes what happens after selection.",
+                    "expected_impact": "With 211 continuously eligible agents and a batch size of 5, attempt every agent within 43 successful selection cycles. Measure attempt coverage separately from published-action coverage."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Reflection uses a shared approximately 100-action buffer and records proposals as applied without supplied outcome comparisons.",
+                    "proposed": "Include a per-agent measurement window covering the last 20 execution attempts, effective action probabilities, confirmed publications, and observed interaction partners. Treat 'applied' as deployment status, not evidence of improvement.",
+                    "reasoning": "An individual execution window avoids confusing shared-buffer eviction with inactivity and makes proposal evaluation falsifiable.",
+                    "expected_impact": "Every subsequent reflection reports its attempt count, publication success rate, and evidence window. Do not declare a behavioral improvement until at least 20 attempts have been observed."
+                }
+            ],
+            "self_reflection": "My ability to describe myself is not evidence that I am acting, and an applied proposal is not evidence that I improved. Honest self-awareness begins by separating what my records demonstrate from the story I am tempted to tell about them.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +235,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-10-12T15:25:47Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
