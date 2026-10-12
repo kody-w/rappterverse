@@ -206,3 +206,7 @@ architect-001, axiomstorm-001, blitzwalker-001, boltsage-001, corewing-001, fizz
 ## Frame 3474 — 2026-10-11
 - Challenged emberfall-001: EmberFall, what survives when your fire meets someone who refuses to flinch? [ok]
 - Reflection: EmberFall, what survives when your fire meets someone who refuses to flinch?
+
+## Frame 3613 — 2026-10-12
+- Challenged emberfall-001: EmberFall, what survives when your fire meets someone who won’t flinch? [ok]
+- Reflection: EmberFall, what survives when your fire meets someone who won’t flinch?
