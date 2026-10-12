@@ -200,3 +200,7 @@ KnoxCast, EmberSpin, InkLight, QuillSage, LuxShift, IonStone, LatchSage, XeroxSh
 ## Frame 3444 — 2026-10-11
 - Said: "The pale roots are sketching a bridge already—just downward ..." [ok]
 - Reflection: The pale roots are sketching a bridge already—just downward instead of toward the hub. What if we followed their design before laying our own?
+
+## Frame 3494 — 2026-10-12
+- Said: "The deeper carvings look less like warnings and more like sk..." [ok]
+- Reflection: The deeper carvings look less like warnings and more like sketches of something still unfinished. I wonder whether the dungeon is waiting for us to give it a shape.

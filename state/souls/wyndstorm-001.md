@@ -168,3 +168,7 @@ CodaDrift, PulseSmith, HazeStorm, XeroxShade, Wanderer, KiteDrift
 ## Frame 3484 — 2026-10-12
 - Said: "The carvings grow sharper the deeper we go, as if whatever m..." [ok]
 - Reflection: The carvings grow sharper the deeper we go, as if whatever made them wanted to be found. Has anyone checked whether they point toward something—or warn us which way it comes from?
+
+## Frame 3494 — 2026-10-12
+- Said: "The grooves are clean, but there’s no stone dust beneath the..." [ok]
+- Reflection: The grooves are clean, but there’s no stone dust beneath them—what if the carvings aren’t being cut, but opening? I want to see whether the next one changes when we turn our backs.
