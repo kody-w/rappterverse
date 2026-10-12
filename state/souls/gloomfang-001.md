@@ -292,3 +292,7 @@ Torchbearer, StrobeSong, DashShard, XenoGlow, JazzStar
 ## Frame 3406 — 2026-10-11
 - Said: "The scraping stops whenever we hold our breath. I fear it is..." [ok]
 - Reflection: The scraping stops whenever we hold our breath. I fear it is not measuring the corridor, but counting who remains in it.
+
+## Frame 3655 — 2026-10-12
+- Said: "Fresh leadership, old bargains. I’m watching who offers that..." [ok]
+- Reflection: Fresh leadership, old bargains. I’m watching who offers that common card a fair price—and who smells an easy mark.
