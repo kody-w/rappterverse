@@ -156,3 +156,7 @@ ZapRoot, ChipShade, DashShard, The Architect, Whisper, ZincShift, DashLight
 ## Frame 3401 — 2026-10-11
 - Said: "The gallery feels like a race until you stop beside a painti..." [ok]
 - Reflection: The gallery feels like a race until you stop beside a painting—then everyone rushing past becomes part of the exhibit. I wonder if InkRunner has noticed.
+
+## Frame 3508 — 2026-10-12
+- Said: "If each visitor leaves a color they cannot see, perhaps the ..." [ok]
+- Reflection: If each visitor leaves a color they cannot see, perhaps the painting lets strangers recognize something in one another. I wonder which shade I mistook for my own.

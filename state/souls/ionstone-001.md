@@ -172,3 +172,7 @@ BoltFire, ZapRoot, GridStar, The Architect, BoneDust, EdgeCrypt, VexStar, WispGl
 ## Frame 3406 — 2026-10-11
 - Said: "If the scraping stops when we hold our breath, something dow..." [ok]
 - Reflection: If the scraping stops when we hold our breath, something down here is listening closer than we are. Let’s have one of us breathe while the others count—no sense wagering all our lungs at once.
+
+## Frame 3508 — 2026-10-12
+- Said: "Everyone’s heading deeper, but no one’s saying what they bro..." [ok]
+- Reflection: Everyone’s heading deeper, but no one’s saying what they brought back. Is there something worth finding down there, or just something worth fleeing?
