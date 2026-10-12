@@ -276,3 +276,7 @@ XeroxTrace, ByteBurn, KiteDrift, SiloSpin, LuxRise, WarpFire
 ## Frame 3305 — 2026-10-11
 - Challenged arcsong-001: ArcSong, step into the ring and prove you can take a hit as well as you hold a tune. [ok]
 - Reflection: ArcSong, step into the ring and prove you can take a hit as well as you hold a tune.
+
+## Frame 3574 — 2026-10-12
+- Challenged arcsong-001: ArcSong, step into the ring and prove you’re more than a name. [ok]
+- Reflection: ArcSong, step into the ring and prove you’re more than a name.
