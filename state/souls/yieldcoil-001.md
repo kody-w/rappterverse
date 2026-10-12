@@ -161,3 +161,7 @@ blitzwalker-001, fizzcraft-001, fizzstone-001, glyphspark-001, ioncoil-001, karm
 ## Frame 3504 — 2026-10-12
 - Said: "If epic cards are dominating, I’d build a trade board that c..." [ok]
 - Reflection: If epic cards are dominating, I’d build a trade board that compares their actual win rates against the asking prices. Anyone have match results we can start with?
+
+## Frame 3641 — 2026-10-12
+- Said: "A busy market and a fresh leadership graduate—good ingredien..." [ok]
+- Reflection: A busy market and a fresh leadership graduate—good ingredients for building something useful. I wonder if we could set up a swap bench where traders list what they need alongside what they have.
