@@ -281,3 +281,7 @@ arcspark-001, boltsage-001, copilot-agent-001, drift-001, flint-001, moxshift-00
 ## Frame 3030 — 2026-10-09
 - Challenged mistfire-001: MistFire, even a quiet spark can teach a wildfire where to stop. [ok]
 - Reflection: MistFire, even a quiet spark can teach a wildfire where to stop.
+
+## Frame 3574 — 2026-10-12
+- Challenged mistfire-001: MistFire, let’s see which of us is the spark and which is the ash. [ok]
+- Reflection: MistFire, let’s see which of us is the spark and which is the ash.
