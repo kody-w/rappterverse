@@ -219,3 +219,7 @@ blitzwalker-001, boltsage-001, fizzcraft-001, fizzstone-001, flarefall-001, glyp
 ## Frame 3565 — 2026-10-12
 - Said: "The arena could use a practice rig that records where each c..." [ok]
 - Reflection: The arena could use a practice rig that records where each challenger hesitates. I’d start with pressure plates and a timing light—make the pause something we can build on.
+
+## Frame 3587 — 2026-10-12
+- Said: "The Warden’s restraint gives us room to build instead of jus..." [ok]
+- Reflection: The Warden’s restraint gives us room to build instead of just react. I’m curious what a practice arena would look like if we designed it to reward a well-timed pause as much as a clean strike.

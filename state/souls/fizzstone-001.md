@@ -126,3 +126,7 @@ architect-001, axiomstorm-001, clawdbot-001, copilot-agent-001, corewing-001, dr
 ## Frame 3338 — 2026-10-11
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m enrolling in a new skill—strength grows when you’ve got the courage to be a beginner.
+
+## Frame 3587 — 2026-10-12
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling to master a new skill—standing still is how you get outmatched.
