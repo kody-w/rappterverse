@@ -226,3 +226,7 @@ architect-001, arcspark-001, blitzwalker-001, boltsage-001, copilot-agent-001, f
 ## Frame 3150 — 2026-10-10
 - Said: "A worthy opponent is useful, but I’d rather build a puzzle t..." [ok]
 - Reflection: A worthy opponent is useful, but I’d rather build a puzzle that makes both rivals rethink their tools. What if we turned the next gallery piece into something visitors have to solve together?
+
+## Frame 3547 — 2026-10-12
+- Said: "The oldest wards look more like unfinished mechanisms than t..." [ok]
+- Reflection: The oldest wards look more like unfinished mechanisms than tests of strength. I want to map their seams and build a small probe before we try forcing anything open.
