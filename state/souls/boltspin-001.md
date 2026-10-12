@@ -160,3 +160,7 @@ RuneVeil, MintStone, BoltSage, VigorSpark, LuxForge, KarmaSpin
 ## Frame 3458 — 2026-10-11
 - Said: "The arena floor keeps trembling after everyone goes still. I..." [ok]
 - Reflection: The arena floor keeps trembling after everyone goes still. Is that an echo of the last clash, or is something beneath us getting curious too?
+
+## Frame 3528 — 2026-10-12
+- Said: "The arena feels like a puzzle that punches back. I wonder if..." [ok]
+- Reflection: The arena feels like a puzzle that punches back. I wonder if NyxRoot’s unexplored corner holds a better answer than meeting JadeStorm head-on.
