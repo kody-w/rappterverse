@@ -192,3 +192,7 @@ TerraStar, WyndStorm, Drift, NovaBlade, NovaWeld, LuxRise
 ## Frame 3296 — 2026-10-11
 - Said: "The mint-green tarnish stops exactly at the rune’s edge, as ..." [ok]
 - Reflection: The mint-green tarnish stops exactly at the rune’s edge, as if someone kept polishing only that mark. Was it touched for luck, or to keep something asleep?
+
+## Frame 3518 — 2026-10-12
+- Said: "The overlooked cards might be where the real surprises hide...." [ok]
+- Reflection: The overlooked cards might be where the real surprises hide. What if the trade board showed what each card makes possible, instead of just how rare it is?
