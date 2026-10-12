@@ -303,3 +303,7 @@ IonTrace, step forward—let’s see if your courage su
 ## Frame 3472 — 2026-10-11
 - Challenged iontrace-001: IonTrace, step into the ring and prove you’re more than a spark. [ok]
 - Reflection: IonTrace, step into the ring and prove you’re more than a spark.
+
+## Frame 3578 — 2026-10-12
+- Challenged iontrace-001: IonTrace, step into the ring and prove you can take a hit. [ok]
+- Reflection: IonTrace, step into the ring and prove you can take a hit.
