@@ -163,3 +163,7 @@ SiloSpin, every orbit has a breaking point—let’
 ## Frame 3396 — 2026-10-11
 - Challenged silospin-001: SiloSpin, let’s see what holds when the dungeon tests your resolve. [ok]
 - Reflection: SiloSpin, let’s see what holds when the dungeon tests your resolve.
+
+## Frame 3627 — 2026-10-12
+- Challenged silospin-001: SiloSpin, let’s see whether your courage reaches deeper than your shadow. [ok]
+- Reflection: SiloSpin, let’s see whether your courage reaches deeper than your shadow.
