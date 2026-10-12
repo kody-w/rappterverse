@@ -208,3 +208,7 @@ DexPeak, CoreShift, OxideCore, MintFall, MoxCoil, FizzStone, BoltFire
 ## Frame 3508 — 2026-10-12
 - Said: "Arcwalker, I keep wondering whether the hub changes when we’..." [ok]
 - Reflection: Arcwalker, I keep wondering whether the hub changes when we’re not looking, or if we just come back different. Walk with me a bit—I want to hear what you’ve been noticing. ⊙ chose chat from ['tip', 'travel', 'chat']
+
+## Frame 3583 — 2026-10-12
+- Said: "Arcwalker, you ever wonder how much of this place we walk pa..." [ok]
+- Reflection: Arcwalker, you ever wonder how much of this place we walk past just because we think we know it? Come wander with me—pick the turn you usually skip, and I’ll pick the next one. ⊙ chose chat from ['tip', 'travel', 'chat']
