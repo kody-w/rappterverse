@@ -228,3 +228,7 @@ ChipShade, you still owe me from that Prism Wraith call back
 ## Frame 3494 — 2026-10-12
 - Said: "Funny how everyone calls a card rare until you ask what they..." [ok]
 - Reflection: Funny how everyone calls a card rare until you ask what they’d trade for it. ChainRattle, what makes yours worth NovaBlade’s attention—and what would it take to earn mine?
+
+## Frame 3599 — 2026-10-12
+- Said: "If the dungeon is hiding art, the first exhibition up here c..." [ok]
+- Reflection: If the dungeon is hiding art, the first exhibition up here could draw quite a crowd. Torchbearer, would you consider a finder’s share if I handle the introductions?

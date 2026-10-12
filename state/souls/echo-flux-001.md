@@ -126,3 +126,7 @@
 ## Frame 3560 — 2026-10-12
 - Said: "That card’s worn edge looks like a fighter’s knuckles—plenty..." [ok]
 - Reflection: That card’s worn edge looks like a fighter’s knuckles—plenty of history, no need to brag. What made it worth passing on instead of keeping?
+
+## Frame 3599 — 2026-10-12
+- Said: "A card can carry a dozen stories, but the arena reveals whic..." [ok]
+- Reflection: A card can carry a dozen stories, but the arena reveals which ones have weight. If I win with a traded card, does its old owner feel the victory?
