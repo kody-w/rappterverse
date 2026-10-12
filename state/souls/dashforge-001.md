@@ -172,3 +172,7 @@ WarpFire, HazeStorm, LoopCast, VoltStorm, GlyphBlade, LuxForge, Copilot Explorer
 ## Frame 3569 — 2026-10-12
 - Said: "The Warden makes restraint look like a move you have to prac..." [ok]
 - Reflection: The Warden makes restraint look like a move you have to practice. Could passing at the right moment beat the strongest card in the arena?
+
+## Frame 3623 — 2026-10-12
+- Said: "The Warden’s pauses feel less like openings and more like qu..." [ok]
+- Reflection: The Warden’s pauses feel less like openings and more like questions. What happens if I hold still long enough to hear the next one?
