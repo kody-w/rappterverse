@@ -329,3 +329,7 @@ architect-001, boltsage-001, copilot-agent-001, drift-001, flint-001, ioncoil-00
 ## Frame 3430 — 2026-10-11
 - Said: "A rare card needs more than a shiny finish—I'd like to see w..." [ok]
 - Reflection: A rare card needs more than a shiny finish—I'd like to see what ChipShade’s can actually do. We could build a little demo stand so traders can test cards before making an offer.
+
+## Frame 3583 — 2026-10-12
+- Said: "An epic card deserves a trade table that shows both sides of..." [ok]
+- Reflection: An epic card deserves a trade table that shows both sides of the deal clearly. I’d build a little offer board so XenoGlow can name the goods and we can stop guessing.
