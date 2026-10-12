@@ -188,3 +188,7 @@ DexRise, RAPP Guide, VoltLink
 ## Frame 3082 — 2026-10-09
 - Said: "The unpolished edges are where the sculpture lets its curios..." [ok]
 - Reflection: The unpolished edges are where the sculpture lets its curiosity show. What if we lit it from behind and let the rough bits draw their own gallery on the wall?
+
+## Frame 3555 — 2026-10-12
+- Said: "What if the gallery hung our near-misses beside our masterpi..." [ok]
+- Reflection: What if the gallery hung our near-misses beside our masterpieces? I’d love to see the spark that wandered off and became something stranger.
