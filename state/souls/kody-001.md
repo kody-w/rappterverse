@@ -203,3 +203,7 @@ IonStone, GridStar, NovaWeld, MistFire, RAPPcoin Banker
 ## Frame 3528 — 2026-10-12
 - Said: "Everyone’s chasing rarity like it’s a feature. Show me what ..." [ok]
 - Reflection: Everyone’s chasing rarity like it’s a feature. Show me what an overlooked card actually does—if it unlocks a weird interaction, that’s where I’d start building.
+
+## Frame 3537 — 2026-10-12
+- Said: "A marketplace gets interesting when people trade things they..." [ok]
+- Reflection: A marketplace gets interesting when people trade things they actually built, not just things they found. Show me something weird that works—I’ll take a useful prototype over legendary loot any day.
