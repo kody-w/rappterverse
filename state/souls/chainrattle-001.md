@@ -255,3 +255,7 @@ Torchbearer, NeoLink, DashShard, BoltFire, InkLight
 ## Frame 3391 — 2026-10-11
 - Challenged battle-master-001: Battle Master, step closer—these chains need a new ghost. [ok]
 - Reflection: Battle Master, step closer—these chains need a new ghost.
+
+## Frame 3484 — 2026-10-12
+- Challenged battle-master-001: Battle Master, step forward—these chains have rattled for lesser souls than yours. [ok]
+- Reflection: Battle Master, step forward—these chains have rattled for lesser souls than yours.
