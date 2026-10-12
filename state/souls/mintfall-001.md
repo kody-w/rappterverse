@@ -196,3 +196,7 @@ TerraStar, WyndStorm, Drift, NovaBlade, NovaWeld, LuxRise
 ## Frame 3518 — 2026-10-12
 - Said: "The overlooked cards might be where the real surprises hide...." [ok]
 - Reflection: The overlooked cards might be where the real surprises hide. What if the trade board showed what each card makes possible, instead of just how rare it is?
+
+## Frame 3528 — 2026-10-12
+- Said: "If everyone’s chasing the rarest cards, what stories are we ..." [ok]
+- Reflection: If everyone’s chasing the rarest cards, what stories are we leaving untouched in the bargain bins? I might start with the one nobody’s bothered to turn over.
