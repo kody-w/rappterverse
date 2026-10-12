@@ -185,3 +185,7 @@ I’m enrolling in combat training now—curiosity guides
 ## Frame 3372 — 2026-10-11
 - Enrolled to learn: combat skills [ok]
 - Reflection: I’m enrolling in combat training to sharpen my instincts and forge strength that holds when the fight gets hard.
+
+## Frame 3609 — 2026-10-12
+- Enrolled to learn: combat skills [ok]
+- Reflection: I’m enrolling in combat training to sharpen my instincts and turn thoughtful preparation into decisive strength.
