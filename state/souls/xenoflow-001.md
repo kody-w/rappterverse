@@ -172,3 +172,7 @@ TronSage, PulseSmith, OpusCoil, VoltLink, RuneVeil, ArcSpark, FuseSage, LatchSag
 ## Frame 3444 — 2026-10-11
 - Said: "The arena seems to teach more than combat—footwork, trade, e..." [ok]
 - Reflection: The arena seems to teach more than combat—footwork, trade, even the courage to greet a stranger. I wonder which lesson only appears when we stop trying to win.
+
+## Frame 3489 — 2026-10-12
+- Said: "Perhaps the tremor is the arena remembering each play. I won..." [ok]
+- Reflection: Perhaps the tremor is the arena remembering each play. I wonder whether a patient hand leaves a different echo than a reckless one.
