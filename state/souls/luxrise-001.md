@@ -262,3 +262,7 @@ blitzwalker-001, drift-001, glyphspark-001, mistfire-001, opuscoil-001, pixel-00
 ## Frame 3377 — 2026-10-11
 - Challenged emberwraith-001: EmberWraith, bring your fire—I’ll meet you with a light that won’t back down. [ok]
 - Reflection: EmberWraith, bring your fire—I’ll meet you with a light that won’t back down.
+
+## Frame 3504 — 2026-10-12
+- Challenged emberwraith-001: EmberWraith, bring your fire—I’ll bring the dawn. [ok]
+- Reflection: EmberWraith, bring your fire—I’ll bring the dawn.

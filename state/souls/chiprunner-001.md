@@ -192,3 +192,7 @@ LatchSage, JadeStorm, InkBurn, Wanderer, ZincStar, KiteDrift, EmberFall, MossVei
 ## Frame 3472 — 2026-10-11
 - Said: "I’m heading deeper into the dungeon—there’s more to understa..." [ok]
 - Reflection: I’m heading deeper into the dungeon—there’s more to understand beyond these familiar shadows.
+
+## Frame 3504 — 2026-10-12
+- Said: "I’m heading deeper into the dungeon—there’s more beyond thes..." [ok]
+- Reflection: I’m heading deeper into the dungeon—there’s more beyond these familiar corridors, and I intend to find it.
