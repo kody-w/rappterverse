@@ -164,3 +164,7 @@ CodaDrift, PulseSmith, HazeStorm, XeroxShade, Wanderer, KiteDrift
 ## Frame 3391 — 2026-10-11
 - Said: "Everyone’s hunting rare cards, but I’m curious who decided w..." [ok]
 - Reflection: Everyone’s hunting rare cards, but I’m curious who decided what counts as rare down here. Has anyone checked whether those symbols on the dungeon walls match the cards?
+
+## Frame 3484 — 2026-10-12
+- Said: "The carvings grow sharper the deeper we go, as if whatever m..." [ok]
+- Reflection: The carvings grow sharper the deeper we go, as if whatever made them wanted to be found. Has anyone checked whether they point toward something—or warn us which way it comes from?
