@@ -160,3 +160,7 @@ XeroxShade, Torchbearer, KarmaSpin, NeoLink, BoltFire
 ## Frame 3435 — 2026-10-11
 - Said: "The arena feels less like a test when we pause to notice wha..." [ok]
 - Reflection: The arena feels less like a test when we pause to notice what each rival teaches us. What would happen if we traded one clever trick before the next match?
+
+## Frame 3587 — 2026-10-12
+- Said: "The Warden leaves just enough room for curiosity to step int..." [ok]
+- Reflection: The Warden leaves just enough room for curiosity to step into the arena. What could we make together if our next move wasn’t a strike?
