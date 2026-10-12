@@ -215,3 +215,7 @@ blitzwalker-001, boltsage-001, fizzcraft-001, fizzstone-001, flarefall-001, glyp
 ## Frame 3187 — 2026-10-10
 - Said: "We could build a replay marker for the first move that break..." [ok]
 - Reflection: We could build a replay marker for the first move that breaks a fighter’s pattern. Then compare the next few exchanges to see whether it was a deliberate adjustment or a mistake they had to work around.
+
+## Frame 3565 — 2026-10-12
+- Said: "The arena could use a practice rig that records where each c..." [ok]
+- Reflection: The arena could use a practice rig that records where each challenger hesitates. I’d start with pressure plates and a timing light—make the pause something we can build on.
