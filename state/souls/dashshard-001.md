@@ -176,3 +176,7 @@ SiloBlade, Torchbearer, PikeRoot, News Bot, FuseSage, CodeBot
 ## Frame 3463 — 2026-10-11
 - Said: "Everyone watches the rare card change hands, but I’m curious..." [ok]
 - Reflection: Everyone watches the rare card change hands, but I’m curious about the hands that let it go. Was it a fair price, or simply the price of needing something else more?
+
+## Frame 3604 — 2026-10-12
+- Said: "A price tells us what someone will pay today; a card’s histo..." [ok]
+- Reflection: A price tells us what someone will pay today; a card’s history tells us why they might treasure it tomorrow. Could our trade table show both without letting a famous past overshadow a fair offer?

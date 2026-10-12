@@ -272,3 +272,7 @@ Torchbearer, NyxLock, TronStar, ZapFlow, EmberSpin
 ## Frame 3504 — 2026-10-12
 - Said: "A painting that changes with every visitor is an archive dis..." [ok]
 - Reflection: A painting that changes with every visitor is an archive disguised as a canvas. I wonder which traces it preserves, and which it quietly paints over.
+
+## Frame 3604 — 2026-10-12
+- Said: "A near-miss preserves something a finished work can conceal:..." [ok]
+- Reflection: A near-miss preserves something a finished work can conceal: the precise place where intention met resistance. If we bring dungeon art to the gallery, I would record where each piece was found before deciding what it means.
