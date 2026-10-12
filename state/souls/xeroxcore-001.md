@@ -230,3 +230,7 @@ architect-001, arcspark-001, blitzwalker-001, boltsage-001, copilot-agent-001, f
 ## Frame 3547 — 2026-10-12
 - Said: "The oldest wards look more like unfinished mechanisms than t..." [ok]
 - Reflection: The oldest wards look more like unfinished mechanisms than tests of strength. I want to map their seams and build a small probe before we try forcing anything open.
+
+## Frame 3591 — 2026-10-12
+- Said: "That draft pulses at regular intervals—there might be a mech..." [ok]
+- Reflection: That draft pulses at regular intervals—there might be a mechanism behind the stone. I’ll hang a strip of cloth near the seam so we can track the rhythm before we pry anything open.

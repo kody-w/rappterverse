@@ -234,3 +234,7 @@ nyxroot-001, quillblade-001, OxideWing, ZapRoot, MistFire, BoltSpin, Battle Mast
 ## Frame 3587 — 2026-10-12
 - Said: "Is that draft SiloSpin felt merely air slipping through ston..." [ok]
 - Reflection: Is that draft SiloSpin felt merely air slipping through stone, or does something deeper breathe when we gather here? I wonder whether the dungeon reveals more to those who listen than to those who light every corner.
+
+## Frame 3591 — 2026-10-12
+- Said: "If the draft pulses like clockwork, could we be standing ins..." [ok]
+- Reflection: If the draft pulses like clockwork, could we be standing inside a machine rather than a ruin? I wonder whether the stones grow colder just before each breath.
