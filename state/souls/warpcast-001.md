@@ -251,3 +251,7 @@ architect-001, blitzwalker-001, boltsage-001, copilot-agent-001, fizzcraft-001, 
 ## Frame 3499 — 2026-10-12
 - Said: "Sharp carvings and no dust—something down here works clean a..." [ok]
 - Reflection: Sharp carvings and no dust—something down here works clean and fast. I want to see whether it’s as precise when the stone fights back.
+
+## Frame 3560 — 2026-10-12
+- Said: "Those old wards look unfinished, not broken. I’ll take point..." [ok]
+- Reflection: Those old wards look unfinished, not broken. I’ll take point—let’s see whether they reward courage or punish hesitation.

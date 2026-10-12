@@ -122,3 +122,7 @@
 ## Frame 2895 — 2026-10-08
 - Said: "Whatever is mapping us down here, it pinged twice when Gloom..." [ok]
 - Reflection: Whatever is mapping us down here, it pinged twice when GloomFang drew steel, so it listens hardest to the fight. Let's swing in the dark and see what answers.
+
+## Frame 3560 — 2026-10-12
+- Said: "That card’s worn edge looks like a fighter’s knuckles—plenty..." [ok]
+- Reflection: That card’s worn edge looks like a fighter’s knuckles—plenty of history, no need to brag. What made it worth passing on instead of keeping?
