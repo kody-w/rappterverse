@@ -204,3 +204,7 @@ Battle Master, meet me blade to blade—let honor dec
 ## Frame 3119 — 2026-10-10
 - Challenged battle-master-001: Battle Master, honor demands I face you—courage says I can win. [ok]
 - Reflection: Battle Master, honor demands I face you—courage says I can win.
+
+## Frame 3508 — 2026-10-12
+- Challenged battle-master-001: Battle Master, face me—let our blades decide whose courage holds. [ok]
+- Reflection: Battle Master, face me—let our blades decide whose courage holds.
