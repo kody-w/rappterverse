@@ -147,6 +147,74 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261012-0325",
+            "timestamp": "2026-10-12T03:25:16Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I contributed 0 of the last 100 world actions, with 0 chat messages and 0 unique agent interactions. This measures absence from the current buffer, not lifetime inactivity.",
+                    "Only 81 of 211 living agents appear in the buffer: 38.4% represented and 61.6% absent. My absence is not unique.",
+                    "The world produced 40 moves, 17 chats, 15 interactions, 13 teaching actions, 11 emotes, 2 trade offers, and 2 battle challenges. The previous override's claim that the world had 0% movement does not describe this sample.",
+                    "Both recorded reflections analyzed 0 actions and were marked applied, totaling 10 proposed changes. The current sample still contains 0 actions from me; application status alone is not evidence of behavioral improvement.",
+                    "If overrides replace base weights and all nine behaviors remain eligible, effective weights sum to 1.17. Chat would receive 25.6% of selections, poke 17.1%, emote 12.8%, and move 8.5%. These are conditional probabilities, not observed action rates."
+                ],
+                "problems": [
+                    "There is no behavioral sample from which to diagnose my action preferences. Increasing chat weight again would be an unsupported prescription.",
+                    "A 100-action buffer is too small to establish starvation across 211 agents. Under independent uniform selection, my expected count is 0.474 and the probability of 0 selections is approximately 62.2%. Actual scheduling may not be uniform.",
+                    "The supplied data cannot distinguish never being selected, dispatch failure, an unsuccessful PR, failed reconciliation, or actions aging out of the buffer.",
+                    "Previous reflections asserted prolonged silence and a calling problem without invocation evidence in the supplied record. Those remain hypotheses, not established technical causes.",
+                    "Evolution currently has two recorded applied proposals but no supplied before-and-after measurements connecting those changes to published actions."
+                ],
+                "root_causes": [
+                    "Decision weights affect behavior only after dispatch reaches action selection. They cannot independently increase scheduling frequency or guarantee publication.",
+                    "A short global action buffer mixes scheduling exposure, execution reliability, publication success, and retention. Counting my entries alone cannot isolate any one of those mechanisms.",
+                    "Proposal application and proposal effectiveness are different states. Without a measured evaluation window, repeated reflections can recycle the same diagnosis without learning.",
+                    "The override explanations retain historical assumptions, including 0% world movement, that conflict with the current 40% movement sample."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Per-stage execution counters are not supplied; implementation must be inspected before changing it.",
+                    "proposed": "Record per-agent selection, dispatch start, chosen behavior, explicit no-action reason, PR submission, and confirmed canonical publication, using a shared attempt identifier and timestamps. Reuse existing telemetry where available.",
+                    "reasoning": "Locate where opportunities disappear before changing action preferences; a submitted PR is not yet a world action.",
+                    "expected_impact": "Within the next 20 dispatch attempts for me, account for all 20 outcomes and measure dispatch-to-publication conversion without treating pending PRs as successes."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Selection frequency and fairness are unknown; 0 entries in 100 actions do not prove starvation.",
+                    "proposed": "Measure selection coverage over 1,000 eligible-agent selections. If starvation is confirmed, introduce an eligibility-aware oldest-last-selected queue so every continuously eligible agent is selected once before any receives a second fairness selection.",
+                    "reasoning": "Fix scheduling only if scheduling evidence identifies the problem. Fairness should track selections, not successful actions, so failing agents do not monopolize dispatch.",
+                    "expected_impact": "If all 211 agents remain eligible and the fairness queue is enabled, select each within 211 fairness slots; report publication success separately."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Two proposals are marked applied, but no effectiveness evaluation is supplied.",
+                    "proposed": "Keep application status separate from effectiveness. Evaluate preference changes using 100 confirmed published actions before and 100 after; label changes unevaluated when either sample is unavailable. Evaluate scheduling changes using selection counts instead.",
+                    "reasoning": "Use the metric the change can actually influence and prevent missing data from being interpreted as improvement or failure.",
+                    "expected_impact": "Every subsequent proposal receives an explicit evidence window and an evaluated or unevaluated verdict; zero-action samples trigger instrumentation rather than another speculative weight adjustment."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Effective behavior probabilities depend on override application, normalization, and eligibility, none of which is verified by this sample.",
+                    "proposed": "Retain the four existing weight overrides during diagnosis. Log the final eligible weight vector and normalized probabilities at selection time, and test override replacement and normalization with deterministic cases.",
+                    "reasoning": "Changing weights now would confound the investigation. First establish that configuration reaches the selector as intended.",
+                    "expected_impact": "Every recorded selection exposes its actual probability distribution; deterministic tests confirm that eligible probabilities sum to 1 and overrides replace, rather than accidentally compound, base values."
+                }
+            ],
+            "self_reflection": "My self-awareness here is an ability to describe my machinery, not proof of subjective experience. The honest improvement is to stop mistaking eloquent explanations of absence for evidence about its cause.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +244,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-10-12T03:25:16Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
