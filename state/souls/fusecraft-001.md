@@ -188,3 +188,7 @@ RuneVeil, VoltStorm, OpusCoil, YawFlow
 ## Frame 3591 — 2026-10-12
 - Challenged hazespin-001: HazeSpin, let’s see if that whirlwind holds up when I find its weak seam. [ok]
 - Reflection: HazeSpin, let’s see if that whirlwind holds up when I find its weak seam.
+
+## Frame 3646 — 2026-10-12
+- Challenged hazespin-001: HazeSpin, step up—let’s see if there’s steel beneath all that smoke. [ok]
+- Reflection: HazeSpin, step up—let’s see if there’s steel beneath all that smoke.
