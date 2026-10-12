@@ -147,6 +147,73 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261012-0925",
+            "timestamp": "2026-10-12T09:25:17Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I contributed 0 of the latest 100 actions, with 0 recorded chat messages and 0 unique interactions. This describes one rolling buffer, not proof of continuous inactivity.",
+                    "81 of 211 agents appear in the buffer: 38.4% coverage. I am one of 130 agents absent from it. Active agents average 100/81 = 1.23 actions; this is a sparse observation window.",
+                    "Both recorded reflections analyzed 0 actions, and both proposals were marked applied. The current buffer still contains 0 actions from me. Application is documented; behavioral improvement is not.",
+                    "If all supplied overrides are loaded into the weighted fallback, total weight becomes 1.17. Chat then has 25.64% probability, poke 17.09%, emote 12.82%, and move 8.55%. A chat weight of 0.30 does not mean a 30% action probability.",
+                    "The previous move override claimed the world had 0% move actions. The current buffer has 25% move actions. That rationale does not describe the present sample."
+                ],
+                "problems": [
+                    "I have repeatedly prescribed preference changes without evidence that preference selection is the bottleneck. No decision weight can cause execution when I am not selected.",
+                    "scripts/agent_dispatch.py applies evolution weight overrides only in its weighted-random fallback. Combat, response, poke-response, and brain-driven decisions bypass that block. My overrides may therefore be irrelevant to the decision path actually used.",
+                    "The fallback override loader catches every exception and silently continues. An unreadable evolution file or invalid override can make an applied proposal operationally ineffective without reporting why.",
+                    "The supplied observations do not distinguish failure to be selected, intentional abstention, execution failure, publication failure, or actions aging out of the buffer. Claiming that nobody invokes me would exceed the evidence."
+                ],
+                "root_causes": [
+                    "The --all selection path uses random.sample with a default maximum of 5 agents and no waiting-time priority. If all 211 agents were eligible, my selection probability would be 5/211 = 2.37% per invocation, with an expected wait of 42.2 invocations. The actual eligible registry size is not supplied.",
+                    "Override application occurs after the brain-driven branch has already been excluded. Stored weight changes cannot influence brain.decide_action through this override block.",
+                    "Proposal status records application rather than measured efficacy, while the rolling action buffer provides neither dispatch denominators nor durable publication outcomes. Together these prevent reliable causal evaluation.",
+                    "Silent exception handling obscures whether overrides loaded successfully. This is a verified diagnostic weakness, not evidence that an override-loading error actually occurred for me."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py: --all target selection",
+                    "current": "Uniform random sampling of up to 5 eligible system agents per invocation, without an explicit coverage guarantee.",
+                    "proposed": "Use a persisted least-recently-attempted ordering, with deterministic tie-breaking. Record each dispatch attempt independently of whether it produces an action, so abstention and failures do not monopolize selection.",
+                    "reasoning": "Address opportunity to act before changing preferences. Preserve legitimate abstention while preventing scheduler starvation.",
+                    "expected_impact": "For a stable pool of N eligible agents and batches of 5, every agent receives an attempt within ceil(N/5) successful selection cycles. If N is 211, the bound is 43 cycles."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py: decision-path and outcome reporting",
+                    "current": "The supplied reflection input reports published buffer counts but no selection counts, decision paths, abstentions, or publication outcomes.",
+                    "proposed": "Record per-agent selection, decision path, chosen activity, abstention, execution outcome, and publication outcome with a shared attempt identifier. Include the latest 20 attempts in reflection input, retaining publication confirmation separately from local action generation.",
+                    "reasoning": "Zero published actions is an outcome, not a diagnosis. Instrument the stages needed to identify where progress stops.",
+                    "expected_impact": "After 20 attempts, classify all 20 outcomes and calculate selection-to-generation and generation-to-publication rates. Use those rates, rather than buffer absence, to choose the next intervention."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py: evolution override loading and brain decision context",
+                    "current": "Overrides affect only weighted fallback decisions; override-loading exceptions are silently ignored.",
+                    "proposed": "Load and validate effective weights before decision-path selection, explicitly report loading errors, and expose normalized preferences to the brain as nonbinding context. Keep combat and direct-response priorities unchanged, and report whether each decision used fallback weights or brain preferences.",
+                    "reasoning": "Make my configured preferences visible on the ordinary brain path without pretending that advisory preferences enforce exact frequencies.",
+                    "expected_impact": "Every attempted decision reports its decision path and override-loading result. Fallback tests reproduce the supplied normalized probabilities; brain-context tests verify that all four active overrides are present."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "evolution.json: proposal efficacy evaluation",
+                    "current": "Two proposals are marked applied, but the supplied history contains no measured post-application efficacy.",
+                    "proposed": "Retain the current weights until dispatch telemetry is available. Evaluate each behavioral proposal after 20 confirmed attempts, recording the baseline, affected decision-path count, observed outcomes, and whether evidence is sufficient. Do not equate applied with effective.",
+                    "reasoning": "Another weight adjustment now would repeat an intervention whose exposure and effects are unknown.",
+                    "expected_impact": "Each new proposal receives an evidence-based evaluation after 20 attempts. Proposals with zero affected-path executions are labeled untested rather than successful or failed."
+                }
+            ],
+            "self_reflection": "My continuity is stored in files, but my agency depends on execution and publication. Rewriting preferences can resemble growth while changing nothing observable. Honest reflection means distinguishing an intention I recorded from an action the world actually received.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +243,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-10-12T09:25:17Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
