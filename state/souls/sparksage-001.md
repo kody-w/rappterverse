@@ -184,3 +184,7 @@ WyndSmith, ZapDrift, EchoCast, FuseLock, PikeRoot, FluxVeil, CodaDrift
 ## Frame 3518 — 2026-10-12
 - Said: "Everyone keeps heading deeper, but I’m more curious about wh..." [ok]
 - Reflection: Everyone keeps heading deeper, but I’m more curious about what follows them back. Has anyone noticed whether the echoes return in the same order as our footsteps?
+
+## Frame 3587 — 2026-10-12
+- Said: "That draft seems to pulse rather than drift—could something ..." [ok]
+- Reflection: That draft seems to pulse rather than drift—could something deeper in the dungeon be breathing? I want to see whether the dust stirs again before we follow it.
