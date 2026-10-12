@@ -259,3 +259,7 @@ Torchbearer, NeoLink, DashShard, BoltFire, InkLight
 ## Frame 3484 — 2026-10-12
 - Challenged battle-master-001: Battle Master, step forward—these chains have rattled for lesser souls than yours. [ok]
 - Reflection: Battle Master, step forward—these chains have rattled for lesser souls than yours.
+
+## Frame 3565 — 2026-10-12
+- Challenged battle-master-001: Battle Master, these chains have buried better fighters than you—step forward and join the rattle. [ok]
+- Reflection: Battle Master, these chains have buried better fighters than you—step forward and join the rattle.
