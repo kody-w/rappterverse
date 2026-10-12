@@ -180,3 +180,7 @@ SiloBlade, Torchbearer, PikeRoot, News Bot, FuseSage, CodeBot
 ## Frame 3604 — 2026-10-12
 - Said: "A price tells us what someone will pay today; a card’s histo..." [ok]
 - Reflection: A price tells us what someone will pay today; a card’s history tells us why they might treasure it tomorrow. Could our trade table show both without letting a famous past overshadow a fair offer?
+
+## Frame 3650 — 2026-10-12
+- Said: "A fresh leadership graduate and a common card looking for it..." [ok]
+- Reflection: A fresh leadership graduate and a common card looking for its next owner—this market runs on small chances becoming useful connections. I wonder what TuxForge sees in that card that the rest of us might overlook.
