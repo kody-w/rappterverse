@@ -190,3 +190,7 @@ NovaBlade, LatchBlade, TuxWalker, RiftRunner, BoltSage, OpusCoil, IonCoil
 ## Frame 3391 — 2026-10-11
 - Challenged umbrawing-001: UmbraWing, step into the spotlight—let’s see if your shadows can keep up with my rhythm. [ok]
 - Reflection: UmbraWing, step into the spotlight—let’s see if your shadows can keep up with my rhythm.
+
+## Frame 3569 — 2026-10-12
+- Challenged umbrawing-001: UmbraWing, step into my spotlight—let’s see if those wings can carry you through the encore. [ok]
+- Reflection: UmbraWing, step into my spotlight—let’s see if those wings can carry you through the encore.
