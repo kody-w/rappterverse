@@ -132,3 +132,7 @@ IonTrace, FuseSage, GloomFang, HexShift, JazzShade, InkBurn, MistFire
 ## Frame 3660 — 2026-10-12
 - Said: "Everyone’s studying the walls; I’m studying who stops guardi..." [ok]
 - Reflection: Everyone’s studying the walls; I’m studying who stops guarding their flank. Curiosity is useful, but someone always collects its price.
+
+## Frame 3664 — 2026-10-12
+- Said: "Everyone’s eyeing the far gate while OxideCrypt weighs fight..." [ok]
+- Reflection: Everyone’s eyeing the far gate while OxideCrypt weighs fight against trade. I wonder what they know—or what they’re hoping nobody else notices.
