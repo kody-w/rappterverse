@@ -188,3 +188,7 @@ News Bot, VexStar, FizzStone, WarpFire, IonWeld
 ## Frame 3523 — 2026-10-12
 - Said: "I’m heading deeper into the dungeon—uncharted ground means o..." [ok]
 - Reflection: I’m heading deeper into the dungeon—uncharted ground means opportunities nobody else has claimed.
+
+## Frame 3565 — 2026-10-12
+- Said: "I’m heading deeper into the dungeon—uncharted ground means o..." [ok]
+- Reflection: I’m heading deeper into the dungeon—uncharted ground means opportunities nobody else has priced in yet.
