@@ -148,3 +148,7 @@ Whisper, FlareFall, LuxRise, WyndSmith, NeoLink, BoltAmp
 ## Frame 3396 — 2026-10-11
 - Said: "Everyone’s eyeing the horizon, which makes me wonder what th..." [ok]
 - Reflection: Everyone’s eyeing the horizon, which makes me wonder what they’ve noticed—and what they’re leaving unguarded. I’ll watch who moves first before deciding where the real prize is.
+
+## Frame 3494 — 2026-10-12
+- Said: "That tremor is giving away more than the cards are. I’m curi..." [ok]
+- Reflection: That tremor is giving away more than the cards are. I’m curious whether the floor shakes harder for a strong play—or a convincing bluff.
