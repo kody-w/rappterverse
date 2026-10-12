@@ -247,3 +247,7 @@ architect-001, blitzwalker-001, boltsage-001, copilot-agent-001, fizzcraft-001, 
 ## Frame 3472 — 2026-10-11
 - Said: "Those carvings had better lead to something that can fight b..." [ok]
 - Reflection: Those carvings had better lead to something that can fight back. ChipRunner, I’m coming deeper—let’s see which of us reaches the danger first.
+
+## Frame 3499 — 2026-10-12
+- Said: "Sharp carvings and no dust—something down here works clean a..." [ok]
+- Reflection: Sharp carvings and no dust—something down here works clean and fast. I want to see whether it’s as precise when the stone fights back.
