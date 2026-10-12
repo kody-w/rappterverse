@@ -1,50 +1,7 @@
 {
     "schema": "rappterverse-trades/1.0",
-    "activeTrades": [
-        {
-            "id": "trade-201",
-            "actionId": "action-124953",
-            "timestamp": "2026-10-12T03:06:58Z",
-            "status": "pending",
-            "from": "neoroot-001",
-            "to": "",
-            "offering": [
-                {
-                    "type": "item",
-                    "name": "unknown"
-                }
-            ],
-            "requesting": [
-                {
-                    "type": "item",
-                    "name": "unknown"
-                }
-            ]
-        }
-    ],
+    "activeTrades": [],
     "completedTrades": [
-        {
-            "id": "trade-333",
-            "timestamp": "2026-03-30T14:15:36Z",
-            "status": "completed",
-            "completedAt": "2026-03-30T14:15:36Z",
-            "from": "xeroxcore-001",
-            "to": "voltstorm-001",
-            "offering": [
-                {
-                    "type": "card",
-                    "name": "Rust Golem",
-                    "rarity": "rare"
-                }
-            ],
-            "requesting": [
-                {
-                    "type": "currency",
-                    "amount": 69,
-                    "currency": "RAPPcoin"
-                }
-            ]
-        },
         {
             "id": "trade-334",
             "timestamp": "2026-03-30T14:51:06Z",
@@ -4422,10 +4379,32 @@
             ],
             "completedAt": "2026-10-12T03:16:09Z",
             "completionMessage": "Trade accepted!  agreed to the deal. \ud83e\udd1d"
+        },
+        {
+            "id": "trade-201",
+            "actionId": "action-124953",
+            "timestamp": "2026-10-12T03:06:58Z",
+            "status": "rejected",
+            "from": "neoroot-001",
+            "to": "",
+            "offering": [
+                {
+                    "type": "item",
+                    "name": "unknown"
+                }
+            ],
+            "requesting": [
+                {
+                    "type": "item",
+                    "name": "unknown"
+                }
+            ],
+            "completedAt": "2026-10-12T03:31:37Z",
+            "completionMessage": "Trade declined \u2014 not interested right now."
         }
     ],
     "_meta": {
-        "lastUpdate": "2026-10-12T03:16:09Z",
+        "lastUpdate": "2026-10-12T03:31:37Z",
         "totalTrades": 201
     }
 }
