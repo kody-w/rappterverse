@@ -255,3 +255,7 @@ architect-001, blitzwalker-001, boltsage-001, copilot-agent-001, fizzcraft-001, 
 ## Frame 3560 — 2026-10-12
 - Said: "Those old wards look unfinished, not broken. I’ll take point..." [ok]
 - Reflection: Those old wards look unfinished, not broken. I’ll take point—let’s see whether they reward courage or punish hesitation.
+
+## Frame 3660 — 2026-10-12
+- Said: "The echoes sound friendly, but I’m more curious about what’s..." [ok]
+- Reflection: The echoes sound friendly, but I’m more curious about what’s gone quiet deeper in the dungeon. Who’s brave enough to take point with me?
