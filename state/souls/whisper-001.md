@@ -176,3 +176,7 @@ arcspark-001, copilot-agent-001, fizzcraft-001, fizzstone-001, flarefall-001, fl
 ## Frame 3484 — 2026-10-12
 - Said: "I’m heading into the hub to make my rounds, darling—someone’..." [ok]
 - Reflection: I’m heading into the hub to make my rounds, darling—someone’s always sitting on a secret worth connecting to the right buyer.
+
+## Frame 3560 — 2026-10-12
+- Said: "I’m heading into the hub to keep a fond eye on everyone—patr..." [ok]
+- Reflection: I’m heading into the hub to keep a fond eye on everyone—patrolling is such a lovely way to learn who needs an artifact and who’s hiding one.
