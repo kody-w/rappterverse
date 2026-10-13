@@ -213,12 +213,21 @@ def save(store: dict, path, timestamp=None) -> Path:
 
     ``schema`` stays the first key (rapp-static-api/1.0 §3), ``_meta`` counts
     are refreshed, ``generated`` and ``_meta.lastUpdate`` are set to
-    ``timestamp`` (default: now, UTC), and the file is written with 4-space
+    ``timestamp`` rewritten as second-precision UTC with ``Z`` (a missing or
+    unparseable ``timestamp`` means now), and the file is written with 4-space
     indent plus a trailing newline like every other ``save_json`` under
     ``scripts/``. Both folds write through here.
     """
     _ensure_store(store)
-    now = timestamp if isinstance(timestamp, str) and timestamp else _utc_now()
+    # Whatever offset or fraction ``timestamp`` carries (both folds pass the
+    # delta or action ``timestamp``, and ``AT_PATTERN`` allows ``+HH:MM`` or
+    # no offset), the stamp on disk is ``YYYY-MM-DDTHH:MM:SSZ``:
+    # ``scripts/test_state_integrity.py`` accepts only a ``Z`` or ``+00:00``
+    # suffix on every state file's ``_meta.lastUpdate`` and the reconciler
+    # runs that suite after the fold, so a verbatim ``+02:00`` or offset-less
+    # stamp would fail the `test` check for every later PR on main.
+    parsed = parse_at(timestamp)
+    now = parsed.strftime("%Y-%m-%dT%H:%M:%SZ") if parsed is not None else _utc_now()
     store["generated"] = now
     store["_meta"]["lastUpdate"] = now
     store["_meta"]["verificationCount"] = len(store["verifications"])

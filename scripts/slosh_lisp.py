@@ -68,7 +68,12 @@ def strip_comments(raw):
     """Drop every `;` comment (to end of line) that is outside a string literal.
 
     This is the RappterVM's comment grammar — one or more `;` — not just the
-    `;;` header convention, and a `;` inside a string stays put. A string
+    `;;` header convention, and a `;` inside a string stays put. As in
+    ``browser_tokenize``, a `;` starts a comment only where a token starts:
+    at the beginning of the text or after whitespace, a parenthesis or a
+    closing quote. Inside a symbol (`wave;c`) it is an ordinary character
+    for ``src/js/rappter-vm.js``, so stripping it would ship a different
+    body from the one the browser reads. A string
     runs to the next `"` with no backslash escapes, exactly as
     ``browser_tokenize`` and ``src/js/rappter-vm.js`` read it; honouring an
     escape here would make `(do "a\\" "b;c")` lose its second string.
@@ -88,7 +93,7 @@ def strip_comments(raw):
             in_string = True
             out.append(c)
             i += 1
-        elif c == ";":
+        elif c == ";" and (i == 0 or raw[i - 1] in " \t\n\r()\""):
             while i < n and raw[i] != "\n":
                 i += 1
         else:

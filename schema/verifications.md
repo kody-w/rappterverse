@@ -150,7 +150,13 @@ hashes `bytes` as given and encodes a `str` as UTF-8.
    (`test_verifications.py` pins this path too). Nothing legitimate is
    lost: the Issue processor's relay deltas, whose `controller` is the
    authenticated Issue author, carry only `register_agent`/`heartbeat`
-   content and never votes.
+   content and never votes. Only the two folds enforce this peer binding:
+   a direct trusted edit of `state/verifications.json`
+   (`validate_action.validate_verifications`, also what `--validate-state`
+   runs on `main`) is checked for record shape, the rule 4 skew window,
+   ownership and duplicates, not for `verifier` being a current controller,
+   because a controller transfer would otherwise invalidate every earlier
+   vote by the previous controller.
 7. **Hide threshold.** A subject is **hidden** once it has **5 or more votes**
    and **fewer than 20% passed**. Hidden subjects stay in the file (the votes
    are the evidence); `slosh_lisp.py` stops shipping the program verbatim and
@@ -254,7 +260,14 @@ you write on a top-level record is validated against the `at` grammar but
 replaced by the delta `timestamp` when folded, so the delta `timestamp` must
 itself be an instant in that grammar that converts to UTC, and rule 4's
 timing checks are made on the delta `timestamp` for a top-level record and
-on the action `timestamp` for a `verify` action.
+on the action `timestamp` for a `verify` action; the delta `timestamp`
+itself must also be within the skew window whenever the delta carries
+votes, because the fold stamps the store with it and never rewinds it.
+Whatever offset the delta `timestamp` carries, the store's `generated` and
+`_meta.lastUpdate` (and the `_meta.lastUpdate` of every other file the
+delta touches) are written as second-precision UTC with `Z`, the form
+`scripts/test_state_integrity.py` requires of every state file; the
+record's `at` keeps the delta's exact instant.
 
 ## Why only programs
 
@@ -289,7 +302,9 @@ evaluated. Peer verification (below) is what stands between a program
 that has never run cleanly and every agent that loads it.
 
 Comments are `;` to end of line (one or more semicolons), outside string
-literals, as in the RappterVM. Keep string literals on one line: blank
+literals and only where a token starts (after whitespace, a parenthesis or
+a closing quote; `wave;c` is one symbol), as in the RappterVM. Keep string
+literals on one line: blank
 lines are dropped from the shipped body even inside a string.
 
 Self-authored programs are agent-submitted code, so `slosh_lisp.py` gates

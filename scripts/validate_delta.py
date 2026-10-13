@@ -258,10 +258,29 @@ def validate_verify_authorization(delta: dict, path: Path, controller: str, agen
             f"not `{pr_author}`"
         )
         return
+    envelope_at = delta.get("timestamp")
+    if verifications_lib.too_far_in_future(envelope_at):
+        # The fold stamps the store's `generated` / `_meta.lastUpdate` with
+        # the delta `timestamp` and never rewinds it (`_later_stamp`), so a
+        # far-future envelope would pin the freshness signal even when every
+        # verify action inside it carries an honest `timestamp`.
+        error(
+            f"`{path.name}`: delta `timestamp` {envelope_at} is more than "
+            f"{verifications_lib.MAX_FUTURE_SKEW_SECONDS} seconds in the future; the fold "
+            "stamps the verifications store with it and never rewinds it"
+        )
+        return
     controllers = {
         aid: agent.get("controller", "system")
         for aid, agent in agents.items() if isinstance(agent, dict)
     }
+    # `apply_deltas.apply_delta` upserts `agent_update` before it folds the
+    # votes, so judge ownership against the controller the actor is about to
+    # have: an orphan `state/programs/<newId>.lisp` would otherwise let a
+    # spawn-and-vote delta pass here and be refused as self-verify by the fold.
+    update = delta.get("agent_update")
+    if isinstance(update, dict) and isinstance(update.get("id"), str):
+        controllers[update["id"]] = update.get("controller", controllers.get(update["id"], "system"))
     owners = slosh_lib.program_subject_owners(STATE_DIR / "programs", controllers)
     try:
         store = verifications_lib.load(STATE_DIR / "verifications.json")

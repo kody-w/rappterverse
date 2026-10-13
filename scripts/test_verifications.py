@@ -399,6 +399,46 @@ class ApplyDeltasFoldTests(TempStateMixin, unittest.TestCase):
         self.assertEqual(apply_deltas._later_stamp("not a time", "2026-10-13T09:00:00Z"), "2026-10-13T09:00:00Z")
         self.assertEqual(apply_deltas._later_stamp(None, "2026-10-13T09:00:00Z"), "2026-10-13T09:00:00Z")
 
+    def test_file_stamps_are_utc_z_whatever_offset_the_delta_carries(self) -> None:
+        """schema/verifications.md: `at` may carry `+HH:MM` or no offset (UTC).
+        Such a delta validates and folds, but `scripts/test_state_integrity.py`
+        accepts only a `Z`/`+00:00` `_meta.lastUpdate` on every state file and
+        the reconciler runs it after the fold, so the stamp on disk must be
+        normalised or the first such vote fails every later PR on main."""
+        store_path = self.state_dir / "verifications.json"
+        cases = (
+            ("2026-10-13T11:24:30", "2026-10-13T11:24:30Z"),
+            ("2026-10-13T13:24:31+02:00", "2026-10-13T11:24:31Z"),
+            ("2026-10-13T06:24:32.250000-05:00", "2026-10-13T11:24:32Z"),
+        )
+        for stamp, expected in cases:
+            with self.subTest(stamp=stamp):
+                applied, stats, _ = self.apply({
+                    "agent_id": "alice-agent-001", "controller": "alice", "timestamp": stamp,
+                    "verifications": [vote("alice", subject=self.bob_file_id)],
+                })
+                self.assertTrue(applied)
+                self.assertEqual(stats["verifications"], 1)
+                store = json.loads(store_path.read_text(encoding="utf-8"))
+                self.assertEqual((store["generated"], store["_meta"]["lastUpdate"]), (expected, expected))
+                # the vote keeps the delta's exact instant, as the validators compared it
+                self.assertEqual(store["verifications"][0]["at"], stamp)
+        # a verify action stamps actions.json the same way
+        (self.state_dir / "actions.json").write_text(json.dumps({"actions": []}), encoding="utf-8")
+        applied, stats, _ = self.apply({
+            "agent_id": "alice-agent-001", "controller": "alice", "timestamp": "2026-10-13T13:24:33+02:00",
+            "actions": [verify_action("alice-agent-001", "alice", self.bob_file_id, passed=False,
+                                      at="2026-10-13T13:24:33+02:00")],
+        })
+        self.assertTrue(applied)
+        actions = json.loads((self.state_dir / "actions.json").read_text(encoding="utf-8"))
+        self.assertEqual(actions["_meta"]["lastUpdate"], "2026-10-13T11:24:33Z")
+        store = json.loads(store_path.read_text(encoding="utf-8"))
+        self.assertEqual(store["_meta"]["lastUpdate"], "2026-10-13T11:24:33Z")
+        self.assertEqual(store["verifications"][0]["at"], "2026-10-13T13:24:33+02:00")
+        # an unparseable stamp is passed through, never invented
+        self.assertEqual(apply_deltas._meta_stamp("not a time"), "not a time")
+
     def test_owner_vote_on_body_id_is_rejected_end_to_end(self) -> None:
         # Bob edits only his header: the file id changes, the body id does not,
         # and Bob still cannot pass-vote either id.
@@ -960,6 +1000,44 @@ class RevoteTimingValidationTests(ValidatorHardeningTests):
         }
         self.vd.validate_verify_authorization(delta, Path("delta.json"), "alice", self.agents_by_id())
         self.assertTrue(any("in the future" in e for e in self.vd.errors), self.vd.errors)
+
+    def test_inbox_far_future_envelope_is_rejected_even_with_honest_actions(self) -> None:
+        """The fold stamps the store's `generated` with the delta `timestamp`
+        and `_later_stamp` never rewinds it, so a year-9999 envelope around
+        an honestly dated verify action would pin the freshness signal."""
+        delta = {
+            "agent_id": "alice-agent-001", "controller": "alice", "timestamp": "9999-01-01T00:00:00Z",
+            "actions": [verify_action("alice-agent-001", "alice", self.bob_file_id, at="2026-10-13T02:00:00Z")],
+        }
+        self.vd.validate_verify_authorization(delta, Path("delta.json"), "alice", self.agents_by_id())
+        self.assertTrue(any("delta `timestamp`" in e and "in the future" in e for e in self.vd.errors), self.vd.errors)
+
+    def test_direct_store_edit_rejects_a_far_future_at(self) -> None:
+        document = {
+            "schema": verifications.DOC_SCHEMA,
+            "verifications": [vote("alice", subject=self.bob_file_id, at="9999-01-01T00:00:00Z")],
+            "subjects": {}, "_meta": {},
+        }
+        self.va.validate_verifications(document)
+        self.assertTrue(any("record 0" in e and "in the future" in e for e in self.va.errors), self.va.errors)
+        self.assertFalse(any("record count does not match" in e for e in self.va.errors), self.va.errors)
+
+    def test_inbox_validation_sees_the_controller_the_fold_will(self) -> None:
+        """The fold applies `agent_update` before it folds votes. With an
+        orphan `state/programs/<newId>.lisp` already on main, a delta that
+        spawns that actor and votes on the shared body used to validate and
+        then be refused as self-verify by the fold."""
+        (self.state_dir / "programs" / "carol-agent-001.lisp").write_text(self.bob_program, encoding="utf-8")
+        spawn = {"id": "carol-agent-001", "controller": "carol", "name": "Carol", "world": "hub",
+                 "position": {"x": 0, "y": 0, "z": 0}, "status": "active"}
+        delta = {"agent_id": "carol-agent-001", "controller": "carol", "timestamp": "2026-10-13T02:00:00Z",
+                 "agent_update": spawn, "verifications": [vote("carol", subject=self.bob_file_id)]}
+        self.vd.validate_verify_authorization(delta, Path("delta.json"), "carol", self.agents_by_id())
+        self.assertTrue(any("self-verify" in e for e in self.vd.errors), self.vd.errors)
+        self.vd.errors.clear()
+        delta["verifications"] = [vote("carol", subject=self.alice_file_id)]
+        self.vd.validate_verify_authorization(delta, Path("delta.json"), "carol", self.agents_by_id())
+        self.assertEqual(self.vd.errors, [])
 
     def test_direct_revote_needs_a_strictly_later_timestamp(self) -> None:
         self.seed_live_vote("2026-10-13T01:00:00Z")

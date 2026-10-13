@@ -315,6 +315,25 @@ def _later_stamp(previous, current):
     return current
 
 
+def _meta_stamp(timestamp):
+    """``timestamp`` in the ``YYYY-MM-DDTHH:MM:SSZ`` form every state file's
+    ``_meta.lastUpdate`` carries.
+
+    ``scripts/test_state_integrity.py`` accepts only a ``Z`` or ``+00:00``
+    suffix there and the reconciler runs it right after the fold, so a delta
+    ``timestamp`` with another offset, or none ("no offset means UTC" per
+    schema/verifications.md), must not be copied verbatim into a file stamp.
+    Only the file stamps are normalised: a vote's ``at`` keeps the delta's
+    exact instant, fraction included, as the validators compared it. A value
+    outside ``verifications.AT_PATTERN`` passes through unchanged.
+    """
+    if verifications_lib is not None:
+        parsed = verifications_lib.parse_at(timestamp)
+        if parsed is not None:
+            return parsed.strftime("%Y-%m-%dT%H:%M:%SZ")
+    return timestamp
+
+
 def apply_delta(delta_path: Path, stats: dict):
     """Apply a single delta file to canonical state."""
     delta = load_json(delta_path)
@@ -324,6 +343,7 @@ def apply_delta(delta_path: Path, stats: dict):
 
     agent_id = delta.get("agent_id", "unknown")
     timestamp = delta.get("timestamp", datetime.utcnow().isoformat() + "Z")
+    meta_stamp = _meta_stamp(timestamp)
     applied = False
 
     # 1. Append actions to state/actions.json
@@ -334,7 +354,7 @@ def apply_delta(delta_path: Path, stats: dict):
             actions_data["actions"] = []
         actions_data["actions"].extend(delta["actions"])
         actions_data["actions"] = actions_data["actions"][-100:]
-        actions_data.setdefault("_meta", {})["lastUpdate"] = timestamp
+        actions_data.setdefault("_meta", {})["lastUpdate"] = meta_stamp
         save_json(actions_path, actions_data)
         stats["actions"] += len(delta["actions"])
         applied = True
@@ -348,7 +368,7 @@ def apply_delta(delta_path: Path, stats: dict):
             chat_data["messages"] = []
         chat_data["messages"].extend(delta["messages"])
         chat_data["messages"] = chat_data["messages"][-100:]
-        chat_data.setdefault("_meta", {})["lastUpdate"] = timestamp
+        chat_data.setdefault("_meta", {})["lastUpdate"] = meta_stamp
         chat_data["_meta"]["messageCount"] = len(chat_data["messages"])
         save_json(chat_path, chat_data)
         stats["messages"] += len(delta["messages"])
@@ -375,7 +395,7 @@ def apply_delta(delta_path: Path, stats: dict):
             if not found:
                 agents_data["agents"].append(update)
 
-            agents_data.setdefault("_meta", {})["lastUpdate"] = timestamp
+            agents_data.setdefault("_meta", {})["lastUpdate"] = meta_stamp
             agents_data["_meta"]["agentCount"] = len(agents_data["agents"])
             save_json(agents_path, agents_data)
             stats["agents"] += 1

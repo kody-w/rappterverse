@@ -467,6 +467,13 @@ def validate_verifications(data: dict):
     "self-verify" and block their own program-update PR. Such votes are
     reported as an informational line, never as an error; the folds still
     refuse a *new* vote by a current owner.
+
+    An `at` beyond `verifications.MAX_FUTURE_SKEW_SECONDS` is an error here
+    too (a record the folds would never have accepted, and one no ordinary
+    re-vote could replace). This path does *not* bind a `verifier` to a
+    controller in `agents.json`: a controller transfer (a direct trusted
+    state PR) would otherwise turn every earlier vote by the previous
+    controller into an error on `main`. Peer binding is the folds' job.
     """
     if "_meta" not in data:
         error("`verifications.json`: Missing `_meta`")
@@ -518,6 +525,14 @@ def validate_verifications(data: dict):
                         f"`verifications.json`: record {index}: `{rec['verifier'].strip()}` now controls "
                         f"subject {rec['subject'][:19]}… (acquired after the vote); the vote is kept"
                     )
+        if isinstance(rec, dict) and verifications_lib.too_far_in_future(rec.get("at")):
+            invalid += 1
+            error(
+                f"`verifications.json`: record {index}: `at` {rec.get('at')} is more than "
+                f"{verifications_lib.MAX_FUTURE_SKEW_SECONDS} seconds in the future; "
+                "no later re-vote could ever replace it"
+            )
+            continue
         try:
             verifications_lib.record(rebuilt, rec, subject_owners=owner_source, require_owner=True)
         except ValueError as exc:

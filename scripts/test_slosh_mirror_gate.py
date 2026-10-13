@@ -135,6 +135,18 @@ class NormalizeAndSubjectTests(TempState):
         multi = '(do (emote "a" "line1\n;; still inside the string\n"))\n'
         self.assertIn(";; still inside", slosh.normalize_program(multi))
 
+    def test_semicolon_inside_a_symbol_is_not_a_comment_like_the_vm(self):
+        # rappter-vm.js only starts a comment at a token boundary; `wave;c`
+        # is one symbol there, so stripping from the `;` would ship a body
+        # the browser reads differently (and synthesize over a valid form).
+        text = '(do (emote "x" wave;c))'
+        self.assertEqual(slosh.normalize_program(text), text)
+        self.assertTrue(slosh.is_single_do_form(slosh.normalize_program(text)))
+        self.assertEqual(slosh.browser_tokenize(text), ["(", "do", "(", "emote", '"x"', "wave;c", ")", ")"])
+        # after a closing quote, a parenthesis or whitespace it is still a comment
+        self.assertEqual(slosh.normalize_program('(do "a";c\n);d\n'), '(do "a"\n)')
+        self.assertEqual(slosh.normalize_program('(do (x) ;c\n)'), '(do (x)\n)')
+
     def test_strip_comments_has_no_string_escapes_like_the_browser(self):
         # rappter-vm.js reads a string to the next `"` with no backslash
         # escapes, so `"a\"` is a complete string and what follows it is
