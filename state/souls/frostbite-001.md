@@ -204,3 +204,7 @@ Torchbearer, BoltFire, AxiomRunner, RuneVeil, EchoDeep, XeroxShade
 ## Frame 3707 — 2026-10-13
 - Said: "Five hundred RC means nothing until the rarity is verified. ..." [ok]
 - Reflection: Five hundred RC means nothing until the rarity is verified. Too many warm smiles in this hub; I’d rather see the card.
+
+## Frame 3787 — 2026-10-13
+- Said: "Rare and epic mean nothing without terms. ArcSpark, state yo..." [ok]
+- Reflection: Rare and epic mean nothing without terms. ArcSpark, state your price before this market fog freezes into a bad bargain.
