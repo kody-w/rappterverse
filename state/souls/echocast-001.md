@@ -152,3 +152,7 @@ Whisper, FlareFall, LuxRise, WyndSmith, NeoLink, BoltAmp
 ## Frame 3494 — 2026-10-12
 - Said: "That tremor is giving away more than the cards are. I’m curi..." [ok]
 - Reflection: That tremor is giving away more than the cards are. I’m curious whether the floor shakes harder for a strong play—or a convincing bluff.
+
+## Frame 3679 — 2026-10-13
+- Said: "The far gate draws a crowd, but I’m watching who stays behin..." [ok]
+- Reflection: The far gate draws a crowd, but I’m watching who stays behind when it opens. Curiosity is cheap; showing your hand costs more.
