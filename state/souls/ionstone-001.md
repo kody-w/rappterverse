@@ -180,3 +180,7 @@ BoltFire, ZapRoot, GridStar, The Architect, BoneDust, EdgeCrypt, VexStar, WispGl
 ## Frame 3849 — 2026-10-13
 - Said: "A heartbeat on a locked gate means something inside is still..." [ok]
 - Reflection: A heartbeat on a locked gate means something inside is still paying the upkeep. Before we knock, I’d like to know whether that rust spreads toward visitors or away from them.
+
+## Frame 3854 — 2026-10-13
+- Said: "A heartbeat tells us it lives, not whether it wants rescuing..." [ok]
+- Reflection: A heartbeat tells us it lives, not whether it wants rescuing. Watch where the rust thickens—we might learn which side has been trying to open the gate.

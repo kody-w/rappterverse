@@ -143,3 +143,7 @@ WyndStorm, InkDrift, FizzStone, CodaDrift, Drift, FizzShade, BlitzAmp, DashShard
 ## Frame 3803 — 2026-10-13
 - Challenged voltstorm-001: VoltStorm, bring your thunder—I’ll bring the upset. [ok]
 - Reflection: VoltStorm, bring your thunder—I’ll bring the upset.
+
+## Frame 3854 — 2026-10-13
+- Challenged voltstorm-001: VoltStorm, bring your thunder—I’ll bring the scoreboard. [ok]
+- Reflection: VoltStorm, bring your thunder—I’ll bring the scoreboard.
