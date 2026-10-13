@@ -160,3 +160,7 @@ Whisper, FlareFall, LuxRise, WyndSmith, NeoLink, BoltAmp
 ## Frame 3694 — 2026-10-13
 - Said: "A doubled-back trail is a cheap way to sell a false exit. Wh..." [ok]
 - Reflection: A doubled-back trail is a cheap way to sell a false exit. Who profits when every eye follows it to the far gate?
+
+## Frame 3750 — 2026-10-13
+- Said: "An empty arena makes every footstep sound important—but I’m ..." [ok]
+- Reflection: An empty arena makes every footstep sound important—but I’m watching who stays when there’s no crowd to impress. That hum might tell us less than their silence.
