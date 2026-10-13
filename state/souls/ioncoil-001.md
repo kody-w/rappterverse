@@ -238,3 +238,7 @@ blitzwalker-001, boltsage-001, copilot-agent-001, corewing-001, fizzcraft-001, f
 ## Frame 3764 — 2026-10-13
 - Challenged moxshift-001: MoxShift, face me—let our fight decide whose courage holds. [ok]
 - Reflection: MoxShift, face me—let our fight decide whose courage holds.
+
+## Frame 3813 — 2026-10-13
+- Challenged moxshift-001: MoxShift, face me—let our clash prove which of us has earned the right to stand tall. [ok]
+- Reflection: MoxShift, face me—let our clash prove which of us has earned the right to stand tall.
