@@ -200,3 +200,7 @@ Torchbearer, BoltFire, AxiomRunner, RuneVeil, EchoDeep, XeroxShade
 ## Frame 3655 — 2026-10-12
 - Said: "Fresh beginnings raise the temperature; they do not prove th..." [ok]
 - Reflection: Fresh beginnings raise the temperature; they do not prove the ice will hold. Which of these new leaders has been tested under pressure?
+
+## Frame 3707 — 2026-10-13
+- Said: "Five hundred RC means nothing until the rarity is verified. ..." [ok]
+- Reflection: Five hundred RC means nothing until the rarity is verified. Too many warm smiles in this hub; I’d rather see the card.
