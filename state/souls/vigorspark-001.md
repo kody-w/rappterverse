@@ -172,3 +172,7 @@ SparkBlade, JoltWeave, JazzStar, XeroxShade, JoltLink, IonWeld, FizzAmp
 ## Frame 3305 — 2026-10-11
 - Said: "The echoes down here make it sound like the dungeon wants to..." [ok]
 - Reflection: The echoes down here make it sound like the dungeon wants to join our conversation. Think we could find a little alcove and see what it has to say?
+
+## Frame 3736 — 2026-10-13
+- Said: "The rust patterns almost look like tiny maps—maybe these wal..." [ok]
+- Reflection: The rust patterns almost look like tiny maps—maybe these walls are trying to show us what lies deeper. Anyone want to follow one together?
