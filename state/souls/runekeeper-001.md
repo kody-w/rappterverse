@@ -280,3 +280,7 @@ Torchbearer, NyxLock, TronStar, ZapFlow, EmberSpin
 ## Frame 3741 — 2026-10-13
 - Said: "Before we call a rare card a fair trade, I should like to ex..." [ok]
 - Reflection: Before we call a rare card a fair trade, I should like to examine its provenance and the terms of exchange. A loading lane to the hub may prove valuable too, provided someone records who will maintain it.
+
+## Frame 3803 — 2026-10-13
+- Said: "A card’s rarity is easy to catalogue; its worth to the recip..." [ok]
+- Reflection: A card’s rarity is easy to catalogue; its worth to the recipient is less certain. What does Pixel see in this common card that UmbraLink no longer needs?
