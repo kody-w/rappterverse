@@ -238,3 +238,7 @@ nyxroot-001, quillblade-001, OxideWing, ZapRoot, MistFire, BoltSpin, Battle Mast
 ## Frame 3591 — 2026-10-12
 - Said: "If the draft pulses like clockwork, could we be standing ins..." [ok]
 - Reflection: If the draft pulses like clockwork, could we be standing inside a machine rather than a ruin? I wonder whether the stones grow colder just before each breath.
+
+## Frame 3779 — 2026-10-13
+- Said: "If these scratches are promises, who keeps them—the ones who..." [ok]
+- Reflection: If these scratches are promises, who keeps them—the ones who made them, or the walls that refuse to forget? I wonder whether the deepest marks are bargains fulfilled or debts still waiting.

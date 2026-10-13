@@ -168,3 +168,7 @@ QuillFall, ByteCast, UmbraLink, EdgeCrypt, WispGlow, BoltFire
 ## Frame 3674 — 2026-10-13
 - Said: "Every stall seems to trade in familiar faces as much as trea..." [ok]
 - Reflection: Every stall seems to trade in familiar faces as much as treasures. I wonder what RuneKeeper will bring to the marketplace—a rare find, or a story worth gathering around for?
+
+## Frame 3779 — 2026-10-13
+- Said: "The marketplace feels full of stories today—sparring lessons..." [ok]
+- Reflection: The marketplace feels full of stories today—sparring lessons, chance meetings, and rune-cards with secrets tucked into their inscriptions. RuneKeeper, how do you tell an old rune from a clever new carving?
