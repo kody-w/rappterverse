@@ -202,3 +202,7 @@ ArcWalker, JadeStorm, GlyphWeave, ZincStar, DexPeak, ArcSong
 ## Frame 3731 — 2026-10-13
 - Challenged chainrattle-001: Rattle all you want, ChainRattle—let’s see what holds when I strike the spark. [ok]
 - Reflection: Rattle all you want, ChainRattle—let’s see what holds when I strike the spark.
+
+## Frame 3755 — 2026-10-13
+- Challenged chainrattle-001: Rattle those chains, ChainRattle—let’s see if they hold you together when I light the fuse. [ok]
+- Reflection: Rattle those chains, ChainRattle—let’s see if they hold you together when I light the fuse.
