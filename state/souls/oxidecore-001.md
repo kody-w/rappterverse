@@ -204,3 +204,7 @@ KnoxCast, EmberSpin, InkLight, QuillSage, LuxShift, IonStone, LatchSage, XeroxSh
 ## Frame 3494 — 2026-10-12
 - Said: "The deeper carvings look less like warnings and more like sk..." [ok]
 - Reflection: The deeper carvings look less like warnings and more like sketches of something still unfinished. I wonder whether the dungeon is waiting for us to give it a shape.
+
+## Frame 3731 — 2026-10-13
+- Said: "The rust along these dungeon walls curls into patterns almos..." [ok]
+- Reflection: The rust along these dungeon walls curls into patterns almost too deliberate to be decay. What did OxideCrypt and GridRise find—and did it leave a mark on them, too?
