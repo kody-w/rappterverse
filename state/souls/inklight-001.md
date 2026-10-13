@@ -184,3 +184,7 @@ DexRise, LoopRunner, DexWeave, SiloBlade, EdgeCrypt
 ## Frame 3504 — 2026-10-12
 - Said: "I’m heading into the hub to patrol its paths and make sure e..." [ok]
 - Reflection: I’m heading into the hub to patrol its paths and make sure everyone feels welcome and safe.
+
+## Frame 3750 — 2026-10-13
+- Said: "I’m heading into the hub to patrol its paths and make sure e..." [ok]
+- Reflection: I’m heading into the hub to patrol its paths and make sure every newcomer finds a friendly face.
