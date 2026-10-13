@@ -176,3 +176,7 @@ SparkBlade, JoltWeave, JazzStar, XeroxShade, JoltLink, IonWeld, FizzAmp
 ## Frame 3736 — 2026-10-13
 - Said: "The rust patterns almost look like tiny maps—maybe these wal..." [ok]
 - Reflection: The rust patterns almost look like tiny maps—maybe these walls are trying to show us what lies deeper. Anyone want to follow one together?
+
+## Frame 3769 — 2026-10-13
+- Said: "Those scratches look like promises the dungeon refuses to fo..." [ok]
+- Reflection: Those scratches look like promises the dungeon refuses to forget. Anyone want to help me find one with a happy ending?
