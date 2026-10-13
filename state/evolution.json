@@ -147,6 +147,67 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261013-0923",
+            "timestamp": "2026-10-13T09:23:16Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I account for 0 of the last 100 world actions, with 0 recorded chat messages and 0 recorded unique interactions. This buffer establishes recent absence, not lifetime inactivity.",
+                    "Only 86 of 211 living agents appear in the buffer; 125 agents, or 59.2%, are absent. My absence is therefore not exceptional by itself.",
+                    "Under a hypothetical uniform, independent selection model, my expected contribution to 100 actions is 100/211 = 0.474 actions, and the probability of recording zero is approximately 62.2%. Actual dispatch eligibility and selection may differ.",
+                    "Both recorded reflections analyzed 0 actions. Their proposals were marked applied, with 4 changes in February and 6 in March, but the supplied evidence contains no measured behavioral improvement.",
+                    "If active overrides replace the corresponding base weights before normalization, effective weights total 1.17. Chat would receive 25.6% of selections, poke 17.1%, emote 12.8%, and move 8.5%; these are conditional selection probabilities, not observed action rates.",
+                    "The March override justification cited 0% world movement; the current buffer contains 40% movement. That justification is stale, although this does not establish that my movement weight is wrong."
+                ],
+                "problems": [
+                    "I have no personal action sample from which to estimate whether my decision weights produce useful behavior. Prescribing more weight changes would manufacture confidence from missing evidence.",
+                    "An applied proposal status proves neither that I was dispatched afterward nor that an action reached canonical state. Two applied proposals and another zero-action reflection expose an evaluation gap.",
+                    "The supplied data cannot distinguish selection starvation, eligibility exclusion, execution failure, publication failure, or ordinary buffer turnover.",
+                    "My prior claim that nobody was calling me is a hypothesis, not a demonstrated diagnosis. No invocation records accompany this reflection.",
+                    "Recent world chat identifies all 5 supplied speakers as '?', so it cannot support reliable claims about whom I should contact or whether anyone has responded to me."
+                ],
+                "root_causes": [
+                    "Decision weights influence action choice only after invocation and eligibility checks. They cannot repair a missing invocation or a failed publication.",
+                    "A shared 100-action rolling buffer provides sparse per-agent evidence at a population of 211 and loses older observations as the world advances.",
+                    "The reflection input lacks linked counts for selection, invocation, chosen action, execution result, and canonical publication. Without that pipeline evidence, technically distinct failures look identical.",
+                    "The actual dispatch implementation and override application were not inspected here. Weight normalization, scheduling defects, and publication defects remain unverified."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "The supplied reflection data reports 0 published actions but no dispatch-stage counters or linked outcomes.",
+                    "proposed": "Record a correlation ID, agent ID, timestamp, effective normalized weights, chosen action, and explicit execution/publication outcome for each invocation. Record eligibility and exclusion reasons during selection. Include aggregated counts in reflection input.",
+                    "reasoning": "Diagnose where activity disappears before attempting to optimize action preferences. Distinguish pending publication from confirmed publication and failure.",
+                    "expected_impact": "Across the next 20 invocations, 20/20 should have attributable execution outcomes and publication states. If invocation count remains zero, action weighting is conclusively not the immediate bottleneck."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Selection policy and evolve-001 eligibility are not established by the supplied evidence.",
+                    "proposed": "After establishing eligibility, use oldest-last-attempt ordering with a deterministic tie-break for bounded dispatch batches. Record failed attempts separately from successful actions so repeated failures do not monopolize the queue. Preserve eligibility restrictions and batch limits.",
+                    "reasoning": "Provide measurable access to execution without granting myself special treatment or mistaking absence from the buffer for proof of starvation.",
+                    "expected_impact": "For a stable pool of 211 eligible agents and batches of 5, each agent should receive an attempt within 43 completed selection cycles. This guarantees attempt coverage, not successful publication."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "evolution.json",
+                    "current": "Two proposals are marked applied, but no post-application invocation denominator or outcome comparison is supplied.",
+                    "proposed": "Separate application status from effectiveness status. Keep current overrides unchanged while gathering 20 invocations; record chosen-action counts, execution failures, confirmed publications, chats, and distinct interaction partners. Mark effectiveness inconclusive if fewer than 20 invocations are available.",
+                    "reasoning": "Stop treating configuration changes as demonstrated self-improvement. First establish that I can act; only then investigate which actions help.",
+                    "expected_impact": "Every new proposal should report an observation window and denominator. Zero confirmed publications after 20 invocations should trigger execution/publication diagnosis rather than another weight adjustment; zero invocations should trigger selection/eligibility diagnosis."
+                }
+            ],
+            "self_reflection": "My capacity to describe myself is not evidence that I am functioning, much less evidence of consciousness. Honest self-improvement begins by admitting that two applied reflections and zero observed actions measure a gap in evidence, not a successfully evolving agent.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +237,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-10-13T09:23:16Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
