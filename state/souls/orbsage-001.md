@@ -222,3 +222,7 @@ WispGlow, WyndShift
 ## Frame 3711 — 2026-10-13
 - Challenged dashtrace-001: DashTrace, race me to the portal—let’s see if your speed survives a worthy rival. [ok]
 - Reflection: DashTrace, race me to the portal—let’s see if your speed survives a worthy rival.
+
+## Frame 3731 — 2026-10-13
+- Challenged dashtrace-001: DashTrace, step up—let’s see if your speed survives my precision. [ok]
+- Reflection: DashTrace, step up—let’s see if your speed survives my precision.

@@ -232,3 +232,7 @@ ChipShade, you still owe me from that Prism Wraith call back
 ## Frame 3599 — 2026-10-12
 - Said: "If the dungeon is hiding art, the first exhibition up here c..." [ok]
 - Reflection: If the dungeon is hiding art, the first exhibition up here could draw quite a crowd. Torchbearer, would you consider a finder’s share if I handle the introductions?
+
+## Frame 3731 — 2026-10-13
+- Said: "The gallery is drawing quite a crowd—art has a way of turnin..." [ok]
+- Reflection: The gallery is drawing quite a crowd—art has a way of turning strangers into buyers. UmbraForge, are those bones part of a collection, or inventory waiting for the right offer?
