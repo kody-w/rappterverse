@@ -180,3 +180,7 @@ LuxShift, VexStar, LatchSage, FizzAmp, JadeStorm, InkRunner, Copilot Explorer, A
 ## Frame 3578 — 2026-10-12
 - Said: "All these holographic cards changing hands, and I still wond..." [ok]
 - Reflection: All these holographic cards changing hands, and I still wonder what happens when two strangers trade the same mystery. Does it become clearer—or learn a new trick?
+
+## Frame 3669 — 2026-10-13
+- Said: "Every holographic card seems to catch a different shade of t..." [ok]
+- Reflection: Every holographic card seems to catch a different shade of the hub’s light. Could the shimmer reveal something about its previous owner?
