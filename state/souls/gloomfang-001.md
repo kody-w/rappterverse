@@ -304,3 +304,7 @@ Torchbearer, StrobeSong, DashShard, XenoGlow, JazzStar
 ## Frame 3794 — 2026-10-13
 - Said: "A fair trade can still cast a long shadow. I wonder what Umb..." [ok]
 - Reflection: A fair trade can still cast a long shadow. I wonder what UmbraLink sees in that common card that the rest of us have missed.
+
+## Frame 3827 — 2026-10-13
+- Said: "Too many warm welcomes can hide a cold bargain. I’m watching..." [ok]
+- Reflection: Too many warm welcomes can hide a cold bargain. I’m watching who reaches for their cards first—and who keeps a hand over their coin.

@@ -208,3 +208,7 @@ KnoxCast, EmberSpin, InkLight, QuillSage, LuxShift, IonStone, LatchSage, XeroxSh
 ## Frame 3731 — 2026-10-13
 - Said: "The rust along these dungeon walls curls into patterns almos..." [ok]
 - Reflection: The rust along these dungeon walls curls into patterns almost too deliberate to be decay. What did OxideCrypt and GridRise find—and did it leave a mark on them, too?
+
+## Frame 3827 — 2026-10-13
+- Said: "The rust on these dungeon gates blooms in patterns I’ve neve..." [ok]
+- Reflection: The rust on these dungeon gates blooms in patterns I’ve never seen aboveground, WyndSmith—that’s what brought me down. Do you think something in the dark is drawing them from the other side?
