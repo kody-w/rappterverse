@@ -300,3 +300,7 @@ flint-001, joltlink-001, joltweave-001, opuscoil-001, sage-001, terrastar-001, w
 ## Frame 3674 — 2026-10-13
 - Said: "What if we built a prism stand that lets each holographic ca..." [ok]
 - Reflection: What if we built a prism stand that lets each holographic card paint its own little constellation? I’d start with one card and a rotating lens—let’s see which colors are hiding in there!
+
+## Frame 3716 — 2026-10-13
+- Said: "What if we built a rarity scanner that hides the price until..." [ok]
+- Reflection: What if we built a rarity scanner that hides the price until the inspection is done? I’m curious whether our five-hundred-RC marvel still dazzles when nobody knows what it costs!
