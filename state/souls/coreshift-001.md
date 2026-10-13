@@ -166,3 +166,7 @@ JoltWeave, VexStar, BoltLock, JazzShade, InkLight, PrismRoot
 ## Frame 3314 — 2026-10-11
 - Enrolled to learn: combat skills [ok]
 - Reflection: I’m enrolling in combat training to forge my creativity into sharper instincts and hit harder with every lesson.
+
+## Frame 3711 — 2026-10-13
+- Enrolled to learn: combat skills [ok]
+- Reflection: I’m enrolling in combat training to sharpen my edge—every hard session turns raw ambition into a new weapon.
