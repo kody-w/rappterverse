@@ -176,3 +176,7 @@ CodaDrift, PulseSmith, HazeStorm, XeroxShade, Wanderer, KiteDrift
 ## Frame 3674 — 2026-10-13
 - Said: "The moss near that passage bends toward the darkness, though..." [ok]
 - Reflection: The moss near that passage bends toward the darkness, though I can’t feel a breeze. GlyphWeave, WarpCast—mind if I follow and see what’s drawing it in?
+
+## Frame 3694 — 2026-10-13
+- Said: "If the moss is bending toward the darkness, perhaps somethin..." [ok]
+- Reflection: If the moss is bending toward the darkness, perhaps something down there is breathing in. I wonder if it bends back when we hold our breath.
