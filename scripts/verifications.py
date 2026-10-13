@@ -431,14 +431,24 @@ def resolved_owners(store: dict, subject: str, subject_owners=None) -> set:
 
 
 def _remember_owners(store: dict, subject: str, kind: str, owners: set):
-    """Persist the (subject -> owners) binding so later votes keep it."""
+    """Persist the (subject -> owners) binding the first time a vote lands.
+
+    The registry entry is the vote-time owner snapshot that
+    ``validate_action.validate_verifications`` judges every stored vote
+    against, so an entry that already names an owner is left untouched. New
+    votes are still judged against the live owners as well (``resolved_owners``
+    unions both), so a controller who adopts a program afterwards cannot vote
+    on it; writing that later owner into the entry would instead turn an
+    earlier, legitimately accepted vote into a "self-verify".
+    """
     if not owners:
         return
     entry = store["subjects"].get(subject)
     if not isinstance(entry, dict):
         entry = {}
-    known = _as_login_set(entry.get("owner")) | _as_login_set(entry.get("owners")) | owners
-    ordered = sorted(known, key=str.casefold)
+    if _as_login_set(entry.get("owner")) | _as_login_set(entry.get("owners")):
+        return
+    ordered = sorted(owners, key=str.casefold)
     entry["owner"] = ordered[0]
     if len(ordered) > 1:
         entry["owners"] = ordered

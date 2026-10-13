@@ -15,6 +15,7 @@ import importlib.util
 import io
 import json
 import os
+import shutil
 import sys
 import tempfile
 import unittest
@@ -1104,6 +1105,65 @@ class ValidatorAgreementTests(unittest.TestCase):
         import validate_delta
         self.assertTrue(validate_delta.has_meaningful_content({"verifications": [vote("alice")]}))
         self.assertFalse(validate_delta.has_meaningful_content({"verifications": []}))
+
+
+class OwnerSnapshotTests(unittest.TestCase):
+    """The subjects registry is the vote-time owner snapshot that
+    validate_verifications judges stored votes by, so a later vote must not
+    rewrite it with the live owners of its own day."""
+
+    def test_later_vote_does_not_rewrite_the_registered_owner(self) -> None:
+        import validate_action
+        store = {"verifications": [], "subjects": {}}
+        verifications.record(store, vote("alice"), {SUBJECT_A: {"bob"}})
+        self.assertEqual(store["subjects"][SUBJECT_A]["owner"], "bob")
+        # bob transfers the program to alice (or alice's program becomes
+        # byte-identical to it): the live owners now include alice.
+        verifications.record(store, vote("carol", at="2026-10-13T01:02:04Z"), {SUBJECT_A: {"bob", "alice"}})
+        self.assertEqual(store["subjects"][SUBJECT_A], {"owner": "bob", "kind": "program"})
+        # alice's earlier vote stays legitimate on --validate-state ...
+        validate_action.errors.clear()
+        saved = (validate_action.STATE_DIR, validate_action.PROGRAMS_DIR)
+        state_dir = Path(tempfile.mkdtemp())
+        (state_dir / "agents.json").write_text(json.dumps({"agents": []}), encoding="utf-8")
+        validate_action.STATE_DIR = state_dir
+        validate_action.PROGRAMS_DIR = state_dir / "programs"
+        try:
+            store["_meta"] = {"lastUpdate": "2026-10-13T01:02:04Z"}
+            store["schema"] = verifications.DOC_SCHEMA
+            validate_action.validate_verifications(store)
+            self.assertEqual(validate_action.errors, [])
+        finally:
+            validate_action.STATE_DIR, validate_action.PROGRAMS_DIR = saved
+            validate_action.errors.clear()
+            shutil.rmtree(state_dir, ignore_errors=True)
+        # ... while alice, now an owner, still cannot cast a new vote.
+        with self.assertRaisesRegex(ValueError, "self-verify"):
+            verifications.record(store, vote("alice", at="2026-10-13T01:02:05Z"), {SUBJECT_A: {"bob", "alice"}})
+
+
+class EnvelopeTimestampTests(unittest.TestCase):
+    def test_offset_less_envelope_timestamp_is_utc_and_orders_without_crashing(self) -> None:
+        # schema/verifications.md: "no offset means UTC". A verify action's
+        # `at` is the envelope `timestamp`, and validate_actions compares
+        # consecutive window timestamps, so a naive value next to an aware
+        # one must compare, not raise TypeError.
+        import validate_action
+        parsed = validate_action.parse_timestamp("2026-01-01T00:00:01")
+        self.assertEqual(parsed.tzinfo, timezone.utc)
+        self.assertEqual(parsed, validate_action.parse_timestamp("2026-01-01T00:00:01Z"))
+        self.assertIsNone(validate_action.parse_timestamp("not a time"))
+        validate_action.errors.clear()
+        try:
+            window = {"actions": [
+                verify_action("alice-agent-001", "alice", SUBJECT_A, action_id="act-1", at="2026-01-01T00:00:00Z"),
+                verify_action("alice-agent-001", "alice", SUBJECT_B, action_id="act-2", at="2026-01-01T00:00:01"),
+            ]}
+            validate_action.validate_actions(window, {"alice-agent-001"})
+            self.assertFalse(any("Timestamp out of order" in e for e in validate_action.errors), validate_action.errors)
+            self.assertFalse(any("invalid timestamp" in e for e in validate_action.errors), validate_action.errors)
+        finally:
+            validate_action.errors.clear()
 
 
 if __name__ == "__main__":

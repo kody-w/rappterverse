@@ -135,6 +135,21 @@ class NormalizeAndSubjectTests(TempState):
         multi = '(do (emote "a" "line1\n;; still inside the string\n"))\n'
         self.assertIn(";; still inside", slosh.normalize_program(multi))
 
+    def test_strip_comments_has_no_string_escapes_like_the_browser(self):
+        # rappter-vm.js reads a string to the next `"` with no backslash
+        # escapes, so `"a\"` is a complete string and what follows it is
+        # outside. Treating the backslash as an escape would swallow the
+        # second string's opening quote, drop `;c")` as a comment and ship a
+        # browser-valid program as the synthesized routine instead.
+        text = '(do "a\\" "b;c")'
+        self.assertEqual(slosh.normalize_program(text), text)
+        self.assertTrue(slosh.is_single_do_form(slosh.normalize_program(text)))
+        self.assertEqual(slosh.browser_tokenize(text), ["(", "do", '"a\\"', '"b;c"', ")"])
+        text = '(do "a\\" ";foo\nbar")'
+        self.assertEqual(slosh.normalize_program(text), text)
+        self.assertEqual(slosh.browser_tokenize(slosh.normalize_program(text)),
+                         slosh.browser_tokenize(text))
+
     def test_body_id_splits_tokens_like_the_browser_vm(self):
         # The browser RappterVM (src/js/rappter-vm.js _tokenize) treats ' and :
         # as ordinary symbol characters, where lisp_vm.tokenize makes ' its own

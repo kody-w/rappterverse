@@ -100,11 +100,19 @@ def program_subject_owners(agents_by_id: dict) -> dict:
 
 
 def parse_timestamp(ts: str) -> datetime | None:
-    """Parse ISO-8601 timestamp, returning None on failure."""
+    """Parse ISO-8601 timestamp, returning None on failure.
+
+    A value with no offset is taken as UTC (the rule `verifications.parse_at`
+    and `schema/verifications.md` state), so every parsed value is aware and
+    the window-ordering comparisons never raise on a mixed window.
+    """
     try:
-        return datetime.fromisoformat(ts.replace("Z", "+00:00"))
+        parsed = datetime.fromisoformat(ts.replace("Z", "+00:00"))
     except (ValueError, AttributeError):
         return None
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=timezone.utc)
+    return parsed
 
 errors = []
 summary_lines = []

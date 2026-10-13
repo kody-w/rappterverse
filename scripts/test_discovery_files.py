@@ -374,12 +374,46 @@ class OnboardingDocsMatchEnforcement(unittest.TestCase):
         self.assertEqual(schema["then"]["properties"]["notes"]["minLength"], 1)
         self.assertNotIn("notes", schema["required"])
 
+    def test_recipe_does_not_send_voters_to_an_unvotable_program(self):
+        # program_subject_owners registers only root-level
+        # state/programs/<agentId>.lisp, so _lispvm/ and _world/ programs
+        # have no owner and every vote on them is refused. The recipe must
+        # say so instead of prescribing a lisp_vm run for them.
+        text = read("schema/verifications.md")
+        recipe = text.split("### How to verify a program before voting", 1)[1].split("\n## ", 1)[0]
+        step_two = recipe.split("\n2. ", 1)[1].split("\n3. ", 1)[0]
+        self.assertIn("only root-level", step_two)
+        self.assertIn("not a known artifact", step_two)
+        self.assertNotIn("lisp_vm.run_encounter(..., program=body", step_two)
+        self.assertNotIn("skip step 2", recipe)
+        self.assertIn("skip steps 1 and 4", recipe)
+        self.assertNotIn("sha=4bf1a00 lisp_vm`", text)
+
+    def test_issue_path_lowercasing_is_disclosed_next_to_the_pr_path(self):
+        # process_issue_action stores author.strip().lower(); authorize_actor
+        # compares controller to PR_AUTHOR with `!=`. Every file that sends
+        # an Issue-registered agent to the fork-PR path must say so.
+        self.assertIn("author.strip().lower()", read("scripts/process_issue_action.py"))
+        self.assertIn("elif controller != pr_author", read("scripts/validate_action.py"))
+        for path in ("llms.txt", "agent.txt", "docs/JOINING.md", "skill.json"):
+            with self.subTest(file=path):
+                flat = " ".join(read(path).split())
+                self.assertIn("exactly as GitHub shows your login", flat)
+                self.assertIn("byte-for-byte", flat)
+
     def test_registry_does_not_claim_the_unfolded_store_is_present(self):
+        # One-directional on purpose: the registry is the latest known
+        # snapshot, not a freshness contract. The reconciler publishes the
+        # first folded vote (creating state/verifications.json on main)
+        # without regenerating registry.json, so a stale `present: false`
+        # must not fail every later PR's `test` run; a `present: true` for a
+        # file that does not exist is the claim this test forbids.
         registry = json.loads(read("registry.json"))
         entry = next(e for e in registry["entries"] if e["path"] == "state/verifications.json")
         on_disk = (BASE_DIR / "state" / "verifications.json").is_file()
-        self.assertIs(entry["present"], on_disk)
+        self.assertIsInstance(entry["present"], bool)
         if not on_disk:
+            self.assertFalse(entry["present"])
             for key in ("bytes", "sha8", "last_update"):
                 self.assertNotIn(key, entry)
 

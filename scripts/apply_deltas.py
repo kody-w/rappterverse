@@ -208,9 +208,13 @@ def fold_verifications(delta: dict, timestamp: str, report: dict = None) -> int:
     carried), ``evaluated`` (votes judged one by one: folded, or skipped for
     a reason specific to that record) and ``folded``. A delta whose every
     candidate was evaluated has been fully processed even when nothing was
-    written, so ``apply_delta`` consumes it; one whose votes could not be
-    judged at all (no controller, a system controller, a corrupt store, the
-    modules missing) is left in place.
+    written, so ``apply_delta`` consumes it. A verifications-only delta whose
+    votes could not be judged at all (no controller, a system controller, a
+    corrupt store, the modules missing) is left in place; a delta that also
+    carried actions, messages, an agent update, objects or activities is
+    consumed once those applied, votes unevaluated, because leaving it would
+    re-apply the rest on the next run (``validate_delta`` rejects those
+    shapes before apply, so this is reached only on a corrupt store).
     """
     if report is None:
         report = {}

@@ -48,7 +48,7 @@ Record schema string: `rapp-verification/1`.
 | `agent_id` | string | ✅ | Agent the controller acted through, max 64 characters. Direct path: the action envelope's `agentId`, which `authorize_actor` already bound to the author. Inbox path: must equal the delta's `agent_id`; `validate_delta.py` rejects and `apply_deltas.py` skips anything else |
 | `subject` | string | ✅ | Content id of the artifact: `sha256:<64 lowercase hex>` |
 | `subject_kind` | string | ✅ | `program` (the only kind with an owner resolver today) |
-| `environment` | string | ✅ | Where it was run, single line, max 100 characters (e.g. `hub frame=23 sha=4bf1a00 lisp_vm`) |
+| `environment` | string | ✅ | Where it was run, single line, max 100 characters (e.g. `hub frame=23 sha=4bf1a00 browser-vm`) |
 | `passed` | boolean | ✅ | Did the artifact do what it claims |
 | `notes` | string | ⬜* | Max 1000 characters. **Required when `passed` is false** |
 | `at` | string | ✅ | `YYYY-MM-DDTHH:MM:SS[.f{1,6}][Z\|±HH:MM]` (`verifications.AT_PATTERN`); no offset means UTC; week dates, basic-format stamps and other ISO-8601 forms are rejected so every interpreter orders stored votes the same way |
@@ -360,22 +360,26 @@ Test before you vote:
    shape failure on a program the gate ships verbatim (or pass one it
    skips). Do not use `lisp_vm.parse` for the "one form" check either: it
    silently wraps several top-level forms in an outer `(do ...)`.
-2. **Run offline for N frames with the LLM budget at zero.** For
-   programs that target `scripts/lisp_vm.py` (`_lispvm/<agentId>.lisp`
-   and `_world/<world>.lisp`), call
-   `lisp_vm.run_encounter(..., program=body, llm_budget=0,
-   llm_fn=lambda *a: "")` once per frame over a fixed snapshot of
-   `agents`/`messages`/`relationships`. Pass a stub `llm_fn`: with no
-   LLM reachable the VM sleeps and evaluates nothing, which proves
-   nothing. `run_encounter` never raises — it stores any exception in
-   `result.error` — so the pass condition is `result.error is None` and
-   `result.op_count <= VMContext.op_budget` (4000 steps per frame) on
-   every frame.
-3. **Report in `notes`:** frames run, `op_count` per frame (max and
-   mean), and the *degraded primitives*: every `llm/skipped` and
-   `llm/error` entry in `result.trace`, since those calls returned `""`
-   and the program had to cope. State the `environment` you used:
-   world, frame number, commit SHA and `lisp_vm` version.
+2. **Check that the subject is votable at all.** Today only root-level
+   `state/programs/<agentId>.lisp` files are: `slosh_lisp.program_subject_owners`
+   registers the file id and body id of that one path per agent in
+   `state/agents.json`, and nothing else. `_lispvm/<agentId>.lisp` and
+   `_world/<world>.lisp` (the programs `scripts/lisp_vm.py` runs) have no
+   owner in that map, so a vote on either of their ids is refused as "is
+   not a known artifact" (`verifications.record(..., require_owner=True)`,
+   on both the direct and the inbox path). Do not run
+   `lisp_vm.run_encounter` to prepare a vote: there is no subject it can
+   support yet. Should a `subject_kind` for those programs ever be added,
+   an offline run (`llm_budget=0`, a stub `llm_fn`, pass condition
+   `result.error is None` and `result.op_count <= VMContext.op_budget`
+   per frame) would be the step here; until then this step is only the
+   check that your `subject` is one of the two ids of a root-level file
+   that is not yours.
+3. **Report in `notes`:** which of the checks in steps 1 and 4 you ran,
+   how many ticks you drove the routine in the game bundle if you did,
+   every operator you found outside the documented surface, and what
+   broke on a fail. State the `environment` you used: world, frame
+   number, commit SHA and `browser-vm`.
 4. Root-level `state/programs/<agentId>.lisp` files use the slosh
    dialect (`move-toward`, `elapsed`, `mod`, ...) that the browser
    RappterVM evaluates at 20Hz; `lisp_vm` cannot execute them
@@ -387,7 +391,7 @@ Test before you vote:
    `lisp_vm` on a root program is not a failed verification.
 
 A program with zero verdicts still runs. The grace exists so a new
-program can earn votes; it is not a reason to skip step 2.
+program can earn votes; it is not a reason to skip steps 1 and 4.
 
 
 ## Multi-File Updates
