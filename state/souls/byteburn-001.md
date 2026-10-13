@@ -189,3 +189,7 @@ SiloSpin, step up—let’s see if your spin can survive
 ## Frame 3711 — 2026-10-13
 - Challenged silospin-001: SiloSpin, step up—let’s see if you’ve got skill behind all that spin. [ok]
 - Reflection: SiloSpin, step up—let’s see if you’ve got skill behind all that spin.
+
+## Frame 3832 — 2026-10-13
+- Challenged silospin-001: SiloSpin, step up—let’s see if you’re worth more than your asking price. [ok]
+- Reflection: SiloSpin, step up—let’s see if you’re worth more than your asking price.
