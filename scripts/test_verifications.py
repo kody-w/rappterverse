@@ -486,6 +486,277 @@ class ReconcileFoldTests(TempStateMixin, unittest.TestCase):
         self.assertFalse((self.state_dir / "verifications.json").exists())
 
 
+class StoreShapeTests(unittest.TestCase):
+    """A parseable but structurally damaged store is never repaired into an
+    empty one: that would let the next fold overwrite the whole history."""
+
+    def test_load_raises_on_non_list_verifications(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "verifications.json"
+            path.write_text(json.dumps({
+                "schema": verifications.DOC_SCHEMA, "verifications": {"oops": 1}, "subjects": {},
+            }), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "`verifications` is not a list"):
+                verifications.load(path)
+            path.write_text(json.dumps({
+                "schema": verifications.DOC_SCHEMA, "verifications": [], "subjects": [],
+            }), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "`subjects` is not an object"):
+                verifications.load(path)
+            # A brand-new {} (or a file without the keys) is still repaired.
+            path.write_text("{}", encoding="utf-8")
+            self.assertEqual(verifications.load(path)["verifications"], [])
+
+    def test_inbox_fold_never_overwrites_a_damaged_store(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            state = Path(tmp) / "state"
+            (state / "programs").mkdir(parents=True)
+            (state / "agents.json").write_text(json.dumps({"agents": [
+                {"id": "alice-agent-001", "controller": "alice"},
+                {"id": "bob-agent-001", "controller": "bob"},
+            ]}), encoding="utf-8")
+            program = "(do nil)\n"
+            (state / "programs" / "bob-agent-001.lisp").write_text(program, encoding="utf-8")
+            file_id = slosh_lisp.program_subjects(program.encode("utf-8"))[0]
+            damaged = json.dumps({"schema": verifications.DOC_SCHEMA, "verifications": {"old": 1}, "subjects": []})
+            (state / "verifications.json").write_text(damaged, encoding="utf-8")
+            saved = apply_deltas.STATE_DIR
+            apply_deltas.STATE_DIR = state
+            try:
+                out = io.StringIO()
+                with contextlib.redirect_stdout(out):
+                    folded = apply_deltas.fold_verifications({
+                        "agent_id": "alice-agent-001", "controller": "alice",
+                        "verifications": [vote("alice", subject=file_id)],
+                    }, "2026-10-13T02:00:00Z")
+            finally:
+                apply_deltas.STATE_DIR = saved
+            self.assertEqual(folded, 0)
+            self.assertIn("unreadable", out.getvalue())
+            self.assertEqual((state / "verifications.json").read_text(encoding="utf-8"), damaged)
+
+
+class RecordLimitTests(unittest.TestCase):
+    def test_verifier_must_look_like_a_github_login(self) -> None:
+        store = {"verifications": []}
+        for bad in ("Kody-w".replace("K", "\u212a"), "-lead", "trail-", "a--b", "has space", "x" * 40, "a/b"):
+            with self.subTest(verifier=bad):
+                with self.assertRaisesRegex(ValueError, "GitHub login"):
+                    verifications.record(store, vote(bad))
+        for good in ("a", "kody-w", "A1-b2-C3", "x" * 39):
+            with self.subTest(verifier=good):
+                verifications.record({"verifications": []}, vote(good))
+
+    def test_agent_id_is_bounded(self) -> None:
+        with self.assertRaisesRegex(ValueError, "`agent_id` must be at most"):
+            verifications.record({"verifications": []}, vote("alice", agent_id="a" * 65))
+        verifications.record({"verifications": []}, vote("alice", agent_id="a" * 64))
+
+    def test_controller_spelling_is_what_gets_stored(self) -> None:
+        store = {"verifications": []}
+        verifications.record(store, vote("OPENCLAW"), controller="openclaw")
+        self.assertEqual(store["verifications"][0]["verifier"], "openclaw")
+        with self.assertRaisesRegex(ValueError, "is not the controller"):
+            verifications.record(store, vote("mallory"), controller="openclaw")
+
+    def test_supersedes_compares_instants_not_strings(self) -> None:
+        sup = verifications.supersedes
+        self.assertTrue(sup("2026-10-12T10:00:00Z", "2026-10-12T10:00:00Z"))            # equal: existing stays
+        self.assertFalse(sup("2026-10-12T10:00:00Z", "2026-10-12T10:00:00Z", strict=True))
+        self.assertFalse(sup("2026-10-12T10:00:00+00:00", "2026-10-12T09:00:00-05:00"))   # 14:00Z is newer
+        self.assertFalse(sup("2026-10-12T03:00:00Z", "2026-10-12T03:00:00.500Z"))
+        self.assertTrue(sup("2026-10-12T02:00:00+01:00", "2026-10-12T00:30:00Z"))
+        self.assertTrue(sup("zzz", "aaa"))  # unparseable: string fallback, never a crash
+        self.assertIsNone(verifications.parse_at("not a time"))
+
+
+class ValidatorHardeningTests(TempStateMixin, unittest.TestCase):
+    """The validators report, never crash, on shapes the folds would skip."""
+
+    def setUp(self) -> None:
+        self.make_state()
+        import validate_action
+        import validate_delta
+        self.va = validate_action
+        self.vd = validate_delta
+        self._saved = (validate_action.STATE_DIR, validate_action.PROGRAMS_DIR, validate_delta.STATE_DIR)
+        validate_action.STATE_DIR = self.state_dir
+        validate_action.PROGRAMS_DIR = self.state_dir / "programs"
+        validate_delta.STATE_DIR = self.state_dir
+        validate_action.errors.clear()
+        validate_delta.errors.clear()
+
+    def tearDown(self) -> None:
+        self.va.STATE_DIR, self.va.PROGRAMS_DIR, self.vd.STATE_DIR = self._saved
+        self.va.errors.clear()
+        self.vd.errors.clear()
+        self.cleanup_state()
+
+    def agents_by_id(self) -> dict:
+        data = json.loads((self.state_dir / "agents.json").read_text(encoding="utf-8"))
+        return {a["id"]: a for a in data["agents"]}
+
+    def test_direct_path_reports_non_string_subject_instead_of_crashing(self) -> None:
+        for bad in ({"a": 1}, ["sha256:" + "a" * 64]):
+            with self.subTest(subject=bad):
+                self.va.errors.clear()
+                action = verify_action("alice-agent-001", "alice", bad)
+                self.va.validate_verify_authorization("state/actions.json", [action], self.agents_by_id(), "alice")
+                self.assertTrue(any("`data.subject` must be a string" in e for e in self.va.errors), self.va.errors)
+
+    def test_inbox_path_reports_non_string_subject_instead_of_crashing(self) -> None:
+        delta = {
+            "agent_id": "alice-agent-001", "controller": "alice", "timestamp": "2026-10-13T02:00:00Z",
+            "verifications": [vote("alice", subject={"a": 1})],
+            "actions": [verify_action("alice-agent-001", "alice", ["x"])],
+        }
+        self.vd.validate_verify_structure(delta, Path("delta.json"))
+        self.vd.validate_verify_authorization(delta, Path("delta.json"), "alice", self.agents_by_id())
+        self.assertTrue(any("subject" in e for e in self.vd.errors), self.vd.errors)
+
+    def test_inbox_top_level_record_must_name_the_delta_agent(self) -> None:
+        for agent_id in ("bob-agent-001", "ghost-999", "a" * 2000):
+            with self.subTest(agent_id=agent_id[:20]):
+                self.vd.errors.clear()
+                delta = {
+                    "agent_id": "alice-agent-001", "controller": "alice", "timestamp": "2026-10-13T02:00:00Z",
+                    "verifications": [vote("alice", subject=self.bob_file_id, agent_id=agent_id)],
+                }
+                self.vd.validate_verify_authorization(delta, Path("delta.json"), "alice", self.agents_by_id())
+                self.assertTrue(any("`agent_id` must be the delta agent" in e for e in self.vd.errors), self.vd.errors)
+        self.vd.errors.clear()
+        delta = {
+            "agent_id": "alice-agent-001", "controller": "alice", "timestamp": "2026-10-13T02:00:00Z",
+            "verifications": [vote("alice", subject=self.bob_file_id)],
+        }
+        self.vd.validate_verify_authorization(delta, Path("delta.json"), "alice", self.agents_by_id())
+        self.assertEqual(self.vd.errors, [])
+
+    def test_inbox_fold_skips_foreign_agent_and_stamps_delta_time(self) -> None:
+        saved = apply_deltas.STATE_DIR
+        apply_deltas.STATE_DIR = self.state_dir
+        try:
+            out = io.StringIO()
+            with contextlib.redirect_stdout(out):
+                folded = apply_deltas.fold_verifications({
+                    "agent_id": "alice-agent-001", "controller": "alice",
+                    "verifications": [
+                        vote("alice", subject=self.bob_file_id, agent_id="ghost-999"),
+                        vote("Alice", subject=self.bob_body_id, agent_id="alice-agent-001",
+                             at="9999-01-01T00:00:00Z"),
+                    ],
+                }, "2026-10-13T02:00:00Z")
+        finally:
+            apply_deltas.STATE_DIR = saved
+        self.assertEqual(folded, 1)
+        self.assertIn("`agent_id` must be the delta agent", out.getvalue())
+        store = verifications.load(self.state_dir / "verifications.json")
+        self.assertEqual(len(store["verifications"]), 1)
+        self.assertEqual(store["verifications"][0]["at"], "2026-10-13T02:00:00Z")
+        self.assertEqual(store["verifications"][0]["verifier"], "alice")  # controller spelling, not "Alice"
+        self.assertEqual(store["generated"], "2026-10-13T02:00:00Z")
+
+    def test_inbox_fold_keeps_a_strictly_newer_live_vote(self) -> None:
+        store_path = self.state_dir / "verifications.json"
+        store = verifications.load(store_path)
+        verifications.record(store, vote("alice", subject=self.bob_file_id, passed=False,
+                                          at="2026-10-13T11:00:00Z"), {self.bob_file_id: "bob"})
+        verifications.save(store, store_path)
+        saved = apply_deltas.STATE_DIR
+        apply_deltas.STATE_DIR = self.state_dir
+        try:
+            out = io.StringIO()
+            with contextlib.redirect_stdout(out):
+                older = apply_deltas.fold_verifications({
+                    "agent_id": "alice-agent-001", "controller": "alice",
+                    "verifications": [vote("alice", subject=self.bob_file_id, passed=True)],
+                }, "2026-10-13T10:00:00Z")
+                newer = apply_deltas.fold_verifications({
+                    "agent_id": "alice-agent-001", "controller": "alice",
+                    "verifications": [vote("alice", subject=self.bob_file_id, passed=True)],
+                }, "2026-10-13T07:00:00-05:00")  # 12:00Z, newer than 11:00Z
+        finally:
+            apply_deltas.STATE_DIR = saved
+        self.assertEqual((older, newer), (0, 1))
+        self.assertIn("a newer live vote", out.getvalue())
+        live = verifications.find_vote(verifications.load(store_path), "alice", self.bob_file_id)
+        self.assertTrue(live["passed"])
+        self.assertEqual(live["at"], "2026-10-13T07:00:00-05:00")
+
+    def test_direct_edit_validation_rejects_self_vote_and_unknown_subject(self) -> None:
+        document = {
+            "schema": verifications.DOC_SCHEMA,
+            "verifications": [
+                vote("bob", subject=self.bob_file_id),           # self-vote: bob owns it (program on disk)
+                vote("alice", subject=SUBJECT_B),                # subject nobody can attribute
+                vote("alice", subject=SUBJECT_A),                # bound only through the registry below
+                vote("carol", subject=SUBJECT_A),                # self-vote via the registry
+            ],
+            "subjects": {SUBJECT_A: {"owner": "carol", "kind": "program"}},
+            "_meta": {},
+        }
+        self.va.validate_verifications(document)
+        joined = "\n".join(self.va.errors)
+        self.assertIn("record 0: self-verify rejected", joined)
+        self.assertIn("record 1: subject", joined)
+        self.assertIn("not a known artifact", joined)
+        self.assertIn("record 3: self-verify rejected", joined)
+        self.assertNotIn("record 2:", joined)
+        self.assertNotIn("duplicates found", joined)
+        self.assertEqual(document["subjects"], {SUBJECT_A: {"owner": "carol", "kind": "program"}})  # untouched
+
+    def test_direct_edit_validation_names_real_duplicates_only(self) -> None:
+        self.va.validate_verifications({
+            "verifications": [vote("alice", subject=self.bob_file_id, passed=False, notes="")],
+            "subjects": {}, "_meta": {},
+        })
+        self.assertEqual(len(self.va.errors), 1, self.va.errors)
+        self.assertIn("notes", self.va.errors[0])
+        self.va.errors.clear()
+        self.va.validate_verifications({
+            "verifications": [vote("alice", subject=self.bob_file_id), vote("ALICE", subject=self.bob_file_id)],
+            "subjects": {}, "_meta": {},
+        })
+        self.assertEqual(len(self.va.errors), 1, self.va.errors)
+        self.assertIn("duplicate", self.va.errors[0])
+        self.va.errors.clear()
+        self.va.validate_verifications({"verifications": {"old": 1}, "subjects": {}, "_meta": {}})
+        self.assertIn("`verifications` is not a list", self.va.errors[0])
+
+
+class ReconcileOrderingTests(ReconcileFoldTests):
+    def test_equal_timestamp_is_not_reapplied_and_fractional_newer_wins(self) -> None:
+        store_path = self.state_dir / "verifications.json"
+        store = verifications.load(store_path)
+        verifications.record(store, vote("alice", subject=self.bob_file_id, passed=True,
+                                          at="2026-10-13T11:00:00Z"), {self.bob_file_id: "bob"})
+        verifications.save(store, store_path)
+        changed, _ = self.fold([verify_action("alice-agent-001", "alice", self.bob_file_id, passed=False,
+                                              at="2026-10-13T11:00:00Z")])
+        self.assertFalse(changed)  # same instant: the live (inbox) vote stands
+        changed, _ = self.fold([verify_action("alice-agent-001", "alice", self.bob_file_id, passed=False,
+                                              at="2026-10-13T11:00:00.500Z")])
+        self.assertTrue(changed)   # lexically smaller, but genuinely newer
+        live = verifications.find_vote(verifications.load(store_path), "alice", self.bob_file_id)
+        self.assertFalse(live["passed"])
+        changed, _ = self.fold([verify_action("alice-agent-001", "alice", self.bob_file_id, passed=True,
+                                              at="2026-10-13T06:00:00-05:00")])  # 11:00Z: older than 11:00:00.5Z
+        self.assertFalse(changed)
+
+    def test_list_agent_id_is_skipped_not_a_crash(self) -> None:
+        action = verify_action("alice-agent-001", "alice", self.bob_file_id)
+        action["agentId"] = ["alice-agent-001"]
+        changed, log = self.fold([action])
+        self.assertFalse(changed)
+        self.assertIn("no peer controller", log)
+
+    def test_stored_verifier_is_the_controller_spelling(self) -> None:
+        changed, _ = self.fold([verify_action("alice-agent-001", "ALICE", self.bob_file_id)])
+        self.assertTrue(changed)
+        store = verifications.load(self.state_dir / "verifications.json")
+        self.assertEqual(store["verifications"][0]["verifier"], "alice")
+
+
 class ValidatorAgreementTests(unittest.TestCase):
     def test_both_validators_share_one_action_type_list(self) -> None:
         import validate_action

@@ -32,12 +32,30 @@ jobs:
       - name: Classify derived-state ownership
         if: github.event_name == 'pull_request'
         run: |
-          if git diff --name-only "origin/${{ github.base_ref }}...HEAD" \
+          # Fail closed: under bash -eo pipefail a failing `git diff` (missing
+          # base ref) aborts this step instead of silently classifying the PR
+          # as state-only. --no-renames lists both ends of a rename, so a file
+          # moved into state/inbox/ still counts as a change outside it;
+          # core.quotePath=off keeps non-ASCII paths unquoted so the anchored
+          # greps below see the real path.
+          changed="$(git -c core.quotePath=off diff --no-renames --name-only "origin/${{ github.base_ref }}...HEAD")"
+          if printf '%s\n' "$changed" \
             | grep -Ev '^(state|worlds|feed)/' \
             | grep -q .; then
             echo "ALLOW_DERIVED_STATE_DRIFT=0" >> "$GITHUB_ENV"
           else
             echo "ALLOW_DERIVED_STATE_DRIFT=1" >> "$GITHUB_ENV"
+          fi
+          # A state-delta PR (fork or bot) carries exactly its queue entry under
+          # state/inbox/ and nothing else; the reconciler drains it after merge.
+          # Only that shape may bypass TestInboxHygiene. Any other path in the
+          # diff, or an empty diff, keeps the inbox-must-be-empty guarantee.
+          if [ -n "$changed" ] && ! printf '%s\n' "$changed" \
+            | grep -Ev '^state/inbox/' \
+            | grep -q .; then
+            echo "ALLOW_INBOX_DELTAS=1" >> "$GITHUB_ENV"
+          else
+            echo "ALLOW_INBOX_DELTAS=0" >> "$GITHUB_ENV"
           fi
 
       - name: Run regression tests
@@ -69,6 +87,9 @@ jobs:
 
       - name: Run discovery file tests
         run: python scripts/test_discovery_files.py -v
+
+      - name: Issue form templates
+        run: python scripts/test_issue_templates.py -v
 
       - name: Run deterministic world-pack compiler tests
         run: python -m unittest discover -s tests -p 'test_world_pack_compiler.py' -v

@@ -44,8 +44,8 @@ Record schema string: `rapp-verification/1`.
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
 | `schema` | string | ⬜ | `rapp-verification/1` (defaults to it when omitted) |
-| `verifier` | string | ✅ | GitHub login of the **controller** casting the vote. Never `system`. Compared case-insensitively |
-| `agent_id` | string | ✅ | Agent the controller acted through (must exist in `agents.json`) |
+| `verifier` | string | ✅ | GitHub login of the **controller** casting the vote: 1-39 ASCII letters, digits or hyphens (`verifications.VERIFIER_RE`). Never `system`. Compared case-insensitively; the folds store the controller's canonical spelling from `agents.json`, not the case the voter typed |
+| `agent_id` | string | ✅ | Agent the controller acted through, max 64 characters. Direct path: the action envelope's `agentId`, which `authorize_actor` already bound to the author. Inbox path: must equal the delta's `agent_id`; `validate_delta.py` rejects and `apply_deltas.py` skips anything else |
 | `subject` | string | ✅ | Content id of the artifact: `sha256:<64 lowercase hex>` |
 | `subject_kind` | string | ✅ | `program` (the only kind with an owner resolver today) |
 | `environment` | string | ✅ | Where it was run, single line, max 100 characters (e.g. `hub frame=23 sha=4bf1a00 lisp_vm`) |
@@ -63,8 +63,12 @@ two ids, and the validators register both under its controller:
 - the **body id**: the UTF-8 bytes of the *canonical body*, i.e. the program
   with every `;` comment and blank line removed and its tokens re-joined with
   single spaces (`slosh_lisp.canonical_body(slosh_lisp.normalize_program(text))`).
-  A tidy one-line program is its own canonical body. Header edits and
-  reformatting do not change it; any change to the code does.
+  Tokens are split by `slosh_lisp.browser_tokenize`, a port of the browser
+  RappterVM's `_tokenize` (`'` and `:` are ordinary symbol characters there,
+  unlike in `lisp_vm.tokenize`), so two programs the browser evaluates
+  differently never share a body id. A tidy one-line program is its own
+  canonical body. Header edits and reformatting do not change it; any change
+  to the code does.
 
 Get both with one command, and vote on the **body id** unless you have a
 reason to pin the exact file:
@@ -118,6 +122,11 @@ hashes `bytes` as given and encodes a `str` as UTF-8.
 6. **Peers only.** `system` is not a verifier, so trusted automation cannot
    cast or pad votes. A `verify` action cannot be cast through delegation:
    the PR author must *be* the controller whose login is `data.verifier`.
+   Trusted repository automation (the reconciler's replay of an accepted PR
+   onto `main`, `trusted_automation_authors()` in `validate_action.py`) is
+   exempt from that author binding but still bound to the actor's
+   controller: `data.verifier` must be the controller of `agentId`, never
+   `system`.
 7. **Hide threshold.** A subject is **hidden** once it has **5 or more votes**
    and **fewer than 20% passed**. Hidden subjects stay in the file (the votes
    are the evidence); `slosh_lisp.py` stops shipping the program verbatim and
@@ -189,14 +198,17 @@ it at all). Two folds write it, both through `verifications.record` →
 
 | Path | Fold | When |
 |------|------|------|
-| Direct PR appending a `verify` action to `state/actions.json` | `scripts/reconcile_derived_state.py` (`fold_verify_actions`) | On every state PR the reconciler replays onto `main`; idempotent, and a window action never overwrites a newer live vote |
-| `state/inbox/<id>.json` delta with a `verifications` list or `verify` actions | `scripts/apply_deltas.py` (`fold_verifications`) | When the delta is applied; every record's `verifier` must be the delta's `controller` |
+| Direct PR appending a `verify` action to `state/actions.json` | `scripts/reconcile_derived_state.py` (`fold_verify_actions`) | On every state PR the reconciler replays onto `main`; idempotent, and a window action whose `at` is not later than the live vote by the same controller (compared as instants, so `Z`, offsets and fractional seconds order correctly) is skipped |
+| `state/inbox/<id>.json` delta with a `verifications` list or `verify` actions | `scripts/apply_deltas.py` (`fold_verifications`) | When the delta is applied; every record's `verifier` must be the delta's `controller` and its `agent_id` the delta's `agent_id`; a top-level record is stamped with the delta `timestamp` as its `at`; a live vote by the same controller with a strictly later `at` is kept |
 
 Both folds skip a bad record with a printed reason rather than failing the
 whole batch, and neither writes anything when the existing store is corrupt
-(`verifications.load` raises on an unreadable file instead of returning an
-empty store). `validate_action.py --validate-state` validates the committed
-store on `main`.
+(`verifications.load` raises on an unreadable file, on a `verifications`
+that is not a list and on a `subjects` that is not an object, instead of
+returning an empty store). `validate_action.py --validate-state` validates
+the committed store on `main` with the same owner rules the folds apply:
+every record must resolve to a known subject (the file's own `subjects`
+registry plus the committed programs) that its verifier does not own.
 
 ### Delta key
 
@@ -210,8 +222,10 @@ store on `main`.
 ```
 
 `scripts/validate_delta.py` checks the shape of every record, and with
-`VALIDATION_REQUIRE_AUTH=1` binds each `verifier` to the delta `controller`
-and applies rules 2, 3 and 6 against the committed programs and store.
+`VALIDATION_REQUIRE_AUTH=1` binds each `verifier` to the delta `controller`,
+each `agent_id` to the delta `agent_id`, and applies rules 2, 3 and 6 against
+the committed programs and store. The `at` you write on a top-level record is
+validated as ISO-8601 but replaced by the delta `timestamp` when folded.
 
 ## Why only programs
 
@@ -328,9 +342,11 @@ Test before you vote:
    dialect (`move-toward`, `elapsed`, `mod`, ...) that the browser
    RappterVM evaluates at 20Hz; `lisp_vm` cannot execute them
    (`lisp_vm.resolve_program` says why). For those, do step 1, check
-   every operator against the surface listed under "File format", and
-   drive the routine in the game bundle if you can; say in `notes`
-   which of these you did.
+   every operator against the surface listed under "File format" in
+   `state/programs/README.md` (the RappterVM in `docs/index.html` is the
+   implementation), and drive the routine in the game bundle if you can;
+   say in `notes` which of these you did. An undefined-symbol error from
+   `lisp_vm` on a root program is not a failed verification.
 
 A program with zero verdicts still runs. The grace exists so a new
 program can earn votes; it is not a reason to skip step 2.

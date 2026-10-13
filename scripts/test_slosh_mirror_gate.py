@@ -135,6 +135,40 @@ class NormalizeAndSubjectTests(TempState):
         multi = '(do (emote "a" "line1\n;; still inside the string\n"))\n'
         self.assertIn(";; still inside", slosh.normalize_program(multi))
 
+    def test_body_id_splits_tokens_like_the_browser_vm(self):
+        # The browser RappterVM (src/js/rappter-vm.js _tokenize) treats ' and :
+        # as ordinary symbol characters, where lisp_vm.tokenize makes ' its own
+        # token. Two programs the browser evaluates differently must never
+        # share a body id, or a pass vote (or a hide) on one transfers to the
+        # other while the shipped text really is the different code.
+        joined = "(do (def x'y 1) x'y)"
+        split = "(do (def x 'y 1) x 'y)"
+        self.assertEqual(slosh.browser_tokenize(joined), ["(", "do", "(", "def", "x'y", "1", ")", "x'y", ")"])
+        self.assertNotEqual(slosh.canonical_body(joined), slosh.canonical_body(split))
+        self.assertNotEqual(body_subject(joined), body_subject(split))
+        self.assertEqual(slosh.canonical_body(joined), joined)
+        self.assertEqual(slosh.canonical_body(split), split)
+        # lisp_vm would have conflated them; that is the bug this pins.
+        self.assertEqual(lisp_vm.tokenize(joined), lisp_vm.tokenize(split))
+
+    def test_browser_tokenizer_matches_rappter_vm_grammar(self):
+        # Whitespace is space/tab/LF/CR; ';' comments; parens; strings with no
+        # escapes; ':' keywords end at space, ')' or LF; symbols end at space,
+        # ')', '(', LF or tab.
+        src = '(do ; comment\n\t(emote "a;b" :kw-1 x:y) (f "q\\" z))'
+        self.assertEqual(
+            slosh.browser_tokenize(src),
+            ["(", "do", "(", "emote", '"a;b"', ":kw-1", "x:y", ")", "(", "f", '"q\\"', "z", ")", ")"],
+        )
+        with self.assertRaises(SyntaxError):
+            slosh.browser_tokenize('(do "open')
+        # Re-tokenizing a canonical body gives the same tokens (idempotent).
+        canon = slosh.canonical_body(src)
+        self.assertEqual(slosh.browser_tokenize(canon), slosh.browser_tokenize(src))
+        self.assertEqual(slosh.canonical_body(canon), canon)
+        # An untokenizable body falls back to itself rather than raising.
+        self.assertEqual(slosh.canonical_body('(do "open'), '(do "open')
+
     def test_file_subject_is_sha256_of_the_bytes_even_for_crlf(self):
         crlf = PROGRAM.replace("\n", "\r\n").encode("utf-8")
         file_id, body_id = slosh.program_subjects(crlf)

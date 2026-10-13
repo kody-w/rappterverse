@@ -199,11 +199,12 @@ def validate_verify_authorization(delta: dict, path: Path, controller: str, agen
     """Bind every verify vote in a delta to the delta's controller.
 
     Mirrors `validate_action.validate_verify_authorization`: the verifier must
-    be the delta's `controller` (case-insensitive), `system` does not vote, the
-    subject must resolve to a known artifact (committed per-agent program by
-    file id or body id, or a registered subject) not owned by the verifier,
-    and one vote per subject per delta. Without this, adding `verify` to the
-    inbox path would let `data.verifier` be any login at all.
+    be the delta's `controller` (case-insensitive), every record's `agent_id`
+    must be the delta's `agent_id`, `system` does not vote, the subject must
+    resolve to a known artifact (committed per-agent program by file id or
+    body id, or a registered subject) not owned by the verifier, and one vote
+    per subject per delta. Without this, adding `verify` to the inbox path
+    would let `data.verifier` be any login at all.
     """
     candidates = verify_candidates(delta)
     if not candidates:
@@ -224,6 +225,7 @@ def validate_verify_authorization(delta: dict, path: Path, controller: str, agen
     except ValueError as exc:
         error(f"`{path.name}`: cannot authorize verify votes — {exc}")
         return
+    delta_agent = delta.get("agent_id")
     seen = set()
     for label, rec in candidates:
         if not isinstance(rec, dict):
@@ -231,13 +233,24 @@ def validate_verify_authorization(delta: dict, path: Path, controller: str, agen
         if not verifications_lib.same_login(rec.get("verifier"), controller):
             error(f"`{path.name}`: {label}: `verifier` must be the delta controller `{controller}`")
             continue
+        # A top-level record names its own agent_id; a verify action gets it
+        # from the envelope, which validate_delta_authorization already bound.
+        # Either way it must be the agent this delta acts through, so a
+        # controller cannot attribute a vote to an agent it does not own.
+        if rec.get("agent_id") != delta_agent:
+            error(f"`{path.name}`: {label}: `agent_id` must be the delta agent `{delta_agent}`")
+            continue
         subject = rec.get("subject")
+        if not isinstance(subject, str):
+            continue  # shape error already reported; an object here is unhashable
         if subject in seen:
             error(f"`{path.name}`: {label}: one vote per controller per subject in a delta")
             continue
         seen.add(subject)
         try:
-            verifications_lib.record(store, rec, subject_owners=owners, require_owner=True)
+            verifications_lib.record(
+                store, rec, subject_owners=owners, require_owner=True, controller=controller,
+            )
         except ValueError as exc:
             error(f"`{path.name}`: {label}: {exc}")
 

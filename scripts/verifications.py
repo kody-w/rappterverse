@@ -32,9 +32,11 @@ Public surface (keep it this small; both repos vendor it):
            require_owner=False) -> dict
     record_from_action(action) -> dict      # verify action -> record
     find_vote(store, verifier, subject) -> dict | None
+    parse_at(value) -> datetime | None     # aware UTC instant of an ``at``
+    supersedes(existing_at, new_at) -> bool # existing vote is at least as new
     score(store, subject) -> dict
     is_hidden(store, subject) -> bool
-    save(store, path)
+    save(store, path, timestamp=None)
 
 Python 3.9+, stdlib only (repo constraint — no ``pip install``).
 """
@@ -47,7 +49,7 @@ import math
 import os
 import re
 import sys
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(
@@ -69,6 +71,14 @@ SUBJECT_RE = re.compile(r"^sha256:[0-9a-f]{64}$")
 SUBJECT_KINDS = ("program",)
 ENVIRONMENT_MAX = 100
 NOTES_MAX = 1000
+# ``verifier`` is a GitHub login: 1-39 chars of [A-Za-z0-9-], no leading,
+# trailing or doubled hyphen. Anything else (a Kelvin-sign look-alike, a
+# space, a 2 MB string) is not a controller and never reaches the store.
+VERIFIER_RE = re.compile(r"^[A-Za-z0-9](?:[A-Za-z0-9]|-(?=[A-Za-z0-9])){0,38}$")
+VERIFIER_MAX = 39
+# ``agent_id`` is an agent record id; the longest in state/agents.json is far
+# below this, and an unbounded field would let one record bloat the store.
+AGENT_ID_MAX = 64
 HIDE_MIN_VOTES = 5
 HIDE_PASS_RATE = 0.20
 WILSON_Z = 1.959964  # two-sided 95%
@@ -135,10 +145,12 @@ def load(path=None) -> dict:
     """Load the store at ``path`` (default ``state/verifications.json``).
 
     A *missing* file yields an empty store, so a first vote can create the
-    file. A file that exists but cannot be read or parsed raises
-    ``ValueError``: silently treating a damaged store as empty would drop the
-    subject registry and every prior vote, and a writer that then saved would
-    replace the whole history with nothing.
+    file. A file that exists but cannot be read or parsed, or whose
+    ``verifications`` is present but not a list, or whose ``subjects`` is
+    present but not an object, raises ``ValueError``: silently treating a
+    damaged store as empty would drop the subject registry and every prior
+    vote, and a writer that then saved would replace the whole history with
+    nothing. Only a brand-new ``{}`` is repaired into an empty store.
     """
     target = Path(path) if path is not None else DEFAULT_PATH
     try:
@@ -150,18 +162,38 @@ def load(path=None) -> dict:
         raise ValueError(f"verifications store unreadable: {target}: {exc}") from exc
     if not isinstance(loaded, dict):
         raise ValueError(f"verifications store unreadable: {target}: top level is not an object")
+    problem = store_shape_problem(loaded)
+    if problem:
+        raise ValueError(f"verifications store unreadable: {target}: {problem}")
     return _ensure_store(loaded)
 
 
-def save(store: dict, path) -> Path:
+def store_shape_problem(store) -> str:
+    """Why ``store`` must not be repaired into an empty store, or ``""``.
+
+    Shared by ``load`` and the direct-edit validator so a damaged file is
+    rejected the same way on every path.
+    """
+    if not isinstance(store, dict):
+        return "top level is not an object"
+    if "verifications" in store and not isinstance(store["verifications"], list):
+        return "`verifications` is not a list"
+    if "subjects" in store and not isinstance(store["subjects"], dict):
+        return "`subjects` is not an object"
+    return ""
+
+
+def save(store: dict, path, timestamp=None) -> Path:
     """Write ``store`` to ``path`` with the house formatting.
 
     ``schema`` stays the first key (rapp-static-api/1.0 §3), ``_meta`` counts
-    are refreshed, and the file is written with 4-space indent plus a trailing
-    newline like every other ``save_json`` under ``scripts/``.
+    are refreshed, ``generated`` and ``_meta.lastUpdate`` are set to
+    ``timestamp`` (default: now, UTC), and the file is written with 4-space
+    indent plus a trailing newline like every other ``save_json`` under
+    ``scripts/``. Both folds write through here.
     """
     _ensure_store(store)
-    now = _utc_now()
+    now = timestamp if isinstance(timestamp, str) and timestamp else _utc_now()
     store["generated"] = now
     store["_meta"]["lastUpdate"] = now
     store["_meta"]["verificationCount"] = len(store["verifications"])
@@ -197,6 +229,40 @@ def _valid_iso8601(value) -> bool:
     return True
 
 
+def parse_at(value):
+    """Aware UTC ``datetime`` for an ISO-8601 ``at``, or None when unparseable.
+
+    ``Z``, numeric offsets, fractional seconds and naive values (taken as UTC)
+    all compare as instants, so ``09:00-05:00`` sorts after ``10:00Z`` the way
+    a string comparison never would.
+    """
+    if not isinstance(value, str) or not value:
+        return None
+    try:
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=timezone.utc)
+    return parsed.astimezone(timezone.utc)
+
+
+def supersedes(existing_at, new_at, *, strict: bool = False) -> bool:
+    """True when the vote at ``existing_at`` keeps its place against ``new_at``.
+
+    Instants are compared when both parse; equal instants count as "already
+    folded" (the existing vote wins) unless ``strict`` is set, in which case
+    only a strictly newer existing vote wins. When either value does not
+    parse the comparison falls back to the strings, so a fold never crashes
+    on a record the validators have not seen.
+    """
+    left = parse_at(existing_at)
+    right = parse_at(new_at)
+    if left is None or right is None:
+        left, right = str(existing_at or ""), str(new_at or "")
+    return left > right if strict else left >= right
+
+
 def _single_line(value: str) -> bool:
     return "\n" not in value and "\r" not in value
 
@@ -221,9 +287,15 @@ def _validate_record(rec: dict) -> dict:
         raise ValueError("`verifier` (controller login) is required")
     if verifier.strip().casefold() in RESERVED_VERIFIERS:
         raise ValueError("`verifier` must be a controller login; `system` does not cast peer votes")
+    if len(verifier.strip()) > VERIFIER_MAX or not VERIFIER_RE.match(verifier.strip()):
+        raise ValueError(
+            f"`verifier` must be a GitHub login (1-{VERIFIER_MAX} ASCII letters, digits or hyphens)"
+        )
     agent_id = rec.get("agent_id")
     if not isinstance(agent_id, str) or not agent_id.strip() or not _single_line(agent_id):
         raise ValueError("`agent_id` is required")
+    if len(agent_id.strip()) > AGENT_ID_MAX:
+        raise ValueError(f"`agent_id` must be at most {AGENT_ID_MAX} characters")
 
     subject = rec.get("subject")
     if not isinstance(subject, str) or not SUBJECT_RE.match(subject):
@@ -320,7 +392,7 @@ def _remember_owners(store: dict, subject: str, kind: str, owners: set):
 
 
 def record(store: dict, rec: dict, subject_owner=None, *, subject_owners=None,
-           require_owner: bool = False) -> dict:
+           require_owner: bool = False, controller=None) -> dict:
     """Validate ``rec`` and fold it into ``store``; return the store.
 
     Raises ``ValueError`` on an invalid record, a self-verify, or (with
@@ -332,9 +404,21 @@ def record(store: dict, rec: dict, subject_owner=None, *, subject_owners=None,
     An existing vote by the same verifier (case-insensitive) on the same
     subject is replaced in place; the store is never appended twice for one
     (verifier, subject).
+
+    ``controller`` is the login the caller resolved from ``agents.json`` (or
+    the delta envelope). When given, it must be the same login as the
+    declared ``verifier`` (case-insensitively) and is what gets *stored*, so
+    the file carries one spelling per controller rather than whatever case
+    the voter typed.
     """
     _ensure_store(store)
     clean = _validate_record(rec)
+    if controller is not None:
+        if not same_login(controller, clean["verifier"]):
+            raise ValueError(
+                f"`verifier` `{clean['verifier']}` is not the controller `{controller}`"
+            )
+        clean["verifier"] = controller.strip()
     source = subject_owner if subject_owner is not None else subject_owners
     owners = resolved_owners(store, clean["subject"], source)
     declared = _as_login_set(rec.get("subject_owner"))

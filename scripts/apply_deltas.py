@@ -191,12 +191,17 @@ def fold_verifications(delta: dict, timestamp: str) -> int:
 
     Takes the top-level ``verifications`` list plus any ``verify``-typed entry
     in ``actions``. Every record's ``verifier`` must be the delta's
-    ``controller`` (the identity the validator bound to the PR author); the
-    subject must resolve to a known artifact not owned by that controller. An
-    unknown or invalid record (bad shape, wrong verifier, self-verify, unknown
-    subject, missing notes on a fail) is skipped with a printed reason; this
-    never raises. Returns the number of votes folded; the store is written
-    only when that is non-zero, and never when the existing store is corrupt.
+    ``controller`` (the identity the validator bound to the PR author) and its
+    ``agent_id`` the delta's ``agent_id``; the subject must resolve to a known
+    artifact not owned by that controller; a live vote by the same controller
+    on the same subject with a strictly later ``at`` is kept (the reconciler
+    applies the same rule to window actions). Top-level records are stamped
+    with the delta ``timestamp``. An unknown or invalid record (bad shape,
+    wrong verifier or agent, self-verify, unknown subject, missing notes on a
+    fail) is skipped with a printed reason; this never raises. Returns the
+    number of votes folded; the store is written only when that is non-zero,
+    through ``verifications.save``, and never when the existing store is
+    corrupt.
     """
     candidates = []
     raw = delta.get("verifications")
@@ -218,6 +223,9 @@ def fold_verifications(delta: dict, timestamp: str) -> int:
     if not isinstance(controller, str) or not controller.strip():
         print(f"  ⚠ Skipping {len(candidates)} verification(s): delta has no `controller`")
         return 0
+    if controller.strip().casefold() in verifications_lib.RESERVED_VERIFIERS:
+        print(f"  ⚠ Skipping {len(candidates)} verification(s): system-controlled deltas do not cast peer verifications")
+        return 0
 
     store_path = STATE_DIR / "verifications.json"
     try:
@@ -226,26 +234,45 @@ def fold_verifications(delta: dict, timestamp: str) -> int:
         print(f"  ⚠ Skipping {len(candidates)} verification(s): {exc}")
         return 0
     owners = verification_subject_owners()
+    delta_agent = delta.get("agent_id")
     folded = 0
     for source, label, entry in candidates:
         where = f"{source}[{label}]"
         if not isinstance(entry, dict):
             print(f"  ⚠ Skipping verification {where}: not an object")
             continue
-        rec = verify_record_from_action(entry) if source == "actions" else entry
+        if source == "actions":
+            rec = verify_record_from_action(entry)
+        else:
+            # A top-level record is stamped with the delta's own time, as a
+            # verify action is stamped with its envelope timestamp.
+            rec = dict(entry)
+            rec["at"] = timestamp
         if not verifications_lib.same_login(rec.get("verifier"), controller):
             print(f"  ⚠ Skipping verification {where}: `verifier` must be the delta controller `{controller}`")
             continue
+        if rec.get("agent_id") != delta_agent:
+            print(f"  ⚠ Skipping verification {where}: `agent_id` must be the delta agent `{delta_agent}`")
+            continue
+        subject = rec.get("subject")
+        if isinstance(subject, str):
+            existing = verifications_lib.find_vote(store, controller, subject)
+            if existing is not None and verifications_lib.supersedes(
+                existing.get("at"), rec.get("at"), strict=True,
+            ):
+                print(f"  ⚠ Skipping verification {where}: a newer live vote by `{controller}` exists ({existing.get('at')})")
+                continue
         try:
-            verifications_lib.record(store, rec, subject_owners=owners, require_owner=True)
+            verifications_lib.record(
+                store, rec, subject_owners=owners, require_owner=True, controller=controller,
+            )
         except (ValueError, TypeError) as exc:
             print(f"  ⚠ Skipping verification {where}: {exc}")
             continue
         folded += 1
 
     if folded:
-        store["_meta"]["lastUpdate"] = timestamp
-        save_json(store_path, store)
+        verifications_lib.save(store, store_path, timestamp)
         print(f"  ✓ Folded {folded} verification(s)")
     return folded
 

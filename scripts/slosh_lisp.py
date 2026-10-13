@@ -43,10 +43,11 @@ try:
 except ImportError:
     _verifications = None
 
-# lisp_vm.tokenize is the one S-expression tokenizer in the repo that knows
-# about string literals and `;` comments; the gate uses it for the structural
-# check and for the canonical body. Without it the gate falls back to the
-# prefix/suffix check it always had.
+# lisp_vm.tokenize is the S-expression tokenizer the gate uses for the
+# structural "one (do ...) form" check (it knows about string literals and `;`
+# comments). Without it the gate falls back to the prefix/suffix check it
+# always had. The canonical body, and therefore the body id every vote and
+# hide keys on, is NOT built with it: see ``browser_tokenize`` below.
 try:
     import lisp_vm as _lisp_vm
 except ImportError:
@@ -113,24 +114,75 @@ def normalize_program(raw):
     ).strip()
 
 
+def browser_tokenize(src):
+    """Split ``src`` exactly as the browser RappterVM does (``_tokenize`` in
+    ``src/js/rappter-vm.js``), because that VM is what evaluates a root-level
+    ``state/programs/<agentId>.lisp``.
+
+    Its grammar differs from ``lisp_vm.tokenize``: whitespace is only space,
+    tab, LF and CR; ``;`` starts a comment to end of line; ``(`` and ``)`` are
+    tokens; a string literal runs to the next ``"`` with no escapes; a ``:``
+    keyword runs to the next space, ``)`` or LF; every other run of characters
+    up to a space, ``)``, ``(``, LF or tab is one symbol, so ``'`` and ``:``
+    inside a symbol are ordinary characters. Two texts that split differently
+    here can evaluate differently in the browser, so they must not share a
+    body id. Raises ``SyntaxError`` on an unterminated string, as the VM does.
+    """
+    tokens = []
+    i = 0
+    n = len(src)
+    while i < n:
+        c = src[i]
+        if c in " \t\n\r":
+            i += 1
+        elif c == ";":
+            while i < n and src[i] != "\n":
+                i += 1
+        elif c in "()":
+            tokens.append(c)
+            i += 1
+        elif c == '"':
+            j = i + 1
+            while j < n and src[j] != '"':
+                j += 1
+            if j >= n:
+                raise SyntaxError("Unterminated Lisp string")
+            tokens.append(src[i:j + 1])
+            i = j + 1
+        elif c == ":":
+            j = i + 1
+            while j < n and src[j] not in " )\n":
+                j += 1
+            tokens.append(src[i:j])
+            i = j
+        else:
+            j = i
+            while j < n and src[j] not in " )(\n\t":
+                j += 1
+            tokens.append(src[i:j])
+            i = j
+    return tokens
+
+
 def canonical_body(body):
     """Whitespace-insensitive form of a body: its tokens re-joined minimally.
 
     `(do  (x\n  y))` and `(do (x y))` canonicalize to the same text, so a
     verdict cast on the body id survives reformatting and a hide cannot be
     laundered by inserting a space. A tidy one-line body is its own canonical
-    form. Falls back to ``body`` itself when the tokenizer is unavailable or
-    the text does not tokenize.
+    form. Tokens are split with ``browser_tokenize`` so that two programs the
+    browser RappterVM evaluates differently (``x'y`` versus ``x 'y``) never
+    share a body id. Falls back to ``body`` itself when the text does not
+    tokenize (an unterminated string), in which case the body id is simply the
+    id of the stripped text.
     """
-    if _lisp_vm is None:
-        return body
     try:
-        tokens = _lisp_vm.tokenize(body)
-    except Exception:
+        tokens = browser_tokenize(body)
+    except SyntaxError:
         return body
     out = []
     for tok in tokens:
-        if out and out[-1] not in ("(", "'") and tok != ")":
+        if out and out[-1] != "(" and tok != ")":
             out.append(" ")
         out.append(tok)
     return "".join(out)

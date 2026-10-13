@@ -49,10 +49,12 @@ def _store_fingerprint(store: dict) -> str:
 def fold_verify_actions(repo_root: Path, agents: dict, actions: dict) -> bool:
     """Fold every `verify` action in the retained window into state/verifications.json.
 
-    Idempotent: a vote already in the store is replaced by an identical record,
-    and the file is written only when a vote or subject binding actually
-    changes. A window action older than the live vote by the same controller
-    on the same subject never overwrites it (a later inbox vote stays newest).
+    Idempotent: a window action whose ``at`` is not later than the live vote
+    by the same controller on the same subject is skipped (timestamps are
+    compared as instants, so ``Z``, offsets and fractional seconds order
+    correctly), and the file is written only when a vote or subject binding
+    actually changes. A later inbox vote therefore stays newest, and an inbox
+    re-vote at the same instant is not re-applied over.
     The same rules as the validators apply (`verifier` is the actor's
     controller, no `system`, known subject, no self-verify), so a record that
     slipped past them is skipped with a printed reason rather than folded.
@@ -82,19 +84,26 @@ def fold_verify_actions(repo_root: Path, agents: dict, actions: dict) -> bool:
     before = _store_fingerprint(store)
     for action in verify_actions:
         rec = verifications_lib.record_from_action(action)
-        controller = controllers.get(action.get("agentId"))
         label = f"verify `{action.get('id')}`"
+        actor_id = action.get("agentId")
+        controller = controllers.get(actor_id) if isinstance(actor_id, str) else None
         if not controller or controller == "system":
             print(f"Skipping {label}: actor has no peer controller")
             continue
         if not verifications_lib.same_login(rec.get("verifier"), controller):
             print(f"Skipping {label}: verifier is not the actor's controller")
             continue
-        existing = verifications_lib.find_vote(store, controller, rec.get("subject") or "")
-        if existing is not None and str(existing.get("at", "")) > str(rec.get("at", "")):
-            continue  # a newer live vote wins
+        subject = rec.get("subject")
+        if not isinstance(subject, str):
+            print(f"Skipping {label}: `data.subject` must be a string")
+            continue
+        existing = verifications_lib.find_vote(store, controller, subject)
+        if existing is not None and verifications_lib.supersedes(existing.get("at"), rec.get("at")):
+            continue  # the live vote is at least as new (instants, not strings): already folded or superseded
         try:
-            verifications_lib.record(store, rec, subject_owners=owners, require_owner=True)
+            verifications_lib.record(
+                store, rec, subject_owners=owners, require_owner=True, controller=controller,
+            )
         except (ValueError, TypeError) as exc:
             print(f"Skipping {label}: {exc}")
     if _store_fingerprint(store) == before:

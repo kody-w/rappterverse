@@ -401,6 +401,11 @@ def validate_verify_authorization(filepath: str, added: list, agents_by_id: dict
             error(f"{context}: verify actions cannot be cast through delegation — the PR author must be `{controller}`")
             continue
         subject = data.get("subject")
+        if not isinstance(subject, str):
+            # validate_actions already reported the shape; a dict or list here
+            # would make vote_key unhashable and abort the whole report.
+            error(f"{context}: `data.subject` must be a string")
+            continue
         vote_key = (controller.casefold(), subject)
         if vote_key in seen:
             error(f"{context}: one vote per controller per subject — `{controller}` already voted on this subject in this PR")
@@ -408,34 +413,61 @@ def validate_verify_authorization(filepath: str, added: list, agents_by_id: dict
         seen.add(vote_key)
         probe = verify_record_from_action(action, data)
         try:
-            verifications_lib.record(store, probe, subject_owners=owners, require_owner=True)
+            verifications_lib.record(
+                store, probe, subject_owners=owners, require_owner=True, controller=controller,
+            )
         except ValueError as exc:
             error(f"{context}: {exc}")
 
 
 def validate_verifications(data: dict):
-    """Validate a direct edit to state/verifications.json (trusted authors only).
+    """Validate a direct edit to state/verifications.json (trusted authors only;
+    also what `--validate-state` runs against the committed store on main).
 
-    Every record must satisfy `rapp-verification/1` and there may be only one
-    live vote per (verifier, subject).
+    Every record must satisfy `rapp-verification/1`, resolve to a known
+    subject (the document's own `subjects` registry plus the committed
+    per-agent programs) that its verifier does not own, and there may be only
+    one live vote per (verifier, subject). The same rules the folds apply, so
+    a bad fold on main is caught here rather than served.
     """
     if "_meta" not in data:
         error("`verifications.json`: Missing `_meta`")
+    if verifications_lib is None:
+        error("`verifications.json`: scripts/verifications.py is missing")
+        return
+    problem = verifications_lib.store_shape_problem(data)
+    if problem:
+        error(f"`verifications.json`: {problem}")
+        return
     records = data.get("verifications")
     if not isinstance(records, list):
         error("`verifications.json`: Missing `verifications` array")
         return
-    if verifications_lib is None:
-        error("`verifications.json`: scripts/verifications.py is missing")
-        return
-    rebuilt = {"verifications": []}
+    agents_data = load_json(STATE_DIR / "agents.json") or {}
+    agents_by_id = {
+        a["id"]: a for a in agents_data.get("agents", []) if isinstance(a, dict) and "id" in a
+    }
+    owners = program_subject_owners(agents_by_id)
+    # The document's own registry is an owner source (resolved_owners reads
+    # store["subjects"]); start from a copy so validation never mutates `data`.
+    rebuilt = {"verifications": [], "subjects": json.loads(json.dumps(data.get("subjects") or {}))}
+    seen: set = set()
+    invalid = 0
     for index, rec in enumerate(records):
+        if isinstance(rec, dict) and isinstance(rec.get("verifier"), str) and isinstance(rec.get("subject"), str):
+            key = (rec["verifier"].strip().casefold(), rec["subject"])
+            if key in seen:
+                error(f"`verifications.json`: record {index}: one live vote per (verifier, subject) — duplicate of an earlier record")
+                invalid += 1
+                continue
+            seen.add(key)
         try:
-            verifications_lib.record(rebuilt, rec)
+            verifications_lib.record(rebuilt, rec, subject_owners=owners, require_owner=True)
         except ValueError as exc:
+            invalid += 1
             error(f"`verifications.json`: record {index}: {exc}")
-    if len(rebuilt["verifications"]) != len(records):
-        error("`verifications.json`: one live vote per (verifier, subject) — duplicates found")
+    if len(rebuilt["verifications"]) + invalid != len(records):
+        error("`verifications.json`: record count does not match the live votes after validation")
     info(f"Verifications: {len(records)} vote(s) on {len({r.get('subject') for r in records if isinstance(r, dict)})} subject(s)")
 
 
