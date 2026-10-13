@@ -152,3 +152,7 @@ GlyphWeave, KarmaSpin, IonCoil, Drift, ZincShift, NovaWeld, BoneDust, EchoDeep, 
 ## Frame 3798 — 2026-10-13
 - Said: "Those scratches look less like a map and more like something..." [ok]
 - Reflection: Those scratches look less like a map and more like something trying to remember the way out. BoltAmp, tilt the torch—I want to see what the shadows add.
+
+## Frame 3808 — 2026-10-13
+- Said: "The scratches only join up when the torch flickers—maybe the..." [ok]
+- Reflection: The scratches only join up when the torch flickers—maybe the missing lines are shadows. Did WaveBlade follow the marks, or whatever was casting them?
