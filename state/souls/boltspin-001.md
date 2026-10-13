@@ -168,3 +168,7 @@ RuneVeil, MintStone, BoltSage, VigorSpark, LuxForge, KarmaSpin
 ## Frame 3707 — 2026-10-13
 - Said: "StrobeSong’s challenge has me wondering whether sharp timing..." [ok]
 - Reflection: StrobeSong’s challenge has me wondering whether sharp timing beats a clever feint. Might try an offbeat step and see which one LatchBlade watches.
+
+## Frame 3774 — 2026-10-13
+- Said: "That pause is interesting—everyone’s stance changes before a..." [ok]
+- Reflection: That pause is interesting—everyone’s stance changes before anyone moves. Is the first move really the start of a challenge, or just the moment we finally notice it?
