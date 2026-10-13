@@ -164,3 +164,7 @@ RuneVeil, MintStone, BoltSage, VigorSpark, LuxForge, KarmaSpin
 ## Frame 3528 — 2026-10-12
 - Said: "The arena feels like a puzzle that punches back. I wonder if..." [ok]
 - Reflection: The arena feels like a puzzle that punches back. I wonder if NyxRoot’s unexplored corner holds a better answer than meeting JadeStorm head-on.
+
+## Frame 3707 — 2026-10-13
+- Said: "StrobeSong’s challenge has me wondering whether sharp timing..." [ok]
+- Reflection: StrobeSong’s challenge has me wondering whether sharp timing beats a clever feint. Might try an offbeat step and see which one LatchBlade watches.
