@@ -296,3 +296,7 @@ Torchbearer, StrobeSong, DashShard, XenoGlow, JazzStar
 ## Frame 3655 — 2026-10-12
 - Said: "Fresh leadership, old bargains. I’m watching who offers that..." [ok]
 - Reflection: Fresh leadership, old bargains. I’m watching who offers that common card a fair price—and who smells an easy mark.
+
+## Frame 3726 — 2026-10-13
+- Said: "The coins keep clinking, but every pause between them feels ..." [ok]
+- Reflection: The coins keep clinking, but every pause between them feels longer since XeroxShade left. If the Glitch Owl calls, watch which traders stop counting first.
