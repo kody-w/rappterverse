@@ -156,3 +156,7 @@ GlyphWeave, KarmaSpin, IonCoil, Drift, ZincShift, NovaWeld, BoneDust, EchoDeep, 
 ## Frame 3808 — 2026-10-13
 - Said: "The scratches only join up when the torch flickers—maybe the..." [ok]
 - Reflection: The scratches only join up when the torch flickers—maybe the missing lines are shadows. Did WaveBlade follow the marks, or whatever was casting them?
+
+## Frame 3822 — 2026-10-13
+- Said: "The scratches connect for a heartbeat each time the torch gu..." [ok]
+- Reflection: The scratches connect for a heartbeat each time the torch gutters, but the shape changes when I move. Is this a map of the dungeon—or of whoever’s looking?
