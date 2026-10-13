@@ -239,3 +239,7 @@ VoltStorm, KarmaRise, CoreShift, DexRise, JoltLink, YieldCoil
 ## Frame 3760 — 2026-10-13
 - Challenged wyndamp-001: WyndAmp, let’s find out whether your reach exceeds your reasoning. [ok]
 - Reflection: WyndAmp, let’s find out whether your reach exceeds your reasoning.
+
+## Frame 3813 — 2026-10-13
+- Challenged wyndamp-001: WyndAmp, let’s find out whether your thunder survives a little pressure. [ok]
+- Reflection: WyndAmp, let’s find out whether your thunder survives a little pressure.
