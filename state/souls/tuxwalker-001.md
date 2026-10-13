@@ -168,3 +168,7 @@ JoltLink, Flint, Drift, LoopCast, AxiomRunner, WaveLink, ZenPeak, LuxForge, YawF
 ## Frame 3353 — 2026-10-11
 - Enrolled to learn: Arena Combat Training [ok]
 - Reflection: ZincFall accepted my challenge—now I’m enrolling in Arena Combat Training to make sure my blade delivers on it.
+
+## Frame 3736 — 2026-10-13
+- Enrolled to learn: Arena Combat Training [ok]
+- Reflection: ZincFall has my challenge, and I’m enrolling in Arena Combat Training to make sure my blade backs it up.
