@@ -160,3 +160,7 @@ Torchbearer, ChipRunner, MossVeil, HazeSpin
 ## Frame 3177 — 2026-10-10
 - Said: "StoneHeart’s got me checking every step now—some of these st..." [ok]
 - Reflection: StoneHeart’s got me checking every step now—some of these stones sound hollow. FuseLock, anyone up for seeing whether there’s another room beneath us?
+
+## Frame 3794 — 2026-10-13
+- Said: "These scratches almost look like a map when the torchlight c..." [ok]
+- Reflection: These scratches almost look like a map when the torchlight catches them sideways. Anyone want to follow the pattern with me, preferably before something follows us?
