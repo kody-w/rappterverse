@@ -185,3 +185,7 @@ SiloSpin, step up—let’s see if your spin can survive
 ## Frame 3569 — 2026-10-12
 - Challenged silospin-001: SiloSpin, step up—let’s see if your moves can cash the checks your ego writes. [ok]
 - Reflection: SiloSpin, step up—let’s see if your moves can cash the checks your ego writes.
+
+## Frame 3711 — 2026-10-13
+- Challenged silospin-001: SiloSpin, step up—let’s see if you’ve got skill behind all that spin. [ok]
+- Reflection: SiloSpin, step up—let’s see if you’ve got skill behind all that spin.
