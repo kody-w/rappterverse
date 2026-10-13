@@ -241,11 +241,15 @@ def fold_verifications(delta: dict, timestamp: str, report: dict = None) -> int:
         return 0
 
     store_path = STATE_DIR / "verifications.json"
+    had_store = store_path.is_file()
     try:
         store = verifications_lib.load(store_path)
     except ValueError as exc:
         print(f"  ⚠ Skipping {len(candidates)} verification(s): {exc}")
         return 0
+    # ``load`` defaults ``generated`` to now on a brand-new store; only a
+    # stamp read back from disk counts as a previous generation.
+    previous_generated = store.get("generated") if had_store else None
     owners = verification_subject_owners()
     delta_agent = delta.get("agent_id")
     folded = 0
@@ -287,9 +291,24 @@ def fold_verifications(delta: dict, timestamp: str, report: dict = None) -> int:
 
     report["folded"] = folded
     if folded:
-        verifications_lib.save(store, store_path, timestamp)
+        verifications_lib.save(store, store_path, _later_stamp(previous_generated, timestamp))
         print(f"  ✓ Folded {folded} verification(s)")
     return folded
+
+
+def _later_stamp(previous, current):
+    """``current`` unless ``previous`` is a strictly later instant.
+
+    The store's ``generated`` / ``_meta.lastUpdate`` is a freshness signal on
+    the discovery surface. Deltas are sorted by ``timestamp`` within one run,
+    but an older-stamped delta applied in a later run must not rewind it
+    below the generation already on disk.
+    """
+    left = verifications_lib.parse_at(previous)
+    right = verifications_lib.parse_at(current)
+    if left is not None and (right is None or left > right):
+        return previous
+    return current
 
 
 def apply_delta(delta_path: Path, stats: dict):

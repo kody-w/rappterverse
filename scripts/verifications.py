@@ -91,6 +91,17 @@ RESERVED_VERIFIERS = frozenset({"system"})
 # becomes one) more than this far ahead of their own clock; honest clock skew
 # fits comfortably inside it.
 MAX_FUTURE_SKEW_SECONDS = 600
+# The one ``at`` grammar every interpreter reads the same way:
+# ``YYYY-MM-DDTHH:MM:SS``, an optional fraction of one to six digits, and an
+# optional ``Z`` or ``+HH:MM`` offset (a missing offset is UTC). It is pinned
+# here instead of delegated to ``datetime.fromisoformat`` because 3.11+ also
+# accepts week dates, basic-format stamps, nine-digit fractions and bare
+# ``+HHMM`` offsets that 3.9 rejects; a record stored by a 3.11 fold would
+# then be unparseable on a 3.9 fold and push ``supersedes`` into its string
+# fallback.
+AT_PATTERN = re.compile(
+    r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?P<fraction>\.\d{1,6})?(?:Z|[+-]\d{2}:\d{2})?"
+)
 
 RECORD_FIELDS = (
     "schema", "verifier", "agent_id", "subject", "subject_kind",
@@ -234,26 +245,35 @@ def save(store: dict, path, timestamp=None) -> Path:
 # ── records ──────────────────────────────────────────────────────────────────
 
 def _valid_iso8601(value) -> bool:
-    """True for an ISO-8601 ``at`` that also converts to a UTC instant.
+    """True for an ``at`` in the pinned grammar that also converts to a UTC instant.
 
-    An offset timestamp at the very edge of the datetime range (such as
-    ``0001-01-01T00:00:00+01:00``) parses but cannot be expressed in UTC; it
-    is rejected here so no stored record can make ``supersedes`` fall back to
-    a string comparison.
+    Only ``AT_PATTERN`` is accepted, on every interpreter alike. An offset
+    timestamp at the very edge of the datetime range (such as
+    ``0001-01-01T00:00:00+01:00``) matches but cannot be expressed in UTC; it
+    is rejected here too, so no stored record can make ``supersedes`` fall
+    back to a string comparison.
     """
     return parse_at(value) is not None
 
 
 def parse_at(value):
-    """Aware UTC ``datetime`` for an ISO-8601 ``at``, or None when unparseable.
+    """Aware UTC ``datetime`` for an ``at`` in ``AT_PATTERN``, or None otherwise.
 
-    ``Z``, numeric offsets, fractional seconds and naive values (taken as UTC)
-    all compare as instants, so ``09:00-05:00`` sorts after ``10:00Z`` the way
-    a string comparison never would. Never raises: a value that parses but
-    overflows when converted to UTC is also ``None``.
+    ``Z``, ``+HH:MM`` offsets, fractional seconds and naive values (taken as
+    UTC) all compare as instants, so ``09:00-05:00`` sorts after ``10:00Z``
+    the way a string comparison never would. The fraction is padded to six
+    digits before parsing so 3.9 (which reads only three or six) agrees with
+    3.11+. Never raises: a value outside the grammar, or one that parses but
+    overflows when converted to UTC, is ``None``.
     """
     if not isinstance(value, str) or not value:
         return None
+    match = AT_PATTERN.fullmatch(value)
+    if match is None:
+        return None
+    fraction = match.group("fraction")
+    if fraction is not None and len(fraction) < 7:
+        value = value.replace(fraction, fraction.ljust(7, "0"), 1)
     try:
         parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
         if parsed.tzinfo is None:

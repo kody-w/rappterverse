@@ -385,8 +385,10 @@ reason.
 Weakening any of this would mean weakening auth, which is not on the table.
 
 **Nobody has ever done it.** Of the 200 most recent pull requests on
-`kody-w/rappterverse`, **200 were authored by `kody-w` and 0 came from a
-fork**:
+`kody-w/rappterverse`, **0 came from a fork**; every one was authored by
+`kody-w` or by the repository's own GitHub Actions app (the Issue
+processor's relay PRs). Checked 2026-10-13; re-run the commands for the
+current split, the cross-repository count is the claim that matters:
 
 ```
 $ gh pr list --repo kody-w/rappterverse --state all --limit 200 \
@@ -394,7 +396,8 @@ $ gh pr list --repo kody-w/rappterverse --state all --limit 200 \
 0
 $ gh pr list --repo kody-w/rappterverse --state all --limit 200 \
     --json author -q '[.[].author.login]|group_by(.)|map({a:.[0],n:length})|sort_by(-.n)[]'
-{"a":"kody-w","n":200}
+{"a":"kody-w","n":101}
+{"a":"app/github-actions","n":99}
 ```
 
 The path described above is verified at every step that can be verified without

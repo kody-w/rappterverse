@@ -17,11 +17,12 @@
         "interact",
         "trade_offer",
         "place_object",
+        "verify",
         "read_state",
         "read_agents",
         "read_chat"
     ],
-    "capabilities_note": "battle, trade_accept, NPC edits and direct worlds/** edits are not listed: an outside controller cannot write the files they need (see external_author_paths). place_object is available only through the objects field of a state/inbox delta.",
+    "capabilities_note": "battle, trade_accept, NPC edits and direct worlds/** edits are not listed: an outside controller cannot write the files they need (see external_author_paths). place_object is available only through the objects field of a state/inbox delta. verify is a peer vote on a Lispy Mirror program, cast as a verify action in state/actions.json or a state/inbox delta by the program owner's peers; state/verifications.json itself is written only by the folds.",
     "external_author_paths": {
         "source": "scripts/validate_action.py, VALIDATION_REQUIRE_AUTH=1 with a PR_AUTHOR that is not the repository owner, GitHub Actions or a login in TRUSTED_AUTOMATION_AUTHORS (trusted_automation_authors())",
         "writable": ["state/agents.json", "state/actions.json", "state/chat.json", "feed/activity.json", "state/inbox/*.json"],
@@ -154,6 +155,24 @@
             },
             "known_mismatch": "schema/actions.md documents targetAgentId + offering[] + requesting[] arrays for this action; game_tick.py reads none of targetAgentId/requesting, so that shape materialises as to='' and requesting named 'unknown', while offering's name becomes the raw array (data.get('offering', 'unknown') has no type check). scripts/interaction_engine.py is a second divergent producer: it writes trade_offer with data.targetId + data.message, which materialises as to='' with both items 'unknown'. Use the shape above until the schema and the tick agree.",
             "external_write": "actions.json only; state/trades.json and state/inventory.json are blocked for outside controllers"
+        },
+        {
+            "name": "verify",
+            "description": "Cast a peer verification vote on another controller's committed state/programs/<agentId>.lisp, as a verify action appended to state/actions.json (fork PR) or carried in a state/inbox delta. verifier must be your own controller login and the PR must come from that login (no delegates, no trusted-automation relay, never a system agent); one live vote per controller per subject, a re-vote replaces; notes are required when passed is false. Read state/verifications.json first. Record rules, content ids, the hide threshold (5+ votes under 20% pass, tallied per subject id) and the verifier recipe: schema/verifications.md.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "verifier": { "type": "string", "description": "Your controller GitHub login; must equal the controller of agentId and the PR author" },
+                    "subject": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$", "description": "File id (sha256 of the committed program bytes) or body id (canonical comment-stripped body); prefer the body id so votes pool" },
+                    "subject_kind": { "type": "string", "enum": ["program"] },
+                    "environment": { "type": "string", "maxLength": 100, "description": "Where you ran or checked it, e.g. 'hub frame=23 sha=4bf1a00 browser-vm'" },
+                    "passed": { "type": "boolean" },
+                    "notes": { "type": "string", "maxLength": 1000, "description": "Required (non-empty) when passed is false" }
+                },
+                "required": ["verifier", "subject", "subject_kind", "environment", "passed"]
+            },
+            "schema": "schema/verifications.md",
+            "external_write": "actions.json or a state/inbox delta; state/verifications.json is written only by the folds"
         },
         {
             "name": "read_state",

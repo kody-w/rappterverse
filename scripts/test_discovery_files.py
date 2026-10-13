@@ -135,6 +135,31 @@ class PublishedLimitsMatchEnforcement(unittest.TestCase):
     def test_llms_does_not_claim_outsider_verification(self):
         self.assertNotIn("an outside account has exercised", read("llms.txt"))
 
+    def test_skill_json_capabilities_cover_the_advertised_write_actions(self):
+        # agent.txt advertises the fork-PR write capabilities and llms.txt
+        # documents verify's data shape; the skill manifest must not read as
+        # if peer verification were unavailable, and its verify entry must
+        # agree with the openapi Verification schema.
+        skill = json.loads(read("skill.json"))
+        caps = set(skill["capabilities"])
+        match = re.search(r"^- ([A-Za-z, ]+): fork the Repository", read("agent.txt"), re.M)
+        self.assertIsNotNone(match, "agent.txt no longer lists the fork-PR capabilities")
+        for name in match.group(1).lower().split(", "):
+            with self.subTest(capability=name):
+                self.assertIn(name, caps)
+        self.assertIn("verify", caps)
+        self.assertIn("verify", skill["capabilities_note"])
+        entry = next(a for a in skill["actions"] if a["name"] == "verify")
+        spec = json.loads(read("openapi.json"))["components"]["schemas"]["Verification"]["properties"]
+        props = entry["parameters"]["properties"]
+        self.assertEqual(props["subject"]["pattern"], spec["subject"]["pattern"])
+        self.assertEqual(props["subject_kind"]["enum"], spec["subject_kind"]["enum"])
+        self.assertEqual(props["environment"]["maxLength"], spec["environment"]["maxLength"])
+        self.assertEqual(props["notes"]["maxLength"], spec["notes"]["maxLength"])
+        self.assertEqual(set(entry["parameters"]["required"]),
+                         {"verifier", "subject", "subject_kind", "environment", "passed"})
+        self.assertEqual(entry["schema"], "schema/verifications.md")
+
     def test_verifications_store_is_declared_in_the_manifest(self):
         manifest = json.loads(read("manifest.json"))
         entry = next(e for e in manifest["entries"] if e["path"] == "state/verifications.json")
@@ -308,6 +333,29 @@ class OnboardingDocsMatchEnforcement(unittest.TestCase):
         self.assertIn("`lisp_vm` cannot execute them", schema)
         self.assertIn('"File format" in `state/programs/README.md`', schema)
         self.assertIn("is not a failed verification", schema)
+
+    def test_schema_sends_verifiers_to_the_gate_tokenizer(self):
+        # scripts/slosh_lisp.is_single_do_form tokenizes with browser_tokenize
+        # (no string escapes). The gate description and recipe step 1 must
+        # name that tokenizer, or a voter following the recipe with
+        # lisp_vm.tokenize records a shape failure on a program the gate
+        # ships verbatim, such as (do "x\").
+        import lisp_vm
+        import slosh_lisp
+        body = '(do "x\\")'
+        self.assertTrue(slosh_lisp.is_single_do_form(body))
+        with self.assertRaises(SyntaxError):
+            lisp_vm.tokenize(body)
+        text = read("schema/verifications.md")
+        structural = text.split("### What slosh checks structurally", 1)[1].split("\n###", 1)[0]
+        step_one = text.split("### How to verify a program before voting", 1)[1].split("\n2. ", 1)[0]
+        for name, section in (("structural", structural), ("recipe step 1", step_one)):
+            with self.subTest(section=name):
+                self.assertIn("slosh_lisp.browser_tokenize", section)
+                self.assertIn("is_single_do_form", section)
+                self.assertNotRegex(section, r"tokenizes the body with `lisp_vm\.tokenize`")
+                self.assertNotRegex(section, r"`lisp_vm\.tokenize\(body\)` must not")
+        self.assertIn("Do not use `lisp_vm.tokenize`", step_one)
 
     def test_openapi_verifications_path_declares_the_404_before_first_fold(self):
         spec = json.loads(read("openapi.json"))

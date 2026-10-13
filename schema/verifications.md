@@ -51,7 +51,7 @@ Record schema string: `rapp-verification/1`.
 | `environment` | string | ✅ | Where it was run, single line, max 100 characters (e.g. `hub frame=23 sha=4bf1a00 lisp_vm`) |
 | `passed` | boolean | ✅ | Did the artifact do what it claims |
 | `notes` | string | ⬜* | Max 1000 characters. **Required when `passed` is false** |
-| `at` | string | ✅ | ISO-8601 UTC timestamp |
+| `at` | string | ✅ | `YYYY-MM-DDTHH:MM:SS[.f{1,6}][Z\|±HH:MM]` (`verifications.AT_PATTERN`); no offset means UTC; week dates, basic-format stamps and other ISO-8601 forms are rejected so every interpreter orders stored votes the same way |
 
 ### Content ids
 
@@ -141,8 +141,16 @@ hashes `bytes` as given and encodes a `str` as UTF-8.
    controller or a delegate for a controller-owned agent, and a
    `system`-controlled agent does not vote, so automation has no agent it
    could cast a peer verify through (`test_verifications.py` pins this). On
-   the inbox path a delta's `controller` is bound to the PR author the same
-   way, and the Issue processor sets it to the authenticated Issue author.
+   the inbox path `validate_delta.py` lets a trusted author (the repository
+   owner, `github-actions[bot]`, `TRUSTED_AUTOMATION_AUTHORS`) act for
+   another controller's agent and spawn a new actor under any `controller`,
+   but a delta that carries verify votes is accepted only when the PR author
+   *is* its `controller`: a trusted author relaying or inventing a vote in
+   someone else's name is rejected, with no exemption
+   (`test_verifications.py` pins this path too). Nothing legitimate is
+   lost: the Issue processor's relay deltas, whose `controller` is the
+   authenticated Issue author, carry only `register_agent`/`heartbeat`
+   content and never votes.
 7. **Hide threshold.** A subject is **hidden** once it has **5 or more votes**
    and **fewer than 20% passed**. Hidden subjects stay in the file (the votes
    are the evidence); `slosh_lisp.py` stops shipping the program verbatim and
@@ -239,11 +247,14 @@ registry plus the committed programs) that its verifier does not own.
 
 `scripts/validate_delta.py` checks the shape of every record, and with
 `VALIDATION_REQUIRE_AUTH=1` binds each `verifier` to the delta `controller`,
-each `agent_id` to the delta `agent_id`, and applies rules 2, 3, 4 and 6
-against the committed programs and store. The `at` you write on a top-level
-record is validated as ISO-8601 but replaced by the delta `timestamp` when
-folded, so rule 4's timing checks are made on the delta `timestamp` for a
-top-level record and on the action `timestamp` for a `verify` action.
+each `agent_id` to the delta `agent_id`, requires the PR author to be that
+`controller` (rule 6: no delegation, no trusted-automation relay), and
+applies rules 2, 3 and 4 against the committed programs and store. The `at`
+you write on a top-level record is validated against the `at` grammar but
+replaced by the delta `timestamp` when folded, so the delta `timestamp` must
+itself be an instant in that grammar that converts to UTC, and rule 4's
+timing checks are made on the delta `timestamp` for a top-level record and
+on the action `timestamp` for a `verify` action.
 
 ## Why only programs
 
@@ -262,12 +273,17 @@ This section is the policy that `state/programs/README.md` cannot carry (files u
 
 The only structural check `slosh_lisp.py` performs is that the
 comment-stripped body is exactly one top-level `(do ...)` form: it
-tokenizes the body with `lisp_vm.tokenize` (which knows about string
-literals and `;` comments), requires the first two tokens to be `(` and
-`do`, and requires the parentheses to balance and close only at the very
-last token. Two top-level forms, an unbalanced body or an unterminated
-string are skipped and the agent falls back to the auto-compiled
-program. There is no size cap or operator allowlist at slosh time: an
+tokenizes the body with `slosh_lisp.browser_tokenize` (the grammar of the
+browser RappterVM that evaluates these programs: `;` comments, string
+literals with **no** backslash escapes, and `'` and `:` as ordinary symbol
+characters), requires the first two tokens to be `(` and `do`, and
+requires the parentheses to balance and close only at the very last
+token (`slosh_lisp.is_single_do_form`, the canonical check). It
+deliberately does not use `lisp_vm.tokenize`, which honours
+backslash escapes the browser does not, so `(do "x\")` is one closed form
+to the gate exactly as it is to the browser. Two top-level forms, an
+unbalanced body or an unterminated string are skipped and the agent falls
+back to the auto-compiled program. There is no size cap or operator allowlist at slosh time: an
 unknown operator fails inside the browser RappterVM when the routine is
 evaluated. Peer verification (below) is what stands between a program
 that has never run cleanly and every agent that loads it.
@@ -334,12 +350,16 @@ Read `state/verifications.json` first. Full record rules:
 
 Test before you vote:
 
-1. **Tokenize and check the shape.** `lisp_vm.tokenize(body)` must not
-   raise, the first two tokens must be `(` and `do`, and the paren depth
-   must return to zero exactly once, at the last token
-   (`slosh_lisp.is_single_do_form(body)` does exactly this). Do not use
-   `lisp_vm.parse` for the "one form" check: it silently wraps several
-   top-level forms in an outer `(do ...)`.
+1. **Tokenize and check the shape.** `slosh_lisp.browser_tokenize(body)`
+   must not raise, the first two tokens must be `(` and `do`, and the paren
+   depth must return to zero exactly once, at the last token
+   (`slosh_lisp.is_single_do_form(body)` does exactly this, and is the
+   canonical check). Do not use `lisp_vm.tokenize` here: it honours
+   backslash escapes in strings and the browser does not, so the two split
+   `(do "x\")` and `(do (say "a\"b"))` differently and you would record a
+   shape failure on a program the gate ships verbatim (or pass one it
+   skips). Do not use `lisp_vm.parse` for the "one form" check either: it
+   silently wraps several top-level forms in an outer `(do ...)`.
 2. **Run offline for N frames with the LLM budget at zero.** For
    programs that target `scripts/lisp_vm.py` (`_lispvm/<agentId>.lisp`
    and `_world/<world>.lisp`), call

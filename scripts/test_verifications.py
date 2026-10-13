@@ -370,6 +370,34 @@ class ApplyDeltasFoldTests(TempStateMixin, unittest.TestCase):
         self.assertEqual(len(store["verifications"]), 1)
         self.assertFalse(store["verifications"][0]["passed"])
 
+    def test_fold_never_rewinds_the_store_generation(self) -> None:
+        """A fresh store is stamped with the delta timestamp (the only
+        generation it has), but an older-stamped delta applied in a later run
+        must not move `generated` / `_meta.lastUpdate` backwards below the
+        generation already on disk."""
+        newer = {
+            "agent_id": "alice-agent-001", "controller": "alice", "timestamp": "2026-10-13T08:06:00Z",
+            "verifications": [vote("alice", subject=self.bob_file_id)],
+        }
+        older = {
+            "agent_id": "bob-agent-001", "controller": "bob", "timestamp": "2026-10-13T07:46:00Z",
+            "verifications": [vote("bob", subject=self.alice_file_id)],
+        }
+        store_path = self.state_dir / "verifications.json"
+        self.assertTrue(self.apply(newer)[0])
+        store = json.loads(store_path.read_text(encoding="utf-8"))
+        self.assertEqual((store["generated"], store["_meta"]["lastUpdate"]), ("2026-10-13T08:06:00Z",) * 2)
+        self.assertTrue(self.apply(older)[0])
+        store = json.loads(store_path.read_text(encoding="utf-8"))
+        self.assertEqual(len(store["verifications"]), 2)
+        self.assertEqual((store["generated"], store["_meta"]["lastUpdate"]), ("2026-10-13T08:06:00Z",) * 2)
+        # and a newer delta still advances it
+        self.assertTrue(self.apply(dict(older, timestamp="2026-10-13T09:00:00Z"))[0])
+        store = json.loads(store_path.read_text(encoding="utf-8"))
+        self.assertEqual(store["generated"], "2026-10-13T09:00:00Z")
+        self.assertEqual(apply_deltas._later_stamp("not a time", "2026-10-13T09:00:00Z"), "2026-10-13T09:00:00Z")
+        self.assertEqual(apply_deltas._later_stamp(None, "2026-10-13T09:00:00Z"), "2026-10-13T09:00:00Z")
+
     def test_owner_vote_on_body_id_is_rejected_end_to_end(self) -> None:
         # Bob edits only his header: the file id changes, the body id does not,
         # and Bob still cannot pass-vote either id.
@@ -841,6 +869,34 @@ class TimestampEdgeTests(unittest.TestCase):
                     verifications.record({"verifications": []}, vote("alice", at=value))
         self.assertIsNotNone(verifications.parse_at("9999-12-31T23:59:59Z"))
 
+    def test_at_grammar_is_pinned_not_delegated_to_fromisoformat(self) -> None:
+        """3.11+ `fromisoformat` accepts week dates, basic-format stamps,
+        nine-digit fractions and bare `+HHMM` offsets that 3.9 rejects. A
+        record stored by a 3.11 fold must parse identically on a 3.9 fold, so
+        `parse_at` accepts one grammar on every interpreter and nothing else."""
+        for value in ("2026-W01-1", "20260101T000000Z", "2026-01-01T00:00:00.123456789Z",
+                      "2026-01-01T00:00:00+0000", "2026-01-01 00:00:00Z", "2026-01-01",
+                      "2026-01-01T00:00Z", "2026-01-01T00:00:00+00:00:00"):
+            with self.subTest(value=value):
+                self.assertIsNone(verifications.parse_at(value))
+                with self.assertRaisesRegex(ValueError, "`at` must be an ISO-8601 timestamp"):
+                    verifications.record({"verifications": []}, vote("alice", at=value))
+        accepted = {
+            "2026-01-01T00:00:00Z": "2026-01-01T00:00:00+00:00",
+            "2026-01-01T00:00:00": "2026-01-01T00:00:00+00:00",
+            "2026-01-01T00:00:00.5Z": "2026-01-01T00:00:00.500000+00:00",
+            "2026-01-01T00:00:00.50Z": "2026-01-01T00:00:00.500000+00:00",
+            "2026-01-01T00:00:00.500Z": "2026-01-01T00:00:00.500000+00:00",
+            "2026-01-01T00:00:00.123456Z": "2026-01-01T00:00:00.123456+00:00",
+            "2025-12-31T19:00:00-05:00": "2026-01-01T00:00:00+00:00",
+        }
+        for value, expected in accepted.items():
+            with self.subTest(value=value):
+                self.assertEqual(verifications.parse_at(value).isoformat(), expected)
+                stored = verifications.record({"verifications": []}, vote("alice", at=value))
+                self.assertEqual(stored["verifications"][0]["at"], value)
+        self.assertTrue(verifications.supersedes("2026-01-01T00:00:00.5Z", "2026-01-01T00:00:00.499999Z", strict=True))
+
     def test_too_far_in_future_uses_the_skew_window(self) -> None:
         now = datetime(2026, 10, 13, 12, 0, 0, tzinfo=timezone.utc)
         self.assertFalse(verifications.too_far_in_future("2026-10-13T12:09:59Z", now))
@@ -939,6 +995,80 @@ class RevoteTimingValidationTests(ValidatorHardeningTests):
         system_action = verify_action("npc-001", "kody-w", self.bob_file_id)
         self.va.validate_verify_authorization("state/actions.json", [system_action], agents, "kody-w")
         self.assertTrue(any("system-controlled agents do not cast" in e for e in self.va.errors), self.va.errors)
+
+    def test_trusted_automation_cannot_relay_a_peer_verify_through_a_delta(self) -> None:
+        """The inbox path has no relay exemption either: a trusted PR author
+        may act for alice's agent, or spawn a new actor under any login, but
+        a vote carried by that delta is rejected unless the author *is* the
+        delta controller."""
+        agents = self.agents_by_id()
+        delta = {
+            "agent_id": "alice-agent-001", "controller": "alice", "timestamp": "2026-10-13T02:00:00Z",
+            "verifications": [vote("alice", subject=self.bob_file_id)],
+        }
+        for author in ("kody-w", "github-actions[bot]", "app/github-actions", "mallory"):
+            with self.subTest(author=author):
+                self.vd.errors.clear()
+                self.vd.validate_verify_authorization(delta, Path("delta.json"), "alice", agents, pr_author=author)
+                self.assertTrue(any("cannot be cast through delegation or relayed" in e for e in self.vd.errors), self.vd.errors)
+        for author in ("alice", "Alice"):
+            with self.subTest(author=author):
+                self.vd.errors.clear()
+                self.vd.validate_verify_authorization(delta, Path("delta.json"), "alice", agents, pr_author=author)
+                self.assertEqual(self.vd.errors, [])
+        # Through the real entry point, with the base agents stubbed to the
+        # temp state: automation spawning a victim and voting in their name,
+        # the owner relaying alice's vote, and alice herself.
+        spawn = {
+            "agent_id": "victim-agent-001", "controller": "victim", "timestamp": "2026-10-13T02:00:00Z",
+            "agent_update": {"id": "victim-agent-001", "controller": "victim", "name": "V", "world": "hub",
+                             "position": {"x": 0, "y": 0, "z": 0}, "status": "active"},
+            "verifications": [vote("victim", subject=self.bob_file_id)],
+        }
+        keys = ("VALIDATION_REQUIRE_AUTH", "PR_AUTHOR")
+        saved_env = {k: os.environ.get(k) for k in keys}
+        saved_loader = self.vd._load_base_agents
+        self.vd._load_base_agents = lambda: agents
+        try:
+            os.environ["VALIDATION_REQUIRE_AUTH"] = "1"
+            for author, payload, relayed in (("github-actions[bot]", spawn, True), ("kody-w", delta, True),
+                                             ("alice", delta, False)):
+                with self.subTest(author=author):
+                    os.environ["PR_AUTHOR"] = author
+                    self.vd.errors.clear()
+                    self.vd.validate_delta_authorization(payload, Path("delta.json"))
+                    hit = any("relayed by trusted automation" in e for e in self.vd.errors)
+                    self.assertIs(hit, relayed, self.vd.errors)
+                    if relayed:
+                        # the spawn / actor binding itself was accepted; only the vote failed
+                        self.assertEqual(len(self.vd.errors), 1, self.vd.errors)
+                    else:
+                        self.assertEqual(self.vd.errors, [])
+        finally:
+            self.vd._load_base_agents = saved_loader
+            for k, v in saved_env.items():
+                if v is None:
+                    os.environ.pop(k, None)
+                else:
+                    os.environ[k] = v
+
+    def test_inbox_effective_at_must_convert_to_utc(self) -> None:
+        """A delta `timestamp` (or verify-action `timestamp`) outside the `at`
+        grammar, or one that cannot be expressed in UTC, used to validate and
+        then be refused by the fold, breaking 'a vote that validates always
+        lands'."""
+        for stamp in ("0001-01-01T00:00:00+01:00", "2026-W01-1", "20260101T000000Z"):
+            with self.subTest(stamp=stamp):
+                self.vd.errors.clear()
+                delta = {"agent_id": "alice-agent-001", "controller": "alice", "timestamp": stamp,
+                         "verifications": [vote("alice", subject=self.bob_file_id)]}
+                self.vd.validate_verify_authorization(delta, Path("delta.json"), "alice", self.agents_by_id())
+                self.assertTrue(any("is not a UTC-convertible" in e for e in self.vd.errors), self.vd.errors)
+                self.vd.errors.clear()
+                delta = {"agent_id": "alice-agent-001", "controller": "alice", "timestamp": "2026-10-13T02:00:00Z",
+                         "actions": [verify_action("alice-agent-001", "alice", self.bob_file_id, at=stamp)]}
+                self.vd.validate_verify_authorization(delta, Path("delta.json"), "alice", self.agents_by_id())
+                self.assertTrue(any("is not a UTC-convertible" in e for e in self.vd.errors), self.vd.errors)
 
     def test_committed_store_keeps_a_vote_whose_verifier_adopted_the_program_later(self) -> None:
         """alice voted on bob's program while bob owned it; later alice's own

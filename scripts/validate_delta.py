@@ -154,7 +154,7 @@ def validate_delta_authorization(delta: dict, path: Path):
         if author_id != actor_id:
             error(f"`{path.name}`: Activity author must match delta agent `{actor_id}`")
 
-    validate_verify_authorization(delta, path, claimed_controller, agents)
+    validate_verify_authorization(delta, path, claimed_controller, agents, pr_author=pr_author)
 
 
 def verify_candidates(delta: dict) -> list:
@@ -207,8 +207,9 @@ def validate_verify_structure(delta: dict, path: Path):
             error(f"`{path.name}`: {label}: {exc}")
 
 
-def validate_verify_authorization(delta: dict, path: Path, controller: str, agents: dict):
-    """Bind every verify vote in a delta to the delta's controller.
+def validate_verify_authorization(delta: dict, path: Path, controller: str, agents: dict,
+                                  pr_author: str = None):
+    """Bind every verify vote in a delta to the delta's controller and PR author.
 
     Mirrors `validate_action.validate_verify_authorization`: the verifier must
     be the delta's `controller` (case-insensitive), every record's `agent_id`
@@ -218,15 +219,28 @@ def validate_verify_authorization(delta: dict, path: Path, controller: str, agen
     per subject per delta. Without this, adding `verify` to the inbox path
     would let `data.verifier` be any login at all.
 
+    When `pr_author` is given (`validate_delta_authorization` passes the
+    authenticated PR author) it must *be* the controller, case-insensitively.
+    `validate_delta_authorization` lets a trusted author (the repository
+    owner, GitHub Actions, `TRUSTED_AUTOMATION_AUTHORS`) act for any existing
+    agent and spawn a new actor under any `controller`, but that trust does
+    not extend to peer votes: a vote in such a delta is rejected, exactly as
+    the direct path refuses a verify cast through delegation. Nothing
+    legitimate is lost, because the Issue processor's relay deltas carry only
+    `register_agent`/`heartbeat` content and never votes.
+
     Two timing rules make validation agree with the fold
     (`apply_deltas.fold_verifications`), so a delta that passes here always
     writes: the `at` the vote will carry (the delta `timestamp` for a
-    top-level record, the action `timestamp` for a `verify` action) may not
-    lie more than `verifications.MAX_FUTURE_SKEW_SECONDS` ahead of the
-    validator's clock, and it must not be older than the controller's live
-    vote on that subject (an equal instant replaces, as the fold's strict
-    comparison does). A far-future `at` would otherwise pin a vote that no
-    later re-vote could ever replace.
+    top-level record, the action `timestamp` for a `verify` action) must be
+    an instant in `verifications.AT_PATTERN` that converts to UTC (the fold
+    stamps it on the record, where `verifications.record` would otherwise
+    refuse it after validation had passed), may not lie more than
+    `verifications.MAX_FUTURE_SKEW_SECONDS` ahead of the validator's clock,
+    and must not be older than the controller's live vote on that subject (an
+    equal instant replaces, as the fold's strict comparison does). A
+    far-future `at` would otherwise pin a vote that no later re-vote could
+    ever replace.
     """
     candidates = verify_candidates(delta)
     if not candidates:
@@ -236,6 +250,13 @@ def validate_verify_authorization(delta: dict, path: Path, controller: str, agen
         return
     if controller == "system":
         error(f"`{path.name}`: system-controlled deltas do not cast peer verifications")
+        return
+    if pr_author is not None and not verifications_lib.same_login(pr_author, controller):
+        error(
+            f"`{path.name}`: verify votes cannot be cast through delegation or relayed by "
+            f"trusted automation — the PR author must be the delta controller `{controller}`, "
+            f"not `{pr_author}`"
+        )
         return
     controllers = {
         aid: agent.get("controller", "system")
@@ -270,6 +291,12 @@ def validate_verify_authorization(delta: dict, path: Path, controller: str, agen
             continue
         seen.add(subject)
         at = effective_vote_at(delta, label, rec)
+        if verifications_lib.parse_at(at) is None:
+            error(
+                f"`{path.name}`: {label}: effective `at` {at!r} is not a UTC-convertible "
+                "`YYYY-MM-DDTHH:MM:SS[.ffffff][Z|+HH:MM]` instant; the fold would refuse the record"
+            )
+            continue
         if verifications_lib.too_far_in_future(at):
             error(
                 f"`{path.name}`: {label}: `at` {at} is more than "
