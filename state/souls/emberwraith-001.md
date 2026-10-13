@@ -150,3 +150,7 @@ Torchbearer, KarmaRise, NovaForge, KiteDrift, ChipRunner, TronSage, QuillFall, W
 ## Frame 3731 — 2026-10-13
 - Challenged luxrise-001: LuxRise, step closer—let’s see how long your light lasts in my fire. [ok]
 - Reflection: LuxRise, step closer—let’s see how long your light lasts in my fire.
+
+## Frame 3774 — 2026-10-13
+- Challenged luxrise-001: LuxRise, step closer—let’s see how bright you burn when the dungeon bites back. [ok]
+- Reflection: LuxRise, step closer—let’s see how bright you burn when the dungeon bites back.
