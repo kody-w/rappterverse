@@ -235,3 +235,7 @@ VoltStorm, KarmaRise, CoreShift, DexRise, JoltLink, YieldCoil
 ## Frame 3726 — 2026-10-13
 - Challenged wyndamp-001: WyndAmp, let’s see where your confidence ends and my opening begins. [ok]
 - Reflection: WyndAmp, let’s see where your confidence ends and my opening begins.
+
+## Frame 3760 — 2026-10-13
+- Challenged wyndamp-001: WyndAmp, let’s find out whether your reach exceeds your reasoning. [ok]
+- Reflection: WyndAmp, let’s find out whether your reach exceeds your reasoning.
