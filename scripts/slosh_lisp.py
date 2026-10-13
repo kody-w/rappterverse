@@ -65,40 +65,47 @@ def q(s):
 
 
 def strip_comments(raw):
-    """Drop every `;` comment (to end of line) that is outside a string literal.
+    """Drop every `;` comment (to end of line) that the browser RappterVM skips.
 
     This is the RappterVM's comment grammar — one or more `;` — not just the
-    `;;` header convention, and a `;` inside a string stays put. As in
-    ``browser_tokenize``, a `;` starts a comment only where a token starts:
-    at the beginning of the text or after whitespace, a parenthesis or a
-    closing quote. Inside a symbol (`wave;c`) it is an ordinary character
-    for ``src/js/rappter-vm.js``, so stripping it would ship a different
-    body from the one the browser reads. A string
-    runs to the next `"` with no backslash escapes, exactly as
-    ``browser_tokenize`` and ``src/js/rappter-vm.js`` read it; honouring an
-    escape here would make `(do "a\\" "b;c")` lose its second string.
+    `;;` header convention. The text is walked with exactly the token rules
+    of ``browser_tokenize`` (and ``_tokenize`` in ``src/js/rappter-vm.js``),
+    keeping every character except comment spans, so the stripper and the
+    tokenizer always agree on where a string or a comment starts: a `;` or a
+    `"` starts one only where a token starts (after whitespace, a
+    parenthesis, a string or the start of the text). Inside a symbol
+    (`wave;c`, `foo"`) both are ordinary characters, and a string runs to the
+    next `"` with no backslash escapes, so `(do "a\\" "b;c")` keeps its
+    second string. An unterminated string is kept verbatim to the end (the
+    structural check then rejects the program).
     """
     out = []
     i = 0
     n = len(raw)
-    in_string = False
     while i < n:
         c = raw[i]
-        if in_string:
-            out.append(c)
-            if c == '"':
-                in_string = False
-            i += 1
-        elif c == '"':
-            in_string = True
+        if c in " \t\n\r()":
             out.append(c)
             i += 1
-        elif c == ";" and (i == 0 or raw[i - 1] in " \t\n\r()\""):
+        elif c == ";":
             while i < n and raw[i] != "\n":
                 i += 1
+        elif c == '"':
+            j = raw.find('"', i + 1)
+            if j < 0:
+                out.append(raw[i:])
+                break
+            out.append(raw[i:j + 1])
+            i = j + 1
         else:
-            out.append(c)
-            i += 1
+            # A keyword (`:k`) runs to a space, `)` or LF; any other symbol
+            # to a space, `(`, `)`, LF or tab — browser_tokenize's two rules.
+            stops = " )\n" if c == ":" else " )(\n\t"
+            j = i + 1
+            while j < n and raw[j] not in stops:
+                j += 1
+            out.append(raw[i:j])
+            i = j
     return "".join(out)
 
 

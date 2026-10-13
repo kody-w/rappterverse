@@ -333,6 +333,16 @@ def _single_line(value: str) -> bool:
     return "\n" not in value and "\r" not in value
 
 
+def _encodable(value: str) -> bool:
+    """False for text holding a lone surrogate (JSON ``\\ud800``): ``save``
+    writes UTF-8 and would raise halfway through the file."""
+    try:
+        value.encode("utf-8")
+    except UnicodeEncodeError:
+        return False
+    return True
+
+
 def same_login(left, right) -> bool:
     """GitHub logins are case-insensitive; compare them that way everywhere."""
     if not isinstance(left, str) or not isinstance(right, str):
@@ -393,6 +403,9 @@ def _validate_record(rec: dict) -> dict:
     at = rec.get("at")
     if not _valid_iso8601(at):
         raise ValueError("`at` must be an ISO-8601 timestamp")
+    for field, value in (("agent_id", agent_id), ("environment", environment), ("notes", notes)):
+        if not _encodable(value):
+            raise ValueError(f"`{field}` must be valid Unicode text (no lone surrogate code points)")
 
     return {
         "schema": RECORD_SCHEMA,

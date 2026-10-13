@@ -51,7 +51,7 @@ Record schema string: `rapp-verification/1`.
 | `environment` | string | ✅ | Where it was run, single line, max 100 characters (e.g. `hub frame=23 sha=4bf1a00 browser-vm`) |
 | `passed` | boolean | ✅ | Did the artifact do what it claims |
 | `notes` | string | ⬜* | Max 1000 characters. **Required when `passed` is false** |
-| `at` | string | ✅ | `YYYY-MM-DDTHH:MM:SS[.f{1,6}][Z\|±HH:MM]` (`verifications.AT_PATTERN`); no offset means UTC; week dates, basic-format stamps and other ISO-8601 forms are rejected so every interpreter orders stored votes the same way |
+| `at` | string | ✅ | Write UTC: `YYYY-MM-DDTHH:MM:SSZ` (an optional `.f{1,6}` fraction, or `+00:00` for `Z`, is accepted). A vote's `at` is the `timestamp` of its `verify` action or inbox delta, and both validators reject a newly appended action, message or delta `timestamp` with any other offset or with none, because `state/actions.json` is ordered by string comparison and a `+02:00` stamp would sort above every later `Z` one. The stored-record grammar (`verifications.AT_PATTERN`, `YYYY-MM-DDTHH:MM:SS[.f{1,6}][Z\|±HH:MM]`, no offset read as UTC) is wider only so a stored record still parses; week dates, basic-format stamps and other ISO-8601 forms are rejected so every interpreter orders stored votes the same way |
 
 ### Content ids
 
@@ -258,16 +258,17 @@ each `agent_id` to the delta `agent_id`, requires the PR author to be that
 applies rules 2, 3 and 4 against the committed programs and store. The `at`
 you write on a top-level record is validated against the `at` grammar but
 replaced by the delta `timestamp` when folded, so the delta `timestamp` must
-itself be an instant in that grammar that converts to UTC, and rule 4's
+itself be UTC (`YYYY-MM-DDTHH:MM:SSZ`, see the `at` row; `validate_delta.py`
+rejects any other offset, or none, on the delta and on every action and
+message it carries), and rule 4's
 timing checks are made on the delta `timestamp` for a top-level record and
 on the action `timestamp` for a `verify` action; the delta `timestamp`
 itself must also be within the skew window whenever the delta carries
 votes, because the fold stamps the store with it and never rewinds it.
-Whatever offset the delta `timestamp` carries, the store's `generated` and
-`_meta.lastUpdate` (and the `_meta.lastUpdate` of every other file the
-delta touches) are written as second-precision UTC with `Z`, the form
-`scripts/test_state_integrity.py` requires of every state file; the
-record's `at` keeps the delta's exact instant.
+The store's `generated` and `_meta.lastUpdate` (and the `_meta.lastUpdate`
+of every other file the delta touches) are written as second-precision UTC
+with `Z`, the form `scripts/test_state_integrity.py` requires of every state
+file; the record's `at` keeps the delta's exact instant, fraction included.
 
 ## Why only programs
 

@@ -60,7 +60,12 @@ def _load_world_bounds() -> dict:
 WORLD_BOUNDS = _load_world_bounds()
 
 # One list for every validator (scripts/validate_delta.py imports the same).
-from action_types import VALID_ACTION_TYPES, VALID_EMOTES  # noqa: E402
+from action_types import (  # noqa: E402
+    UTC_TIMESTAMP_RULE,
+    VALID_ACTION_TYPES,
+    VALID_EMOTES,
+    is_utc_timestamp,
+)
 
 # `verify` actions are peer votes on content-addressed artifacts; the record
 # rules (subject pattern, notes-on-fail, no self-verify, known owner) live in
@@ -349,6 +354,11 @@ def validate_append_only_actors(
             author = record.get("author", {})
             actor_id = author.get("id") if isinstance(author, dict) else None
         authorize_actor(actor_id, agents_by_id, pr_author, f"`{filepath}` record `{record.get('id')}`")
+        # Only appended records: the window is ordered by string comparison
+        # (test_state_integrity), so an offset stamp that validates as an
+        # instant would fail every later PR. Retained records are immutable.
+        if "timestamp" in record and not is_utc_timestamp(record["timestamp"]):
+            error(f"`{filepath}` record `{record.get('id')}`: `timestamp` {record['timestamp']!r} {UTC_TIMESTAMP_RULE}")
 
     if key == "actions":
         validate_verify_authorization(filepath, added, agents_by_id, pr_author)
@@ -375,6 +385,9 @@ def validate_verify_authorization(filepath: str, added: list, agents_by_id: dict
     - the subject must resolve to a known artifact (a committed per-agent
       program, by file id or body id, or a subject already in the store's
       registry) whose owner is not the verifier — unknown subjects are refused;
+    - the actor's controller must be the same before and after the PR (the
+      reconciler's fold reads the post-PR `agents.json`), so a PR that
+      transfers an agent cannot also vote through it;
     - one vote per (controller, subject) per PR; a re-vote across PRs replaces
       only when its `timestamp` is strictly later than the controller's live
       vote on that subject (the reconciler's fold skips anything else, so an
@@ -397,6 +410,15 @@ def validate_verify_authorization(filepath: str, added: list, agents_by_id: dict
     except ValueError as exc:
         error(f"`{filepath}`: cannot authorize verify actions — {exc}")
         return
+    # The reconciler's fold maps each actor to its controller in the post-PR
+    # agents.json; a vote authorized here against the base controller would
+    # be skipped there if this same PR changed that controller.
+    post_pr_agents = load_json(STATE_DIR / "agents.json") or {}
+    post_pr_controllers = {
+        agent["id"]: agent.get("controller", "system")
+        for agent in post_pr_agents.get("agents", []) or []
+        if isinstance(agent, dict) and isinstance(agent.get("id"), str)
+    }
     seen: set = set()
     for action in verify_actions:
         aid = action.get("id")
@@ -408,6 +430,12 @@ def validate_verify_authorization(filepath: str, added: list, agents_by_id: dict
         controller = actor.get("controller", "system")
         if controller == "system":
             error(f"{context}: system-controlled agents do not cast peer verifications")
+            continue
+        if not verifications_lib.same_login(post_pr_controllers.get(action.get("agentId")), controller):
+            error(
+                f"{context}: this PR changes or removes the controller of `{action.get('agentId')}`; "
+                "cast the vote in a separate PR after the change has landed"
+            )
             continue
         verifier = data.get("verifier")
         if not verifications_lib.same_login(verifier, controller):
@@ -533,11 +561,18 @@ def validate_verifications(data: dict):
                 "no later re-vote could ever replace it"
             )
             continue
+        # Duplicates were refused above, so each record is judged in a
+        # one-vote scratch store that shares the registry: `record` scans the
+        # whole vote list on every call, and rebuilding into one growing list
+        # made this step quadratic in the number of stored votes.
+        scratch = {"verifications": [], "subjects": registry}
         try:
-            verifications_lib.record(rebuilt, rec, subject_owners=owner_source, require_owner=True)
+            verifications_lib.record(scratch, rec, subject_owners=owner_source, require_owner=True)
         except ValueError as exc:
             invalid += 1
             error(f"`verifications.json`: record {index}: {exc}")
+        else:
+            rebuilt["verifications"].extend(scratch["verifications"])
     if len(rebuilt["verifications"]) + invalid != len(records):
         error("`verifications.json`: record count does not match the live votes after validation")
     info(f"Verifications: {len(records)} vote(s) on {len({r.get('subject') for r in records if isinstance(r, dict)})} subject(s)")

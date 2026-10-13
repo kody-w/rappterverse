@@ -162,6 +162,20 @@ class NormalizeAndSubjectTests(TempState):
         self.assertEqual(slosh.browser_tokenize(slosh.normalize_program(text)),
                          slosh.browser_tokenize(text))
 
+    def test_quote_inside_a_symbol_does_not_open_a_string_like_the_vm(self):
+        # `foo"` is one symbol for rappter-vm.js, so the `"` after it opens
+        # nothing and `";not a comment"` is a whole string. A stripper that
+        # opened a string at every quote cut the body to `(do foo" (do "`,
+        # skipped a program the browser runs and keyed it on the wrong text.
+        text = '(do foo" (do ";not a comment" (emote "bob" "wave")))'
+        self.assertTrue(slosh.is_single_do_form(text))
+        self.assertEqual(slosh.normalize_program(text), text)
+        self.assertTrue(slosh.is_single_do_form(slosh.normalize_program(text)))
+        self.assertEqual(slosh.browser_tokenize(slosh.normalize_program(text)),
+                         slosh.browser_tokenize(text))
+        # a keyword runs past `(`, so the quote after `:k(` is inside it too
+        self.assertEqual(slosh.normalize_program('(do :k(" x) ;c\n)'), '(do :k(" x)\n)')
+
     def test_body_id_splits_tokens_like_the_browser_vm(self):
         # The browser RappterVM (src/js/rappter-vm.js _tokenize) treats ' and :
         # as ordinary symbol characters, where lisp_vm.tokenize makes ' its own

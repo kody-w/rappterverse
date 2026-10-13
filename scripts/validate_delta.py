@@ -26,7 +26,11 @@ from dreamcatcher_delta import (  # noqa: E402
     verify_manifest_repository,
 )
 
-from action_types import VALID_ACTION_TYPES  # noqa: E402  (one list, shared with validate_action)
+from action_types import (  # noqa: E402  (shared with validate_action)
+    UTC_TIMESTAMP_RULE,
+    VALID_ACTION_TYPES,
+    is_utc_timestamp,
+)
 
 # Peer verification votes (schema/verifications.md). The record rules live in
 # scripts/verifications.py; the ids a program answers to in scripts/slosh_lisp.py.
@@ -480,6 +484,9 @@ def validate_delta(path: Path):
             datetime.fromisoformat(delta["timestamp"].replace("Z", "+00:00"))
         except (ValueError, AttributeError):
             error(f"`{path.name}`: Invalid timestamp format")
+        else:
+            if not is_utc_timestamp(delta["timestamp"]):
+                error(f"`{path.name}`: delta `timestamp` {delta['timestamp']!r} {UTC_TIMESTAMP_RULE}")
 
     # Must contain at least one delta type
     delta_keys = ("actions", "messages", "agent_update", "objects", "activities", "verifications")
@@ -506,6 +513,8 @@ def validate_delta(path: Path):
                     error(f"`{path.name}`: Action `data` must be an object")
                 if "timestamp" in action and not valid_timestamp(action["timestamp"]):
                     error(f"`{path.name}`: Invalid action timestamp")
+                elif "timestamp" in action and not is_utc_timestamp(action["timestamp"]):
+                    error(f"`{path.name}`: action `timestamp` {action['timestamp']!r} {UTC_TIMESTAMP_RULE}")
 
     # Validate messages entries
     if "messages" in delta:
@@ -530,6 +539,8 @@ def validate_delta(path: Path):
                     error(f"`{path.name}`: Message author requires `id` and `name`")
                 if "timestamp" in msg and not valid_timestamp(msg["timestamp"]):
                     error(f"`{path.name}`: Invalid message timestamp")
+                elif "timestamp" in msg and not is_utc_timestamp(msg["timestamp"]):
+                    error(f"`{path.name}`: message `timestamp` {msg['timestamp']!r} {UTC_TIMESTAMP_RULE}")
 
     # Validate agent_update
     if "agent_update" in delta:

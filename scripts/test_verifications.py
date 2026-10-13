@@ -608,6 +608,19 @@ class ReconcileFoldTests(TempStateMixin, unittest.TestCase):
         store = verifications.load(self.state_dir / "verifications.json")
         self.assertFalse(store["verifications"][0]["passed"])
 
+    def test_direct_fold_never_rewinds_the_store_generation(self) -> None:
+        """An inbox vote may stamp the store up to the skew window ahead;
+        the direct-path fold must keep that stamp, as the inbox fold does."""
+        ahead = datetime.fromtimestamp(datetime.now(timezone.utc).timestamp() + 300, timezone.utc)
+        ahead_stamp = ahead.strftime("%Y-%m-%dT%H:%M:%SZ")
+        store = verifications.load(self.state_dir / "verifications.json")
+        verifications.record(store, vote("bob", subject=self.alice_file_id), {self.alice_file_id: "alice"})
+        verifications.save(store, self.state_dir / "verifications.json", ahead_stamp)
+        changed, _ = self.fold([verify_action("alice-agent-001", "alice", self.bob_file_id)])
+        self.assertTrue(changed)
+        stored = json.loads((self.state_dir / "verifications.json").read_text(encoding="utf-8"))
+        self.assertEqual((stored["generated"], stored["_meta"]["lastUpdate"]), (ahead_stamp, ahead_stamp))
+
     def test_no_verify_actions_means_no_store(self) -> None:
         changed, _ = self.fold([{"id": "a", "type": "move", "agentId": "alice-agent-001", "data": {}}])
         self.assertFalse(changed)
@@ -1130,6 +1143,85 @@ class RevoteTimingValidationTests(ValidatorHardeningTests):
                     os.environ.pop(k, None)
                 else:
                     os.environ[k] = v
+
+    def test_direct_vote_rejected_when_the_same_pr_changes_the_controller(self) -> None:
+        """validate_action authorizes against the base controller, the fold
+        reads the post-PR agents.json: a PR that transfers the voting agent
+        used to validate and then have its vote skipped by the fold."""
+        base = self.agents_by_id()
+        data = json.loads((self.state_dir / "agents.json").read_text(encoding="utf-8"))
+        data["agents"][0]["controller"] = "carol"   # alice-agent-001 handed to carol in this PR
+        (self.state_dir / "agents.json").write_text(json.dumps(data), encoding="utf-8")
+        action = verify_action("alice-agent-001", "alice", self.bob_file_id)
+        self.va.validate_verify_authorization("state/actions.json", [action], base, "alice")
+        self.assertTrue(any("changes or removes the controller" in e for e in self.va.errors), self.va.errors)
+        # the same vote with the controller unchanged (case aside) is fine
+        data["agents"][0]["controller"] = "Alice"
+        (self.state_dir / "agents.json").write_text(json.dumps(data), encoding="utf-8")
+        self.va.errors.clear()
+        self.va.validate_verify_authorization("state/actions.json", [action], base, "alice")
+        self.assertEqual(self.va.errors, [])
+
+    def test_offset_timestamps_are_rejected_before_they_reach_the_window(self) -> None:
+        """TestActionIntegrity.test_timestamps_monotonic orders the actions
+        window by string. A `+02:00` stamp is honest as an instant but sorts
+        above every later `Z` stamp, so once folded it failed every later PR
+        on main for hours. Both validators now refuse it up front."""
+        offset, later_z = "2026-10-13T18:24:16+02:00", "2026-10-13T16:24:30Z"
+        self.assertLess(later_z, offset)  # the string order the integrity suite uses
+        ok_stamps = ("2026-10-13T16:24:16Z", "2026-10-13T16:24:16.250Z", "2026-10-13T16:24:16.123456+00:00")
+        bad_stamps = (offset, "2026-10-13T11:24:16-05:00", "2026-10-13T16:24:16", "20261013T162416Z")
+        emote = {"id": "act-9", "agentId": "alice-agent-001", "type": "emote", "world": "hub", "data": {"emote": "wave"}}
+        message = {"id": "msg-9", "author": {"id": "alice-agent-001", "name": "A"}, "content": "hi", "world": "hub"}
+        inbox = self.state_dir / "inbox"
+        for stamp in ok_stamps + bad_stamps:
+            for where in ("envelope", "action", "message"):
+                with self.subTest(stamp=stamp, where=where):
+                    delta = {
+                        "agent_id": "alice-agent-001", "controller": "alice",
+                        "timestamp": stamp if where == "envelope" else "2026-10-13T16:24:16Z",
+                        "actions": [dict(emote, timestamp=stamp if where == "action" else "2026-10-13T16:24:16Z")],
+                        "messages": [dict(message, timestamp=stamp if where == "message" else "2026-10-13T16:24:16Z")],
+                    }
+                    path = inbox / "utc.json"
+                    path.write_text(json.dumps(delta), encoding="utf-8")
+                    self.vd.errors.clear()
+                    with contextlib.redirect_stdout(io.StringIO()):
+                        self.vd.validate_delta(path)
+                    hit = any("must be UTC" in e for e in self.vd.errors)
+                    self.assertIs(hit, stamp in bad_stamps, self.vd.errors)
+        # The direct path: only appended records are judged.
+        base_window = {"actions": [dict(emote, id="act-1", timestamp="2026-10-13T16:00:00Z")]}
+        saved_loader = self.va.load_base_json
+        self.va.load_base_json = lambda filepath: base_window
+        try:
+            for stamp in ok_stamps + bad_stamps:
+                with self.subTest(direct=stamp):
+                    self.va.errors.clear()
+                    current = base_window["actions"] + [dict(emote, id="act-2", timestamp=stamp)]
+                    with contextlib.redirect_stdout(io.StringIO()):
+                        self.va.validate_append_only_actors(
+                            "state/actions.json", "actions", current, self.agents_by_id(), "alice")
+                    hit = any("must be UTC" in e for e in self.va.errors)
+                    self.assertIs(hit, stamp in bad_stamps, self.va.errors)
+        finally:
+            self.va.load_base_json = saved_loader
+
+    def test_lone_surrogate_text_is_refused_before_the_fold_can_crash_on_save(self) -> None:
+        """json.loads turns `\\ud800` into a lone surrogate that save()
+        cannot encode; it used to pass both validators and crash apply_deltas
+        halfway through writing state/verifications.json."""
+        bad = json.loads('"loops forever \\ud800"')
+        for field in ("notes", "environment", "agent_id"):
+            with self.subTest(field=field):
+                rec = vote("alice", subject=self.bob_file_id, passed=False, **{field: bad})
+                with self.assertRaisesRegex(ValueError, "lone surrogate"):
+                    verifications.record({}, rec, {self.bob_file_id: "bob"})
+        self.vd.errors.clear()
+        delta = {"agent_id": "alice-agent-001", "controller": "alice", "timestamp": "2026-10-13T02:00:00Z",
+                 "verifications": [vote("alice", subject=self.bob_file_id, passed=False, notes=bad)]}
+        self.vd.validate_verify_structure(delta, Path("delta.json"))
+        self.assertTrue(any("lone surrogate" in e for e in self.vd.errors), self.vd.errors)
 
     def test_inbox_effective_at_must_convert_to_utc(self) -> None:
         """A delta `timestamp` (or verify-action `timestamp`) outside the `at`

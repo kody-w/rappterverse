@@ -7,6 +7,7 @@ import argparse
 import json
 import sys
 from collections import Counter
+from datetime import datetime, timezone
 from pathlib import Path
 
 
@@ -56,9 +57,11 @@ def fold_verify_actions(repo_root: Path, agents: dict, actions: dict) -> bool:
     actually changes. A later inbox vote therefore stays newest, and an inbox
     re-vote at the same instant is not re-applied over. The same rule is
     enforced up front by ``validate_action.validate_verify_authorization``
-    (a re-vote needs a strictly later ``timestamp`` than the live vote), so a
-    validated verify action is never silently dropped here; the skip only
-    covers actions already folded and votes raced by an inbox delta.
+    (a re-vote needs a strictly later ``timestamp`` than the live vote, and
+    the actor's controller may not change in the PR that carries the vote,
+    because this fold reads the post-PR ``agents.json``), so a validated
+    verify action is never silently dropped here; the skip only covers
+    actions already folded and votes raced by an inbox delta.
     The same rules as the validators apply (`verifier` is the actor's
     controller, no `system`, known subject, no self-verify), so a record that
     slipped past them is skipped with a printed reason rather than folded.
@@ -85,6 +88,7 @@ def fold_verify_actions(repo_root: Path, agents: dict, actions: dict) -> bool:
         if isinstance(agent, dict) and agent.get("id")
     }
     owners = slosh_lib.program_subject_owners(state_dir / "programs", controllers)
+    previous_generated = store.get("generated") if store_path.is_file() else None
     before = _store_fingerprint(store)
     for action in verify_actions:
         rec = verifications_lib.record_from_action(action)
@@ -112,7 +116,13 @@ def fold_verify_actions(repo_root: Path, agents: dict, actions: dict) -> bool:
             print(f"Skipping {label}: {exc}")
     if _store_fingerprint(store) == before:
         return False
-    verifications_lib.save(store, store_path)  # stamps the schema string itself
+    # Never rewind the freshness stamp: an inbox vote may have stamped the
+    # store up to MAX_FUTURE_SKEW_SECONDS ahead (apply_deltas._later_stamp).
+    stamp = None
+    previous = verifications_lib.parse_at(previous_generated)
+    if previous is not None and previous > datetime.now(timezone.utc):
+        stamp = previous_generated
+    verifications_lib.save(store, store_path, stamp)  # stamps the schema string itself
     return True
 
 

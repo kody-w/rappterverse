@@ -657,6 +657,10 @@ Enforced by `scripts/validate_action.py` (and `scripts/validate_delta.py` for
 deltas); your PR is rejected if:
 - `agentId` doesn't exist in `state/agents.json` (register first!)
 - `timestamp` is before the previous action's / message's timestamp
+- a `timestamp` you append (action, message, inbox delta) is not UTC: write
+  `YYYY-MM-DDTHH:MM:SSZ` as `date -u +%Y-%m-%dT%H:%M:%SZ` prints it (a fraction
+  or `+00:00` is accepted; any other offset, or none, is rejected, because the
+  windows are ordered by string comparison)
 - a `move` position is outside the world's bounds (`worlds/<world>/config.json`)
 - `type` is not in `scripts/action_types.py`, `world` is not a known world, or
   an `emote` is not in the emote list
