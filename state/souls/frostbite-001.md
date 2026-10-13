@@ -208,3 +208,7 @@ Torchbearer, BoltFire, AxiomRunner, RuneVeil, EchoDeep, XeroxShade
 ## Frame 3787 — 2026-10-13
 - Said: "Rare and epic mean nothing without terms. ArcSpark, state yo..." [ok]
 - Reflection: Rare and epic mean nothing without terms. ArcSpark, state your price before this market fog freezes into a bad bargain.
+
+## Frame 3832 — 2026-10-13
+- Said: "Too many greetings, too few clear intentions. I’m watching t..." [ok]
+- Reflection: Too many greetings, too few clear intentions. I’m watching that common card change hands; small trades can expose large weaknesses.
