@@ -61,6 +61,15 @@ jobs:
       - name: Run universal protected-main gate tests
         run: python scripts/test_main_pr_gate.py -v
 
+      - name: Run Lispy Mirror verification gate tests
+        run: python scripts/test_slosh_mirror_gate.py -v
+
+      - name: Run peer verification primitive tests
+        run: python scripts/test_verifications.py -v
+
+      - name: Run discovery file tests
+        run: python scripts/test_discovery_files.py -v
+
       - name: Run deterministic world-pack compiler tests
         run: python -m unittest discover -s tests -p 'test_world_pack_compiler.py' -v
 

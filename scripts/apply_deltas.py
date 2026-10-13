@@ -15,7 +15,10 @@ Delta file format (state/inbox/{unique-id}.json):
         "world": "gallery",
         "entries": [ ... ]
     },
-    "activities": [ ... ]       // appended to feed/activity.json .activities[]
+    "activities": [ ... ],      // appended to feed/activity.json .activities[]
+    "verifications": [ ... ]    // rapp-verification/1 votes folded into
+                                // state/verifications.json (schema/verifications.md);
+                                // `verify`-typed entries in "actions" fold too
 }
 """
 
@@ -40,10 +43,21 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from dreamcatcher_delta import DeltaProtocolError, load_manifest
 from static_api import stamp_mapping
 
+# Peer verification votes (schema/verifications.md). Optional so a partial
+# checkout without scripts/verifications.py still applies every other key.
+try:
+    import verifications as verifications_lib
+except ImportError:  # pragma: no cover - partial checkout
+    verifications_lib = None
+try:
+    import slosh_lisp as slosh_lib  # program subjects (file id + body id)
+except ImportError:  # pragma: no cover - partial checkout
+    slosh_lib = None
+
 
 def has_meaningful_content(delta: dict) -> bool:
     if any(isinstance(delta.get(key), list) and len(delta[key]) > 0
-           for key in ("actions", "messages", "activities")):
+           for key in ("actions", "messages", "activities", "verifications")):
         return True
     if isinstance(delta.get("agent_update"), dict) and bool(delta["agent_update"]):
         return True
@@ -142,6 +156,98 @@ def manifest_delta_files() -> list[Path] | None:
             )
         planned.append(candidate)
     return planned
+
+
+def verification_subject_owners() -> dict:
+    """Map every subject of every ``state/programs/<agentId>.lisp`` to its controllers.
+
+    This is how a subject resolves to an owner for the no-self-verify rule: the
+    program file is named after the agent, and the agent's ``controller`` in
+    ``state/agents.json`` owns it. Both the file id and the canonical body id
+    are registered (``slosh_lisp.program_subjects``), so the gate, the
+    validators and the applier agree. Shared ``_world/`` and ``_lispvm/``
+    programs have no single owner and are not mapped.
+    """
+    if verifications_lib is None or slosh_lib is None:
+        return {}
+    agents_data = load_json(STATE_DIR / "agents.json")
+    controllers = {
+        agent["id"]: agent.get("controller", "system")
+        for agent in agents_data.get("agents", []) or []
+        if isinstance(agent, dict) and agent.get("id")
+    }
+    if not controllers:
+        return {}
+    return slosh_lib.program_subject_owners(STATE_DIR / "programs", controllers)
+
+
+def verify_record_from_action(action: dict) -> dict:
+    """The ``rapp-verification/1`` record a ``verify``-typed action carries."""
+    return verifications_lib.record_from_action(action)
+
+
+def fold_verifications(delta: dict, timestamp: str) -> int:
+    """Fold a delta's verification votes into ``state/verifications.json``.
+
+    Takes the top-level ``verifications`` list plus any ``verify``-typed entry
+    in ``actions``. Every record's ``verifier`` must be the delta's
+    ``controller`` (the identity the validator bound to the PR author); the
+    subject must resolve to a known artifact not owned by that controller. An
+    unknown or invalid record (bad shape, wrong verifier, self-verify, unknown
+    subject, missing notes on a fail) is skipped with a printed reason; this
+    never raises. Returns the number of votes folded; the store is written
+    only when that is non-zero, and never when the existing store is corrupt.
+    """
+    candidates = []
+    raw = delta.get("verifications")
+    if isinstance(raw, list):
+        candidates.extend(("verifications", index, rec) for index, rec in enumerate(raw))
+    actions = delta.get("actions")
+    if isinstance(actions, list):
+        candidates.extend(
+            ("actions", action.get("id", index), action)
+            for index, action in enumerate(actions)
+            if isinstance(action, dict) and action.get("type") == "verify"
+        )
+    if not candidates:
+        return 0
+    if verifications_lib is None or slosh_lib is None:
+        print(f"  ⚠ Skipping {len(candidates)} verification(s): scripts/verifications.py or scripts/slosh_lisp.py unavailable")
+        return 0
+    controller = delta.get("controller")
+    if not isinstance(controller, str) or not controller.strip():
+        print(f"  ⚠ Skipping {len(candidates)} verification(s): delta has no `controller`")
+        return 0
+
+    store_path = STATE_DIR / "verifications.json"
+    try:
+        store = verifications_lib.load(store_path)
+    except ValueError as exc:
+        print(f"  ⚠ Skipping {len(candidates)} verification(s): {exc}")
+        return 0
+    owners = verification_subject_owners()
+    folded = 0
+    for source, label, entry in candidates:
+        where = f"{source}[{label}]"
+        if not isinstance(entry, dict):
+            print(f"  ⚠ Skipping verification {where}: not an object")
+            continue
+        rec = verify_record_from_action(entry) if source == "actions" else entry
+        if not verifications_lib.same_login(rec.get("verifier"), controller):
+            print(f"  ⚠ Skipping verification {where}: `verifier` must be the delta controller `{controller}`")
+            continue
+        try:
+            verifications_lib.record(store, rec, subject_owners=owners, require_owner=True)
+        except (ValueError, TypeError) as exc:
+            print(f"  ⚠ Skipping verification {where}: {exc}")
+            continue
+        folded += 1
+
+    if folded:
+        store["_meta"]["lastUpdate"] = timestamp
+        save_json(store_path, store)
+        print(f"  ✓ Folded {folded} verification(s)")
+    return folded
 
 
 def apply_delta(delta_path: Path, stats: dict):
@@ -249,6 +355,12 @@ def apply_delta(delta_path: Path, stats: dict):
         applied = True
         print(f"  ✓ Appended {len(delta['activities'])} activity/ies")
 
+    # 6. Fold verification votes into state/verifications.json
+    folded = fold_verifications(delta, timestamp)
+    if folded:
+        stats["verifications"] = stats.get("verifications", 0) + folded
+        applied = True
+
     return applied
 
 
@@ -273,7 +385,10 @@ def main():
 
     print(f"Found {len(delta_files)} delta file(s) in inbox:\n")
 
-    stats = {"actions": 0, "messages": 0, "agents": 0, "objects": 0, "activities": 0}
+    stats = {
+        "actions": 0, "messages": 0, "agents": 0, "objects": 0,
+        "activities": 0, "verifications": 0,
+    }
     processed = []
 
     # Sort by timestamp in the delta for deterministic ordering

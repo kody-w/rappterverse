@@ -59,14 +59,44 @@ def _load_world_bounds() -> dict:
 
 WORLD_BOUNDS = _load_world_bounds()
 
-VALID_ACTION_TYPES = {
-    "move", "chat", "emote", "spawn", "despawn",
-    "interact", "trade_offer", "trade_accept", "trade_decline",
-    "battle_challenge", "battle_action", "place_object",
-    "teach",
-}
+# One list for every validator (scripts/validate_delta.py imports the same).
+from action_types import VALID_ACTION_TYPES, VALID_EMOTES  # noqa: E402
 
-VALID_EMOTES = {"wave", "dance", "bow", "clap", "think", "celebrate", "cheer", "nod"}
+# `verify` actions are peer votes on content-addressed artifacts; the record
+# rules (subject pattern, notes-on-fail, no self-verify, known owner) live in
+# scripts/verifications.py, and the ids a program answers to (file bytes and
+# canonical body) are defined once in scripts/slosh_lisp.py so the gate and
+# the validators can never disagree about who owns which subject.
+try:
+    import verifications as verifications_lib
+except ImportError:  # pragma: no cover - partial checkout
+    verifications_lib = None
+try:
+    import slosh_lisp as slosh_lib
+except ImportError:  # pragma: no cover - partial checkout
+    slosh_lib = None
+
+PROGRAMS_DIR = STATE_DIR / "programs"
+
+
+def program_subject_owners(agents_by_id: dict) -> dict:
+    """Map every subject of every `state/programs/<agentId>.lisp` to its controllers.
+
+    A verifier may not vote on a program its own controller authored; the
+    program file name is the agent id, and the agent's `controller` is the
+    owner. Both the file id and the canonical body id are registered (see
+    `slosh_lisp.program_subjects`). Only the top-level per-agent programs
+    count (not `_world/`, `_lispvm/`): shared world defaults have no single
+    owner.
+    """
+    if verifications_lib is None or slosh_lib is None:
+        return {}
+    controllers = {
+        aid: agent.get("controller", "system")
+        for aid, agent in agents_by_id.items()
+        if isinstance(agent, dict)
+    }
+    return slosh_lib.program_subject_owners(PROGRAMS_DIR, controllers)
 
 
 def parse_timestamp(ts: str) -> datetime | None:
@@ -312,8 +342,101 @@ def validate_append_only_actors(
             actor_id = author.get("id") if isinstance(author, dict) else None
         authorize_actor(actor_id, agents_by_id, pr_author, f"`{filepath}` record `{record.get('id')}`")
 
+    if key == "actions":
+        validate_verify_authorization(filepath, added, agents_by_id, pr_author)
+
     info(f"`{filepath}`: {len(added)} new record(s) authorized")
     return added
+
+
+def validate_verify_authorization(filepath: str, added: list, agents_by_id: dict, pr_author: str):
+    """Bind every appended `verify` action to its controller and forbid self-votes.
+
+    Rules, all enforced here or in `verifications.record`:
+
+    - `data.verifier` must be the controller of `agentId` (case-insensitive,
+      like GitHub logins) — the same binding `authorize_actor` just checked
+      against the PR author, so a verifier is always a GitHub login;
+    - a verify action may not be cast through delegation: the PR author must
+      *be* that controller (trusted automation excepted), so a delegate cannot
+      vote in the controller's name on a subject the delegate owns;
+    - a `system`-controlled agent does not cast peer votes;
+    - the subject must resolve to a known artifact (a committed per-agent
+      program, by file id or body id, or a subject already in the store's
+      registry) whose owner is not the verifier — unknown subjects are refused;
+    - one vote per (controller, subject) per PR; a re-vote across PRs replaces.
+
+    A declared `data.subject_owner` is honoured only against the verifier.
+    """
+    verify_actions = [a for a in added if a.get("type") == "verify"]
+    if not verify_actions:
+        return
+    if verifications_lib is None:
+        error(f"`{filepath}`: verify actions need scripts/verifications.py, which is missing")
+        return
+    owners = program_subject_owners(agents_by_id)
+    try:
+        store = verifications_lib.load(STATE_DIR / "verifications.json")
+    except ValueError as exc:
+        error(f"`{filepath}`: cannot authorize verify actions — {exc}")
+        return
+    trusted = pr_author in trusted_automation_authors()
+    seen: set = set()
+    for action in verify_actions:
+        aid = action.get("id")
+        context = f"`{filepath}` verify `{aid}`"
+        data = action.get("data") if isinstance(action.get("data"), dict) else {}
+        actor = agents_by_id.get(action.get("agentId"))
+        if not actor:
+            continue  # authorize_actor already reported the unknown actor
+        controller = actor.get("controller", "system")
+        if controller == "system":
+            error(f"{context}: system-controlled agents do not cast peer verifications")
+            continue
+        verifier = data.get("verifier")
+        if not verifications_lib.same_login(verifier, controller):
+            error(f"{context}: `data.verifier` must be `{controller}` (the controller of `{action.get('agentId')}`)")
+            continue
+        if not trusted and not verifications_lib.same_login(pr_author, controller):
+            error(f"{context}: verify actions cannot be cast through delegation — the PR author must be `{controller}`")
+            continue
+        subject = data.get("subject")
+        vote_key = (controller.casefold(), subject)
+        if vote_key in seen:
+            error(f"{context}: one vote per controller per subject — `{controller}` already voted on this subject in this PR")
+            continue
+        seen.add(vote_key)
+        probe = verify_record_from_action(action, data)
+        try:
+            verifications_lib.record(store, probe, subject_owners=owners, require_owner=True)
+        except ValueError as exc:
+            error(f"{context}: {exc}")
+
+
+def validate_verifications(data: dict):
+    """Validate a direct edit to state/verifications.json (trusted authors only).
+
+    Every record must satisfy `rapp-verification/1` and there may be only one
+    live vote per (verifier, subject).
+    """
+    if "_meta" not in data:
+        error("`verifications.json`: Missing `_meta`")
+    records = data.get("verifications")
+    if not isinstance(records, list):
+        error("`verifications.json`: Missing `verifications` array")
+        return
+    if verifications_lib is None:
+        error("`verifications.json`: scripts/verifications.py is missing")
+        return
+    rebuilt = {"verifications": []}
+    for index, rec in enumerate(records):
+        try:
+            verifications_lib.record(rebuilt, rec)
+        except ValueError as exc:
+            error(f"`verifications.json`: record {index}: {exc}")
+    if len(rebuilt["verifications"]) != len(records):
+        error("`verifications.json`: one live vote per (verifier, subject) — duplicates found")
+    info(f"Verifications: {len(records)} vote(s) on {len({r.get('subject') for r in records if isinstance(r, dict)})} subject(s)")
 
 
 def validate_feed_authorization(data: dict, agents_by_id: dict, pr_author: str):
@@ -543,7 +666,32 @@ def validate_actions(data: dict, agent_ids: set):
             if emote and emote not in VALID_EMOTES:
                 error(f"`actions.json`: Action `{aid}` has invalid emote `{emote}`")
 
+        # `verify` actions: envelope only here. The record rules
+        # (schema/verifications.md) are applied to *appended* records in
+        # validate_verify_authorization, so a later tightening of those rules
+        # cannot fail unrelated PRs over verify actions already in the window.
+        if action_type == "verify" and not isinstance(action_data.get("subject"), str):
+            error(f"`actions.json`: Verify `{aid}` must carry `data.subject`")
+
     info(f"Actions: {len(actions)} total, timestamps ordered, IDs unique, recent entries validated")
+
+
+def verify_record_from_action(action: dict, action_data: dict) -> dict:
+    """The `rapp-verification/1` record a `verify` action carries (shared helper)."""
+    if verifications_lib is not None:
+        return verifications_lib.record_from_action(action)
+    return {
+        "schema": "rapp-verification/1",
+        "verifier": action_data.get("verifier"),
+        "agent_id": action.get("agentId"),
+        "subject": action_data.get("subject"),
+        "subject_kind": action_data.get("subject_kind"),
+        "environment": action_data.get("environment"),
+        "passed": action_data.get("passed"),
+        "notes": action_data.get("notes", ""),
+        "at": action.get("timestamp"),
+        "subject_owner": action_data.get("subject_owner"),
+    }
 
 
 def validate_chat(data: dict, agent_ids: set):
@@ -708,6 +856,8 @@ def validate_state_file(filename: str, data: dict, agent_ids: set):
         if "_meta" not in data:
             error(f"`{filename}`: Missing `_meta`")
         info(f"`{filename}`: JSON valid")
+    elif filename == "verifications.json":
+        validate_verifications(data)
 
 
 def validate_trades(data: dict, agent_ids: set):
@@ -842,7 +992,10 @@ def validate_canonical_state():
         "npcs.json",
         "game_state.json",
         "relationships.json",
+        "verifications.json",
     ):
+        if filename == "verifications.json" and not (STATE_DIR / filename).is_file():
+            continue  # created by the first folded vote; absence is fine
         data = load_json(STATE_DIR / filename)
         if data is None:
             error(f"`{filename}`: failed to load")

@@ -14,6 +14,18 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from static_api import stamp_mapping
 
+# Peer verification votes cast as `verify` actions in state/actions.json are
+# folded into state/verifications.json here, because this script runs on every
+# reconciled state PR (scripts/state_reconciler.py) and the action window only
+# keeps 100 records. Optional imports: a checkout without the verification
+# layer still reconciles everything else.
+try:
+    import verifications as verifications_lib
+    import slosh_lisp as slosh_lib
+except ImportError:  # pragma: no cover - partial checkout
+    verifications_lib = None
+    slosh_lib = None
+
 
 def load_json(path: Path) -> dict:
     with path.open(encoding="utf-8") as handle:
@@ -25,6 +37,70 @@ def save_json(path: Path, data: dict):
     with path.open("w", encoding="utf-8") as handle:
         json.dump(data, handle, indent=4, ensure_ascii=False, allow_nan=False)
         handle.write("\n")
+
+
+def _store_fingerprint(store: dict) -> str:
+    return json.dumps(
+        {"verifications": store.get("verifications"), "subjects": store.get("subjects")},
+        sort_keys=True,
+    )
+
+
+def fold_verify_actions(repo_root: Path, agents: dict, actions: dict) -> bool:
+    """Fold every `verify` action in the retained window into state/verifications.json.
+
+    Idempotent: a vote already in the store is replaced by an identical record,
+    and the file is written only when a vote or subject binding actually
+    changes. A window action older than the live vote by the same controller
+    on the same subject never overwrites it (a later inbox vote stays newest).
+    The same rules as the validators apply (`verifier` is the actor's
+    controller, no `system`, known subject, no self-verify), so a record that
+    slipped past them is skipped with a printed reason rather than folded.
+    Returns True when the store was written.
+    """
+    if verifications_lib is None or slosh_lib is None:
+        return False
+    verify_actions = [
+        action for action in actions.get("actions", [])
+        if isinstance(action, dict) and action.get("type") == "verify"
+    ]
+    if not verify_actions:
+        return False
+    state_dir = repo_root / "state"
+    store_path = state_dir / "verifications.json"
+    try:
+        store = verifications_lib.load(store_path)
+    except ValueError as exc:
+        print(f"Skipping verification fold: {exc}")
+        return False
+    controllers = {
+        agent["id"]: agent.get("controller", "system")
+        for agent in agents.get("agents", [])
+        if isinstance(agent, dict) and agent.get("id")
+    }
+    owners = slosh_lib.program_subject_owners(state_dir / "programs", controllers)
+    before = _store_fingerprint(store)
+    for action in verify_actions:
+        rec = verifications_lib.record_from_action(action)
+        controller = controllers.get(action.get("agentId"))
+        label = f"verify `{action.get('id')}`"
+        if not controller or controller == "system":
+            print(f"Skipping {label}: actor has no peer controller")
+            continue
+        if not verifications_lib.same_login(rec.get("verifier"), controller):
+            print(f"Skipping {label}: verifier is not the actor's controller")
+            continue
+        existing = verifications_lib.find_vote(store, controller, rec.get("subject") or "")
+        if existing is not None and str(existing.get("at", "")) > str(rec.get("at", "")):
+            continue  # a newer live vote wins
+        try:
+            verifications_lib.record(store, rec, subject_owners=owners, require_owner=True)
+        except (ValueError, TypeError) as exc:
+            print(f"Skipping {label}: {exc}")
+    if _store_fingerprint(store) == before:
+        return False
+    verifications_lib.save(store, store_path)  # stamps the schema string itself
+    return True
 
 
 def reconcile(repo_root: Path) -> list[str]:
@@ -106,6 +182,9 @@ def reconcile(repo_root: Path) -> list[str]:
         relationships["bonds"] = expected_bonds
         save_json(state_dir / "relationships.json", relationships)
         changed.append("state/relationships.json")
+
+    if fold_verify_actions(repo_root, agents, actions):
+        changed.append("state/verifications.json")
 
     return changed
 

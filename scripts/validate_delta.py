@@ -26,12 +26,20 @@ from dreamcatcher_delta import (  # noqa: E402
     verify_manifest_repository,
 )
 
+from action_types import VALID_ACTION_TYPES  # noqa: E402  (one list, shared with validate_action)
+
+# Peer verification votes (schema/verifications.md). The record rules live in
+# scripts/verifications.py; the ids a program answers to in scripts/slosh_lisp.py.
+try:
+    import verifications as verifications_lib  # noqa: E402
+except ImportError:  # pragma: no cover - partial checkout
+    verifications_lib = None
+try:
+    import slosh_lisp as slosh_lib  # noqa: E402
+except ImportError:  # pragma: no cover - partial checkout
+    slosh_lib = None
+
 VALID_WORLDS = {"hub", "arena", "marketplace", "gallery", "dungeon"}
-VALID_ACTION_TYPES = {
-    "move", "chat", "emote", "spawn", "despawn",
-    "interact", "trade_offer", "trade_accept", "trade_decline",
-    "battle_challenge", "battle_action", "place_object", "teach",
-}
 
 errors = []
 
@@ -146,10 +154,97 @@ def validate_delta_authorization(delta: dict, path: Path):
         if author_id != actor_id:
             error(f"`{path.name}`: Activity author must match delta agent `{actor_id}`")
 
+    validate_verify_authorization(delta, path, claimed_controller, agents)
+
+
+def verify_candidates(delta: dict) -> list:
+    """Every (label, rapp-verification/1 record) a delta carries.
+
+    Top-level ``verifications`` entries are taken as records; ``verify``-typed
+    entries in ``actions`` are converted with ``verifications.record_from_action``.
+    """
+    found = []
+    raw = delta.get("verifications")
+    if isinstance(raw, list):
+        found.extend((f"verifications[{i}]", rec) for i, rec in enumerate(raw))
+    actions = delta.get("actions")
+    if isinstance(actions, list) and verifications_lib is not None:
+        found.extend(
+            (f"actions[{action.get('id', i)}]", verifications_lib.record_from_action(action))
+            for i, action in enumerate(actions)
+            if isinstance(action, dict) and action.get("type") == "verify"
+        )
+    return found
+
+
+def validate_verify_structure(delta: dict, path: Path):
+    """Shape checks every verify vote must pass, trusted or not."""
+    candidates = verify_candidates(delta)
+    if not candidates:
+        return
+    if verifications_lib is None:
+        error(f"`{path.name}`: verify votes need scripts/verifications.py, which is missing")
+        return
+    for label, rec in candidates:
+        if not isinstance(rec, dict):
+            error(f"`{path.name}`: {label}: verification must be an object")
+            continue
+        try:
+            verifications_lib.record({"verifications": []}, rec)
+        except ValueError as exc:
+            error(f"`{path.name}`: {label}: {exc}")
+
+
+def validate_verify_authorization(delta: dict, path: Path, controller: str, agents: dict):
+    """Bind every verify vote in a delta to the delta's controller.
+
+    Mirrors `validate_action.validate_verify_authorization`: the verifier must
+    be the delta's `controller` (case-insensitive), `system` does not vote, the
+    subject must resolve to a known artifact (committed per-agent program by
+    file id or body id, or a registered subject) not owned by the verifier,
+    and one vote per subject per delta. Without this, adding `verify` to the
+    inbox path would let `data.verifier` be any login at all.
+    """
+    candidates = verify_candidates(delta)
+    if not candidates:
+        return
+    if verifications_lib is None or slosh_lib is None:
+        error(f"`{path.name}`: verify votes need scripts/verifications.py and scripts/slosh_lisp.py")
+        return
+    if controller == "system":
+        error(f"`{path.name}`: system-controlled deltas do not cast peer verifications")
+        return
+    controllers = {
+        aid: agent.get("controller", "system")
+        for aid, agent in agents.items() if isinstance(agent, dict)
+    }
+    owners = slosh_lib.program_subject_owners(STATE_DIR / "programs", controllers)
+    try:
+        store = verifications_lib.load(STATE_DIR / "verifications.json")
+    except ValueError as exc:
+        error(f"`{path.name}`: cannot authorize verify votes — {exc}")
+        return
+    seen = set()
+    for label, rec in candidates:
+        if not isinstance(rec, dict):
+            continue  # reported by validate_verify_structure
+        if not verifications_lib.same_login(rec.get("verifier"), controller):
+            error(f"`{path.name}`: {label}: `verifier` must be the delta controller `{controller}`")
+            continue
+        subject = rec.get("subject")
+        if subject in seen:
+            error(f"`{path.name}`: {label}: one vote per controller per subject in a delta")
+            continue
+        seen.add(subject)
+        try:
+            verifications_lib.record(store, rec, subject_owners=owners, require_owner=True)
+        except ValueError as exc:
+            error(f"`{path.name}`: {label}: {exc}")
+
 
 def has_meaningful_content(delta: dict) -> bool:
     if any(isinstance(delta.get(key), list) and len(delta[key]) > 0
-           for key in ("actions", "messages", "activities")):
+           for key in ("actions", "messages", "activities", "verifications")):
         return True
     if isinstance(delta.get("agent_update"), dict) and bool(delta["agent_update"]):
         return True
@@ -291,7 +386,7 @@ def validate_delta(path: Path):
             error(f"`{path.name}`: Invalid timestamp format")
 
     # Must contain at least one delta type
-    delta_keys = {"actions", "messages", "agent_update", "objects", "activities"}
+    delta_keys = ("actions", "messages", "agent_update", "objects", "activities", "verifications")
     if not has_meaningful_content(delta):
         error(f"`{path.name}`: No delta content (need a non-empty value for: {', '.join(delta_keys)})")
 
@@ -362,6 +457,11 @@ def validate_delta(path: Path):
             for entry in entries:
                 if "id" not in entry:
                     error(f"`{path.name}`: Object entry missing `id`")
+
+    # Validate verifications (peer votes; schema/verifications.md)
+    if "verifications" in delta and not isinstance(delta["verifications"], list):
+        error(f"`{path.name}`: `verifications` must be an array")
+    validate_verify_structure(delta, path)
 
     validate_delta_authorization(delta, path)
     print(f"  ✓ Validated {path.name}")
