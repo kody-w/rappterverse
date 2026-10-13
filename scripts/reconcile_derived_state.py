@@ -54,7 +54,11 @@ def fold_verify_actions(repo_root: Path, agents: dict, actions: dict) -> bool:
     compared as instants, so ``Z``, offsets and fractional seconds order
     correctly), and the file is written only when a vote or subject binding
     actually changes. A later inbox vote therefore stays newest, and an inbox
-    re-vote at the same instant is not re-applied over.
+    re-vote at the same instant is not re-applied over. The same rule is
+    enforced up front by ``validate_action.validate_verify_authorization``
+    (a re-vote needs a strictly later ``timestamp`` than the live vote), so a
+    validated verify action is never silently dropped here; the skip only
+    covers actions already folded and votes raced by an inbox delta.
     The same rules as the validators apply (`verifier` is the actor's
     controller, no `system`, known subject, no self-verify), so a record that
     slipped past them is skipped with a printed reason rather than folded.

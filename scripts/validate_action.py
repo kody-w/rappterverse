@@ -358,13 +358,22 @@ def validate_verify_authorization(filepath: str, added: list, agents_by_id: dict
       like GitHub logins) — the same binding `authorize_actor` just checked
       against the PR author, so a verifier is always a GitHub login;
     - a verify action may not be cast through delegation: the PR author must
-      *be* that controller (trusted automation excepted), so a delegate cannot
-      vote in the controller's name on a subject the delegate owns;
-    - a `system`-controlled agent does not cast peer votes;
+      *be* that controller, so a delegate cannot vote in the controller's
+      name on a subject the delegate owns. There is no trusted-automation
+      exemption: `authorize_actor` already refuses any author other than the
+      controller or a delegate for a controller-owned agent, and a
+      `system`-controlled agent does not cast peer votes, so automation has
+      no agent it could vote through (`test_verifications.py` pins this);
     - the subject must resolve to a known artifact (a committed per-agent
       program, by file id or body id, or a subject already in the store's
       registry) whose owner is not the verifier — unknown subjects are refused;
-    - one vote per (controller, subject) per PR; a re-vote across PRs replaces.
+    - one vote per (controller, subject) per PR; a re-vote across PRs replaces
+      only when its `timestamp` is strictly later than the controller's live
+      vote on that subject (the reconciler's fold skips anything else, so an
+      equal or older timestamp is rejected here rather than silently dropped
+      there), and a `timestamp` more than
+      `verifications.MAX_FUTURE_SKEW_SECONDS` ahead of the validator's clock
+      is refused so a vote cannot outrun every later re-vote.
 
     A declared `data.subject_owner` is honoured only against the verifier.
     """
@@ -380,7 +389,6 @@ def validate_verify_authorization(filepath: str, added: list, agents_by_id: dict
     except ValueError as exc:
         error(f"`{filepath}`: cannot authorize verify actions — {exc}")
         return
-    trusted = pr_author in trusted_automation_authors()
     seen: set = set()
     for action in verify_actions:
         aid = action.get("id")
@@ -397,7 +405,7 @@ def validate_verify_authorization(filepath: str, added: list, agents_by_id: dict
         if not verifications_lib.same_login(verifier, controller):
             error(f"{context}: `data.verifier` must be `{controller}` (the controller of `{action.get('agentId')}`)")
             continue
-        if not trusted and not verifications_lib.same_login(pr_author, controller):
+        if not verifications_lib.same_login(pr_author, controller):
             error(f"{context}: verify actions cannot be cast through delegation — the PR author must be `{controller}`")
             continue
         subject = data.get("subject")
@@ -411,6 +419,21 @@ def validate_verify_authorization(filepath: str, added: list, agents_by_id: dict
             error(f"{context}: one vote per controller per subject — `{controller}` already voted on this subject in this PR")
             continue
         seen.add(vote_key)
+        at = action.get("timestamp")
+        if verifications_lib.too_far_in_future(at):
+            error(
+                f"{context}: `timestamp` {at} is more than "
+                f"{verifications_lib.MAX_FUTURE_SKEW_SECONDS} seconds in the future; "
+                "a vote is stamped with the time it was cast"
+            )
+            continue
+        live = verifications_lib.find_vote(store, controller, subject)
+        if live is not None and verifications_lib.supersedes(live.get("at"), at):
+            error(
+                f"{context}: `{controller}` already has a live vote on this subject at "
+                f"{live.get('at')}; a re-vote needs a strictly later `timestamp`"
+            )
+            continue
         probe = verify_record_from_action(action, data)
         try:
             verifications_lib.record(
@@ -425,10 +448,17 @@ def validate_verifications(data: dict):
     also what `--validate-state` runs against the committed store on main).
 
     Every record must satisfy `rapp-verification/1`, resolve to a known
-    subject (the document's own `subjects` registry plus the committed
-    per-agent programs) that its verifier does not own, and there may be only
-    one live vote per (verifier, subject). The same rules the folds apply, so
-    a bad fold on main is caught here rather than served.
+    subject that its verifier did not own *when the vote was accepted*, and
+    there may be only one live vote per (verifier, subject). The owner source
+    for a subject the document's own `subjects` registry knows is that
+    registry entry, which the fold wrote when the vote was accepted; the live
+    per-agent programs are consulted only for a subject the registry does not
+    carry. A controller who later adopts a program they once verified (their
+    `state/programs/<agentId>.lisp` becoming byte-identical to the subject)
+    would otherwise turn their earlier, legitimately accepted vote into a
+    "self-verify" and block their own program-update PR. Such votes are
+    reported as an informational line, never as an error; the folds still
+    refuse a *new* vote by a current owner.
     """
     if "_meta" not in data:
         error("`verifications.json`: Missing `_meta`")
@@ -447,13 +477,16 @@ def validate_verifications(data: dict):
     agents_by_id = {
         a["id"]: a for a in agents_data.get("agents", []) if isinstance(a, dict) and "id" in a
     }
-    owners = program_subject_owners(agents_by_id)
-    # The document's own registry is an owner source (resolved_owners reads
-    # store["subjects"]); start from a copy so validation never mutates `data`.
-    rebuilt = {"verifications": [], "subjects": json.loads(json.dumps(data.get("subjects") or {}))}
+    live_owners = program_subject_owners(agents_by_id)
+    # The document's own registry is the vote-time owner source
+    # (resolved_owners reads store["subjects"]); start from a copy so
+    # validation never mutates `data`.
+    registry = json.loads(json.dumps(data.get("subjects") or {}))
+    rebuilt = {"verifications": [], "subjects": registry}
     seen: set = set()
     invalid = 0
     for index, rec in enumerate(records):
+        owner_source = live_owners
         if isinstance(rec, dict) and isinstance(rec.get("verifier"), str) and isinstance(rec.get("subject"), str):
             key = (rec["verifier"].strip().casefold(), rec["subject"])
             if key in seen:
@@ -461,8 +494,24 @@ def validate_verifications(data: dict):
                 invalid += 1
                 continue
             seen.add(key)
+            if verifications_lib.resolved_owners(rebuilt, rec["subject"]):
+                # Registered at fold time: judge the vote against the owners
+                # of record, and only report a controller who adopted the
+                # program afterwards.
+                owner_source = None
+                registered = verifications_lib.resolved_owners(rebuilt, rec["subject"])
+                adopted_since = [
+                    owner for owner in live_owners.get(rec["subject"], ())
+                    if verifications_lib.same_login(owner, rec["verifier"])
+                    and not any(verifications_lib.same_login(owner, known) for known in registered)
+                ]
+                if adopted_since:
+                    info(
+                        f"`verifications.json`: record {index}: `{rec['verifier'].strip()}` now controls "
+                        f"subject {rec['subject'][:19]}… (acquired after the vote); the vote is kept"
+                    )
         try:
-            verifications_lib.record(rebuilt, rec, subject_owners=owners, require_owner=True)
+            verifications_lib.record(rebuilt, rec, subject_owners=owner_source, require_owner=True)
         except ValueError as exc:
             invalid += 1
             error(f"`verifications.json`: record {index}: {exc}")

@@ -32,16 +32,21 @@ jobs:
       - name: Classify derived-state ownership
         if: github.event_name == 'pull_request'
         run: |
-          # Fail closed: under bash -eo pipefail a failing `git diff` (missing
-          # base ref) aborts this step instead of silently classifying the PR
-          # as state-only. --no-renames lists both ends of a rename, so a file
-          # moved into state/inbox/ still counts as a change outside it;
-          # core.quotePath=off keeps non-ASCII paths unquoted so the anchored
-          # greps below see the real path.
+          # Fail closed: a step with no `shell:` runs under `bash -e {0}`
+          # (errexit, no pipefail), so the `git diff` is a plain assignment
+          # whose failure (missing base ref) aborts the step instead of
+          # silently classifying the PR as state-only; test_state_integrity
+          # also executes this block under `bash -eo pipefail`, and it must
+          # classify identically either way. --no-renames lists both ends of
+          # a rename, so a file moved into state/inbox/ still counts as a
+          # change outside it; core.quotePath=off keeps non-ASCII paths
+          # unquoted so the anchored greps below see the real path.
           changed="$(git -c core.quotePath=off diff --no-renames --name-only "origin/${{ github.base_ref }}...HEAD")"
-          if printf '%s\n' "$changed" \
-            | grep -Ev '^(state|worlds|feed)/' \
-            | grep -q .; then
+          # Each grep consumes its whole input (no `grep -q`, which exits on
+          # the first match and, under pipefail, makes the upstream stages die
+          # of SIGPIPE on a large diff and the test fail open).
+          outside_derived="$(printf '%s\n' "$changed" | grep -Ev '^(state|worlds|feed)/' || true)"
+          if [ -n "$outside_derived" ]; then
             echo "ALLOW_DERIVED_STATE_DRIFT=0" >> "$GITHUB_ENV"
           else
             echo "ALLOW_DERIVED_STATE_DRIFT=1" >> "$GITHUB_ENV"
@@ -50,9 +55,8 @@ jobs:
           # state/inbox/ and nothing else; the reconciler drains it after merge.
           # Only that shape may bypass TestInboxHygiene. Any other path in the
           # diff, or an empty diff, keeps the inbox-must-be-empty guarantee.
-          if [ -n "$changed" ] && ! printf '%s\n' "$changed" \
-            | grep -Ev '^state/inbox/' \
-            | grep -q .; then
+          outside_inbox="$(printf '%s\n' "$changed" | grep -Ev '^state/inbox/' || true)"
+          if [ -n "$changed" ] && [ -z "$outside_inbox" ]; then
             echo "ALLOW_INBOX_DELTAS=1" >> "$GITHUB_ENV"
           else
             echo "ALLOW_INBOX_DELTAS=0" >> "$GITHUB_ENV"

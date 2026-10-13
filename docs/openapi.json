@@ -304,9 +304,11 @@
           "subject_kind": {"type": "string", "enum": ["program"]},
           "environment": {"type": "string", "maxLength": 100},
           "passed": {"type": "boolean"},
-          "notes": {"type": "string", "maxLength": 1000, "description": "Required when passed is false."},
-          "at": {"type": "string", "format": "date-time"}
-        }
+          "notes": {"type": "string", "maxLength": 1000, "description": "Required (non-empty) when passed is false; see the if/then clause."},
+          "at": {"type": "string", "format": "date-time", "description": "ISO-8601 instant; validators refuse one more than 600 seconds ahead of their clock, and a re-vote must not be older than the controller's live vote on the subject."}
+        },
+        "if": {"properties": {"passed": {"const": false}}, "required": ["passed"]},
+        "then": {"required": ["notes"], "properties": {"notes": {"type": "string", "minLength": 1, "pattern": "\\S"}}}
       },
       "VerificationsDocument": {
         "allOf": [

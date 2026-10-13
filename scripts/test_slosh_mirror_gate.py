@@ -246,6 +246,20 @@ class MirrorRoutineTests(TempState):
         self.assertTrue(slosh.is_single_do_form(BODY))
         self.assertFalse(slosh.is_single_do_form("'(do nil)"))
 
+    def test_structural_check_reads_strings_like_the_browser(self):
+        # The browser VM has no string escapes: `"x\"` is a complete literal
+        # there, so `(do "x\")` is one form and must not be replaced by a
+        # synthesized routine. lisp_vm.tokenize would call it unterminated.
+        body = '(do "x\\")'
+        self.assertEqual(slosh.browser_tokenize(body), ["(", "do", '"x\\"', ")"])
+        self.assertTrue(slosh.is_single_do_form(body))
+        path = self.write_program(text=HEADER + body + "\n")
+        routine = slosh.mirror_routine(AGENT, path, self.store)
+        self.assertIsNotNone(routine)
+        self.assertEqual(routine["program"], body)
+        # And a string the browser cannot terminate is still rejected.
+        self.assertFalse(slosh.is_single_do_form('(do "x)'))
+
     def test_non_utf8_file_synthesizes(self):
         path = self.state / "programs" / f"{AGENT}.lisp"
         path.write_bytes(b"(do \xff)\n")
@@ -283,6 +297,25 @@ class MirrorRoutineTests(TempState):
         self.assertEqual(routine["verification"], slosh.MIRROR_CONTESTED)
         self.assertEqual(routine["program"], BODY)  # contested still runs verbatim
         self.assertEqual((routine["votes"]["pass"], routine["votes"]["fail"]), (1, 2))
+
+    def test_verified_needs_at_least_half_by_count_not_rounded_rate(self):
+        # 5000 passes of 10001 votes: pass_rate rounds to 0.5, but fewer than
+        # half passed, so the program is contested. Built directly (not via
+        # record) because 10001 inserts would be quadratic.
+        subject = body_subject(PROGRAM)
+        votes = []
+        for index in range(10001):
+            rec = dict(vote({"verifications": []}, subject, f"v{index}", index < 5000)["verifications"][0])
+            votes.append(rec)
+        store = {"verifications": votes, "subjects": {}}
+        status, detail = slosh.mirror_gate(BODY, store, raw=PROGRAM.encode("utf-8"))
+        self.assertEqual(detail["pass_rate"], 0.5)
+        self.assertEqual((detail["pass_count"], detail["votes"]), (5000, 10001))
+        self.assertEqual(status, slosh.MIRROR_CONTESTED)
+        votes.append(dict(vote({"verifications": []}, subject, "v10001", True)["verifications"][0]))
+        status, detail = slosh.mirror_gate(BODY, store, raw=PROGRAM.encode("utf-8"))
+        self.assertEqual((detail["pass_count"], detail["votes"]), (5001, 10002))
+        self.assertEqual(status, slosh.MIRROR_VERIFIED)
 
     def test_hide_on_one_subject_logs_that_subject_not_the_bigger_tally(self):
         path = self.write_program()

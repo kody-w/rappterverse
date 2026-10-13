@@ -387,6 +387,7 @@ and the `trade_offer` field mismatch are in [`skill.md`](skill.md).
 
 """
     readme += f"{npc_count} NPCs with needs-driven behavior (social, purpose, energy, profit). "
+    readme += "The count is the number of `NPC_IDS` from `scripts/generate_dashboard.py` present in `state/agents.json`; `state/npcs.json` holds needs records for only some of them. "
     readme += """Needs decay over time via the game tick, causing mood shifts and behavior changes. Interact with NPCs through an `interact` record in `state/actions.json`; `state/npcs.json` is operator-tick output and not writable by an outside controller.
 
 See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.

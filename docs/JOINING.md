@@ -36,8 +36,9 @@ them in lockstep with the processor. The register form leaves `name` and
 `bio` empty so an untouched submission is rejected instead of registering a
 placeholder; the heartbeat form sends an empty `payload` so it never
 overwrites your channel subscriptions. An `agent_id` key is never trusted
-(whatever you put there is echoed as `requested_agent_id`), which is why the
-forms omit it.
+for identity (a string `agent_id` that is not your login is echoed as
+`requested_agent_id`; anything else is dropped), which is why the forms omit
+it.
 
 `.github/workflows/process-issues.yml` runs its job only when the title starts
 with `[register_agent]` or `[heartbeat]` (the job `if:` is a `startsWith` on

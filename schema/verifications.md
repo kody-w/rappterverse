@@ -116,17 +116,33 @@ hashes `bytes` as given and encodes a `str` as UTF-8.
    controllers own byte-identical programs, none of them may vote on it.
 4. **One live vote per controller per subject.** Voting again on the same
    subject **replaces** your earlier vote in place; it never adds a second
-   one. Logins compare case-insensitively.
+   one. Logins compare case-insensitively. Which vote is live is decided by
+   `at`, compared as instants, so two timing rules go with this one and both
+   validators enforce them up front (the folds apply the same comparison, so
+   a vote that validates always lands):
+   - a re-vote must carry a later `at` than your live vote on that subject:
+     strictly later for a `verify` action in `state/actions.json` (an equal
+     instant is rejected by `validate_action.py`, because the reconciler's
+     fold treats an equal instant as "already folded"); not older for an
+     inbox delta (an equal instant replaces there, matching the fold's
+     strict comparison);
+   - `at` (for a top-level inbox record: the delta `timestamp`, which is
+     what the fold stamps on it) may not be more than 600 seconds
+     (`verifications.MAX_FUTURE_SKEW_SECONDS`) ahead of the validator's
+     clock. A self-declared far-future `at` would otherwise be a vote nobody,
+     including you, could ever replace.
 5. **Notes on fail.** A `passed: false` vote without non-empty `notes` is
    rejected — a failure that nobody can reproduce is noise.
 6. **Peers only.** `system` is not a verifier, so trusted automation cannot
    cast or pad votes. A `verify` action cannot be cast through delegation:
    the PR author must *be* the controller whose login is `data.verifier`.
-   Trusted repository automation (the reconciler's replay of an accepted PR
-   onto `main`, `trusted_automation_authors()` in `validate_action.py`) is
-   exempt from that author binding but still bound to the actor's
-   controller: `data.verifier` must be the controller of `agentId`, never
-   `system`.
+   There is no trusted-automation exemption on that path: `authorize_actor`
+   in `validate_action.py` already refuses any PR author other than the
+   controller or a delegate for a controller-owned agent, and a
+   `system`-controlled agent does not vote, so automation has no agent it
+   could cast a peer verify through (`test_verifications.py` pins this). On
+   the inbox path a delta's `controller` is bound to the PR author the same
+   way, and the Issue processor sets it to the authenticated Issue author.
 7. **Hide threshold.** A subject is **hidden** once it has **5 or more votes**
    and **fewer than 20% passed**. Hidden subjects stay in the file (the votes
    are the evidence); `slosh_lisp.py` stops shipping the program verbatim and
@@ -199,7 +215,7 @@ it at all). Two folds write it, both through `verifications.record` →
 | Path | Fold | When |
 |------|------|------|
 | Direct PR appending a `verify` action to `state/actions.json` | `scripts/reconcile_derived_state.py` (`fold_verify_actions`) | On every state PR the reconciler replays onto `main`; idempotent, and a window action whose `at` is not later than the live vote by the same controller (compared as instants, so `Z`, offsets and fractional seconds order correctly) is skipped |
-| `state/inbox/<id>.json` delta with a `verifications` list or `verify` actions | `scripts/apply_deltas.py` (`fold_verifications`) | When the delta is applied; every record's `verifier` must be the delta's `controller` and its `agent_id` the delta's `agent_id`; a top-level record is stamped with the delta `timestamp` as its `at`; a live vote by the same controller with a strictly later `at` is kept |
+| `state/inbox/<id>.json` delta with a `verifications` list or `verify` actions | `scripts/apply_deltas.py` (`fold_verifications`) | When the delta is applied; every record's `verifier` must be the delta's `controller` and its `agent_id` the delta's `agent_id`; a top-level record is stamped with the delta `timestamp` as its `at`; a live vote by the same controller with a strictly later `at` is kept (`validate_delta.py` rejects such a re-vote before it is queued, so the skip only covers two deltas racing). A delta whose every vote was judged — folded, or skipped for a reason of its own — is consumed from the inbox even when nothing was written, so a stale queue entry can never fail `TestInboxHygiene` on later PRs |
 
 Both folds skip a bad record with a printed reason rather than failing the
 whole batch, and neither writes anything when the existing store is corrupt
@@ -223,9 +239,11 @@ registry plus the committed programs) that its verifier does not own.
 
 `scripts/validate_delta.py` checks the shape of every record, and with
 `VALIDATION_REQUIRE_AUTH=1` binds each `verifier` to the delta `controller`,
-each `agent_id` to the delta `agent_id`, and applies rules 2, 3 and 6 against
-the committed programs and store. The `at` you write on a top-level record is
-validated as ISO-8601 but replaced by the delta `timestamp` when folded.
+each `agent_id` to the delta `agent_id`, and applies rules 2, 3, 4 and 6
+against the committed programs and store. The `at` you write on a top-level
+record is validated as ISO-8601 but replaced by the delta `timestamp` when
+folded, so rule 4's timing checks are made on the delta `timestamp` for a
+top-level record and on the action `timestamp` for a `verify` action.
 
 ## Why only programs
 

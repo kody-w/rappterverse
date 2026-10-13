@@ -43,15 +43,12 @@ try:
 except ImportError:
     _verifications = None
 
-# lisp_vm.tokenize is the S-expression tokenizer the gate uses for the
-# structural "one (do ...) form" check (it knows about string literals and `;`
-# comments). Without it the gate falls back to the prefix/suffix check it
-# always had. The canonical body, and therefore the body id every vote and
-# hide keys on, is NOT built with it: see ``browser_tokenize`` below.
-try:
-    import lisp_vm as _lisp_vm
-except ImportError:
-    _lisp_vm = None
+# The structural "one (do ...) form" check, the canonical body and therefore
+# the body id every vote and hide keys on are all built with
+# ``browser_tokenize`` below: the grammar of the browser RappterVM that
+# evaluates these programs. ``lisp_vm.tokenize`` honours backslash escapes in
+# strings and the browser does not, so using it for the structural check
+# made ``(do "x\")`` a single form for the browser but not for the gate.
 
 MIRROR_HIDDEN = "hidden"
 MIRROR_UNVERIFIED = "unverified"
@@ -191,15 +188,15 @@ def canonical_body(body):
 def is_single_do_form(body):
     """True when ``body`` is exactly one top-level ``(do ...)`` form.
 
-    With the tokenizer: the first two tokens are ``(`` and ``do``, parentheses
-    balance, and the depth returns to zero only at the very last token (so
-    `(do nil) (emote ...)` and `(do (if x y z)) )` are both rejected). Without
-    it: the historical prefix/suffix check.
+    Tokenized with ``browser_tokenize`` (the grammar the body id and the
+    browser RappterVM use, so the structural check and the id can never
+    disagree about what a string literal is): the first two tokens are ``(``
+    and ``do``, parentheses balance, and the depth returns to zero only at
+    the very last token (so `(do nil) (emote ...)` and `(do (if x y z)) )` are
+    both rejected). An unterminated string does not tokenize and is rejected.
     """
-    if _lisp_vm is None:
-        return bool(body.startswith("(do") and body[3:4].isspace() and body.endswith(")"))
     try:
-        tokens = _lisp_vm.tokenize(body)
+        tokens = browser_tokenize(body)
     except Exception:
         return False
     if len(tokens) < 3 or tokens[0] != "(" or tokens[1] != "do":
@@ -372,7 +369,9 @@ def mirror_gate(body, store, raw=None):
         if hidden_summary is not None:
             return MIRROR_HIDDEN, detail
         if detail.get("votes", 0) > 0:
-            if detail["pass_rate"] >= MIRROR_VERIFIED_PASS_RATE:
+            # Compare the counts, not the rounded pass_rate kept for display:
+            # 5000 of 10001 rounds to 0.5 but is not "at least half".
+            if detail["pass_count"] >= detail["votes"] * MIRROR_VERIFIED_PASS_RATE:
                 return MIRROR_VERIFIED, detail
             return MIRROR_CONTESTED, detail
         return MIRROR_UNVERIFIED, detail

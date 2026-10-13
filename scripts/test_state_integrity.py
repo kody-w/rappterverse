@@ -3951,9 +3951,11 @@ class TestInboxHygiene(unittest.TestCase):
             lines.append(line[10:] if line.startswith(" " * 10) else line.strip())
         return "\n".join(lines).replace("${{ github.base_ref }}", "main") + "\n"
 
-    def _classify(self, paths, git_fails=False):
-        """Run the classify step under bash -eo pipefail with a stub git that
-        prints `paths` and a GITHUB_ENV file; return (exit code, env lines, git argv)."""
+    def _classify(self, paths, git_fails=False, shell_args=("-eo", "pipefail")):
+        """Run the classify step under bash with `shell_args` (default
+        `-eo pipefail`; GitHub's own default for a step without `shell:` is
+        `bash -e`) and a stub git that prints `paths` and a GITHUB_ENV file;
+        return (exit code, env lines, git argv)."""
         import subprocess
         with tempfile.TemporaryDirectory() as tmp:
             tmp_path = Path(tmp)
@@ -3975,7 +3977,7 @@ class TestInboxHygiene(unittest.TestCase):
             script = tmp_path / "classify.sh"
             script.write_text(self._classify_step_script(), encoding="utf-8")
             env = {"PATH": f"{bin_dir}:{os.environ.get('PATH', '')}", "GITHUB_ENV": str(github_env)}
-            result = subprocess.run(["bash", "-eo", "pipefail", str(script)], env=env,
+            result = subprocess.run(["bash", *shell_args, str(script)], env=env,
                                     capture_output=True, text=True)
             argv = argv_log.read_text(encoding="utf-8").split() if argv_log.exists() else []
             return result.returncode, github_env.read_text(encoding="utf-8").split(), argv
@@ -3993,14 +3995,32 @@ class TestInboxHygiene(unittest.TestCase):
             ("state/inbox/issue-9.json", "scripts/foo.py"): ["ALLOW_DERIVED_STATE_DRIFT=0", "ALLOW_INBOX_DELTAS=0"],
             ("state/inbox/caf\u00e9.json",): ["ALLOW_DERIVED_STATE_DRIFT=1", "ALLOW_INBOX_DELTAS=1"],
         }
+        # A large diff: the step's greps must consume all of their input. With
+        # `grep -q` at the end of a pipeline the upstream stages die of SIGPIPE
+        # once it exits, and under pipefail that failed the `if`, classifying
+        # 10,000 changed scripts as a state-only, inbox-only PR (fail open).
+        big_code = tuple(f"scripts/generated_{i:05d}.py" for i in range(10000))
+        big_inbox = tuple(f"state/inbox/issue-{i:05d}.json" for i in range(10000))
+        cases[big_code] = ["ALLOW_DERIVED_STATE_DRIFT=0", "ALLOW_INBOX_DELTAS=0"]
+        cases[big_inbox] = ["ALLOW_DERIVED_STATE_DRIFT=1", "ALLOW_INBOX_DELTAS=1"]
+        cases[big_inbox + ("scripts/foo.py",)] = ["ALLOW_DERIVED_STATE_DRIFT=0", "ALLOW_INBOX_DELTAS=0"]
         for paths, expected in cases.items():
-            with self.subTest(paths=paths):
+            with self.subTest(paths=paths if len(paths) < 10 else f"{len(paths)} paths"):
                 code, env_lines, argv = self._classify(paths)
                 self.assertEqual(code, 0)
                 self.assertEqual(env_lines, expected)
                 self.assertIn("--no-renames", argv)
                 self.assertIn("core.quotePath=off", argv)
                 self.assertIn("origin/main...HEAD", argv)
+        # The deployed step has no `shell:`, so GitHub runs it as `bash -e {0}`
+        # without pipefail; it must classify the same way there.
+        for paths, expected in cases.items():
+            with self.subTest(shell="bash -e", paths=paths if len(paths) < 10 else f"{len(paths)} paths"):
+                code, env_lines, _ = self._classify(paths, shell_args=("-e",))
+                self.assertEqual(code, 0)
+                self.assertEqual(env_lines, expected)
+        commands = [line for line in self._classify_step_script().splitlines() if not line.lstrip().startswith("#")]
+        self.assertNotIn("grep -q", "\n".join(commands))
         code, env_lines, _ = self._classify(("state/agents.json",), git_fails=True)
         self.assertNotEqual(code, 0, "a failing git diff must fail the step, not classify the PR")
         self.assertEqual(env_lines, [])

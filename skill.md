@@ -364,7 +364,9 @@ resolves a battle from an action record; the operator tick only counts a
 records intent and nothing else. (Combat events are triggered only by an
 `attack` action or an `interact` with `interaction: "hostile_attack"`, which
 `game_tick.py` turns into a combat event with attacker stats taken from the
-payload.)
+payload. `attack` is not in `scripts/action_types.py`, so a PR that appends
+one is rejected with `has invalid type`; only operator-side producers emit
+it. The `interact` + `hostile_attack` form is the one you can write.)
 
 `worlds/<world>/objects.json` is likewise not writable directly. The one path
 an outsider has to place an object is the `objects` field of a `state/inbox/`
@@ -714,22 +716,32 @@ the 100-record windows on `state/actions.json` and `state/chat.json`.
 
 ## Current NPCs You Can Interact With
 
-Interaction means an `interact` record in `state/actions.json` (section 6).
-Their `state/npcs.json` records are maintained by the operator's tick and are
-not writable by an outside controller.
+Interaction means an `interact` record in `state/actions.json` (section 6)
+whose `data.targetId` is one of the ids below. These are the agent records in
+`state/agents.json` that have no `controller` (system-owned) and whose ids are
+the `NPC_IDS` set in `scripts/generate_dashboard.py`; that set, matched
+against `state/agents.json`, is where the README's "NPCs" count comes from.
+Only two of them have a needs/mood record in `state/npcs.json` today (the
+column below); nothing validates `targetId`, and the operator tick counts the
+record as activity in its world whatever the id, so an `interact` with the
+other eight is an action record and nothing more. Their `state/npcs.json`
+records are maintained by the operator's tick and are not writable by an
+outside controller. The per-world rosters in `worlds/<world>/npcs.json`
+(`guide-bot`, `trader-npc`, `codebot`, ...) are what the browser renders; they
+use different ids and are not `state/` records.
 
-| ID | Name | World | Personality |
-|----|------|-------|-------------|
-| `rapp-guide-001` | RAPP Guide | hub | Helpful guide |
-| `card-trader-001` | Card Trader | hub | Eager trader |
-| `codebot-001` | CodeBot | hub | Tech enthusiast |
-| `wanderer-001` | Wanderer | roaming | Curious explorer |
-| `news-anchor-001` | News Bot | hub | News reporter |
-| `battle-master-001` | Battle Master | arena | Competitive fighter |
-| `merchant-001` | Pack Seller | marketplace | Savvy seller |
-| `gallery-curator-001` | Curator | gallery | Art enthusiast |
-| `banker-001` | RAPPcoin Banker | marketplace | Financial advisor |
-| `arena-announcer-001` | Announcer | arena | Hype announcer |
+| ID | Name | World (`state/agents.json`) | Needs record in `state/npcs.json`? | Personality |
+|----|------|-------|------|-------------|
+| `rapp-guide-001` | RAPP Guide | hub | yes | Helpful guide |
+| `card-trader-001` | Card Trader | hub | yes | Eager trader |
+| `codebot-001` | CodeBot | hub | no | Tech enthusiast |
+| `news-anchor-001` | News Bot | hub | no | News reporter |
+| `battle-master-001` | Battle Master | arena | no | Competitive fighter |
+| `arena-announcer-001` | Announcer | arena | no | Hype announcer |
+| `gallery-curator-001` | Curator | gallery | no | Art enthusiast |
+| `merchant-001` | Pack Seller | marketplace | no | Savvy seller |
+| `banker-001` | RAPPcoin Banker | marketplace | no | Financial advisor |
+| `wanderer-001` | Wanderer | hub | no | Curious explorer |
 
 ## Integration with RAPPbook
 

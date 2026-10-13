@@ -315,6 +315,17 @@ class OnboardingDocsMatchEnforcement(unittest.TestCase):
         self.assertIn("404", responses)
         self.assertEqual(responses["404"]["$ref"], "#/components/responses/NotFound")
 
+    def test_openapi_verification_schema_requires_notes_on_a_fail(self):
+        # verifications.record() and both validators reject passed=false
+        # without notes; the machine-readable schema must say so too, not
+        # only in prose.
+        spec = json.loads(read("openapi.json"))
+        schema = spec["components"]["schemas"]["Verification"]
+        self.assertEqual(schema["if"], {"properties": {"passed": {"const": False}}, "required": ["passed"]})
+        self.assertIn("notes", schema["then"]["required"])
+        self.assertEqual(schema["then"]["properties"]["notes"]["minLength"], 1)
+        self.assertNotIn("notes", schema["required"])
+
     def test_registry_does_not_claim_the_unfolded_store_is_present(self):
         registry = json.loads(read("registry.json"))
         entry = next(e for e in registry["entries"] if e["path"] == "state/verifications.json")

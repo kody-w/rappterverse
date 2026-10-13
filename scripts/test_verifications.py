@@ -14,9 +14,11 @@ import hashlib
 import importlib.util
 import io
 import json
+import os
 import sys
 import tempfile
 import unittest
+from datetime import datetime, timezone
 from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).resolve().parent
@@ -381,9 +383,10 @@ class ApplyDeltasFoldTests(TempStateMixin, unittest.TestCase):
             "verifications": [vote("bob", subject=body_id), vote("bob", subject=new_file_id)],
         }
         applied, stats, log = self.apply(delta)
-        self.assertFalse(applied)
+        self.assertTrue(applied)  # both votes judged (and refused): the queue entry is consumed
         self.assertEqual(stats["verifications"], 0)
         self.assertEqual(log.count("self-verify"), 2)
+        self.assertFalse((self.state_dir / "verifications.json").exists())
         # Whitespace-only edits map to the same body id, so neither does that launder it.
         spaced = edited.replace("(do (if", "(do  (if")
         self.assertEqual(slosh_lisp.program_subjects(spaced.encode("utf-8"))[1], body_id)
@@ -409,7 +412,7 @@ class ApplyDeltasFoldTests(TempStateMixin, unittest.TestCase):
         self.assertIn("unreadable", log)
         self.assertEqual(store_path.read_text(encoding="utf-8"), "{broken")
 
-    def test_delta_with_only_bad_verifications_does_not_crash_or_write(self) -> None:
+    def test_delta_with_only_bad_verifications_is_consumed_without_a_write(self) -> None:
         delta = {
             "agent_id": "alice-agent-001",
             "controller": "alice",
@@ -417,10 +420,66 @@ class ApplyDeltasFoldTests(TempStateMixin, unittest.TestCase):
             "verifications": [vote("alice", subject="sha256:short"), 42],
         }
         applied, stats, log = self.apply(delta)
-        self.assertFalse(applied)
+        # Every vote was judged and skipped for its own reason; retrying can
+        # never change that, so the queue entry is processed (and removed by
+        # main) rather than left to fail TestInboxHygiene on later PRs.
+        self.assertTrue(applied)
         self.assertEqual(stats["verifications"], 0)
         self.assertIn("Skipping verification", log)
+        self.assertIn("Consumed 2 verification(s) without a store change", log)
         self.assertFalse((self.state_dir / "verifications.json").exists())
+
+    def test_unjudged_verifications_leave_the_delta_in_place(self) -> None:
+        # No controller: the votes could not be evaluated at all, so the file
+        # is kept (a human must look), unlike the all-skipped case above.
+        delta = {
+            "agent_id": "alice-agent-001",
+            "timestamp": "2026-10-13T02:00:00Z",
+            "verifications": [vote("alice", subject=self.bob_file_id)],
+        }
+        applied, stats, log = self.apply(delta)
+        self.assertFalse(applied)
+        self.assertIn("delta has no `controller`", log)
+
+    def test_validated_stale_revote_is_consumed_and_inbox_ends_empty(self) -> None:
+        """A verifications-only re-vote whose delta timestamp is older than
+        the controller's live vote folds nothing, yet validate_delta used to
+        accept it: apply must still consume the queue entry."""
+        store_path = self.state_dir / "verifications.json"
+        store = verifications.load(store_path)
+        verifications.record(store, vote("alice", subject=self.bob_file_id, passed=False,
+                                          at="2026-10-13T11:00:00Z"), {self.bob_file_id: "bob"})
+        verifications.save(store, store_path)
+        before = store_path.read_text(encoding="utf-8")
+        delta = {
+            "agent_id": "alice-agent-001", "controller": "alice",
+            "timestamp": "2026-10-13T10:00:00Z",  # older than the live 11:00Z vote
+            "verifications": [vote("alice", subject=self.bob_file_id, passed=True)],
+        }
+        applied, stats, log = self.apply(delta)
+        self.assertTrue(applied)
+        self.assertEqual(stats["verifications"], 0)
+        self.assertIn("a newer live vote", log)
+        self.assertEqual(store_path.read_text(encoding="utf-8"), before)
+
+        # End to end through main(): the inbox file is removed.
+        inbox = self.state_dir / "inbox"
+        self.assertEqual([p.name for p in inbox.glob("*.json")], ["delta-1.json"])
+        saved_inbox = apply_deltas.INBOX_DIR
+        apply_deltas.INBOX_DIR = inbox
+        saved_manifest = os.environ.pop("DREAMCATCHER_DELTA_MANIFEST", None)
+        try:
+            out = io.StringIO()
+            with contextlib.redirect_stdout(out), self.assertRaises(SystemExit) as stop:
+                apply_deltas.main()
+        finally:
+            apply_deltas.INBOX_DIR = saved_inbox
+            if saved_manifest is not None:
+                os.environ["DREAMCATCHER_DELTA_MANIFEST"] = saved_manifest
+        self.assertEqual(stop.exception.code, 0)
+        self.assertIn("Applied 1/1", out.getvalue())
+        self.assertEqual(list(inbox.glob("*.json")), [])
+        self.assertEqual(store_path.read_text(encoding="utf-8"), before)
 
 
 class ReconcileFoldTests(TempStateMixin, unittest.TestCase):
@@ -503,9 +562,22 @@ class StoreShapeTests(unittest.TestCase):
             }), encoding="utf-8")
             with self.assertRaisesRegex(ValueError, "`subjects` is not an object"):
                 verifications.load(path)
-            # A brand-new {} (or a file without the keys) is still repaired.
+            # A brand-new {} is still repaired...
             path.write_text("{}", encoding="utf-8")
             self.assertEqual(verifications.load(path)["verifications"], [])
+            # ...but a store that kept its registry and counts and lost the
+            # votes list is damaged, not empty: loading it would let the next
+            # fold save over the history.
+            for damaged in (
+                {"subjects": {SUBJECT_A: {"owner": "bob", "kind": "program"}}, "_meta": {"verificationCount": 3}},
+                {"schema": verifications.DOC_SCHEMA, "_meta": {}},
+            ):
+                with self.subTest(damaged=sorted(damaged)):
+                    path.write_text(json.dumps(damaged), encoding="utf-8")
+                    with self.assertRaisesRegex(ValueError, "`verifications` is missing"):
+                        verifications.load(path)
+                    self.assertEqual(verifications.store_shape_problem(damaged), "`verifications` is missing")
+            self.assertEqual(verifications.store_shape_problem({}), "")
 
     def test_inbox_fold_never_overwrites_a_damaged_store(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -755,6 +827,139 @@ class ReconcileOrderingTests(ReconcileFoldTests):
         self.assertTrue(changed)
         store = verifications.load(self.state_dir / "verifications.json")
         self.assertEqual(store["verifications"][0]["verifier"], "alice")
+
+
+class TimestampEdgeTests(unittest.TestCase):
+    def test_parse_at_never_raises_on_range_edge_offsets(self) -> None:
+        for value in ("0001-01-01T00:00:00+01:00", "9999-12-31T23:00:00-05:00"):
+            with self.subTest(value=value):
+                self.assertIsNone(verifications.parse_at(value))
+                # supersedes falls back to the string comparison instead of
+                # crashing the folds that call it outside their try blocks.
+                self.assertTrue(verifications.supersedes(value, "2026-10-13T00:00:00Z") in (True, False))
+                with self.assertRaisesRegex(ValueError, "`at` must be an ISO-8601 timestamp"):
+                    verifications.record({"verifications": []}, vote("alice", at=value))
+        self.assertIsNotNone(verifications.parse_at("9999-12-31T23:59:59Z"))
+
+    def test_too_far_in_future_uses_the_skew_window(self) -> None:
+        now = datetime(2026, 10, 13, 12, 0, 0, tzinfo=timezone.utc)
+        self.assertFalse(verifications.too_far_in_future("2026-10-13T12:09:59Z", now))
+        self.assertFalse(verifications.too_far_in_future("2026-10-13T07:09:59-05:00", now))  # 12:09:59Z
+        self.assertTrue(verifications.too_far_in_future("2026-10-13T12:10:01Z", now))
+        self.assertTrue(verifications.too_far_in_future("9999-01-01T00:00:00Z", now))
+        self.assertFalse(verifications.too_far_in_future("not a time", now))
+        self.assertFalse(verifications.too_far_in_future("2026-10-13T12:10:01Z", "2026-10-13T12:05:00Z"))
+        self.assertTrue(verifications.too_far_in_future("9999-01-01T00:00:00Z"))  # real clock
+
+
+class RevoteTimingValidationTests(ValidatorHardeningTests):
+    """Validation and the folds agree on which re-votes land, so a delta or
+    action that validates is never silently dropped afterwards."""
+
+    def seed_live_vote(self, at: str = "2026-10-13T01:00:00Z") -> Path:
+        store_path = self.state_dir / "verifications.json"
+        store = verifications.load(store_path)
+        verifications.record(store, vote("alice", subject=self.bob_file_id, passed=False, at=at),
+                             {self.bob_file_id: "bob"})
+        verifications.save(store, store_path)
+        return store_path
+
+    def test_inbox_revote_older_than_live_vote_is_rejected_equal_is_not(self) -> None:
+        self.seed_live_vote("2026-10-13T01:00:00Z")
+        for timestamp, ok in (("2026-10-13T00:59:59Z", False), ("2026-10-13T01:00:00Z", True),
+                              ("2026-10-12T20:00:00-05:00", True)):  # 01:00Z spelled with an offset
+            with self.subTest(timestamp=timestamp):
+                self.vd.errors.clear()
+                delta = {
+                    "agent_id": "alice-agent-001", "controller": "alice", "timestamp": timestamp,
+                    "verifications": [vote("alice", subject=self.bob_file_id, at="2026-10-13T01:30:00Z")],
+                }
+                self.vd.validate_verify_authorization(delta, Path("delta.json"), "alice", self.agents_by_id())
+                if ok:
+                    self.assertEqual(self.vd.errors, [])
+                else:
+                    self.assertTrue(any("a newer live vote by `alice`" in e for e in self.vd.errors), self.vd.errors)
+        # The delta timestamp, not the record's own `at`, is what counts for a
+        # top-level record (apply stamps it); a verify action keeps its own.
+        self.vd.errors.clear()
+        delta = {
+            "agent_id": "alice-agent-001", "controller": "alice", "timestamp": "2026-10-13T00:30:00Z",
+            "actions": [verify_action("alice-agent-001", "alice", self.bob_file_id, at="2026-10-13T01:30:00Z")],
+        }
+        self.vd.validate_verify_authorization(delta, Path("delta.json"), "alice", self.agents_by_id())
+        self.assertEqual(self.vd.errors, [])
+
+    def test_inbox_far_future_timestamp_is_rejected(self) -> None:
+        delta = {
+            "agent_id": "alice-agent-001", "controller": "alice", "timestamp": "9999-01-01T00:00:00Z",
+            "verifications": [vote("alice", subject=self.bob_file_id)],
+        }
+        self.vd.validate_verify_authorization(delta, Path("delta.json"), "alice", self.agents_by_id())
+        self.assertTrue(any("in the future" in e for e in self.vd.errors), self.vd.errors)
+        self.vd.errors.clear()
+        delta = {
+            "agent_id": "alice-agent-001", "controller": "alice", "timestamp": "2026-10-13T02:00:00Z",
+            "actions": [verify_action("alice-agent-001", "alice", self.bob_file_id, at="9999-01-01T00:00:00Z")],
+        }
+        self.vd.validate_verify_authorization(delta, Path("delta.json"), "alice", self.agents_by_id())
+        self.assertTrue(any("in the future" in e for e in self.vd.errors), self.vd.errors)
+
+    def test_direct_revote_needs_a_strictly_later_timestamp(self) -> None:
+        self.seed_live_vote("2026-10-13T01:00:00Z")
+        for at, ok in (("2026-10-13T00:59:00Z", False), ("2026-10-13T01:00:00Z", False),
+                       ("2026-10-12T20:00:00-05:00", False), ("2026-10-13T01:00:00.500Z", True)):
+            with self.subTest(at=at):
+                self.va.errors.clear()
+                action = verify_action("alice-agent-001", "alice", self.bob_file_id, at=at)
+                self.va.validate_verify_authorization("state/actions.json", [action], self.agents_by_id(), "alice")
+                if ok:
+                    self.assertEqual(self.va.errors, [])
+                else:
+                    self.assertTrue(any("strictly later `timestamp`" in e for e in self.va.errors), self.va.errors)
+
+    def test_direct_far_future_timestamp_is_rejected(self) -> None:
+        action = verify_action("alice-agent-001", "alice", self.bob_file_id, at="9999-01-01T00:00:00Z")
+        self.va.validate_verify_authorization("state/actions.json", [action], self.agents_by_id(), "alice")
+        self.assertTrue(any("in the future" in e for e in self.va.errors), self.va.errors)
+
+    def test_trusted_automation_cannot_cast_a_peer_verify(self) -> None:
+        """There is no automation exemption on the direct path: the repo
+        owner can neither act for alice's agent nor relay her vote."""
+        owner = self.va.trusted_automation_authors()
+        self.assertIn("kody-w", owner)
+        action = verify_action("alice-agent-001", "alice", self.bob_file_id)
+        agents = self.agents_by_id()
+        self.assertFalse(self.va.authorize_actor("alice-agent-001", agents, "kody-w", "ctx"))
+        self.assertTrue(any("is controlled by `alice`, not `kody-w`" in e for e in self.va.errors), self.va.errors)
+        self.va.errors.clear()
+        self.va.validate_verify_authorization("state/actions.json", [action], agents, "kody-w")
+        self.assertTrue(any("cannot be cast through delegation" in e for e in self.va.errors), self.va.errors)
+        # And a system agent never votes, whoever the author is.
+        self.va.errors.clear()
+        system_action = verify_action("npc-001", "kody-w", self.bob_file_id)
+        self.va.validate_verify_authorization("state/actions.json", [system_action], agents, "kody-w")
+        self.assertTrue(any("system-controlled agents do not cast" in e for e in self.va.errors), self.va.errors)
+
+    def test_committed_store_keeps_a_vote_whose_verifier_adopted_the_program_later(self) -> None:
+        """alice voted on bob's program while bob owned it; later alice's own
+        program becomes byte-identical. --validate-state must keep her vote
+        (judged against the registry at vote time) and only note the change."""
+        store = verifications.load(self.state_dir / "verifications.json")
+        verifications.record(store, vote("alice", subject=self.bob_file_id, passed=True),
+                             {self.bob_file_id: "bob"})
+        (self.state_dir / "programs" / "alice-agent-001.lisp").write_text(self.bob_program, encoding="utf-8")
+        document = json.loads(json.dumps(store))
+        self.va.summary_lines.clear()
+        self.va.validate_verifications(document)
+        self.assertEqual(self.va.errors, [])
+        self.assertTrue(any("acquired after the vote" in line for line in self.va.summary_lines), self.va.summary_lines)
+        # A subject the registry does not know still falls back to the live
+        # programs, so a hand-added self-vote is caught.
+        document["verifications"].append(vote("bob", subject=self.bob_body_id))
+        document["subjects"].pop(self.bob_body_id, None)
+        self.va.errors.clear()
+        self.va.validate_verifications(document)
+        self.assertTrue(any("record 1: self-verify rejected" in e for e in self.va.errors), self.va.errors)
 
 
 class ValidatorAgreementTests(unittest.TestCase):

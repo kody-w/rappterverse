@@ -186,7 +186,7 @@ def verify_record_from_action(action: dict) -> dict:
     return verifications_lib.record_from_action(action)
 
 
-def fold_verifications(delta: dict, timestamp: str) -> int:
+def fold_verifications(delta: dict, timestamp: str, report: dict = None) -> int:
     """Fold a delta's verification votes into ``state/verifications.json``.
 
     Takes the top-level ``verifications`` list plus any ``verify``-typed entry
@@ -195,14 +195,26 @@ def fold_verifications(delta: dict, timestamp: str) -> int:
     ``agent_id`` the delta's ``agent_id``; the subject must resolve to a known
     artifact not owned by that controller; a live vote by the same controller
     on the same subject with a strictly later ``at`` is kept (the reconciler
-    applies the same rule to window actions). Top-level records are stamped
-    with the delta ``timestamp``. An unknown or invalid record (bad shape,
-    wrong verifier or agent, self-verify, unknown subject, missing notes on a
-    fail) is skipped with a printed reason; this never raises. Returns the
-    number of votes folded; the store is written only when that is non-zero,
-    through ``verifications.save``, and never when the existing store is
-    corrupt.
+    applies the same rule to window actions, and ``validate_delta`` rejects
+    such a stale re-vote up front, so reaching that skip here means two
+    deltas raced). Top-level records are stamped with the delta
+    ``timestamp``. An unknown or invalid record (bad shape, wrong verifier or
+    agent, self-verify, unknown subject, missing notes on a fail) is skipped
+    with a printed reason; this never raises. Returns the number of votes
+    folded; the store is written only when that is non-zero, through
+    ``verifications.save``, and never when the existing store is corrupt.
+
+    ``report``, when given, is filled with ``candidates`` (votes the delta
+    carried), ``evaluated`` (votes judged one by one: folded, or skipped for
+    a reason specific to that record) and ``folded``. A delta whose every
+    candidate was evaluated has been fully processed even when nothing was
+    written, so ``apply_delta`` consumes it; one whose votes could not be
+    judged at all (no controller, a system controller, a corrupt store, the
+    modules missing) is left in place.
     """
+    if report is None:
+        report = {}
+    report.update({"candidates": 0, "evaluated": 0, "folded": 0})
     candidates = []
     raw = delta.get("verifications")
     if isinstance(raw, list):
@@ -216,6 +228,7 @@ def fold_verifications(delta: dict, timestamp: str) -> int:
         )
     if not candidates:
         return 0
+    report["candidates"] = len(candidates)
     if verifications_lib is None or slosh_lib is None:
         print(f"  ⚠ Skipping {len(candidates)} verification(s): scripts/verifications.py or scripts/slosh_lisp.py unavailable")
         return 0
@@ -238,6 +251,7 @@ def fold_verifications(delta: dict, timestamp: str) -> int:
     folded = 0
     for source, label, entry in candidates:
         where = f"{source}[{label}]"
+        report["evaluated"] += 1
         if not isinstance(entry, dict):
             print(f"  ⚠ Skipping verification {where}: not an object")
             continue
@@ -271,6 +285,7 @@ def fold_verifications(delta: dict, timestamp: str) -> int:
             continue
         folded += 1
 
+    report["folded"] = folded
     if folded:
         verifications_lib.save(store, store_path, timestamp)
         print(f"  ✓ Folded {folded} verification(s)")
@@ -383,10 +398,20 @@ def apply_delta(delta_path: Path, stats: dict):
         print(f"  ✓ Appended {len(delta['activities'])} activity/ies")
 
     # 6. Fold verification votes into state/verifications.json
-    folded = fold_verifications(delta, timestamp)
+    report = {}
+    folded = fold_verifications(delta, timestamp, report)
     if folded:
         stats["verifications"] = stats.get("verifications", 0) + folded
         applied = True
+    elif report.get("candidates") and report["evaluated"] == report["candidates"]:
+        # Every vote was judged and skipped for a reason of its own (a stale
+        # re-vote that a newer live vote already supersedes, a record the
+        # validator would have refused). Retrying it later can never change
+        # the outcome, so the queue entry is consumed rather than left in
+        # state/inbox/, where it would fail TestInboxHygiene on every later
+        # PR until a human removed it.
+        applied = True
+        print(f"  ✓ Consumed {report['candidates']} verification(s) without a store change (all skipped)")
 
     return applied
 

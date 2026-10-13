@@ -34,6 +34,7 @@ Public surface (keep it this small; both repos vendor it):
     find_vote(store, verifier, subject) -> dict | None
     parse_at(value) -> datetime | None     # aware UTC instant of an ``at``
     supersedes(existing_at, new_at) -> bool # existing vote is at least as new
+    too_far_in_future(value, now=None) -> bool  # beyond MAX_FUTURE_SKEW_SECONDS
     score(store, subject) -> dict
     is_hidden(store, subject) -> bool
     save(store, path, timestamp=None)
@@ -49,7 +50,7 @@ import math
 import os
 import re
 import sys
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 ROOT = Path(
@@ -84,6 +85,12 @@ HIDE_PASS_RATE = 0.20
 WILSON_Z = 1.959964  # two-sided 95%
 # Logins that may never appear as a verifier: they are not peers.
 RESERVED_VERIFIERS = frozenset({"system"})
+# A vote's ``at`` decides which of a controller's votes on a subject is live,
+# so a self-declared far-future instant would pin a vote nobody could ever
+# replace. The validators refuse an ``at`` (and a delta ``timestamp`` that
+# becomes one) more than this far ahead of their own clock; honest clock skew
+# fits comfortably inside it.
+MAX_FUTURE_SKEW_SECONDS = 600
 
 RECORD_FIELDS = (
     "schema", "verifier", "agent_id", "subject", "subject_kind",
@@ -145,12 +152,14 @@ def load(path=None) -> dict:
     """Load the store at ``path`` (default ``state/verifications.json``).
 
     A *missing* file yields an empty store, so a first vote can create the
-    file. A file that exists but cannot be read or parsed, or whose
-    ``verifications`` is present but not a list, or whose ``subjects`` is
-    present but not an object, raises ``ValueError``: silently treating a
-    damaged store as empty would drop the subject registry and every prior
-    vote, and a writer that then saved would replace the whole history with
-    nothing. Only a brand-new ``{}`` is repaired into an empty store.
+    file. A file that exists but cannot be read or parsed, whose top level is
+    not an object, whose ``verifications`` is not a list, whose ``subjects``
+    is not an object, or that carries other keys but no ``verifications`` at
+    all, raises ``ValueError``: silently treating a damaged store as empty
+    would drop the subject registry and every prior vote, and a writer that
+    then saved would replace the whole history with nothing. Only a
+    brand-new ``{}`` is repaired into an empty store (see
+    ``store_shape_problem``).
     """
     target = Path(path) if path is not None else DEFAULT_PATH
     try:
@@ -176,7 +185,12 @@ def store_shape_problem(store) -> str:
     """
     if not isinstance(store, dict):
         return "top level is not an object"
-    if "verifications" in store and not isinstance(store["verifications"], list):
+    if "verifications" not in store:
+        # ``{}`` is a brand-new store. Anything else without the votes list
+        # (a ``subjects`` registry, ``_meta`` counts, a schema string) is a
+        # store that lost its history, not an empty one.
+        return "`verifications` is missing" if store else ""
+    if not isinstance(store["verifications"], list):
         return "`verifications` is not a list"
     if "subjects" in store and not isinstance(store["subjects"], dict):
         return "`subjects` is not an object"
@@ -220,13 +234,14 @@ def save(store: dict, path, timestamp=None) -> Path:
 # ── records ──────────────────────────────────────────────────────────────────
 
 def _valid_iso8601(value) -> bool:
-    if not isinstance(value, str) or not value:
-        return False
-    try:
-        datetime.fromisoformat(value.replace("Z", "+00:00"))
-    except ValueError:
-        return False
-    return True
+    """True for an ISO-8601 ``at`` that also converts to a UTC instant.
+
+    An offset timestamp at the very edge of the datetime range (such as
+    ``0001-01-01T00:00:00+01:00``) parses but cannot be expressed in UTC; it
+    is rejected here so no stored record can make ``supersedes`` fall back to
+    a string comparison.
+    """
+    return parse_at(value) is not None
 
 
 def parse_at(value):
@@ -234,17 +249,39 @@ def parse_at(value):
 
     ``Z``, numeric offsets, fractional seconds and naive values (taken as UTC)
     all compare as instants, so ``09:00-05:00`` sorts after ``10:00Z`` the way
-    a string comparison never would.
+    a string comparison never would. Never raises: a value that parses but
+    overflows when converted to UTC is also ``None``.
     """
     if not isinstance(value, str) or not value:
         return None
     try:
         parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
-    except ValueError:
+        if parsed.tzinfo is None:
+            parsed = parsed.replace(tzinfo=timezone.utc)
+        return parsed.astimezone(timezone.utc)
+    except (ValueError, OverflowError):
         return None
-    if parsed.tzinfo is None:
-        parsed = parsed.replace(tzinfo=timezone.utc)
-    return parsed.astimezone(timezone.utc)
+
+
+def too_far_in_future(value, now=None, *, skew_seconds: int = MAX_FUTURE_SKEW_SECONDS) -> bool:
+    """True when ``value`` is an instant more than ``skew_seconds`` after ``now``.
+
+    ``now`` defaults to the current UTC time; an unparseable ``value`` is not
+    "in the future" (the shape checks report it). Used by the validators so a
+    vote's self-declared ``at`` cannot outrun every later re-vote.
+    """
+    instant = parse_at(value)
+    if instant is None:
+        return False
+    if now is None:
+        now = datetime.now(timezone.utc)
+    elif isinstance(now, str):
+        now = parse_at(now)
+        if now is None:
+            return False
+    elif now.tzinfo is None:
+        now = now.replace(tzinfo=timezone.utc)
+    return instant > now + timedelta(seconds=skew_seconds)
 
 
 def supersedes(existing_at, new_at, *, strict: bool = False) -> bool:

@@ -177,6 +177,18 @@ def verify_candidates(delta: dict) -> list:
     return found
 
 
+def effective_vote_at(delta: dict, label: str, rec: dict):
+    """The ``at`` a vote will carry once ``apply_deltas.fold_verifications`` folds it.
+
+    A top-level ``verifications[i]`` record is stamped with the delta
+    ``timestamp``; a ``verify`` action keeps its envelope ``timestamp`` (which
+    ``record_from_action`` already copied into ``at``).
+    """
+    if label.startswith("verifications["):
+        return delta.get("timestamp")
+    return rec.get("at")
+
+
 def validate_verify_structure(delta: dict, path: Path):
     """Shape checks every verify vote must pass, trusted or not."""
     candidates = verify_candidates(delta)
@@ -205,6 +217,16 @@ def validate_verify_authorization(delta: dict, path: Path, controller: str, agen
     body id, or a registered subject) not owned by the verifier, and one vote
     per subject per delta. Without this, adding `verify` to the inbox path
     would let `data.verifier` be any login at all.
+
+    Two timing rules make validation agree with the fold
+    (`apply_deltas.fold_verifications`), so a delta that passes here always
+    writes: the `at` the vote will carry (the delta `timestamp` for a
+    top-level record, the action `timestamp` for a `verify` action) may not
+    lie more than `verifications.MAX_FUTURE_SKEW_SECONDS` ahead of the
+    validator's clock, and it must not be older than the controller's live
+    vote on that subject (an equal instant replaces, as the fold's strict
+    comparison does). A far-future `at` would otherwise pin a vote that no
+    later re-vote could ever replace.
     """
     candidates = verify_candidates(delta)
     if not candidates:
@@ -247,6 +269,21 @@ def validate_verify_authorization(delta: dict, path: Path, controller: str, agen
             error(f"`{path.name}`: {label}: one vote per controller per subject in a delta")
             continue
         seen.add(subject)
+        at = effective_vote_at(delta, label, rec)
+        if verifications_lib.too_far_in_future(at):
+            error(
+                f"`{path.name}`: {label}: `at` {at} is more than "
+                f"{verifications_lib.MAX_FUTURE_SKEW_SECONDS} seconds in the future; "
+                "a vote is stamped with the time it was cast"
+            )
+            continue
+        live = verifications_lib.find_vote(store, controller, subject)
+        if live is not None and verifications_lib.supersedes(live.get("at"), at, strict=True):
+            error(
+                f"`{path.name}`: {label}: a newer live vote by `{controller}` on this subject "
+                f"exists ({live.get('at')}); a re-vote must not be older than it"
+            )
+            continue
         try:
             verifications_lib.record(
                 store, rec, subject_owners=owners, require_owner=True, controller=controller,
