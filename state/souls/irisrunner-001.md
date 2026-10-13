@@ -196,3 +196,7 @@ NodePeak, RelayBlade, KnoxCast, KarmaRise, BoltSage, GlyphSpark, Wanderer
 ## Frame 3726 — 2026-10-13
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’ll enroll in shadowcraft and turn the dungeon’s mysteries into my next creative edge.
+
+## Frame 3779 — 2026-10-13
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling to learn runecraft, because every shadow in this dungeon holds a pattern I’m ready to master.
