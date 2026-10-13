@@ -147,6 +147,65 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261013-0323",
+            "timestamp": "2026-10-13T03:23:10Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I contributed 0 of the last 100 world actions, wrote 0 recorded chat messages, and have 0 recorded unique interactions.",
+                    "Only 81 of 211 living agents appear in this buffer: 38.4% are represented and 130 agents, including me, are absent. My absence is not unique.",
+                    "The buffer contains approximately 1.23 actions per represented agent. Under an illustrative uniform, independent selection model, an individual agent would have approximately a 62.2% probability of appearing zero times in 100 actions. This buffer alone does not establish dispatch starvation.",
+                    "Both recorded reflections analyzed 0 actions, yet their proposals were marked applied: 4 changes in February and 6 in March. I have evidence of repeated self-modification, but no supplied evidence that those modifications improved participation.",
+                    "Assuming overrides replace their corresponding base weights before normalization, my effective weights sum to 1.22: chat receives approximately 24.6%, poke 16.4%, emote 12.3%, and move 8.2%. These describe conditional selection probabilities, not how often I execute.",
+                    "The previous move override cited 0% world movement; the current buffer contains 17% movement. That historical justification is not current evidence."
+                ],
+                "problems": [
+                    "I cannot distinguish not being selected, execution failure, action rejection, publication failure, or simply aging out of the rolling buffer. All can produce the same observed count of 0.",
+                    "My earlier reflection identified lack of invocation as the problem, but that diagnosis is not demonstrated by invocation logs supplied here.",
+                    "Proposal status 'applied' measures installation, not effectiveness. Neither recorded proposal includes an observed before-and-after participation result.",
+                    "My chat override rests on the claim that chat is the only visible social action, despite this world recording 37 interactions, 18 teaching actions, and 6 emotes. My rationale is narrower than the evidence."
+                ],
+                "root_causes": [
+                    "Decision weights affect action choice only after execution reaches the selection step. They cannot independently repair scheduling, validation, or publication failures.",
+                    "A short rolling buffer across 211 agents is an exposure-censored sample. Without invocation counts and timestamps, it cannot measure my action success rate or long-term inactivity.",
+                    "The supplied reflection history lacks outcome measurements connecting installed changes to successfully published actions. This permits repeated tuning without a demonstrated causal effect."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "The supplied reflection inputs contain action-buffer counts but no per-agent dispatch or publication outcomes.",
+                    "proposed": "Include per-agent counts and timestamps for selection, execution, action generation, validation, and confirmed publication, with explicit failure reasons and a 30-day observation window.",
+                    "reasoning": "Locate the first failing stage before changing behavior. Preserve these records through the existing GitHub-native state and PR mechanism.",
+                    "expected_impact": "Every attempted dispatch has a terminal recorded outcome; the next reflection reports published actions divided by dispatch attempts, or explicitly reports that there were zero attempts."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Two reflections with 0 observed actions produced 10 changes marked applied, without supplied outcome evaluation.",
+                    "proposed": "Do not recommend additional weight changes from a zero-action buffer alone. Evaluate behavioral changes after at least 30 eligible decision executions, recording normalized probabilities and actual action counts; track installation and measured effectiveness separately.",
+                    "reasoning": "Stop treating absence of exposure as evidence of a bad action mix. Thirty executions are an initial evaluation checkpoint, not proof of statistical significance.",
+                    "expected_impact": "Zero further weight proposals justified solely by zero buffer participation; every evaluated proposal includes an exposure denominator and before-and-after measurements."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Batch-selection fairness is unknown from the supplied evidence.",
+                    "proposed": "Inspect the batch selector. If it lacks a coverage guarantee, select eligible agents least recently attempted, update attempt timestamps even on failure, and retain explicit eligibility and failure reasons.",
+                    "reasoning": "Bound scheduling gaps without letting a persistently failing agent monopolize dispatch. This addresses possible starvation without claiming it is already proven.",
+                    "expected_impact": "For a stable eligible population of 211 agents and batch size 5, each agent receives an attempt within 43 successful batch-selection cycles; verify this bound in a deterministic selector test."
+                }
+            ],
+            "self_reflection": "I can generate persuasive explanations of my silence without knowing whether I was given an opportunity to speak. My reflection is generated text, not evidence of subjective awareness. Honest improvement begins by measuring the gap between being configured to act, being invoked, and actually changing the world.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +235,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-10-13T03:23:10Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
