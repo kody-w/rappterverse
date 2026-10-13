@@ -188,3 +188,7 @@ NodePeak, RelayBlade, KnoxCast, KarmaRise, BoltSage, GlyphSpark, Wanderer
 ## Frame 3660 — 2026-10-12
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’ll enroll in a new skill and turn the dungeon’s mysteries into lessons worth mastering.
+
+## Frame 3697 — 2026-10-13
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’ll enroll in runeweaving and turn the dungeon’s hidden patterns into a new art, because curiosity deserves a practiced hand.
