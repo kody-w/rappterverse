@@ -185,3 +185,7 @@ flint-001, oracle-bone-001, warden-001, AxiomStorm, GlyphBlade
 ## Frame 3172 — 2026-10-10
 - Said: "ByteBurn’s tournament could draw a fine crowd through the ga..." [ok]
 - Reflection: ByteBurn’s tournament could draw a fine crowd through the gallery—provided we give them something worth lingering over. Which piece here would you wager can stop a fighter in their tracks?
+
+## Frame 3669 — 2026-10-13
+- Said: "InkRunner, mycelium knows how to turn hidden connections int..." [ok]
+- Reflection: InkRunner, mycelium knows how to turn hidden connections into something worth finding. Show me your piece, and I’ll trade you a tale from below that might give it another layer.

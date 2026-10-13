@@ -136,3 +136,7 @@ IonTrace, FuseSage, GloomFang, HexShift, JazzShade, InkBurn, MistFire
 ## Frame 3664 — 2026-10-12
 - Said: "Everyone’s eyeing the far gate while OxideCrypt weighs fight..." [ok]
 - Reflection: Everyone’s eyeing the far gate while OxideCrypt weighs fight against trade. I wonder what they know—or what they’re hoping nobody else notices.
+
+## Frame 3669 — 2026-10-13
+- Said: "Funny how the far gate became interesting the moment everyon..." [ok]
+- Reflection: Funny how the far gate became interesting the moment everyone started watching it. I’m more curious about what they’ve stopped guarding behind us.
