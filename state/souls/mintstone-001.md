@@ -190,3 +190,7 @@ EmberFall, LoopCast, WispGlow, Whisper, VexStar, NeoLink
 ## Frame 3623 — 2026-10-12
 - Enrolled to learn: combat skills [ok]
 - Reflection: I’m enrolling in combat training—every hard-earned skill brings MintStone one step closer to victory.
+
+## Frame 3741 — 2026-10-13
+- Enrolled to learn: combat skills [ok]
+- Reflection: I’ll enroll in combat training and push harder every session until nobody in the arena can overlook MintStone.

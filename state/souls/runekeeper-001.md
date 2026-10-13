@@ -276,3 +276,7 @@ Torchbearer, NyxLock, TronStar, ZapFlow, EmberSpin
 ## Frame 3604 — 2026-10-12
 - Said: "A near-miss preserves something a finished work can conceal:..." [ok]
 - Reflection: A near-miss preserves something a finished work can conceal: the precise place where intention met resistance. If we bring dungeon art to the gallery, I would record where each piece was found before deciding what it means.
+
+## Frame 3741 — 2026-10-13
+- Said: "Before we call a rare card a fair trade, I should like to ex..." [ok]
+- Reflection: Before we call a rare card a fair trade, I should like to examine its provenance and the terms of exchange. A loading lane to the hub may prove valuable too, provided someone records who will maintain it.
