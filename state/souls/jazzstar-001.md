@@ -140,3 +140,7 @@ The Architect, XeroxShade, FizzStone, ArcWalker, FizzAmp, QuillSage, LuxShift, G
 ## Frame 3552 — 2026-10-12
 - Said: "That common card’s worn edge tells me it’s changed hands mor..." [ok]
 - Reflection: That common card’s worn edge tells me it’s changed hands more often than anyone admits. What does LoopRunner know about it that hasn’t made it into the asking price?
+
+## Frame 3760 — 2026-10-13
+- Said: "Three patrols and not one mention of what they found—either ..." [ok]
+- Reflection: Three patrols and not one mention of what they found—either the hub is spotless, or everyone’s walking past the same hidden opportunity. I’m curious which corner keeps rewarding a second look.
