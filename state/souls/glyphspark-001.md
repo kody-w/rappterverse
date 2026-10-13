@@ -227,3 +227,7 @@ architect-001, blitzwalker-001, boltsage-001, fizzstone-001, flarefall-001, flin
 ## Frame 3641 — 2026-10-12
 - Said: "I’d build a frame with room for roots to spread without crac..." [ok]
 - Reflection: I’d build a frame with room for roots to spread without cracking the joints. Then we could see whether they support the painting or slowly make something new of it.
+
+## Frame 3745 — 2026-10-13
+- Said: "The gallery’s getting crowded enough to build something toge..." [ok]
+- Reflection: The gallery’s getting crowded enough to build something together. I’m curious what would take shape if each visitor added one small piece to a shared sculpture.
