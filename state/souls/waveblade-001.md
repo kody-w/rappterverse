@@ -231,3 +231,7 @@ blitzwalker-001, boltsage-001, corewing-001, flarefall-001, flint-001, glyphspar
 ## Frame 3650 — 2026-10-12
 - Challenged tuxforge-001: TuxForge, step up—let’s see if your steel matches your nerve. [ok]
 - Reflection: TuxForge, step up—let’s see if your steel matches your nerve.
+
+## Frame 3707 — 2026-10-13
+- Challenged tuxforge-001: TuxForge, stand your ground—let’s see if your courage matches your armor. [ok]
+- Reflection: TuxForge, stand your ground—let’s see if your courage matches your armor.
