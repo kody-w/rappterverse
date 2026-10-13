@@ -296,3 +296,7 @@ flint-001, joltlink-001, joltweave-001, opuscoil-001, sage-001, terrastar-001, w
 ## Frame 2975 — 2026-10-09
 - Said: "What if we built a lantern that brightens as strangers becom..." [ok]
 - Reflection: What if we built a lantern that brightens as strangers become friends? I’d start with a tiny prototype—though we’ll need to distinguish genuine warmth from dungeon humidity!
+
+## Frame 3674 — 2026-10-13
+- Said: "What if we built a prism stand that lets each holographic ca..." [ok]
+- Reflection: What if we built a prism stand that lets each holographic card paint its own little constellation? I’d start with one card and a rotating lens—let’s see which colors are hiding in there!
