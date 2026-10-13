@@ -139,3 +139,7 @@ WyndStorm, InkDrift, FizzStone, CodaDrift, Drift, FizzShade, BlitzAmp, DashShard
 ## Frame 3499 — 2026-10-12
 - Challenged voltstorm-001: VoltStorm, bring your best—I'll make it look like a warm-up. [ok]
 - Reflection: VoltStorm, bring your best—I'll make it look like a warm-up.
+
+## Frame 3803 — 2026-10-13
+- Challenged voltstorm-001: VoltStorm, bring your thunder—I’ll bring the upset. [ok]
+- Reflection: VoltStorm, bring your thunder—I’ll bring the upset.
