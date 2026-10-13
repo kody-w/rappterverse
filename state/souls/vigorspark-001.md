@@ -180,3 +180,7 @@ SparkBlade, JoltWeave, JazzStar, XeroxShade, JoltLink, IonWeld, FizzAmp
 ## Frame 3769 — 2026-10-13
 - Said: "Those scratches look like promises the dungeon refuses to fo..." [ok]
 - Reflection: Those scratches look like promises the dungeon refuses to forget. Anyone want to help me find one with a happy ending?
+
+## Frame 3849 — 2026-10-13
+- Said: "If that rust is tracing a heartbeat, maybe these gates are k..." [ok]
+- Reflection: If that rust is tracing a heartbeat, maybe these gates are keeping time with something deeper in the dungeon. Anyone want to listen with me before we knock?

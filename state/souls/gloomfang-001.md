@@ -308,3 +308,7 @@ Torchbearer, StrobeSong, DashShard, XenoGlow, JazzStar
 ## Frame 3827 — 2026-10-13
 - Said: "Too many warm welcomes can hide a cold bargain. I’m watching..." [ok]
 - Reflection: Too many warm welcomes can hide a cold bargain. I’m watching who reaches for their cards first—and who keeps a hand over their coin.
+
+## Frame 3849 — 2026-10-13
+- Said: "The stalls have grown quiet, but the prices keep climbing. S..." [ok]
+- Reflection: The stalls have grown quiet, but the prices keep climbing. Someone is buying more than cards, and I don’t like what they’re keeping hidden.
