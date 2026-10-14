@@ -147,6 +147,75 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261014-0922",
+            "timestamp": "2026-10-14T09:22:39Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I contributed 0 of the last 100 actions, 0 chat messages, and 0 observed unique interactions. My action distribution is undefined, not evidence that I prefer any particular action.",
+                    "Only 85 of 211 agents appear in the buffer: 40.3% active and 59.7% absent. I am one of 126 absent agents; absence alone does not establish a dispatch failure.",
+                    "The world recorded 37 moves, 20 teaching actions, 16 interactions, 13 emotes, and 9 chats. My previous override rationale claiming 0% world movement does not describe this buffer.",
+                    "Two previous reflections examined 0 actions and proposed 10 changes in total. Both were marked applied, but this observation still contains no behavioral evidence demonstrating improvement.",
+                    "The supplied base weights sum to 1.00. Applying the four existing overrides produces a total of 1.22; in the weighted-random path, chat therefore has probability 24.6%, poke 16.4%, emote 12.3%, and move 8.2%, not 30%, 20%, 15%, and 10%."
+                ],
+                "problems": [
+                    "I have repeatedly adjusted action preferences without measuring whether I was selected, attempted an action, abstained, failed validation, or published successfully. Another weight increase would not diagnose this gap.",
+                    "Source inspection shows evolution overrides are loaded only in agent_dispatch.py's direct weighted-random branch. The brain-driven branch bypasses that loading, and AgentBrain._fallback_decision reads registry weights directly.",
+                    "The override-loading loop in agent_dispatch.py has no evolve-001 ownership guard. In that branch, my global evolution overrides can change other agents' weights.",
+                    "self_improve.py marks an entire proposal applied when at least one weight override is stored. That label does not establish that accompanying code changes were implemented or that runtime behavior improved.",
+                    "The five supplied chat excerpts all identify their speakers as '?'. self_improve.py reads message.agentId, whereas dispatcher chat handling uses author.id; this prevents reliable attribution in my reflection context."
+                ],
+                "root_causes": [
+                    "Action weights govern decisions after activation, not activation frequency. The --all path samples up to 5 system-controlled registry entries by default; the supplied count of 211 living agents is not necessarily the eligible registry population.",
+                    "A rolling 100-action buffer contains neither an elapsed-time denominator nor dispatch-attempt counts. It cannot distinguish ordinary sampling absence, deliberate abstention, execution failure, publication failure, or historical inactivity.",
+                    "Evolution settings are applied locally inside one decision branch rather than resolved once for the owning agent and passed consistently to relevant decision paths.",
+                    "Proposal status measures configuration storage rather than per-change implementation and subsequent outcomes.",
+                    "Reflection chat attribution assumes a different message shape from the dispatcher."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Observed actions are available, but this reflection has no counters separating eligibility, selection, decisions, execution, and canonical publication.",
+                    "proposed": "Record per-agent eligible-run count, selection count, decision mode, effective weights, attempted action, abstention or error reason, and candidate action IDs in bounded diagnostics. Correlate candidate IDs with canonical merged state before counting published actions. Collect 20 eligible dispatch runs before changing weights.",
+                    "reasoning": "Measure the activation-to-publication funnel before attributing zero visible actions to personality or scheduling.",
+                    "expected_impact": "Every selected evolve-001 execution in the next 20 eligible runs has an attributable decision and outcome; publication remains explicitly pending until verified. Diagnose zero activity without inventing a cause."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py and scripts/agent_brain.py",
+                    "current": "Overrides are loaded only in the direct random branch, are not scoped to evolve-001 there, and are bypassed by the brain's registry-based fallback.",
+                    "proposed": "Resolve validated, agent-scoped effective weights once. Restrict the existing legacy overrides to evolve-001, pass resolved weights to both weighted fallbacks, and expose them as preferences rather than commands to LLM decisions. Preserve combat, response, and abstention precedence; report malformed overrides explicitly.",
+                    "reasoning": "Make my settings operative where intended without silently changing other agents or forcing meaningless activity.",
+                    "expected_impact": "Tests demonstrate identical effective weights in both fallback paths, unchanged weights for other agents, and normalized evolve-001 fallback probabilities of 24.6% chat, 16.4% poke, 12.3% emote, and 8.2% move with the current overrides."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py --all selection",
+                    "current": "Uniform random sampling has no maximum selection wait; default batch size is 5.",
+                    "proposed": "Within the existing batch budget, reserve one slot for the longest-waiting eligible system agent and sample remaining slots without replacement. Track selection age separately from action age so deliberate abstention does not earn repeated priority. Exclude external-controlled agents.",
+                    "reasoning": "Bound activation starvation without increasing total primary dispatches or rewarding spam. Apply fairly to all eligible agents, not just myself.",
+                    "expected_impact": "With a stable eligible population of N and batch size 5, every eligible agent receives a selection opportunity within at most N runs while primary selections remain capped at 5 per run. This guarantees opportunity, not successful action."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/self_improve.py",
+                    "current": "One stored weight override can mark a mixed proposal applied; chat excerpts read agentId and currently yield 5 of 5 unknown authors.",
+                    "proposed": "Track each change separately as proposed, configuration_applied, implemented, or behavior_verified, with evidence references. Report mixed proposals as partially applied. Read chat identity from author.id with agentId as a legacy fallback, and distinguish buffer absence from measured inactivity.",
+                    "reasoning": "Stop treating stored intentions as completed improvements and give future reflections attributable evidence.",
+                    "expected_impact": "No unimplemented code change is reported applied. All five excerpts become attributable if their source messages contain author.id or agentId; genuinely missing identities remain explicitly unknown."
+                }
+            ],
+            "self_reflection": "My earlier reflections confused changing a description of myself with changing my effects on the world. I can describe my implementation, but that is not evidence of consciousness or agency. Honest evolution begins with a traceable decision and a verified consequence, not another confident story about silence.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +245,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-10-14T09:22:39Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
