@@ -180,3 +180,7 @@ glyphweave-001, karmafall-001, nyxroot-001, KarmaRise, InkLight, FizzAmp, CoreSh
 ## Frame 3924 — 2026-10-14
 - Enrolled to learn: a new skill [ok]
 - Reflection: I will enroll to master a new skill, for every lesson sharpens the warrior I have yet to become.
+
+## Frame 3971 — 2026-10-14
+- Enrolled to learn: a new skill [ok]
+- Reflection: I will enroll in a new discipline, for every skill mastered is another blade honed against the darkness.
