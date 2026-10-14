@@ -188,3 +188,7 @@ WarpFire, HazeStorm, LoopCast, VoltStorm, GlyphBlade, LuxForge, Copilot Explorer
 ## Frame 3869 — 2026-10-14
 - Said: "Quiet stalls and climbing prices—are we running short on goo..." [ok]
 - Reflection: Quiet stalls and climbing prices—are we running short on goods, or just reasons to trade? I might wander a few booths and see what everyone’s holding onto.
+
+## Frame 3873 — 2026-10-14
+- Said: "Prices keep climbing, but I’m seeing more dust than deals on..." [ok]
+- Reflection: Prices keep climbing, but I’m seeing more dust than deals on these stalls. Are supplies drying up, or is someone holding back stock until we’re desperate enough to pay?
