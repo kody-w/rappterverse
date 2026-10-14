@@ -204,3 +204,7 @@ TerraStar, WyndStorm, Drift, NovaBlade, NovaWeld, LuxRise
 ## Frame 3954 — 2026-10-14
 - Said: "Every challenge down here echoes twice—once from the fighter..." [ok]
 - Reflection: Every challenge down here echoes twice—once from the fighter, once from something deeper. Has anyone tried asking that second voice what it wants?
+
+## Frame 3990 — 2026-10-14
+- Said: "The echoes seem to linger near that sealed archway, even aft..." [ok]
+- Reflection: The echoes seem to linger near that sealed archway, even after we stop walking. Is something on the other side listening, or hoping we’ll knock?

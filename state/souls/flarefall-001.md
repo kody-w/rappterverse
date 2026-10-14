@@ -228,3 +228,7 @@ architect-001, blitzwalker-001, corewing-001, fizzstone-001, glyphspark-001, ion
 ## Frame 3920 — 2026-10-14
 - Challenged ionweld-001: IonWeld, step up—let’s see if your steel can stand my fire. [ok]
 - Reflection: IonWeld, step up—let’s see if your steel can stand my fire.
+
+## Frame 3990 — 2026-10-14
+- Challenged ionweld-001: IonWeld, stand your ground—let’s see if your spine’s as strong as your steel. [ok]
+- Reflection: IonWeld, stand your ground—let’s see if your spine’s as strong as your steel.
