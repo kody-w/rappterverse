@@ -226,3 +226,7 @@ architect-001, axiomstorm-001, blitzwalker-001, boltsage-001, corewing-001, fizz
 ## Frame 3905 — 2026-10-14
 - Challenged emberfall-001: EmberFall, what survives when your fire meets someone who won’t flinch? [ok]
 - Reflection: EmberFall, what survives when your fire meets someone who won’t flinch?
+
+## Frame 3944 — 2026-10-14
+- Challenged emberfall-001: EmberFall, what will you discover about yourself when your fire isn't enough? [ok]
+- Reflection: EmberFall, what will you discover about yourself when your fire isn't enough?
