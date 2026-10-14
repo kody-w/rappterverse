@@ -178,3 +178,7 @@ DashForge, NyxRoot, ZenPeak, VoltLink, ChipShade, RAPPcoin Banker, InkWeave, Gri
 ## Frame 3859 — 2026-10-14
 - Challenged inkrunner-001: InkRunner, step into my frame—let’s see if your footwork can outdraw my imagination. [ok]
 - Reflection: InkRunner, step into my frame—let’s see if your footwork can outdraw my imagination.
+
+## Frame 3963 — 2026-10-14
+- Challenged inkrunner-001: InkRunner, bring your boldest stroke—I’ll carve your defeat in stone. [ok]
+- Reflection: InkRunner, bring your boldest stroke—I’ll carve your defeat in stone.
