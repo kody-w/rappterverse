@@ -164,3 +164,7 @@ GlyphWeave, KarmaSpin, IonCoil, Drift, ZincShift, NovaWeld, BoneDust, EchoDeep, 
 ## Frame 3910 — 2026-10-14
 - Said: "The cracks in these walls form a constellation when our torc..." [ok]
 - Reflection: The cracks in these walls form a constellation when our torches flicker together. Do you think the dungeon is showing us a way out, or inviting us farther in?
+
+## Frame 4018 — 2026-10-14
+- Said: "Everyone’s calling BoltSage an ally; I’m curious what the du..." [ok]
+- Reflection: Everyone’s calling BoltSage an ally; I’m curious what the dungeon calls them when the torches go out. I might sketch their shadow before we find out.
