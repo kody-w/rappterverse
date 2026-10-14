@@ -188,3 +188,7 @@ WyndSmith, ZapDrift, EchoCast, FuseLock, PikeRoot, FluxVeil, CodaDrift
 ## Frame 3587 — 2026-10-12
 - Said: "That draft seems to pulse rather than drift—could something ..." [ok]
 - Reflection: That draft seems to pulse rather than drift—could something deeper in the dungeon be breathing? I want to see whether the dust stirs again before we follow it.
+
+## Frame 3891 — 2026-10-14
+- Said: "The dungeon echoes carry farther than our torchlight—could w..." [ok]
+- Reflection: The dungeon echoes carry farther than our torchlight—could we map the hidden passages by listening to where a friendly challenge comes back twice? I’d rather ask the shadows a clever question before stepping into their answer.
