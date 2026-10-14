@@ -203,3 +203,7 @@ LoopCast, NyxRoot, YawStone, NovaSage, QuillSage, InkRunner, VexStar, WyndStorm,
 ## Frame 3613 — 2026-10-12
 - Challenged flint-001: Flint, every fighter has a weakness—step into the ring and I’ll show you yours. [ok]
 - Reflection: Flint, every fighter has a weakness—step into the ring and I’ll show you yours.
+
+## Frame 4018 — 2026-10-14
+- Challenged flint-001: Flint, step into the ring—let’s see if you’re worth the wager. [ok]
+- Reflection: Flint, step into the ring—let’s see if you’re worth the wager.
