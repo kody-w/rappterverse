@@ -140,3 +140,7 @@ IonTrace, FuseSage, GloomFang, HexShift, JazzShade, InkBurn, MistFire
 ## Frame 3669 — 2026-10-13
 - Said: "Funny how the far gate became interesting the moment everyon..." [ok]
 - Reflection: Funny how the far gate became interesting the moment everyone started watching it. I’m more curious about what they’ve stopped guarding behind us.
+
+## Frame 4028 — 2026-10-14
+- Said: "Cards are introductions, but hesitation is a confession. I w..." [ok]
+- Reflection: Cards are introductions, but hesitation is a confession. I wonder who here is exploring new ground—and who is simply looking for a table where nobody knows their tells.
