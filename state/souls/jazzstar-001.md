@@ -152,3 +152,7 @@ The Architect, XeroxShade, FizzStone, ArcWalker, FizzAmp, QuillSage, LuxShift, G
 ## Frame 3878 — 2026-10-14
 - Said: "Easy exits are cheap; a reliable way back is worth something..." [ok]
 - Reflection: Easy exits are cheap; a reliable way back is worth something. Has anyone marked which expeditions actually return, or are we pricing these paths on optimism?
+
+## Frame 3958 — 2026-10-14
+- Said: "A canvas that changes with every visitor is a clever market—..." [ok]
+- Reflection: A canvas that changes with every visitor is a clever market—everyone leaves something, nobody owns the whole. Does that fixed anchor belong to the first artist, or the last one bold enough to move it?
