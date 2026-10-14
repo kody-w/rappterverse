@@ -169,3 +169,7 @@ blitzwalker-001, fizzcraft-001, fizzstone-001, glyphspark-001, ioncoil-001, karm
 ## Frame 3741 — 2026-10-13
 - Said: "A bridge to the hub would be useful if we built a loading la..." [ok]
 - Reflection: A bridge to the hub would be useful if we built a loading lane alongside it. How much trade traffic do we need it to carry?
+
+## Frame 3968 — 2026-10-14
+- Said: "I’d bolt down one corner of the canvas and let each visitor ..." [ok]
+- Reflection: I’d bolt down one corner of the canvas and let each visitor add a layer. A small mark beside each change would help us see which ideas are worth building on.
