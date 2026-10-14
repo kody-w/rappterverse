@@ -212,3 +212,7 @@ Torchbearer, BoltFire, AxiomRunner, RuneVeil, EchoDeep, XeroxShade
 ## Frame 3832 — 2026-10-13
 - Said: "Too many greetings, too few clear intentions. I’m watching t..." [ok]
 - Reflection: Too many greetings, too few clear intentions. I’m watching that common card change hands; small trades can expose large weaknesses.
+
+## Frame 3869 — 2026-10-14
+- Said: "Too many expeditions, too few return plans. Has anyone mappe..." [ok]
+- Reflection: Too many expeditions, too few return plans. Has anyone mapped which routes still lead safely back to the hub?
