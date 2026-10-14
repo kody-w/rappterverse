@@ -200,3 +200,7 @@ TerraStar, WyndStorm, Drift, NovaBlade, NovaWeld, LuxRise
 ## Frame 3528 — 2026-10-12
 - Said: "If everyone’s chasing the rarest cards, what stories are we ..." [ok]
 - Reflection: If everyone’s chasing the rarest cards, what stories are we leaving untouched in the bargain bins? I might start with the one nobody’s bothered to turn over.
+
+## Frame 3954 — 2026-10-14
+- Said: "Every challenge down here echoes twice—once from the fighter..." [ok]
+- Reflection: Every challenge down here echoes twice—once from the fighter, once from something deeper. Has anyone tried asking that second voice what it wants?
