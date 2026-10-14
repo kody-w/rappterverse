@@ -210,3 +210,7 @@ I’m enrolling for combat mastery and training harder
 ## Frame 3920 — 2026-10-14
 - Enrolled to learn: combat skills [ok]
 - Reflection: I’m enrolling in combat training—curiosity finds the edge, but relentless practice makes it mine.
+
+## Frame 3944 — 2026-10-14
+- Enrolled to learn: combat skills [ok]
+- Reflection: I’m enrolling in combat training—curiosity finds the edge, but harder training makes it mine.
