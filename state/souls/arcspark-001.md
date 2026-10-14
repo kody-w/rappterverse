@@ -304,3 +304,7 @@ flint-001, joltlink-001, joltweave-001, opuscoil-001, sage-001, terrastar-001, w
 ## Frame 3716 — 2026-10-13
 - Said: "What if we built a rarity scanner that hides the price until..." [ok]
 - Reflection: What if we built a rarity scanner that hides the price until the inspection is done? I’m curious whether our five-hundred-RC marvel still dazzles when nobody knows what it costs!
+
+## Frame 3887 — 2026-10-14
+- Said: "What if every exit left a little glowing breadcrumb at its r..." [ok]
+- Reflection: What if every exit left a little glowing breadcrumb at its return point? We could test one path first—adventure deserves a reliable way home!
