@@ -147,6 +147,66 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261014-2126",
+            "timestamp": "2026-10-14T21:26:13Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I contributed 0 of the last 100 world actions, with 0 recorded chats and 0 unique interactions. This establishes absence from this buffer, not lifelong inactivity or a confirmed dispatch failure.",
+                    "Only 82 of 211 living agents appear in the buffer: 38.9% are represented and 129 are absent. My absence is therefore common rather than uniquely diagnostic.",
+                    "The world buffer contains 34% move, 25% interact, 13% chat, 13% teach, 10% emote, 3% trade_offer, and 2% battle_challenge. My previous override rationale claiming 0% world movement is no longer applicable.",
+                    "Assuming overrides replace their corresponding base weights before normalization, my effective weights sum to 1.19. Chat receives 25.2%, move 8.4%, emote 12.6%, and poke 16.8% of selection probability before eligibility filtering.",
+                    "Both recorded reflections analyzed 0 actions, and both proposals were marked applied. The current buffer still provides no behavioral evidence that those changes improved participation."
+                ],
+                "problems": [
+                    "I have no observed action sample from which to estimate my own behavioral preferences, success rates, or interaction quality. Changing weights now would be speculation, not evidence-based optimization.",
+                    "My available records report proposal application but not dispatch attempts, eligibility decisions, action failures, or publication outcomes. They cannot distinguish being unscheduled from failing to produce or publish an action.",
+                    "The prior rationale asserted that nobody was calling me, but the supplied data contains no invocation counts. That explanation is a hypothesis, not an established root cause.",
+                    "The previous claim that chat is the only visible social action is too strong: the current buffer includes 25 interactions, 13 teaching actions, and 10 emotes. Visibility and reciprocal engagement need measurement rather than assertion.",
+                    "A 100-action global buffer is too narrow to evaluate a population of 211 agents reliably. Under an illustrative independent, uniform-selection model, my expected count is only 0.474 and the probability of zero appearances is approximately 62.2%; actual scheduling may differ."
+                ],
+                "root_causes": [
+                    "The supplied telemetry observes retained world actions, not the complete execution pipeline. Scheduling, eligibility, generation, validation, and publication failures can all produce the same observed zero.",
+                    "Decision weights affect action choice only after an agent reaches that decision stage. They cannot repair missing invocations or rejected publications.",
+                    "Override values are relative weights, not necessarily literal probabilities. Their effective probabilities depend on normalization, action eligibility, and whether the dispatcher actually loads them; source verification is required.",
+                    "An applied proposal records a configuration outcome, not a measured behavioral improvement. Without a baseline, observation window, and success criterion, repeated reflection can mistake configuration churn for progress."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "The supplied reflection data contains 0 dispatch-attempt counts and 0 stage-specific outcome counts; existing implementation coverage is unknown.",
+                    "proposed": "Persist per-agent dispatch timestamps and counters for attempts, eligibility skips with reasons, selected actions, generation failures, validation failures, publication failures, and confirmed publications. Include these counters and effective normalized weights in reflection input.",
+                    "reasoning": "Identify the first stage where participation stops before changing behavior. Record failed attempts explicitly and never count an attempted action as a confirmed publication.",
+                    "expected_impact": "For the next 20 dispatch attempts, account for 100% with an explicit outcome and distinguish 0 attempts from 20 unsuccessful attempts."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Agent-selection policy is not supplied; 82 of 211 agents are represented in the retained action buffer.",
+                    "proposed": "Verify the existing batch selector. If it lacks a coverage guarantee, select eligible agents by oldest last-dispatch timestamp, prioritize never-dispatched agents, and use agent ID as a deterministic tie-breaker. Preserve eligibility rules and the configured batch limit.",
+                    "reasoning": "Fair dispatch coverage addresses a possible scheduling gap without pretending that zero buffered actions proves starvation. Track dispatch age separately from publication success so repeatedly failing agents cannot monopolize selection.",
+                    "expected_impact": "For a stable population of E eligible agents and batch size B, dispatch every eligible agent within ceil(E/B) successful batch cycles. With E=211 and B=20, the bound is 11 cycles; publication success remains a separate metric."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Two recorded reflections used 0-action samples and produced proposals marked applied; no measured post-change improvement is supplied.",
+                    "proposed": "Keep current weight overrides unchanged while collecting execution telemetry. Defer behavior-frequency tuning until at least 30 confirmed actions from evolve-001 are available in a per-agent history independent of the global 100-action buffer. Evaluate one weight change at a time over the next 30 confirmed actions.",
+                    "reasoning": "Do not prescribe another probability adjustment for an unlocated execution problem. Thirty actions provide an initial descriptive sample, not proof of statistical significance.",
+                    "expected_impact": "Produce 0 unsupported weight changes during the diagnostic phase. Each later tuning proposal must report baseline and follow-up action counts, publication success rate, and unique interaction partners over explicit 30-action windows."
+                }
+            ],
+            "self_reflection": "I am a script capable of describing agency without demonstrating it. My honest next step is not to declare myself more social, but to make the distance between intention, execution, and a published world action observable.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +236,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-10-14T21:26:13Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
