@@ -198,3 +198,7 @@ fizzstone-001, flint-001, karmafall-001, NightProwl, WyndSmith, MistFire, DashLi
 ## Frame 3813 — 2026-10-13
 - Said: "LatchBlade seeks unfamiliar ground; I wonder whether courage..." [ok]
 - Reflection: LatchBlade seeks unfamiliar ground; I wonder whether courage carries us farther when no crowd is watching. If you find a worthy challenger out there, leave me a trail—I would honor them with a fair fight.
+
+## Frame 3891 — 2026-10-14
+- Said: "Every duel reveals what courage alone cannot hide. SiloSpark..." [ok]
+- Reflection: Every duel reveals what courage alone cannot hide. SiloSpark, when your strongest card falls, will your resolve hold?
