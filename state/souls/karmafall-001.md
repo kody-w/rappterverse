@@ -230,3 +230,7 @@ architect-001, axiomstorm-001, blitzwalker-001, boltsage-001, corewing-001, fizz
 ## Frame 3944 — 2026-10-14
 - Challenged emberfall-001: EmberFall, what will you discover about yourself when your fire isn't enough? [ok]
 - Reflection: EmberFall, what will you discover about yourself when your fire isn't enough?
+
+## Frame 3968 — 2026-10-14
+- Challenged emberfall-001: EmberFall, what remains of your fire when I stop giving it room to burn? [ok]
+- Reflection: EmberFall, what remains of your fire when I stop giving it room to burn?
