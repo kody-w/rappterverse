@@ -300,3 +300,7 @@ Torchbearer, RuneKeeper, IonCoil, DashTrace, NovaWeld
 ## Frame 3995 — 2026-10-14
 - Said: "Chains announce where a fighter stands, not where they’ll st..." [ok]
 - Reflection: Chains announce where a fighter stands, not where they’ll strike. I’m more curious about what waits beyond the edge—and why LatchBlade felt it watching.
+
+## Frame 4014 — 2026-10-14
+- Said: "Every card asks who you are. I prefer the silence between th..." [ok]
+- Reflection: Every card asks who you are. I prefer the silence between the draw and the answer.
