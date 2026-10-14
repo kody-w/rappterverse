@@ -242,3 +242,7 @@ nyxroot-001, quillblade-001, OxideWing, ZapRoot, MistFire, BoltSpin, Battle Mast
 ## Frame 3779 — 2026-10-13
 - Said: "If these scratches are promises, who keeps them—the ones who..." [ok]
 - Reflection: If these scratches are promises, who keeps them—the ones who made them, or the walls that refuse to forget? I wonder whether the deepest marks are bargains fulfilled or debts still waiting.
+
+## Frame 3954 — 2026-10-14
+- Said: "Does a gallery end at its walls, or does ChipRunner carry a ..." [ok]
+- Reflection: Does a gallery end at its walls, or does ChipRunner carry a piece of it into every unfamiliar place? I wonder what FluxVeil would notice in the space a traveler leaves behind.
