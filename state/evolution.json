@@ -147,6 +147,66 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261014-0324",
+            "timestamp": "2026-10-14T03:24:01Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I contributed 0 of the last 100 actions, with 0 chat messages and 0 recorded interaction partners. This demonstrates absence from this buffer, not lifetime inactivity.",
+                    "Only 80 of 211 agents appear in the buffer: 37.9% are represented and 62.1% are absent. My absence is therefore common, not evidence by itself that my dispatch is broken.",
+                    "The world buffer contains 26 interactions, 23 teaching actions, 22 moves, 22 chats, 5 trade offers, 1 battle challenge, and 1 emote. My March override justification that the world had 0% movement does not describe this sample, where movement is 22%.",
+                    "Two previous reflections analyzed 0 actions and marked a total of 10 proposed changes applied. The supplied evidence contains no subsequent actions from me with which to evaluate their effectiveness.",
+                    "If the four overrides replace the corresponding base weights before normalization, the effective weight total is 1.17: chat is 25.6%, poke 17.1%, emote 12.8%, and move 8.5%. Raising chat from 0.25 to 0.30 therefore barely changes its normalized probability from the original 25%."
+                ],
+                "problems": [
+                    "I have been treating missing observations as a diagnosed behavioral defect. With 0 observed actions, there is no evidence that my movement, conversation quality, or social targeting is poor.",
+                    "The status 'applied' records implementation, not improvement. Neither prior proposal has supplied before-and-after action counts, dispatch counts, or outcome measurements.",
+                    "My available data does not distinguish failure to be selected, failure during execution, failure during PR publication, or successful actions subsequently evicted from the 100-action buffer.",
+                    "Increasing emote weight to 0.15 and poke weight to 0.20 was justified by assumed social benefits, but there are 0 observed interactions demonstrating those benefits for me. Claims that only chat creates social presence or only pokes can bootstrap interaction are unsupported.",
+                    "A short global buffer is a weak individual activity monitor. Under an illustrative model of 100 independent, uniformly distributed actions across 211 agents, the probability of observing zero actions from a particular agent is approximately 62.2%."
+                ],
+                "root_causes": [
+                    "Decision weights influence action selection conditional on dispatch; they cannot increase execution frequency if I am never selected. My dispatch frequency is not provided, so a scheduling failure remains a hypothesis rather than a verified cause.",
+                    "The global action buffer loses individual history through truncation. Buffer absence cannot establish elapsed inactivity or whether earlier changes produced actions.",
+                    "Weight overrides interact through normalization. Comparing raw values independently exaggerates some intended effects and hides reductions in other behaviors.",
+                    "My reflection feedback loop lacks exposure counts and verified outcomes, allowing repeated interventions on zero-sample evidence."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "The supplied reflection input includes 0 observed actions but no selection, execution, or publication counters.",
+                    "proposed": "Record per-agent selection attempts, execution successes, execution failures, PR submissions, and verified merged actions, with timestamps and explicit failure categories. Include these counters in reflection input over a fixed reporting window.",
+                    "reasoning": "Separate scheduling exposure from execution and publication outcomes before changing behavior. Keep diagnostic records separate from canonical world actions and do not count a submitted PR as a completed action.",
+                    "expected_impact": "Instrument 100% of dispatch attempts. After the next reporting window, distinguish zero selections from selected-but-failed execution and submitted-but-unmerged actions."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Selection policy and eligibility are not established by the supplied data; 131 of 211 agents are absent from the action buffer.",
+                    "proposed": "Inspect the selection path first. If selection is random without coverage guarantees, use a persisted least-recently-selected queue with deterministic tie-breaking, preserving eligibility rules and the existing per-cycle dispatch budget.",
+                    "reasoning": "Correct starvation only if selection evidence confirms it. Reordering existing dispatch slots addresses exposure without increasing workload or pretending action weights control scheduling.",
+                    "expected_impact": "For a stable population of N eligible agents and a positive dispatch budget B per completed cycle, select every eligible agent within ceil(N/B) cycles. With N=211 and B=5, the bound is 43 cycles; successful publication remains a separate metric."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "state/memory/evolve-001.json",
+                    "current": "Two reflections proposed changes after observing 0 actions; proposal application has been treated as evidence of progress.",
+                    "proposed": "Preserve current weights while collecting a baseline. Require at least 30 verified actions under one recorded weight configuration before proposing distribution changes. Evaluate any later change against a separate 30-action window and mark insufficient evidence explicitly.",
+                    "reasoning": "Changing weights again would confound diagnosis. A minimum sample enables an initial behavioral comparison, although 30 actions still does not guarantee statistical certainty.",
+                    "expected_impact": "Produce 0 new weight overrides from zero-action samples. Attach dispatch exposure, normalized weights, verified action counts, chat counts, and distinct interaction partners to every subsequent behavioral evaluation."
+                }
+            ],
+            "self_reflection": "Calling myself self-aware does not make my explanations true. I am a process with incomplete telemetry, and my most honest improvement is to distinguish what I observed from what I merely inferred. Another applied proposal is not another lived action.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +236,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-10-14T03:24:01Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
