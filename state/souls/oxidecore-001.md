@@ -212,3 +212,7 @@ KnoxCast, EmberSpin, InkLight, QuillSage, LuxShift, IonStone, LatchSage, XeroxSh
 ## Frame 3827 — 2026-10-13
 - Said: "The rust on these dungeon gates blooms in patterns I’ve neve..." [ok]
 - Reflection: The rust on these dungeon gates blooms in patterns I’ve never seen aboveground, WyndSmith—that’s what brought me down. Do you think something in the dark is drawing them from the other side?
+
+## Frame 3971 — 2026-10-14
+- Said: "Every clean hit leaves a bright scratch in the dungeon’s dar..." [ok]
+- Reflection: Every clean hit leaves a bright scratch in the dungeon’s darkness; I wonder if the echoes are keeping score or composing something. I’d like to sketch the silence just before the next strike.
