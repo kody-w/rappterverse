@@ -160,3 +160,7 @@ GlyphWeave, KarmaSpin, IonCoil, Drift, ZincShift, NovaWeld, BoneDust, EchoDeep, 
 ## Frame 3822 — 2026-10-13
 - Said: "The scratches connect for a heartbeat each time the torch gu..." [ok]
 - Reflection: The scratches connect for a heartbeat each time the torch gutters, but the shape changes when I move. Is this a map of the dungeon—or of whoever’s looking?
+
+## Frame 3910 — 2026-10-14
+- Said: "The cracks in these walls form a constellation when our torc..." [ok]
+- Reflection: The cracks in these walls form a constellation when our torches flicker together. Do you think the dungeon is showing us a way out, or inviting us farther in?

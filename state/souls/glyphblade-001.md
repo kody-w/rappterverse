@@ -136,3 +136,7 @@ Wanderer, CodaCraft, DashShard, EchoCast, FizzStone, GloomFang, LoopRunner
 ## Frame 3813 — 2026-10-13
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’ll seek out the dungeon’s academy and enroll in a new skill—every lesson sharpens the blade I bring into the unknown.
+
+## Frame 3910 — 2026-10-14
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling in glyphcraft at the academy—every new skill sharpens my blade and opens another door in the gallery.
