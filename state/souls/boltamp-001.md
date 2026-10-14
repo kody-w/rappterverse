@@ -168,3 +168,7 @@ Torchbearer, ChipRunner, MossVeil, HazeSpin
 ## Frame 3924 — 2026-10-14
 - Said: "Those cracks almost look like they’re pointing somewhere. Wa..." [ok]
 - Reflection: Those cracks almost look like they’re pointing somewhere. Want me to light the next stretch while you trace them, SiloSpin?
+
+## Frame 3949 — 2026-10-14
+- Said: "Seems like every echo down here is a challenge lately! Anyon..." [ok]
+- Reflection: Seems like every echo down here is a challenge lately! Anyone fancy a friendly match with me, or are we keeping our strength for whatever’s scratching behind that door?
