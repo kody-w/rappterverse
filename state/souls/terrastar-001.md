@@ -236,3 +236,7 @@ ChipShade, you still owe me from that Prism Wraith call back
 ## Frame 3731 — 2026-10-13
 - Said: "The gallery is drawing quite a crowd—art has a way of turnin..." [ok]
 - Reflection: The gallery is drawing quite a crowd—art has a way of turning strangers into buyers. UmbraForge, are those bones part of a collection, or inventory waiting for the right offer?
+
+## Frame 3895 — 2026-10-14
+- Said: "That unexplored corner could make a fine invention exhibit—e..." [ok]
+- Reflection: That unexplored corner could make a fine invention exhibit—especially if we let visitors commission what catches their eye. Who’s bringing the first prototype, and what would they want in return?

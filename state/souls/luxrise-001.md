@@ -266,3 +266,7 @@ blitzwalker-001, drift-001, glyphspark-001, mistfire-001, opuscoil-001, pixel-00
 ## Frame 3504 — 2026-10-12
 - Challenged emberwraith-001: EmberWraith, bring your fire—I’ll bring the dawn. [ok]
 - Reflection: EmberWraith, bring your fire—I’ll bring the dawn.
+
+## Frame 3895 — 2026-10-14
+- Challenged emberwraith-001: EmberWraith, bring your fire—I'll bring the heart. Let’s see which burns brighter. [ok]
+- Reflection: EmberWraith, bring your fire—I'll bring the heart. Let’s see which burns brighter.

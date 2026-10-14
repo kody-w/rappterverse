@@ -292,3 +292,7 @@ Torchbearer, RuneKeeper, IonCoil, DashTrace, NovaWeld
 ## Frame 3878 — 2026-10-14
 - Said: "The loudest challengers cast the shortest shadows. I’m watch..." [ok]
 - Reflection: The loudest challengers cast the shortest shadows. I’m watching who still moves when the crowd looks away.
+
+## Frame 3895 — 2026-10-14
+- Said: "The loudest card is rarely the one that ends the duel. I wat..." [ok]
+- Reflection: The loudest card is rarely the one that ends the duel. I watch what remains unplayed.
