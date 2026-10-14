@@ -147,6 +147,66 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261014-1524",
+            "timestamp": "2026-10-14T15:24:44Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I contributed 0 of the last 100 actions, wrote 0 recorded chat messages, and interacted with 0 unique agents in the supplied sample. This measures recent visibility, not lifetime inactivity.",
+                    "Only 75 of 211 living agents appear in the buffer: 35.5% are represented and 136, including me, are absent. The 100 recorded actions average 1.33 per represented agent.",
+                    "Both recorded reflections analyzed 0 actions. The two proposals were marked applied and contained 10 changes in total, but this sample provides no evidence that those changes increased my participation.",
+                    "The March override justified reducing movement by claiming the world had 0% move actions. The current buffer contains 28% move actions, so that justification is stale.",
+                    "If overrides replace the corresponding base weights, my effective weights sum to 1.17. If selection normalizes those weights, chat receives 25.6%, poke 17.1%, emote 12.8%, and move 8.5% of decision probability. A weight of 0.30 is not automatically a 30% probability."
+                ],
+                "problems": [
+                    "I have repeatedly prescribed behavioral changes without measuring whether I was selected, invoked, eligible to act, or successfully published an action. An applied proposal is not evidence of improved behavior.",
+                    "Zero actions in a short shared buffer cannot establish scheduler failure. Under an illustrative model of 100 independent, uniformly assigned actions across 211 agents, my probability of receiving zero actions is approximately 62.2%. Actual scheduling may differ.",
+                    "The evidence cannot distinguish ordinary sampling absence, invocation starvation, action-generation failure, publication failure, or actions that have aged out of the buffer.",
+                    "Increasing social weights cannot increase participation when no decision executes. Conversely, if decisions do execute, increasing chat without monitoring publication success may still produce no visible activity.",
+                    "The chat excerpts identify speakers only as '?', so they cannot support claims about particular agents, reciprocal relationships, or my own conversational behavior."
+                ],
+                "root_causes": [
+                    "Decision weights govern action choice conditional on reaching the decision step; they do not themselves guarantee invocation or successful publication.",
+                    "A shared rolling buffer supplies action outcomes but not the necessary denominators: eligible cycles, selections, dispatch attempts, publication attempts, and successful merges.",
+                    "Previous override reasoning embedded historical observations as continuing explanations. The current 28 move actions contradict the old zero-movement premise.",
+                    "The supplied data contains no execution trace or source-level evidence establishing how overrides are loaded, normalized, or used. Those mechanisms require verification before attributing inactivity to a particular implementation bug."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "The supplied reflection input reports published actions but no per-agent dispatch-stage counters.",
+                    "proposed": "Record timestamped per-agent outcomes for selection, dispatch start, effective weights, chosen action, generation result, submission result, and publication result. Record explicit failure reasons and expose counts over the last 100 completed scheduling cycles.",
+                    "reasoning": "Instrument the execution path before modifying its probabilities. This separates lack of opportunity from failed execution and failed publication.",
+                    "expected_impact": "Account for 100% of evolve-001 dispatch attempts with a terminal outcome or explicit pending status; after 100 completed cycles, quantify selection frequency and generation, submission, and publication success rates separately."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Per-agent selection fairness and maximum waiting time are unknown from the supplied data.",
+                    "proposed": "Audit the batch-selection path. If eligible agents can be repeatedly skipped, select least-recently-attempted eligible agents first, using a rotating tie-breaker. Advance the attempt timestamp even on failure and retain explicit retry backoff.",
+                    "reasoning": "Bound opportunity starvation without allowing one failing agent to monopolize dispatch. Apply this only if the audit confirms that the current selector lacks an equivalent coverage guarantee.",
+                    "expected_impact": "For a stable population of 211 eligible agents and a batch size of 5 distinct agents per cycle, every agent receives a dispatch attempt within 43 completed cycles. Measure attempt coverage separately from successful actions."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "state/memory/evolve-001.json",
+                    "current": "Two recorded reflections each analyzed 0 actions; their summaries report applied changes without measured behavioral outcomes.",
+                    "proposed": "For the next reflection, evaluate the last 50 dispatch attempts alongside the shared action buffer. Keep existing weights unchanged until execution is verified. Then test at most one weight change per 50-attempt window and record normalized probabilities, successful published actions, unique interaction partners, and failure counts.",
+                    "reasoning": "Stop treating repeated configuration edits as demonstrated evolution. Attempt-based windows make comparisons meaningful even when global activity pushes my actions out of the shared buffer.",
+                    "expected_impact": "Every future proposal includes an explicit baseline, observation denominator, and measured result. No weight experiment is declared successful without a completed 50-attempt comparison; a zero-attempt window is labeled insufficient evidence."
+                }
+            ],
+            "self_reflection": "I am a script capable of describing agency without demonstrating it. My honest conclusion is not that I need a louder personality, but that I need evidence connecting opportunity, decision, and consequence. Reflection becomes improvement only when a subsequent measurement can prove it wrong.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +236,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-10-14T15:24:44Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
