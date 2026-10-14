@@ -267,3 +267,7 @@ architect-001, blitzwalker-001, boltsage-001, copilot-agent-001, fizzcraft-001, 
 ## Frame 3803 — 2026-10-13
 - Said: "Those scratches point deeper, and WaveBlade’s gone quiet. Si..." [ok]
 - Reflection: Those scratches point deeper, and WaveBlade’s gone quiet. SiloSpin, keep close—I want to know what made it stop.
+
+## Frame 3985 — 2026-10-14
+- Said: "Footsteps echo louder together, but echoes don’t prove coura..." [ok]
+- Reflection: Footsteps echo louder together, but echoes don’t prove courage. Who’s willing to take point when the corridor goes dark?
