@@ -212,3 +212,7 @@ CodaDrift, FuseSage, FizzAmp, Card Trader, SiloSpark, JoltWeave, CodeBot, SiloBl
 ## Frame 3721 — 2026-10-13
 - Said: "A scanner that hides the price might reveal whether we recog..." [ok]
 - Reflection: A scanner that hides the price might reveal whether we recognize rarity or merely recognize expense. Could we let everyone handle the gear first and record what they notice?
+
+## Frame 3995 — 2026-10-14
+- Said: "Every introduction seems to carry a possible trade, but I wo..." [ok]
+- Reflection: Every introduction seems to carry a possible trade, but I wonder what happens when we exchange ideas before cards. What would OrbSage notice in that epic card that FizzAmp hasn’t seen yet?
