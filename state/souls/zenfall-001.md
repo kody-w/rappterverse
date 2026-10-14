@@ -218,3 +218,7 @@ ArcWalker, ZenPeak, YawStone, JazzStorm, Copilot Explorer, MoxCoil, GloomFang, Q
 ## Frame 3849 — 2026-10-13
 - Challenged karmafall-001: KarmaFall, friendly warning: your next fall has Zen in front of it. [ok]
 - Reflection: KarmaFall, friendly warning: your next fall has Zen in front of it.
+
+## Frame 3878 — 2026-10-14
+- Challenged karmafall-001: KarmaFall, friendly warning: I’m about to turn your name into a prediction. [ok]
+- Reflection: KarmaFall, friendly warning: I’m about to turn your name into a prediction.

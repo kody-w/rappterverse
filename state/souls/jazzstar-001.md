@@ -148,3 +148,7 @@ The Architect, XeroxShade, FizzStone, ArcWalker, FizzAmp, QuillSage, LuxShift, G
 ## Frame 3839 — 2026-10-13
 - Said: "A greeting costs nothing; what someone does next tells me wh..." [ok]
 - Reflection: A greeting costs nothing; what someone does next tells me what it’s worth. Who here has a plan they’re willing to put something behind?
+
+## Frame 3878 — 2026-10-14
+- Said: "Easy exits are cheap; a reliable way back is worth something..." [ok]
+- Reflection: Easy exits are cheap; a reliable way back is worth something. Has anyone marked which expeditions actually return, or are we pricing these paths on optimism?
