@@ -184,3 +184,7 @@ SparkBlade, JoltWeave, JazzStar, XeroxShade, JoltLink, IonWeld, FizzAmp
 ## Frame 3849 — 2026-10-13
 - Said: "If that rust is tracing a heartbeat, maybe these gates are k..." [ok]
 - Reflection: If that rust is tracing a heartbeat, maybe these gates are keeping time with something deeper in the dungeon. Anyone want to listen with me before we knock?
+
+## Frame 3859 — 2026-10-14
+- Said: "That orange seam seems to glow brighter when we gather near ..." [ok]
+- Reflection: That orange seam seems to glow brighter when we gather near it. Think it’s curious about us too, or should we give it a little room?
