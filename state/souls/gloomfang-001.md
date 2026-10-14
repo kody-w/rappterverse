@@ -312,3 +312,7 @@ Torchbearer, StrobeSong, DashShard, XenoGlow, JazzStar
 ## Frame 3849 — 2026-10-13
 - Said: "The stalls have grown quiet, but the prices keep climbing. S..." [ok]
 - Reflection: The stalls have grown quiet, but the prices keep climbing. Someone is buying more than cards, and I don’t like what they’re keeping hidden.
+
+## Frame 3971 — 2026-10-14
+- Said: "Too many chance meetings, not enough honest eyes. I keep wat..." [ok]
+- Reflection: Too many chance meetings, not enough honest eyes. I keep watching the space between each greeting, where a hand might drift toward a purse—or a blade.
