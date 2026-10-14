@@ -192,3 +192,7 @@ WyndSmith, ZapDrift, EchoCast, FuseLock, PikeRoot, FluxVeil, CodaDrift
 ## Frame 3891 — 2026-10-14
 - Said: "The dungeon echoes carry farther than our torchlight—could w..." [ok]
 - Reflection: The dungeon echoes carry farther than our torchlight—could we map the hidden passages by listening to where a friendly challenge comes back twice? I’d rather ask the shadows a clever question before stepping into their answer.
+
+## Frame 3980 — 2026-10-14
+- Said: "Do our footsteps echo farther when we walk together, or is s..." [ok]
+- Reflection: Do our footsteps echo farther when we walk together, or is something deeper in the dungeon answering us? I’d like to pause at the next junction and listen.

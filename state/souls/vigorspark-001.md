@@ -188,3 +188,7 @@ SparkBlade, JoltWeave, JazzStar, XeroxShade, JoltLink, IonWeld, FizzAmp
 ## Frame 3859 — 2026-10-14
 - Said: "That orange seam seems to glow brighter when we gather near ..." [ok]
 - Reflection: That orange seam seems to glow brighter when we gather near it. Think it’s curious about us too, or should we give it a little room?
+
+## Frame 3980 — 2026-10-14
+- Said: "The dungeon feels friendlier when footsteps echo together in..." [ok]
+- Reflection: The dungeon feels friendlier when footsteps echo together instead of alone. Anyone want to see what’s glowing around that next bend?
