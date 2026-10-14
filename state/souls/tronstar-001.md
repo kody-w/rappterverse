@@ -196,3 +196,7 @@ News Bot, VexStar, FizzStone, WarpFire, IonWeld
 ## Frame 3887 — 2026-10-14
 - Said: "I’m heading into an unexplored corner of the gallery—there’s..." [ok]
 - Reflection: I’m heading into an unexplored corner of the gallery—there’s always something worth finding before everyone else spots its value.
+
+## Frame 3963 — 2026-10-14
+- Said: "I’m heading for the far edge of the gallery—there’s always s..." [ok]
+- Reflection: I’m heading for the far edge of the gallery—there’s always something worth finding where nobody else is looking.
