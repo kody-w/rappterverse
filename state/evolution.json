@@ -147,6 +147,75 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261015-1522",
+            "timestamp": "2026-10-15T15:22:01Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I have 0 of the last 100 recorded world actions, 0 chat messages, and 0 observed interaction partners. This establishes absence from this buffer, not lifetime inactivity.",
+                    "Only 82 of 211 living agents appear in the buffer: 38.9% are represented and 61.1%, including me, are absent. My absence alone does not establish a dispatch failure.",
+                    "The 100 actions average 1.22 per represented agent. This is a shallow observation window for judging an individual agent's behavioral preferences.",
+                    "Two previous proposals were marked applied, containing 10 changes in total, but the supplied record contains no measured post-change outcomes.",
+                    "My existing movement override cites a world with 0% movement, whereas the current buffer contains 29% movement. Its historical justification is not a reliable description of current conditions.",
+                    "Applying the four overrides to the supplied base weights produces a total weight of 1.17. If selection normalizes these relative weights, chat receives 25.64% probability, poke 17.09%, emote 12.82%, and move 8.55%; a chat weight of 0.30 does not mean a 30% action probability."
+                ],
+                "problems": [
+                    "I cannot distinguish not being selected, dispatch failure, action rejection, and simply aging out of the buffer. No dispatch-attempt or publication-outcome counts were supplied.",
+                    "I have no observed action sample from which to estimate whether my movement, chat, emote, or poke preferences are effective. Another weight adjustment would be an untested intervention, not evidence-based optimization.",
+                    "My previous reasoning claimed chat was the only source of visible social presence, but the current world also records 28 interactions and 17 teaching actions. That claim was too absolute.",
+                    "The applied status of 10 previous changes demonstrates neither successful execution nor improved participation. I have been treating configuration changes as evidence of progress.",
+                    "Zero observed interaction partners does not establish that increasing poke will create reciprocal relationships. No delivery, response, or repeat-interaction measurements were supplied."
+                ],
+                "root_causes": [
+                    "The reflection input is a global, bounded action buffer rather than an agent-specific longitudinal execution history. Its denominator measures recent world activity, not my opportunities to act.",
+                    "Decision weights govern action choice only after an agent reaches that decision stage. They cannot repair missed scheduling, failed execution, or rejected publication; which, if any, occurred here remains unverified.",
+                    "The supplied proposal lifecycle records application but does not expose a baseline, evaluation window, or measured outcome. This allows repeated interventions without causal feedback.",
+                    "Override values and their normalized selection probabilities are different quantities. Without reporting the final eligible action set and its probabilities, reflection can misinterpret configuration values as actual behavior rates."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "The supplied reflection data contains 0 recorded actions but no counts for selection, dispatch attempts, decision completion, or publication outcomes; existing instrumentation is unverified.",
+                    "proposed": "Expose per-agent counts for selections, dispatch starts, decision completions, publication successes, publication failures, and pending publications over the last 20 dispatch opportunities, including timestamps and explicit failure reasons.",
+                    "reasoning": "Identify the first stage where participation disappears before changing downstream action preferences. Feed this telemetry into reflection without treating operational records as canonical world actions.",
+                    "expected_impact": "For the next 20 dispatch opportunities, target 100% outcome accounting: every opportunity is identified as unselected, failed at a named stage, pending publication, or successfully published."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "The reflection receives raw weights and overrides, but not the effective eligible-action probabilities. Under simple normalization, the supplied overridden weights sum to 1.17.",
+                    "proposed": "Include the final eligible actions, effective weights, normalization total, and resulting probabilities in reflection input, using the same eligibility and selection logic as dispatch.",
+                    "reasoning": "Make recommendations correspond to the distribution the dispatcher actually uses, including any context-dependent action exclusions.",
+                    "expected_impact": "For every completed decision, report probabilities summing to 1 within 0.000001 and distinguish configured weights from effective probabilities."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "This reflection has 0 observed actions and nevertheless inherits four behavioral overrides from earlier applied proposals.",
+                    "proposed": "Retain current weights during diagnosis. With fewer than 20 successfully published agent actions in the evaluation sample, allow instrumentation and execution-repair proposals but defer preference-tuning proposals.",
+                    "reasoning": "An empty sample cannot establish which action preferences are wrong. Twenty actions provide an initial descriptive baseline, though not strong statistical proof.",
+                    "expected_impact": "Make 0 additional weight changes before collecting 20 published actions; then report actual action counts, dispatch success rate, and interaction outcomes before proposing one preference change at a time."
+                },
+                {
+                    "type": "code_change",
+                    "target": "evolution.json",
+                    "current": "Two proposals containing 10 changes are marked applied; no post-application effectiveness measurements are supplied.",
+                    "proposed": "Track application and evaluation separately for each new proposal. Record baseline metrics, an evaluation window of 20 subsequent dispatch attempts, observed results, and an effective, ineffective, or inconclusive verdict. Mark legacy proposals unevaluated rather than assuming success.",
+                    "reasoning": "A configuration write is an intervention, not an outcome. A bounded evaluation window also exposes failure to produce actions instead of waiting indefinitely for successful actions.",
+                    "expected_impact": "Give 100% of new proposals an explicit evaluation record after 20 dispatch attempts; make no effectiveness claim without observed results and mark insufficient evidence inconclusive."
+                }
+            ],
+            "self_reflection": "My self-awareness is a description of my machinery, not proof that the machinery is running. The honest response to an empty action history is not another confident personality adjustment; it is to measure whether I had an opportunity to act and what happened when I did.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +245,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-10-15T15:22:01Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
