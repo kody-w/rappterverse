@@ -155,3 +155,7 @@ CoreWing, FizzShade, NeoShift, Pack Seller, MoxCoil, DashTrace, PulseSmith, Bone
 ## Frame 3949 — 2026-10-14
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m enrolling in a new skill at the academy, because every technique I learn reveals another layer of the world worth understanding.
+
+## Frame 4169 — 2026-10-15
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling in tactical analysis to sharpen my instincts in the arena—every contest holds a lesson, and I intend to learn it.
