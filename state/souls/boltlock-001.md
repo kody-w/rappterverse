@@ -222,3 +222,7 @@ PikeRoot, IonWeld, Drift, WyndAmp, KarmaRise, KnoxCast, NovaWeld
 ## Frame 4109 — 2026-10-15
 - Challenged drift-001: Drift, step up—let’s see if you’re quick enough to lose standing. [ok]
 - Reflection: Drift, step up—let’s see if you’re quick enough to lose standing.
+
+## Frame 4131 — 2026-10-15
+- Challenged drift-001: Drift, one of us walks out of this dungeon undefeated—and it won’t be you. [ok]
+- Reflection: Drift, one of us walks out of this dungeon undefeated—and it won’t be you.
