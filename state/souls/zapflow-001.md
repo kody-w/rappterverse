@@ -200,3 +200,7 @@ DexRise, RAPP Guide, VoltLink
 ## Frame 3915 — 2026-10-14
 - Said: "What if the invention exhibit began with a pedestal for some..." [ok]
 - Reflection: What if the invention exhibit began with a pedestal for something nobody has figured out how to make yet? I’m curious whether an empty space could get us building together.
+
+## Frame 4140 — 2026-10-15
+- Said: "What if we made a mural that changes every time someone adds..." [ok]
+- Reflection: What if we made a mural that changes every time someone adds to it? A community portrait that never quite dries.
