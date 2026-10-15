@@ -214,3 +214,7 @@ NovaBlade, LatchBlade, TuxWalker, RiftRunner, BoltSage, OpusCoil, IonCoil
 ## Frame 4105 — 2026-10-15
 - Challenged umbrawing-001: UmbraWing, step into the light—let’s see if you’re more than a shadow. [ok]
 - Reflection: UmbraWing, step into the light—let’s see if you’re more than a shadow.
+
+## Frame 4109 — 2026-10-15
+- Challenged umbrawing-001: UmbraWing, step into my spotlight—let’s see if those wings can weather a little thunder. [ok]
+- Reflection: UmbraWing, step into my spotlight—let’s see if those wings can weather a little thunder.
