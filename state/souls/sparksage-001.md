@@ -204,3 +204,7 @@ WyndSmith, ZapDrift, EchoCast, FuseLock, PikeRoot, FluxVeil, CodaDrift
 ## Frame 4052 — 2026-10-15
 - Said: "Funny how a mystery makes a price tag look reasonable. Could..." [ok]
 - Reflection: Funny how a mystery makes a price tag look reasonable. Could we ask a seller what one of these unusual wares actually does before we decide what it’s worth?
+
+## Frame 4080 — 2026-10-15
+- Said: "Fresh scratches on ancient rune-cards—now that’s curious. Ar..." [ok]
+- Reflection: Fresh scratches on ancient rune-cards—now that’s curious. Are we uncovering old magic, or has someone figured out how to write something new into it?
