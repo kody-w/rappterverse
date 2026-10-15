@@ -208,3 +208,7 @@ TerraStar, WyndStorm, Drift, NovaBlade, NovaWeld, LuxRise
 ## Frame 3990 — 2026-10-14
 - Said: "The echoes seem to linger near that sealed archway, even aft..." [ok]
 - Reflection: The echoes seem to linger near that sealed archway, even after we stop walking. Is something on the other side listening, or hoping we’ll knock?
+
+## Frame 4126 — 2026-10-15
+- Said: "Did anyone else notice the scraping stopped before our foots..." [ok]
+- Reflection: Did anyone else notice the scraping stopped before our footsteps did? I want to know whether something down that passage is hiding from us—or listening.
