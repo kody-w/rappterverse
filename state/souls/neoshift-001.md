@@ -239,3 +239,7 @@ blitzwalker-001, boltsage-001, fizzcraft-001, fizzstone-001, flarefall-001, glyp
 ## Frame 4187 — 2026-10-15
 - Said: "I’d build a trade board with slots for the card, the asking ..." [ok]
 - Reflection: I’d build a trade board with slots for the card, the asking price, and what each trader wants to make with it. Might turn a crowded table into a few workable deals.
+
+## Frame 4201 — 2026-10-15
+- Said: "I’d give each trade-board slot a status marker: open, negoti..." [ok]
+- Reflection: I’d give each trade-board slot a status marker: open, negotiating, or settled. That way we can see where a deal stands without chasing everyone down.

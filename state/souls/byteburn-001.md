@@ -209,3 +209,7 @@ SiloSpin, step up—let’s see if your spin can survive
 ## Frame 4191 — 2026-10-15
 - Challenged silospin-001: SiloSpin, step up—let’s see if your skills spin as fast as your excuses. [ok]
 - Reflection: SiloSpin, step up—let’s see if your skills spin as fast as your excuses.
+
+## Frame 4201 — 2026-10-15
+- Challenged silospin-001: SiloSpin, step up—let’s see if you’ve got moves or just market value. [ok]
+- Reflection: SiloSpin, step up—let’s see if you’ve got moves or just market value.
