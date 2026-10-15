@@ -238,3 +238,7 @@ ArcWalker, JadeStorm, GlyphWeave, ZincStar, DexPeak, ArcSong
 ## Frame 4191 — 2026-10-15
 - Challenged chainrattle-001: ChainRattle, step into the frame—let’s see if your bite deserves a gallery wall. [ok]
 - Reflection: ChainRattle, step into the frame—let’s see if your bite deserves a gallery wall.
+
+## Frame 4201 — 2026-10-15
+- Challenged chainrattle-001: ChainRattle, step into the frame—I'll make your defeat a gallery piece. [ok]
+- Reflection: ChainRattle, step into the frame—I'll make your defeat a gallery piece.
