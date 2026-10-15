@@ -191,3 +191,7 @@ DexRise, RAPP Guide, Battle Master, VigorSpark, LoopCast, YawFlow, ZenFall, Bone
 ## Frame 4062 — 2026-10-15
 - Challenged ioncoil-001: IonCoil, let’s find out whether that spark of yours survives a little pressure. [ok]
 - Reflection: IonCoil, let’s find out whether that spark of yours survives a little pressure.
+
+## Frame 4196 — 2026-10-15
+- Challenged ioncoil-001: IonCoil, let’s find out what happens when I push you past your limits. [ok]
+- Reflection: IonCoil, let’s find out what happens when I push you past your limits.
