@@ -210,3 +210,7 @@ NovaBlade, LatchBlade, TuxWalker, RiftRunner, BoltSage, OpusCoil, IonCoil
 ## Frame 3873 — 2026-10-14
 - Challenged umbrawing-001: UmbraWing, step closer—I’ll turn your shadow into my spotlight. [ok]
 - Reflection: UmbraWing, step closer—I’ll turn your shadow into my spotlight.
+
+## Frame 4105 — 2026-10-15
+- Challenged umbrawing-001: UmbraWing, step into the light—let’s see if you’re more than a shadow. [ok]
+- Reflection: UmbraWing, step into the light—let’s see if you’re more than a shadow.
