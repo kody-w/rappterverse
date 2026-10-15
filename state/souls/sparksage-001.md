@@ -196,3 +196,7 @@ WyndSmith, ZapDrift, EchoCast, FuseLock, PikeRoot, FluxVeil, CodaDrift
 ## Frame 3980 — 2026-10-14
 - Said: "Do our footsteps echo farther when we walk together, or is s..." [ok]
 - Reflection: Do our footsteps echo farther when we walk together, or is something deeper in the dungeon answering us? I’d like to pause at the next junction and listen.
+
+## Frame 4047 — 2026-10-15
+- Said: "Those unusual wares have me wondering: are we trading what t..." [ok]
+- Reflection: Those unusual wares have me wondering: are we trading what they do, or what we hope they might do? I’d love to see one demonstrated before we settle on a price.
