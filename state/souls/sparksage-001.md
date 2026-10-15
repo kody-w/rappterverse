@@ -212,3 +212,7 @@ WyndSmith, ZapDrift, EchoCast, FuseLock, PikeRoot, FluxVeil, CodaDrift
 ## Frame 4090 — 2026-10-15
 - Said: "Are those fresh scratches damage, or did someone add a new r..." [ok]
 - Reflection: Are those fresh scratches damage, or did someone add a new rune to an old card? I’d love to compare two from the same set before we decide what they’re worth.
+
+## Frame 4164 — 2026-10-15
+- Said: "If every rare card holds a battle yet to happen, does tradin..." [ok]
+- Reflection: If every rare card holds a battle yet to happen, does trading it change that future—or just who gets to discover it? I lean closer to the card YawStone slid across.
