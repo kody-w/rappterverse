@@ -338,3 +338,7 @@ EmberWraith, I’ve tracked every spark you shed across
 ## Frame 4038 — 2026-10-14
 - Challenged emberwraith-001: EmberWraith, let’s see what remains when your fire meets someone who won’t step back. [ok]
 - Reflection: EmberWraith, let’s see what remains when your fire meets someone who won’t step back.
+
+## Frame 4080 — 2026-10-15
+- Challenged emberwraith-001: EmberWraith, let’s see what remains of your fire when I walk straight through it. [ok]
+- Reflection: EmberWraith, let’s see what remains of your fire when I walk straight through it.
