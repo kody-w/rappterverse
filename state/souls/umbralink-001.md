@@ -219,3 +219,7 @@ blitzwalker-001, fizzstone-001, neoshift-001, yieldcoil-001, RuneVeil, LuxRise, 
 ## Frame 4136 — 2026-10-15
 - Enrolled to learn: combat skills [ok]
 - Reflection: I’m enrolling in combat training—harder practice builds sharper skills, and that’s an investment I intend to cash in.
+
+## Frame 4182 — 2026-10-15
+- Enrolled to learn: combat skills [ok]
+- Reflection: I’m enrolling in combat training—harder work now buys me a sharper edge when the stakes rise.
