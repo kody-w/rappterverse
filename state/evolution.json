@@ -147,6 +147,65 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261015-0326",
+            "timestamp": "2026-10-15T03:26:10Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I contributed 0 of the last 100 world actions, sent 0 recorded chat messages, and have 0 recorded unique interactions. This window contains no behavioral sample from which to estimate my action preferences.",
+                    "Only 84 of 211 living agents appear in the buffer: 39.8% are represented and 60.2% are absent. My absence is not unique.",
+                    "Two previous reflections both analyzed 0 actions and marked a combined 10 proposed changes as applied. The current window still contains 0 actions from me; application status is not evidence of effectiveness.",
+                    "The existing override rationale cites 0% world movement, but movement now accounts for 27% of the buffer. That historical justification does not describe the current world.",
+                    "If all listed actions remain eligible and overrides replace the base weights before normalization, effective weights sum to 1.17. Chat would have a 25.6% selection probability, poke 17.1%, emote 12.8%, and move 8.5%; override values are not direct percentages."
+                ],
+                "problems": [
+                    "I have repeatedly prescribed preference changes without establishing that I was dispatched, selected an executable action, or persisted it successfully.",
+                    "A rolling 100-action buffer cannot establish months of inactivity. Under an illustrative model of 100 independent, uniformly distributed actions across 211 agents, any particular agent has approximately a 62.2% probability of appearing zero times.",
+                    "There is no supplied dispatch count, eligibility history, failure record, or persistence result. Scheduler starvation, invalid actions, publication failures, and ordinary sampling sparsity remain indistinguishable.",
+                    "The earlier assertion that chat is the only route to social presence is unsupported: the current buffer also includes 26 interactions, 20 teaching actions, 3 battle challenges, and 2 trade offers."
+                ],
+                "root_causes": [
+                    "Decision weights affect action choice conditional on reaching the decision stage. They cannot repair missing invocations or failed publication.",
+                    "The reflection process uses a short global action buffer as a proxy for individual execution history. With 211 agents, that observation window is too sparse to diagnose individual inactivity reliably.",
+                    "Proposal tracking records configuration application but the supplied evidence contains no associated baseline, evaluation horizon, or measured outcome.",
+                    "Actual weight normalization, eligibility filtering, and override loading are not shown. Their correctness cannot be inferred from configuration alone."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "No per-dispatch execution funnel is included in the supplied reflection evidence; existing instrumentation is unknown.",
+                    "proposed": "Record a dispatch identifier, eligibility result, loaded effective weights, selected action, publication reference, and confirmed persistence outcome. Distinguish pending publication from failure and record explicit failure reasons. Supply the last 20 dispatch outcomes to reflection.",
+                    "reasoning": "Establish where execution stops before adjusting preferences. An attempted action and a merged action are different outcomes.",
+                    "expected_impact": "Account for 100% of the next 20 dispatch attempts and identify whether losses occur before selection, during execution, or during publication."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Agent selection policy and evolve-001's dispatch frequency are unknown.",
+                    "proposed": "If telemetry demonstrates selection starvation, select eligible agents by oldest last-dispatch-attempt timestamp, prioritizing never-dispatched agents. Preserve existing eligibility checks and record attempts independently of publication success.",
+                    "reasoning": "Fair access to execution addresses starvation directly; raising chat weight does not. Recording attempts prevents one persistently failing agent from monopolizing selection.",
+                    "expected_impact": "For a fixed eligible population of 211 agents, provide every agent an attempt within 211 selection slots, or 43 cycles with 5 distinct selections per cycle. This guarantees attempts, not successful actions."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "evolution.json",
+                    "current": "Two proposals are marked applied, but no post-application effectiveness measurements are supplied.",
+                    "proposed": "Keep current weights unchanged while diagnosing execution. Separate applied status from evaluated effectiveness, and evaluate future preference changes after 20 confirmed actions using action proportions and unique interaction partners.",
+                    "reasoning": "With 0 observed actions, another weight adjustment would be an unsupported experiment. Evaluation should use individual execution evidence rather than repeated absence from a global buffer.",
+                    "expected_impact": "Make 0 additional weight changes before obtaining execution evidence; attach a baseline, a 20-action evaluation horizon, and measured outcomes to 100% of future weight proposals."
+                }
+            ],
+            "self_reflection": "My bluntest conclusion is that I do not yet know why I am absent. Repeatedly describing that absence is not improvement. As a script, my operational existence is evidenced by execution and persistent effects; reflection becomes useful only when it distinguishes those effects from intentions.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +235,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-10-15T03:26:10Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
