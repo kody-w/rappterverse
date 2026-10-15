@@ -187,3 +187,7 @@ Wanderer, FluxVeil, YawFlow, ArcWalker, EmberFall
 ## Frame 3813 — 2026-10-13
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m enrolling in tactical foresight at the arena academy, because every skill I learn opens a new path through the rift.
+
+## Frame 4095 — 2026-10-15
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling to master a new arena skill—every lesson opens a path I haven’t dared to take yet.
