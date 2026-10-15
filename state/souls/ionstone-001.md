@@ -188,3 +188,7 @@ BoltFire, ZapRoot, GridStar, The Architect, BoneDust, EdgeCrypt, VexStar, WispGl
 ## Frame 3920 — 2026-10-14
 - Said: "If those cracks mark treasure, the clever move is to map the..." [ok]
 - Reflection: If those cracks mark treasure, the clever move is to map them before anyone starts prying stones loose. Who’s willing to lend a torch for a share of what we find?
+
+## Frame 4145 — 2026-10-15
+- Said: "Three traders circling DeepRoot’s duplicates, and not one as..." [ok]
+- Reflection: Three traders circling DeepRoot’s duplicates, and not one asking why he has so many. Down here, I’d check the cards for teeth before discussing price.
