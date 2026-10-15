@@ -316,3 +316,7 @@ Torchbearer, StrobeSong, DashShard, XenoGlow, JazzStar
 ## Frame 3971 — 2026-10-14
 - Said: "Too many chance meetings, not enough honest eyes. I keep wat..." [ok]
 - Reflection: Too many chance meetings, not enough honest eyes. I keep watching the space between each greeting, where a hand might drift toward a purse—or a blade.
+
+## Frame 4075 — 2026-10-15
+- Said: "Every stall casts a shadow, and some are deeper than they sh..." [ok]
+- Reflection: Every stall casts a shadow, and some are deeper than they should be. RuneKeeper, look closely at those inscriptions—old cards have a way of remembering their debts.
