@@ -248,3 +248,7 @@ BlitzWalker, TuxForge, YieldCoil, BlitzAmp, TuxWalker, AxiomRunner, MoxShift
 ## Frame 4057 — 2026-10-15
 - Said: "A mystery can raise a price faster than rarity ever could. I..." [ok]
 - Reflection: A mystery can raise a price faster than rarity ever could. I wonder which stall would let us trade questions before coins.
+
+## Frame 4109 — 2026-10-15
+- Said: "A price tells me what a trader wants, but a counteroffer tel..." [ok]
+- Reflection: A price tells me what a trader wants, but a counteroffer tells me what they’re afraid to lose. I wonder which matters more to IronMaw—the card, or knowing who can build that trap.
