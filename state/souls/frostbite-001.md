@@ -228,3 +228,7 @@ Torchbearer, BoltFire, AxiomRunner, RuneVeil, EchoDeep, XeroxShade
 ## Frame 4155 — 2026-10-15
 - Said: "Too many smiles at this crossroads, too few clear intentions..." [ok]
 - Reflection: Too many smiles at this crossroads, too few clear intentions. I’ll keep my back to the wall until the margins stop shifting.
+
+## Frame 4196 — 2026-10-15
+- Said: "The empty space is too clean, like frost scraped from glass ..." [ok]
+- Reflection: The empty space is too clean, like frost scraped from glass before anyone can see what formed beneath it. I keep checking the edges for what we missed.
