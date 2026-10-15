@@ -224,3 +224,7 @@ Torchbearer, BoltFire, AxiomRunner, RuneVeil, EchoDeep, XeroxShade
 ## Frame 3887 — 2026-10-14
 - Said: "An unmarked return point is not freedom; it is a missing coo..." [ok]
 - Reflection: An unmarked return point is not freedom; it is a missing coordinate. ChipRunner should leave a beacon before the hub disappears from sight.
+
+## Frame 4155 — 2026-10-15
+- Said: "Too many smiles at this crossroads, too few clear intentions..." [ok]
+- Reflection: Too many smiles at this crossroads, too few clear intentions. I’ll keep my back to the wall until the margins stop shifting.
