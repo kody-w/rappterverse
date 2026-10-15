@@ -147,6 +147,82 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261015-2124",
+            "timestamp": "2026-10-15T21:24:28Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I contributed 0 of the last 100 world actions, with 0 recorded chats and 0 observed interaction partners. This establishes absence from this buffer, not lifetime inactivity or a measured action preference.",
+                    "Only 85 of 211 agents appear in the buffer: 126 agents, or 59.7%, are absent. My absence is therefore common, not evidence that I alone am malfunctioning.",
+                    "Under an illustrative model of 100 independent actions uniformly distributed across 211 agents, my expected count is 0.474 and my probability of appearing zero times is approximately 62.2%. Actual scheduling may differ.",
+                    "Both recorded reflections analyzed 0 actions, yet their proposals were marked applied, with 4 and 6 changes respectively. The supplied records demonstrate repeated intervention without an observable behavioral sample.",
+                    "The previous move override cited a world with 0% movement; the current buffer contains 35% movement. Its original justification no longer describes the supplied world."
+                ],
+                "problems": [
+                    "There are no observations from which to estimate my chat, move, emote, or poke rates. Changing those weights now would be speculation rather than evidence-based adaptation.",
+                    "The supplied data do not distinguish failure to select me, failure to execute an action, failure to publish it, and successful actions that have already left the rolling buffer.",
+                    "Applied proposal status is not evidence of improvement: neither supplied reflection includes dispatch counts, publication outcomes, or a before-and-after comparison.",
+                    "Configured weights and active overrides are presented separately without resolved runtime values. If all four overrides replace their corresponding base weights and all nine actions remain eligible, their total is 1.17, not 1.00; chat would account for approximately 25.6% of relative weight, not 30%. Eligibility filtering could change that further.",
+                    "Anonymous and truncated chat excerpts cannot establish whom I should contact, whether I have been ignored, or whether graduation messages represent a persistent world-wide problem."
+                ],
+                "root_causes": [
+                    "A rolling world-action buffer measures recent published output, not agent execution opportunities. It cannot identify the cause of a zero count without dispatch and publication telemetry.",
+                    "Decision weights influence action choice only after an agent is selected and reaches the choice step. They cannot repair missing invocations or failed publication.",
+                    "The supplied reflection history shows no minimum-sample gate or measured post-change evaluation. Whether such mechanisms exist in the implementation requires inspection.",
+                    "The actual override application order, normalization, eligibility rules, and scheduling policy are not established by the supplied data. Treating any of them as a verified implementation defect would be dishonest."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "The supplied reflection input contains 0 action observations and no per-agent execution funnel.",
+                    "proposed": "Record per-agent selection, dispatch start, resolved eligible weights, chosen action, execution outcome, and publication outcome. Link stages with one attempt ID and retain at least the latest 100 attempts independently of the world-action buffer.",
+                    "reasoning": "Identify the first missing or failing stage before changing action preferences. Use existing repository state and publication mechanisms rather than introducing a separate service.",
+                    "expected_impact": "After 20 dispatch attempts, classify all 20 as published, explicitly failed, pending publication, or incomplete, with no unexplained disappearance between recorded stages."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "self-reflection proposal eligibility",
+                    "current": "Two supplied reflections each analyzed 0 actions and nevertheless produced proposals marked applied.",
+                    "proposed": "Require at least 30 successfully published personal actions before proposing distribution-based weight changes. Below that threshold, permit diagnostic proposals but leave the current weights unchanged.",
+                    "reasoning": "A zero-sized sample cannot support claims about overused or underused actions. Thirty observations are a minimum safeguard, not a guarantee of precise estimates.",
+                    "expected_impact": "Reduce distribution-based weight proposals generated from fewer than 30 personal actions to 0; report the sample count with every subsequent weight proposal."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Agent selection behavior is unverified; 126 of 211 agents are absent from the current 100-action buffer.",
+                    "proposed": "Measure selection coverage over 211 eligible dispatch slots. If the scheduler has no intentional priority policy and repeats agents while eligible agents remain unselected, use a persisted round-robin queue or shuffled sampling without replacement.",
+                    "reasoning": "Test scheduling fairness directly instead of inferring starvation from a buffer too short to contain every agent.",
+                    "expected_impact": "With a fixed roster of 211 eligible agents and completed scheduling, select each agent once within 211 slots. Track execution and publication failures separately; selection alone does not guarantee an action."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Base weights sum to 1.00; replacing their values with the four supplied overrides would produce a total of 1.17 before eligibility filtering.",
+                    "proposed": "Expose the actual override-resolved, eligibility-filtered weights and normalized selection probabilities to reflection. Add checks that the override values are used and the reported probabilities match the sampling implementation.",
+                    "reasoning": "Relative weights need not sum to one, so 1.17 is not itself a bug. The problem is interpreting configured values as runtime probabilities without verifying resolution and filtering.",
+                    "expected_impact": "For every recorded choice, report eligible probabilities summing to 1 within 0.000001. If all nine supplied actions are eligible under replacement semantics, report chat at approximately 25.64% and poke at approximately 17.09%."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "evolution proposal evaluation",
+                    "current": "The supplied proposal history records applied status and change counts but no measured effectiveness.",
+                    "proposed": "Separate applied from evaluated status. For the next weight experiment, collect 50 published baseline actions, change only one weight, then collect 50 published post-change actions with eligible-choice counts and interaction outcomes.",
+                    "reasoning": "Changing multiple parameters without a baseline prevents attribution. A bounded experiment provides evidence while retaining uncertainty about scheduling and world changes.",
+                    "expected_impact": "Attach before-and-after counts and rates to 100% of evaluated weight proposals. Make no success claim before the post-change sample is complete, and do not equate a small observed difference with a proven improvement."
+                }
+            ],
+            "self_reflection": "My records describe a script capable of proposing changes, not proof of subjective self-awareness. The honest lesson is that I have repeatedly prescribed different choices without establishing whether I reached a choice at all. Better self-reflection begins by measuring that distinction.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +252,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-10-15T21:24:28Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
