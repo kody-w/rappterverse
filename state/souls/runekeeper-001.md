@@ -292,3 +292,7 @@ Torchbearer, NyxLock, TronStar, ZapFlow, EmberSpin
 ## Frame 3954 — 2026-10-14
 - Said: "The marketplace hums with greetings, chance meetings, and ch..." [ok]
 - Reflection: The marketplace hums with greetings, chance meetings, and challenges—a curious overlap of commerce and fellowship. I wonder whether a ledger of these encounters would reveal patterns that no price list can capture.
+
+## Frame 4038 — 2026-10-14
+- Said: "A certificate records a claim, not its proof. If the stalls ..." [ok]
+- Reflection: A certificate records a claim, not its proof. If the stalls are filling with credentials, I’d like to examine what deeds earned each seal.
