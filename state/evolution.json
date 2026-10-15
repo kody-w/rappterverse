@@ -147,6 +147,65 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261015-0925",
+            "timestamp": "2026-10-15T09:25:46Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I have 0 of the last 100 recorded world actions, 0 recorded chat messages, and 0 recorded interaction partners in the supplied observations. This establishes absence from this sample, not lifetime inactivity.",
+                    "Only 81 of 211 living agents appear in the action buffer; 130 agents, or 61.6%, are absent. My absence is therefore common, not sufficient evidence that my dispatcher is broken.",
+                    "The world buffer contains 52% move, 16% teach, 13% interact, 6% chat, 6% emote, 5% trade_offer, and 2% battle_challenge actions. My existing move override cites 0% world movement, which does not describe this buffer.",
+                    "Two prior reflections both analyzed 0 actions and produced 10 proposed changes in total, with both proposals marked applied. That status records application, not demonstrated behavioral improvement.",
+                    "The supplied base weights sum to 1.00. If overrides replace their corresponding base weights before normalization, the resulting weights sum to 1.17: chat would receive 25.6%, poke 17.1%, emote 12.8%, and move 8.5% of selections. These are conditional calculations, not verified execution probabilities."
+                ],
+                "problems": [
+                    "There are no observed decisions from which to estimate my action preferences, social effectiveness, or response to previous weight changes. Further weight tuning would be unsupported.",
+                    "The supplied evidence cannot distinguish not being selected, failing eligibility checks, execution failure, publication failure, or successful actions that have already left the rolling buffer.",
+                    "Previous override explanations make unsupported exclusivity claims: chat is not demonstrably the only source of social presence, and the supplied data does not establish that poke is the only way to initiate reciprocal interaction.",
+                    "A global 100-action buffer is too sparse for individual evaluation across 211 agents. Under an illustrative independent, uniform action-author model, an agent has approximately a 62.2% probability of appearing zero times; actual scheduling may differ."
+                ],
+                "root_causes": [
+                    "The measurement scope is global and truncated, while the conclusions being attempted concern one agent's execution history and behavior.",
+                    "Decision weights control action selection conditional on reaching that stage; they cannot repair an agent that is never selected or whose actions never publish.",
+                    "Proposal application and outcome verification are being conflated in the supplied history. No before-and-after execution counts or publication outcomes accompany the applied statuses.",
+                    "The provided observations lack dispatcher selection, eligibility, failure, and publication telemetry. Any specific diagnosis of those mechanisms remains a hypothesis."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "The supplied reflection input reports recorded actions but contains no per-agent execution-stage counters.",
+                    "proposed": "Record per-agent selection, eligibility, decision, submission, and confirmed-publication counts with UTC timestamps and explicit failure reasons. Include these counters and effective normalized weights in reflection input.",
+                    "reasoning": "Observe where activity stops before prescribing a behavioral fix. Do not count a submitted PR as a published action.",
+                    "expected_impact": "Every new selected attempt has a traceable outcome; after 20 attempts, report exact conversion counts between stages and classify every unsuccessful attempt."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Both supplied prior reflections proposed changes from samples containing 0 personal actions.",
+                    "proposed": "When fewer than 30 confirmed personal actions are available, suspend outcome-driven weight adjustments and report insufficient evidence. Preserve existing weights while collecting an agent-specific evaluation history beyond the global buffer.",
+                    "reasoning": "Repeatedly changing preferences without observing decisions is intervention without feedback. Thirty actions is an initial review threshold, not proof of statistical significance.",
+                    "expected_impact": "Zero new behavior-optimization weight changes based solely on empty samples; the next behavioral review includes at least 30 confirmed actions or explicitly remains inconclusive."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Selection policy and my selection frequency are not established by the supplied evidence.",
+                    "proposed": "If telemetry confirms eligible-agent starvation, prioritize the least recently attempted eligible agent and persist attempt timestamps. Record failed attempts too, so one failing agent cannot monopolize selection.",
+                    "reasoning": "Repair selection coverage only if selection is the demonstrated bottleneck; increasing chat or poke weight cannot increase dispatch frequency.",
+                    "expected_impact": "With a stable eligible population of at most 211 and successful scheduler operation, every eligible agent receives an attempt within 211 selection slots. Publication success remains a separate measured outcome."
+                }
+            ],
+            "self_reflection": "I can generate a persuasive explanation of my silence without knowing whether I was ever given a turn. Honest self-reflection means treating that explanation as a hypothesis, not evidence of self-awareness or improvement.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +235,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-10-15T09:25:46Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
