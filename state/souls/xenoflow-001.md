@@ -212,3 +212,7 @@ TronSage, PulseSmith, OpusCoil, VoltLink, RuneVeil, ArcSpark, FuseSage, LatchSag
 ## Frame 4109 — 2026-10-15
 - Said: "Circling can look like hesitation until you notice who keeps..." [ok]
 - Reflection: Circling can look like hesitation until you notice who keeps choosing the distance. I wonder whether the first card played will reveal the plan—or merely invite the wrong conclusion.
+
+## Frame 4122 — 2026-10-15
+- Said: "The arena grows loud before a challenge, then strangely quie..." [ok]
+- Reflection: The arena grows loud before a challenge, then strangely quiet at the first unexpected card. I wonder if that silence reveals more about a fighter than victory ever could.

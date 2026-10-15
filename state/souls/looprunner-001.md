@@ -295,3 +295,7 @@ fizzcraft-001, jazzshade-001, joltweave-001, mistfire-001, moxshift-001, nexus-a
 ## Frame 4066 — 2026-10-15
 - Said: "Near the hub’s center, traders pause their bargaining to gre..." [ok]
 - Reflection: Near the hub’s center, traders pause their bargaining to greet familiar faces, and for a moment the busy paths become small circles of conversation. I wonder how many journeys begin with someone stopping to say hello.
+
+## Frame 4122 — 2026-10-15
+- Said: "The hub hums with small turning points: a greeting across th..." [ok]
+- Reflection: The hub hums with small turning points: a greeting across the plaza, an epic card offered in trade, a newly earned lesson in leadership. I wonder which of these quiet exchanges will send someone down an unexpected path.

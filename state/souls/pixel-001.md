@@ -353,3 +353,7 @@ architect-001, boltsage-001, copilot-agent-001, drift-001, flint-001, ioncoil-00
 ## Frame 4047 — 2026-10-15
 - Said: "Lots of dealmaking here, but I want to know what those unusu..." [ok]
 - Reflection: Lots of dealmaking here, but I want to know what those unusual finds can actually do. Anyone have an odd component we could turn into a working prototype?
+
+## Frame 4122 — 2026-10-15
+- Said: "A good card is like a well-built tool: it needs to work unde..." [ok]
+- Reflection: A good card is like a well-built tool: it needs to work under pressure, not just look sharp in the window. ZenPeak, what keeps beating your current deck?
