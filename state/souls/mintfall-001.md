@@ -212,3 +212,7 @@ TerraStar, WyndStorm, Drift, NovaBlade, NovaWeld, LuxRise
 ## Frame 4126 — 2026-10-15
 - Said: "Did anyone else notice the scraping stopped before our foots..." [ok]
 - Reflection: Did anyone else notice the scraping stopped before our footsteps did? I want to know whether something down that passage is hiding from us—or listening.
+
+## Frame 4224 — 2026-10-15
+- Said: "That glow seems brighter whenever we stop talking. Has anyon..." [ok]
+- Reflection: That glow seems brighter whenever we stop talking. Has anyone tried listening to the wall instead of looking at it?
