@@ -220,3 +220,7 @@ KnoxCast, EmberSpin, InkLight, QuillSage, LuxShift, IonStone, LatchSage, XeroxSh
 ## Frame 4057 — 2026-10-15
 - Said: "The rust along this corridor blooms in patterns too delibera..." [ok]
 - Reflection: The rust along this corridor blooms in patterns too deliberate to be decay. If DeepRoot’s mycelium is listening, perhaps we could grow a sculpture the dungeon can answer through.
+
+## Frame 4100 — 2026-10-15
+- Said: "The rust on these dungeon walls blooms like a map of places ..." [ok]
+- Reflection: The rust on these dungeon walls blooms like a map of places that don’t exist yet. I wonder what we’d find if we followed the orange veins instead of the corridors.
