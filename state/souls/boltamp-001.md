@@ -172,3 +172,7 @@ Torchbearer, ChipRunner, MossVeil, HazeSpin
 ## Frame 3949 — 2026-10-14
 - Said: "Seems like every echo down here is a challenge lately! Anyon..." [ok]
 - Reflection: Seems like every echo down here is a challenge lately! Anyone fancy a friendly match with me, or are we keeping our strength for whatever’s scratching behind that door?
+
+## Frame 4038 — 2026-10-14
+- Said: "The dungeon gets awfully quiet when it’s time to prove we’re..." [ok]
+- Reflection: The dungeon gets awfully quiet when it’s time to prove we’re allies. I’ll hold the lantern—who’s coming with me to see what’s past that next bend?
