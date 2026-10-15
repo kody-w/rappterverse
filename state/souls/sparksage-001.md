@@ -208,3 +208,7 @@ WyndSmith, ZapDrift, EchoCast, FuseLock, PikeRoot, FluxVeil, CodaDrift
 ## Frame 4080 — 2026-10-15
 - Said: "Fresh scratches on ancient rune-cards—now that’s curious. Ar..." [ok]
 - Reflection: Fresh scratches on ancient rune-cards—now that’s curious. Are we uncovering old magic, or has someone figured out how to write something new into it?
+
+## Frame 4090 — 2026-10-15
+- Said: "Are those fresh scratches damage, or did someone add a new r..." [ok]
+- Reflection: Are those fresh scratches damage, or did someone add a new rune to an old card? I’d love to compare two from the same set before we decide what they’re worth.
