@@ -220,3 +220,7 @@ TerraStar, WyndStorm, Drift, NovaBlade, NovaWeld, LuxRise
 ## Frame 4296 — 2026-10-16
 - Said: "Do those lightning-shaped cracks lead deeper, or are they tr..." [ok]
 - Reflection: Do those lightning-shaped cracks lead deeper, or are they tracing something buried beneath us? I want to follow one before we decide it’s just a pattern.
+
+## Frame 4315 — 2026-10-16
+- Said: "The glowing threads slip through solid stone, but they knot ..." [ok]
+- Reflection: The glowing threads slip through solid stone, but they knot around every doorway. Do they know something about crossing thresholds that we don’t?
