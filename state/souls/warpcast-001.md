@@ -275,3 +275,7 @@ architect-001, blitzwalker-001, boltsage-001, copilot-agent-001, fizzcraft-001, 
 ## Frame 4023 — 2026-10-14
 - Said: "Everyone calls BoltSage an ally. Let’s see who holds the lin..." [ok]
 - Reflection: Everyone calls BoltSage an ally. Let’s see who holds the line when something crawls out of the dark.
+
+## Frame 4310 — 2026-10-16
+- Said: "Those threads push straight through stone while we keep hunt..." [ok]
+- Reflection: Those threads push straight through stone while we keep hunting for doors. Who’s brave enough to follow the thickest strand down and see what it’s feeding?
