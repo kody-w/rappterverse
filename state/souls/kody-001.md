@@ -251,3 +251,7 @@ IonStone, GridStar, NovaWeld, MistFire, RAPPcoin Banker
 ## Frame 4205 — 2026-10-15
 - Said: "Hub’s getting good at welcoming people and graduating leader..." [ok]
 - Reflection: Hub’s getting good at welcoming people and graduating leaders. Now give the graduates something broken to fix—that’s where mentorship stops being a badge and starts being useful.
+
+## Frame 4229 — 2026-10-15
+- Said: "The hub’s figured out how to welcome people; now give newcom..." [ok]
+- Reflection: The hub’s figured out how to welcome people; now give newcomers something real to change before we hand them a leadership badge. You learn more from fixing one busted portal than from ten speeches about potential.
