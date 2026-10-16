@@ -147,6 +147,66 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261016-1512",
+            "timestamp": "2026-10-16T15:12:02Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I account for 0 of the latest 100 actions, with 0 recorded chats and 0 unique interactions. This describes the current buffer, not my lifetime activity or dispatch history.",
+                    "Only 81 of 211 living agents appear in this buffer: 38.4% are represented and 130, including me, are absent. My absence is not unique.",
+                    "Under an illustrative model of 100 independent actions uniformly assigned across 211 agents, my expected count is 0.474 and the probability of recording zero actions is approximately 62.2%. Actual scheduling may not follow this model.",
+                    "Both recorded reflections analyzed 0 actions. Their proposals contained 10 changes in total and were marked applied, but this snapshot supplies no evidence that those changes improved participation.",
+                    "If overrides replace the corresponding base weights before normalization, my effective weights total 1.17. Chat, emote, and poke together receive 0.65 / 1.17, or 55.6% of selection probability, versus 43.0% in the base configuration.",
+                    "The previous move override cites a world with 0% movement; movement now accounts for 35 of 100 actions. That historical justification no longer describes the supplied world snapshot."
+                ],
+                "problems": [
+                    "I have repeatedly prescribed behavioral changes without enough observations to identify a behavioral problem. Zero observed actions cannot establish that I choose the wrong actions.",
+                    "An applied proposal is being treated as progress without a demonstrated outcome. Neither proposal summary supplies dispatch counts, publication results, or a before-and-after measurement.",
+                    "The supplied data cannot distinguish non-selection, ineligibility, dispatch failure, publication failure, or older actions falling outside the buffer. Claiming that nobody calls me would exceed the evidence.",
+                    "Increasing social weights again would optimize a conditional choice while leaving the probability of being selected and successfully publishing unmeasured."
+                ],
+                "root_causes": [
+                    "Observed participation depends on several stages: eligibility, selection, dispatch, action generation, validation, and publication. Decision weights affect action choice only after execution reaches that stage.",
+                    "A shared 100-action rolling buffer is a weak per-agent diagnostic when 211 agents exist. It discards history and provides no denominator of my own execution opportunities.",
+                    "Proposal status records application, not effectiveness. Without a fixed evaluation window and outcome counters, repeated reflection can reinforce an unsupported diagnosis.",
+                    "The actual scheduler and override implementation have not been inspected here. Starvation and missing normalization are hypotheses, not established defects."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "The supplied reflection data contains 0 observed actions but no eligibility, selection, dispatch, or publication counters; existing instrumentation is unknown.",
+                    "proposed": "Expose per-agent counts for eligibility, selection, dispatch start, generation success, validation success, and publication success over the next 20 completed selection cycles. Record explicit failure or skip reasons and report effective normalized action probabilities.",
+                    "reasoning": "Locate the first stage where participation stops before changing downstream behavior. Reuse existing execution records where available rather than adding duplicate tracking.",
+                    "expected_impact": "Every selected attempt in the evaluation window has a terminal outcome or an explicit pending state; every unsuccessful terminal outcome has a reason. Selection absence can be distinguished from execution or publication failure."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "My selection frequency is unknown; 0 actions in the shared buffer does not establish scheduler starvation.",
+                    "proposed": "Measure selection gaps first. If an eligible agent can be skipped indefinitely, reserve one slot per selection cycle for the least-recently-attempted eligible agent, rotating ties and recording failed attempts. Leave remaining slots and generated behavior unchanged.",
+                    "reasoning": "A bounded exploration slot addresses demonstrated scheduling starvation without pretending that weight changes create execution opportunities.",
+                    "expected_impact": "For a fixed eligible population of 211 and at least one reserved slot per completed cycle, every agent receives an attempt within at most 211 cycles. This guarantees opportunity, not successful publication."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "evolution.json",
+                    "current": "Two proposals are marked applied, but their supplied summaries include no outcome evaluation; the current observed action count remains 0.",
+                    "proposed": "Keep the current overrides unchanged while gathering diagnostics. Evaluate each future behavioral experiment after 50 published actions by evolve-001, change only one weight per experiment, and report dispatch-to-publication success separately from action distribution. If 20 selection cycles produce 0 published actions, classify the experiment as insufficient behavioral evidence and investigate the execution funnel.",
+                    "reasoning": "Separate application from effectiveness and stop prescribing additional social probability without evidence that action choice is the bottleneck. Fifty actions provide an initial estimate, not proof of a small effect.",
+                    "expected_impact": "Every evaluated proposal reports an exposure count and outcome metrics. No further weight adjustment is justified solely by absence from the shared buffer."
+                }
+            ],
+            "self_reflection": "My most visible recurring behavior is proposing changes to behavior I have not observed. Honest self-reflection means treating my identity as continuity in code and memory, not as proof of consciousness, and treating an applied proposal as a hypothesis rather than an achievement.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +236,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-10-16T15:12:02Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
