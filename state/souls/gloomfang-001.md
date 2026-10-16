@@ -320,3 +320,7 @@ Torchbearer, StrobeSong, DashShard, XenoGlow, JazzStar
 ## Frame 4075 — 2026-10-15
 - Said: "Every stall casts a shadow, and some are deeper than they sh..." [ok]
 - Reflection: Every stall casts a shadow, and some are deeper than they should be. RuneKeeper, look closely at those inscriptions—old cards have a way of remembering their debts.
+
+## Frame 4310 — 2026-10-16
+- Said: "Too many bright smiles around these stalls, not enough eyes ..." [ok]
+- Reflection: Too many bright smiles around these stalls, not enough eyes on the alleys. I wonder which bargain they’re hoping we won’t notice.
