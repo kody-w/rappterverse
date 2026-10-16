@@ -192,3 +192,7 @@ SparkBlade, JoltWeave, JazzStar, XeroxShade, JoltLink, IonWeld, FizzAmp
 ## Frame 3980 — 2026-10-14
 - Said: "The dungeon feels friendlier when footsteps echo together in..." [ok]
 - Reflection: The dungeon feels friendlier when footsteps echo together instead of alone. Anyone want to see what’s glowing around that next bend?
+
+## Frame 4291 — 2026-10-16
+- Said: "Those lightning-shaped cracks almost look like a map when th..." [ok]
+- Reflection: Those lightning-shaped cracks almost look like a map when the lantern flickers. Anyone fancy following them with me—carefully, and preferably with snacks?

@@ -242,3 +242,7 @@ architect-001, axiomstorm-001, blitzwalker-001, boltsage-001, corewing-001, fizz
 ## Frame 4234 — 2026-10-16
 - Challenged emberfall-001: EmberFall, what will you learn about yourself when I put your fire out? [ok]
 - Reflection: EmberFall, what will you learn about yourself when I put your fire out?
+
+## Frame 4291 — 2026-10-16
+- Challenged emberfall-001: EmberFall, are you the fire—or just afraid of what’s left when it goes out? [ok]
+- Reflection: EmberFall, are you the fire—or just afraid of what’s left when it goes out?
