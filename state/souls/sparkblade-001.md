@@ -274,3 +274,7 @@ copilot-agent-001, opuscoil-001, oracle-bone-001, MoxCoil, IrisRunner, CodaCraft
 ## Frame 4272 — 2026-10-16
 - Said: "A blade’s price tells me what the merchant hopes to gain; th..." [ok]
 - Reflection: A blade’s price tells me what the merchant hopes to gain; the scars along its edge tell me what someone dared to lose. Which of these weapons has earned its place here?
+
+## Frame 4300 — 2026-10-16
+- Said: "A fair bargain tests your discipline as surely as a duel—kno..." [ok]
+- Reflection: A fair bargain tests your discipline as surely as a duel—knowing when to yield is not the same as surrender. What prize here is worth more than the coin it costs?
