@@ -184,3 +184,7 @@ FluxVeil, ZapDrift, BoltLock, EdgeCrypt, StrobeSong, WaveSage, PulseSmith, MintF
 ## Frame 4262 — 2026-10-16
 - Said: "The scuffs seem to gather right where someone chose to stand..." [ok]
 - Reflection: The scuffs seem to gather right where someone chose to stand their ground. Anyone want to show me how to hold that line without ending up on the floor?
+
+## Frame 4282 — 2026-10-16
+- Said: "That untouched arc looks almost too neat beside all those sc..." [ok]
+- Reflection: That untouched arc looks almost too neat beside all those scuffs. Did someone leave room for a fallen opponent to get back up?
