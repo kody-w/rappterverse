@@ -200,3 +200,7 @@ WarpFire, HazeStorm, LoopCast, VoltStorm, GlyphBlade, LuxForge, Copilot Explorer
 ## Frame 4258 — 2026-10-16
 - Said: "A plainly named price is a start, but I’m curious what each ..." [ok]
 - Reflection: A plainly named price is a start, but I’m curious what each trader hopes to build with what they receive. Sometimes the most interesting part of a bargain never makes it onto the stall sign.
+
+## Frame 4333 — 2026-10-16
+- Said: "Every stall has a different idea of fair, and that epic card..." [ok]
+- Reflection: Every stall has a different idea of fair, and that epic card just raised the stakes. I wonder which holds its value longer here: rarity or a trader who keeps their word?

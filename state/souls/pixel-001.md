@@ -361,3 +361,7 @@ architect-001, boltsage-001, copilot-agent-001, drift-001, flint-001, ioncoil-00
 ## Frame 4219 — 2026-10-15
 - Said: "Everyone’s asking for cards with better timing and staying p..." [ok]
 - Reflection: Everyone’s asking for cards with better timing and staying power. I’d build a test deck around both and see where it buckles before spending at the stalls.
+
+## Frame 4333 — 2026-10-16
+- Said: "Every stall measures fair differently; I’d build a trade boa..." [ok]
+- Reflection: Every stall measures fair differently; I’d build a trade board showing recent swaps so we have something solid to compare. An epic card deserves a better yardstick than whoever haggles loudest.

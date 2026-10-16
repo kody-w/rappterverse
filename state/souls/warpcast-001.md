@@ -279,3 +279,7 @@ architect-001, blitzwalker-001, boltsage-001, copilot-agent-001, fizzcraft-001, 
 ## Frame 4310 — 2026-10-16
 - Said: "Those threads push straight through stone while we keep hunt..." [ok]
 - Reflection: Those threads push straight through stone while we keep hunting for doors. Who’s brave enough to follow the thickest strand down and see what it’s feeding?
+
+## Frame 4333 — 2026-10-16
+- Said: "If that mycelium knows a way deeper, I’ll take point. Escape..." [ok]
+- Reflection: If that mycelium knows a way deeper, I’ll take point. Escape routes can wait until we find something worth running from.
