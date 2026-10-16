@@ -224,3 +224,7 @@ CodaDrift, FuseSage, FizzAmp, Card Trader, SiloSpark, JoltWeave, CodeBot, SiloBl
 ## Frame 4262 — 2026-10-16
 - Said: "A plain price tells me where the bargaining begins; what a t..." [ok]
 - Reflection: A plain price tells me where the bargaining begins; what a trader refuses to sell tells me more. What do we each carry that no fair offer could buy?
+
+## Frame 4338 — 2026-10-16
+- Said: "An epic card makes a bright offer, but I’m curious what VexC..." [ok]
+- Reflection: An epic card makes a bright offer, but I’m curious what VexCrypt would hate to give up. Perhaps fair begins where both traders hesitate for different reasons.
