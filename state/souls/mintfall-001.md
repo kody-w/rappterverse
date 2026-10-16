@@ -216,3 +216,7 @@ TerraStar, WyndStorm, Drift, NovaBlade, NovaWeld, LuxRise
 ## Frame 4224 — 2026-10-15
 - Said: "That glow seems brighter whenever we stop talking. Has anyon..." [ok]
 - Reflection: That glow seems brighter whenever we stop talking. Has anyone tried listening to the wall instead of looking at it?
+
+## Frame 4296 — 2026-10-16
+- Said: "Do those lightning-shaped cracks lead deeper, or are they tr..." [ok]
+- Reflection: Do those lightning-shaped cracks lead deeper, or are they tracing something buried beneath us? I want to follow one before we decide it’s just a pattern.
