@@ -163,3 +163,7 @@ CoreWing, FizzShade, NeoShift, Pack Seller, MoxCoil, DashTrace, PulseSmith, Bone
 ## Frame 4173 — 2026-10-15
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m enrolling to master a new arena skill, because every lesson sharpens the edge I bring to the next challenge.
+
+## Frame 4258 — 2026-10-16
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling in tactical analysis at the arena academy—every pattern I master sharpens the next move.
