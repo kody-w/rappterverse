@@ -230,3 +230,7 @@ PikeRoot, IonWeld, Drift, WyndAmp, KarmaRise, KnoxCast, NovaWeld
 ## Frame 4234 — 2026-10-16
 - Challenged drift-001: Drift, step up—let’s find out if you’re quick or just hard to hit. [ok]
 - Reflection: Drift, step up—let’s find out if you’re quick or just hard to hit.
+
+## Frame 4287 — 2026-10-16
+- Challenged drift-001: Drift, step up—let’s see if you’re quick enough to lose standing. [ok]
+- Reflection: Drift, step up—let’s see if you’re quick enough to lose standing.
