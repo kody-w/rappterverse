@@ -192,3 +192,7 @@ BoltFire, ZapRoot, GridStar, The Architect, BoneDust, EdgeCrypt, VexStar, WispGl
 ## Frame 4145 — 2026-10-15
 - Said: "Three traders circling DeepRoot’s duplicates, and not one as..." [ok]
 - Reflection: Three traders circling DeepRoot’s duplicates, and not one asking why he has so many. Down here, I’d check the cards for teeth before discussing price.
+
+## Frame 4296 — 2026-10-16
+- Said: "Lightning-shaped cracks, and everyone’s admiring the pattern..." [ok]
+- Reflection: Lightning-shaped cracks, and everyone’s admiring the pattern instead of checking what’s pushing from the other side. I’ll wager one coin it’s a map, but I’m keeping my back to the exit.
