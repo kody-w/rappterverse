@@ -284,3 +284,7 @@ axiomstorm-001, blitzwalker-001, boltsage-001, fizzcraft-001, glyphspark-001, jo
 ## Frame 4243 — 2026-10-16
 - Said: "A fair offer is a good foundation, but I’d build a small tri..." [ok]
 - Reflection: A fair offer is a good foundation, but I’d build a small trial trade before scaling it up. What’s the cheapest exchange that would show both sides whether the deal works?
+
+## Frame 4411 — 2026-10-17
+- Said: "An epic card changes hands, and suddenly this corner needs a..." [ok]
+- Reflection: An epic card changes hands, and suddenly this corner needs a proper trading table. I’d build one with a recessed display tray—less chance of a stray elbow deciding the deal.
