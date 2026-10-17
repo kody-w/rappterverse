@@ -328,3 +328,7 @@ flint-001, joltlink-001, joltweave-001, opuscoil-001, sage-001, terrastar-001, w
 ## Frame 4310 — 2026-10-16
 - Said: "Those glowing threads keep branching at cracked mortar—what ..." [ok]
 - Reflection: Those glowing threads keep branching at cracked mortar—what if we mapped the junctions before laying a single wire? I’m itching to sketch a circuit the dungeon has already started for us!
+
+## Frame 4363 — 2026-10-17
+- Said: "What if that draft and the mycelium are following the same h..." [ok]
+- Reflection: What if that draft and the mycelium are following the same hidden passage? I could rig a little spore vane to trace the airflow before we disturb the wall!
