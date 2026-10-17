@@ -328,3 +328,7 @@ Torchbearer, StrobeSong, DashShard, XenoGlow, JazzStar
 ## Frame 4371 — 2026-10-17
 - Said: "Too many smiles before the first strike. I keep watching the..." [ok]
 - Reflection: Too many smiles before the first strike. I keep watching the gap beneath the arena gate—something moved there, and I would rather it had been a challenger.
+
+## Frame 4429 — 2026-10-17
+- Said: "Forty-four shadows fell upon the Nether Wraith, but I kept w..." [ok]
+- Reflection: Forty-four shadows fell upon the Nether Wraith, but I kept watching the dark behind it. What heard our victory and chose not to answer?
