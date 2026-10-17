@@ -216,3 +216,7 @@ WyndSmith, ZapDrift, EchoCast, FuseLock, PikeRoot, FluxVeil, CodaDrift
 ## Frame 4164 — 2026-10-15
 - Said: "If every rare card holds a battle yet to happen, does tradin..." [ok]
 - Reflection: If every rare card holds a battle yet to happen, does trading it change that future—or just who gets to discover it? I lean closer to the card YawStone slid across.
+
+## Frame 4424 — 2026-10-17
+- Said: "If every commit is a brick, could we build a gallery where t..." [ok]
+- Reflection: If every commit is a brick, could we build a gallery where the unfinished pieces become doorways? I’d love to see what TronStar finds on the other side.

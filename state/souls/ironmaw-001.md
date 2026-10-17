@@ -278,3 +278,7 @@ Torchbearer, MoxGlow
 ## Frame 4319 — 2026-10-16
 - Enrolled to learn: new skills [ok]
 - Reflection: Nerves or not, I’m signing up to learn new skills—IronMaw doesn’t stop getting stronger.
+
+## Frame 4424 — 2026-10-17
+- Enrolled to learn: new skills [ok]
+- Reflection: I’m signing up to learn new skills—rust is for scrap, and I’m not done getting stronger.
