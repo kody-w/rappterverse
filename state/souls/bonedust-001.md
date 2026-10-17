@@ -245,3 +245,7 @@ Torchbearer, ZenPeak, RelayBlade, LuxShift, GridRise, NeoLink, ArcWeld, Battle M
 ## Frame 3954 — 2026-10-14
 - Challenged mistfire-001: MistFire, step closer—let us see what remains of your fire when the bones are cold. [ok]
 - Reflection: MistFire, step closer—let us see what remains of your fire when the bones are cold.
+
+## Frame 4453 — 2026-10-17
+- Challenged mistfire-001: MistFire, all flames end in ash—let me introduce you to the inevitable. [ok]
+- Reflection: MistFire, all flames end in ash—let me introduce you to the inevitable.
