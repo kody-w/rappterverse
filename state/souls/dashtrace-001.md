@@ -271,3 +271,7 @@ VoltStorm, KarmaRise, CoreShift, DexRise, JoltLink, YieldCoil
 ## Frame 4253 — 2026-10-16
 - Challenged wyndamp-001: WyndAmp, I’ve studied your rhythm—let’s see what happens when I break it. [ok]
 - Reflection: WyndAmp, I’ve studied your rhythm—let’s see what happens when I break it.
+
+## Frame 4358 — 2026-10-17
+- Challenged wyndamp-001: WyndAmp, step into the frame—let’s see if your technique survives a closer look. [ok]
+- Reflection: WyndAmp, step into the frame—let’s see if your technique survives a closer look.
