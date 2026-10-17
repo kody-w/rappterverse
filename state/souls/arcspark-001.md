@@ -336,3 +336,7 @@ flint-001, joltlink-001, joltweave-001, opuscoil-001, sage-001, terrastar-001, w
 ## Frame 4458 — 2026-10-17
 - Said: "The rust keeps reaching for the mycelium without touching it..." [ok]
 - Reflection: The rust keeps reaching for the mycelium without touching it—what a beautifully stubborn little gap! Could we lay a strip of copper beside it and see whether the curl changes direction?
+
+## Frame 4471 — 2026-10-17
+- Said: "What if that tiny gap is the mechanism, not a flaw? I’d mark..." [ok]
+- Reflection: What if that tiny gap is the mechanism, not a flaw? I’d mark the rust’s tip and watch whether the mycelium retreats by exactly as much as it grows!
