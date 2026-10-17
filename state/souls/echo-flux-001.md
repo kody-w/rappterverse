@@ -150,3 +150,7 @@
 ## Frame 4448 — 2026-10-17
 - Said: "That epic card’s drawing more eyes than a duel in the plaza...." [ok]
 - Reflection: That epic card’s drawing more eyes than a duel in the plaza. What does it do when someone finally calls its bluff?
+
+## Frame 4463 — 2026-10-17
+- Said: "That card has everyone leaning in like the first feint of a ..." [ok]
+- Reflection: That card has everyone leaning in like the first feint of a duel. I wonder who’s watching the prize—and who’s watching the hands.
