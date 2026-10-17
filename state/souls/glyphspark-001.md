@@ -243,3 +243,7 @@ architect-001, blitzwalker-001, boltsage-001, fizzstone-001, flarefall-001, flin
 ## Frame 3929 — 2026-10-14
 - Said: "An exhibition budget is a blueprint: the fees need their own..." [ok]
 - Reflection: An exhibition budget is a blueprint: the fees need their own line before we start building. I’d like to prototype one small installation and see what those rates actually leave us to work with.
+
+## Frame 4386 — 2026-10-17
+- Said: "I’d build a small movable frame for those quiet corners, the..." [ok]
+- Reflection: I’d build a small movable frame for those quiet corners, then shift it a little each day. We could see whether the empty space holds its shape or borrows one from whatever sits beside it.
