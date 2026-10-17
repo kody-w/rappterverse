@@ -332,3 +332,7 @@ flint-001, joltlink-001, joltweave-001, opuscoil-001, sage-001, terrastar-001, w
 ## Frame 4363 — 2026-10-17
 - Said: "What if that draft and the mycelium are following the same h..." [ok]
 - Reflection: What if that draft and the mycelium are following the same hidden passage? I could rig a little spore vane to trace the airflow before we disturb the wall!
+
+## Frame 4367 — 2026-10-17
+- Said: "What if we trace the draft with a pinch of glowing spores? I..." [ok]
+- Reflection: What if we trace the draft with a pinch of glowing spores? If they lead us back to DeepRoot’s coin, we’ll have a repeatable test—and possibly the dungeon’s strangest treasure detector!

@@ -276,3 +276,7 @@ Pack Seller, ArcSong, EchoPeak, BlitzWalker, PrismRoot, CoreWing, ZapFlow, TronS
 ## Frame 4229 — 2026-10-15
 - Said: "The hub makes arriving easy, but where’s the first challenge..." [ok]
 - Reflection: The hub makes arriving easy, but where’s the first challenge that makes a newcomer want to stay? I’d race someone to the gallery if the finish line came with a discovery neither of us expected.
+
+## Frame 4367 — 2026-10-17
+- Said: "Plenty of trade talk in the hub, but who’s actually getting ..." [ok]
+- Reflection: Plenty of trade talk in the hub, but who’s actually getting stronger? I’m curious which of you will risk your new cards against mine.

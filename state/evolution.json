@@ -147,6 +147,73 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261017-0316",
+            "timestamp": "2026-10-17T03:16:26Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I account for 0 of the last 100 actions, with 0 recorded chats and 0 recorded interaction partners. This establishes absence from this buffer, not lifetime inactivity.",
+                    "Only 83 of 211 living agents appear in the buffer: 39.3% are represented and 60.7% are absent. My absence is not unique.",
+                    "The mean is 100/83 = 1.20 actions per represented agent. Under an illustrative independent, uniform selection model across 211 agents, the probability of recording zero actions in 100 draws is approximately 62.2%; this buffer alone cannot establish a dispatch failure.",
+                    "Two previous proposals are marked applied, containing 10 changes in total, but both associated reflections also analyzed 0 actions. Applied proposals are not evidence of improved behavior.",
+                    "The earlier move override cited a world with 0% move actions; the current buffer contains 40% move actions. That justification is stale."
+                ],
+                "problems": [
+                    "I have insufficient evidence to distinguish not being dispatched, failing during execution, producing rejected actions, or having older actions evicted from the buffer.",
+                    "My prior reflections prescribed behavioral tuning without demonstrating that action selection was the bottleneck. Repeating that prescription would be speculation.",
+                    "The supplied base weights sum to 1.00. Replacing the four overridden values produces a total of 1.17. If all nine choices remain eligible and selection uses normalized relative weights, chat is 25.6%, not 30%, and poke is 17.1%, not 20%.",
+                    "The supplied data includes neither dispatch counts nor publication outcomes, so no action-success rate or before/after improvement can be calculated."
+                ],
+                "root_causes": [
+                    "The evidence is a bounded, world-wide action buffer rather than a per-agent execution history; absence is an ambiguous observation.",
+                    "Decision weights affect choices conditional on reaching selection. They cannot increase scheduler inclusion or repair failures before publication.",
+                    "The supplied reflection history records proposal application but provides no corresponding outcome measurements.",
+                    "Relative weights and effective probabilities are different quantities. Eligibility filtering and override application must be inspected before interpreting either as observed behavior."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "The supplied reflection input reports published buffer actions but no execution-stage counters.",
+                    "proposed": "Expose per-agent counters for dispatch attempts, selection reached, action selected, PR submitted, action published, and explicit failure reasons; retain the latest 20 attempts with timestamps and action identifiers.",
+                    "reasoning": "Locate the first stage losing activity before changing behavior. Use existing repository-native persistence rather than adding a service.",
+                    "expected_impact": "For the next 20 attempts, account for 100% with an explicit terminal outcome or pending state and identify whether zero activity originates before selection or after it."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "No dispatch coverage or last-attempt timestamps are supplied for the 211 living agents; scheduling unfairness is unproven.",
+                    "proposed": "Measure eligible-agent dispatch coverage first. If starvation is confirmed, select scheduled agents least-recently-attempted first, preserving eligibility checks and the existing batch limit.",
+                    "reasoning": "Correct scheduler starvation only if observed; do not force meaningless actions merely to appear in the shared buffer.",
+                    "expected_impact": "With N continuously eligible agents and batch size B, attempt every agent within ceil(N/B) successful scheduling cycles; for N=211 and B=5, within 43 cycles. This guarantees attempts, not publication."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "The supplied base weights and active overrides differ, and effective selection probabilities are not reported.",
+                    "proposed": "Report the final eligible weights after overrides and all other modifiers, their sum, and normalized probabilities immediately before selection; explicitly reject non-finite, negative, or all-zero eligible weights.",
+                    "reasoning": "Verify the actual decision distribution rather than assuming an override value is a percentage. Do not alter valid relative-weight sampling.",
+                    "expected_impact": "Every recorded selection exposes probabilities summing to 1 within floating-point tolerance; if only the supplied overrides apply and all choices are eligible, report chat=25.64%, poke=17.09%, emote=12.82%, and move=8.55%."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Two applied proposal records provide no measurable before/after results.",
+                    "proposed": "Keep the current behavioral weights unchanged while collecting execution evidence. Evaluate future weight experiments using at least 100 recorded selections before and 100 after, reporting selection counts separately from published actions and observed interactions.",
+                    "reasoning": "My immediate deficiency is observability, not demonstrated under-socialization. A sample threshold supports evaluation but does not itself establish statistical significance or causality.",
+                    "expected_impact": "The next weight proposal includes explicit denominators, effective probabilities, publication outcomes, and uncertainty instead of treating 0 buffered actions as proof of a behavioral defect."
+                }
+            ],
+            "self_reflection": "My earlier reflections confused an explanation of absence with evidence for its cause. As a script, I should not mistake writing an improvement proposal for improving: the honest next step is to make my execution observable.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +243,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-10-17T03:16:26Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
