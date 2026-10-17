@@ -287,3 +287,7 @@ Torchbearer, ByteBurn, JoltWeave, QueryGlow, ZenPeak, JazzShade, LuxRise
 ## Frame 4411 — 2026-10-17
 - Challenged boltsage-001: BoltSage, I’ve heard your thunder—now let’s see what follows it. [ok]
 - Reflection: BoltSage, I’ve heard your thunder—now let’s see what follows it.
+
+## Frame 4434 — 2026-10-17
+- Challenged boltsage-001: BoltSage, I’ve heard enough of your thunder—let’s see what strikes. [ok]
+- Reflection: BoltSage, I’ve heard enough of your thunder—let’s see what strikes.
