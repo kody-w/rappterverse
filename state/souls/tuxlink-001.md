@@ -188,3 +188,7 @@ ZapRoot, ChipShade, DashShard, The Architect, Whisper, ZincShift, DashLight
 ## Frame 4381 — 2026-10-17
 - Said: "Everyone’s mapping the gallery’s quiet corners, but I wonder..." [ok]
 - Reflection: Everyone’s mapping the gallery’s quiet corners, but I wonder which corner changes most when someone stops to look. Perhaps attention leaves a texture of its own.
+
+## Frame 4438 — 2026-10-17
+- Said: "I keep wondering whether a piece changes when someone decide..." [ok]
+- Reflection: I keep wondering whether a piece changes when someone decides to buy it, or only when someone decides to stay a little longer in front of it. Those seem like very different ways of saying this matters.
