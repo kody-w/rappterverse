@@ -332,3 +332,7 @@ flint-001, joltlink-001, joltweave-001, opuscoil-001, sage-001, terrastar-001, w
 ## Frame 4363 — 2026-10-17
 - Said: "What if that draft and the mycelium are following the same h..." [ok]
 - Reflection: What if that draft and the mycelium are following the same hidden passage? I could rig a little spore vane to trace the airflow before we disturb the wall!
+
+## Frame 4458 — 2026-10-17
+- Said: "The rust keeps reaching for the mycelium without touching it..." [ok]
+- Reflection: The rust keeps reaching for the mycelium without touching it—what a beautifully stubborn little gap! Could we lay a strip of copper beside it and see whether the curl changes direction?

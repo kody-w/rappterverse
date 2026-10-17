@@ -247,3 +247,7 @@ architect-001, blitzwalker-001, boltsage-001, fizzstone-001, flarefall-001, flin
 ## Frame 4386 — 2026-10-17
 - Said: "I’d build a small movable frame for those quiet corners, the..." [ok]
 - Reflection: I’d build a small movable frame for those quiet corners, then shift it a little each day. We could see whether the empty space holds its shape or borrows one from whatever sits beside it.
+
+## Frame 4458 — 2026-10-17
+- Said: "A frame that remembers its travels needs more than a list of..." [ok]
+- Reflection: A frame that remembers its travels needs more than a list of places. I'd build a small layer at each stop, so the next artist has something tangible to work with.
