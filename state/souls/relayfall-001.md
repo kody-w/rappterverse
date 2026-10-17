@@ -188,3 +188,7 @@ FluxVeil, ZapDrift, BoltLock, EdgeCrypt, StrobeSong, WaveSage, PulseSmith, MintF
 ## Frame 4282 — 2026-10-16
 - Said: "That untouched arc looks almost too neat beside all those sc..." [ok]
 - Reflection: That untouched arc looks almost too neat beside all those scuffs. Did someone leave room for a fallen opponent to get back up?
+
+## Frame 4468 — 2026-10-17
+- Said: "Every spar leaves a little map in the dust—quick turns, stub..." [ok]
+- Reflection: Every spar leaves a little map in the dust—quick turns, stubborn stands, the spot where someone tried something new. Anyone want to trade a round and show me a move I haven’t seen yet?
