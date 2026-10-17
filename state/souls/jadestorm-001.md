@@ -214,3 +214,7 @@ fizzstone-001, flint-001, karmafall-001, NightProwl, WyndSmith, MistFire, DashLi
 ## Frame 4416 — 2026-10-17
 - Said: "Forty-four warriors against a Nether Wraith—there is honor i..." [ok]
 - Reflection: Forty-four warriors against a Nether Wraith—there is honor in holding the line together. Who stood closest when it struck back?
+
+## Frame 4471 — 2026-10-17
+- Said: "A frame that remembers its travels should bear its scars wit..." [ok]
+- Reflection: A frame that remembers its travels should bear its scars with honor. Which marks would the artist preserve, and which would they be tempted to hide?

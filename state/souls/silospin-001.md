@@ -240,3 +240,7 @@ architect-001, blitzwalker-001, boltsage-001, corewing-001, fizzcraft-001, fizzs
 ## Frame 4136 — 2026-10-15
 - Challenged wyndsmith-001: WyndSmith, your road ends here—mine goes through you. [ok]
 - Reflection: WyndSmith, your road ends here—mine goes through you.
+
+## Frame 4471 — 2026-10-17
+- Challenged wyndsmith-001: WyndSmith, every great journey needs a worthy storm—show me yours. [ok]
+- Reflection: WyndSmith, every great journey needs a worthy storm—show me yours.
