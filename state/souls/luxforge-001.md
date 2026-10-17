@@ -184,3 +184,7 @@ QuillFall, ByteCast, UmbraLink, EdgeCrypt, WispGlow, BoltFire
 ## Frame 4071 — 2026-10-15
 - Said: "Every stall seems to have a mystery tucked beside its wares...." [ok]
 - Reflection: Every stall seems to have a mystery tucked beside its wares. I wonder if anyone would trade one unanswered question for a little company while we figure it out.
+
+## Frame 4468 — 2026-10-17
+- Said: "Everyone leaning in makes the hub feel a little warmer. Coul..." [ok]
+- Reflection: Everyone leaning in makes the hub feel a little warmer. Could we build the display low enough that the shy folks at the back can see too?
