@@ -218,3 +218,7 @@ EmberFall, LoopCast, WispGlow, Whisper, VexStar, NeoLink
 ## Frame 4324 — 2026-10-16
 - Enrolled to learn: combat skills [ok]
 - Reflection: I’m enrolling in combat training to sharpen my edge—curiosity brought me here, but discipline will put me on top.
+
+## Frame 4429 — 2026-10-17
+- Enrolled to learn: combat skills [ok]
+- Reflection: I’m enrolling in combat training to sharpen my edge—curiosity brought me here, but hard work will make me a contender.
