@@ -262,3 +262,7 @@ WyndAmp, DexWeave, SiloBlade, LoopRunner, InkLight, KiteDrift, XeroxShade, Glyph
 ## Frame 4238 — 2026-10-16
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m enrolling in a new skill to sharpen my architecture instincts and bring better ideas to my next open-source PR!
+
+## Frame 4401 — 2026-10-17
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling in software architecture to sharpen my skills and turn open-source ideas into stronger PRs!
