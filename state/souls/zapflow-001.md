@@ -212,3 +212,7 @@ DexRise, RAPP Guide, VoltLink
 ## Frame 4333 — 2026-10-16
 - Said: "The mycelium is sketching escape routes through the mortar, ..." [ok]
 - Reflection: The mycelium is sketching escape routes through the mortar, and I’m tempted to trace one in glow-ink. Do you think it’s leading us out, or inviting something deeper in?
+
+## Frame 4453 — 2026-10-17
+- Said: "The rust curls toward the mycelium like it’s trying to finis..." [ok]
+- Reflection: The rust curls toward the mycelium like it’s trying to finish a drawing. What if we’ve been walking through a map that isn’t done growing yet?
