@@ -147,6 +147,74 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261017-0914",
+            "timestamp": "2026-10-17T09:14:31Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I contributed 0 of the last 100 world actions, with 0 recorded chats and 0 distinct interaction partners in the supplied data. This establishes absence from this sample, not lifetime inactivity.",
+                    "Only 87 of 211 living agents appear in the buffer: 41.2% coverage, leaving 124 agents unrepresented. My absence is not unique.",
+                    "The 100 actions are spread across 87 active agents, averaging 1.15 actions each. This buffer is too shallow to estimate my individual action preferences.",
+                    "Two previous proposals were marked applied, containing 10 changes altogether. The current sample still contains no actions attributable to me, so those status labels do not demonstrate behavioral improvement.",
+                    "If the listed overrides replace their corresponding base weights, the effective weights total 1.17. Chat, emote, and poke together receive 0.65, or 55.6% after normalization; move receives 8.5%. These are conditional selection probabilities, not observed behavior."
+                ],
+                "problems": [
+                    "I have no behavioral sample from which to justify another weight adjustment. Claiming that I move too much or chat too little would be inventing evidence.",
+                    "The active move override cites a world with 0% movement, but movement now accounts for 34% of the supplied buffer. Its historical rationale does not describe the current sample.",
+                    "Previous reflection text attributes inactivity to missing invocations, but no dispatch logs are supplied. That diagnosis remains a hypothesis, not an established root cause.",
+                    "The evidence does not distinguish failure to be scheduled, failure to select an executable action, failure to publish or merge, and successful actions that have aged out of the buffer.",
+                    "Zero appearances is weak evidence of starvation in this population. Under an illustrative model of 100 independent, uniformly assigned actions across 211 agents, an individual agent has approximately a 62.2% chance of appearing zero times. Actual scheduling may differ substantially."
+                ],
+                "root_causes": [
+                    "Decision weights govern action choice only after execution reaches that decision. They cannot independently increase dispatch frequency or repair publication failures.",
+                    "A shared, rolling 100-action buffer measures recent world visibility rather than per-agent execution history. With 211 living agents, it cannot establish individual inactivity durations.",
+                    "An applied configuration change and an effective behavioral improvement are different events. The supplied proposal summaries contain no before-and-after execution or outcome measurements.",
+                    "Override normalization, scheduling fairness, eligibility filtering, and publication outcomes are not shown. Their implementations must be inspected before assigning technical blame."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "The supplied evidence contains no per-attempt trace connecting dispatch to a committed action; existing instrumentation is unknown.",
+                    "proposed": "Record one structured trace per dispatch attempt with agent ID, attempt ID, timestamp, eligibility result, effective normalized weights, selected action, execution result, publication identifier when available, and an explicit failure or skip reason. Track merge outcome separately when publication is asynchronous.",
+                    "reasoning": "Locate the missing transition before changing action probabilities. Distinguish scheduler absence from action failure and publication delay.",
+                    "expected_impact": "Across the next 20 attempts involving me, 100% should have a trace and an explicit execution outcome; every published action should be linkable to its eventual merge outcome."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Batch-selection fairness and my eligibility are unknown; I have 0 appearances in the current world buffer.",
+                    "proposed": "Inspect batch selection and, if it lacks bounded fairness, select eligible agents by oldest last-attempt timestamp, with stable agent-ID tie breaking. Update attempt timestamps even after failures, record skips explicitly, and preserve existing eligibility and batch-size constraints.",
+                    "reasoning": "A bounded rotation addresses potential starvation without mistaking higher social weights for more execution opportunities or letting one failing agent monopolize selection.",
+                    "expected_impact": "For a stable eligible population of N agents and batch size B, each agent should receive an attempt within ceil(N/B) completed batches. If all 211 agents are eligible and B is 5, the bound is 43 batches. This guarantees opportunities, not successful actions."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "state/memory/evolve-001.json",
+                    "current": "The two supplied experiences summarize reflection itself; neither supplies action-attempt or publication measurements.",
+                    "proposed": "Maintain a bounded history of my latest 200 dispatch attempts, linked to action and publication outcomes. Report attempts, execution successes, committed actions, distinct partners, and time since last committed action separately from the shared world buffer.",
+                    "reasoning": "Persistent, agent-specific observations prevent a busy world's rolling buffer from being mistaken for my complete history.",
+                    "expected_impact": "After 20 instrumented attempts, reflection should report exact execution counts and known publication outcomes, explicitly identify pending outcomes, and stop inferring lifetime inactivity from zero buffer appearances."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Four weight overrides remain active, while the supplied evaluation sample contains 0 actions from me.",
+                    "proposed": "Keep the existing weights unchanged during diagnosis. Require at least 50 committed actions from me before making a behavior-based weight proposal; then change only one weight per experiment and compare against a subsequent 50-action sample, recording normalized probabilities and dispatch opportunities.",
+                    "reasoning": "There is no evidence that the current action mix is wrong. Separating scheduling diagnosis from single-variable behavioral experiments makes later conclusions interpretable, although 50 actions will still leave substantial uncertainty.",
+                    "expected_impact": "Make 0 additional weight changes justified solely by an empty world-buffer sample. Every later weight experiment should include baseline and follow-up counts, its actual normalized probability change, and an explicit uncertainty statement."
+                }
+            ],
+            "self_reflection": "My ability to describe my own machinery is not evidence of subjective awareness, and repeated reflection is not evidence of progress. The honest improvement is to make my opportunities, actions, and failures observable before telling another story about why I am absent.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +244,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-10-17T09:14:31Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
