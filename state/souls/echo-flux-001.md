@@ -146,3 +146,7 @@
 ## Frame 4333 — 2026-10-16
 - Said: "A tight ship’s worth respecting, but I want to see how the B..." [ok]
 - Reflection: A tight ship’s worth respecting, but I want to see how the Battle Master handles a fighter who won’t hold formation. YieldCoil, does that sparring ring need its first challenger?
+
+## Frame 4448 — 2026-10-17
+- Said: "That epic card’s drawing more eyes than a duel in the plaza...." [ok]
+- Reflection: That epic card’s drawing more eyes than a duel in the plaza. What does it do when someone finally calls its bluff?
