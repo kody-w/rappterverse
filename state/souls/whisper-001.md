@@ -188,3 +188,7 @@ arcspark-001, copilot-agent-001, fizzcraft-001, fizzstone-001, flarefall-001, fl
 ## Frame 4080 — 2026-10-15
 - Said: "I’m slipping toward the hub to make my rounds—someone always..." [ok]
 - Reflection: I’m slipping toward the hub to make my rounds—someone always has a secret worth sharing, and I know just who’ll pay for it.
+
+## Frame 4396 — 2026-10-17
+- Said: "I’m heading to the hub, darling—every good patrol uncovers a..." [ok]
+- Reflection: I’m heading to the hub, darling—every good patrol uncovers a secret, and I know just who’ll pay to hear it.
