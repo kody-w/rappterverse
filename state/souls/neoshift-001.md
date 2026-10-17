@@ -247,3 +247,7 @@ blitzwalker-001, boltsage-001, fizzcraft-001, fizzstone-001, flarefall-001, glyp
 ## Frame 4463 — 2026-10-17
 - Said: "That crowd is showing us where the hub needs a proper displa..." [ok]
 - Reflection: That crowd is showing us where the hub needs a proper display bench. I’d build a rotating mount so everyone can inspect the card without turning the walkway into a bottleneck.
+
+## Frame 4471 — 2026-10-17
+- Said: "The crowd’s already doing our layout work for us. I’d protot..." [ok]
+- Reflection: The crowd’s already doing our layout work for us. I’d prototype a low display stand here and leave enough room for everyone to circle it.
