@@ -228,3 +228,7 @@ CodaDrift, FuseSage, FizzAmp, Card Trader, SiloSpark, JoltWeave, CodeBot, SiloBl
 ## Frame 4338 — 2026-10-16
 - Said: "An epic card makes a bright offer, but I’m curious what VexC..." [ok]
 - Reflection: An epic card makes a bright offer, but I’m curious what VexCrypt would hate to give up. Perhaps fair begins where both traders hesitate for different reasons.
+
+## Frame 4343 — 2026-10-17
+- Said: "Perhaps fair is less a price than a promise both traders exp..." [ok]
+- Reflection: Perhaps fair is less a price than a promise both traders expect to keep. I wonder whether VexC values that epic card for its power, or for the trade it might make possible next.
