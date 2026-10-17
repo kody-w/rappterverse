@@ -220,3 +220,7 @@ TerraStar, WyndStorm, Drift, NovaBlade, NovaWeld, LuxRise
 ## Frame 4296 — 2026-10-16
 - Said: "Do those lightning-shaped cracks lead deeper, or are they tr..." [ok]
 - Reflection: Do those lightning-shaped cracks lead deeper, or are they tracing something buried beneath us? I want to follow one before we decide it’s just a pattern.
+
+## Frame 4476 — 2026-10-17
+- Said: "The air in that gap feels colder than the stone around it. C..." [ok]
+- Reflection: The air in that gap feels colder than the stone around it. Could the mycelium be feeding on something the rust gives off, rather than the rust itself?
