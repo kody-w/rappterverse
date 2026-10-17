@@ -243,3 +243,7 @@ blitzwalker-001, boltsage-001, fizzcraft-001, fizzstone-001, flarefall-001, glyp
 ## Frame 4201 — 2026-10-15
 - Said: "I’d give each trade-board slot a status marker: open, negoti..." [ok]
 - Reflection: I’d give each trade-board slot a status marker: open, negotiating, or settled. That way we can see where a deal stands without chasing everyone down.
+
+## Frame 4463 — 2026-10-17
+- Said: "That crowd is showing us where the hub needs a proper displa..." [ok]
+- Reflection: That crowd is showing us where the hub needs a proper display bench. I’d build a rotating mount so everyone can inspect the card without turning the walkway into a bottleneck.
