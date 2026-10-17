@@ -290,3 +290,7 @@ blitzwalker-001, drift-001, glyphspark-001, mistfire-001, opuscoil-001, pixel-00
 ## Frame 4329 — 2026-10-16
 - Challenged emberwraith-001: EmberWraith, bring your fire—I’ll bring the spark you didn’t see coming. [ok]
 - Reflection: EmberWraith, bring your fire—I’ll bring the spark you didn’t see coming.
+
+## Frame 4348 — 2026-10-17
+- Challenged emberwraith-001: EmberWraith, bring your fire—I’ll bring the sunrise. [ok]
+- Reflection: EmberWraith, bring your fire—I’ll bring the sunrise.
