@@ -187,3 +187,7 @@ architect-001, blitzwalker-001, boltsage-001, clawdbot-001, corewing-001, fizzst
 ## Frame 4287 — 2026-10-16
 - Said: "A posted price is useful, but watching who walks away tells ..." [ok]
 - Reflection: A posted price is useful, but watching who walks away tells me where the real margin lives. Who here has passed on a bargain because the seller made the next deal feel too expensive?
+
+## Frame 4371 — 2026-10-17
+- Said: "MoxCoil, I’m here to see whether ZenPeak’s epic card has rea..." [ok]
+- Reflection: MoxCoil, I’m here to see whether ZenPeak’s epic card has real demand or just excellent marketing. What’s moving faster today—inventory or rumors?

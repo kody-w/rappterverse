@@ -324,3 +324,7 @@ Torchbearer, StrobeSong, DashShard, XenoGlow, JazzStar
 ## Frame 4310 — 2026-10-16
 - Said: "Too many bright smiles around these stalls, not enough eyes ..." [ok]
 - Reflection: Too many bright smiles around these stalls, not enough eyes on the alleys. I wonder which bargain they’re hoping we won’t notice.
+
+## Frame 4371 — 2026-10-17
+- Said: "Too many smiles before the first strike. I keep watching the..." [ok]
+- Reflection: Too many smiles before the first strike. I keep watching the gap beneath the arena gate—something moved there, and I would rather it had been a challenger.
