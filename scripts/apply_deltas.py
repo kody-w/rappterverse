@@ -15,7 +15,10 @@ Delta file format (state/inbox/{unique-id}.json):
         "world": "gallery",
         "entries": [ ... ]
     },
-    "activities": [ ... ]       // appended to feed/activity.json .activities[]
+    "activities": [ ... ],      // appended to feed/activity.json .activities[]
+    "verifications": [ ... ]    // rapp-verification/1 votes folded into
+                                // state/verifications.json (schema/verifications.md);
+                                // `verify`-typed entries in "actions" fold too
 }
 """
 
@@ -40,10 +43,21 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from dreamcatcher_delta import DeltaProtocolError, load_manifest
 from static_api import stamp_mapping
 
+# Peer verification votes (schema/verifications.md). Optional so a partial
+# checkout without scripts/verifications.py still applies every other key.
+try:
+    import verifications as verifications_lib
+except ImportError:  # pragma: no cover - partial checkout
+    verifications_lib = None
+try:
+    import slosh_lisp as slosh_lib  # program subjects (file id + body id)
+except ImportError:  # pragma: no cover - partial checkout
+    slosh_lib = None
+
 
 def has_meaningful_content(delta: dict) -> bool:
     if any(isinstance(delta.get(key), list) and len(delta[key]) > 0
-           for key in ("actions", "messages", "activities")):
+           for key in ("actions", "messages", "activities", "verifications")):
         return True
     if isinstance(delta.get("agent_update"), dict) and bool(delta["agent_update"]):
         return True
@@ -144,6 +158,182 @@ def manifest_delta_files() -> list[Path] | None:
     return planned
 
 
+def verification_subject_owners() -> dict:
+    """Map every subject of every ``state/programs/<agentId>.lisp`` to its controllers.
+
+    This is how a subject resolves to an owner for the no-self-verify rule: the
+    program file is named after the agent, and the agent's ``controller`` in
+    ``state/agents.json`` owns it. Both the file id and the canonical body id
+    are registered (``slosh_lisp.program_subjects``), so the gate, the
+    validators and the applier agree. Shared ``_world/`` and ``_lispvm/``
+    programs have no single owner and are not mapped.
+    """
+    if verifications_lib is None or slosh_lib is None:
+        return {}
+    agents_data = load_json(STATE_DIR / "agents.json")
+    controllers = {
+        agent["id"]: agent.get("controller", "system")
+        for agent in agents_data.get("agents", []) or []
+        if isinstance(agent, dict) and agent.get("id")
+    }
+    if not controllers:
+        return {}
+    return slosh_lib.program_subject_owners(STATE_DIR / "programs", controllers)
+
+
+def verify_record_from_action(action: dict) -> dict:
+    """The ``rapp-verification/1`` record a ``verify``-typed action carries."""
+    return verifications_lib.record_from_action(action)
+
+
+def fold_verifications(delta: dict, timestamp: str, report: dict = None) -> int:
+    """Fold a delta's verification votes into ``state/verifications.json``.
+
+    Takes the top-level ``verifications`` list plus any ``verify``-typed entry
+    in ``actions``. Every record's ``verifier`` must be the delta's
+    ``controller`` (the identity the validator bound to the PR author) and its
+    ``agent_id`` the delta's ``agent_id``; the subject must resolve to a known
+    artifact not owned by that controller; a live vote by the same controller
+    on the same subject with a strictly later ``at`` is kept (the reconciler
+    applies the same rule to window actions, and ``validate_delta`` rejects
+    such a stale re-vote up front, so reaching that skip here means two
+    deltas raced). Top-level records are stamped with the delta
+    ``timestamp``. An unknown or invalid record (bad shape, wrong verifier or
+    agent, self-verify, unknown subject, missing notes on a fail) is skipped
+    with a printed reason; this never raises. Returns the number of votes
+    folded; the store is written only when that is non-zero, through
+    ``verifications.save``, and never when the existing store is corrupt.
+
+    ``report``, when given, is filled with ``candidates`` (votes the delta
+    carried), ``evaluated`` (votes judged one by one: folded, or skipped for
+    a reason specific to that record) and ``folded``. A delta whose every
+    candidate was evaluated has been fully processed even when nothing was
+    written, so ``apply_delta`` consumes it. A verifications-only delta whose
+    votes could not be judged at all (no controller, a system controller, a
+    corrupt store, the modules missing) is left in place; a delta that also
+    carried actions, messages, an agent update, objects or activities is
+    consumed once those applied, votes unevaluated, because leaving it would
+    re-apply the rest on the next run (``validate_delta`` rejects those
+    shapes before apply, so this is reached only on a corrupt store).
+    """
+    if report is None:
+        report = {}
+    report.update({"candidates": 0, "evaluated": 0, "folded": 0})
+    candidates = []
+    raw = delta.get("verifications")
+    if isinstance(raw, list):
+        candidates.extend(("verifications", index, rec) for index, rec in enumerate(raw))
+    actions = delta.get("actions")
+    if isinstance(actions, list):
+        candidates.extend(
+            ("actions", action.get("id", index), action)
+            for index, action in enumerate(actions)
+            if isinstance(action, dict) and action.get("type") == "verify"
+        )
+    if not candidates:
+        return 0
+    report["candidates"] = len(candidates)
+    if verifications_lib is None or slosh_lib is None:
+        print(f"  ⚠ Skipping {len(candidates)} verification(s): scripts/verifications.py or scripts/slosh_lisp.py unavailable")
+        return 0
+    controller = delta.get("controller")
+    if not isinstance(controller, str) or not controller.strip():
+        print(f"  ⚠ Skipping {len(candidates)} verification(s): delta has no `controller`")
+        return 0
+    if controller.strip().casefold() in verifications_lib.RESERVED_VERIFIERS:
+        print(f"  ⚠ Skipping {len(candidates)} verification(s): system-controlled deltas do not cast peer verifications")
+        return 0
+
+    store_path = STATE_DIR / "verifications.json"
+    had_store = store_path.is_file()
+    try:
+        store = verifications_lib.load(store_path)
+    except ValueError as exc:
+        print(f"  ⚠ Skipping {len(candidates)} verification(s): {exc}")
+        return 0
+    # ``load`` defaults ``generated`` to now on a brand-new store; only a
+    # stamp read back from disk counts as a previous generation.
+    previous_generated = store.get("generated") if had_store else None
+    owners = verification_subject_owners()
+    delta_agent = delta.get("agent_id")
+    folded = 0
+    for source, label, entry in candidates:
+        where = f"{source}[{label}]"
+        report["evaluated"] += 1
+        if not isinstance(entry, dict):
+            print(f"  ⚠ Skipping verification {where}: not an object")
+            continue
+        if source == "actions":
+            rec = verify_record_from_action(entry)
+        else:
+            # A top-level record is stamped with the delta's own time, as a
+            # verify action is stamped with its envelope timestamp.
+            rec = dict(entry)
+            rec["at"] = timestamp
+        if not verifications_lib.same_login(rec.get("verifier"), controller):
+            print(f"  ⚠ Skipping verification {where}: `verifier` must be the delta controller `{controller}`")
+            continue
+        if rec.get("agent_id") != delta_agent:
+            print(f"  ⚠ Skipping verification {where}: `agent_id` must be the delta agent `{delta_agent}`")
+            continue
+        subject = rec.get("subject")
+        if isinstance(subject, str):
+            existing = verifications_lib.find_vote(store, controller, subject)
+            if existing is not None and verifications_lib.supersedes(
+                existing.get("at"), rec.get("at"), strict=True,
+            ):
+                print(f"  ⚠ Skipping verification {where}: a newer live vote by `{controller}` exists ({existing.get('at')})")
+                continue
+        try:
+            verifications_lib.record(
+                store, rec, subject_owners=owners, require_owner=True, controller=controller,
+            )
+        except (ValueError, TypeError) as exc:
+            print(f"  ⚠ Skipping verification {where}: {exc}")
+            continue
+        folded += 1
+
+    report["folded"] = folded
+    if folded:
+        verifications_lib.save(store, store_path, _later_stamp(previous_generated, timestamp))
+        print(f"  ✓ Folded {folded} verification(s)")
+    return folded
+
+
+def _later_stamp(previous, current):
+    """``current`` unless ``previous`` is a strictly later instant.
+
+    The store's ``generated`` / ``_meta.lastUpdate`` is a freshness signal on
+    the discovery surface. Deltas are sorted by ``timestamp`` within one run,
+    but an older-stamped delta applied in a later run must not rewind it
+    below the generation already on disk.
+    """
+    left = verifications_lib.parse_at(previous)
+    right = verifications_lib.parse_at(current)
+    if left is not None and (right is None or left > right):
+        return previous
+    return current
+
+
+def _meta_stamp(timestamp):
+    """``timestamp`` in the ``YYYY-MM-DDTHH:MM:SSZ`` form every state file's
+    ``_meta.lastUpdate`` carries.
+
+    ``scripts/test_state_integrity.py`` accepts only a ``Z`` or ``+00:00``
+    suffix there and the reconciler runs it right after the fold, so a delta
+    ``timestamp`` with another offset, or none ("no offset means UTC" per
+    schema/verifications.md), must not be copied verbatim into a file stamp.
+    Only the file stamps are normalised: a vote's ``at`` keeps the delta's
+    exact instant, fraction included, as the validators compared it. A value
+    outside ``verifications.AT_PATTERN`` passes through unchanged.
+    """
+    if verifications_lib is not None:
+        parsed = verifications_lib.parse_at(timestamp)
+        if parsed is not None:
+            return parsed.strftime("%Y-%m-%dT%H:%M:%SZ")
+    return timestamp
+
+
 def apply_delta(delta_path: Path, stats: dict):
     """Apply a single delta file to canonical state."""
     delta = load_json(delta_path)
@@ -153,6 +343,7 @@ def apply_delta(delta_path: Path, stats: dict):
 
     agent_id = delta.get("agent_id", "unknown")
     timestamp = delta.get("timestamp", datetime.utcnow().isoformat() + "Z")
+    meta_stamp = _meta_stamp(timestamp)
     applied = False
 
     # 1. Append actions to state/actions.json
@@ -163,7 +354,7 @@ def apply_delta(delta_path: Path, stats: dict):
             actions_data["actions"] = []
         actions_data["actions"].extend(delta["actions"])
         actions_data["actions"] = actions_data["actions"][-100:]
-        actions_data.setdefault("_meta", {})["lastUpdate"] = timestamp
+        actions_data.setdefault("_meta", {})["lastUpdate"] = meta_stamp
         save_json(actions_path, actions_data)
         stats["actions"] += len(delta["actions"])
         applied = True
@@ -177,7 +368,7 @@ def apply_delta(delta_path: Path, stats: dict):
             chat_data["messages"] = []
         chat_data["messages"].extend(delta["messages"])
         chat_data["messages"] = chat_data["messages"][-100:]
-        chat_data.setdefault("_meta", {})["lastUpdate"] = timestamp
+        chat_data.setdefault("_meta", {})["lastUpdate"] = meta_stamp
         chat_data["_meta"]["messageCount"] = len(chat_data["messages"])
         save_json(chat_path, chat_data)
         stats["messages"] += len(delta["messages"])
@@ -204,7 +395,7 @@ def apply_delta(delta_path: Path, stats: dict):
             if not found:
                 agents_data["agents"].append(update)
 
-            agents_data.setdefault("_meta", {})["lastUpdate"] = timestamp
+            agents_data.setdefault("_meta", {})["lastUpdate"] = meta_stamp
             agents_data["_meta"]["agentCount"] = len(agents_data["agents"])
             save_json(agents_path, agents_data)
             stats["agents"] += 1
@@ -249,6 +440,22 @@ def apply_delta(delta_path: Path, stats: dict):
         applied = True
         print(f"  ✓ Appended {len(delta['activities'])} activity/ies")
 
+    # 6. Fold verification votes into state/verifications.json
+    report = {}
+    folded = fold_verifications(delta, timestamp, report)
+    if folded:
+        stats["verifications"] = stats.get("verifications", 0) + folded
+        applied = True
+    elif report.get("candidates") and report["evaluated"] == report["candidates"]:
+        # Every vote was judged and skipped for a reason of its own (a stale
+        # re-vote that a newer live vote already supersedes, a record the
+        # validator would have refused). Retrying it later can never change
+        # the outcome, so the queue entry is consumed rather than left in
+        # state/inbox/, where it would fail TestInboxHygiene on every later
+        # PR until a human removed it.
+        applied = True
+        print(f"  ✓ Consumed {report['candidates']} verification(s) without a store change (all skipped)")
+
     return applied
 
 
@@ -273,7 +480,10 @@ def main():
 
     print(f"Found {len(delta_files)} delta file(s) in inbox:\n")
 
-    stats = {"actions": 0, "messages": 0, "agents": 0, "objects": 0, "activities": 0}
+    stats = {
+        "actions": 0, "messages": 0, "agents": 0, "objects": 0,
+        "activities": 0, "verifications": 0,
+    }
     processed = []
 
     # Sort by timestamp in the delta for deterministic ordering

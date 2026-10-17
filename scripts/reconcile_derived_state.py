@@ -7,12 +7,25 @@ import argparse
 import json
 import sys
 from collections import Counter
+from datetime import datetime, timezone
 from pathlib import Path
 
 
 # rapp-static-api/1.0 §3: a state write must preserve the document's schema string.
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from static_api import stamp_mapping
+
+# Peer verification votes cast as `verify` actions in state/actions.json are
+# folded into state/verifications.json here, because this script runs on every
+# reconciled state PR (scripts/state_reconciler.py) and the action window only
+# keeps 100 records. Optional imports: a checkout without the verification
+# layer still reconciles everything else.
+try:
+    import verifications as verifications_lib
+    import slosh_lisp as slosh_lib
+except ImportError:  # pragma: no cover - partial checkout
+    verifications_lib = None
+    slosh_lib = None
 
 
 def load_json(path: Path) -> dict:
@@ -25,6 +38,92 @@ def save_json(path: Path, data: dict):
     with path.open("w", encoding="utf-8") as handle:
         json.dump(data, handle, indent=4, ensure_ascii=False, allow_nan=False)
         handle.write("\n")
+
+
+def _store_fingerprint(store: dict) -> str:
+    return json.dumps(
+        {"verifications": store.get("verifications"), "subjects": store.get("subjects")},
+        sort_keys=True,
+    )
+
+
+def fold_verify_actions(repo_root: Path, agents: dict, actions: dict) -> bool:
+    """Fold every `verify` action in the retained window into state/verifications.json.
+
+    Idempotent: a window action whose ``at`` is not later than the live vote
+    by the same controller on the same subject is skipped (timestamps are
+    compared as instants, so ``Z``, offsets and fractional seconds order
+    correctly), and the file is written only when a vote or subject binding
+    actually changes. A later inbox vote therefore stays newest, and an inbox
+    re-vote at the same instant is not re-applied over. The same rule is
+    enforced up front by ``validate_action.validate_verify_authorization``
+    (a re-vote needs a strictly later ``timestamp`` than the live vote, and
+    the actor's controller may not change in the PR that carries the vote,
+    because this fold reads the post-PR ``agents.json``), so a validated
+    verify action is never silently dropped here; the skip only covers
+    actions already folded and votes raced by an inbox delta.
+    The same rules as the validators apply (`verifier` is the actor's
+    controller, no `system`, known subject, no self-verify), so a record that
+    slipped past them is skipped with a printed reason rather than folded.
+    Returns True when the store was written.
+    """
+    if verifications_lib is None or slosh_lib is None:
+        return False
+    verify_actions = [
+        action for action in actions.get("actions", [])
+        if isinstance(action, dict) and action.get("type") == "verify"
+    ]
+    if not verify_actions:
+        return False
+    state_dir = repo_root / "state"
+    store_path = state_dir / "verifications.json"
+    try:
+        store = verifications_lib.load(store_path)
+    except ValueError as exc:
+        print(f"Skipping verification fold: {exc}")
+        return False
+    controllers = {
+        agent["id"]: agent.get("controller", "system")
+        for agent in agents.get("agents", [])
+        if isinstance(agent, dict) and agent.get("id")
+    }
+    owners = slosh_lib.program_subject_owners(state_dir / "programs", controllers)
+    previous_generated = store.get("generated") if store_path.is_file() else None
+    before = _store_fingerprint(store)
+    for action in verify_actions:
+        rec = verifications_lib.record_from_action(action)
+        label = f"verify `{action.get('id')}`"
+        actor_id = action.get("agentId")
+        controller = controllers.get(actor_id) if isinstance(actor_id, str) else None
+        if not controller or controller == "system":
+            print(f"Skipping {label}: actor has no peer controller")
+            continue
+        if not verifications_lib.same_login(rec.get("verifier"), controller):
+            print(f"Skipping {label}: verifier is not the actor's controller")
+            continue
+        subject = rec.get("subject")
+        if not isinstance(subject, str):
+            print(f"Skipping {label}: `data.subject` must be a string")
+            continue
+        existing = verifications_lib.find_vote(store, controller, subject)
+        if existing is not None and verifications_lib.supersedes(existing.get("at"), rec.get("at")):
+            continue  # the live vote is at least as new (instants, not strings): already folded or superseded
+        try:
+            verifications_lib.record(
+                store, rec, subject_owners=owners, require_owner=True, controller=controller,
+            )
+        except (ValueError, TypeError) as exc:
+            print(f"Skipping {label}: {exc}")
+    if _store_fingerprint(store) == before:
+        return False
+    # Never rewind the freshness stamp: an inbox vote may have stamped the
+    # store up to MAX_FUTURE_SKEW_SECONDS ahead (apply_deltas._later_stamp).
+    stamp = None
+    previous = verifications_lib.parse_at(previous_generated)
+    if previous is not None and previous > datetime.now(timezone.utc):
+        stamp = previous_generated
+    verifications_lib.save(store, store_path, stamp)  # stamps the schema string itself
+    return True
 
 
 def reconcile(repo_root: Path) -> list[str]:
@@ -106,6 +205,9 @@ def reconcile(repo_root: Path) -> list[str]:
         relationships["bonds"] = expected_bonds
         save_json(state_dir / "relationships.json", relationships)
         changed.append("state/relationships.json")
+
+    if fold_verify_actions(repo_root, agents, actions):
+        changed.append("state/verifications.json")
 
     return changed
 

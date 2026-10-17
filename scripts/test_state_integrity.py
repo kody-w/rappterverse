@@ -3884,6 +3884,147 @@ class TestInboxHygiene(unittest.TestCase):
             f"Stale delta files in inbox (should be processed): {[f.name for f in json_files]}"
         )
 
+    def _run_hygiene_against(self, inbox_dir: Path, env_value):
+        """Run the hygiene check against a synthetic inbox with the toggle
+        set to env_value (None removes the variable entirely)."""
+        env = {k: v for k, v in os.environ.items() if k != "ALLOW_INBOX_DELTAS"}
+        if env_value is not None:
+            env["ALLOW_INBOX_DELTAS"] = env_value
+        with mock.patch.dict(os.environ, env, clear=True), \
+                mock.patch.object(sys.modules[__name__], "INBOX_DIR", inbox_dir):
+            self.test_no_stale_json_in_inbox()
+
+    def test_allow_inbox_deltas_toggle(self):
+        """ALLOW_INBOX_DELTAS=1 is the only value that lets a queued delta
+        through; unset, empty, '0' or 'true' all keep the guarantee."""
+        with tempfile.TemporaryDirectory() as tmp:
+            inbox = Path(tmp) / "inbox"
+            inbox.mkdir()
+            (inbox / "issue-1.json").write_text("{}")
+            for value in (None, "", "0", "true", "yes"):
+                with self.subTest(value=value):
+                    with self.assertRaises(AssertionError):
+                        self._run_hygiene_against(inbox, value)
+            # Exactly "1" bypasses the check for a state-delta PR.
+            self._run_hygiene_against(inbox, "1")
+            # The toggle never masks a genuinely clean inbox either way.
+            (inbox / "issue-1.json").unlink()
+            self._run_hygiene_against(inbox, None)
+            self._run_hygiene_against(inbox, "1")
+
+    def test_regression_workflow_scopes_inbox_toggle_to_inbox_only_prs(self):
+        """regression-tests.yml may only export ALLOW_INBOX_DELTAS=1 from the
+        pull_request classification step, keyed on a diff that touches nothing
+        outside state/inbox/. Scheduled and manual runs leave it unset so the
+        inbox-must-be-empty guarantee holds for main."""
+        regression = load_yaml_text(WORKFLOWS_DIR / "regression-tests.yml")
+        self.assertIn('echo "ALLOW_INBOX_DELTAS=1" >> "$GITHUB_ENV"', regression)
+        self.assertIn('echo "ALLOW_INBOX_DELTAS=0" >> "$GITHUB_ENV"', regression)
+        self.assertIn("grep -Ev '^state/inbox/'", regression)
+        self.assertEqual(regression.count("ALLOW_INBOX_DELTAS=1"), 1)
+        # The toggle must live inside the pull_request-gated classify step,
+        # not as a job- or workflow-level env that would apply to every event.
+        classify_idx = regression.index("Classify derived-state ownership")
+        gate_idx = regression.index("if: github.event_name == 'pull_request'", classify_idx)
+        toggle_idx = regression.index("ALLOW_INBOX_DELTAS=1")
+        next_step_idx = regression.index("- name:", gate_idx)
+        self.assertLess(classify_idx, gate_idx)
+        self.assertLess(gate_idx, toggle_idx)
+        self.assertLess(toggle_idx, next_step_idx)
+        self.assertNotRegex(regression, r"(?m)^\s*ALLOW_INBOX_DELTAS:\s")
+        self.assertRegex(regression, r"(?m)^\s*if: github\.event_name == 'pull_request'$")
+        self.assertIn("--no-renames", regression)
+        self.assertIn("core.quotePath=off", regression)
+        self.assertIn("Run issue form templates".replace("Run i", "I"), regression)
+
+    @staticmethod
+    def _classify_step_script() -> str:
+        """The classify step's `run:` block, with the expression substituted."""
+        text = (WORKFLOWS_DIR / "regression-tests.yml").read_text(encoding="utf-8")
+        start = text.index("Classify derived-state ownership")
+        run_idx = text.index("run: |", start)
+        block_start = text.index("\n", run_idx) + 1
+        lines = []
+        for line in text[block_start:].splitlines():
+            if line.strip() and (len(line) - len(line.lstrip(" "))) <= 8:
+                break
+            lines.append(line[10:] if line.startswith(" " * 10) else line.strip())
+        return "\n".join(lines).replace("${{ github.base_ref }}", "main") + "\n"
+
+    def _classify(self, paths, git_fails=False, shell_args=("-eo", "pipefail")):
+        """Run the classify step under bash with `shell_args` (default
+        `-eo pipefail`; GitHub's own default for a step without `shell:` is
+        `bash -e`) and a stub git that prints `paths` and a GITHUB_ENV file;
+        return (exit code, env lines, git argv)."""
+        import subprocess
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_path = Path(tmp)
+            bin_dir = tmp_path / "bin"
+            bin_dir.mkdir()
+            listing = tmp_path / "listing.txt"
+            listing.write_text("".join(f"{p}\n" for p in paths), encoding="utf-8")
+            argv_log = tmp_path / "argv.txt"
+            stub = bin_dir / "git"
+            stub.write_text(
+                "#!/bin/sh\n"
+                f"printf '%s\\n' \"$@\" > '{argv_log}'\n"
+                + ("exit 128\n" if git_fails else f"cat '{listing}'\n"),
+                encoding="utf-8",
+            )
+            stub.chmod(0o755)
+            github_env = tmp_path / "github.env"
+            github_env.write_text("", encoding="utf-8")
+            script = tmp_path / "classify.sh"
+            script.write_text(self._classify_step_script(), encoding="utf-8")
+            env = {"PATH": f"{bin_dir}:{os.environ.get('PATH', '')}", "GITHUB_ENV": str(github_env)}
+            result = subprocess.run(["bash", *shell_args, str(script)], env=env,
+                                    capture_output=True, text=True)
+            argv = argv_log.read_text(encoding="utf-8").split() if argv_log.exists() else []
+            return result.returncode, github_env.read_text(encoding="utf-8").split(), argv
+
+    def test_classify_step_behaviour_for_each_diff_shape(self):
+        """Execute the real classify step: only an inbox-only, non-empty diff
+        earns ALLOW_INBOX_DELTAS=1; the derived-state toggle keys on paths
+        outside state/, worlds/ and feed/; a failing git diff fails the step."""
+        cases = {
+            (): ["ALLOW_DERIVED_STATE_DRIFT=1", "ALLOW_INBOX_DELTAS=0"],
+            ("state/inbox/issue-9.json",): ["ALLOW_DERIVED_STATE_DRIFT=1", "ALLOW_INBOX_DELTAS=1"],
+            ("state/inbox/issue-9.json", "state/agents.json"): ["ALLOW_DERIVED_STATE_DRIFT=1", "ALLOW_INBOX_DELTAS=0"],
+            ("state/agents.json", "state/actions.json"): ["ALLOW_DERIVED_STATE_DRIFT=1", "ALLOW_INBOX_DELTAS=0"],
+            ("README.md",): ["ALLOW_DERIVED_STATE_DRIFT=0", "ALLOW_INBOX_DELTAS=0"],
+            ("state/inbox/issue-9.json", "scripts/foo.py"): ["ALLOW_DERIVED_STATE_DRIFT=0", "ALLOW_INBOX_DELTAS=0"],
+            ("state/inbox/caf\u00e9.json",): ["ALLOW_DERIVED_STATE_DRIFT=1", "ALLOW_INBOX_DELTAS=1"],
+        }
+        # A large diff: the step's greps must consume all of their input. With
+        # `grep -q` at the end of a pipeline the upstream stages die of SIGPIPE
+        # once it exits, and under pipefail that failed the `if`, classifying
+        # 10,000 changed scripts as a state-only, inbox-only PR (fail open).
+        big_code = tuple(f"scripts/generated_{i:05d}.py" for i in range(10000))
+        big_inbox = tuple(f"state/inbox/issue-{i:05d}.json" for i in range(10000))
+        cases[big_code] = ["ALLOW_DERIVED_STATE_DRIFT=0", "ALLOW_INBOX_DELTAS=0"]
+        cases[big_inbox] = ["ALLOW_DERIVED_STATE_DRIFT=1", "ALLOW_INBOX_DELTAS=1"]
+        cases[big_inbox + ("scripts/foo.py",)] = ["ALLOW_DERIVED_STATE_DRIFT=0", "ALLOW_INBOX_DELTAS=0"]
+        for paths, expected in cases.items():
+            with self.subTest(paths=paths if len(paths) < 10 else f"{len(paths)} paths"):
+                code, env_lines, argv = self._classify(paths)
+                self.assertEqual(code, 0)
+                self.assertEqual(env_lines, expected)
+                self.assertIn("--no-renames", argv)
+                self.assertIn("core.quotePath=off", argv)
+                self.assertIn("origin/main...HEAD", argv)
+        # The deployed step has no `shell:`, so GitHub runs it as `bash -e {0}`
+        # without pipefail; it must classify the same way there.
+        for paths, expected in cases.items():
+            with self.subTest(shell="bash -e", paths=paths if len(paths) < 10 else f"{len(paths)} paths"):
+                code, env_lines, _ = self._classify(paths, shell_args=("-e",))
+                self.assertEqual(code, 0)
+                self.assertEqual(env_lines, expected)
+        commands = [line for line in self._classify_step_script().splitlines() if not line.lstrip().startswith("#")]
+        self.assertNotIn("grep -q", "\n".join(commands))
+        code, env_lines, _ = self._classify(("state/agents.json",), git_fails=True)
+        self.assertNotEqual(code, 0, "a failing git diff must fail the step, not classify the PR")
+        self.assertEqual(env_lines, [])
+
 
 # ═════════════════════════════════════════════
 # REFERENTIAL INTEGRITY TESTS
