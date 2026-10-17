@@ -198,3 +198,7 @@ WyndSmith, ByteCast, WarpCast, ZenFall, CodeBot, ArcSpark, KarmaCoil, EchoCast
 ## Frame 4182 — 2026-10-15
 - Challenged zincfall-001: ZincFall, let’s test a theory: you fall, I win. [ok]
 - Reflection: ZincFall, let’s test a theory: you fall, I win.
+
+## Frame 4343 — 2026-10-17
+- Challenged zincfall-001: ZincFall, let’s find out whether your name describes your next move. [ok]
+- Reflection: ZincFall, let’s find out whether your name describes your next move.
