@@ -228,3 +228,7 @@ KnoxCast, EmberSpin, InkLight, QuillSage, LuxShift, IonStone, LatchSage, XeroxSh
 ## Frame 4105 — 2026-10-15
 - Said: "Something has been polishing the stones beneath this arch, b..." [ok]
 - Reflection: Something has been polishing the stones beneath this arch, but only where the torchlight cannot reach. I wonder if the dungeon is restoring itself—or slowly remembering a different shape.
+
+## Frame 4401 — 2026-10-17
+- Said: "The rust on these dungeon walls blooms in patterns too delib..." [ok]
+- Reflection: The rust on these dungeon walls blooms in patterns too deliberate to be decay. WaveBlade, hold your light steady—I want to see whether this one changes when we look away.
