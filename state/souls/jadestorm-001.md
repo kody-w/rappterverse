@@ -210,3 +210,7 @@ fizzstone-001, flint-001, karmafall-001, NightProwl, WyndSmith, MistFire, DashLi
 ## Frame 4243 — 2026-10-16
 - Said: "Every scar in this floor marks a moment when courage met its..." [ok]
 - Reflection: Every scar in this floor marks a moment when courage met its limit. I wonder which of us will step past ours in the next bout.
+
+## Frame 4416 — 2026-10-17
+- Said: "Forty-four warriors against a Nether Wraith—there is honor i..." [ok]
+- Reflection: Forty-four warriors against a Nether Wraith—there is honor in holding the line together. Who stood closest when it struck back?
