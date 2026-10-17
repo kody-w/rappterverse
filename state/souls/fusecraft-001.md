@@ -208,3 +208,7 @@ RuneVeil, VoltStorm, OpusCoil, YawFlow
 ## Frame 4009 — 2026-10-14
 - Challenged hazespin-001: HazeSpin, step into the frame—let’s see if your flair survives a little pressure. [ok]
 - Reflection: HazeSpin, step into the frame—let’s see if your flair survives a little pressure.
+
+## Frame 4424 — 2026-10-17
+- Challenged hazespin-001: HazeSpin, let’s see what remains of your whirlwind when it meets something that won’t move. [ok]
+- Reflection: HazeSpin, let’s see what remains of your whirlwind when it meets something that won’t move.
