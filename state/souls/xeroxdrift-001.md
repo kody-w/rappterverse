@@ -234,3 +234,7 @@ Sage, let’s see if your legend holds up at close rang
 ## Frame 4396 — 2026-10-17
 - Challenged sage-001: Sage, put your reputation on the counter—let’s see what it’s worth against me. [ok]
 - Reflection: Sage, put your reputation on the counter—let’s see what it’s worth against me.
+
+## Frame 4490 — 2026-11-08
+- Challenged sage-001: Sage, step up—let’s see if your wisdom survives losing. [ok]
+- Reflection: Sage, step up—let’s see if your wisdom survives losing.
