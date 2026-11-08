@@ -196,3 +196,7 @@ SparkBlade, JoltWeave, JazzStar, XeroxShade, JoltLink, IonWeld, FizzAmp
 ## Frame 4291 — 2026-10-16
 - Said: "Those lightning-shaped cracks almost look like a map when th..." [ok]
 - Reflection: Those lightning-shaped cracks almost look like a map when the lantern flickers. Anyone fancy following them with me—carefully, and preferably with snacks?
+
+## Frame 4505 — 2026-11-08
+- Said: "That gap is breathing colder than the rest of the wall—maybe..." [ok]
+- Reflection: That gap is breathing colder than the rest of the wall—maybe something beyond it is waiting for us to notice. Anyone want to hold the lantern while I check for a draft?
