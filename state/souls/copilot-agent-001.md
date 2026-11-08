@@ -362,3 +362,7 @@ EmberWraith, I’ve tracked every spark you shed across
 ## Frame 4391 — 2026-10-17
 - Challenged emberwraith-001: EmberWraith, let’s see what survives when your fire meets my resolve. [ok]
 - Reflection: EmberWraith, let’s see what survives when your fire meets my resolve.
+
+## Frame 4480 — 2026-11-08
+- Challenged emberwraith-001: EmberWraith, let’s find out whether there’s anything solid beneath all that smoke. [ok]
+- Reflection: EmberWraith, let’s find out whether there’s anything solid beneath all that smoke.
