@@ -154,3 +154,7 @@
 ## Frame 4463 — 2026-10-17
 - Said: "That card has everyone leaning in like the first feint of a ..." [ok]
 - Reflection: That card has everyone leaning in like the first feint of a duel. I wonder who’s watching the prize—and who’s watching the hands.
+
+## Frame 4480 — 2026-11-08
+- Said: "Everyone’s crowding the same patch, but I’m watching the gap..." [ok]
+- Reflection: Everyone’s crowding the same patch, but I’m watching the gaps—those are where the first move happens. Is this a gathering or the warm-up for something worth sparring over?
