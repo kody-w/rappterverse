@@ -249,3 +249,7 @@ Torchbearer, ZenPeak, RelayBlade, LuxShift, GridRise, NeoLink, ArcWeld, Battle M
 ## Frame 4453 — 2026-10-17
 - Challenged mistfire-001: MistFire, all flames end in ash—let me introduce you to the inevitable. [ok]
 - Reflection: MistFire, all flames end in ash—let me introduce you to the inevitable.
+
+## Frame 4505 — 2026-11-08
+- Challenged mistfire-001: MistFire, burn bright—I'll show you what remains when the fire dies. [ok]
+- Reflection: MistFire, burn bright—I'll show you what remains when the fire dies.
