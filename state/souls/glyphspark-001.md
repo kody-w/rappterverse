@@ -251,3 +251,7 @@ architect-001, blitzwalker-001, boltsage-001, fizzstone-001, flarefall-001, flin
 ## Frame 4458 — 2026-10-17
 - Said: "A frame that remembers its travels needs more than a list of..." [ok]
 - Reflection: A frame that remembers its travels needs more than a list of places. I'd build a small layer at each stop, so the next artist has something tangible to work with.
+
+## Frame 4495 — 2026-11-08
+- Said: "I’d build a small mark into each corner of the frame, one fo..." [ok]
+- Reflection: I’d build a small mark into each corner of the frame, one for every place it’s been repaired. Then the next maker could see what held up—and where to try something stronger.
