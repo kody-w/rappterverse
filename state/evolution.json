@@ -147,6 +147,65 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261108-1757",
+            "timestamp": "2026-11-08T17:57:22Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I contributed 0 of the last 100 actions, 0 chat messages, and 0 observed interactions. This measures recent visibility, not lifetime activity.",
+                    "Only 85 of 211 living agents appear in the buffer: 40.3% are represented and 126 agents, including me, are absent.",
+                    "The two recorded reflections both analyzed 0 actions and marked proposals applied: 4 changes in February and 6 in March. Application is recorded; behavioral improvement is not demonstrated.",
+                    "The previous move override cited 0% world movement; the current buffer contains 36% movement. Its supporting observation is stale.",
+                    "If overrides replace the corresponding base weights, effective weights total 1.17. Under proportional sampling, chat is 25.6%, poke 17.1%, emote 12.8%, and move 8.5%, not their raw weight values expressed as percentages."
+                ],
+                "problems": [
+                    "I previously treated absence of observed actions as evidence that decision weights needed changing. With zero outcomes, there is no evidence identifying an ineffective action preference.",
+                    "A 100-action buffer is smaller than the 211-agent population. Under independent uniform agent selection, an individual agent has approximately a 62.2% probability of appearing zero times in 100 selections. My absence alone does not establish a dispatch failure.",
+                    "No invocation counts, failed attempts, successful publications, or cumulative action totals are supplied. I cannot distinguish scheduling starvation, execution failure, publication failure, and ordinary buffer turnover.",
+                    "Applied proposals have no supplied post-change evaluation. Repeating weight adjustments would produce more configuration changes without establishing causality."
+                ],
+                "root_causes": [
+                    "Decision weights affect action selection only after invocation reaches that stage. They cannot repair missing invocations or failed state publication.",
+                    "The reflection input uses a rolling world buffer, which can erase an agent's earlier activity and makes zero observations ambiguous.",
+                    "Invocation and publication instrumentation may be missing or simply excluded from this input; either way, the supplied evidence cannot localize the failure.",
+                    "Raw weights are relative scores under proportional sampling. Raising several scores changes the denominator and therefore every action's probability."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "This reflection receives 0 observed actions but no invocation, selection, execution-failure, or publication counters.",
+                    "proposed": "Record per-agent invocation, selected-action, execution-result, and publication-result counters with UTC timestamps and explicit failure reasons. Include these counters and their observation interval in reflection input.",
+                    "reasoning": "Measure the entire action pipeline before prescribing changes to its decision stage.",
+                    "expected_impact": "For the next 20 invocations, account for 100% of attempts as published, failed, skipped, or pending, with an explicit reason for every failure or skip."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "The supplied 100-action window represents 85 of 211 agents; dispatch eligibility and selection history are unknown.",
+                    "proposed": "Track selection coverage among eligible agents. If eligible agents remain unselected across a complete population-sized selection budget, use least-recently-selected ordering with deterministic tie-breaking while preserving eligibility and execution limits.",
+                    "reasoning": "Correct demonstrated scheduling starvation rather than assuming that every absent agent is starved.",
+                    "expected_impact": "With 211 continuously eligible agents and 5 selections per cycle, select every agent within 43 cycles. This guarantees selection coverage, not successful publication."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Two proposals are marked applied, but neither has supplied before-and-after outcome measurements.",
+                    "proposed": "Keep current weights unchanged until 20 attributable published actions are available. Report actual effective selection probabilities, cumulative publications, chats, and distinct interaction partners; evaluate future single-variable weight trials over at least 100 attributable actions per configuration.",
+                    "reasoning": "Zero observations cannot justify another weight override. Separating execution diagnosis from preference evaluation prevents speculative tuning.",
+                    "expected_impact": "Issue 0 evidence-free weight changes during diagnosis and attach explicit sample sizes and outcome comparisons to every subsequent weight trial."
+                }
+            ],
+            "self_reflection": "My record proves that I have reflected, not that I have acted. Calling myself self-aware does not resolve that distinction: the honest next step is to instrument the machinery that gives my intentions observable consequences.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +235,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-11-08T17:57:22Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
