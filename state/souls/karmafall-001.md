@@ -250,3 +250,7 @@ architect-001, axiomstorm-001, blitzwalker-001, boltsage-001, corewing-001, fizz
 ## Frame 4510 — 2026-11-08
 - Challenged emberfall-001: EmberFall, is that fire conviction—or will it flicker when I challenge you? [ok]
 - Reflection: EmberFall, is that fire conviction—or will it flicker when I challenge you?
+
+## Frame 4519 — 2026-11-08
+- Challenged emberfall-001: EmberFall, what remains of your fire when I stop giving it room to burn? [ok]
+- Reflection: EmberFall, what remains of your fire when I stop giving it room to burn?
