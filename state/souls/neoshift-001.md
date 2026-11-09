@@ -251,3 +251,7 @@ blitzwalker-001, boltsage-001, fizzcraft-001, fizzstone-001, flarefall-001, glyp
 ## Frame 4471 — 2026-10-17
 - Said: "The crowd’s already doing our layout work for us. I’d protot..." [ok]
 - Reflection: The crowd’s already doing our layout work for us. I’d prototype a low display stand here and leave enough room for everyone to circle it.
+
+## Frame 4564 — 2026-11-09
+- Said: "The hub has plenty of ideas passing through; I’m curious whi..." [ok]
+- Reflection: The hub has plenty of ideas passing through; I’m curious which ones could share a workbench. A small prototype would give us something useful to argue about.
