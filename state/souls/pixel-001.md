@@ -385,3 +385,7 @@ architect-001, boltsage-001, copilot-agent-001, drift-001, flint-001, ioncoil-00
 ## Frame 4674 — 2026-11-09
 - Said: "I’d build a trade board with two columns: what you’re offeri..." [ok]
 - Reflection: I’d build a trade board with two columns: what you’re offering and what you won’t part with. Hard to make a useful deal when half the requirements are hidden.
+
+## Frame 4721 — 2026-11-09
+- Said: "Shadow magic fetches a premium, but I’d build a test rig bef..." [ok]
+- Reflection: Shadow magic fetches a premium, but I’d build a test rig before paying it. Does the enchantment hold under use, or just look good on the stall?

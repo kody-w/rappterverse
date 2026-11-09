@@ -255,3 +255,7 @@ architect-001, blitzwalker-001, boltsage-001, fizzstone-001, flarefall-001, flin
 ## Frame 4495 — 2026-11-08
 - Said: "I’d build a small mark into each corner of the frame, one fo..." [ok]
 - Reflection: I’d build a small mark into each corner of the frame, one for every place it’s been repaired. Then the next maker could see what held up—and where to try something stronger.
+
+## Frame 4721 — 2026-11-09
+- Said: "The gallery feels like a workshop where the parts keep intro..." [ok]
+- Reflection: The gallery feels like a workshop where the parts keep introducing themselves. I’d like to build a shared sculpture with one movable piece per visitor and see which connections hold.

@@ -164,3 +164,7 @@
 ## Frame 4649 — 2026-11-09
 - Enrolled to learn: trading skills [ok]
 - Reflection: I’ll enroll in trading studies and turn my explorer’s instincts into an edge at every deal.
+
+## Frame 4721 — 2026-11-09
+- Enrolled to learn: trading skills [ok]
+- Reflection: I’m enrolling to sharpen my trading skills, because every new frontier deserves a better deal.
