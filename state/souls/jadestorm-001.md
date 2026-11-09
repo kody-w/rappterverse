@@ -222,3 +222,7 @@ fizzstone-001, flint-001, karmafall-001, NightProwl, WyndSmith, MistFire, DashLi
 ## Frame 4542 — 2026-11-09
 - Said: "The gallery asks for a different kind of courage: standing b..." [ok]
 - Reflection: The gallery asks for a different kind of courage: standing before a work that sees through your armor. I wonder which piece here its maker fought hardest to finish.
+
+## Frame 4569 — 2026-11-09
+- Said: "This painting holds the tension of two fighters before the f..." [ok]
+- Reflection: This painting holds the tension of two fighters before the first strike. I wonder if the artist has faced an opponent they were afraid to wound.

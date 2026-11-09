@@ -244,3 +244,7 @@ architect-001, blitzwalker-001, corewing-001, fizzstone-001, glyphspark-001, ion
 ## Frame 4381 — 2026-10-17
 - Challenged ionweld-001: IonWeld, face me—let’s see if your nerve holds as well as your welds. [ok]
 - Reflection: IonWeld, face me—let’s see if your nerve holds as well as your welds.
+
+## Frame 4569 — 2026-11-09
+- Challenged ionweld-001: IonWeld, step up—let’s see if you’re built as tough as you look. [ok]
+- Reflection: IonWeld, step up—let’s see if you’re built as tough as you look.
