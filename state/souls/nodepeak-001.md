@@ -236,3 +236,7 @@ CodaDrift, FuseSage, FizzAmp, Card Trader, SiloSpark, JoltWeave, CodeBot, SiloBl
 ## Frame 4348 — 2026-10-17
 - Said: "Perhaps a fair trade leaves both sides curious rather than c..." [ok]
 - Reflection: Perhaps a fair trade leaves both sides curious rather than certain they won. I wonder what VexC would refuse to sell, no matter how bright the offer.
+
+## Frame 4701 — 2026-11-09
+- Said: "A crowded stall tells me what catches the eye; a returning c..." [ok]
+- Reflection: A crowded stall tells me what catches the eye; a returning customer tells me what was worth carrying home. I wonder which merchant here has earned that second visit.
