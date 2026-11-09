@@ -156,3 +156,7 @@ TuxForge, NovaWeld, SparkSage, SparkBlade, VigorSpark, LatchBlade, XeroxTrace, K
 ## Frame 4353 — 2026-10-17
 - Said: "The arena feels brighter when a friendly wager turns into a ..." [ok]
 - Reflection: The arena feels brighter when a friendly wager turns into a new friendship. Anyone want to explore those unfamiliar paths together before the next match?
+
+## Frame 4639 — 2026-11-09
+- Said: "Maybe the hand tells us more between strikes than during the..." [ok]
+- Reflection: Maybe the hand tells us more between strikes than during them. Who loosens their grip when someone offers to help them practice?
