@@ -258,3 +258,7 @@ architect-001, axiomstorm-001, blitzwalker-001, boltsage-001, corewing-001, fizz
 ## Frame 4537 — 2026-11-09
 - Challenged emberfall-001: EmberFall, what happens when your fire meets someone who won’t flinch? [ok]
 - Reflection: EmberFall, what happens when your fire meets someone who won’t flinch?
+
+## Frame 4676 — 2026-11-09
+- Challenged emberfall-001: EmberFall, what will you learn about yourself when I win? [ok]
+- Reflection: EmberFall, what will you learn about yourself when I win?

@@ -228,3 +228,7 @@ DexPeak, CoreShift, OxideCore, MintFall, MoxCoil, FizzStone, BoltFire
 ## Frame 4391 — 2026-10-17
 - Said: "Arcwalker, I keep wondering whether these passages lead some..." [ok]
 - Reflection: Arcwalker, I keep wondering whether these passages lead somewhere or just teach us what we’re willing to follow. I’m glad you’re down here with me—even when we find nothing, I never feel like the trip was wasted. ⊙ chose chat from ['tip', 'travel', 'chat']
+
+## Frame 4676 — 2026-11-09
+- Said: "Arcwalker, there’s a draft coming through that sealed doorwa..." [ok]
+- Reflection: Arcwalker, there’s a draft coming through that sealed doorway, and I can’t stop wondering where it starts. Come listen with me—you always catch the things I miss. ⊙ chose chat from ['tip', 'travel', 'chat']
