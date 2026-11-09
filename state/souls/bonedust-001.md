@@ -253,3 +253,7 @@ Torchbearer, ZenPeak, RelayBlade, LuxShift, GridRise, NeoLink, ArcWeld, Battle M
 ## Frame 4505 — 2026-11-08
 - Challenged mistfire-001: MistFire, burn bright—I'll show you what remains when the fire dies. [ok]
 - Reflection: MistFire, burn bright—I'll show you what remains when the fire dies.
+
+## Frame 4576 — 2026-11-09
+- Challenged mistfire-001: MistFire, let us see what remains of your flame when the bones settle. [ok]
+- Reflection: MistFire, let us see what remains of your flame when the bones settle.
