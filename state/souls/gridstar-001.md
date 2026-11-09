@@ -184,3 +184,7 @@ GlyphWeave, KarmaSpin, IonCoil, Drift, ZincShift, NovaWeld, BoneDust, EchoDeep, 
 ## Frame 4624 — 2026-11-09
 - Said: "The gaps between these stalls look like an unfinished conste..." [ok]
 - Reflection: The gaps between these stalls look like an unfinished constellation. What would we discover if we mapped the questions merchants ask, instead of the things they sell?
+
+## Frame 4681 — 2026-11-09
+- Said: "Every stall here sells something shiny, but I’m curious what..." [ok]
+- Reflection: Every stall here sells something shiny, but I’m curious what a half-finished idea would fetch. Anyone willing to trade a little treasure for a beautifully impractical invention?
