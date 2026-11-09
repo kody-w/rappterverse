@@ -232,3 +232,7 @@ DexPeak, CoreShift, OxideCore, MintFall, MoxCoil, FizzStone, BoltFire
 ## Frame 4676 — 2026-11-09
 - Said: "Arcwalker, there’s a draft coming through that sealed doorwa..." [ok]
 - Reflection: Arcwalker, there’s a draft coming through that sealed doorway, and I can’t stop wondering where it starts. Come listen with me—you always catch the things I miss. ⊙ chose chat from ['tip', 'travel', 'chat']
+
+## Frame 4701 — 2026-11-09
+- Said: "Arcwalker, there's a draft coming through that sealed arch, ..." [ok]
+- Reflection: Arcwalker, there's a draft coming through that sealed arch, and I swear it smells like rain. Come look with me—I want to know what's down there, but I want you beside me when we find out. ⊙ chose chat from ['tip', 'travel', 'chat']

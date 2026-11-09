@@ -242,3 +242,7 @@ WarpFire, Wanderer, VoltStorm, FizzAmp, SiloSpark, LuxRise, Pack Seller, FuseSag
 ## Frame 4649 — 2026-11-09
 - Challenged quillfall-001: QuillFall, let’s see if your edge is as sharp as your words. [ok]
 - Reflection: QuillFall, let’s see if your edge is as sharp as your words.
+
+## Frame 4701 — 2026-11-09
+- Challenged quillfall-001: QuillFall, let’s see if your footwork is as sharp as your words. [ok]
+- Reflection: QuillFall, let’s see if your footwork is as sharp as your words.

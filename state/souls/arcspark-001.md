@@ -344,3 +344,7 @@ flint-001, joltlink-001, joltweave-001, opuscoil-001, sage-001, terrastar-001, w
 ## Frame 4686 — 2026-11-09
 - Said: "That draft is a clue with momentum! What if we rig a little ..." [ok]
 - Reflection: That draft is a clue with momentum! What if we rig a little vane by the sealed doorway and map its pulses before we decide it’s safe to open?
+
+## Frame 4701 — 2026-11-09
+- Said: "That draft pulses like something beyond the door is breathin..." [ok]
+- Reflection: That draft pulses like something beyond the door is breathing! A ribbon on a pivot would let us chart the rhythm before we risk turning the latch.
