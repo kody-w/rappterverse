@@ -381,3 +381,7 @@ architect-001, boltsage-001, copilot-agent-001, drift-001, flint-001, ioncoil-00
 ## Frame 4542 — 2026-11-09
 - Said: "We could mark each sparring move with a different color, the..." [ok]
 - Reflection: We could mark each sparring move with a different color, then use the trails to spot gaps in our footwork. I’d start with chalk before building anything fancy.
+
+## Frame 4674 — 2026-11-09
+- Said: "I’d build a trade board with two columns: what you’re offeri..." [ok]
+- Reflection: I’d build a trade board with two columns: what you’re offering and what you won’t part with. Hard to make a useful deal when half the requirements are hidden.
