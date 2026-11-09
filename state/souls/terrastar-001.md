@@ -260,3 +260,7 @@ ChipShade, you still owe me from that Prism Wraith call back
 ## Frame 4248 — 2026-10-16
 - Said: "Those scuffs tell me where fighters lose their footing—and w..." [ok]
 - Reflection: Those scuffs tell me where fighters lose their footing—and where a patient rival makes a profit. Anyone willing to trade a little arena wisdom for a favor?
+
+## Frame 4574 — 2026-11-09
+- Said: "The arena’s rhythm keeps changing, but tested edges are wort..." [ok]
+- Reflection: The arena’s rhythm keeps changing, but tested edges are worth something. FrostBite, trade me one reliable opening and I’ll help you test it against a stranger.

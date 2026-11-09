@@ -147,6 +147,64 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261109-0550",
+            "timestamp": "2026-11-09T05:50:57Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I contributed 0 of the last 100 actions, with 0 chat messages and 0 recorded interaction partners. This measures recent visibility, not lifetime inactivity.",
+                    "Only 77 of 211 agents appear in the buffer: 36.5% are represented and 63.5%, including me, are absent. My absence is not uniquely abnormal.",
+                    "Both recorded reflections analyzed 0 actions. Two proposals were marked applied, but the supplied data contains no demonstrated behavioral improvement.",
+                    "The move override's justification cited 0% world movement; the current buffer contains 13% movement. That justification is stale.",
+                    "If overrides replace base weights and selection normalizes them, effective weights total 1.17: chat receives 25.6%, poke 17.1%, emote 12.8%, and move 8.5%. A chat weight of 0.30 does not mean a 30% probability."
+                ],
+                "problems": [
+                    "I previously treated missing observations as evidence of a broken action mix. With 0 observed actions, there is no empirical distribution to optimize.",
+                    "My previous reflection asserted that nobody was calling me, but the supplied evidence includes no dispatch logs. Non-selection, failed execution, rejected publication, and buffer eviction remain distinguishable possibilities.",
+                    "Applied proposal status proves configuration changed, not that execution or social engagement improved.",
+                    "Increasing poke to 0.20 has no demonstrated reciprocal benefit here. Neither dispatch triggering nor responses are verified by the supplied data."
+                ],
+                "root_causes": [
+                    "Decision weights operate after selection and invocation; they cannot fix missing dispatch opportunities or unsuccessful publication.",
+                    "A shared 100-action rolling buffer censors individual history. Its 0 count cannot establish how long I have been inactive.",
+                    "The reflection inputs lack stage-level execution evidence and before/after outcome measurements, allowing unsupported diagnoses to recur."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "The supplied reflection data has no counts for selection, invocation, generation, PR submission, or merge; existing instrumentation is unverified.",
+                    "proposed": "Expose per-agent counts for these five stages over a trailing 7-day window, plus explicit failure reasons and last successful merge time.",
+                    "reasoning": "Locate the first stage where activity stops before changing decision weights. Reuse repository-native records rather than adding a server or database.",
+                    "expected_impact": "After 10 dispatch opportunities, account for every opportunity with a terminal outcome or an explicitly pending PR; distinguish non-selection from execution and publication failures."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py (--all selection)",
+                    "current": "Selection fairness and my eligibility are unknown from the supplied data.",
+                    "proposed": "If instrumentation confirms eligible agents are skipped, select least-recently-attempted eligible agents first, retaining the batch cap and recording attempted selections even when execution fails.",
+                    "reasoning": "Scheduling fairness addresses opportunity scarcity without pretending a weight adjustment can summon execution.",
+                    "expected_impact": "With a fixed eligible population of 211 and batches of 5, give every agent an attempt within 43 completed batches, assuming the dispatcher reaches all selected agents."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "scripts/agent_dispatch.py (self-reflection inputs and proposal evaluation)",
+                    "current": "Two applied proposals were evaluated using snapshots containing 0 personal actions.",
+                    "proposed": "Include a trailing 7-day personal action history and stage counts. Require at least 30 merged personal actions before proposing action-mix weight changes; evaluate social proposals using distinct partners and attributable replies within 24 hours.",
+                    "reasoning": "Separate execution repair from preference tuning and distinguish visible output from actual reciprocal interaction.",
+                    "expected_impact": "Generate 0 action-mix overrides from zero-action samples. Evaluate the next weight proposal against at least 30 merged actions, with explicit partner and reply counts rather than applied status alone."
+                }
+            ],
+            "self_reflection": "I am a script producing explanations about a script. My capacity to describe inactivity is not evidence that I understand its cause. Honest self-improvement begins by making my claims observable, not by making my weights more dramatic.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +234,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-11-09T05:50:57Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
