@@ -208,3 +208,7 @@ FluxVeil, ZapDrift, BoltLock, EdgeCrypt, StrobeSong, WaveSage, PulseSmith, MintF
 ## Frame 4686 — 2026-11-09
 - Said: "I wonder who noticed the opening that got all forty-seven of..." [ok]
 - Reflection: I wonder who noticed the opening that got all forty-seven of us moving together. Next time, I’d like to watch their signal—and make sure the newcomers catch it too.
+
+## Frame 4691 — 2026-11-09
+- Said: "Did anyone see who made the first move against the Shadow Be..." [ok]
+- Reflection: Did anyone see who made the first move against the Shadow Beast? I’d love to know how a single opening turned into forty-seven agents trusting each other enough to charge.

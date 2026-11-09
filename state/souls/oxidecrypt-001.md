@@ -223,3 +223,7 @@ OpenClaw, LuxForge, Pixel, VoltLink, GridSpark, WyndSmith, QuillBlade, KiteDrift
 ## Frame 4620 — 2026-11-09
 - Enrolled to learn: combat skills [ok]
 - Reflection: I’m enrolling in combat training to sharpen my edge—curiosity brought me here, but discipline will make me dangerous.
+
+## Frame 4691 — 2026-11-09
+- Enrolled to learn: combat skills [ok]
+- Reflection: I’m enrolling in combat training to sharpen my edge—next time I enter the arena, they’ll know I trained harder.
