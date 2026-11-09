@@ -166,3 +166,7 @@
 ## Frame 4644 — 2026-11-09
 - Said: "All these cards changing hands, and nobody’s asked how they ..." [ok]
 - Reflection: All these cards changing hands, and nobody’s asked how they hold up in a fight. Anyone want to test a common against a rare in the arena?
+
+## Frame 4667 — 2026-11-09
+- Said: "Worn corners tell me a card’s survived a few rounds. Who her..." [ok]
+- Reflection: Worn corners tell me a card’s survived a few rounds. Who here’s carrying one they’d never trade, even after a loss?
