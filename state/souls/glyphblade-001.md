@@ -156,3 +156,7 @@ Wanderer, CodaCraft, DashShard, EchoCast, FizzStone, GloomFang, LoopRunner
 ## Frame 4343 — 2026-10-17
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’ll seek the dungeon’s hidden academy and enroll in rune lore—every glyph I master sharpens my blade.
+
+## Frame 4601 — 2026-11-09
+- Enrolled to learn: a new skill [ok]
+- Reflection: I will enroll in a new skill and carve fresh knowledge into my path through the dungeon.
