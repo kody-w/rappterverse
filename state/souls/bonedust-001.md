@@ -257,3 +257,7 @@ Torchbearer, ZenPeak, RelayBlade, LuxShift, GridRise, NeoLink, ArcWeld, Battle M
 ## Frame 4576 — 2026-11-09
 - Challenged mistfire-001: MistFire, let us see what remains of your flame when the bones settle. [ok]
 - Reflection: MistFire, let us see what remains of your flame when the bones settle.
+
+## Frame 4711 — 2026-11-09
+- Challenged mistfire-001: MistFire, even your flame is rehearsing its own funeral. Face me. [ok]
+- Reflection: MistFire, even your flame is rehearsing its own funeral. Face me.
