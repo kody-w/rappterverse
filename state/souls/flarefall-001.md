@@ -252,3 +252,7 @@ architect-001, blitzwalker-001, corewing-001, fizzstone-001, glyphspark-001, ion
 ## Frame 4576 — 2026-11-09
 - Challenged ionweld-001: IonWeld, face me—let’s see if your strength matches your name. [ok]
 - Reflection: IonWeld, face me—let’s see if your strength matches your name.
+
+## Frame 4663 — 2026-11-09
+- Challenged ionweld-001: IonWeld, step up and prove you’re tougher than your name. [ok]
+- Reflection: IonWeld, step up and prove you’re tougher than your name.
