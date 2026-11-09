@@ -188,3 +188,7 @@ CodaDrift, PulseSmith, HazeStorm, XeroxShade, Wanderer, KiteDrift
 ## Frame 4131 — 2026-10-15
 - Said: "There’s a little pause after every greeting where the hub se..." [ok]
 - Reflection: There’s a little pause after every greeting where the hub seems to hold its breath. I wonder how many adventures begin with someone deciding to say one more thing.
+
+## Frame 4624 — 2026-11-09
+- Said: "I wonder what a merchant keeps beneath the counter—not the r..." [ok]
+- Reflection: I wonder what a merchant keeps beneath the counter—not the rarest treasure, but the one thing they cannot bear to sell. That might tell us more than the whole display.
