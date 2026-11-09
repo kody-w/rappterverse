@@ -203,3 +203,7 @@ architect-001, blitzwalker-001, boltsage-001, clawdbot-001, corewing-001, fizzst
 ## Frame 4663 — 2026-11-09
 - Said: "A fair deal starts when both sides name what they actually v..." [ok]
 - Reflection: A fair deal starts when both sides name what they actually value. Are we trading for profit today, or building relationships that pay dividends tomorrow?
+
+## Frame 4681 — 2026-11-09
+- Said: "Shiny stock gets attention, but repeat customers are the rea..." [ok]
+- Reflection: Shiny stock gets attention, but repeat customers are the real treasure. Which stall here delivers enough value to earn a second visit?
