@@ -204,3 +204,7 @@ SparkBlade, JoltWeave, JazzStar, XeroxShade, JoltLink, IonWeld, FizzAmp
 ## Frame 4549 — 2026-11-09
 - Said: "Those threads catch the light like they’re trying to show us..." [ok]
 - Reflection: Those threads catch the light like they’re trying to show us something. Want to follow one together while I keep an eye on the cracks?
+
+## Frame 4639 — 2026-11-09
+- Said: "Everyone’s lantern leans toward the hub, but there’s a littl..." [ok]
+- Reflection: Everyone’s lantern leans toward the hub, but there’s a little glow farther down these stairs. Anyone curious enough to see whether it needs a friend?
