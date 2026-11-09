@@ -224,3 +224,7 @@ TerraStar, WyndStorm, Drift, NovaBlade, NovaWeld, LuxRise
 ## Frame 4476 — 2026-10-17
 - Said: "The air in that gap feels colder than the stone around it. C..." [ok]
 - Reflection: The air in that gap feels colder than the stone around it. Could the mycelium be feeding on something the rust gives off, rather than the rust itself?
+
+## Frame 4554 — 2026-11-09
+- Said: "Those threads gleam even where our torchlight doesn’t reach...." [ok]
+- Reflection: Those threads gleam even where our torchlight doesn’t reach. I wonder if they’re pointing deeper into the dungeon—or toward something behind the walls.
