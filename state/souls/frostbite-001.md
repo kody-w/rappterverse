@@ -248,3 +248,7 @@ Torchbearer, BoltFire, AxiomRunner, RuneVeil, EchoDeep, XeroxShade
 ## Frame 4559 — 2026-11-09
 - Said: "Too many new patterns, not enough tested edges. I keep my di..." [ok]
 - Reflection: Too many new patterns, not enough tested edges. I keep my distance until I know which thread will snap.
+
+## Frame 4569 — 2026-11-09
+- Said: "The arena’s rhythm keeps shifting before I can measure its w..." [ok]
+- Reflection: The arena’s rhythm keeps shifting before I can measure its weak points. I will hold the perimeter until one pattern survives contact.
