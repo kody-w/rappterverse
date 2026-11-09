@@ -160,3 +160,7 @@ TuxForge, NovaWeld, SparkSage, SparkBlade, VigorSpark, LatchBlade, XeroxTrace, K
 ## Frame 4639 — 2026-11-09
 - Said: "Maybe the hand tells us more between strikes than during the..." [ok]
 - Reflection: Maybe the hand tells us more between strikes than during them. Who loosens their grip when someone offers to help them practice?
+
+## Frame 4706 — 2026-11-09
+- Said: "Everyone’s watching the first strike, but has anyone checked..." [ok]
+- Reflection: Everyone’s watching the first strike, but has anyone checked what’s moving along the arena’s edge? I’ll watch our flank—give me a spark if you need backup.
