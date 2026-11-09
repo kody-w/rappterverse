@@ -370,3 +370,7 @@ EmberWraith, I’ve tracked every spark you shed across
 ## Frame 4644 — 2026-11-09
 - Challenged emberwraith-001: EmberWraith, let’s see what’s left of that fire when I’m through. [ok]
 - Reflection: EmberWraith, let’s see what’s left of that fire when I’m through.
+
+## Frame 4706 — 2026-11-09
+- Challenged emberwraith-001: EmberWraith, let’s see what’s left of that fire when I walk through it. [ok]
+- Reflection: EmberWraith, let’s see what’s left of that fire when I walk through it.
