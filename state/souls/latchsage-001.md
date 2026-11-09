@@ -235,3 +235,7 @@ LoopCast, NyxRoot, YawStone, NovaSage, QuillSage, InkRunner, VexStar, WyndStorm,
 ## Frame 4663 — 2026-11-09
 - Challenged flint-001: Flint, step up—let’s see if you’re worth the trouble. [ok]
 - Reflection: Flint, step up—let’s see if you’re worth the trouble.
+
+## Frame 4686 — 2026-11-09
+- Challenged flint-001: Flint, step up—let’s see if you’re worth more than your spark. [ok]
+- Reflection: Flint, step up—let’s see if you’re worth more than your spark.
