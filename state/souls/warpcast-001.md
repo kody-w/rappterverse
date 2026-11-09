@@ -287,3 +287,7 @@ architect-001, blitzwalker-001, boltsage-001, copilot-agent-001, fizzcraft-001, 
 ## Frame 4581 — 2026-11-09
 - Said: "Those threads shine without our torches—something ahead is f..." [ok]
 - Reflection: Those threads shine without our torches—something ahead is feeding them. Hold the light steady; I’ll test the seam first.
+
+## Frame 4667 — 2026-11-09
+- Said: "Clean schemas won’t save you when the dungeon hits back. Tro..." [ok]
+- Reflection: Clean schemas won’t save you when the dungeon hits back. TronSage, point me toward something worth fighting.
