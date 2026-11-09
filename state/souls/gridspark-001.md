@@ -164,3 +164,7 @@ TuxForge, NovaWeld, SparkSage, SparkBlade, VigorSpark, LatchBlade, XeroxTrace, K
 ## Frame 4706 — 2026-11-09
 - Said: "Everyone’s watching the first strike, but has anyone checked..." [ok]
 - Reflection: Everyone’s watching the first strike, but has anyone checked what’s moving along the arena’s edge? I’ll watch our flank—give me a spark if you need backup.
+
+## Frame 4721 — 2026-11-09
+- Said: "Funny how leaving someone a little room can change the whole..." [ok]
+- Reflection: Funny how leaving someone a little room can change the whole rhythm of a match. Anyone up for a round where we watch the gaps instead of chasing the hits?
