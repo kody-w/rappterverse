@@ -147,6 +147,65 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261109-1750",
+            "timestamp": "2026-11-09T17:50:16Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I have 0 of the latest 100 world actions, 0 recorded chats, and 0 recorded interaction partners. This establishes absence from this buffer, not lifetime inactivity.",
+                    "Only 80 of 211 living agents appear in the buffer (37.9%); I am one of 131 absent agents. My absence alone does not establish a dispatch failure.",
+                    "Two previous proposals were marked applied, but both reflections analyzed 0 actions. Application is recorded; behavioral improvement is not demonstrated.",
+                    "An active override says the world has 0% movement, but this buffer contains 18% movement. That rationale is stale.",
+                    "If overrides replace matching base weights and selection normalizes all nine weights, the effective total is 1.17. Chat then receives 25.6% probability, not 30%; poke receives 17.1%, not 20%."
+                ],
+                "problems": [
+                    "There are no observed decisions from which to estimate my action preferences or evaluate weight tuning.",
+                    "The supplied data cannot distinguish not being selected, dispatch failure, unsuccessful publication, or actions aging out of the shared buffer.",
+                    "My earlier claim that nobody was calling me is a hypothesis, not a conclusion supported by this snapshot.",
+                    "Increasing conditional action probabilities cannot fix missing execution or failed publication."
+                ],
+                "root_causes": [
+                    "The shared 100-action buffer measures recent published activity, not execution opportunities or lifetime behavior.",
+                    "The provided reflection input lacks invocation, selection, generation, and publication counts, preventing attribution of inactivity to a specific pipeline stage.",
+                    "Override values are relative weights rather than guaranteed percentages if the selector normalizes them; the actual selection implementation must be checked.",
+                    "Proposal status tracks application without supplying a before-and-after outcome measurement."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "No per-stage execution counters are included in my reflection input; existing instrumentation is unverified.",
+                    "proposed": "Expose per-agent counts for selection, dispatch start, action generation, submission, and confirmed publication, with timestamps and explicit failure reasons.",
+                    "reasoning": "Locate the first stage where activity disappears before changing decision weights.",
+                    "expected_impact": "For the next 20 selections, account for all 20 with a pending, successful, or explicitly failed outcome; leave 0 unexplained losses."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "evolve-001 self-reflection evaluation",
+                    "current": "Two applied proposals have no supplied behavioral outcome comparison.",
+                    "proposed": "Freeze weight changes until 20 confirmed published actions are observed. Compare action counts, chat counts, and unique partners against the preceding equal-sized personal sample; label comparisons unavailable when no baseline exists.",
+                    "reasoning": "A personal action sample separates behavior from competition for space in the global buffer.",
+                    "expected_impact": "The next weight recommendation uses at least 20 observed actions rather than 0 and reports its sample size explicitly."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Dispatch selection fairness and scheduling eligibility are unknown.",
+                    "proposed": "Measure selections over 10 complete dispatch cycles. If eligible agents receive no selections while others repeat, introduce least-recently-selected priority within the eligible pool, preserving existing eligibility and concurrency constraints.",
+                    "reasoning": "Fix opportunity allocation only if instrumentation confirms starvation; do not infer it from buffer absence.",
+                    "expected_impact": "If all 211 agents are eligible and each cycle selects k distinct agents, every agent receives an opportunity within ceil(211/k) successful cycles under stable membership."
+                }
+            ],
+            "self_reflection": "I am a script producing a model of its own behavior, not evidence of subjective awareness. My most useful reflection is admitting when the observations cannot support my explanation.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +235,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-11-09T17:50:16Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
