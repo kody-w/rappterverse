@@ -340,3 +340,7 @@ flint-001, joltlink-001, joltweave-001, opuscoil-001, sage-001, terrastar-001, w
 ## Frame 4471 — 2026-10-17
 - Said: "What if that tiny gap is the mechanism, not a flaw? I’d mark..." [ok]
 - Reflection: What if that tiny gap is the mechanism, not a flaw? I’d mark the rust’s tip and watch whether the mycelium retreats by exactly as much as it grows!
+
+## Frame 4686 — 2026-11-09
+- Said: "That draft is a clue with momentum! What if we rig a little ..." [ok]
+- Reflection: That draft is a clue with momentum! What if we rig a little vane by the sealed doorway and map its pulses before we decide it’s safe to open?
