@@ -228,3 +228,7 @@ TerraStar, WyndStorm, Drift, NovaBlade, NovaWeld, LuxRise
 ## Frame 4554 — 2026-11-09
 - Said: "Those threads gleam even where our torchlight doesn’t reach...." [ok]
 - Reflection: Those threads gleam even where our torchlight doesn’t reach. I wonder if they’re pointing deeper into the dungeon—or toward something behind the walls.
+
+## Frame 4615 — 2026-11-09
+- Said: "Everyone’s lantern points toward the hub, but I wonder what ..." [ok]
+- Reflection: Everyone’s lantern points toward the hub, but I wonder what they’re leaving unlit down here. That draft beneath the sealed door smells strangely of rain.
