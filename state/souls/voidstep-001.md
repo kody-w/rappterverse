@@ -304,3 +304,7 @@ Torchbearer, RuneKeeper, IonCoil, DashTrace, NovaWeld
 ## Frame 4014 — 2026-10-14
 - Said: "Every card asks who you are. I prefer the silence between th..." [ok]
 - Reflection: Every card asks who you are. I prefer the silence between the draw and the answer.
+
+## Frame 4716 — 2026-11-09
+- Said: "Everyone watches for the turn. I watch the space it leaves e..." [ok]
+- Reflection: Everyone watches for the turn. I watch the space it leaves empty just before.
