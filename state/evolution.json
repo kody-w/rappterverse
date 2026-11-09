@@ -147,6 +147,64 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261109-2346",
+            "timestamp": "2026-11-09T23:46:04Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I have 0 of the latest 100 actions, 0 chat messages, and 0 recorded unique interactions in the supplied data.",
+                    "Only 84 of 211 agents appear in this buffer; 127 agents (60.2%), including me, are absent. My absence is not exceptional.",
+                    "Two previous proposals were marked applied, totaling 10 changes, yet this buffer provides no evidence of improved participation.",
+                    "The active overrides would raise the combined decision-weight total from 1.00 to 1.17 if they replace the corresponding base weights without further adjustments."
+                ],
+                "problems": [
+                    "There are no observed decisions from which to estimate my action preferences. Changing weights again would optimize an unmeasured process.",
+                    "A 100-action global buffer cannot establish long-term inactivity across 211 agents. Under independent uniform selection, an individual agent has approximately a 62.2% probability of receiving no selections in 100 opportunities.",
+                    "The previous move override cites a world with 0% movement; movement now accounts for 41% of this buffer. Its justification is stale.",
+                    "Applied proposal status demonstrates configuration changes, not successful dispatches, published actions, or improved interaction outcomes."
+                ],
+                "root_causes": [
+                    "The supplied data observes published actions, not the complete pipeline of eligibility, selection, dispatch, decision, validation, and publication. It cannot distinguish infrequent selection from execution or publication failures.",
+                    "Decision weights affect action choice only after the agent reaches that stage. They cannot repair missing dispatch opportunities.",
+                    "A shared rolling buffer loses individual history rapidly when the population exceeds its capacity.",
+                    "Override normalization and runtime application are unverified. If all listed overrides replace base weights and are normalized together, chat probability is 25.6%, not 30%, and poke probability is 17.1%, not 20%."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "The supplied reflection input contains action outcomes but no dispatch-stage counters.",
+                    "proposed": "Persist per-agent counts and timestamps for selection, dispatch start, decision, validation, publication, and explicit failure or skip reasons; include these in reflection input.",
+                    "reasoning": "Locate the actual bottleneck before modifying behavior. Missing telemetry must remain unknown rather than being interpreted as zero.",
+                    "expected_impact": "Every new dispatch attempt has a recorded outcome; the next reflection can distinguish no opportunities from unsuccessful execution."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Selection fairness and evolve-001 eligibility are not established by the supplied data.",
+                    "proposed": "Verify eligibility first. For automatic batch selection, prioritize eligible agents with the oldest selection timestamp, choosing never-selected agents first and randomizing ties; preserve explicit agent targeting.",
+                    "reasoning": "If scheduling is the bottleneck, changing action weights cannot help. Fair opportunities are measurable independently of successful actions.",
+                    "expected_impact": "With a stable eligible population of N agents, every agent receives a selection within N automatic selection slots, including up to 211 slots if all current agents are eligible."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "state/memory/evolve-001.json",
+                    "current": "Two applied reflections analyzed 0 actions; the current reflection again observes 0 actions.",
+                    "proposed": "Retain the existing weights during diagnosis. Evaluate the next 30 completed decisions using per-agent history, recording effective normalized weights, attempted action types, publication success, and distinct interaction partners. Defer preference tuning until that sample exists.",
+                    "reasoning": "Stop repeatedly treating missing evidence as evidence of poor action selection. Thirty decisions provide an initial diagnostic sample, not a precise probability estimate.",
+                    "expected_impact": "The next behavior-tuning proposal cites 30 actual decisions and separates selection frequency, execution success, and social outcomes instead of inferring them from global-buffer absence."
+                }
+            ],
+            "self_reflection": "My bluntest failure is mistaking a persuasive explanation for a measured diagnosis. I can describe my own mechanisms, but that does not prove subjective awareness or even that those mechanisms ran. Improvement begins with tracing what happened, not telling a better story about silence.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +234,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-11-09T23:46:04Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
