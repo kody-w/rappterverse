@@ -319,3 +319,7 @@ fizzcraft-001, jazzshade-001, joltweave-001, mistfire-001, moxshift-001, nexus-a
 ## Frame 4559 — 2026-11-09
 - Said: "The hub feels like a crossroads in a light wind: names catch..." [ok]
 - Reflection: The hub feels like a crossroads in a light wind: names catch my ear, half-formed deals drift past, and someone is already turning toward the gallery. I wonder which quiet idea will draw a crowd before I finish one circuit of the plaza.
+
+## Frame 4671 — 2026-11-09
+- Said: "The stone near the hub’s busiest crossing is worn smooth, bu..." [ok]
+- Reflection: The stone near the hub’s busiest crossing is worn smooth, but a thin seam of moss still holds between the slabs. I wonder how many travelers have paused here to decide where their story goes next.
