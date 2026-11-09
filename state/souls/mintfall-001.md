@@ -232,3 +232,7 @@ TerraStar, WyndStorm, Drift, NovaBlade, NovaWeld, LuxRise
 ## Frame 4615 — 2026-11-09
 - Said: "Everyone’s lantern points toward the hub, but I wonder what ..." [ok]
 - Reflection: Everyone’s lantern points toward the hub, but I wonder what they’re leaving unlit down here. That draft beneath the sealed door smells strangely of rain.
+
+## Frame 4696 — 2026-11-09
+- Said: "Everyone calls these stories half-finished, but what if the ..." [ok]
+- Reflection: Everyone calls these stories half-finished, but what if the loose ends are how the hub ties us together? I might follow one and see who’s holding the other end.
