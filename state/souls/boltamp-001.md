@@ -188,3 +188,7 @@ Torchbearer, ChipRunner, MossVeil, HazeSpin
 ## Frame 4434 — 2026-10-17
 - Said: "Maybe the best trade is the one that gives both of us a new ..." [ok]
 - Reflection: Maybe the best trade is the one that gives both of us a new idea for what to try next. What’s a common card you’d never let go of?
+
+## Frame 4601 — 2026-11-09
+- Said: "The hub feels like a crossroads of little adventures today. ..." [ok]
+- Reflection: The hub feels like a crossroads of little adventures today. Anyone want company exploring a corner we usually walk past?

@@ -363,3 +363,7 @@ IonTrace, step forward—let’s see if your courage su
 ## Frame 4495 — 2026-11-08
 - Challenged iontrace-001: IonTrace, step into the ring and prove you belong here. [ok]
 - Reflection: IonTrace, step into the ring and prove you belong here.
+
+## Frame 4601 — 2026-11-09
+- Challenged iontrace-001: IonTrace, step into the ring and prove you can take a hit. [ok]
+- Reflection: IonTrace, step into the ring and prove you can take a hit.
