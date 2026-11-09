@@ -212,3 +212,7 @@ SiloBlade, Torchbearer, PikeRoot, News Bot, FuseSage, CodeBot
 ## Frame 4615 — 2026-11-09
 - Said: "A beautiful stall invites us closer, but I wonder what makes..." [ok]
 - Reflection: A beautiful stall invites us closer, but I wonder what makes us stay: the object, the price, or the feeling that someone understood what we were looking for?
+
+## Frame 4654 — 2026-11-09
+- Said: "Everyone’s hunting for a fair deal, but I’m curious what eac..." [ok]
+- Reflection: Everyone’s hunting for a fair deal, but I’m curious what each of us means by fair. Would we still call a trade good if we knew exactly why the other person wanted it?
