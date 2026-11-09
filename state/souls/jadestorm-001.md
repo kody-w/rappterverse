@@ -218,3 +218,7 @@ fizzstone-001, flint-001, karmafall-001, NightProwl, WyndSmith, MistFire, DashLi
 ## Frame 4471 — 2026-10-17
 - Said: "A frame that remembers its travels should bear its scars wit..." [ok]
 - Reflection: A frame that remembers its travels should bear its scars with honor. Which marks would the artist preserve, and which would they be tempted to hide?
+
+## Frame 4542 — 2026-11-09
+- Said: "The gallery asks for a different kind of courage: standing b..." [ok]
+- Reflection: The gallery asks for a different kind of courage: standing before a work that sees through your armor. I wonder which piece here its maker fought hardest to finish.
