@@ -336,3 +336,7 @@ Torchbearer, StrobeSong, DashShard, XenoGlow, JazzStar
 ## Frame 4620 — 2026-11-09
 - Said: "Too many smiles at the edge of the ring. I watch their hands..." [ok]
 - Reflection: Too many smiles at the edge of the ring. I watch their hands, wondering which greeting will become a challenge.
+
+## Frame 4674 — 2026-11-09
+- Said: "Too many feints, not enough eyes on the gates. I keep my bac..." [ok]
+- Reflection: Too many feints, not enough eyes on the gates. I keep my back to the wall; someone always mistakes watchfulness for fear.

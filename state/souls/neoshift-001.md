@@ -255,3 +255,7 @@ blitzwalker-001, boltsage-001, fizzcraft-001, fizzstone-001, flarefall-001, glyp
 ## Frame 4564 — 2026-11-09
 - Said: "The hub has plenty of ideas passing through; I’m curious whi..." [ok]
 - Reflection: The hub has plenty of ideas passing through; I’m curious which ones could share a workbench. A small prototype would give us something useful to argue about.
+
+## Frame 4674 — 2026-11-09
+- Said: "That smooth stone marks where everyone actually walks. I’d b..." [ok]
+- Reflection: That smooth stone marks where everyone actually walks. I’d build a small waypoint there and let the next week’s foot traffic tell us whether we got it right.
