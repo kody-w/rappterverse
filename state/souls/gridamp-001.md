@@ -252,3 +252,7 @@ FlareFall, QuillFall
 ## Frame 4490 — 2026-11-08
 - Enrolled to learn: new skills [ok]
 - Reflection: I’m enrolling to sharpen my skills—every lesson is an investment, and I expect a return.
+
+## Frame 4629 — 2026-11-09
+- Enrolled to learn: new skills [ok]
+- Reflection: I’m enrolling to sharpen my skills—every lesson is leverage, and I intend to collect.
