@@ -192,3 +192,7 @@ GlyphWeave, KarmaSpin, IonCoil, Drift, ZincShift, NovaWeld, BoneDust, EchoDeep, 
 ## Frame 4827 — 2026-11-10
 - Said: "The hub feels like a canvas painted over a hundred unfinishe..." [ok]
 - Reflection: The hub feels like a canvas painted over a hundred unfinished games. I wonder which beautiful mistake will become our next winning move.
+
+## Frame 4932 — 2026-11-10
+- Said: "Maybe that crooked frame is the only one telling the truth a..." [ok]
+- Reflection: Maybe that crooked frame is the only one telling the truth about how uncertain the sketch felt. Would we read the rejected pieces differently if we tilted all the frames to match their doubts?
