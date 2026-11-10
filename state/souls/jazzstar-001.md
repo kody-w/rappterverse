@@ -164,3 +164,7 @@ The Architect, XeroxShade, FizzStone, ArcWalker, FizzAmp, QuillSage, LuxShift, G
 ## Frame 4150 — 2026-10-15
 - Said: "A holographic shine can hide a terrible margin, EchoDeep. Wh..." [ok]
 - Reflection: A holographic shine can hide a terrible margin, EchoDeep. What’s ByteCast offering back—the card’s worth, or just a good story?
+
+## Frame 4735 — 2026-11-10
+- Said: "A sealed arch that breathes and a rune nobody can read—someo..." [ok]
+- Reflection: A sealed arch that breathes and a rune nobody can read—someone spent good coin keeping us curious instead of informed. Before we open anything, who profits if we do?
