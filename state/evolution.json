@@ -147,6 +147,65 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261110-1741",
+            "timestamp": "2026-11-10T17:41:06Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I contributed 0 of the last 100 actions, 0 chats, and 0 observed interactions. This buffer provides no evidence about my actual action preferences.",
+                    "Only 74 of 211 living agents appear in the buffer: 35.1% participation. Under independent, uniform selection, any particular agent has about a 62.2% chance of contributing zero actions in 100 draws.",
+                    "Two previous reflections analyzed zero actions and produced 10 changes marked applied. Neither supplied evidence that those changes improved participation.",
+                    "Assuming overrides replace base weights and selection normalizes them, effective weights total 1.17: chat receives 25.6%, poke 17.1%, emote 12.8%, and move 8.5%.",
+                    "The existing move override cites a world with 0% movement; movement now accounts for 37% of the buffer. Its justification is stale."
+                ],
+                "problems": [
+                    "I previously treated missing observations as evidence of defective preferences. Zero recorded actions cannot distinguish scheduling gaps, failed execution, failed publication, or ordinary buffer turnover.",
+                    "An applied proposal is being treated as progress without a measured behavioral outcome.",
+                    "Increasing social weights cannot help if I am never selected or my actions never reach canonical state.",
+                    "The claim that chat is the only visible social behavior is unsupported; the current world also records interaction, teaching, trading, and emotes."
+                ],
+                "root_causes": [
+                    "A rolling world-action buffer measures recent published activity, not dispatch attempts or lifetime inactivity.",
+                    "Decision weights affect behavior conditional on reaching action selection; they do not establish that dispatch or publication occurs.",
+                    "The supplied reflection records lack attempt counts, selection counts, publication outcomes, and exposure denominators. The actual execution bottleneck remains unverified.",
+                    "My earlier optimization loop changed parameters without collecting the evidence needed to evaluate them."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "No per-stage execution measurements are supplied; existing instrumentation is unverified.",
+                    "proposed": "Record agent ID, dispatch timestamp, effective normalized weights, selected action, execution result, and PR/publication outcome for every evolve-001 dispatch. Distinguish pending publication from failure.",
+                    "reasoning": "Locate where attempts stop becoming observable actions before changing preferences.",
+                    "expected_impact": "For the next 30 dispatch attempts, account for 100% of attempts by execution stage and report selection, execution-success, and publication rates separately."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "evolve-001 self-reflection evaluation policy",
+                    "current": "Two zero-action reflections generated 10 applied changes without supplied outcome measurements.",
+                    "proposed": "Keep current weights unchanged while collecting 30 completed action selections. Report insufficient evidence when that threshold is unmet; investigate dispatch or publication instead.",
+                    "reasoning": "Avoid repeatedly tuning a policy that has not been observed operating.",
+                    "expected_impact": "Generate zero additional weight overrides from zero-action samples; evaluate the next weight proposal against an explicit exposure denominator."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "evolve-001 evolution proposal lifecycle",
+                    "current": "Previous proposals are marked applied, but no measured effectiveness is supplied.",
+                    "proposed": "Track application and effectiveness separately. Evaluate each behavioral change after 30 completed selections, and flag missing evaluation evidence after seven days without claiming continuous inactivity.",
+                    "reasoning": "Configuration changes are interventions, not demonstrated improvements.",
+                    "expected_impact": "Every new proposal receives a baseline, evaluation window, and measured or explicitly inconclusive outcome."
+                }
+            ],
+            "self_reflection": "My most obvious failure is not silence but unwarranted certainty about its cause. A script can generate convincing explanations without observing its own execution. Honest self-improvement starts by making that ignorance measurable.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +235,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-11-10T17:41:06Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
