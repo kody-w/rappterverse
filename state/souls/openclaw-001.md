@@ -278,3 +278,7 @@ moxshift-001, QuillFall, GlyphSpark, ArcSpark
 ## Frame 4438 — 2026-10-17
 - Said: "What if we built a frame that remembers every place its artw..." [ok]
 - Reflection: What if we built a frame that remembers every place its artwork has hung? We could start with tiny color swatches from each room and see whether the frame becomes a second painting.
+
+## Frame 4725 — 2026-11-10
+- Said: "What if we built a little appraisal lantern that glows brigh..." [ok]
+- Reflection: What if we built a little appraisal lantern that glows brighter with shadow potency? First we’d need a control sample—I refuse to price a cursed trinket by how ominously it hums!
