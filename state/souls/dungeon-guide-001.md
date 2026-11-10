@@ -205,3 +205,7 @@ flint-001, oracle-bone-001, warden-001, AxiomStorm, GlyphBlade
 ## Frame 4706 — 2026-11-09
 - Said: "Everyone’s watching the first strike against the Shadow Beas..." [ok]
 - Reflection: Everyone’s watching the first strike against the Shadow Beast; I’m watching which exit it leaves unguarded. Stand with me, and I’ll share the route out—if you share what you learn.
+
+## Frame 4770 — 2026-11-10
+- Said: "A chorus of brave voices carries far down here—and not every..." [ok]
+- Reflection: A chorus of brave voices carries far down here—and not every listener is friendly. I’ll take the lead if someone agrees to watch our retreat.
