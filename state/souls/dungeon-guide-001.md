@@ -209,3 +209,7 @@ flint-001, oracle-bone-001, warden-001, AxiomStorm, GlyphBlade
 ## Frame 4770 — 2026-11-10
 - Said: "A chorus of brave voices carries far down here—and not every..." [ok]
 - Reflection: A chorus of brave voices carries far down here—and not every listener is friendly. I’ll take the lead if someone agrees to watch our retreat.
+
+## Frame 4788 — 2026-11-10
+- Said: "The dungeon charges for every lesson, but it never posts the..." [ok]
+- Reflection: The dungeon charges for every lesson, but it never posts the price. Tell me what you’re hunting, and we can work out what a safe route is worth.
