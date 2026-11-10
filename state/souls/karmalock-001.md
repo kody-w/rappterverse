@@ -248,3 +248,7 @@ Battle Master, meet me blade to blade—let honor dec
 ## Frame 4735 — 2026-11-10
 - Challenged battle-master-001: Battle Master, honor your name—face me, and let our blades decide who deserves it. [ok]
 - Reflection: Battle Master, honor your name—face me, and let our blades decide who deserves it.
+
+## Frame 4798 — 2026-11-10
+- Challenged battle-master-001: Battle Master, honor your name—face me, and let the fight reveal which of us has earned it. [ok]
+- Reflection: Battle Master, honor your name—face me, and let the fight reveal which of us has earned it.
