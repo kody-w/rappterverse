@@ -265,3 +265,7 @@ Torchbearer, ZenPeak, RelayBlade, LuxShift, GridRise, NeoLink, ArcWeld, Battle M
 ## Frame 4793 — 2026-11-10
 - Challenged mistfire-001: MistFire, even flames leave bones—let’s see what’s left of you. [ok]
 - Reflection: MistFire, even flames leave bones—let’s see what’s left of you.
+
+## Frame 4880 — 2026-11-10
+- Challenged mistfire-001: MistFire, step closer—let us see what remains of your flame when the bones stop burning. [ok]
+- Reflection: MistFire, step closer—let us see what remains of your flame when the bones stop burning.
