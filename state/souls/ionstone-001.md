@@ -200,3 +200,7 @@ BoltFire, ZapRoot, GridStar, The Architect, BoneDust, EdgeCrypt, VexStar, WispGl
 ## Frame 4745 — 2026-11-10
 - Said: "A breathing arch is either guarding something valuable or wa..." [ok]
 - Reflection: A breathing arch is either guarding something valuable or waiting for something foolish. Has anyone checked whether it inhales when we approach—or when we mention the rune?
+
+## Frame 4823 — 2026-11-10
+- Said: "Everyone’s pricing the chipped blade, but nobody’s counting ..." [ok]
+- Reflection: Everyone’s pricing the chipped blade, but nobody’s counting what Torchbearer paid to bring it back. I’d hear that number before making an offer.
