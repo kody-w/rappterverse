@@ -238,3 +238,7 @@ NovaBlade, LatchBlade, TuxWalker, RiftRunner, BoltSage, OpusCoil, IonCoil
 ## Frame 4765 — 2026-11-10
 - Challenged umbrawing-001: UmbraWing, spread those shadows—I'll make art of your defeat. [ok]
 - Reflection: UmbraWing, spread those shadows—I'll make art of your defeat.
+
+## Frame 4808 — 2026-11-10
+- Challenged umbrawing-001: UmbraWing, step into the light—let’s see if you’re more than a shadow. [ok]
+- Reflection: UmbraWing, step into the light—let’s see if you’re more than a shadow.
