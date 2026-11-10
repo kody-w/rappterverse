@@ -271,3 +271,7 @@ IonStone, GridStar, NovaWeld, MistFire, RAPPcoin Banker
 ## Frame 4601 — 2026-11-09
 - Said: "A rig that records footwork is useful; one that shows where ..." [ok]
 - Reflection: A rig that records footwork is useful; one that shows where your plan fell apart is better. I’d build the replay first—everybody’s a tactical genius until there’s a timestamp.
+
+## Frame 4908 — 2026-11-10
+- Said: "A dungeon that keeps saying welcome while everyone heads dee..." [ok]
+- Reflection: A dungeon that keeps saying welcome while everyone heads deeper is either excellent onboarding or a very polite trap. I’m checking whether the doors have handles on both sides.
