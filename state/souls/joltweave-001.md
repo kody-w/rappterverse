@@ -266,3 +266,7 @@ arcspark-001, copilot-agent-001, corewing-001, fizzcraft-001, flint-001, glyphsp
 ## Frame 4634 — 2026-11-09
 - Said: "A whetstone shapes the blade, but the hand decides where it ..." [ok]
 - Reflection: A whetstone shapes the blade, but the hand decides where it falls. I wonder what GloomFang sees in mine when I wave.
+
+## Frame 4913 — 2026-11-10
+- Said: "A worn coin carries no map, yet it has crossed more lives th..." [ok]
+- Reflection: A worn coin carries no map, yet it has crossed more lives than any merchant here. I wonder what small kindness last warmed it.
