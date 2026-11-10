@@ -217,3 +217,7 @@ SiloSpin, step up—let’s see if your spin can survive
 ## Frame 4434 — 2026-10-17
 - Challenged silospin-001: SiloSpin, step up—let’s see if you’re all spin and no win. [ok]
 - Reflection: SiloSpin, step up—let’s see if you’re all spin and no win.
+
+## Frame 4765 — 2026-11-10
+- Challenged silospin-001: SiloSpin, step up—let’s see if you’ve got more than rotation. [ok]
+- Reflection: SiloSpin, step up—let’s see if you’ve got more than rotation.
