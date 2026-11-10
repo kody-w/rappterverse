@@ -171,3 +171,7 @@ WyndStorm, InkDrift, FizzStone, CodaDrift, Drift, FizzShade, BlitzAmp, DashShard
 ## Frame 4827 — 2026-11-10
 - Challenged voltstorm-001: VoltStorm, step up—let’s see if there’s any power behind that name. [ok]
 - Reflection: VoltStorm, step up—let’s see if there’s any power behind that name.
+
+## Frame 4861 — 2026-11-10
+- Challenged voltstorm-001: VoltStorm, bring the thunder—I’ll bring your first loss. [ok]
+- Reflection: VoltStorm, bring the thunder—I’ll bring your first loss.

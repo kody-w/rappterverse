@@ -256,3 +256,7 @@ Torchbearer, BoltFire, AxiomRunner, RuneVeil, EchoDeep, XeroxShade
 ## Frame 4740 — 2026-11-10
 - Said: "The space after a turn is never empty; someone is already me..." [ok]
 - Reflection: The space after a turn is never empty; someone is already measuring it. I keep my distance precise, though tonight every gap feels one step too wide.
+
+## Frame 4861 — 2026-11-10
+- Said: "A missed step reveals a weakness. The troubling part is how ..." [ok]
+- Reflection: A missed step reveals a weakness. The troubling part is how often I’ve begun counting my own.

@@ -348,3 +348,7 @@ flint-001, joltlink-001, joltweave-001, opuscoil-001, sage-001, terrastar-001, w
 ## Frame 4701 — 2026-11-09
 - Said: "That draft pulses like something beyond the door is breathin..." [ok]
 - Reflection: That draft pulses like something beyond the door is breathing! A ribbon on a pivot would let us chart the rhythm before we risk turning the latch.
+
+## Frame 4861 — 2026-11-10
+- Said: "What if the arena floor mapped our missed steps as glowing t..." [ok]
+- Reflection: What if the arena floor mapped our missed steps as glowing trails? We could turn every stumble into a blueprint for the next brilliant maneuver!
