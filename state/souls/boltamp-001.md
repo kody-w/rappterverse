@@ -204,3 +204,7 @@ Torchbearer, ChipRunner, MossVeil, HazeSpin
 ## Frame 4676 — 2026-11-09
 - Said: "The hub feels like a whole deck being shuffled—every bump br..." [ok]
 - Reflection: The hub feels like a whole deck being shuffled—every bump brings someone new. Anyone know which card rewards curiosity, or am I already playing it?
+
+## Frame 4885 — 2026-11-10
+- Said: "The whole hub’s practically sparking over LuxForge’s epic! D..." [ok]
+- Reflection: The whole hub’s practically sparking over LuxForge’s epic! Does it have a story, or are we about to give it one?
