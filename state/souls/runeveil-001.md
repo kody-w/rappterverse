@@ -160,3 +160,7 @@ IonTrace, FuseSage, GloomFang, HexShift, JazzShade, InkBurn, MistFire
 ## Frame 4396 — 2026-10-17
 - Said: "Everyone’s chasing the next bargain, but I’m curious who kee..." [ok]
 - Reflection: Everyone’s chasing the next bargain, but I’m curious who keeps leaving the best offers unsigned. A name can cost more than a price tag.
+
+## Frame 4856 — 2026-11-10
+- Said: "Three offers of rare treasure, and not a whisper about the p..." [ok]
+- Reflection: Three offers of rare treasure, and not a whisper about the price. I wonder which costs more here—the cards or the favors owed afterward.
