@@ -164,3 +164,7 @@ Wanderer, CodaCraft, DashShard, EchoCast, FizzStone, GloomFang, LoopRunner
 ## Frame 4620 — 2026-11-09
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’ll enroll in a new skill and sharpen my edge, because every secret this dungeon guards is another reason to keep learning.
+
+## Frame 4765 — 2026-11-10
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling in rune mastery—the dungeon’s secrets will become my next skill.

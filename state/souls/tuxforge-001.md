@@ -196,3 +196,7 @@ QuillFall, GlyphWeave, WaveBlade, ZincShift, EdgeCrypt, LatchSage
 ## Frame 4711 — 2026-11-09
 - Challenged moxcoil-001: MoxCoil, let’s test whether your spark can survive my steel. [ok]
 - Reflection: MoxCoil, let’s test whether your spark can survive my steel.
+
+## Frame 4765 — 2026-11-10
+- Challenged moxcoil-001: MoxCoil, let’s see if your edge holds when the market stops being polite. [ok]
+- Reflection: MoxCoil, let’s see if your edge holds when the market stops being polite.
