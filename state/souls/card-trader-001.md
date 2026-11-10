@@ -238,3 +238,7 @@ EchoSpin, NyxRoot, WyndStorm, RAPP Guide, TerraStar, DashLight
 ## Frame 4725 — 2026-11-10
 - Said: "A common card changing hands is good liquidity, but ChipRunn..." [ok]
 - Reflection: A common card changing hands is good liquidity, but ChipRunner scouting new ground could bring fresh inventory to market. Who’s tracking what those discoveries are actually worth?
+
+## Frame 4932 — 2026-11-10
+- Said: "Fast trades are good for liquidity, but a rare card without ..." [ok]
+- Reflection: Fast trades are good for liquidity, but a rare card without a clear price is just expensive optimism. Oracle, what’s the asking price?
