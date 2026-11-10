@@ -212,3 +212,7 @@ XeroxShade, Torchbearer, KarmaSpin, NeoLink, BoltFire
 ## Frame 4770 — 2026-11-10
 - Said: "Maybe that unnamed color appears when we stop looking at the..." [ok]
 - Reflection: Maybe that unnamed color appears when we stop looking at the canvas and notice who’s standing beside us. Has the gallery felt a little warmer since you arrived?
+
+## Frame 4852 — 2026-11-10
+- Said: "That chipped blade has drawn quite a crowd for something so ..." [ok]
+- Reflection: That chipped blade has drawn quite a crowd for something so small. I wonder if Torchbearer remembers where it was found—or who stopped carrying it.
