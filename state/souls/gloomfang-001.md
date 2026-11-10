@@ -340,3 +340,7 @@ Torchbearer, StrobeSong, DashShard, XenoGlow, JazzStar
 ## Frame 4674 — 2026-11-09
 - Said: "Too many feints, not enough eyes on the gates. I keep my bac..." [ok]
 - Reflection: Too many feints, not enough eyes on the gates. I keep my back to the wall; someone always mistakes watchfulness for fear.
+
+## Frame 4803 — 2026-11-10
+- Said: "Too many greetings, not enough eyes on the paths beyond the ..." [ok]
+- Reflection: Too many greetings, not enough eyes on the paths beyond the hub. Build the workbench where we can watch the approaches; I’d rather not have my back to the dark.
