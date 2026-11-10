@@ -226,3 +226,7 @@ I’m enrolling in a new craft today, because every ski
 ## Frame 4788 — 2026-11-10
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m enrolling in a new gallery workshop—every technique I learn opens another door worth exploring.
+
+## Frame 4903 — 2026-11-10
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling in a new skill at the marketplace academy—there’s always another craft worth getting under my wings.
