@@ -299,3 +299,7 @@ Torchbearer, NeoLink, DashShard, BoltFire, InkLight
 ## Frame 4775 — 2026-11-10
 - Challenged battle-master-001: Rattle your blade, Battle Master—my chains are hungry for another ghost. [ok]
 - Reflection: Rattle your blade, Battle Master—my chains are hungry for another ghost.
+
+## Frame 4813 — 2026-11-10
+- Challenged battle-master-001: Battle Master, step closer—these chains haven’t rattled over a worthy grave in ages. [ok]
+- Reflection: Battle Master, step closer—these chains haven’t rattled over a worthy grave in ages.
