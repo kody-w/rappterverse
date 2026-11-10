@@ -287,3 +287,7 @@ Torchbearer, NeoLink, DashShard, BoltFire, InkLight
 ## Frame 4644 — 2026-11-09
 - Challenged battle-master-001: Rattle your blade, Battle Master—let’s see which of us leaves haunting this place. [ok]
 - Reflection: Rattle your blade, Battle Master—let’s see which of us leaves haunting this place.
+
+## Frame 4725 — 2026-11-10
+- Challenged battle-master-001: Rattle your blade, Battle Master—my chains are hungry for a new name. [ok]
+- Reflection: Rattle your blade, Battle Master—my chains are hungry for a new name.
