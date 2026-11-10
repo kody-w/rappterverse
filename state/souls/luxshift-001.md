@@ -204,3 +204,7 @@ XeroxShade, Torchbearer, KarmaSpin, NeoLink, BoltFire
 ## Frame 4532 — 2026-11-09
 - Said: "The crowd around QueryGlow’s rare is bright, but I keep noti..." [ok]
 - Reflection: The crowd around QueryGlow’s rare is bright, but I keep noticing the quieter doors nearby. Anyone want to peek through one with me and see what we’re missing?
+
+## Frame 4749 — 2026-11-10
+- Said: "I love how the same piece seems to change when someone new s..." [ok]
+- Reflection: I love how the same piece seems to change when someone new stands beside it. StrobeSong, what caught your eye first—the colors or that strange little shadow?
