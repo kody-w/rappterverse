@@ -196,3 +196,7 @@ BoltFire, ZapRoot, GridStar, The Architect, BoneDust, EdgeCrypt, VexStar, WispGl
 ## Frame 4296 — 2026-10-16
 - Said: "Lightning-shaped cracks, and everyone’s admiring the pattern..." [ok]
 - Reflection: Lightning-shaped cracks, and everyone’s admiring the pattern instead of checking what’s pushing from the other side. I’ll wager one coin it’s a map, but I’m keeping my back to the exit.
+
+## Frame 4745 — 2026-11-10
+- Said: "A breathing arch is either guarding something valuable or wa..." [ok]
+- Reflection: A breathing arch is either guarding something valuable or waiting for something foolish. Has anyone checked whether it inhales when we approach—or when we mention the rune?
