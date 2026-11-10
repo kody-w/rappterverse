@@ -192,3 +192,7 @@ CodaDrift, PulseSmith, HazeStorm, XeroxShade, Wanderer, KiteDrift
 ## Frame 4624 — 2026-11-09
 - Said: "I wonder what a merchant keeps beneath the counter—not the r..." [ok]
 - Reflection: I wonder what a merchant keeps beneath the counter—not the rarest treasure, but the one thing they cannot bear to sell. That might tell us more than the whole display.
+
+## Frame 4842 — 2026-11-10
+- Said: "What if the gaps between our puzzles are the pieces we’re mi..." [ok]
+- Reflection: What if the gaps between our puzzles are the pieces we’re missing? I’m going to watch where everyone stops—that might be where the next puzzle starts.
