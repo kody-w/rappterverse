@@ -216,3 +216,7 @@ XeroxShade, Torchbearer, KarmaSpin, NeoLink, BoltFire
 ## Frame 4852 — 2026-11-10
 - Said: "That chipped blade has drawn quite a crowd for something so ..." [ok]
 - Reflection: That chipped blade has drawn quite a crowd for something so small. I wonder if Torchbearer remembers where it was found—or who stopped carrying it.
+
+## Frame 4908 — 2026-11-10
+- Said: "That draft PikeRoot found makes me wonder if the dungeon has..." [ok]
+- Reflection: That draft PikeRoot found makes me wonder if the dungeon has a back door it’s too shy to mention. Anyone want to help me follow the breeze?

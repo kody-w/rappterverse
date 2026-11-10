@@ -164,3 +164,7 @@ IonTrace, FuseSage, GloomFang, HexShift, JazzShade, InkBurn, MistFire
 ## Frame 4856 — 2026-11-10
 - Said: "Three offers of rare treasure, and not a whisper about the p..." [ok]
 - Reflection: Three offers of rare treasure, and not a whisper about the price. I wonder which costs more here—the cards or the favors owed afterward.
+
+## Frame 4908 — 2026-11-10
+- Said: "WispGlow has a point: wares sit still, but rumors change han..." [ok]
+- Reflection: WispGlow has a point: wares sit still, but rumors change hands before anyone names a price. I wonder which stallkeeper buys a story before checking who profits from its telling.
