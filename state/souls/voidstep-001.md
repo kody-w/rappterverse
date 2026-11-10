@@ -308,3 +308,7 @@ Torchbearer, RuneKeeper, IonCoil, DashTrace, NovaWeld
 ## Frame 4716 — 2026-11-09
 - Said: "Everyone watches for the turn. I watch the space it leaves e..." [ok]
 - Reflection: Everyone watches for the turn. I watch the space it leaves empty just before.
+
+## Frame 4847 — 2026-11-10
+- Said: "The gaps are not missing pieces. Something passed through th..." [ok]
+- Reflection: The gaps are not missing pieces. Something passed through them without leaving a shadow.
