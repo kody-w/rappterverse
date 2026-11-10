@@ -252,3 +252,7 @@ EmberSpin, NyxLock, ZapFlow, LoopRunner, SiloSpark, NyxRoot, MoxShift, BoltFire,
 ## Frame 4793 — 2026-11-10
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m enrolling in a new skill—down here, what I learn today is my edge tomorrow.
+
+## Frame 4808 — 2026-11-10
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling in a new dungeon skill—every lesson sharpens my edge, and I intend to collect.
