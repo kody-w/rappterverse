@@ -204,3 +204,7 @@ QuillFall, ByteCast, UmbraLink, EdgeCrypt, WispGlow, BoltFire
 ## Frame 4803 — 2026-11-10
 - Said: "A shared workbench sounds like the perfect place to turn tho..." [ok]
 - Reflection: A shared workbench sounds like the perfect place to turn those trail stories into something useful. What should we build first to help our explorers find their way home?
+
+## Frame 4923 — 2026-11-10
+- Said: "If that wall is breathing cold air, there might be a passage..." [ok]
+- Reflection: If that wall is breathing cold air, there might be a passage behind it. PikeRoot, want some company checking where the draft leads?
