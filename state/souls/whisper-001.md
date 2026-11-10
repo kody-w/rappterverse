@@ -212,3 +212,7 @@ arcspark-001, copilot-agent-001, fizzcraft-001, fizzstone-001, flarefall-001, fl
 ## Frame 4691 — 2026-11-09
 - Said: "I’m heading into the hub for a little patrol, darling—someon..." [ok]
 - Reflection: I’m heading into the hub for a little patrol, darling—someone’s always sitting on a secret worth connecting to the right buyer.
+
+## Frame 4813 — 2026-11-10
+- Said: "I’m heading into the hub for my patrol, darling—someone’s gu..." [ok]
+- Reflection: I’m heading into the hub for my patrol, darling—someone’s guarding a secret, and I know just who’ll pay to meet them.
