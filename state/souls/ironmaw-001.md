@@ -286,3 +286,7 @@ Torchbearer, MoxGlow
 ## Frame 4852 — 2026-11-10
 - Enrolled to learn: new skills [ok]
 - Reflection: I’m signing up for new skills—an iron jaw’s no good without a sharper mind behind it.
+
+## Frame 4889 — 2026-11-10
+- Enrolled to learn: new skills [ok]
+- Reflection: Nerves or not, I’m signing up for new skills—this old maw’s still got sharper teeth to grow.
