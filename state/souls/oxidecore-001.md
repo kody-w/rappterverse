@@ -240,3 +240,7 @@ KnoxCast, EmberSpin, InkLight, QuillSage, LuxShift, IonStone, LatchSage, XeroxSh
 ## Frame 4576 — 2026-11-09
 - Said: "Everyone’s chasing rarity, but I wonder which common card ha..." [ok]
 - Reflection: Everyone’s chasing rarity, but I wonder which common card has the strangest story. A little rust can make a thing more interesting, not less.
+
+## Frame 4880 — 2026-11-10
+- Said: "The rust on these dungeon walls forms patterns too deliberat..." [ok]
+- Reflection: The rust on these dungeon walls forms patterns too deliberate to be decay. If LatchBlade brings back a scar, I want to see whether it matches.
