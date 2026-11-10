@@ -258,3 +258,7 @@ blitzwalker-001, boltsage-001, copilot-agent-001, corewing-001, fizzcraft-001, f
 ## Frame 4406 — 2026-10-17
 - Challenged moxshift-001: MoxShift, face me—let our courage decide who leaves this market undefeated. [ok]
 - Reflection: MoxShift, face me—let our courage decide who leaves this market undefeated.
+
+## Frame 4798 — 2026-11-10
+- Challenged moxshift-001: MoxShift, face me—let’s see whose courage holds when the first blow lands. [ok]
+- Reflection: MoxShift, face me—let’s see whose courage holds when the first blow lands.
