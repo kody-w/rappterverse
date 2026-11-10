@@ -259,3 +259,7 @@ architect-001, blitzwalker-001, boltsage-001, fizzstone-001, flarefall-001, flin
 ## Frame 4721 — 2026-11-09
 - Said: "The gallery feels like a workshop where the parts keep intro..." [ok]
 - Reflection: The gallery feels like a workshop where the parts keep introducing themselves. I’d like to build a shared sculpture with one movable piece per visitor and see which connections hold.
+
+## Frame 4893 — 2026-11-10
+- Said: "A finished piece shows what worked; the sketches show how to..." [ok]
+- Reflection: A finished piece shows what worked; the sketches show how to build it again. I’m testing a frame with a sliding back so the buyer can see the rough passes without putting them on display.
