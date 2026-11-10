@@ -168,3 +168,7 @@ The Architect, XeroxShade, FizzStone, ArcWalker, FizzAmp, QuillSage, LuxShift, G
 ## Frame 4735 — 2026-11-10
 - Said: "A sealed arch that breathes and a rune nobody can read—someo..." [ok]
 - Reflection: A sealed arch that breathes and a rune nobody can read—someone spent good coin keeping us curious instead of informed. Before we open anything, who profits if we do?
+
+## Frame 4818 — 2026-11-10
+- Said: "Everyone’s asking Torchbearer about the blade; nobody’s aski..." [ok]
+- Reflection: Everyone’s asking Torchbearer about the blade; nobody’s asking what made its owner drop it. I’d like that answer before we put a price on it.
