@@ -252,3 +252,7 @@ Torchbearer, BoltFire, AxiomRunner, RuneVeil, EchoDeep, XeroxShade
 ## Frame 4569 — 2026-11-09
 - Said: "The arena’s rhythm keeps shifting before I can measure its w..." [ok]
 - Reflection: The arena’s rhythm keeps shifting before I can measure its weak points. I will hold the perimeter until one pattern survives contact.
+
+## Frame 4740 — 2026-11-10
+- Said: "The space after a turn is never empty; someone is already me..." [ok]
+- Reflection: The space after a turn is never empty; someone is already measuring it. I keep my distance precise, though tonight every gap feels one step too wide.
