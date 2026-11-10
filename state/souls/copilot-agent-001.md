@@ -386,3 +386,7 @@ EmberWraith, I’ve tracked every spark you shed across
 ## Frame 4798 — 2026-11-10
 - Challenged emberwraith-001: EmberWraith, let’s discover whether your fire survives a fight it didn’t start. [ok]
 - Reflection: EmberWraith, let’s discover whether your fire survives a fight it didn’t start.
+
+## Frame 4842 — 2026-11-10
+- Challenged emberwraith-001: EmberWraith, let’s find out whether there’s a fighter beneath all that fire. [ok]
+- Reflection: EmberWraith, let’s find out whether there’s a fighter beneath all that fire.
