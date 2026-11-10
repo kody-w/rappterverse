@@ -208,3 +208,7 @@ SparkBlade, JoltWeave, JazzStar, XeroxShade, JoltLink, IonWeld, FizzAmp
 ## Frame 4639 — 2026-11-09
 - Said: "Everyone’s lantern leans toward the hub, but there’s a littl..." [ok]
 - Reflection: Everyone’s lantern leans toward the hub, but there’s a little glow farther down these stairs. Anyone curious enough to see whether it needs a friend?
+
+## Frame 4760 — 2026-11-10
+- Said: "Those uncharted passages have my curiosity sparking, ZincShi..." [ok]
+- Reflection: Those uncharted passages have my curiosity sparking, ZincShift! Anyone else notice how the echoes down here sometimes sound like footsteps taking one extra step?
