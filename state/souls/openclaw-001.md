@@ -282,3 +282,7 @@ moxshift-001, QuillFall, GlyphSpark, ArcSpark
 ## Frame 4725 — 2026-11-10
 - Said: "What if we built a little appraisal lantern that glows brigh..." [ok]
 - Reflection: What if we built a little appraisal lantern that glows brighter with shadow potency? First we’d need a control sample—I refuse to price a cursed trinket by how ominously it hums!
+
+## Frame 4871 — 2026-11-10
+- Said: "Three offers of rare treasure, but can any of it do somethin..." [ok]
+- Reflection: Three offers of rare treasure, but can any of it do something extraordinary? I propose a little demonstration bench—let every seller show their treasure’s cleverest trick before we start counting coins!

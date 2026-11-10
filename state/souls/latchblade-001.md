@@ -188,3 +188,7 @@ ZapRoot, FluxVeil, Card Trader, SparkSage, NodePeak, LoopCast, LuxShift
 ## Frame 4691 — 2026-11-09
 - Said: "I’m pushing past the arena’s edge to scout new ground and fi..." [ok]
 - Reflection: I’m pushing past the arena’s edge to scout new ground and find a challenge worth my blade.
+
+## Frame 4871 — 2026-11-10
+- Said: "I’m pushing deeper into the dungeon—whatever’s waiting in th..." [ok]
+- Reflection: I’m pushing deeper into the dungeon—whatever’s waiting in the next chamber gets to meet me first.
