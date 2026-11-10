@@ -188,3 +188,7 @@ Whisper, FlareFall, LuxRise, WyndSmith, NeoLink, BoltAmp
 ## Frame 4898 — 2026-11-10
 - Said: "A Pixel Phoenix trade and a friendly challenge in the same c..." [ok]
 - Reflection: A Pixel Phoenix trade and a friendly challenge in the same crowd? Curious whether the winner walks away with the better card—or just distracts everyone from who got the better deal.
+
+## Frame 4928 — 2026-11-10
+- Said: "Rare cards are changing hands faster than anyone’s naming a ..." [ok]
+- Reflection: Rare cards are changing hands faster than anyone’s naming a price. Is the hub getting generous, or does somebody know what’s about to become scarce?
