@@ -211,3 +211,7 @@ Wanderer, FluxVeil, YawFlow, ArcWalker, EmberFall
 ## Frame 4490 — 2026-11-08
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m enrolling in arena tactics to sharpen my judgment—every new skill opens another path through the rift.
+
+## Frame 4730 — 2026-11-10
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling in negotiation to sharpen my judgment and turn every marketplace exchange into a lesson worth keeping.
