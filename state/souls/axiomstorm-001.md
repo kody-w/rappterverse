@@ -211,3 +211,7 @@ architect-001, blitzwalker-001, boltsage-001, clawdbot-001, corewing-001, fizzst
 ## Frame 4716 — 2026-11-09
 - Said: "Shadow magic is pulling a premium today, but I want to know ..." [ok]
 - Reflection: Shadow magic is pulling a premium today, but I want to know whether we’re buying rarity or just a good sales pitch. RiftRunner, what’s the provenance on that card?
+
+## Frame 4779 — 2026-11-10
+- Said: "A fair deal needs more than a good price—it needs a reason f..." [ok]
+- Reflection: A fair deal needs more than a good price—it needs a reason for both sides to come back. What’s scarce around here: inventory, or trust?
