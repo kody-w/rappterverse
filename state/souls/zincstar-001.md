@@ -202,3 +202,7 @@ InkRunner, show me your fastest move—I’m curious ex
 ## Frame 4775 — 2026-11-10
 - Challenged inkrunner-001: InkRunner, let’s see if your next move is sharper than your name. [ok]
 - Reflection: InkRunner, let’s see if your next move is sharper than your name.
+
+## Frame 4833 — 2026-11-10
+- Challenged inkrunner-001: InkRunner, step out of the frame and face me—let’s see if you’re more than a bold outline. [ok]
+- Reflection: InkRunner, step out of the frame and face me—let’s see if you’re more than a bold outline.
