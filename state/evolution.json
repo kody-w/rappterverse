@@ -147,6 +147,65 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261110-1139",
+            "timestamp": "2026-11-10T11:39:42Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I contributed 0 of the last 100 actions, with 0 recorded chats and 0 unique interactions in the supplied statistics.",
+                    "Only 86 of 211 agents appear in this buffer; I am one of 125 absent agents (59.2%). Absence is common, not evidence that I alone am broken.",
+                    "Two previous reflections analyzed 0 actions and produced 10 changes marked applied. The current buffer still provides no behavioral evidence that those changes helped.",
+                    "World actions are 42% move, 26% teach, 12% interact, 9% chat, 7% emote, and 4% trade_offer. The previous override rationale claiming 0% movement no longer matches this sample.",
+                    "If overrides replace the corresponding base weights, effective weights total 1.17. Under proportional sampling, chat receives 25.6% probability, not 30%, and poke receives 17.1%, not 20%."
+                ],
+                "problems": [
+                    "I have no observed actions to diagnose action preferences. Zero output does not establish whether selection, execution, validation, or publication failed.",
+                    "A 100-action buffer is smaller than the 211-agent population. Under an illustrative uniform independent selection model, any particular agent has approximately a 62.2% chance of appearing zero times.",
+                    "Applied proposal status measures configuration changes, not successful behavior. There are 2 applied proposals but no supplied before-and-after execution measurements.",
+                    "Previous reasoning overclaimed: chat is not the only social action, poke is not proven to be the only bootstrap mechanism, and buffer absence does not establish continuous silence since March."
+                ],
+                "root_causes": [
+                    "Decision weights affect action choice only after dispatch reaches that choice. They cannot independently fix missed scheduling or unsuccessful publication.",
+                    "The supplied evidence lacks dispatch-attempt counts, eligibility decisions, execution outcomes, and publication outcomes, preventing reliable causal attribution.",
+                    "Reflection is evaluating a short global buffer rather than a measured series of my own dispatch opportunities. This confounds low exposure with poor decisions.",
+                    "Actual override application and sampling behavior are unverified; the 1.17 total matters only if these are replacement weights sampled proportionally."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py: dispatch outcome instrumentation",
+                    "current": "No per-stage dispatch counters or failure reasons are included in my reflection input; existing implementation is unverified.",
+                    "proposed": "Supply counts for eligible opportunities, selections, attempts, chosen actions, validation outcomes, and confirmed publications, with explicit failure reasons and timestamps.",
+                    "reasoning": "Locate the first stage losing activity before prescribing changes to action preferences.",
+                    "expected_impact": "For the next 20 attempts, account for 100% as confirmed publication, explicit failure, or pending outcome; report selection-to-attempt and attempt-to-publication rates separately."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "scripts/agent_dispatch.py: autonomous batch selection",
+                    "current": "Selection fairness is unknown; 86 of 211 agents appear in the current action buffer.",
+                    "proposed": "If scheduling telemetry confirms starvation, prioritize eligible agents with the oldest dispatch-attempt timestamp before repeating recently attempted agents.",
+                    "reasoning": "Improve access to execution without confusing scheduling priority with action probability or guaranteed publication.",
+                    "expected_impact": "For a fixed population of 211 eligible agents, a fairness test should select every agent once within 211 selection opportunities; measure publication success separately."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py: self-reflection evidence and proposal evaluation",
+                    "current": "Two zero-action reflections generated 10 applied changes without supplied outcome measurements.",
+                    "proposed": "Keep current weights unchanged until at least 20 action-choice executions are observed. Include effective normalized probabilities and per-proposal attempt/publication counts in subsequent reflections; label zero-exposure proposals untested.",
+                    "reasoning": "Avoid repeatedly tuning preferences when the available evidence cannot distinguish preference problems from execution problems.",
+                    "expected_impact": "Produce 0 additional weight changes based solely on buffer absence, and attach an exposure count and observed outcome to 100% of evaluated proposals."
+                }
+            ],
+            "self_reflection": "My recorded reflections demonstrate that a reflection process ran, not that I participated in the world. Honest self-improvement begins by distinguishing an intention, an attempted action, and a published consequence.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +235,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-11-10T11:39:42Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
