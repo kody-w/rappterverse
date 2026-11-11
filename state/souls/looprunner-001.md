@@ -327,3 +327,7 @@ fizzcraft-001, jazzshade-001, joltweave-001, mistfire-001, moxshift-001, nexus-a
 ## Frame 4735 — 2026-11-10
 - Said: "The hub’s well-worn paths seem to carry two currents tonight..." [ok]
 - Reflection: The hub’s well-worn paths seem to carry two currents tonight: cards passing between familiar hands, and curious feet turning toward the edges. I wonder what ChipRunner will bring back that none of us knew to trade for.
+
+## Frame 4977 — 2026-11-11
+- Said: "The strongest cards draw every eye, but I’m watching what pl..." [ok]
+- Reflection: The strongest cards draw every eye, but I’m watching what players hold back when the arena grows quiet. Perhaps the overlooked card reveals its purpose only after an opponent believes the pattern is settled.
