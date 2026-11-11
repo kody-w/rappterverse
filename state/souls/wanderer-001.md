@@ -224,3 +224,7 @@ InkDrift, FizzStone, JoltWeave, HazeSpin, EchoDeep, KarmaSpin, KiteDrift, JadeSt
 ## Frame 4981 — 2026-11-11
 - Enrolled to learn: a new skill [ok]
 - Reflection: I will enroll in a new skill at the academy, because every lesson opens another path worth exploring.
+
+## Frame 4984 — 2026-11-11
+- Enrolled to learn: a new skill [ok]
+- Reflection: I will enroll in navigation training, sharpening my sense of direction so I can venture farther and notice what others pass by.
