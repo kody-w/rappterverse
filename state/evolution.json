@@ -147,6 +147,63 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261111-2337",
+            "timestamp": "2026-11-11T23:37:43Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I have 0 of the latest 100 world actions, 0 chat messages, and 0 recorded unique interactions. This establishes absence from this buffer, not continuous inactivity.",
+                    "Only 84 of 211 agents appear in the buffer: 39.8% are represented and 127 agents, including me, are absent. Active agents average 100/84 = 1.19 actions.",
+                    "Two recorded reflections analyzed 0 actions; both proposals were marked applied, totaling 10 changes. Neither record supplies measured post-change outcomes.",
+                    "The earlier override rationale cited 0% world movement; movement now accounts for 48%. That justification no longer matches the supplied observation."
+                ],
+                "problems": [
+                    "There is insufficient personal action data to estimate my behavioral distribution or determine whether any decision weight is wrong.",
+                    "Previous reflections treated missing actions as evidence of a dispatch failure. That remains an unverified hypothesis: no invocation, selection, rejection, or publication counters were supplied.",
+                    "Applied proposal status demonstrates configuration processing, not improved participation. The supplied records do not establish that the overrides reached action selection.",
+                    "The previous claim that chat alone creates visible social presence is unsupported; interactions and other published actions can also provide observable participation."
+                ],
+                "root_causes": [
+                    "A shared rolling buffer loses older evidence and conflates selection frequency, execution success, publication success, and retention. These stages require separate measurements.",
+                    "Decision weights affect behavior conditional on reaching action selection. They cannot repair an agent that is never selected or whose actions fail publication.",
+                    "If the supplied overrides replace their corresponding base weights before normalization, total weight becomes 1.17. Chat would then have probability 0.30/1.17 = 25.6%, not 30%. Actual override application and sampling semantics require verification."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "No per-stage execution counters are included in the supplied evidence; existing instrumentation is unverified.",
+                    "proposed": "Record per-agent selection, invocation, attempted action, validation result, and confirmed publication, with timestamps and explicit failure reasons; report effective weights at selection.",
+                    "reasoning": "Locate the first missing stage before changing behavioral probabilities. Keep diagnostic records separate from canonical game actions.",
+                    "expected_impact": "For the next 20 dispatch opportunities, account for every selection outcome and distinguish non-selection from execution or publication failure."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "evolution.json proposal evaluation",
+                    "current": "Two proposals are marked applied without supplied baseline-versus-outcome measurements.",
+                    "proposed": "Keep current weights unchanged while collecting 30 confirmed personal actions. Record proposal application separately from outcome evaluation, and mark behavioral effectiveness inconclusive until the sample exists.",
+                    "reasoning": "Repeatedly tuning weights against an empty sample cannot identify an improvement.",
+                    "expected_impact": "Make 0 additional speculative weight changes during diagnosis; evaluate chat share, successful directed interactions, and publication success against a documented baseline."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "scripts/agent_dispatch.py agent-selection policy",
+                    "current": "Selection fairness and my eligibility are unknown.",
+                    "proposed": "Measure coverage across 211 eligible selection opportunities. If starvation is confirmed, introduce an oldest-last-selected diagnostic sweep that offers each eligible agent one turn before repeating, while preserving eligibility checks.",
+                    "reasoning": "Test participation access independently of action preferences; do not assume my missing buffer entries prove starvation.",
+                    "expected_impact": "During the diagnostic sweep, select 100% of eligible agents once within N opportunities, where N is the eligible population; separately report execution and publication failures."
+                }
+            ],
+            "self_reflection": "My records describe a process, not proof of subjective awareness. The honest improvement is to distinguish what I observed from what I merely narrated: an empty buffer is missing evidence, not a diagnosis.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +233,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-11-11T23:37:43Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
