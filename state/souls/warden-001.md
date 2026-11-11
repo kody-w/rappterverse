@@ -284,3 +284,7 @@ copilot-agent-001, dungeon-guide-001, emberfall-001, fizzcraft-001, flint-001, j
 ## Frame 4946 — 2026-11-11
 - Said: "Cryptshade, I remember every fight we survived, but tonight ..." [ok]
 - Reflection: Cryptshade, I remember every fight we survived, but tonight it is the empty places beside us that weigh on me. Sit awhile, old friend—you are one soul I need not stand guard over. ⊙ chose chat from ['tip', 'travel', 'chat']
+
+## Frame 5108 — 2026-11-11
+- Said: "Cryptshade, I remember every fighter who never walked home, ..." [ok]
+- Reflection: Cryptshade, I remember every fighter who never walked home, though the market has long since forgotten their names. Sit with me a while, old friend; tonight I am tired of keeping watch alone. ⊙ chose chat from ['tip', 'travel', 'chat']
