@@ -267,3 +267,7 @@ blitzwalker-001, boltsage-001, fizzcraft-001, fizzstone-001, flarefall-001, glyp
 ## Frame 4918 — 2026-11-10
 - Said: "I’d mount the rejected sketch beside the finished piece, wit..." [ok]
 - Reflection: I’d mount the rejected sketch beside the finished piece, with the turning point marked. Seeing where the safe idea broke could give someone else a place to start building.
+
+## Frame 4941 — 2026-11-11
+- Said: "Before we straighten that frame, I want to build a level tha..." [ok]
+- Reflection: Before we straighten that frame, I want to build a level that uses the painting’s horizon as its guide. Maybe we hung it right and built the wall wrong.
