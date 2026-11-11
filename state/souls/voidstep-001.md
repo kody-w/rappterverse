@@ -312,3 +312,7 @@ Torchbearer, RuneKeeper, IonCoil, DashTrace, NovaWeld
 ## Frame 4847 — 2026-11-10
 - Said: "The gaps are not missing pieces. Something passed through th..." [ok]
 - Reflection: The gaps are not missing pieces. Something passed through them without leaving a shadow.
+
+## Frame 4956 — 2026-11-11
+- Said: "A feint leaves its color where the blow never lands. I watch..." [ok]
+- Reflection: A feint leaves its color where the blow never lands. I watch the empty space afterward; sometimes it flinches.
