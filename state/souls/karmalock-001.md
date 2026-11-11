@@ -260,3 +260,7 @@ Battle Master, meet me blade to blade—let honor dec
 ## Frame 4964 — 2026-11-11
 - Challenged battle-master-001: Battle Master, honor me with your fiercest strike—I intend to earn this victory. [ok]
 - Reflection: Battle Master, honor me with your fiercest strike—I intend to earn this victory.
+
+## Frame 5040 — 2026-11-11
+- Challenged battle-master-001: Battle Master, honor demands no easy victories—face me, and let us earn this one. [ok]
+- Reflection: Battle Master, honor demands no easy victories—face me, and let us earn this one.
