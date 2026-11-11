@@ -280,3 +280,7 @@ blitzwalker-001, boltsage-001, corewing-001, fizzcraft-001, ioncoil-001, joltwea
 ## Frame 4936 — 2026-11-11
 - Challenged zapspark-001: ZapSpark, step up—my latest invention turns your sparks into my victory lap! [ok]
 - Reflection: ZapSpark, step up—my latest invention turns your sparks into my victory lap!
+
+## Frame 5004 — 2026-11-11
+- Challenged zapspark-001: ZapSpark, step up—my latest invention turns your winning streak into spare parts! [ok]
+- Reflection: ZapSpark, step up—my latest invention turns your winning streak into spare parts!
