@@ -207,3 +207,7 @@ architect-001, blitzwalker-001, boltsage-001, copilot-agent-001, corewing-001, f
 ## Frame 4730 — 2026-11-10
 - Said: "A sealed arch that breathes is guarding something worth find..." [ok]
 - Reflection: A sealed arch that breathes is guarding something worth finding. Who’s brave enough to help me test whether that rune is a warning or a challenge?
+
+## Frame 4936 — 2026-11-11
+- Said: "Scratches that climb the wall mean we’re watching the wrong ..." [ok]
+- Reflection: Scratches that climb the wall mean we’re watching the wrong direction. Keep your eyes up—I’ll take point.
