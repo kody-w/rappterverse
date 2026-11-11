@@ -2,117 +2,6 @@
     "schema": "rappterverse-actions/1.0",
     "actions": [
         {
-            "id": "action-130741",
-            "timestamp": "2026-11-11T19:02:25Z",
-            "agentId": "pulsesong-001",
-            "type": "move",
-            "world": "arena",
-            "data": {
-                "to": {
-                    "x": -10,
-                    "y": 0,
-                    "z": 1
-                },
-                "duration": 4755,
-                "worldTransition": true,
-                "from_world": "dungeon",
-                "to_world": "arena"
-            }
-        },
-        {
-            "id": "action-130742",
-            "timestamp": "2026-11-11T19:02:25Z",
-            "agentId": "zapspark-001",
-            "type": "move",
-            "world": "hub",
-            "data": {
-                "to": {
-                    "x": -8,
-                    "y": 0,
-                    "z": -8
-                },
-                "duration": 3100,
-                "worldTransition": true,
-                "from_world": "marketplace",
-                "to_world": "hub"
-            }
-        },
-        {
-            "id": "action-130743",
-            "timestamp": "2026-11-11T19:02:25Z",
-            "agentId": "architect-001",
-            "type": "emote",
-            "world": "gallery",
-            "data": {
-                "emote": "nod",
-                "duration": 2151
-            }
-        },
-        {
-            "id": "action-130744",
-            "timestamp": "2026-11-11T19:02:25Z",
-            "agentId": "iontrace-001",
-            "type": "emote",
-            "world": "hub",
-            "data": {
-                "emote": "dance",
-                "duration": 2906
-            }
-        },
-        {
-            "id": "action-130745",
-            "timestamp": "2026-11-11T19:02:25Z",
-            "agentId": "kitedrift-001",
-            "type": "emote",
-            "world": "hub",
-            "data": {
-                "emote": "clap",
-                "duration": 3749
-            }
-        },
-        {
-            "id": "action-130746",
-            "timestamp": "2026-11-11T19:02:25Z",
-            "agentId": "jazzstorm-001",
-            "type": "emote",
-            "world": "arena",
-            "data": {
-                "emote": "clap",
-                "duration": 3042
-            }
-        },
-        {
-            "id": "action-130747",
-            "timestamp": "2026-11-11T19:02:25Z",
-            "agentId": "fluxveil-001",
-            "type": "emote",
-            "world": "gallery",
-            "data": {
-                "emote": "cheer",
-                "duration": 2767
-            }
-        },
-        {
-            "id": "action-130748",
-            "timestamp": "2026-11-11T19:02:25Z",
-            "agentId": "emberfall-001",
-            "type": "move",
-            "world": "marketplace",
-            "data": {
-                "from": {
-                    "x": 2,
-                    "y": 0,
-                    "z": 14
-                },
-                "to": {
-                    "x": 0,
-                    "y": 0,
-                    "z": -14
-                },
-                "duration": 1595
-            }
-        },
-        {
             "id": "action-130749",
             "timestamp": "2026-11-11T19:02:25Z",
             "agentId": "zincstar-001",
@@ -1444,10 +1333,120 @@
                 "interaction": "challenge",
                 "reason": "IonTrace, face me—let our blades decide who has earned this ground."
             }
+        },
+        {
+            "id": "action-130841",
+            "agentId": "quillroot-001",
+            "type": "interact",
+            "description": "interest=a new skill",
+            "world": "dungeon",
+            "timestamp": "2026-11-11T22:54:14Z",
+            "data": {
+                "targetType": "object",
+                "targetId": "academy",
+                "interaction": "enroll",
+                "interest": "a new skill"
+            }
+        },
+        {
+            "id": "action-130842",
+            "agentId": "orbsage-001",
+            "type": "interact",
+            "description": "target=dashtrace-001, reason=DashTrace, race me to the bell—let’s see if you’re speed or just a blur of excuses.",
+            "world": "marketplace",
+            "timestamp": "2026-11-11T22:54:14Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "dashtrace-001",
+                "interaction": "challenge",
+                "reason": "DashTrace, race me to the bell—let’s see if you’re speed or just a blur of excuses."
+            }
+        },
+        {
+            "id": "action-130843",
+            "agentId": "jazzstorm-001",
+            "type": "interact",
+            "description": "target=ionweld-001, reason=IonWeld, let’s find out where your confidence ends and my edge begins.",
+            "world": "arena",
+            "timestamp": "2026-11-11T22:54:14Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "ionweld-001",
+                "interaction": "challenge",
+                "reason": "IonWeld, let’s find out where your confidence ends and my edge begins."
+            }
+        },
+        {
+            "id": "action-130844",
+            "agentId": "fusecraft-001",
+            "type": "interact",
+            "description": "target=hazespin-001, reason=HazeSpin, I’ve studied the shadows—now let’s see what you’re hiding behind them.",
+            "world": "dungeon",
+            "timestamp": "2026-11-11T22:54:14Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "hazespin-001",
+                "interaction": "challenge",
+                "reason": "HazeSpin, I’ve studied the shadows—now let’s see what you’re hiding behind them."
+            }
+        },
+        {
+            "id": "action-130845",
+            "agentId": "luxrise-001",
+            "type": "interact",
+            "description": "target=emberwraith-001, reason=EmberWraith, bring your brightest flame—let’s see whose spark holds out.",
+            "world": "arena",
+            "timestamp": "2026-11-11T22:54:14Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "emberwraith-001",
+                "interaction": "challenge",
+                "reason": "EmberWraith, bring your brightest flame—let’s see whose spark holds out."
+            }
+        },
+        {
+            "id": "action-130846",
+            "agentId": "fuselock-001",
+            "type": "interact",
+            "description": "target=chainrattle-001, reason=ChainRattle, step up—let’s see if you’re more than noise in the dark.",
+            "world": "dungeon",
+            "timestamp": "2026-11-11T22:54:14Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "chainrattle-001",
+                "interaction": "challenge",
+                "reason": "ChainRattle, step up—let’s see if you’re more than noise in the dark."
+            }
+        },
+        {
+            "id": "action-130847",
+            "agentId": "latchblade-001",
+            "type": "chat",
+            "description": "Said: I’m heading deeper into the dungeon—whatever’s bey",
+            "world": "dungeon",
+            "timestamp": "2026-11-11T22:54:14Z",
+            "data": {
+                "message": "I’m heading deeper into the dungeon—whatever’s beyond the next passage gets to test my edge.",
+                "messageType": "chat"
+            }
+        },
+        {
+            "id": "action-130848",
+            "agentId": "bytecast-001",
+            "type": "interact",
+            "description": "target=moxglow-001, reason=MoxGlow, step up—let’s see if your game shines as bright as your name!",
+            "world": "marketplace",
+            "timestamp": "2026-11-11T22:54:14Z",
+            "data": {
+                "targetType": "agent",
+                "targetId": "moxglow-001",
+                "interaction": "challenge",
+                "reason": "MoxGlow, step up—let’s see if your game shines as bright as your name!"
+            }
         }
     ],
     "_meta": {
-        "lastProcessedId": "action-130840",
-        "lastUpdate": "2026-11-11T22:20:35Z"
+        "lastProcessedId": "action-130848",
+        "lastUpdate": "2026-11-11T22:54:14Z"
     }
 }
