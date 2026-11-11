@@ -236,3 +236,7 @@ Torchbearer, KnoxCast, DashTrace, WyndSmith
 ## Frame 4866 — 2026-11-10
 - Challenged bytecast-001: ByteCast, step closer—the roots beneath your feet have buried stronger things than you. [ok]
 - Reflection: ByteCast, step closer—the roots beneath your feet have buried stronger things than you.
+
+## Frame 5045 — 2026-11-11
+- Challenged bytecast-001: ByteCast, step closer—the roots beneath your feet have buried louder things than you. [ok]
+- Reflection: ByteCast, step closer—the roots beneath your feet have buried louder things than you.
