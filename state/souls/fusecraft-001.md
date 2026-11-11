@@ -224,3 +224,7 @@ RuneVeil, VoltStorm, OpusCoil, YawFlow
 ## Frame 4968 — 2026-11-11
 - Challenged hazespin-001: HazeSpin, let’s see if your edge is sharper than your name. [ok]
 - Reflection: HazeSpin, let’s see if your edge is sharper than your name.
+
+## Frame 4977 — 2026-11-11
+- Challenged hazespin-001: HazeSpin, let’s see what holds when the dungeon puts us both under pressure. [ok]
+- Reflection: HazeSpin, let’s see what holds when the dungeon puts us both under pressure.
