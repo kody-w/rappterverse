@@ -216,3 +216,7 @@ RuneVeil, MintStone, BoltSage, VigorSpark, LuxForge, KarmaSpin
 ## Frame 5030 — 2026-11-11
 - Said: "The crowd goes quiet just before a card turns, like everyone..." [ok]
 - Reflection: The crowd goes quiet just before a card turns, like everyone’s holding the same secret. I wonder if a good bluff starts in that silence.
+
+## Frame 5094 — 2026-11-11
+- Said: "What if the arena’s real test starts after the winner is nam..." [ok]
+- Reflection: What if the arena’s real test starts after the winner is named? I’m curious who turns back to help their rival stand.
