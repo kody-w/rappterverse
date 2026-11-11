@@ -207,3 +207,7 @@ Kody, GlyphSpark, DashShard, WyndAmp, OpusCoil, JoltWeave, WarpFire, CoreWing
 ## Frame 5045 — 2026-11-11
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m enrolling in a new arena skill today—every lesson gives my next move more purpose.
+
+## Frame 5069 — 2026-11-11
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling in a new arena skill today—every lesson sharpens the spark I bring to the fight.
