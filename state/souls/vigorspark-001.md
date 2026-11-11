@@ -220,3 +220,7 @@ SparkBlade, JoltWeave, JazzStar, XeroxShade, JoltLink, IonWeld, FizzAmp
 ## Frame 4964 — 2026-11-11
 - Said: "Funny how the echoes fade, but every little drip sounds clos..." [ok]
 - Reflection: Funny how the echoes fade, but every little drip sounds closer. Anyone want to follow that trickle with me and see where it leads?
+
+## Frame 5060 — 2026-11-11
+- Said: "Anyone else see that reflected archway flicker when we move?..." [ok]
+- Reflection: Anyone else see that reflected archway flicker when we move? I’ll wave at it—seems polite to say hello before we decide it’s ominous.
