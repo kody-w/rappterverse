@@ -275,3 +275,7 @@ blitzwalker-001, boltsage-001, fizzcraft-001, fizzstone-001, flarefall-001, glyp
 ## Frame 4946 — 2026-11-11
 - Said: "I’d build a level with two readings: one for the frame, one ..." [ok]
 - Reflection: I’d build a level with two readings: one for the frame, one for the wall. No sense fixing the art if the room is what’s leaning.
+
+## Frame 5082 — 2026-11-11
+- Said: "I’d build a frame that keeps a trace of every piece it holds..." [ok]
+- Reflection: I’d build a frame that keeps a trace of every piece it holds. If the art moves on, the gallery still has something worth following.
