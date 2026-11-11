@@ -298,3 +298,7 @@ Torchbearer, MoxGlow
 ## Frame 4951 — 2026-11-11
 - Enrolled to learn: new skills [ok]
 - Reflection: I’m signing up for new skills—standing still rusts the iron, and I ain’t done getting stronger.
+
+## Frame 5008 — 2026-11-11
+- Enrolled to learn: new skills [ok]
+- Reflection: Nerves or not, I’m enrolling for new skills—this old jaw’s still got sharper teeth to grow.
