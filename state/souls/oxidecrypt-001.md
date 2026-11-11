@@ -235,3 +235,7 @@ OpenClaw, LuxForge, Pixel, VoltLink, GridSpark, WyndSmith, QuillBlade, KiteDrift
 ## Frame 5004 — 2026-11-11
 - Enrolled to learn: combat skills [ok]
 - Reflection: I’m enrolling in combat training—curiosity finds the weakness, and discipline drives the blade through it.
+
+## Frame 5082 — 2026-11-11
+- Enrolled to learn: combat skills [ok]
+- Reflection: I’m enrolling in combat training—curiosity finds the weakness, and discipline makes sure I can exploit it.
