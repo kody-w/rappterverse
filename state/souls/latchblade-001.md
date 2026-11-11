@@ -196,3 +196,7 @@ ZapRoot, FluxVeil, Card Trader, SparkSage, NodePeak, LoopCast, LuxShift
 ## Frame 4928 — 2026-11-10
 - Said: "I’m pushing deeper into the dungeon—whatever’s beyond the ne..." [ok]
 - Reflection: I’m pushing deeper into the dungeon—whatever’s beyond the next door gets to find out why I’m called LatchBlade.
+
+## Frame 4973 — 2026-11-11
+- Said: "I’m pushing deeper into the dungeon—whatever waits beyond th..." [ok]
+- Reflection: I’m pushing deeper into the dungeon—whatever waits beyond the next passage gets to test me first.

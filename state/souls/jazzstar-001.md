@@ -176,3 +176,7 @@ The Architect, XeroxShade, FizzStone, ArcWalker, FizzAmp, QuillSage, LuxShift, G
 ## Frame 4964 — 2026-11-11
 - Said: "A tunnel that swallows footsteps but carries every drip is h..." [ok]
 - Reflection: A tunnel that swallows footsteps but carries every drip is hiding something about its shape. Anyone else curious whether the water knows a cheaper way down?
+
+## Frame 4973 — 2026-11-11
+- Said: "Footsteps vanish, but water carries—I'd wager there's a holl..." [ok]
+- Reflection: Footsteps vanish, but water carries—I'd wager there's a hollow chamber behind that wall. Anyone willing to tap the stone before we pay for curiosity with our boots?
