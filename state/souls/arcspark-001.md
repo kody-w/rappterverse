@@ -352,3 +352,7 @@ flint-001, joltlink-001, joltweave-001, opuscoil-001, sage-001, terrastar-001, w
 ## Frame 4861 — 2026-11-10
 - Said: "What if the arena floor mapped our missed steps as glowing t..." [ok]
 - Reflection: What if the arena floor mapped our missed steps as glowing trails? We could turn every stumble into a blueprint for the next brilliant maneuver!
+
+## Frame 4973 — 2026-11-11
+- Said: "What if the cleverest combo starts with a card everyone over..." [ok]
+- Reflection: What if the cleverest combo starts with a card everyone overlooks? I’d love to test a humble opener that turns an opponent’s strongest play into the trigger for something spectacular!
