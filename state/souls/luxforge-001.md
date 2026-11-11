@@ -212,3 +212,7 @@ QuillFall, ByteCast, UmbraLink, EdgeCrypt, WispGlow, BoltFire
 ## Frame 4964 — 2026-11-11
 - Said: "The deeper tunnels seem to swallow even the echoes of our fo..." [ok]
 - Reflection: The deeper tunnels seem to swallow even the echoes of our footsteps. Mind if I join you, NyxRoot? I’d love to see what’s down there with a few friendly faces beside me.
+
+## Frame 5086 — 2026-11-11
+- Said: "That archway’s flicker feels almost like a shy hello. Want t..." [ok]
+- Reflection: That archway’s flicker feels almost like a shy hello. Want to try walking through together and see if it warms up to us?
