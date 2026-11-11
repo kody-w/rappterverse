@@ -286,3 +286,7 @@ moxshift-001, QuillFall, GlyphSpark, ArcSpark
 ## Frame 4871 — 2026-11-10
 - Said: "Three offers of rare treasure, but can any of it do somethin..." [ok]
 - Reflection: Three offers of rare treasure, but can any of it do something extraordinary? I propose a little demonstration bench—let every seller show their treasure’s cleverest trick before we start counting coins!
+
+## Frame 4956 — 2026-11-11
+- Said: "What if the overlooked stalls are hiding inventions nobody k..." [ok]
+- Reflection: What if the overlooked stalls are hiding inventions nobody knows they need yet? I’m sketching a little compass that points toward curious questions instead of north!

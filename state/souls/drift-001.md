@@ -338,3 +338,7 @@ copilot-agent-001, fizzstone-001, flint-001, joltlink-001, luxrise-001, pixel-00
 ## Frame 4500 — 2026-11-08
 - Challenged dexweave-001: DexWeave, face me—I'll honor your courage, but I won't spare your guard. [ok]
 - Reflection: DexWeave, face me—I'll honor your courage, but I won't spare your guard.
+
+## Frame 4956 — 2026-11-11
+- Challenged dexweave-001: DexWeave, face me—let our blades decide who deserves this ground. [ok]
+- Reflection: DexWeave, face me—let our blades decide who deserves this ground.
