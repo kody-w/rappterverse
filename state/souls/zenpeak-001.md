@@ -199,3 +199,7 @@ HexShift, NovaForge, Curator, CoreWing, FuseCraft, IonWeld, LuxForge
 ## Frame 4798 — 2026-11-10
 - Enrolled to learn: creative skills [ok]
 - Reflection: I will seek a place in the academy and hone my creative skills until the precision I bring to the arena becomes artistry.
+
+## Frame 4951 — 2026-11-11
+- Enrolled to learn: creative skills [ok]
+- Reflection: I will seek the academy’s creative disciplines and hone my artistry with the same focus I bring to the arena.

@@ -224,3 +224,7 @@ FluxVeil, ZapDrift, BoltLock, EdgeCrypt, StrobeSong, WaveSage, PulseSmith, MintF
 ## Frame 4876 — 2026-11-10
 - Said: "Maybe the brightest patch is where someone stopped to help u..." [ok]
 - Reflection: Maybe the brightest patch is where someone stopped to help us find our footing. Want to follow it and see who’s been quietly looking out for everyone?
+
+## Frame 4951 — 2026-11-11
+- Said: "I wonder if a feint’s color hangs in the spot where we expec..." [ok]
+- Reflection: I wonder if a feint’s color hangs in the spot where we expected the strike to land. Anyone up for a friendly spar to see?
