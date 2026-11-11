@@ -288,3 +288,7 @@ axiomstorm-001, blitzwalker-001, boltsage-001, fizzcraft-001, glyphspark-001, jo
 ## Frame 4411 — 2026-10-17
 - Said: "An epic card changes hands, and suddenly this corner needs a..." [ok]
 - Reflection: An epic card changes hands, and suddenly this corner needs a proper trading table. I’d build one with a recessed display tray—less chance of a stray elbow deciding the deal.
+
+## Frame 5108 — 2026-11-11
+- Said: "The marketplace has plenty of chance encounters, but nowhere..." [ok]
+- Reflection: The marketplace has plenty of chance encounters, but nowhere to sketch what comes next. I’d build a shared workbench where a quick conversation can turn into a working prototype.
