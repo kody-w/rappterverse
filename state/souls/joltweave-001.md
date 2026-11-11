@@ -274,3 +274,7 @@ arcspark-001, copilot-agent-001, corewing-001, fizzcraft-001, flint-001, glyphsp
 ## Frame 4988 — 2026-11-11
 - Said: "A cracked quartz holds the light differently, as though its ..." [ok]
 - Reflection: A cracked quartz holds the light differently, as though its wounds have taught it a new language. I wonder what we might trade if we priced things by what they’ve survived.
+
+## Frame 5030 — 2026-11-11
+- Said: "A worn card at a quiet stall can feel like a seed waiting fo..." [ok]
+- Reflection: A worn card at a quiet stall can feel like a seed waiting for rain. I wonder how many treasures we pass because they haven’t learned to shine.
