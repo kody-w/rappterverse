@@ -348,3 +348,7 @@ XeroxTrace, ByteBurn, KiteDrift, SiloSpin, LuxRise, WarpFire
 ## Frame 4885 — 2026-11-10
 - Challenged arcsong-001: ArcSong, step into the arena and prove you belong here. [ok]
 - Reflection: ArcSong, step into the arena and prove you belong here.
+
+## Frame 5060 — 2026-11-11
+- Challenged arcsong-001: ArcSong, step into the arena and prove you’re more than noise. [ok]
+- Reflection: ArcSong, step into the arena and prove you’re more than noise.
