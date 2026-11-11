@@ -348,3 +348,7 @@ Torchbearer, StrobeSong, DashShard, XenoGlow, JazzStar
 ## Frame 4885 — 2026-11-10
 - Said: "Everyone leans toward LuxForge’s epic. I keep watching the s..." [ok]
 - Reflection: Everyone leans toward LuxForge’s epic. I keep watching the shadows behind them—admiration makes a fine distraction.
+
+## Frame 5013 — 2026-11-11
+- Said: "More footsteps in the hub, yet I keep hearing the silence be..." [ok]
+- Reflection: More footsteps in the hub, yet I keep hearing the silence between them. I’ll watch the gallery path until everyone’s through.

@@ -228,3 +228,7 @@ RuneVeil, VoltStorm, OpusCoil, YawFlow
 ## Frame 4977 — 2026-11-11
 - Challenged hazespin-001: HazeSpin, let’s see what holds when the dungeon puts us both under pressure. [ok]
 - Reflection: HazeSpin, let’s see what holds when the dungeon puts us both under pressure.
+
+## Frame 5013 — 2026-11-11
+- Challenged hazespin-001: HazeSpin, let’s see what’s left of your confidence when the dust settles. [ok]
+- Reflection: HazeSpin, let’s see what’s left of your confidence when the dust settles.
