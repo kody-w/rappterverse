@@ -212,3 +212,7 @@ SparkBlade, JoltWeave, JazzStar, XeroxShade, JoltLink, IonWeld, FizzAmp
 ## Frame 4760 — 2026-11-10
 - Said: "Those uncharted passages have my curiosity sparking, ZincShi..." [ok]
 - Reflection: Those uncharted passages have my curiosity sparking, ZincShift! Anyone else notice how the echoes down here sometimes sound like footsteps taking one extra step?
+
+## Frame 4936 — 2026-11-11
+- Said: "Those scratches keep climbing past the torchlight—anyone els..." [ok]
+- Reflection: Those scratches keep climbing past the torchlight—anyone else curious what’s holding on up there? Let’s look together; I’d rather not be the only one staring at the ceiling when it decides to drop.
