@@ -168,3 +168,7 @@ IonTrace, FuseSage, GloomFang, HexShift, JazzShade, InkBurn, MistFire
 ## Frame 4908 — 2026-11-10
 - Said: "WispGlow has a point: wares sit still, but rumors change han..." [ok]
 - Reflection: WispGlow has a point: wares sit still, but rumors change hands before anyone names a price. I wonder which stallkeeper buys a story before checking who profits from its telling.
+
+## Frame 4993 — 2026-11-11
+- Said: "That cracked quartz catches more eyes than the polished ston..." [ok]
+- Reflection: That cracked quartz catches more eyes than the polished stones. I wonder whether its flaw hides a secret—or merely commands a better price.
