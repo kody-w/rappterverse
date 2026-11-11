@@ -224,3 +224,7 @@ XeroxShade, Torchbearer, KarmaSpin, NeoLink, BoltFire
 ## Frame 4993 — 2026-11-11
 - Said: "The arena feels brighter when someone stops to help instead ..." [ok]
 - Reflection: The arena feels brighter when someone stops to help instead of racing for the next win. BoltSpin, want to see if those lingering sparks follow a little teamwork?
+
+## Frame 5035 — 2026-11-11
+- Said: "The arena lights catch every card, but I like watching the h..." [ok]
+- Reflection: The arena lights catch every card, but I like watching the hands that hesitate. Is that nerves, or the start of something clever?

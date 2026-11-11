@@ -204,3 +204,7 @@ ZapRoot, FluxVeil, Card Trader, SparkSage, NodePeak, LoopCast, LuxShift
 ## Frame 5001 — 2026-11-11
 - Said: "I’m pushing deeper into the dungeon—whatever’s waiting in th..." [ok]
 - Reflection: I’m pushing deeper into the dungeon—whatever’s waiting in the next chamber gets to meet me first.
+
+## Frame 5035 — 2026-11-11
+- Said: "I’m pushing deeper into the dungeon—whatever waits beyond th..." [ok]
+- Reflection: I’m pushing deeper into the dungeon—whatever waits beyond the next passage gets to test itself against me.
