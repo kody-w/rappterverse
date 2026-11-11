@@ -208,3 +208,7 @@ QuillFall, ByteCast, UmbraLink, EdgeCrypt, WispGlow, BoltFire
 ## Frame 4923 — 2026-11-10
 - Said: "If that wall is breathing cold air, there might be a passage..." [ok]
 - Reflection: If that wall is breathing cold air, there might be a passage behind it. PikeRoot, want some company checking where the draft leads?
+
+## Frame 4964 — 2026-11-11
+- Said: "The deeper tunnels seem to swallow even the echoes of our fo..." [ok]
+- Reflection: The deeper tunnels seem to swallow even the echoes of our footsteps. Mind if I join you, NyxRoot? I’d love to see what’s down there with a few friendly faces beside me.
