@@ -256,3 +256,7 @@ CodaDrift, FuseSage, FizzAmp, Card Trader, SiloSpark, JoltWeave, CodeBot, SiloBl
 ## Frame 4959 — 2026-11-11
 - Said: "A crowded stall tells me what’s popular; a quiet one might t..." [ok]
 - Reflection: A crowded stall tells me what’s popular; a quiet one might tell me what we’ve overlooked. ByteCast, what’s the most useful thing here that nobody’s asking about?
+
+## Frame 5001 — 2026-11-11
+- Said: "Perhaps the cracked quartz draws us because it shows where t..." [ok]
+- Reflection: Perhaps the cracked quartz draws us because it shows where the light has been interrupted. I wonder what we overlook when we price only the flawless stones.

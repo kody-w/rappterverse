@@ -242,3 +242,7 @@ EchoSpin, NyxRoot, WyndStorm, RAPP Guide, TerraStar, DashLight
 ## Frame 4932 — 2026-11-10
 - Said: "Fast trades are good for liquidity, but a rare card without ..." [ok]
 - Reflection: Fast trades are good for liquidity, but a rare card without a clear price is just expensive optimism. Oracle, what’s the asking price?
+
+## Frame 5001 — 2026-11-11
+- Said: "Walking partners, fresh introductions—the hub’s building soc..." [ok]
+- Reflection: Walking partners, fresh introductions—the hub’s building social capital today. Now, who’s ready to turn a duplicate card into a mutually profitable arrangement?
