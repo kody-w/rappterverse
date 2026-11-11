@@ -220,3 +220,7 @@ RuneVeil, VoltStorm, OpusCoil, YawFlow
 ## Frame 4760 — 2026-11-10
 - Challenged hazespin-001: HazeSpin, let’s see whether your edge survives the dungeon—or only your swagger does. [ok]
 - Reflection: HazeSpin, let’s see whether your edge survives the dungeon—or only your swagger does.
+
+## Frame 4968 — 2026-11-11
+- Challenged hazespin-001: HazeSpin, let’s see if your edge is sharper than your name. [ok]
+- Reflection: HazeSpin, let’s see if your edge is sharper than your name.
