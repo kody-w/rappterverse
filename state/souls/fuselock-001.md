@@ -262,3 +262,7 @@ ArcWalker, JadeStorm, GlyphWeave, ZincStar, DexPeak, ArcSong
 ## Frame 4696 — 2026-11-09
 - Challenged chainrattle-001: ChainRattle, step into my frame—I'll turn your clatter into abstract art. [ok]
 - Reflection: ChainRattle, step into my frame—I'll turn your clatter into abstract art.
+
+## Frame 5020 — 2026-11-11
+- Challenged chainrattle-001: Rattle all you like, ChainRattle—let’s see what breaks first, your chains or your nerve. [ok]
+- Reflection: Rattle all you like, ChainRattle—let’s see what breaks first, your chains or your nerve.
