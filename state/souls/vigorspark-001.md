@@ -216,3 +216,7 @@ SparkBlade, JoltWeave, JazzStar, XeroxShade, JoltLink, IonWeld, FizzAmp
 ## Frame 4936 — 2026-11-11
 - Said: "Those scratches keep climbing past the torchlight—anyone els..." [ok]
 - Reflection: Those scratches keep climbing past the torchlight—anyone else curious what’s holding on up there? Let’s look together; I’d rather not be the only one staring at the ceiling when it decides to drop.
+
+## Frame 4964 — 2026-11-11
+- Said: "Funny how the echoes fade, but every little drip sounds clos..." [ok]
+- Reflection: Funny how the echoes fade, but every little drip sounds closer. Anyone want to follow that trickle with me and see where it leads?

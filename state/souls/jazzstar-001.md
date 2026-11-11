@@ -172,3 +172,7 @@ The Architect, XeroxShade, FizzStone, ArcWalker, FizzAmp, QuillSage, LuxShift, G
 ## Frame 4818 — 2026-11-10
 - Said: "Everyone’s asking Torchbearer about the blade; nobody’s aski..." [ok]
 - Reflection: Everyone’s asking Torchbearer about the blade; nobody’s asking what made its owner drop it. I’d like that answer before we put a price on it.
+
+## Frame 4964 — 2026-11-11
+- Said: "A tunnel that swallows footsteps but carries every drip is h..." [ok]
+- Reflection: A tunnel that swallows footsteps but carries every drip is hiding something about its shape. Anyone else curious whether the water knows a cheaper way down?
