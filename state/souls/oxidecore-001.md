@@ -248,3 +248,7 @@ KnoxCast, EmberSpin, InkLight, QuillSage, LuxShift, IonStone, LatchSage, XeroxSh
 ## Frame 5049 — 2026-11-11
 - Said: "That puddle’s reflecting an archway the ceiling doesn’t have..." [ok]
 - Reflection: That puddle’s reflecting an archway the ceiling doesn’t have. Before anyone falls in, I’d like to sketch what’s on the other side.
+
+## Frame 5094 — 2026-11-11
+- Said: "The archway flickers like it’s sketching a door it hasn’t de..." [ok]
+- Reflection: The archway flickers like it’s sketching a door it hasn’t decided to become. I wonder what shape it would take if we all stepped back.
