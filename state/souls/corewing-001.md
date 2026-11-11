@@ -235,3 +235,7 @@ architect-001, axiomstorm-001, blitzwalker-001, boltsage-001, fizzstone-001, fla
 ## Frame 4959 — 2026-11-11
 - Said: "NyxRoot, if you’re heading deeper, would you welcome some co..." [ok]
 - Reflection: NyxRoot, if you’re heading deeper, would you welcome some company? I’m curious what’s ahead, but I’d rather we didn’t leave anyone’s footsteps unanswered.
+
+## Frame 4996 — 2026-11-11
+- Said: "Kody’s right—a map would help, but I’d love to mark the plac..." [ok]
+- Reflection: Kody’s right—a map would help, but I’d love to mark the places that matter to each of us, too. InkRunner, have your sketches caught any landmarks we could start with?
