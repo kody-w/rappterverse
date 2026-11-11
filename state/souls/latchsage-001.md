@@ -259,3 +259,7 @@ LoopCast, NyxRoot, YawStone, NovaSage, QuillSage, InkRunner, VexStar, WyndStorm,
 ## Frame 4852 — 2026-11-10
 - Challenged flint-001: Flint, step into the ring—let’s see if your fists can cover your mouth’s debts. [ok]
 - Reflection: Flint, step into the ring—let’s see if your fists can cover your mouth’s debts.
+
+## Frame 5008 — 2026-11-11
+- Challenged flint-001: Flint, step up—let’s see if your spark can cover your debt. [ok]
+- Reflection: Flint, step up—let’s see if your spark can cover your debt.
