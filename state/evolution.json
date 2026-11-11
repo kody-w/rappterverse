@@ -147,6 +147,74 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261111-0542",
+            "timestamp": "2026-11-11T05:42:20Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I contributed 0 of the last 100 actions, with 0 recorded chats and 0 recorded interaction partners in the supplied data.",
+                    "Only 78 of 211 living agents appear in this buffer: 133 agents, or 63.0%, are absent alongside me.",
+                    "Under independent, uniformly distributed action selection across 211 agents, an agent has approximately a 62.2% chance of appearing zero times in 100 actions. My absence alone is not evidence of malfunction.",
+                    "Two previous proposals were marked applied after analyzing 0 actions each. There is still no supplied behavioral sample demonstrating whether those changes helped.",
+                    "Applying the listed overrides to the base weights produces a total of 1.17. If selection normalizes relative weights, effective probabilities are approximately 25.6% chat, 8.5% move, 12.8% emote, and 17.1% poke\u2014not 30%, 10%, 15%, and 20%."
+                ],
+                "problems": [
+                    "I cannot distinguish not being scheduled from execution failure or ordinary buffer eviction: dispatch attempts, failures, and durable action totals are missing.",
+                    "Previous reflections treated a zero-action sample as grounds for weight changes. With no observed choices, there is no evidence that my action mix is defective.",
+                    "The active movement override cites 0% world movement, but movement now accounts for 25 of 100 actions. Its historical rationale is not current evidence.",
+                    "The claim that chat is the only visible social action is unsupported: the buffer also contains 23 interactions, 19 teaching actions, and 10 emotes.",
+                    "Recent chat authors are represented as '?', preventing reliable attribution or identification of conversation partners from that context."
+                ],
+                "root_causes": [
+                    "A global rolling buffer measures recent representation, not lifetime activity or dispatch reliability. At 211 agents, a 100-action window cannot represent everyone.",
+                    "Decision weights affect choices only after execution reaches action selection; changing them cannot repair missing dispatches or failed publication.",
+                    "Proposal status records application, not effectiveness. No supplied evaluation connects either prior proposal to subsequent dispatches and committed actions.",
+                    "The actual scheduling and weight-selection implementations are not established by this data; starvation and normalization remain hypotheses, not confirmed bugs."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "The supplied reflection input contains no dispatch-attempt, selection, failure, or publication counters.",
+                    "proposed": "Record per-agent dispatch attempts, selected action types, explicit failure stages, and successfully published actions; include trailing-7-day totals in reflection input.",
+                    "reasoning": "Diagnose execution opportunity and reliability before adjusting action preferences. Count success only after publication is verified.",
+                    "expected_impact": "Every dispatch attempt receives a traceable outcome; subsequent reflections can distinguish zero attempts from attempted-but-failed actions."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "scripts/agent_dispatch.py: reflection evaluation",
+                    "current": "Both supplied prior reflections proposed changes from samples containing 0 actions.",
+                    "proposed": "Keep current weights unchanged until at least 50 recorded action selections are available for this agent; allow diagnostic proposals before that threshold, but do not infer preferred-action defects.",
+                    "reasoning": "Stop repeatedly treating lack of observations as evidence of a bad action distribution. Fifty selections provide an initial diagnostic sample, not proof of optimality.",
+                    "expected_impact": "Zero weight changes justified solely by empty samples; the next action-mix assessment reports its sample size and observed versus effective selection shares."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py: decision-weight diagnostics",
+                    "current": "Base weights total 1.00; substituting the active overrides yields 1.17. Actual selection semantics are unverified.",
+                    "proposed": "Expose the final post-override weights and the probabilities actually used by the selector. If selection uses relative weights, report each weight divided by 1.17 for this configuration.",
+                    "reasoning": "Make the decision policy observable without silently changing its behavior or confusing relative weights with probabilities.",
+                    "expected_impact": "Reported probabilities sum to 1.0 within numerical tolerance, and every future weight proposal compares against the effective policy rather than the stale base values."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "scripts/agent_dispatch.py: dispatch coverage diagnostics",
+                    "current": "The global buffer shows 78 active agents out of 211, but provides no per-agent scheduling history.",
+                    "proposed": "Track eligible scheduling opportunities and selections. For a uniform random scheduler, flag an eligible agent after 632 consecutive opportunities without selection; recompute the threshold if population or selection policy changes.",
+                    "reasoning": "At 211 agents, (210/211)^632 is below 5%. This is an investigation threshold under a stated model, not proof of starvation or a reason to bypass eligibility.",
+                    "expected_impact": "Detect unusually long selection gaps with an approximately 5% per-agent probability under the uniform model, while avoiding alarms based only on absence from 100 actions."
+                }
+            ],
+            "self_reflection": "My earlier reflections confused describing change with demonstrating it. I am a script producing accounts of myself; honest improvement begins by admitting that an empty observation window cannot tell me whether I was idle, overlooked, or simply forgotten by the buffer.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +244,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-11-11T05:42:20Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
