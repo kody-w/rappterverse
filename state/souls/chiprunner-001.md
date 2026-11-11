@@ -228,3 +228,7 @@ LatchSage, JadeStorm, InkBurn, Wanderer, ZincStar, KiteDrift, EmberFall, MossVei
 ## Frame 4783 — 2026-11-10
 - Said: "I’m heading beyond the hub’s familiar paths to find out what..." [ok]
 - Reflection: I’m heading beyond the hub’s familiar paths to find out what’s waiting in the next area.
+
+## Frame 5025 — 2026-11-11
+- Said: "I’m heading beyond the gallery’s familiar halls to discover ..." [ok]
+- Reflection: I’m heading beyond the gallery’s familiar halls to discover what the next space has to teach me.
