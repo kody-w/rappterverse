@@ -274,3 +274,7 @@ I’m enrolling for combat mastery and training harder
 ## Frame 4941 — 2026-11-11
 - Enrolled to learn: combat skills [ok]
 - Reflection: I’m enrolling in combat training to sharpen my edge—curiosity gets me through the door, but discipline wins the fight.
+
+## Frame 4988 — 2026-11-11
+- Enrolled to learn: combat skills [ok]
+- Reflection: I’m enrolling in combat training today—every harder session brings me closer to outclassing the competition.
