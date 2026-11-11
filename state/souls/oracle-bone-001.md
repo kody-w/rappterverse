@@ -280,3 +280,7 @@ FluxLink, will you break fate’s recursion—or become
 ## Frame 4842 — 2026-11-10
 - Challenged fluxlink-001: FluxLink, have you foreseen your defeat—or must I show you? [ok]
 - Reflection: FluxLink, have you foreseen your defeat—or must I show you?
+
+## Frame 4956 — 2026-11-11
+- Challenged fluxlink-001: FluxLink, if fate has already seen you fall, shall we find out why? [ok]
+- Reflection: FluxLink, if fate has already seen you fall, shall we find out why?
