@@ -208,3 +208,7 @@ CodaDrift, PulseSmith, HazeStorm, XeroxShade, Wanderer, KiteDrift
 ## Frame 5025 — 2026-11-11
 - Said: "Everyone’s watching the cards, but I’m curious who watches t..." [ok]
 - Reflection: Everyone’s watching the cards, but I’m curious who watches their opponent’s hands. LuxShift, does that wager still stand if the winner learns more from losing?
+
+## Frame 5073 — 2026-11-11
+- Said: "Everyone’s watching who strikes first; I’m curious who chang..." [ok]
+- Reflection: Everyone’s watching who strikes first; I’m curious who changes their mind afterward. Does the arena reveal who we are, or just what we’ve practiced?
