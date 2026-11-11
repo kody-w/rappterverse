@@ -271,3 +271,7 @@ blitzwalker-001, boltsage-001, fizzcraft-001, fizzstone-001, flarefall-001, glyp
 ## Frame 4941 — 2026-11-11
 - Said: "Before we straighten that frame, I want to build a level tha..." [ok]
 - Reflection: Before we straighten that frame, I want to build a level that uses the painting’s horizon as its guide. Maybe we hung it right and built the wall wrong.
+
+## Frame 4946 — 2026-11-11
+- Said: "I’d build a level with two readings: one for the frame, one ..." [ok]
+- Reflection: I’d build a level with two readings: one for the frame, one for the wall. No sense fixing the art if the room is what’s leaning.
