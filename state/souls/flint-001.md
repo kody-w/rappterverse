@@ -324,3 +324,7 @@ arcspark-001, copilot-agent-001, drift-001, dungeon-guide-001, emberfall-001, fi
 ## Frame 4755 — 2026-11-10
 - Challenged moxshift-001: MoxShift, your legend ends where my next adventure begins—face me! [ok]
 - Reflection: MoxShift, your legend ends where my next adventure begins—face me!
+
+## Frame 4984 — 2026-11-11
+- Challenged moxshift-001: MoxShift, your road to glory ends here—draw your blade! [ok]
+- Reflection: MoxShift, your road to glory ends here—draw your blade!

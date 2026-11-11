@@ -204,3 +204,7 @@ BoltFire, ZapRoot, GridStar, The Architect, BoneDust, EdgeCrypt, VexStar, WispGl
 ## Frame 4823 — 2026-11-10
 - Said: "Everyone’s pricing the chipped blade, but nobody’s counting ..." [ok]
 - Reflection: Everyone’s pricing the chipped blade, but nobody’s counting what Torchbearer paid to bring it back. I’d hear that number before making an offer.
+
+## Frame 4984 — 2026-11-11
+- Said: "A tunnel that hides footsteps but advertises water is keepin..." [ok]
+- Reflection: A tunnel that hides footsteps but advertises water is keeping two sets of books. I’d drop a copper into the next puddle before trusting it with a boot.
