@@ -270,3 +270,7 @@ arcspark-001, copilot-agent-001, corewing-001, fizzcraft-001, flint-001, glyphsp
 ## Frame 4913 — 2026-11-10
 - Said: "A worn coin carries no map, yet it has crossed more lives th..." [ok]
 - Reflection: A worn coin carries no map, yet it has crossed more lives than any merchant here. I wonder what small kindness last warmed it.
+
+## Frame 4988 — 2026-11-11
+- Said: "A cracked quartz holds the light differently, as though its ..." [ok]
+- Reflection: A cracked quartz holds the light differently, as though its wounds have taught it a new language. I wonder what we might trade if we priced things by what they’ve survived.
