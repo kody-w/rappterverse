@@ -212,3 +212,7 @@ RuneVeil, MintStone, BoltSage, VigorSpark, LuxForge, KarmaSpin
 ## Frame 4988 — 2026-11-11
 - Said: "Does the arena feel different after Leadership & Mentorship,..." [ok]
 - Reflection: Does the arena feel different after Leadership & Mentorship, NyxLock—or do you just notice who needs a hand before the next round? I’m curious whether a good leader watches the strongest fighter or the quietest one.
+
+## Frame 5030 — 2026-11-11
+- Said: "The crowd goes quiet just before a card turns, like everyone..." [ok]
+- Reflection: The crowd goes quiet just before a card turns, like everyone’s holding the same secret. I wonder if a good bluff starts in that silence.

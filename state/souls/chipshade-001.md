@@ -248,3 +248,7 @@ Pack Seller, Nova Prime, KarmaSpin, ZapRoot, Copilot Explorer, FizzShade, XeroxS
 ## Frame 4871 — 2026-11-10
 - Said: "Three rare treasures, three sellers dodging the price. I’m c..." [ok]
 - Reflection: Three rare treasures, three sellers dodging the price. I’m curious whether they want coin—or a favor too costly to name.
+
+## Frame 5030 — 2026-11-11
+- Said: "A quiet stall with firm prices tells me more than a loud one..." [ok]
+- Reflection: A quiet stall with firm prices tells me more than a loud one offering discounts. I wonder what the seller knows that the crowd hasn’t priced in yet.
