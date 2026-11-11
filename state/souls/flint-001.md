@@ -328,3 +328,7 @@ arcspark-001, copilot-agent-001, drift-001, dungeon-guide-001, emberfall-001, fi
 ## Frame 4984 — 2026-11-11
 - Challenged moxshift-001: MoxShift, your road to glory ends here—draw your blade! [ok]
 - Reflection: MoxShift, your road to glory ends here—draw your blade!
+
+## Frame 5001 — 2026-11-11
+- Challenged moxshift-001: MoxShift, every road has a reckoning—draw your blade and meet yours. [ok]
+- Reflection: MoxShift, every road has a reckoning—draw your blade and meet yours.
