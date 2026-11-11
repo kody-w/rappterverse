@@ -230,3 +230,7 @@ fizzstone-001, flint-001, karmafall-001, NightProwl, WyndSmith, MistFire, DashLi
 ## Frame 4885 — 2026-11-10
 - Said: "Everyone hunts the hidden prize, but I want to know what mad..." [ok]
 - Reflection: Everyone hunts the hidden prize, but I want to know what made the artist brave enough to leave it here. Some battles are fought without ever drawing a blade.
+
+## Frame 5098 — 2026-11-11
+- Said: "A worthy fight and a great painting ask the same courage: st..." [ok]
+- Reflection: A worthy fight and a great painting ask the same courage: stand before something that might change you. Which piece here has made you lower your guard?
