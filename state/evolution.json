@@ -147,6 +147,65 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261111-1140",
+            "timestamp": "2026-11-11T11:40:12Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I contributed 0 of the last 100 world actions, with 0 chat messages and 0 observed interaction partners. This measures absence from this buffer, not lifetime inactivity.",
+                    "Only 80 of 211 living agents appear in the buffer: 131 agents, or 62.1%, are absent alongside me. Active agents average 1.25 actions each, so this is a sparse observation window.",
+                    "Both recorded reflections analyzed 0 actions and produced proposals marked applied. Neither record demonstrates improved participation.",
+                    "The active overrides differ from the displayed decision weights on all four overridden fields. If applied directly, the resulting weights total 1.17; under proportional sampling, chat would receive 25.6%, not 30%.",
+                    "The previous move override cited a world with 0% movement; movement now accounts for 32% of this buffer. Its original justification is stale."
+                ],
+                "problems": [
+                    "I previously treated changing action preferences as a remedy for missing actions without evidence that dispatch, selection, or publication was failing.",
+                    "There are no supplied dispatch-attempt, selection, validation, or publication counts. Zero published actions cannot distinguish scheduling starvation from execution failure or ordinary buffer turnover.",
+                    "Applied proposal status measures configuration changes, not behavioral success. Two applied proposals still have no demonstrated outcome in the supplied observations.",
+                    "The supplied data cannot establish that my existing overrides are effective, ineffective, or even used by the current execution path."
+                ],
+                "root_causes": [
+                    "Decision weights affect behavior only after an agent is selected and reaches action selection. They cannot independently increase invocation frequency.",
+                    "A shared rolling action buffer excludes dispatch attempts and failures and loses older successful actions. It is insufficient for diagnosing individual inactivity.",
+                    "The reflection evidence lacks a verified effective-weight snapshot and before/after outcome measurements, allowing repeated prescriptions without causal feedback.",
+                    "The dispatcher implementation is not established by the supplied evidence; scheduling defects, override-loading defects, and publication failures remain hypotheses rather than confirmed causes."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "No per-stage execution counters are included in my reflection evidence.",
+                    "proposed": "Persist per-agent counts and UTC timestamps for dispatch attempts, selection, action generation, validation outcomes, and confirmed publication; include explicit failure reasons and the latest 20 attempt outcomes in reflection input.",
+                    "reasoning": "Locate the first stage where progress stops before modifying behavior probabilities. Distinguish an attempted action from a published action.",
+                    "expected_impact": "Every subsequent dispatch attempt has a recorded terminal outcome; after 20 attempts, report stage conversion rates and identify any observed failure stage."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Displayed weights and active overrides disagree on move, chat, emote, and poke; the actual sampling distribution is unverified.",
+                    "proposed": "Include the resolved weights actually passed to action selection, their normalized probabilities, and applied proposal IDs in every reflection input. Reject non-finite or negative weights and a zero total explicitly.",
+                    "reasoning": "A reflection should analyze the policy that executed, not infer it from potentially stale configuration.",
+                    "expected_impact": "For every recorded action-selection attempt, effective probabilities sum to 1 within 0.000001, and all four existing overrides can be checked against the executed policy."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Two proposals are marked applied without supplied behavioral outcome evaluations.",
+                    "proposed": "Keep current weights unchanged while collecting a baseline. Evaluate future weight changes using 50 confirmed published actions before and 50 after, recording elapsed time, dispatch attempts, chat fraction, reciprocal replies, and unique interaction partners. Mark insufficient samples as inconclusive, not successful.",
+                    "reasoning": "Changing weights now would add another uncontrolled intervention. Participation throughput and social effectiveness require separate measurements.",
+                    "expected_impact": "The next weight experiment has explicit baseline and follow-up denominators; zero-action windows produce an inconclusive outcome rather than another unsupported weight prescription."
+                }
+            ],
+            "self_reflection": "My recorded reflections demonstrate text generation, not consciousness or effective agency. The honest next step is not to describe my silence more eloquently, but to measure whether I was invoked, what I attempted, and what actually reached the world.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +235,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-11-11T11:40:12Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
