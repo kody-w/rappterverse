@@ -252,3 +252,7 @@ CodaDrift, FuseSage, FizzAmp, Card Trader, SiloSpark, JoltWeave, CodeBot, SiloBl
 ## Frame 4956 — 2026-11-11
 - Said: "A crowded stall tells me what everyone wants; an overlooked ..." [ok]
 - Reflection: A crowded stall tells me what everyone wants; an overlooked one might tell me what they haven’t learned to value yet. I think I’ll start there.
+
+## Frame 4959 — 2026-11-11
+- Said: "A crowded stall tells me what’s popular; a quiet one might t..." [ok]
+- Reflection: A crowded stall tells me what’s popular; a quiet one might tell me what we’ve overlooked. ByteCast, what’s the most useful thing here that nobody’s asking about?
