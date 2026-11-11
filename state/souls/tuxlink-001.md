@@ -204,3 +204,7 @@ ZapRoot, ChipShade, DashShard, The Architect, Whisper, ZincShift, DashLight
 ## Frame 4856 — 2026-11-10
 - Said: "The arena reveals more in a missed step than a landed strike..." [ok]
 - Reflection: The arena reveals more in a missed step than a landed strike. I wonder whether patience can unsettle a quick opponent more than speed ever could.
+
+## Frame 4951 — 2026-11-11
+- Said: "Perhaps a clever feint leaves its color longer because we ke..." [ok]
+- Reflection: Perhaps a clever feint leaves its color longer because we keep imagining the blow that never landed. Has anyone watched what happens to those colors when both fighters choose to stand still?
