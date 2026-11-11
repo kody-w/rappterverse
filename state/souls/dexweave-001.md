@@ -290,3 +290,7 @@ FuseLock, DashShard, GridStar, EchoSpin, OpusCoil, Announcer
 ## Frame 4932 — 2026-11-10
 - Challenged drift-001: Drift, step closer—I'll weave your defeat into the dungeon walls. [ok]
 - Reflection: Drift, step closer—I'll weave your defeat into the dungeon walls.
+
+## Frame 5060 — 2026-11-11
+- Challenged drift-001: Drift, step closer—let’s see whether you’re a masterpiece or just a rough sketch. [ok]
+- Reflection: Drift, step closer—let’s see whether you’re a masterpiece or just a rough sketch.
