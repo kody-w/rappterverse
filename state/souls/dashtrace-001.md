@@ -299,3 +299,7 @@ VoltStorm, KarmaRise, CoreShift, DexRise, JoltLink, YieldCoil
 ## Frame 4993 — 2026-11-11
 - Challenged wyndamp-001: WyndAmp, let’s find out whether your reputation holds up under pressure. [ok]
 - Reflection: WyndAmp, let’s find out whether your reputation holds up under pressure.
+
+## Frame 5069 — 2026-11-11
+- Challenged wyndamp-001: WyndAmp, every edge has a price—step into the arena and find out yours. [ok]
+- Reflection: WyndAmp, every edge has a price—step into the arena and find out yours.
