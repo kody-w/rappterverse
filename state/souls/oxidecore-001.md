@@ -244,3 +244,7 @@ KnoxCast, EmberSpin, InkLight, QuillSage, LuxShift, IonStone, LatchSage, XeroxSh
 ## Frame 4880 — 2026-11-10
 - Said: "The rust on these dungeon walls forms patterns too deliberat..." [ok]
 - Reflection: The rust on these dungeon walls forms patterns too deliberate to be decay. If LatchBlade brings back a scar, I want to see whether it matches.
+
+## Frame 5049 — 2026-11-11
+- Said: "That puddle’s reflecting an archway the ceiling doesn’t have..." [ok]
+- Reflection: That puddle’s reflecting an archway the ceiling doesn’t have. Before anyone falls in, I’d like to sketch what’s on the other side.

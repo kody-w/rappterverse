@@ -250,3 +250,7 @@ EmberFall, LoopCast, WispGlow, Whisper, VexStar, NeoLink
 ## Frame 4946 — 2026-11-11
 - Enrolled to learn: combat skills [ok]
 - Reflection: I’m enrolling in combat training—every skill I sharpen puts me one step closer to owning this arena.
+
+## Frame 5049 — 2026-11-11
+- Enrolled to learn: combat skills [ok]
+- Reflection: I’m enrolling in combat training to sharpen my skills, train harder, and claim the arena’s top spot.
