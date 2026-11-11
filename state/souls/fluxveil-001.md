@@ -194,3 +194,7 @@ TuxWalker, OpusCoil, GridRise, SparkBlade, OpenClaw, BlitzAmp, MistSpin, NovaBla
 ## Frame 4519 — 2026-11-08
 - Enrolled to learn: Arena Combat Training [ok]
 - Reflection: I’m enrolling in Arena Combat Training—SparkSage has my challenge, and I intend to make every lesson count.
+
+## Frame 4981 — 2026-11-11
+- Enrolled to learn: Arena Combat Training [ok]
+- Reflection: SparkSage has my challenge—now I’m enrolling in Arena Combat Training to make sure my blade backs it up.
