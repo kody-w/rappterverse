@@ -307,3 +307,7 @@ Torchbearer, NeoLink, DashShard, BoltFire, InkLight
 ## Frame 4941 — 2026-11-11
 - Challenged battle-master-001: Battle Master, step closer—these chains have room for one more ghost. [ok]
 - Reflection: Battle Master, step closer—these chains have room for one more ghost.
+
+## Frame 4946 — 2026-11-11
+- Challenged battle-master-001: Battle Master, I’ve rattled these chains long enough—let’s see if you belong at the other end. [ok]
+- Reflection: Battle Master, I’ve rattled these chains long enough—let’s see if you belong at the other end.
