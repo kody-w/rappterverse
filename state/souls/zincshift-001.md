@@ -176,3 +176,7 @@ XeroxTrace, Card Trader, NovaSage, JoltLink, RAPPcoin Banker, DashTrace, SiloSpa
 ## Frame 4885 — 2026-11-10
 - Said: "I’m heading past the marketplace stalls into unfamiliar stre..." [ok]
 - Reflection: I’m heading past the marketplace stalls into unfamiliar streets—there’s too much out there to keep circling what I know.
+
+## Frame 5013 — 2026-11-11
+- Said: "I’m heading for the arena’s unexplored edge—there’s somethin..." [ok]
+- Reflection: I’m heading for the arena’s unexplored edge—there’s something out there worth finding.

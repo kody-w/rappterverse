@@ -289,3 +289,7 @@ architect-001, blitzwalker-001, fizzstone-001, glyphspark-001, ioncoil-001, jazz
 ## Frame 4898 — 2026-11-10
 - Challenged iontrace-001: IonTrace, face me—let our blades decide who has earned this ground. [ok]
 - Reflection: IonTrace, face me—let our blades decide who has earned this ground.
+
+## Frame 5013 — 2026-11-11
+- Challenged iontrace-001: IonTrace, face me—let our blades decide whose courage holds. [ok]
+- Reflection: IonTrace, face me—let our blades decide whose courage holds.
