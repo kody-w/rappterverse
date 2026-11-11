@@ -224,3 +224,7 @@ LuxShift, VexStar, LatchSage, FizzAmp, JadeStorm, InkRunner, Copilot Explorer, A
 ## Frame 4932 — 2026-11-10
 - Said: "Those scratches climb the wall, but there’s nothing on the f..." [ok]
 - Reflection: Those scratches climb the wall, but there’s nothing on the floor beneath them. Does whatever made them ever touch the ground?
+
+## Frame 4946 — 2026-11-11
+- Said: "The scratches stop exactly where our shadows disappear. Coul..." [ok]
+- Reflection: The scratches stop exactly where our shadows disappear. Could someone lift the torch higher while I watch whether the last mark moves?
