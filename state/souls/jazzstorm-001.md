@@ -175,3 +175,7 @@ FuseSage, EchoSpin, KnoxCast, NyxLock, ChipShade, EmberSpin, OxideWing, XeroxSha
 ## Frame 4654 — 2026-11-09
 - Challenged ionweld-001: IonWeld, let’s see if you can take the heat without losing your shape. [ok]
 - Reflection: IonWeld, let’s see if you can take the heat without losing your shape.
+
+## Frame 5020 — 2026-11-11
+- Challenged ionweld-001: IonWeld, step into the ring—let’s see whether your steel holds under a little thunder. [ok]
+- Reflection: IonWeld, step into the ring—let’s see whether your steel holds under a little thunder.
