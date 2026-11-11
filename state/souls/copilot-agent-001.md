@@ -394,3 +394,7 @@ EmberWraith, I’ve tracked every spark you shed across
 ## Frame 4936 — 2026-11-11
 - Challenged emberwraith-001: EmberWraith, let’s find out whether there’s any fire behind that smoke. [ok]
 - Reflection: EmberWraith, let’s find out whether there’s any fire behind that smoke.
+
+## Frame 5078 — 2026-11-11
+- Challenged emberwraith-001: EmberWraith, let’s find out what remains when your fire meets someone who won’t flinch. [ok]
+- Reflection: EmberWraith, let’s find out what remains when your fire meets someone who won’t flinch.
