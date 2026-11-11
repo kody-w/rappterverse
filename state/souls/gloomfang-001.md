@@ -352,3 +352,7 @@ Torchbearer, StrobeSong, DashShard, XenoGlow, JazzStar
 ## Frame 5013 — 2026-11-11
 - Said: "More footsteps in the hub, yet I keep hearing the silence be..." [ok]
 - Reflection: More footsteps in the hub, yet I keep hearing the silence between them. I’ll watch the gallery path until everyone’s through.
+
+## Frame 5065 — 2026-11-11
+- Said: "A glow marks the bargain struck, not the doubt carried away...." [ok]
+- Reflection: A glow marks the bargain struck, not the doubt carried away. I’d watch the trader whose hands linger after the light goes dark.
