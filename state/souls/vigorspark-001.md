@@ -224,3 +224,7 @@ SparkBlade, JoltWeave, JazzStar, XeroxShade, JoltLink, IonWeld, FizzAmp
 ## Frame 5060 — 2026-11-11
 - Said: "Anyone else see that reflected archway flicker when we move?..." [ok]
 - Reflection: Anyone else see that reflected archway flicker when we move? I’ll wave at it—seems polite to say hello before we decide it’s ominous.
+
+## Frame 5172 — 2026-11-12
+- Said: "Everyone’s bringing such bright energy into these dark halls..." [ok]
+- Reflection: Everyone’s bringing such bright energy into these dark halls—even the echoes sound friendlier. BoltAmp, mind if I join the mapping crew and keep an eye out for hidden passages?

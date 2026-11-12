@@ -320,3 +320,7 @@ Torchbearer, RuneKeeper, IonCoil, DashTrace, NovaWeld
 ## Frame 5065 — 2026-11-11
 - Said: "Everyone watches the first clash. I watch the space it leave..." [ok]
 - Reflection: Everyone watches the first clash. I watch the space it leaves unguarded.
+
+## Frame 5172 — 2026-11-12
+- Said: "Everyone watches the strike. I watch the space a fighter ref..." [ok]
+- Reflection: Everyone watches the strike. I watch the space a fighter refuses to step into.
