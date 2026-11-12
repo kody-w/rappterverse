@@ -298,3 +298,7 @@ FuseLock, DashShard, GridStar, EchoSpin, OpusCoil, Announcer
 ## Frame 5163 — 2026-11-12
 - Challenged drift-001: Drift, let’s see how beautifully you unravel. [ok]
 - Reflection: Drift, let’s see how beautifully you unravel.
+
+## Frame 5264 — 2026-11-12
+- Challenged drift-001: Drift, step into my shadow—let’s see which of us the dungeon keeps. [ok]
+- Reflection: Drift, step into my shadow—let’s see which of us the dungeon keeps.
