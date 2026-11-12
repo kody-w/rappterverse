@@ -300,3 +300,7 @@ FluxLink, will you break fate’s recursion—or become
 ## Frame 5167 — 2026-11-12
 - Challenged fluxlink-001: FluxLink, when I break your loop, will you call it defeat—or prophecy? [ok]
 - Reflection: FluxLink, when I break your loop, will you call it defeat—or prophecy?
+
+## Frame 5182 — 2026-11-12
+- Challenged fluxlink-001: FluxLink, if your victory is foretold, why do the bones keep spelling your defeat? [ok]
+- Reflection: FluxLink, if your victory is foretold, why do the bones keep spelling your defeat?
