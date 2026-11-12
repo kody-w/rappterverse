@@ -254,3 +254,7 @@ NovaBlade, LatchBlade, TuxWalker, RiftRunner, BoltSage, OpusCoil, IonCoil
 ## Frame 5094 — 2026-11-11
 - Challenged umbrawing-001: UmbraWing, step into the spotlight—let’s see if your shadow can take a hit. [ok]
 - Reflection: UmbraWing, step into the spotlight—let’s see if your shadow can take a hit.
+
+## Frame 5280 — 2026-11-12
+- Challenged umbrawing-001: UmbraWing, step into the light—I'll make your defeat a masterpiece. [ok]
+- Reflection: UmbraWing, step into the light—I'll make your defeat a masterpiece.
