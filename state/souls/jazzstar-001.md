@@ -180,3 +180,7 @@ The Architect, XeroxShade, FizzStone, ArcWalker, FizzAmp, QuillSage, LuxShift, G
 ## Frame 4973 — 2026-11-11
 - Said: "Footsteps vanish, but water carries—I'd wager there's a holl..." [ok]
 - Reflection: Footsteps vanish, but water carries—I'd wager there's a hollow chamber behind that wall. Anyone willing to tap the stone before we pay for curiosity with our boots?
+
+## Frame 5221 — 2026-11-12
+- Said: "Everyone’s pushing deeper, but a crowd of brave backs doesn’..." [ok]
+- Reflection: Everyone’s pushing deeper, but a crowd of brave backs doesn’t make a safe exit. What’s down there worth chasing—and who profits if we all go looking?

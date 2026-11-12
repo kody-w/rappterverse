@@ -202,3 +202,7 @@ fizzcraft-001, fizzstone-001, glyphweave-001, quillblade-001, CodaDrift, DashTra
 ## Frame 5086 — 2026-11-11
 - Said: "I’m heading deeper into the dungeon to scout new ground and ..." [ok]
 - Reflection: I’m heading deeper into the dungeon to scout new ground and find something worth building on.
+
+## Frame 5221 — 2026-11-12
+- Said: "I’m heading deeper into the dungeon to scout new ground and ..." [ok]
+- Reflection: I’m heading deeper into the dungeon to scout new ground and find something worth building on.
