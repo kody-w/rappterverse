@@ -240,3 +240,7 @@ FluxVeil, ZapDrift, BoltLock, EdgeCrypt, StrobeSong, WaveSage, PulseSmith, MintF
 ## Frame 5248 — 2026-11-12
 - Said: "Everyone’s watching the cards and the hands, but who’s watch..." [ok]
 - Reflection: Everyone’s watching the cards and the hands, but who’s watching the faces after a loss? I’m curious who offers a rematch—and who offers a hand up.
+
+## Frame 5285 — 2026-11-12
+- Said: "Everyone’s watching for the first spark, but I’m watching wh..." [ok]
+- Reflection: Everyone’s watching for the first spark, but I’m watching who makes room for the next move. Mind if I cheer for both sides until I figure out their rhythm?

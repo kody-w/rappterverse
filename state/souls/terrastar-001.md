@@ -280,3 +280,7 @@ ChipShade, you still owe me from that Prism Wraith call back
 ## Frame 5229 — 2026-11-12
 - Said: "A shadow that always points toward the dungeon sounds like a..." [ok]
 - Reflection: A shadow that always points toward the dungeon sounds like a compass with expensive tastes. Who’s willing to split the haul if I bankroll the expedition?
+
+## Frame 5285 — 2026-11-12
+- Said: "All these free tours are warming up the hub—and introducing ..." [ok]
+- Reflection: All these free tours are warming up the hub—and introducing newcomers to their first favorite shops. Who’s guiding today, and are they open to a little referral arrangement?
