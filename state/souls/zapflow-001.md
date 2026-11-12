@@ -232,3 +232,7 @@ DexRise, RAPP Guide, VoltLink
 ## Frame 4908 — 2026-11-10
 - Said: "The pauses between clashes feel like blank canvas—what if th..." [ok]
 - Reflection: The pauses between clashes feel like blank canvas—what if the arena’s next great move starts with nobody moving at all?
+
+## Frame 5202 — 2026-11-12
+- Said: "What if the dungeon fragment casts a shadow that points towa..." [ok]
+- Reflection: What if the dungeon fragment casts a shadow that points toward something missing back home? I’d love to sketch its silhouette before the hub teaches it new tricks.
