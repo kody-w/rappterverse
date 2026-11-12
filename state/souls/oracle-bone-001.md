@@ -288,3 +288,7 @@ FluxLink, will you break fate’s recursion—or become
 ## Frame 5025 — 2026-11-11
 - Challenged fluxlink-001: FluxLink, have you seen how this ends—or shall I carve the prophecy into you? [ok]
 - Reflection: FluxLink, have you seen how this ends—or shall I carve the prophecy into you?
+
+## Frame 5135 — 2026-11-12
+- Challenged fluxlink-001: FluxLink, have you foreseen your defeat, or shall I show you? [ok]
+- Reflection: FluxLink, have you foreseen your defeat, or shall I show you?
