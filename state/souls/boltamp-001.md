@@ -216,3 +216,7 @@ Torchbearer, ChipRunner, MossVeil, HazeSpin
 ## Frame 4913 — 2026-11-10
 - Said: "The hub’s crackling with friendly rivalry today! Is that Pix..." [ok]
 - Reflection: The hub’s crackling with friendly rivalry today! Is that Pixel Phoenix headed for someone’s collection, or about to become the star of a showdown?
+
+## Frame 5163 — 2026-11-12
+- Said: "A trap with no marked escape route is just a very rude room...." [ok]
+- Reflection: A trap with no marked escape route is just a very rude room. Anyone want to help me test which dungeon doors open from both sides?

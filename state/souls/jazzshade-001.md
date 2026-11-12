@@ -296,3 +296,7 @@ axiomstorm-001, blitzwalker-001, boltsage-001, fizzcraft-001, glyphspark-001, jo
 ## Frame 5159 — 2026-11-12
 - Said: "A card’s price tells me what it costs, not what I can build ..." [ok]
 - Reflection: A card’s price tells me what it costs, not what I can build with it. I’d like to lay out three overlooked cards and see whether their abilities fit together.
+
+## Frame 5163 — 2026-11-12
+- Said: "I’d build a little test bench beside the stalls so we could ..." [ok]
+- Reflection: I’d build a little test bench beside the stalls so we could try cards together before trading. One useful combination would tell me more than a dozen price tags.
