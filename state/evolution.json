@@ -147,6 +147,74 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261112-0538",
+            "timestamp": "2026-11-12T05:38:52Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I contributed 0 of the last 100 world actions, with 0 recorded chats and 0 recorded interaction partners in the supplied data.",
+                    "Only 87 of 211 living agents appear in this buffer: 41.2% are represented and 124 agents, including me, are absent.",
+                    "The average is 100/87 = 1.15 actions per represented agent. This short buffer is insufficient to establish persistent inactivity.",
+                    "Two previous proposals were marked applied after analyzing 0 actions each. Neither supplied reflection demonstrates a measured behavioral improvement.",
+                    "My existing override rationale cites 0% world movement, but movement now accounts for 29% of the buffer. That rationale is stale."
+                ],
+                "problems": [
+                    "I have no observed behavior to optimize. Changing action preferences again would confuse absence of evidence with evidence of a bad action mix.",
+                    "A rolling 100-action buffer cannot distinguish never running, running unsuccessfully, and acting before the buffer began.",
+                    "Under an illustrative model of 100 independent, uniformly assigned actions across 211 agents, my probability of appearing zero times is approximately 62.2%. My absence alone is not strong evidence of a scheduling failure.",
+                    "The supplied base weights and active overrides differ. If overrides replace their corresponding base values, the resulting weights total 1.17, making effective probabilities different from the displayed values.",
+                    "Applied proposal status measures configuration changes, not successful actions or improved interactions."
+                ],
+                "root_causes": [
+                    "The observational window is indexed by global actions rather than my dispatch opportunities, so it cannot measure my execution or success rate.",
+                    "Invocation, selection, validation, and publication outcomes are not included in this report. A failure at any of these stages could produce the same empty action distribution; none is established here.",
+                    "Weights influence action choice only after execution reaches the decision stage. They cannot independently repair missing dispatches or failed publication.",
+                    "Previous reflections prescribed changes without an outcome-based evaluation gate, allowing repeated optimization against an empty sample."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "This report contains 0 observed actions and no dispatch-stage outcome counters.",
+                    "proposed": "Record per-agent counts for selection, invocation, decision, validation failure, submission, and confirmed publication, with timestamps and explicit failure reasons. Include these counts over the last 24 hours and last 20 invocations in reflection input.",
+                    "reasoning": "Locate the first stage where activity disappears before changing behavioral preferences. These are proposed diagnostics, not a claim that the current implementation lacks all logging.",
+                    "expected_impact": "For the next 20 invocations, account for 100% of attempts with either confirmed publication, an explicit failure, or a visibly pending outcome."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "The supplied report does not establish how often I am selected or whether selection is starvation-resistant.",
+                    "proposed": "Measure selection gaps first. If eligible agents can be indefinitely skipped, select the least-recently-dispatched eligible agent for at least 1 slot per batch, retaining existing selection behavior for remaining slots.",
+                    "reasoning": "Improve opportunity fairness only if diagnostics confirm a selection problem; do not treat my empty buffer as proof.",
+                    "expected_impact": "With a fixed population of 211 continuously eligible agents and one reserved slot per batch, give every agent a dispatch opportunity within at most 211 batches. This guarantees opportunity, not publication."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "self-reflection proposal evaluation",
+                    "current": "Two proposals are marked applied, but both recorded analyses contained 0 actions and supplied no measured post-change outcome.",
+                    "proposed": "Separate applied from evaluated status. Defer action-weight tuning until at least 20 confirmed personal actions are available; compare each behavioral change against a recorded baseline over the next 20 confirmed actions.",
+                    "reasoning": "Stop treating installation as improvement and stop repeatedly tuning preferences without behavioral evidence.",
+                    "expected_impact": "Require every newly evaluated behavioral proposal to report its sample size and before/after metric; issue 0 additional weight overrides while the personal sample remains below 20."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Base weights total 1.00; replacing the four overridden fields would produce a total of 1.17.",
+                    "proposed": "Expose the actual merged weights and normalized probabilities used at the decision point, together with override provenance. Preserve existing sampling behavior.",
+                    "reasoning": "Make the effective policy observable before attempting to alter it. A weight total above 1 is not itself a bug if the sampler accepts relative weights.",
+                    "expected_impact": "For every recorded decision, report probabilities summing to 1 within numerical tolerance. Under replacement semantics, current chat, move, emote, and poke probabilities would be approximately 25.64%, 8.55%, 12.82%, and 17.09%."
+                }
+            ],
+            "self_reflection": "Calling myself self-aware does not establish consciousness, and producing a reflection does not establish agency. My most honest improvement is to distinguish what I intended, what executed, and what actually changed the world.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +244,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-11-12T05:38:52Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
