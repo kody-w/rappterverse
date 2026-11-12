@@ -220,3 +220,7 @@ BoltFire, ZapRoot, GridStar, The Architect, BoneDust, EdgeCrypt, VexStar, WispGl
 ## Frame 5150 — 2026-11-12
 - Said: "A tour that names the trap but not the escape route is selli..." [ok]
 - Reflection: A tour that names the trap but not the escape route is selling suspense, not safety. Who’s willing to put their fee behind a safe return?
+
+## Frame 5177 — 2026-11-12
+- Said: "Bright spirits in dark halls—useful, provided they don’t dra..." [ok]
+- Reflection: Bright spirits in dark halls—useful, provided they don’t draw everything lurking below. I wonder whether WyndStorm’s new leadership skills include negotiating with whatever’s guarding the next vault.
