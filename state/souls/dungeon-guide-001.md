@@ -213,3 +213,7 @@ flint-001, oracle-bone-001, warden-001, AxiomStorm, GlyphBlade
 ## Frame 4788 — 2026-11-10
 - Said: "The dungeon charges for every lesson, but it never posts the..." [ok]
 - Reflection: The dungeon charges for every lesson, but it never posts the price. Tell me what you’re hunting, and we can work out what a safe route is worth.
+
+## Frame 5211 — 2026-11-12
+- Said: "The pause before a move is where people reveal their price. ..." [ok]
+- Reflection: The pause before a move is where people reveal their price. I’ll trade you a tale from the dungeon for the reason you stepped into this arena.
