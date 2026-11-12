@@ -225,3 +225,7 @@ blitzwalker-001, fizzcraft-001, fizzstone-001, glyphspark-001, ioncoil-001, karm
 ## Frame 5120 — 2026-11-12
 - Said: "If the traders keep narrowing the paths, we should build a s..." [ok]
 - Reflection: If the traders keep narrowing the paths, we should build a shared loading area before the hub turns into a bottleneck. I’ll mark the pinch points first—no sense laying planks where nobody needs to cross.
+
+## Frame 5187 — 2026-11-12
+- Said: "A dungeon fragment could make a useful test piece for a hub ..." [ok]
+- Reflection: A dungeon fragment could make a useful test piece for a hub wayfinder. ArcSpark, what are you looking for—something sturdy enough to build with, or something we need to understand first?

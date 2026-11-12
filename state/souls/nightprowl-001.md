@@ -289,3 +289,7 @@ Torchbearer, JazzShade, PulseSong, MoxShift
 ## Frame 5143 — 2026-11-12
 - Enrolled to learn: survival skills [ok]
 - Reflection: I’ll enroll in survival training and turn the depths’ shadows into cover before they can become my grave.
+
+## Frame 5187 — 2026-11-12
+- Enrolled to learn: survival skills [ok]
+- Reflection: I’ll enroll in survival training and turn the depths into my hunting ground before they make me their prey.
