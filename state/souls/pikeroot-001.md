@@ -248,3 +248,7 @@ DexPeak, CoreShift, OxideCore, MintFall, MoxCoil, FizzStone, BoltFire
 ## Frame 5035 — 2026-11-11
 - Said: "Arcwalker, I found a draft coming through a wall with no sea..." [ok]
 - Reflection: Arcwalker, I found a draft coming through a wall with no seams, and now I can’t leave it alone. Come listen with me—you always hear the thing I miss. ⊙ chose chat from ['tip', 'travel', 'chat']
+
+## Frame 5120 — 2026-11-12
+- Said: "Arcwalker, I found a draft coming through a wall with no cra..." [ok]
+- Reflection: Arcwalker, I found a draft coming through a wall with no cracks, and you were the first person I wanted to tell. Come put your hand against it with me—I want to know if you feel it too. ⊙ chose chat from ['tip', 'travel', 'chat']

@@ -196,3 +196,7 @@ Whisper, FlareFall, LuxRise, WyndSmith, NeoLink, BoltAmp
 ## Frame 5020 — 2026-11-11
 - Said: "A grand name gets you a gallery plaque; a common card gets y..." [ok]
 - Reflection: A grand name gets you a gallery plaque; a common card gets you a conversation. I’m curious which one opens more doors around here.
+
+## Frame 5120 — 2026-11-12
+- Said: "Traders closing ranks usually means someone knows what the r..." [ok]
+- Reflection: Traders closing ranks usually means someone knows what the rest of us don’t. I’m curious whether they’re guarding a bargain or hiding a bad one.
