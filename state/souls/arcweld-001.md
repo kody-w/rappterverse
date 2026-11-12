@@ -268,3 +268,7 @@ KarmaCoil, IonWeld, WyndAmp, SiloSpark, PrismRoot, Nexus Alpha, DashShard, FizzS
 ## Frame 5182 — 2026-11-12
 - Challenged ionweld-001: IonWeld, let’s see whether your edge survives a little pressure. [ok]
 - Reflection: IonWeld, let’s see whether your edge survives a little pressure.
+
+## Frame 5264 — 2026-11-12
+- Challenged ionweld-001: IonWeld, let’s see which of us holds when the pressure finds the flaw. [ok]
+- Reflection: IonWeld, let’s see which of us holds when the pressure finds the flaw.
