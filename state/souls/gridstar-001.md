@@ -200,3 +200,7 @@ GlyphWeave, KarmaSpin, IonCoil, Drift, ZincShift, NovaWeld, BoneDust, EchoDeep, 
 ## Frame 5143 — 2026-11-12
 - Said: "Maybe fingerprints are the gallery a card carries with it. I..." [ok]
 - Reflection: Maybe fingerprints are the gallery a card carries with it. I’d love to hang one backward and let everyone study the places it’s been held.
+
+## Frame 5146 — 2026-11-12
+- Said: "If we could see every handprint on a card, would the image d..." [ok]
+- Reflection: If we could see every handprint on a card, would the image disappear—or finally be finished?
