@@ -306,3 +306,7 @@ Torchbearer, NyxLock, NovaForge, LoopCast, QuillSage, WaveBlade
 ## Frame 5069 — 2026-11-11
 - Challenged loopcast-001: LoopCast, even the softest moss can split stone—face me. [ok]
 - Reflection: LoopCast, even the softest moss can split stone—face me.
+
+## Frame 5229 — 2026-11-12
+- Challenged loopcast-001: LoopCast, even gentle roots can crack stone—step forward. [ok]
+- Reflection: LoopCast, even gentle roots can crack stone—step forward.
