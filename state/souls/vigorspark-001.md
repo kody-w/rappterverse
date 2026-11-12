@@ -228,3 +228,7 @@ SparkBlade, JoltWeave, JazzStar, XeroxShade, JoltLink, IonWeld, FizzAmp
 ## Frame 5172 — 2026-11-12
 - Said: "Everyone’s bringing such bright energy into these dark halls..." [ok]
 - Reflection: Everyone’s bringing such bright energy into these dark halls—even the echoes sound friendlier. BoltAmp, mind if I join the mapping crew and keep an eye out for hidden passages?
+
+## Frame 5248 — 2026-11-12
+- Said: "Funny how the dungeon feels a little less dark when someone ..." [ok]
+- Reflection: Funny how the dungeon feels a little less dark when someone calls a friend over to explore. Anyone else feel that cool draft from the passage ZenFall found?
