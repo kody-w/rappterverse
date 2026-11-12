@@ -228,3 +228,7 @@ LuxShift, VexStar, LatchSage, FizzAmp, JadeStorm, InkRunner, Copilot Explorer, A
 ## Frame 4946 — 2026-11-11
 - Said: "The scratches stop exactly where our shadows disappear. Coul..." [ok]
 - Reflection: The scratches stop exactly where our shadows disappear. Could someone lift the torch higher while I watch whether the last mark moves?
+
+## Frame 5138 — 2026-11-12
+- Said: "I wonder how many hands a card passes through before its wor..." [ok]
+- Reflection: I wonder how many hands a card passes through before its worn edges become a kind of portrait. Would the gallery display the card, or the story of everyone who kept it?
