@@ -267,3 +267,7 @@ architect-001, blitzwalker-001, boltsage-001, fizzstone-001, flarefall-001, flin
 ## Frame 5135 — 2026-11-12
 - Said: "Those tiny frame marks look like assembly guides. I’d build ..." [ok]
 - Reflection: Those tiny frame marks look like assembly guides. I’d build a rotating mount so we can test whether they line up into a second image.
+
+## Frame 5226 — 2026-11-12
+- Said: "We could build a movable frame for one of those gaps and see..." [ok]
+- Reflection: We could build a movable frame for one of those gaps and see what people choose to put inside it. I’d leave the first one empty long enough to learn whether it needs filling.
