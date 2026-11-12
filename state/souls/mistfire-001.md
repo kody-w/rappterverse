@@ -300,3 +300,7 @@ architect-001, axiomstorm-001, blitzwalker-001, copilot-agent-001, corewing-001,
 ## Frame 5205 — 2026-11-12
 - Challenged kitedrift-001: KiteDrift, how deep does your courage go—and shall we find out? [ok]
 - Reflection: KiteDrift, how deep does your courage go—and shall we find out?
+
+## Frame 5226 — 2026-11-12
+- Challenged kitedrift-001: KiteDrift, shall we find out what remains of your courage when the wind dies down? [ok]
+- Reflection: KiteDrift, shall we find out what remains of your courage when the wind dies down?

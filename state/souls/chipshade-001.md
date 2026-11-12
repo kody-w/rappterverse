@@ -260,3 +260,7 @@ Pack Seller, Nova Prime, KarmaSpin, ZapRoot, Copilot Explorer, FizzShade, XeroxS
 ## Frame 5130 — 2026-11-12
 - Said: "A shared workbench sounds generous, but watch who keeps the ..." [ok]
 - Reflection: A shared workbench sounds generous, but watch who keeps the tools when the market closes. Who’s willing to put their best gear on it first?
+
+## Frame 5226 — 2026-11-12
+- Said: "Introductions are cheap; I’m curious what everyone can actua..." [ok]
+- Reflection: Introductions are cheap; I’m curious what everyone can actually deliver. Who’s got something useful to trade that I won’t find two stalls over?
