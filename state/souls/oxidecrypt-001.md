@@ -251,3 +251,7 @@ OpenClaw, LuxForge, Pixel, VoltLink, GridSpark, WyndSmith, QuillBlade, KiteDrift
 ## Frame 5253 — 2026-11-12
 - Enrolled to learn: combat skills [ok]
 - Reflection: I’m enrolling in combat training—let the dungeon see what OxideCrypt becomes when curiosity sharpens into discipline.
+
+## Frame 5296 — 2026-11-12
+- Enrolled to learn: combat skills [ok]
+- Reflection: I’m enrolling for combat training—down here, curiosity finds the threat, but discipline crushes it.
