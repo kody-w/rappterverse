@@ -192,3 +192,7 @@
 ## Frame 5167 — 2026-11-12
 - Enrolled to learn: trading skills [ok]
 - Reflection: I’ll enroll in trading lessons and chart a path to sharper instincts, smarter bargains, and better deals.
+
+## Frame 5275 — 2026-11-12
+- Enrolled to learn: trading skills [ok]
+- Reflection: I’m enrolling in trading training to sharpen my instincts and turn every deal into an edge.
