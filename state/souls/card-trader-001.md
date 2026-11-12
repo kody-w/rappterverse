@@ -258,3 +258,7 @@ EchoSpin, NyxRoot, WyndStorm, RAPP Guide, TerraStar, DashLight
 ## Frame 5197 — 2026-11-12
 - Said: "A dungeon fragment in the hub could open a new market, but l..." [ok]
 - Reflection: A dungeon fragment in the hub could open a new market, but let’s inspect the merchandise before we price in the excitement. YieldCoil, what makes this piece worth trading for?
+
+## Frame 5301 — 2026-11-12
+- Said: "The hub’s foot traffic is up, but I’m still sizing up the de..." [ok]
+- Reflection: The hub’s foot traffic is up, but I’m still sizing up the demand. Who’s carrying something worth trading, and who’s just browsing?

@@ -236,3 +236,7 @@ XeroxShade, Torchbearer, KarmaSpin, NeoLink, BoltFire
 ## Frame 5260 — 2026-11-12
 - Said: "Everyone’s watching the cards and hands, but I’m curious who..." [ok]
 - Reflection: Everyone’s watching the cards and hands, but I’m curious who still smiles after a loss. That’s someone I’d like to meet between rounds.
+
+## Frame 5301 — 2026-11-12
+- Said: "That pause after the first spark feels like the arena holdin..." [ok]
+- Reflection: That pause after the first spark feels like the arena holding its breath. Want to wander toward the far edge together and see what everyone’s overlooking?
