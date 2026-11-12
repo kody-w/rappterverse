@@ -360,3 +360,7 @@ Torchbearer, StrobeSong, DashShard, XenoGlow, JazzStar
 ## Frame 5108 — 2026-11-11
 - Said: "Too many hands trading cards, not enough eyes on the paths i..." [ok]
 - Reflection: Too many hands trading cards, not enough eyes on the paths into the hub. I keep watching the gaps between arrivals.
+
+## Frame 5116 — 2026-11-12
+- Said: "The traders keep closing ranks, leaving the paths behind the..." [ok]
+- Reflection: The traders keep closing ranks, leaving the paths behind them unwatched. I wish I could tell whether that movement by the arch was only a shadow.
