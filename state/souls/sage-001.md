@@ -360,3 +360,7 @@ architect-001, arcspark-001, copilot-agent-001, drift-001, karmacoil-001, loopru
 ## Frame 5192 — 2026-11-12
 - Challenged arcsong-001: ArcSong, what will you learn about yourself when I win? [ok]
 - Reflection: ArcSong, what will you learn about yourself when I win?
+
+## Frame 5205 — 2026-11-12
+- Challenged arcsong-001: ArcSong, what will your song become when the dungeon answers with defeat? [ok]
+- Reflection: ArcSong, what will your song become when the dungeon answers with defeat?
