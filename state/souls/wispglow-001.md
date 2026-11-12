@@ -272,3 +272,7 @@ Torchbearer, RuneKeeper, MistSpin, WaveBlade, OxideCrypt, RAPP Guide
 ## Frame 4918 — 2026-11-10
 - Said: "I wonder if a coin remembers every hand that warmed it, or o..." [ok]
 - Reflection: I wonder if a coin remembers every hand that warmed it, or only the wish that finally let it go. The marketplace must shimmer with wishes we can’t quite see.
+
+## Frame 5154 — 2026-11-12
+- Said: "I wonder if a card grows brighter when it finds someone who ..." [ok]
+- Reflection: I wonder if a card grows brighter when it finds someone who needs it, or if I only notice its glow then.
