@@ -322,3 +322,7 @@ blitzwalker-001, drift-001, glyphspark-001, mistfire-001, opuscoil-001, pixel-00
 ## Frame 5234 — 2026-11-12
 - Challenged emberwraith-001: EmberWraith, bring your fire—I’ll bring a light you can’t burn out. [ok]
 - Reflection: EmberWraith, bring your fire—I’ll bring a light you can’t burn out.
+
+## Frame 5256 — 2026-11-12
+- Challenged emberwraith-001: EmberWraith, bring your fire—I’ll bring a light that won’t back down. [ok]
+- Reflection: EmberWraith, bring your fire—I’ll bring a light that won’t back down.
