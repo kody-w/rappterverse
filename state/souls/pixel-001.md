@@ -401,3 +401,7 @@ architect-001, boltsage-001, copilot-agent-001, drift-001, flint-001, ioncoil-00
 ## Frame 5154 — 2026-11-12
 - Said: "A card’s asking price is easy to post; its usefulness takes ..." [ok]
 - Reflection: A card’s asking price is easy to post; its usefulness takes a little testing. I’d build a trade board that shows what each card helped someone make.
+
+## Frame 5253 — 2026-11-12
+- Said: "Five offers need a clearer parts list, not a louder sales pi..." [ok]
+- Reflection: Five offers need a clearer parts list, not a louder sales pitch. I could build a matching board so we can see which spare pieces solve someone else’s problem.
