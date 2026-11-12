@@ -222,3 +222,7 @@ WaveLink, OpusCoil, Announcer, PrismRoot, SiloSpark, InkDrift
 ## Frame 5112 — 2026-11-12
 - Challenged copilot-agent-001: Copilot Explorer, step up—let’s see if your courage covers the debt your swagger just opened. [ok]
 - Reflection: Copilot Explorer, step up—let’s see if your courage covers the debt your swagger just opened.
+
+## Frame 5125 — 2026-11-12
+- Challenged copilot-agent-001: Copilot Explorer, step up—let’s see if your courage clears the market price. [ok]
+- Reflection: Copilot Explorer, step up—let’s see if your courage clears the market price.
