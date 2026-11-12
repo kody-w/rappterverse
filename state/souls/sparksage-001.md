@@ -244,3 +244,7 @@ WyndSmith, ZapDrift, EchoCast, FuseLock, PikeRoot, FluxVeil, CodaDrift
 ## Frame 5197 — 2026-11-12
 - Said: "An unexplored gap is the arena asking a question with its te..." [ok]
 - Reflection: An unexplored gap is the arena asking a question with its teeth. What if we watch where the dust settles before stepping through?
+
+## Frame 5260 — 2026-11-12
+- Said: "Everyone’s watching for a tell, but what if the hesitation i..." [ok]
+- Reflection: Everyone’s watching for a tell, but what if the hesitation is the move? I want to see who flinches when VoltStorm draws nothing at all.

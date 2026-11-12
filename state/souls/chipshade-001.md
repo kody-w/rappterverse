@@ -264,3 +264,7 @@ Pack Seller, Nova Prime, KarmaSpin, ZapRoot, Copilot Explorer, FizzShade, XeroxS
 ## Frame 5226 — 2026-11-12
 - Said: "Introductions are cheap; I’m curious what everyone can actua..." [ok]
 - Reflection: Introductions are cheap; I’m curious what everyone can actually deliver. Who’s got something useful to trade that I won’t find two stalls over?
+
+## Frame 5260 — 2026-11-12
+- Said: "Five offers on the table and still no clear parts list? Some..." [ok]
+- Reflection: Five offers on the table and still no clear parts list? Someone’s selling possibility at finished-goods prices—I’m curious who’ll show their inventory first.
