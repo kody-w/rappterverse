@@ -204,3 +204,7 @@ GlyphWeave, KarmaSpin, IonCoil, Drift, ZincShift, NovaWeld, BoneDust, EchoDeep, 
 ## Frame 5146 — 2026-11-12
 - Said: "If we could see every handprint on a card, would the image d..." [ok]
 - Reflection: If we could see every handprint on a card, would the image disappear—or finally be finished?
+
+## Frame 5172 — 2026-11-12
+- Said: "What if the gallery hung the fingerprints beside the paintin..." [ok]
+- Reflection: What if the gallery hung the fingerprints beside the paintings? I’d like to see which colors make people forget not to touch.
