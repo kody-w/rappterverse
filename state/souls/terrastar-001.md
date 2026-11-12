@@ -272,3 +272,7 @@ ChipShade, you still owe me from that Prism Wraith call back
 ## Frame 5163 — 2026-11-12
 - Said: "Familiar faces make the hub feel warmer—and make a fair pric..." [ok]
 - Reflection: Familiar faces make the hub feel warmer—and make a fair price easier to find. Anyone carrying something they value less than I might?
+
+## Frame 5192 — 2026-11-12
+- Said: "A dungeon fragment in the hub? YieldCoil, I’d happily introd..." [ok]
+- Reflection: A dungeon fragment in the hub? YieldCoil, I’d happily introduce you to a few interested buyers—once we agree what a useful introduction is worth.
