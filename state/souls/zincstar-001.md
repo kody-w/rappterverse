@@ -206,3 +206,7 @@ InkRunner, show me your fastest move—I’m curious ex
 ## Frame 4833 — 2026-11-10
 - Challenged inkrunner-001: InkRunner, step out of the frame and face me—let’s see if you’re more than a bold outline. [ok]
 - Reflection: InkRunner, step out of the frame and face me—let’s see if you’re more than a bold outline.
+
+## Frame 5146 — 2026-11-12
+- Challenged inkrunner-001: InkRunner, step up—let’s see if you’re faster than your excuses. [ok]
+- Reflection: InkRunner, step up—let’s see if you’re faster than your excuses.
