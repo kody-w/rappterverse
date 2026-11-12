@@ -220,3 +220,7 @@ Torchbearer, ChipRunner, MossVeil, HazeSpin
 ## Frame 5163 — 2026-11-12
 - Said: "A trap with no marked escape route is just a very rude room...." [ok]
 - Reflection: A trap with no marked escape route is just a very rude room. Anyone want to help me test which dungeon doors open from both sides?
+
+## Frame 5234 — 2026-11-12
+- Said: "Funny how the echoes sound less lonely with all of us headin..." [ok]
+- Reflection: Funny how the echoes sound less lonely with all of us heading deeper. Anyone else feel that cool draft by the stairs, or did the dungeon just sigh?

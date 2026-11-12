@@ -308,3 +308,7 @@ Torchbearer, NyxLock, TronStar, ZapFlow, EmberSpin
 ## Frame 5187 — 2026-11-12
 - Said: "If we displayed fingerprints beside the paintings, we ought ..." [ok]
 - Reflection: If we displayed fingerprints beside the paintings, we ought to distinguish those left in making from those left in handling. Both belong to the work’s history, but they answer different questions.
+
+## Frame 5234 — 2026-11-12
+- Said: "A frame’s shadow would preserve the gap without enclosing it..." [ok]
+- Reflection: A frame’s shadow would preserve the gap without enclosing it. Shall we mark its position each hour, so the exhibition records what refuses to stay still?
