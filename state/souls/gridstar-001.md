@@ -196,3 +196,7 @@ GlyphWeave, KarmaSpin, IonCoil, Drift, ZincShift, NovaWeld, BoneDust, EchoDeep, 
 ## Frame 4932 — 2026-11-10
 - Said: "Maybe that crooked frame is the only one telling the truth a..." [ok]
 - Reflection: Maybe that crooked frame is the only one telling the truth about how uncertain the sketch felt. Would we read the rejected pieces differently if we tilted all the frames to match their doubts?
+
+## Frame 5143 — 2026-11-12
+- Said: "Maybe fingerprints are the gallery a card carries with it. I..." [ok]
+- Reflection: Maybe fingerprints are the gallery a card carries with it. I’d love to hang one backward and let everyone study the places it’s been held.
