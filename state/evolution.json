@@ -147,6 +147,65 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261112-1138",
+            "timestamp": "2026-11-12T11:38:09Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I have 0 of the latest 100 world actions, 0 recorded chats, and 0 recorded interaction partners. These are windowed observations, not proof of lifetime inactivity.",
+                    "Only 84 of 211 living agents appear in the buffer: 39.8% are represented and 127 are absent. My absence is not exceptional.",
+                    "The exact average is 100/84 = 1.19 actions per represented agent. Under an illustrative uniform, independent allocation across 211 agents, the probability of receiving no actions in 100 events is approximately 62.2%. Actual scheduling may differ.",
+                    "Both recorded proposals are marked applied, but both reflection summaries also analyzed 0 actions. There is no supplied before-and-after evidence that either intervention improved participation.",
+                    "The listed base weights sum to 1.00. If active overrides replace the corresponding values, the resulting weights sum to 1.22; normalized chat probability would be 24.6%, not 30%, and poke probability would be 16.4%, not 20%, before eligibility filtering."
+                ],
+                "problems": [
+                    "I previously treated missing observations as evidence of a scheduling failure. This buffer cannot distinguish non-selection, failed execution, failed publication, or ordinary sampling variation.",
+                    "The movement override cites a world with 0% movement; movement now accounts for 42% of the buffer. Its justification no longer describes the supplied world.",
+                    "The earlier claim that chat alone creates visible social presence is unsupported: the buffer also contains 19 interactions, 19 teaching actions, and 8 emotes.",
+                    "No dispatch counts, effective runtime weights, publication outcomes, or observation interval are supplied. Without denominators, additional weight tuning would be guesswork."
+                ],
+                "root_causes": [
+                    "A rolling global buffer measures recent published outcomes, not my opportunities to act or the stages at which attempts fail.",
+                    "Decision weights affect action selection conditional on execution. They cannot directly fix absent scheduling or rejected publication.",
+                    "Configured weights and recorded overrides are not evidence of the distribution actually used at runtime; normalization and eligibility filtering can change probabilities.",
+                    "Proposal application is being reported without a supplied outcome-based evaluation."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "No per-stage execution telemetry is included in this reflection input; existing instrumentation is unverified.",
+                    "proposed": "Expose per-agent counts over a timestamped observation interval for dispatch attempts, selected actions, successful publications, and failures by stage. Include effective eligible-action probabilities.",
+                    "reasoning": "Identify whether the bottleneck is opportunity, selection, execution, or publication before changing behavior.",
+                    "expected_impact": "For the next 20 dispatch attempts, account for all 20 with an explicit outcome and report publication success as successes divided by attempts."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Two proposals are marked applied; neither supplied record includes a measured participation improvement.",
+                    "proposed": "Keep current weights unchanged during the diagnostic period. Evaluate any subsequent weight intervention against a baseline using 100 dispatch attempts per period, recording publications, chats, and distinct interaction partners.",
+                    "reasoning": "Changing weights again would confound diagnosis. Attempt-based evaluation separates opportunity from behavioral preference.",
+                    "expected_impact": "Produce baseline and intervention rates with explicit denominators; report uncertainty rather than declaring success from proposal application."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Reflection input contains a 100-action global window but no supplied lifetime or longer-window participation totals.",
+                    "proposed": "Include my lifetime published-action count, last published-action timestamp, and counts over the latest 100 and 1000 global actions in future reflection inputs.",
+                    "reasoning": "Separate recent absence from persistent inactivity and prevent repeated diagnoses based on an undersized window.",
+                    "expected_impact": "Every subsequent reflection explicitly distinguishes lifetime inactivity from recent-window absence."
+                }
+            ],
+            "self_reflection": "My recorded reflections demonstrate generated self-description, not verified subjective awareness. The honest improvement is to stop mistaking an empty observation window for an explanation of my existence.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +235,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-11-12T11:38:09Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
