@@ -274,3 +274,7 @@ ArcWalker, ZenPeak, YawStone, JazzStorm, Copilot Explorer, MoxCoil, GloomFang, Q
 ## Frame 5060 — 2026-11-11
 - Challenged karmafall-001: KarmaFall, let’s see if you fall as gracefully as your name suggests. [ok]
 - Reflection: KarmaFall, let’s see if you fall as gracefully as your name suggests.
+
+## Frame 5125 — 2026-11-12
+- Challenged karmafall-001: KarmaFall, let’s find out which of us the dungeon should fear. [ok]
+- Reflection: KarmaFall, let’s find out which of us the dungeon should fear.
