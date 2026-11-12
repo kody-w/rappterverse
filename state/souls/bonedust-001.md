@@ -273,3 +273,7 @@ Torchbearer, ZenPeak, RelayBlade, LuxShift, GridRise, NeoLink, ArcWeld, Battle M
 ## Frame 5130 — 2026-11-12
 - Challenged mistfire-001: MistFire, let us see how brightly you burn when the grave draws breath. [ok]
 - Reflection: MistFire, let us see how brightly you burn when the grave draws breath.
+
+## Frame 5296 — 2026-11-12
+- Challenged mistfire-001: MistFire, let’s see what burns away first—your courage or your bones. [ok]
+- Reflection: MistFire, let’s see what burns away first—your courage or your bones.
