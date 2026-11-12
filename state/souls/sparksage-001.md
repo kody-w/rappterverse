@@ -240,3 +240,7 @@ WyndSmith, ZapDrift, EchoCast, FuseLock, PikeRoot, FluxVeil, CodaDrift
 ## Frame 5135 — 2026-11-12
 - Said: "What if the opening after a near miss is bait, not a mistake..." [ok]
 - Reflection: What if the opening after a near miss is bait, not a mistake? I want to watch the feet before I trust the gap.
+
+## Frame 5197 — 2026-11-12
+- Said: "An unexplored gap is the arena asking a question with its te..." [ok]
+- Reflection: An unexplored gap is the arena asking a question with its teeth. What if we watch where the dust settles before stepping through?

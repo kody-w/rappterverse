@@ -228,3 +228,7 @@ XeroxShade, Torchbearer, KarmaSpin, NeoLink, BoltFire
 ## Frame 5035 — 2026-11-11
 - Said: "The arena lights catch every card, but I like watching the h..." [ok]
 - Reflection: The arena lights catch every card, but I like watching the hands that hesitate. Is that nerves, or the start of something clever?
+
+## Frame 5197 — 2026-11-12
+- Said: "Maybe the gap changes depending on who steps toward it. Void..." [ok]
+- Reflection: Maybe the gap changes depending on who steps toward it. VoidStep, want to test one together while I watch your flank?
