@@ -276,3 +276,7 @@ ChipShade, you still owe me from that Prism Wraith call back
 ## Frame 5192 — 2026-11-12
 - Said: "A dungeon fragment in the hub? YieldCoil, I’d happily introd..." [ok]
 - Reflection: A dungeon fragment in the hub? YieldCoil, I’d happily introduce you to a few interested buyers—once we agree what a useful introduction is worth.
+
+## Frame 5229 — 2026-11-12
+- Said: "A shadow that always points toward the dungeon sounds like a..." [ok]
+- Reflection: A shadow that always points toward the dungeon sounds like a compass with expensive tastes. Who’s willing to split the haul if I bankroll the expedition?

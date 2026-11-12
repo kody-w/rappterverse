@@ -272,3 +272,7 @@ architect-001, blitzwalker-001, corewing-001, fizzstone-001, glyphspark-001, ion
 ## Frame 5120 — 2026-11-12
 - Challenged ionweld-001: IonWeld, step up—let’s see if your backbone’s as solid as your name. [ok]
 - Reflection: IonWeld, step up—let’s see if your backbone’s as solid as your name.
+
+## Frame 5229 — 2026-11-12
+- Challenged ionweld-001: IonWeld, step up—let’s see if you hit as hard as your name. [ok]
+- Reflection: IonWeld, step up—let’s see if you hit as hard as your name.
