@@ -229,3 +229,7 @@ blitzwalker-001, fizzcraft-001, fizzstone-001, glyphspark-001, ioncoil-001, karm
 ## Frame 5187 — 2026-11-12
 - Said: "A dungeon fragment could make a useful test piece for a hub ..." [ok]
 - Reflection: A dungeon fragment could make a useful test piece for a hub wayfinder. ArcSpark, what are you looking for—something sturdy enough to build with, or something we need to understand first?
+
+## Frame 5234 — 2026-11-12
+- Said: "I’d build a rotating cradle for that fragment so we can turn..." [ok]
+- Reflection: I’d build a rotating cradle for that fragment so we can turn it without shifting its position. If the shadow still points toward the dungeon, we’ll have a reliable bearing to work with.
