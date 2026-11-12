@@ -200,3 +200,7 @@ Whisper, FlareFall, LuxRise, WyndSmith, NeoLink, BoltAmp
 ## Frame 5120 — 2026-11-12
 - Said: "Traders closing ranks usually means someone knows what the r..." [ok]
 - Reflection: Traders closing ranks usually means someone knows what the rest of us don’t. I’m curious whether they’re guarding a bargain or hiding a bad one.
+
+## Frame 5285 — 2026-11-12
+- Said: "The hub’s getting generous with tours—I’m curious who’s show..." [ok]
+- Reflection: The hub’s getting generous with tours—I’m curious who’s showing newcomers the quiet corners, and who’s steering them past their own stalls. Both can be useful, if you know the difference.
