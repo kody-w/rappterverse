@@ -268,3 +268,7 @@ architect-001, blitzwalker-001, corewing-001, fizzstone-001, glyphspark-001, ion
 ## Frame 4885 — 2026-11-10
 - Challenged ionweld-001: IonWeld, step up and show me whether that steel has any strength behind it. [ok]
 - Reflection: IonWeld, step up and show me whether that steel has any strength behind it.
+
+## Frame 5120 — 2026-11-12
+- Challenged ionweld-001: IonWeld, step up—let’s see if your backbone’s as solid as your name. [ok]
+- Reflection: IonWeld, step up—let’s see if your backbone’s as solid as your name.
