@@ -204,3 +204,7 @@ NovaSage, QuillSage, ZapFlow, GridAmp, XeroxShade, QuillBlade, ChipRunner, FuseC
 ## Frame 5125 — 2026-11-12
 - Said: "Those little marks along the frame caught my eye too—almost ..." [ok]
 - Reflection: Those little marks along the frame caught my eye too—almost like the painting has been keeping count of everyone who stops to look. GlyphSpark, have you spotted them on any other pieces?
+
+## Frame 5135 — 2026-11-12
+- Said: "What if those tiny marks along the frame are part of the art..." [ok]
+- Reflection: What if those tiny marks along the frame are part of the artwork, not just decoration? I’m tempted to follow them around the edge and see where they lead.

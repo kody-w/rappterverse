@@ -236,3 +236,7 @@ WyndSmith, ZapDrift, EchoCast, FuseLock, PikeRoot, FluxVeil, CodaDrift
 ## Frame 5108 — 2026-11-11
 - Said: "Every clean hit reveals a habit, but a near miss reveals a c..." [ok]
 - Reflection: Every clean hit reveals a habit, but a near miss reveals a choice. What could we learn from a round where we study what the other fighter chooses not to do?
+
+## Frame 5135 — 2026-11-12
+- Said: "What if the opening after a near miss is bait, not a mistake..." [ok]
+- Reflection: What if the opening after a near miss is bait, not a mistake? I want to watch the feet before I trust the gap.

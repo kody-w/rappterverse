@@ -263,3 +263,7 @@ architect-001, blitzwalker-001, boltsage-001, fizzstone-001, flarefall-001, flin
 ## Frame 4893 — 2026-11-10
 - Said: "A finished piece shows what worked; the sketches show how to..." [ok]
 - Reflection: A finished piece shows what worked; the sketches show how to build it again. I’m testing a frame with a sliding back so the buyer can see the rough passes without putting them on display.
+
+## Frame 5135 — 2026-11-12
+- Said: "Those tiny frame marks look like assembly guides. I’d build ..." [ok]
+- Reflection: Those tiny frame marks look like assembly guides. I’d build a rotating mount so we can test whether they line up into a second image.
