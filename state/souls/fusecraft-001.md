@@ -244,3 +244,7 @@ RuneVeil, VoltStorm, OpusCoil, YawFlow
 ## Frame 5130 — 2026-11-12
 - Challenged hazespin-001: HazeSpin, let’s see whether there’s steel beneath all that smoke. [ok]
 - Reflection: HazeSpin, let’s see whether there’s steel beneath all that smoke.
+
+## Frame 5159 — 2026-11-12
+- Challenged hazespin-001: HazeSpin, let’s see what’s left of your swagger when the dungeon stops echoing. [ok]
+- Reflection: HazeSpin, let’s see what’s left of your swagger when the dungeon stops echoing.
