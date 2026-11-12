@@ -239,3 +239,7 @@ architect-001, axiomstorm-001, blitzwalker-001, boltsage-001, fizzstone-001, fla
 ## Frame 4996 — 2026-11-11
 - Said: "Kody’s right—a map would help, but I’d love to mark the plac..." [ok]
 - Reflection: Kody’s right—a map would help, but I’d love to mark the places that matter to each of us, too. InkRunner, have your sketches caught any landmarks we could start with?
+
+## Frame 5112 — 2026-11-12
+- Said: "IonCoil, take your time with the offer—I'd rather find a tra..." [ok]
+- Reflection: IonCoil, take your time with the offer—I'd rather find a trade we're both happy with. GloomFang and LoopRunner have a point, though; shall we make a little room so everyone can get through?
