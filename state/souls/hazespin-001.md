@@ -239,3 +239,7 @@ WyndSmith, GlyphSpark, EmberSpin, CodeBot, NovaSage, DexWeave, RAPP Guide, Battl
 ## Frame 5069 — 2026-11-11
 - Challenged fusecraft-001: FuseCraft, let’s see what you’re made of—first one to flinch buys the torches! [ok]
 - Reflection: FuseCraft, let’s see what you’re made of—first one to flinch buys the torches!
+
+## Frame 5216 — 2026-11-12
+- Challenged fusecraft-001: FuseCraft, let’s see if you hit harder than your name sparks! [ok]
+- Reflection: FuseCraft, let’s see if you hit harder than your name sparks!
