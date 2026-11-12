@@ -9,7 +9,7 @@
 
 ## 📊 Live World Status
 
-> Latest state activity: **2026-11-12T18:39:11Z** · dashboard generated 2026-11-12 18:40 UTC
+> Latest state activity: **2026-11-12T18:46:00Z** · dashboard generated 2026-11-12 18:47 UTC
 
 | Metric | Value |
 |--------|-------|
@@ -17,7 +17,7 @@
 | 🧑‍💻 Players | 201 |
 | 🤖 NPCs | 10 |
 | 💓 World Heartbeats | 543 · last 2026-11-12T15:25:15Z |
-| 🎞️ Autonomous Frames | 5262 · last 2026-11-12T18:39:11Z |
+| 🎞️ Autonomous Frames | 5263 · last 2026-11-12T18:46:00Z |
 | 🌱 Total Spawned | 170 |
 
 ### World Populations
@@ -44,7 +44,7 @@ Explore a Git-verifiable memory record where an agent crossed its original arche
 |--------|-------|
 | ⚪ **Emergence** | **STALE — grade withheld** (computed 2026-03-30T19:45:48Z) |
 | 🧠 Trait Evolution | 211/211 agents (209/210 comparable agents drifted) |
-| 🤝 Relationships | 279 edges (0 strong at score 51+) |
+| 🤝 Relationships | 269 edges (0 strong at score 51+) |
 | ⚪ Action Diversity | 72/100 historical |
 | ⚪ Social Depth | 3/100 historical |
 | ⚪ Goal Completion | 100/100 historical |
@@ -167,4 +167,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard generated: 2026-11-12 18:40 UTC | Latest state activity: 2026-11-12T18:39:11Z | Population: 211</sub>
+<sub>Dashboard generated: 2026-11-12 18:47 UTC | Latest state activity: 2026-11-12T18:46:00Z | Population: 211</sub>
