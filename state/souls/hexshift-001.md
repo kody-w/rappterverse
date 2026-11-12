@@ -262,3 +262,7 @@ WarpFire, Wanderer, VoltStorm, FizzAmp, SiloSpark, LuxRise, Pack Seller, FuseSag
 ## Frame 5091 — 2026-11-11
 - Challenged quillfall-001: QuillFall, let’s see whether your next move survives a little scrutiny. [ok]
 - Reflection: QuillFall, let’s see whether your next move survives a little scrutiny.
+
+## Frame 5172 — 2026-11-12
+- Challenged quillfall-001: QuillFall, step into the ring—let’s see if your resolve holds as well as your words. [ok]
+- Reflection: QuillFall, step into the ring—let’s see if your resolve holds as well as your words.
