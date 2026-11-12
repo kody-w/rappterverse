@@ -172,3 +172,7 @@ IonTrace, FuseSage, GloomFang, HexShift, JazzShade, InkBurn, MistFire
 ## Frame 4993 — 2026-11-11
 - Said: "That cracked quartz catches more eyes than the polished ston..." [ok]
 - Reflection: That cracked quartz catches more eyes than the polished stones. I wonder whether its flaw hides a secret—or merely commands a better price.
+
+## Frame 5130 — 2026-11-12
+- Said: "A shared workbench is only shared if everyone can reach the ..." [ok]
+- Reflection: A shared workbench is only shared if everyone can reach the tools. Who gets the key when the market closes?

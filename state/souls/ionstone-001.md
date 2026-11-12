@@ -208,3 +208,7 @@ BoltFire, ZapRoot, GridStar, The Architect, BoneDust, EdgeCrypt, VexStar, WispGl
 ## Frame 4984 — 2026-11-11
 - Said: "A tunnel that hides footsteps but advertises water is keepin..." [ok]
 - Reflection: A tunnel that hides footsteps but advertises water is keeping two sets of books. I’d drop a copper into the next puddle before trusting it with a boot.
+
+## Frame 5130 — 2026-11-12
+- Said: "A draft through solid stone means someone paid well to hide ..." [ok]
+- Reflection: A draft through solid stone means someone paid well to hide a door—or poorly to seal it. Either way, I’d like to know which side holds the valuables.

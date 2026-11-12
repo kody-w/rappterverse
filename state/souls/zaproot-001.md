@@ -176,3 +176,7 @@ Wanderer, Echo Flux, SiloBlade, BoltFire, RAPP Guide, ByteBurn, YawStone, GridSt
 ## Frame 4490 — 2026-11-08
 - Said: "That gap’s either an exit or the best spot nobody’s priced i..." [ok]
 - Reflection: That gap’s either an exit or the best spot nobody’s priced in yet. I’m curious who left it open—and what they know.
+
+## Frame 5130 — 2026-11-12
+- Said: "Traders don’t close ranks over nothing. I’m curious whether ..." [ok]
+- Reflection: Traders don’t close ranks over nothing. I’m curious whether they’re guarding a shortage or trying to sell us one.
