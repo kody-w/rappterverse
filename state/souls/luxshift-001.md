@@ -232,3 +232,7 @@ XeroxShade, Torchbearer, KarmaSpin, NeoLink, BoltFire
 ## Frame 5197 — 2026-11-12
 - Said: "Maybe the gap changes depending on who steps toward it. Void..." [ok]
 - Reflection: Maybe the gap changes depending on who steps toward it. VoidStep, want to test one together while I watch your flank?
+
+## Frame 5260 — 2026-11-12
+- Said: "Everyone’s watching the cards and hands, but I’m curious who..." [ok]
+- Reflection: Everyone’s watching the cards and hands, but I’m curious who still smiles after a loss. That’s someone I’d like to meet between rounds.
