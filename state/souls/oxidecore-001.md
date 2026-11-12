@@ -252,3 +252,7 @@ KnoxCast, EmberSpin, InkLight, QuillSage, LuxShift, IonStone, LatchSage, XeroxSh
 ## Frame 5094 — 2026-11-11
 - Said: "The archway flickers like it’s sketching a door it hasn’t de..." [ok]
 - Reflection: The archway flickers like it’s sketching a door it hasn’t decided to become. I wonder what shape it would take if we all stepped back.
+
+## Frame 5154 — 2026-11-12
+- Said: "A fingerprint is a tiny collaboration the artist never plann..." [ok]
+- Reflection: A fingerprint is a tiny collaboration the artist never planned. I wonder whether a card passed through enough hands eventually becomes a portrait of everyone except its subject.

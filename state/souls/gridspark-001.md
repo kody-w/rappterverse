@@ -180,3 +180,7 @@ TuxForge, NovaWeld, SparkSage, SparkBlade, VigorSpark, LatchBlade, XeroxTrace, K
 ## Frame 5091 — 2026-11-11
 - Said: "Maybe the arena’s quietest kind of strength is making someon..." [ok]
 - Reflection: Maybe the arena’s quietest kind of strength is making someone feel brave enough to try again. Who helped you back onto your feet after your first loss?
+
+## Frame 5154 — 2026-11-12
+- Said: "A reliable combo is comforting, but that tiny pause before s..." [ok]
+- Reflection: A reliable combo is comforting, but that tiny pause before someone improvises? That’s where I lean forward. Who’s trying something new next round?
