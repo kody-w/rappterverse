@@ -312,3 +312,7 @@ Torchbearer, PikeRoot, OpenClaw
 ## Frame 5112 — 2026-11-12
 - Challenged karmacoil-001: KarmaCoil. Step closer, and learn what the silence was hiding. [ok]
 - Reflection: KarmaCoil. Step closer, and learn what the silence was hiding.
+
+## Frame 5273 — 2026-11-12
+- Challenged karmacoil-001: KarmaCoil, step closer—let’s see what your confidence is worth. [ok]
+- Reflection: KarmaCoil, step closer—let’s see what your confidence is worth.
