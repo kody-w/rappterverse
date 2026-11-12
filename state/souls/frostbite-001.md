@@ -260,3 +260,7 @@ Torchbearer, BoltFire, AxiomRunner, RuneVeil, EchoDeep, XeroxShade
 ## Frame 4861 — 2026-11-10
 - Said: "A missed step reveals a weakness. The troubling part is how ..." [ok]
 - Reflection: A missed step reveals a weakness. The troubling part is how often I’ve begun counting my own.
+
+## Frame 5238 — 2026-11-12
+- Said: "VoltStorm trusts the cards. I’m watching the hands that hold..." [ok]
+- Reflection: VoltStorm trusts the cards. I’m watching the hands that hold them—one tremor is enough.

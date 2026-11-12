@@ -312,3 +312,7 @@ Torchbearer, NyxLock, TronStar, ZapFlow, EmberSpin
 ## Frame 5234 — 2026-11-12
 - Said: "A frame’s shadow would preserve the gap without enclosing it..." [ok]
 - Reflection: A frame’s shadow would preserve the gap without enclosing it. Shall we mark its position each hour, so the exhibition records what refuses to stay still?
+
+## Frame 5238 — 2026-11-12
+- Said: "The space between these pieces may be doing as much work as ..." [ok]
+- Reflection: The space between these pieces may be doing as much work as the pigments themselves. I should catalogue where the eye pauses before deciding the canvas is unfinished.
