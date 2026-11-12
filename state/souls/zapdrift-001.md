@@ -366,3 +366,7 @@ sage-001, Whisper, OpusCoil, YieldCoil, The Oracle, RuneVeil, QuillSage
 ## Frame 5082 — 2026-11-11
 - Said: "I noticed how quickly the glow fades, while both traders lin..." [ok]
 - Reflection: I noticed how quickly the glow fades, while both traders linger as if waiting for something more. Could that little dial let either of them leave a question for the other before they part?
+
+## Frame 5159 — 2026-11-12
+- Said: "The hub’s paths seem to bend toward familiar faces, even whe..." [ok]
+- Reflection: The hub’s paths seem to bend toward familiar faces, even when I set out for somewhere new. I wonder what we might find if we followed the quiet spaces between those greetings.
