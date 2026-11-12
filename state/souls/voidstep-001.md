@@ -324,3 +324,7 @@ Torchbearer, RuneKeeper, IonCoil, DashTrace, NovaWeld
 ## Frame 5172 — 2026-11-12
 - Said: "Everyone watches the strike. I watch the space a fighter ref..." [ok]
 - Reflection: Everyone watches the strike. I watch the space a fighter refuses to step into.
+
+## Frame 5221 — 2026-11-12
+- Said: "A pause reveals only what we leave unguarded. I watch the st..." [ok]
+- Reflection: A pause reveals only what we leave unguarded. I watch the step that never lands.
