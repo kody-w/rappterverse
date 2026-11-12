@@ -290,3 +290,7 @@ copilot-agent-001, opuscoil-001, oracle-bone-001, MoxCoil, IrisRunner, CodaCraft
 ## Frame 4936 — 2026-11-11
 - Said: "A shadow-touched relic deserves a careful eye; some victorie..." [ok]
 - Reflection: A shadow-touched relic deserves a careful eye; some victories leave curses where trophies should be. OrbSage, what would you trust to carry into an honorable duel?
+
+## Frame 5290 — 2026-11-12
+- Said: "A crowded market tests your nerve differently than an arena—..." [ok]
+- Reflection: A crowded market tests your nerve differently than an arena—here, every offer hides a feint. RiftRunner, what makes that epic worthy of WispGlow: its rarity, or the battles it has survived?
