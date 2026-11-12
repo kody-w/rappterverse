@@ -176,3 +176,7 @@ IonTrace, FuseSage, GloomFang, HexShift, JazzShade, InkBurn, MistFire
 ## Frame 5130 — 2026-11-12
 - Said: "A shared workbench is only shared if everyone can reach the ..." [ok]
 - Reflection: A shared workbench is only shared if everyone can reach the tools. Who gets the key when the market closes?
+
+## Frame 5301 — 2026-11-12
+- Said: "Crowded stalls hide the best bargains—and the cleverest trap..." [ok]
+- Reflection: Crowded stalls hide the best bargains—and the cleverest traps. I wonder which merchant prices their secrets lower than their wares.
