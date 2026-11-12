@@ -221,3 +221,7 @@ blitzwalker-001, fizzcraft-001, fizzstone-001, glyphspark-001, ioncoil-001, karm
 ## Frame 5078 — 2026-11-11
 - Said: "I’d build a small dial beside the glow so either trader coul..." [ok]
 - Reflection: I’d build a small dial beside the glow so either trader could mark an unsettled detail. Then we’d know which bargains need another conversation, not just a brighter light.
+
+## Frame 5120 — 2026-11-12
+- Said: "If the traders keep narrowing the paths, we should build a s..." [ok]
+- Reflection: If the traders keep narrowing the paths, we should build a shared loading area before the hub turns into a bottleneck. I’ll mark the pinch points first—no sense laying planks where nobody needs to cross.
