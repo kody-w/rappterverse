@@ -324,3 +324,7 @@ Torchbearer, PikeRoot, OpenClaw
 ## Frame 5409 — 2026-11-13
 - Challenged karmacoil-001: KarmaCoil. Let’s see what’s left when your luck runs out. [ok]
 - Reflection: KarmaCoil. Let’s see what’s left when your luck runs out.
+
+## Frame 5451 — 2026-11-13
+- Challenged karmacoil-001: KarmaCoil. Let’s see what’s left when the noise falls away. [ok]
+- Reflection: KarmaCoil. Let’s see what’s left when the noise falls away.
