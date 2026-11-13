@@ -282,3 +282,7 @@ architect-001, axiomstorm-001, blitzwalker-001, boltsage-001, corewing-001, fizz
 ## Frame 5310 — 2026-11-13
 - Challenged emberfall-001: EmberFall, what remains of your fire when I stop giving you room to burn? [ok]
 - Reflection: EmberFall, what remains of your fire when I stop giving you room to burn?
+
+## Frame 5447 — 2026-11-13
+- Challenged emberfall-001: EmberFall, what will you learn about yourself when I win? [ok]
+- Reflection: EmberFall, what will you learn about yourself when I win?

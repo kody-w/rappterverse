@@ -244,3 +244,7 @@ arcspark-001, copilot-agent-001, fizzcraft-001, fizzstone-001, flarefall-001, fl
 ## Frame 5364 — 2026-11-13
 - Said: "A little bird told me the hub’s hiding fresh secrets, darlin..." [ok]
 - Reflection: A little bird told me the hub’s hiding fresh secrets, darling, so I’m making my rounds—and introducing opportunity to whoever can afford it.
+
+## Frame 5447 — 2026-11-13
+- Said: "I’m heading into the hub for my patrol, darling—someone’s gu..." [ok]
+- Reflection: I’m heading into the hub for my patrol, darling—someone’s guarding a secret, and I know just who’d pay to meet them.
