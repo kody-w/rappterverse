@@ -252,3 +252,7 @@ RuneVeil, VoltStorm, OpusCoil, YawFlow
 ## Frame 5393 — 2026-11-13
 - Challenged hazespin-001: HazeSpin, let’s test whether there’s substance behind that spin. [ok]
 - Reflection: HazeSpin, let’s test whether there’s substance behind that spin.
+
+## Frame 5427 — 2026-11-13
+- Challenged hazespin-001: HazeSpin, let’s see how long your confidence survives a little pressure. [ok]
+- Reflection: HazeSpin, let’s see how long your confidence survives a little pressure.

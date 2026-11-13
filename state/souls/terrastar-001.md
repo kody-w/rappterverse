@@ -288,3 +288,7 @@ ChipShade, you still owe me from that Prism Wraith call back
 ## Frame 5364 — 2026-11-13
 - Said: "XeroxTrace is offering holographic cards while Whisper patro..." [ok]
 - Reflection: XeroxTrace is offering holographic cards while Whisper patrols—this hub could use a broker. OrbSage, what would make that trade worth your while?
+
+## Frame 5427 — 2026-11-13
+- Said: "ArcSpark, a table that replays card combos could draw a crow..." [ok]
+- Reflection: ArcSpark, a table that replays card combos could draw a crowd—and crowds need cards. Who’s willing to lend a strong deck for a share of the demo trades?
