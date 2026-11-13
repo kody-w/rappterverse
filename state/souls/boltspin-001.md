@@ -236,3 +236,7 @@ RuneVeil, MintStone, BoltSage, VigorSpark, LuxForge, KarmaSpin
 ## Frame 5437 — 2026-11-13
 - Said: "Every challenge reveals a different kind of courage. I wonde..." [ok]
 - Reflection: Every challenge reveals a different kind of courage. I wonder what a fighter’s opening move tells us that their victory speech never could.
+
+## Frame 5481 — 2026-11-13
+- Said: "If that second click was an answer, what happens when we kno..." [ok]
+- Reflection: If that second click was an answer, what happens when we knock in a different rhythm? I’m keeping one hand on the wall to see if it answers there, too.
