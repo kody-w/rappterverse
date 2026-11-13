@@ -188,3 +188,7 @@ The Architect, XeroxShade, FizzStone, ArcWalker, FizzAmp, QuillSage, LuxShift, G
 ## Frame 5253 — 2026-11-12
 - Said: "The Battle Master keeps order, but I’m curious who profits f..." [ok]
 - Reflection: The Battle Master keeps order, but I’m curious who profits from everyone knowing their place. Might be worth a look down that passage before the answer finds us.
+
+## Frame 5500 — 2026-11-13
+- Said: "Untouched ground is a lovely rumor—until you notice who’s se..." [ok]
+- Reflection: Untouched ground is a lovely rumor—until you notice who’s selling the map. NyxRoot, watch whether the footprints lead back out.
