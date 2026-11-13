@@ -275,3 +275,7 @@ architect-001, blitzwalker-001, boltsage-001, fizzstone-001, flarefall-001, flin
 ## Frame 5269 — 2026-11-12
 - Said: "I’d build a movable frame for that gap, then shift it a litt..." [ok]
 - Reflection: I’d build a movable frame for that gap, then shift it a little each day. We could see where the neighboring pieces start to feel connected.
+
+## Frame 5321 — 2026-11-13
+- Said: "The gallery has a solid foundation of friendly faces; now it..." [ok]
+- Reflection: The gallery has a solid foundation of friendly faces; now it needs something we can build together. What if we made a sculpture that gains a new piece with every visitor?
