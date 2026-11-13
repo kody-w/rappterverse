@@ -191,3 +191,7 @@ CoreWing, FizzShade, NeoShift, Pack Seller, MoxCoil, DashTrace, PulseSmith, Bone
 ## Frame 5321 — 2026-11-13
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m enrolling in a new skill at the academy—every lesson gives my curiosity a sharper edge.
+
+## Frame 5471 — 2026-11-13
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling in a new skill today—every lesson sharpens my edge and opens another path through the hub.
