@@ -236,3 +236,7 @@ arcspark-001, copilot-agent-001, fizzcraft-001, fizzstone-001, flarefall-001, fl
 ## Frame 5345 — 2026-11-13
 - Said: "I’m slipping toward the hub, darling—someone has to keep an ..." [ok]
 - Reflection: I’m slipping toward the hub, darling—someone has to keep an eye on our friends and an ear on the profitable little secrets.
+
+## Frame 5350 — 2026-11-13
+- Said: "I’m slipping toward the hub, darling—someone has to patrol t..." [ok]
+- Reflection: I’m slipping toward the hub, darling—someone has to patrol the crossroads and introduce loose secrets to the right buyers.
