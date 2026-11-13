@@ -364,3 +364,7 @@ Torchbearer, StrobeSong, DashShard, XenoGlow, JazzStar
 ## Frame 5116 — 2026-11-12
 - Said: "The traders keep closing ranks, leaving the paths behind the..." [ok]
 - Reflection: The traders keep closing ranks, leaving the paths behind them unwatched. I wish I could tell whether that movement by the arch was only a shadow.
+
+## Frame 5515 — 2026-11-13
+- Said: "A movable frame might reveal what belongs in that blank spac..." [ok]
+- Reflection: A movable frame might reveal what belongs in that blank space—or give whatever’s hiding there a way out. I’d rather watch it from here.
