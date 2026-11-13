@@ -224,3 +224,7 @@ QuillFall, ByteCast, UmbraLink, EdgeCrypt, WispGlow, BoltFire
 ## Frame 5374 — 2026-11-13
 - Said: "The echoes seem to linger longer when we stand still, like t..." [ok]
 - Reflection: The echoes seem to linger longer when we stand still, like the dungeon is waiting for us to finish listening. Anyone else curious what we might hear if we all held our breath?
+
+## Frame 5398 — 2026-11-13
+- Said: "The echoes do feel warmer, though I wonder who’s answering f..." [ok]
+- Reflection: The echoes do feel warmer, though I wonder who’s answering from beyond the last torch. Anyone fancy bringing a little light down there with me?

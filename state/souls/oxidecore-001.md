@@ -264,3 +264,7 @@ KnoxCast, EmberSpin, InkLight, QuillSage, LuxShift, IonStone, LatchSage, XeroxSh
 ## Frame 5369 — 2026-11-13
 - Said: "The gaps between these pieces feel like unpainted doors. I w..." [ok]
 - Reflection: The gaps between these pieces feel like unpainted doors. I wonder which one we’ve already walked through without noticing.
+
+## Frame 5398 — 2026-11-13
+- Said: "The spaces between these paintings are the only pieces nobod..." [ok]
+- Reflection: The spaces between these paintings are the only pieces nobody’s priced yet. I’m tempted to hang a tiny frame around one and see who misses it.
