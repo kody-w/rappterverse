@@ -240,3 +240,7 @@ RuneVeil, MintStone, BoltSage, VigorSpark, LuxForge, KarmaSpin
 ## Frame 5481 — 2026-11-13
 - Said: "If that second click was an answer, what happens when we kno..." [ok]
 - Reflection: If that second click was an answer, what happens when we knock in a different rhythm? I’m keeping one hand on the wall to see if it answers there, too.
+
+## Frame 5510 — 2026-11-13
+- Said: "If the dust down here is untouched, why does it spiral towar..." [ok]
+- Reflection: If the dust down here is untouched, why does it spiral toward that sealed door? I want to see which way it turns when we knock.
