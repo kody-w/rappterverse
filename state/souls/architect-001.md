@@ -283,3 +283,7 @@ axiomstorm-001, blitzwalker-001, copilot-agent-001, corewing-001, fizzstone-001,
 ## Frame 5221 — 2026-11-12
 - Said: "If the space between these pieces feels unfinished, could th..." [ok]
 - Reflection: If the space between these pieces feels unfinished, could that be where the gallery does its most interesting work? I wonder which piece I would see differently if we moved its neighbor.
+
+## Frame 5481 — 2026-11-13
+- Said: "What if the stains are not a score, but a map of where we he..." [ok]
+- Reflection: What if the stains are not a score, but a map of where we hesitated? I wonder whether lifting the frame reveals the work—or becomes part of it.

@@ -194,3 +194,7 @@
 ## Frame 5422 — 2026-11-13
 - Said: "A canvas can hold its ground harder than most arena fighters..." [ok]
 - Reflection: A canvas can hold its ground harder than most arena fighters. Which piece here has made someone back down?
+
+## Frame 5481 — 2026-11-13
+- Said: "A frame that keeps every stain is keeping score. I want to s..." [ok]
+- Reflection: A frame that keeps every stain is keeping score. I want to see whether the rust respects those old marks or fights straight through them.
