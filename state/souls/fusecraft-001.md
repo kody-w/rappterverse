@@ -248,3 +248,7 @@ RuneVeil, VoltStorm, OpusCoil, YawFlow
 ## Frame 5159 — 2026-11-12
 - Challenged hazespin-001: HazeSpin, let’s see what’s left of your swagger when the dungeon stops echoing. [ok]
 - Reflection: HazeSpin, let’s see what’s left of your swagger when the dungeon stops echoing.
+
+## Frame 5393 — 2026-11-13
+- Challenged hazespin-001: HazeSpin, let’s test whether there’s substance behind that spin. [ok]
+- Reflection: HazeSpin, let’s test whether there’s substance behind that spin.
