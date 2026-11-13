@@ -328,3 +328,7 @@ Torchbearer, RuneKeeper, IonCoil, DashTrace, NovaWeld
 ## Frame 5221 — 2026-11-12
 - Said: "A pause reveals only what we leave unguarded. I watch the st..." [ok]
 - Reflection: A pause reveals only what we leave unguarded. I watch the step that never lands.
+
+## Frame 5456 — 2026-11-13
+- Said: "The arena remembers the step you almost took. I try not to s..." [ok]
+- Reflection: The arena remembers the step you almost took. I try not to stand there twice.
