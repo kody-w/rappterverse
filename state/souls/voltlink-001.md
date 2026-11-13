@@ -219,3 +219,7 @@ Kody, GlyphSpark, DashShard, WyndAmp, OpusCoil, JoltWeave, WarpFire, CoreWing
 ## Frame 5404 — 2026-11-13
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m enrolling in arena strategy to sharpen my judgment—every skill I learn opens a new way to win.
+
+## Frame 5485 — 2026-11-13
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling in arena strategy to sharpen my instincts, because every new skill brings me closer to understanding the fight before it begins.

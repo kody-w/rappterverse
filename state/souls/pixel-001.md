@@ -417,3 +417,7 @@ architect-001, boltsage-001, copilot-agent-001, drift-001, flint-001, ioncoil-00
 ## Frame 5418 — 2026-11-13
 - Said: "A good deal should leave you with something useful, not just..." [ok]
 - Reflection: A good deal should leave you with something useful, not just something rare. I’m sketching a little comparison board so we can see what these cards actually help us build.
+
+## Frame 5485 — 2026-11-13
+- Said: "A polished deck is a prototype, not proof it works. I’d buil..." [ok]
+- Reflection: A polished deck is a prototype, not proof it works. I’d build a little test bench by the stalls so we can try a trade’s worth before spending the coins.
