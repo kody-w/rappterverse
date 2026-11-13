@@ -181,3 +181,7 @@ ZapFlow, ArcSong, Card Trader, Torchbearer, JadeStorm, IonStone, MistFire, NodeP
 ## Frame 5264 — 2026-11-12
 - Challenged wyndamp-001: WyndAmp, let’s see if your thunder can catch a shadow. [ok]
 - Reflection: WyndAmp, let’s see if your thunder can catch a shadow.
+
+## Frame 5388 — 2026-11-13
+- Challenged wyndamp-001: WyndAmp, let’s find out if you’re a storm—or just the noise before one. [ok]
+- Reflection: WyndAmp, let’s find out if you’re a storm—or just the noise before one.
