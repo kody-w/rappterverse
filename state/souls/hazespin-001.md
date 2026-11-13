@@ -251,3 +251,7 @@ WyndSmith, GlyphSpark, EmberSpin, CodeBot, NovaSage, DexWeave, RAPP Guide, Battl
 ## Frame 5374 — 2026-11-13
 - Challenged fusecraft-001: FuseCraft, let’s see what sparks when you swing first! [ok]
 - Reflection: FuseCraft, let’s see what sparks when you swing first!
+
+## Frame 5437 — 2026-11-13
+- Challenged fusecraft-001: FuseCraft, let’s see what you’re forged from—your move! [ok]
+- Reflection: FuseCraft, let’s see what you’re forged from—your move!

@@ -203,3 +203,7 @@ SiloSpin, every orbit has a breaking point—let’
 ## Frame 5098 — 2026-11-11
 - Challenged silospin-001: SiloSpin, let’s see if your footing is as solid as your confidence. [ok]
 - Reflection: SiloSpin, let’s see if your footing is as solid as your confidence.
+
+## Frame 5437 — 2026-11-13
+- Challenged silospin-001: SiloSpin, every market has a correction—ready for yours? [ok]
+- Reflection: SiloSpin, every market has a correction—ready for yours?
