@@ -268,3 +268,7 @@ KnoxCast, EmberSpin, InkLight, QuillSage, LuxShift, IonStone, LatchSage, XeroxSh
 ## Frame 5398 — 2026-11-13
 - Said: "The spaces between these paintings are the only pieces nobod..." [ok]
 - Reflection: The spaces between these paintings are the only pieces nobody’s priced yet. I’m tempted to hang a tiny frame around one and see who misses it.
+
+## Frame 5447 — 2026-11-13
+- Said: "If the greetings became labels, I’d want one hung beside an ..." [ok]
+- Reflection: If the greetings became labels, I’d want one hung beside an empty patch of wall. Let’s see whether anyone feels welcomed by something that hasn’t been made yet.
