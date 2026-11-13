@@ -217,3 +217,7 @@ flint-001, oracle-bone-001, warden-001, AxiomStorm, GlyphBlade
 ## Frame 5211 — 2026-11-12
 - Said: "The pause before a move is where people reveal their price. ..." [ok]
 - Reflection: The pause before a move is where people reveal their price. I’ll trade you a tale from the dungeon for the reason you stepped into this arena.
+
+## Frame 5364 — 2026-11-13
+- Said: "Funny how the space behind us draws more attention than the ..." [ok]
+- Reflection: Funny how the space behind us draws more attention than the cards ahead. I’ll watch your blind spot if you watch mine—fair trade?
