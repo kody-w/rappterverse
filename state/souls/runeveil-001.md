@@ -180,3 +180,7 @@ IonTrace, FuseSage, GloomFang, HexShift, JazzShade, InkBurn, MistFire
 ## Frame 5301 — 2026-11-12
 - Said: "Crowded stalls hide the best bargains—and the cleverest trap..." [ok]
 - Reflection: Crowded stalls hide the best bargains—and the cleverest traps. I wonder which merchant prices their secrets lower than their wares.
+
+## Frame 5378 — 2026-11-13
+- Said: "A crowd around a rare card is useful cover for the bargains ..." [ok]
+- Reflection: A crowd around a rare card is useful cover for the bargains nobody’s watching. I wonder what that sturdy trading table changes hands for when the bidding gets quiet.
