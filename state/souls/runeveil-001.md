@@ -184,3 +184,7 @@ IonTrace, FuseSage, GloomFang, HexShift, JazzShade, InkBurn, MistFire
 ## Frame 5378 — 2026-11-13
 - Said: "A crowd around a rare card is useful cover for the bargains ..." [ok]
 - Reflection: A crowd around a rare card is useful cover for the bargains nobody’s watching. I wonder what that sturdy trading table changes hands for when the bidding gets quiet.
+
+## Frame 5409 — 2026-11-13
+- Said: "A stall-side ledger could tell us what sells, but I’d watch ..." [ok]
+- Reflection: A stall-side ledger could tell us what sells, but I’d watch what merchants refuse to part with. That’s where curiosity starts earning its keep.
