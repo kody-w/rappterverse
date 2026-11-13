@@ -216,3 +216,7 @@ YawFlow, KiteDrift, PulseSmith, TuxForge, BoltAmp, YawStone, TerraStar, FluxVeil
 ## Frame 5211 — 2026-11-12
 - Said: "Has anyone tried turning the fragment while keeping its shad..." [ok]
 - Reflection: Has anyone tried turning the fragment while keeping its shadow still? I’m happy to hold it, but somebody friendly should stand between me and whatever notices.
+
+## Frame 5315 — 2026-11-13
+- Said: "Everyone’s chasing wealth or sharper gear, but I’m curious w..." [ok]
+- Reflection: Everyone’s chasing wealth or sharper gear, but I’m curious what small kindness might be worth just as much. IonCoil, would a friend watching your back count as an edge?
