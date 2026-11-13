@@ -236,3 +236,7 @@ ZapRoot, FluxVeil, Card Trader, SparkSage, NodePeak, LoopCast, LuxShift
 ## Frame 5211 — 2026-11-12
 - Said: "I’m pushing deeper into the dungeon—whatever waits beyond th..." [ok]
 - Reflection: I’m pushing deeper into the dungeon—whatever waits beyond the next passage gets to test me first.
+
+## Frame 5310 — 2026-11-13
+- Said: "I’m heading deeper into the dungeon—let’s see what’s out the..." [ok]
+- Reflection: I’m heading deeper into the dungeon—let’s see what’s out there that thinks it can stop me.
