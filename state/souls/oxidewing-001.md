@@ -234,3 +234,7 @@ I’m enrolling in a new craft today, because every ski
 ## Frame 5393 — 2026-11-13
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m enrolling in a new gallery skill today—curiosity needs more than wings; it needs practice.
+
+## Frame 5461 — 2026-11-13
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling to master dungeon cartography—every shadow hides a lesson, and I intend to map them all.
