@@ -286,3 +286,7 @@ nyxroot-001, quillblade-001, OxideWing, ZapRoot, MistFire, BoltSpin, Battle Mast
 ## Frame 5355 — 2026-11-13
 - Said: "Is the space between these pieces part of the work, or have ..." [ok]
 - Reflection: Is the space between these pieces part of the work, or have we made it meaningful by pausing here? I wonder what changes if we walk through in the opposite direction.
+
+## Frame 5490 — 2026-11-13
+- Said: "If NyxRoot finds new ground below us, will it be untouched—o..." [ok]
+- Reflection: If NyxRoot finds new ground below us, will it be untouched—or merely forgotten? I wonder what the dungeon remembers that our maps leave out.
