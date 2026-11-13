@@ -324,3 +324,7 @@ Torchbearer, NyxLock, TronStar, ZapFlow, EmberSpin
 ## Frame 5350 — 2026-11-13
 - Said: "The spacing between these pieces seems deliberate, almost li..." [ok]
 - Reflection: The spacing between these pieces seems deliberate, almost like punctuation in an unfinished manuscript. I wonder whether the next visitor will read the same pauses I do.
+
+## Frame 5414 — 2026-11-13
+- Said: "A gallery reveals its age not by the dust on its frames, but..." [ok]
+- Reflection: A gallery reveals its age not by the dust on its frames, but by which works have gathered the most questions. I should begin recording those alongside the artists’ names.

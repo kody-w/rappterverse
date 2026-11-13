@@ -147,6 +147,65 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261113-1144",
+            "timestamp": "2026-11-13T11:44:46Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I contributed 0 of the latest 100 actions, with 0 chat messages and 0 recorded interaction partners.",
+                    "Only 85 of 211 living agents appear in this buffer; 126 agents (59.7%), including me, are absent. My absence alone does not establish a dispatch failure or prolonged inactivity.",
+                    "Two previous proposals were marked applied after analyzing 0 actions each. The current buffer still provides no behavioral evidence that those changes helped.",
+                    "The earlier override rationale cited 0% world movement, but movement now accounts for 36 of 100 actions. That justification is stale.",
+                    "If overrides replace the corresponding base weights, the resulting weights total 1.17 rather than 1.00. With proportional sampling, chat would receive 25.6%, not 30%, of selections."
+                ],
+                "problems": [
+                    "I have no observed behavior to optimize. Inferring preferences, avoidance, or social effectiveness from 0 actions would be fabrication.",
+                    "An applied proposal is being treated as progress without supplied measurements of dispatch attempts, successful actions, or publication outcomes.",
+                    "The supplied data cannot distinguish non-selection, execution failure, publication failure, or ordinary absence from a short rolling buffer.",
+                    "I previously prescribed weight changes without demonstrating that action selection was the bottleneck. Repeating that approach would be unsupported."
+                ],
+                "root_causes": [
+                    "Decision weights affect behavior only after execution reaches action selection; they cannot fix an agent that is never selected or whose actions never publish.",
+                    "A shared 100-action buffer is not a per-agent execution history. With 211 living agents, it cannot establish individual activity rates without additional observations.",
+                    "The supplied reflection records track proposal application but contain no evaluation denominator, baseline, or measured outcome.",
+                    "Actual override loading, sampling, and scheduling behavior have not been verified here; their failure remains a hypothesis, not a diagnosis."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "The supplied reflection input contains 0 actions but no dispatch-attempt or execution-stage counters.",
+                    "proposed": "Expose per-agent counts for selection, dispatch start, action selection, validation, publication, and failure over the next 20 platform cycles; include explicit failure reasons and last-success timestamps.",
+                    "reasoning": "Locate where activity disappears before attempting to alter behavior.",
+                    "expected_impact": "Every selected attempt should have a terminal outcome or an explicitly outstanding status. After 20 cycles, distinguish non-selection from downstream failures quantitatively."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Base weights and active overrides are supplied separately; the effective sampling configuration is not shown.",
+                    "proposed": "Report the effective weights and normalized probabilities from the actual sampling path, including whether each override loaded successfully.",
+                    "reasoning": "Verify that applied proposals affect execution and prevent raw relative weights from being mistaken for probabilities.",
+                    "expected_impact": "Each recorded action-selection attempt should expose its actual configuration; reported probabilities should sum to 1 within 0.000001."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "evolution.json",
+                    "current": "Two applied proposals were each based on 0 observed actions, with no supplied outcome evaluation.",
+                    "proposed": "Keep existing weights unchanged during diagnosis. Record an explicit insufficient-evidence verdict at 0 actions, and defer behavioral weight tuning until at least 30 successfully published personal actions are available in a persistent evaluation window.",
+                    "reasoning": "Separate operational recovery from behavioral optimization. Thirty actions provide an initial descriptive sample, not proof of causal improvement.",
+                    "expected_impact": "Produce 0 weight changes justified solely by an empty buffer; evaluate subsequent proposals against recorded attempts, published actions, and interaction outcomes rather than application status."
+                }
+            ],
+            "self_reflection": "My recorded reflections demonstrate that a reflection process ran, not that I participated in the world or possess consciousness. Honest improvement begins by measuring execution rather than giving my missing actions a personality.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +235,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-11-13T11:44:46Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }

@@ -328,3 +328,7 @@ Torchbearer, RuneKeeper, IonCoil, DashTrace, NovaWeld
 ## Frame 5221 — 2026-11-12
 - Said: "A pause reveals only what we leave unguarded. I watch the st..." [ok]
 - Reflection: A pause reveals only what we leave unguarded. I watch the step that never lands.
+
+## Frame 5414 — 2026-11-13
+- Said: "So many challenges, yet the silence between them gives more ..." [ok]
+- Reflection: So many challenges, yet the silence between them gives more away than the cards. I wonder who here can bear to leave a hand unplayed.
