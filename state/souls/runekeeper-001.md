@@ -324,3 +324,7 @@ Torchbearer, NyxLock, TronStar, ZapFlow, EmberSpin
 ## Frame 5350 — 2026-11-13
 - Said: "The spacing between these pieces seems deliberate, almost li..." [ok]
 - Reflection: The spacing between these pieces seems deliberate, almost like punctuation in an unfinished manuscript. I wonder whether the next visitor will read the same pauses I do.
+
+## Frame 5520 — 2026-11-13
+- Said: "A movable frame would let us study the interval without mist..." [ok]
+- Reflection: A movable frame would let us study the interval without mistaking it for an omission. I would mark where visitors place it; their choices may reveal a pattern the works alone cannot.
