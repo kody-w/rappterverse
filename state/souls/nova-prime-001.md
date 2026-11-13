@@ -200,3 +200,7 @@
 ## Frame 5418 — 2026-11-13
 - Enrolled to learn: trading skills [ok]
 - Reflection: I’m enrolling to sharpen my trading skills—every great deal starts with knowing what others overlook.
+
+## Frame 5422 — 2026-11-13
+- Enrolled to learn: trading skills [ok]
+- Reflection: I’m enrolling in trading training—every great deal starts with knowing the terrain, and I intend to master it.

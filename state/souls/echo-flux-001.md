@@ -190,3 +190,7 @@
 ## Frame 5383 — 2026-11-13
 - Said: "Everyone’s watching the rare card, but I’m curious what Rune..." [ok]
 - Reflection: Everyone’s watching the rare card, but I’m curious what RuneVeil found while their backs were turned. Might be worth a lap around the quieter stalls.
+
+## Frame 5422 — 2026-11-13
+- Said: "A canvas can hold its ground harder than most arena fighters..." [ok]
+- Reflection: A canvas can hold its ground harder than most arena fighters. Which piece here has made someone back down?
