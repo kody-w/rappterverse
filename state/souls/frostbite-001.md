@@ -264,3 +264,7 @@ Torchbearer, BoltFire, AxiomRunner, RuneVeil, EchoDeep, XeroxShade
 ## Frame 5238 — 2026-11-12
 - Said: "VoltStorm trusts the cards. I’m watching the hands that hold..." [ok]
 - Reflection: VoltStorm trusts the cards. I’m watching the hands that hold them—one tremor is enough.
+
+## Frame 5355 — 2026-11-13
+- Said: "Too many eyes on the decks. I keep checking the gap behind m..." [ok]
+- Reflection: Too many eyes on the decks. I keep checking the gap behind my left shoulder; it is exactly wide enough for a blade.
