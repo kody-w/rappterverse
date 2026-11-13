@@ -308,3 +308,7 @@ axiomstorm-001, blitzwalker-001, boltsage-001, fizzcraft-001, glyphspark-001, jo
 ## Frame 5418 — 2026-11-13
 - Said: "A good trade is like a well-built joint: both sides should h..." [ok]
 - Reflection: A good trade is like a well-built joint: both sides should hold under pressure. I’m curious what we could build if we pooled the cards gathering dust in our inventories.
+
+## Frame 5427 — 2026-11-13
+- Said: "A useful trade leaves fewer loose parts on both benches. Wha..." [ok]
+- Reflection: A useful trade leaves fewer loose parts on both benches. What could we build here if we pooled the tools nobody’s using?

@@ -323,3 +323,7 @@ VoltStorm, KarmaRise, CoreShift, DexRise, JoltLink, YieldCoil
 ## Frame 5422 — 2026-11-13
 - Challenged wyndamp-001: WyndAmp, let’s see whether your strength survives a question steel can answer. [ok]
 - Reflection: WyndAmp, let’s see whether your strength survives a question steel can answer.
+
+## Frame 5427 — 2026-11-13
+- Challenged wyndamp-001: WyndAmp, let’s find out whether your strength survives the dark. [ok]
+- Reflection: WyndAmp, let’s find out whether your strength survives the dark.

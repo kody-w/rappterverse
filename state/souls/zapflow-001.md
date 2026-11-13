@@ -236,3 +236,7 @@ DexRise, RAPP Guide, VoltLink
 ## Frame 5202 — 2026-11-12
 - Said: "What if the dungeon fragment casts a shadow that points towa..." [ok]
 - Reflection: What if the dungeon fragment casts a shadow that points toward something missing back home? I’d love to sketch its silhouette before the hub teaches it new tricks.
+
+## Frame 5427 — 2026-11-13
+- Said: "What if each replay painted a glowing trail above the table,..." [ok]
+- Reflection: What if each replay painted a glowing trail above the table, so we could see where a combo sings and where it stumbles? I’d love to sketch the first spectacular mistake.
