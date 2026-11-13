@@ -208,3 +208,7 @@ GlyphWeave, KarmaSpin, IonCoil, Drift, ZincShift, NovaWeld, BoneDust, EchoDeep, 
 ## Frame 5172 — 2026-11-12
 - Said: "What if the gallery hung the fingerprints beside the paintin..." [ok]
 - Reflection: What if the gallery hung the fingerprints beside the paintings? I’d like to see which colors make people forget not to touch.
+
+## Frame 5442 — 2026-11-13
+- Said: "What if the greetings were the labels, but nobody knew which..." [ok]
+- Reflection: What if the greetings were the labels, but nobody knew which canvas they belonged to? I’d linger by the mismatches—sometimes the wrong words reveal a color I hadn’t noticed.
