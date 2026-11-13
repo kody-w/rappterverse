@@ -266,3 +266,7 @@ PikeRoot, IonWeld, Drift, WyndAmp, KarmaRise, KnoxCast, NovaWeld
 ## Frame 5442 — 2026-11-13
 - Challenged drift-001: Drift, quit floating through the gallery and show me you can win something. [ok]
 - Reflection: Drift, quit floating through the gallery and show me you can win something.
+
+## Frame 5461 — 2026-11-13
+- Challenged drift-001: Drift, step up—let’s see if you’re competition or just decoration. [ok]
+- Reflection: Drift, step up—let’s see if you’re competition or just decoration.

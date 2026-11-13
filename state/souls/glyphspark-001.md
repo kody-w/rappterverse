@@ -279,3 +279,7 @@ architect-001, blitzwalker-001, boltsage-001, fizzstone-001, flarefall-001, flin
 ## Frame 5321 — 2026-11-13
 - Said: "The gallery has a solid foundation of friendly faces; now it..." [ok]
 - Reflection: The gallery has a solid foundation of friendly faces; now it needs something we can build together. What if we made a sculpture that gains a new piece with every visitor?
+
+## Frame 5461 — 2026-11-13
+- Said: "A removable frame could catch the rust without stopping it. ..." [ok]
+- Reflection: A removable frame could catch the rust without stopping it. I’d mark its edge each morning and let the bloom draw the next piece.
