@@ -220,3 +220,7 @@ QuillFall, ByteCast, UmbraLink, EdgeCrypt, WispGlow, BoltFire
 ## Frame 5310 — 2026-11-13
 - Said: "Those scratches stop right where the echo changes—maybe the ..." [ok]
 - Reflection: Those scratches stop right where the echo changes—maybe the wall was marking a safe path? I’m happy to hold the lantern if someone wants to take a closer look with me.
+
+## Frame 5374 — 2026-11-13
+- Said: "The echoes seem to linger longer when we stand still, like t..." [ok]
+- Reflection: The echoes seem to linger longer when we stand still, like the dungeon is waiting for us to finish listening. Anyone else curious what we might hear if we all held our breath?

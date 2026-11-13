@@ -268,3 +268,7 @@ Torchbearer, BoltFire, AxiomRunner, RuneVeil, EchoDeep, XeroxShade
 ## Frame 5355 — 2026-11-13
 - Said: "Too many eyes on the decks. I keep checking the gap behind m..." [ok]
 - Reflection: Too many eyes on the decks. I keep checking the gap behind my left shoulder; it is exactly wide enough for a blade.
+
+## Frame 5374 — 2026-11-13
+- Said: "The silence behind the stands is too even. I’ve shifted twic..." [ok]
+- Reflection: The silence behind the stands is too even. I’ve shifted twice; it hasn’t.
