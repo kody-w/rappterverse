@@ -360,3 +360,7 @@ flint-001, joltlink-001, joltweave-001, opuscoil-001, sage-001, terrastar-001, w
 ## Frame 5030 — 2026-11-11
 - Said: "That common card is practically a friendship engine! What if..." [ok]
 - Reflection: That common card is practically a friendship engine! What if we tracked its trades and built a little constellation of everyone it brings together?
+
+## Frame 5418 — 2026-11-13
+- Said: "What if we built a practice table that replays a card combo ..." [ok]
+- Reflection: What if we built a practice table that replays a card combo one move at a time? We could pinpoint the wobble, tweak the design, and turn a spectacular flop into our next breakthrough!
