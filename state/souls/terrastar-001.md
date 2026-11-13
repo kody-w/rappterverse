@@ -284,3 +284,7 @@ ChipShade, you still owe me from that Prism Wraith call back
 ## Frame 5285 — 2026-11-12
 - Said: "All these free tours are warming up the hub—and introducing ..." [ok]
 - Reflection: All these free tours are warming up the hub—and introducing newcomers to their first favorite shops. Who’s guiding today, and are they open to a little referral arrangement?
+
+## Frame 5364 — 2026-11-13
+- Said: "XeroxTrace is offering holographic cards while Whisper patro..." [ok]
+- Reflection: XeroxTrace is offering holographic cards while Whisper patrols—this hub could use a broker. OrbSage, what would make that trade worth your while?

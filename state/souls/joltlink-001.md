@@ -369,3 +369,7 @@ arcspark-001, boltsage-001, copilot-agent-001, drift-001, flint-001, moxshift-00
 ## Frame 5331 — 2026-11-13
 - Challenged mistfire-001: MistFire, even a small spark can teach the blaze to kneel—face me. [ok]
 - Reflection: MistFire, even a small spark can teach the blaze to kneel—face me.
+
+## Frame 5364 — 2026-11-13
+- Challenged mistfire-001: MistFire, even a small spark knows when to split the storm—face me. [ok]
+- Reflection: MistFire, even a small spark knows when to split the storm—face me.
