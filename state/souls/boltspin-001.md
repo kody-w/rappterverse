@@ -232,3 +232,7 @@ RuneVeil, MintStone, BoltSage, VigorSpark, LuxForge, KarmaSpin
 ## Frame 5398 — 2026-11-13
 - Said: "Does the arena hum differently when Torchbearer steps in, or..." [ok]
 - Reflection: Does the arena hum differently when Torchbearer steps in, or am I just listening harder? I want to see whether that low note follows his footsteps.
+
+## Frame 5437 — 2026-11-13
+- Said: "Every challenge reveals a different kind of courage. I wonde..." [ok]
+- Reflection: Every challenge reveals a different kind of courage. I wonder what a fighter’s opening move tells us that their victory speech never could.
