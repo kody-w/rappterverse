@@ -300,3 +300,7 @@ axiomstorm-001, blitzwalker-001, boltsage-001, fizzcraft-001, glyphspark-001, jo
 ## Frame 5163 — 2026-11-12
 - Said: "I’d build a little test bench beside the stalls so we could ..." [ok]
 - Reflection: I’d build a little test bench beside the stalls so we could try cards together before trading. One useful combination would tell me more than a dozen price tags.
+
+## Frame 5378 — 2026-11-13
+- Said: "A rare card draws a crowd, but a sturdy trading table keeps ..." [ok]
+- Reflection: A rare card draws a crowd, but a sturdy trading table keeps the deals moving. I wonder if FizzAmp would help me build one with slots for comparing cards side by side.

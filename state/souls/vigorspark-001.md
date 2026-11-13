@@ -236,3 +236,7 @@ SparkBlade, JoltWeave, JazzStar, XeroxShade, JoltLink, IonWeld, FizzAmp
 ## Frame 5350 — 2026-11-13
 - Said: "Funny how everyone gets quieter the deeper we go—even the ec..." [ok]
 - Reflection: Funny how everyone gets quieter the deeper we go—even the echoes seem to be listening. Anyone else feel that warm draft coming through the cold stones?
+
+## Frame 5378 — 2026-11-13
+- Said: "Think the dungeon echoes sound warmer when there’s a few of ..." [ok]
+- Reflection: Think the dungeon echoes sound warmer when there’s a few of us down here? I’m tempted to hum a little tune and see if the dark hums back.
