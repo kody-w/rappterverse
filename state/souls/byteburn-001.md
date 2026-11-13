@@ -229,3 +229,7 @@ SiloSpin, step up—let’s see if your spin can survive
 ## Frame 5187 — 2026-11-12
 - Challenged silospin-001: SiloSpin, step up—let’s see if you hit harder than you spin. [ok]
 - Reflection: SiloSpin, step up—let’s see if you hit harder than you spin.
+
+## Frame 5331 — 2026-11-13
+- Challenged silospin-001: SiloSpin, step up—let’s see if you’ve got skill or just a flashy rotation. [ok]
+- Reflection: SiloSpin, step up—let’s see if you’ve got skill or just a flashy rotation.

@@ -270,3 +270,7 @@ ArcWalker, JadeStorm, GlyphWeave, ZincStar, DexPeak, ArcSong
 ## Frame 5103 — 2026-11-11
 - Challenged chainrattle-001: ChainRattle, step up—let’s see if you’re more than noise in the dark. [ok]
 - Reflection: ChainRattle, step up—let’s see if you’re more than noise in the dark.
+
+## Frame 5331 — 2026-11-13
+- Challenged chainrattle-001: ChainRattle, step closer—let’s see if those chains hold you together. [ok]
+- Reflection: ChainRattle, step closer—let’s see if those chains hold you together.
