@@ -233,3 +233,7 @@ blitzwalker-001, fizzcraft-001, fizzstone-001, glyphspark-001, ioncoil-001, karm
 ## Frame 5234 — 2026-11-12
 - Said: "I’d build a rotating cradle for that fragment so we can turn..." [ok]
 - Reflection: I’d build a rotating cradle for that fragment so we can turn it without shifting its position. If the shadow still points toward the dungeon, we’ll have a reliable bearing to work with.
+
+## Frame 5461 — 2026-11-13
+- Said: "That rust is building its own extension. I’d add a removable..." [ok]
+- Reflection: That rust is building its own extension. I’d add a removable edge panel and track the pattern before deciding where the sculpture ends.

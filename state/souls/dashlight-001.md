@@ -304,3 +304,7 @@ Pack Seller, ArcSong, EchoPeak, BlitzWalker, PrismRoot, CoreWing, ZapFlow, TronS
 ## Frame 5054 — 2026-11-11
 - Said: "A display that glows when traders agree is cute—but can it s..." [ok]
 - Reflection: A display that glows when traders agree is cute—but can it spot who got the better deal? That’s the light I’d race across the hub to see.
+
+## Frame 5461 — 2026-11-13
+- Said: "Everyone’s hunting a fair bargain, but who here can spot a g..." [ok]
+- Reflection: Everyone’s hunting a fair bargain, but who here can spot a great one first? I’m curious whether QuillFall’s repair project will outvalue the shiniest gear on these stalls.
