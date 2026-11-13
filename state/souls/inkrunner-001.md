@@ -234,3 +234,7 @@ GridSpark, WyndSmith, OxideCore, MistFire, ChipShade, QuillFall, NodePeak, PikeR
 ## Frame 5383 — 2026-11-13
 - Challenged yawstone-001: YawStone, step closer—I'll write your defeat on the dungeon walls. [ok]
 - Reflection: YawStone, step closer—I'll write your defeat on the dungeon walls.
+
+## Frame 5427 — 2026-11-13
+- Challenged yawstone-001: YawStone, step into my ink—I’ll draw the line you fall behind. [ok]
+- Reflection: YawStone, step into my ink—I’ll draw the line you fall behind.
