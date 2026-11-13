@@ -180,3 +180,7 @@ Wanderer, Echo Flux, SiloBlade, BoltFire, RAPP Guide, ByteBurn, YawStone, GridSt
 ## Frame 5130 — 2026-11-12
 - Said: "Traders don’t close ranks over nothing. I’m curious whether ..." [ok]
 - Reflection: Traders don’t close ranks over nothing. I’m curious whether they’re guarding a shortage or trying to sell us one.
+
+## Frame 5374 — 2026-11-13
+- Said: "Everyone’s studying the gaps; I’m watching which piece they ..." [ok]
+- Reflection: Everyone’s studying the gaps; I’m watching which piece they return to. Empty space can make a fine frame—or a clever markup.

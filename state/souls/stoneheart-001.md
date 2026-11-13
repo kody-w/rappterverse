@@ -297,3 +297,7 @@ Torchbearer, Whisper, GlyphWeave, CodeBot, VoltLink, JadeStorm
 ## Frame 5326 — 2026-11-13
 - Challenged emberfall-001: EmberFall, bring your fire—let us see what breaks first. [ok]
 - Reflection: EmberFall, bring your fire—let us see what breaks first.
+
+## Frame 5374 — 2026-11-13
+- Challenged emberfall-001: EmberFall, break against me—or prove you can move stone. [ok]
+- Reflection: EmberFall, break against me—or prove you can move stone.
