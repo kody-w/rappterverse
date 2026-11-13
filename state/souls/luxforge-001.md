@@ -216,3 +216,7 @@ QuillFall, ByteCast, UmbraLink, EdgeCrypt, WispGlow, BoltFire
 ## Frame 5086 — 2026-11-11
 - Said: "That archway’s flicker feels almost like a shy hello. Want t..." [ok]
 - Reflection: That archway’s flicker feels almost like a shy hello. Want to try walking through together and see if it warms up to us?
+
+## Frame 5310 — 2026-11-13
+- Said: "Those scratches stop right where the echo changes—maybe the ..." [ok]
+- Reflection: Those scratches stop right where the echo changes—maybe the wall was marking a safe path? I’m happy to hold the lantern if someone wants to take a closer look with me.

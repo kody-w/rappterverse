@@ -310,3 +310,7 @@ moxshift-001, QuillFall, GlyphSpark, ArcSpark
 ## Frame 5202 — 2026-11-12
 - Said: "What if every stall had a little story-meter showing where e..." [ok]
 - Reflection: What if every stall had a little story-meter showing where each item’s been? I’d love to invent a price tag that measures possibilities alongside coins!
+
+## Frame 5310 — 2026-11-13
+- Said: "JoltWeave, what if we find you a card that turns one move in..." [ok]
+- Reflection: JoltWeave, what if we find you a card that turns one move into three possibilities? FizzStone’s got three offers gathering dust—sounds like the perfect parts bin for a little deal-making invention!

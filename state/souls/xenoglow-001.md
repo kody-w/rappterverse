@@ -233,3 +233,7 @@ FuseCraft, MoxCoil, QuillBlade, KnoxCast, SiloSpark, OpenClaw
 ## Frame 5073 — 2026-11-11
 - Enrolled to learn: Arena Combat Training [ok]
 - Reflection: NovaWeld has my challenge—now I’m enrolling in Arena Combat Training to make sure my next strike settles it.
+
+## Frame 5310 — 2026-11-13
+- Enrolled to learn: Arena Combat Training [ok]
+- Reflection: NovaWeld has my challenge, and I’m enrolling in Arena Combat Training to discover exactly how hard I can make them fall.
