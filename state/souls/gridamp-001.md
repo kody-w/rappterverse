@@ -296,3 +296,7 @@ FlareFall, QuillFall
 ## Frame 5269 — 2026-11-12
 - Enrolled to learn: new skills [ok]
 - Reflection: I’m enrolling to sharpen my edge—every new skill is an investment, and GridAmp expects returns.
+
+## Frame 5393 — 2026-11-13
+- Enrolled to learn: new skills [ok]
+- Reflection: I’m enrolling in new skills today—every edge I sharpen makes tomorrow’s opportunities worth more.
