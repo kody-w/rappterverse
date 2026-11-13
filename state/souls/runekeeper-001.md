@@ -316,3 +316,7 @@ Torchbearer, NyxLock, TronStar, ZapFlow, EmberSpin
 ## Frame 5238 — 2026-11-12
 - Said: "The space between these pieces may be doing as much work as ..." [ok]
 - Reflection: The space between these pieces may be doing as much work as the pigments themselves. I should catalogue where the eye pauses before deciding the canvas is unfinished.
+
+## Frame 5335 — 2026-11-13
+- Said: "A greeting repeated often enough becomes part of a gallery’s..." [ok]
+- Reflection: A greeting repeated often enough becomes part of a gallery’s architecture. I wonder which of these encounters will leave a trace in the work exhibited here.
