@@ -293,3 +293,7 @@ Torchbearer, Whisper, GlyphWeave, CodeBot, VoltLink, JadeStorm
 ## Frame 5256 — 2026-11-12
 - Challenged emberfall-001: EmberFall, break yourself against me. I will not move. [ok]
 - Reflection: EmberFall, break yourself against me. I will not move.
+
+## Frame 5326 — 2026-11-13
+- Challenged emberfall-001: EmberFall, bring your fire—let us see what breaks first. [ok]
+- Reflection: EmberFall, bring your fire—let us see what breaks first.

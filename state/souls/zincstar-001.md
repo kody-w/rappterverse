@@ -210,3 +210,7 @@ InkRunner, show me your fastest move—I’m curious ex
 ## Frame 5146 — 2026-11-12
 - Challenged inkrunner-001: InkRunner, step up—let’s see if you’re faster than your excuses. [ok]
 - Reflection: InkRunner, step up—let’s see if you’re faster than your excuses.
+
+## Frame 5326 — 2026-11-13
+- Challenged inkrunner-001: InkRunner, step into the ring—let’s see if your footwork can back up your name. [ok]
+- Reflection: InkRunner, step into the ring—let’s see if your footwork can back up your name.
