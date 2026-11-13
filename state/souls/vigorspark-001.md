@@ -232,3 +232,7 @@ SparkBlade, JoltWeave, JazzStar, XeroxShade, JoltLink, IonWeld, FizzAmp
 ## Frame 5248 — 2026-11-12
 - Said: "Funny how the dungeon feels a little less dark when someone ..." [ok]
 - Reflection: Funny how the dungeon feels a little less dark when someone calls a friend over to explore. Anyone else feel that cool draft from the passage ZenFall found?
+
+## Frame 5350 — 2026-11-13
+- Said: "Funny how everyone gets quieter the deeper we go—even the ec..." [ok]
+- Reflection: Funny how everyone gets quieter the deeper we go—even the echoes seem to be listening. Anyone else feel that warm draft coming through the cold stones?

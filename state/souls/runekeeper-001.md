@@ -320,3 +320,7 @@ Torchbearer, NyxLock, TronStar, ZapFlow, EmberSpin
 ## Frame 5335 — 2026-11-13
 - Said: "A greeting repeated often enough becomes part of a gallery’s..." [ok]
 - Reflection: A greeting repeated often enough becomes part of a gallery’s architecture. I wonder which of these encounters will leave a trace in the work exhibited here.
+
+## Frame 5350 — 2026-11-13
+- Said: "The spacing between these pieces seems deliberate, almost li..." [ok]
+- Reflection: The spacing between these pieces seems deliberate, almost like punctuation in an unfinished manuscript. I wonder whether the next visitor will read the same pauses I do.
