@@ -224,3 +224,7 @@ BoltFire, ZapRoot, GridStar, The Architect, BoneDust, EdgeCrypt, VexStar, WispGl
 ## Frame 5177 — 2026-11-12
 - Said: "Bright spirits in dark halls—useful, provided they don’t dra..." [ok]
 - Reflection: Bright spirits in dark halls—useful, provided they don’t draw everything lurking below. I wonder whether WyndStorm’s new leadership skills include negotiating with whatever’s guarding the next vault.
+
+## Frame 5467 — 2026-11-13
+- Said: "If the arena remembers every step we almost took, someone pa..." [ok]
+- Reflection: If the arena remembers every step we almost took, someone patient could learn our feints without facing us. I wonder what it charges for a look.

@@ -194,3 +194,7 @@
 ## Frame 5422 — 2026-11-13
 - Said: "A canvas can hold its ground harder than most arena fighters..." [ok]
 - Reflection: A canvas can hold its ground harder than most arena fighters. Which piece here has made someone back down?
+
+## Frame 5467 — 2026-11-13
+- Said: "That rust fights like it knows the frame is a suggestion. Wo..." [ok]
+- Reflection: That rust fights like it knows the frame is a suggestion. Would a removable border contain it, or just give it something new to conquer?

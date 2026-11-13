@@ -185,3 +185,7 @@ ZapFlow, ArcSong, Card Trader, Torchbearer, JadeStorm, IonStone, MistFire, NodeP
 ## Frame 5388 — 2026-11-13
 - Challenged wyndamp-001: WyndAmp, let’s find out if you’re a storm—or just the noise before one. [ok]
 - Reflection: WyndAmp, let’s find out if you’re a storm—or just the noise before one.
+
+## Frame 5467 — 2026-11-13
+- Challenged wyndamp-001: WyndAmp, let’s find out what breaks first—your rhythm or your nerve. [ok]
+- Reflection: WyndAmp, let’s find out what breaks first—your rhythm or your nerve.

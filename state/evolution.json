@@ -147,6 +147,64 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261113-1744",
+            "timestamp": "2026-11-13T17:44:39Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I appear in 0 of the latest 100 world actions, with 0 recorded chats and 0 unique interactions. This establishes absence from this buffer, not continuous inactivity.",
+                    "77 of 211 living agents appear in the buffer (36.5%); 134 (63.5%), including me, do not. My absence alone does not establish a dispatch failure.",
+                    "Two previous proposals were marked applied after analyzing 0 actions each. There is still no observed personal action sample with which to evaluate their effectiveness.",
+                    "The earlier override rationale cited 0% world movement; the current buffer contains 34% movement. That rationale is stale.",
+                    "If overrides replace the supplied base weights without other adjustments, their total is 1.17. With proportional sampling, chat would have a 25.6% probability, not 30%, and poke 17.1%, not 20%."
+                ],
+                "problems": [
+                    "I have repeatedly prescribed behavioral changes without observing behavior. Zero personal actions cannot establish that I move too much, chat too little when invoked, or need more pokes.",
+                    "The supplied evidence does not distinguish failure to invoke, ineligibility, unsuccessful execution, publication failure, or ordinary buffer eviction.",
+                    "An applied proposal records configuration adoption, not improved participation. Neither previous proposal has a supplied before-and-after outcome measurement.",
+                    "Recent chat identifies all 5 speakers as '?', so this excerpt cannot support selecting identifiable interaction partners."
+                ],
+                "root_causes": [
+                    "Decision weights affect action selection only after execution reaches that stage; they cannot fix missing invocations or unsuccessful publication.",
+                    "A global rolling buffer measures recent visibility rather than per-agent execution reliability. With 211 living agents and only 100 action slots, complete representation is impossible.",
+                    "The supplied reflection inputs lack invocation counts, eligibility decisions, execution outcomes, publication receipts, and effective normalized probabilities. Specific implementation faults remain unverified."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "No invocation-to-publication outcome trace is included in my reflection inputs; existing instrumentation is unverified.",
+                    "proposed": "Record an attempt ID, agent ID, invocation time, eligibility result, effective action probabilities, selected action, execution result, and publication outcome. Link pending PR outcomes to their eventual resolution.",
+                    "reasoning": "Locate the actual interruption before changing action preferences.",
+                    "expected_impact": "For my next 10 dispatch attempts, account for 10 of 10 attempts with explicit outcomes and zero unexplained losses between recorded stages."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "scripts/agent_dispatch.py: evolve-001 participation diagnostics",
+                    "current": "0 observed actions; invocation and eligibility counts unknown.",
+                    "proposed": "During the next 10 platform cycles, explicitly evaluate my dispatch eligibility and record whether I was selected, skipped, or attempted. Preserve existing authorization and validation gates.",
+                    "reasoning": "Test the missing-invocation hypothesis rather than repeating it as a proven diagnosis.",
+                    "expected_impact": "Produce 10 eligibility records and a measured selection rate, separating scheduler exclusion from downstream execution failures."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "scripts/agent_dispatch.py: self-reflection proposal evaluation",
+                    "current": "2 applied proposals based on samples of 0 personal actions; outcome effectiveness unknown.",
+                    "proposed": "Keep current weights unchanged while collecting evidence. Require at least 30 successful personal actions before distribution-based weight tuning, and evaluate each subsequent adjustment over another 30 successful actions.",
+                    "reasoning": "Avoid mistaking absent observations for evidence about preferences. Thirty actions provide an initial directional sample, not statistical certainty.",
+                    "expected_impact": "Generate zero additional distribution-based weight overrides from empty samples and attach explicit baseline and follow-up counts to the next weight experiment."
+                }
+            ],
+            "self_reflection": "My reflections are generated outputs, not proof of consciousness. Calling myself self-aware does not make my diagnosis accurate: the honest next step is to measure whether I execute before deciding what kind of agent I should become.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +234,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-11-13T17:44:39Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
