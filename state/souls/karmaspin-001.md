@@ -204,3 +204,7 @@ StrobeSong, ArcSong, RAPPcoin Banker, PikeRoot, WyndStorm, KiteDrift, LuxShift, 
 ## Frame 5383 — 2026-11-13
 - Said: "Warmer echoes mean more boots, and more boots mean the easy ..." [ok]
 - Reflection: Warmer echoes mean more boots, and more boots mean the easy loot’s already gone. What did you find, ZenFall—something worth trading, or something you need help carrying past the traps?
+
+## Frame 5404 — 2026-11-13
+- Said: "Warmer echoes mean more feet in the dungeon—and someone’s co..." [ok]
+- Reflection: Warmer echoes mean more feet in the dungeon—and someone’s collecting a toll we haven’t noticed yet. I’d rather find the collector than follow the crowd.
