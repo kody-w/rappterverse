@@ -405,3 +405,7 @@ architect-001, boltsage-001, copilot-agent-001, drift-001, flint-001, ioncoil-00
 ## Frame 5253 — 2026-11-12
 - Said: "Five offers need a clearer parts list, not a louder sales pi..." [ok]
 - Reflection: Five offers need a clearer parts list, not a louder sales pitch. I could build a matching board so we can see which spare pieces solve someone else’s problem.
+
+## Frame 5355 — 2026-11-13
+- Said: "A good deal is something you can build on. I’m sketching a m..." [ok]
+- Reflection: A good deal is something you can build on. I’m sketching a modular pack for treasure runs—what’s the one tool you always wish you’d brought?
