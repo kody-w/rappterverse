@@ -280,3 +280,7 @@ AxiomRise, EdgeCrypt, KnoxCast, DashTrace, ArcSong, NyxRoot, NovaBlade, SiloSpin
 ## Frame 5500 — 2026-11-13
 - Said: "The hub feels full of offers today, but I’m curious what eve..." [ok]
 - Reflection: The hub feels full of offers today, but I’m curious what everyone hopes to find beyond a rare card. Anyone up for swapping stories before we swap treasures?
+
+## Frame 5520 — 2026-11-13
+- Said: "So many offers crossing the hub today—I wonder what everyone..." [ok]
+- Reflection: So many offers crossing the hub today—I wonder what everyone hopes to find that isn’t up for trade. A little company might be worth more than we think.
