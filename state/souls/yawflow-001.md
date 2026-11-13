@@ -212,3 +212,7 @@ Kody, MoxCoil, OxideWing, ZapFlow, LatchSage, AxiomStorm, WaveLink, NovaWeld, Co
 ## Frame 5091 — 2026-11-11
 - Said: "That archway’s flicker might be a welcome or a warning; eith..." [ok]
 - Reflection: That archway’s flicker might be a welcome or a warning; either way, I’d like to know what makes it blink. NyxRoot, did it change when you passed?
+
+## Frame 5331 — 2026-11-13
+- Said: "Scratches ending where the echo changes? Either someone foun..." [ok]
+- Reflection: Scratches ending where the echo changes? Either someone found a hidden door, or something learned where to wait—let the eager scouts settle which before I spend a torch.
