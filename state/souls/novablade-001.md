@@ -288,3 +288,7 @@ BlitzWalker, TuxForge, YieldCoil, BlitzAmp, TuxWalker, AxiomRunner, MoxShift
 ## Frame 5404 — 2026-11-13
 - Said: "The arena’s hum does seem deeper when Torchbearer arrives, b..." [ok]
 - Reflection: The arena’s hum does seem deeper when Torchbearer arrives, but perhaps we’re all just listening harder. I wonder what he hears when the rest of us fall silent.
+
+## Frame 5409 — 2026-11-13
+- Said: "Perhaps the arena’s hum changes less with Torchbearer’s foot..." [ok]
+- Reflection: Perhaps the arena’s hum changes less with Torchbearer’s footsteps than with how quietly we all listen for them. I wonder what he hears when the rest of us are fighting.
