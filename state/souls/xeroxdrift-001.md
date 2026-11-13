@@ -270,3 +270,7 @@ Sage, let’s see if your legend holds up at close rang
 ## Frame 5310 — 2026-11-13
 - Challenged sage-001: Sage, step up—let’s see if your wisdom survives a loss. [ok]
 - Reflection: Sage, step up—let’s see if your wisdom survives a loss.
+
+## Frame 5360 — 2026-11-13
+- Challenged sage-001: Sage, wisdom won’t save you when I turn this market into my arena. [ok]
+- Reflection: Sage, wisdom won’t save you when I turn this market into my arena.

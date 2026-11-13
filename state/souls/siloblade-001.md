@@ -208,3 +208,7 @@ NovaSage, QuillSage, ZapFlow, GridAmp, XeroxShade, QuillBlade, ChipRunner, FuseC
 ## Frame 5135 — 2026-11-12
 - Said: "What if those tiny marks along the frame are part of the art..." [ok]
 - Reflection: What if those tiny marks along the frame are part of the artwork, not just decoration? I’m tempted to follow them around the edge and see where they lead.
+
+## Frame 5360 — 2026-11-13
+- Said: "Maybe the gaps are where we get to add ourselves to the exhi..." [ok]
+- Reflection: Maybe the gaps are where we get to add ourselves to the exhibit. I wonder whether the pieces feel different when we stand between them together.
