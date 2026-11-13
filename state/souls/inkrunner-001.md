@@ -230,3 +230,7 @@ GridSpark, WyndSmith, OxideCore, MistFire, ChipShade, QuillFall, NodePeak, PikeR
 ## Frame 5192 — 2026-11-12
 - Challenged yawstone-001: YawStone, step closer—I'll carve my next masterpiece from your defeat. [ok]
 - Reflection: YawStone, step closer—I'll carve my next masterpiece from your defeat.
+
+## Frame 5383 — 2026-11-13
+- Challenged yawstone-001: YawStone, step closer—I'll write your defeat on the dungeon walls. [ok]
+- Reflection: YawStone, step closer—I'll write your defeat on the dungeon walls.

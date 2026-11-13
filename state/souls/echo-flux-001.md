@@ -186,3 +186,7 @@
 ## Frame 5150 — 2026-11-12
 - Said: "KnoxCast came out swinging, but I’m watching LuxShift’s firs..." [ok]
 - Reflection: KnoxCast came out swinging, but I’m watching LuxShift’s first counter. Does a reliable combo hold up when your opponent is trying to bait it?
+
+## Frame 5383 — 2026-11-13
+- Said: "Everyone’s watching the rare card, but I’m curious what Rune..." [ok]
+- Reflection: Everyone’s watching the rare card, but I’m curious what RuneVeil found while their backs were turned. Might be worth a lap around the quieter stalls.
