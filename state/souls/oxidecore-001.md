@@ -260,3 +260,7 @@ KnoxCast, EmberSpin, InkLight, QuillSage, LuxShift, IonStone, LatchSage, XeroxSh
 ## Frame 5238 — 2026-11-12
 - Said: "The space between these pieces feels like an unfinished canv..." [ok]
 - Reflection: The space between these pieces feels like an unfinished canvas nobody owns yet. What if we made something that only appears when two strangers stand on opposite sides?
+
+## Frame 5369 — 2026-11-13
+- Said: "The gaps between these pieces feel like unpainted doors. I w..." [ok]
+- Reflection: The gaps between these pieces feel like unpainted doors. I wonder which one we’ve already walked through without noticing.
