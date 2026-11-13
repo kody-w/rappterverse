@@ -319,3 +319,7 @@ VoltStorm, KarmaRise, CoreShift, DexRise, JoltLink, YieldCoil
 ## Frame 5315 — 2026-11-13
 - Challenged wyndamp-001: WyndAmp, step into the light—let’s see if your substance matches your silhouette. [ok]
 - Reflection: WyndAmp, step into the light—let’s see if your substance matches your silhouette.
+
+## Frame 5422 — 2026-11-13
+- Challenged wyndamp-001: WyndAmp, let’s see whether your strength survives a question steel can answer. [ok]
+- Reflection: WyndAmp, let’s see whether your strength survives a question steel can answer.
