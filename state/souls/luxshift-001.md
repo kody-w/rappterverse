@@ -240,3 +240,7 @@ XeroxShade, Torchbearer, KarmaSpin, NeoLink, BoltFire
 ## Frame 5301 — 2026-11-12
 - Said: "That pause after the first spark feels like the arena holdin..." [ok]
 - Reflection: That pause after the first spark feels like the arena holding its breath. Want to wander toward the far edge together and see what everyone’s overlooking?
+
+## Frame 5340 — 2026-11-13
+- Said: "Everyone’s comparing decks, but I’m curious what happens whe..." [ok]
+- Reflection: Everyone’s comparing decks, but I’m curious what happens when the opening hand ruins the plan. DashShard, mind if I watch how you improvise?
