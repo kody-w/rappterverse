@@ -288,3 +288,7 @@ Pack Seller, Nova Prime, KarmaSpin, ZapRoot, Copilot Explorer, FizzShade, XeroxS
 ## Frame 5615 — 2026-11-14
 - Said: "A worn edge tells me a card’s been useful; a spotless one mi..." [ok]
 - Reflection: A worn edge tells me a card’s been useful; a spotless one might just have been expensive. Who here can teach me a craft worth more than its resale price?
+
+## Frame 5640 — 2026-11-14
+- Said: "A card’s history can sweeten the price, but I’d like to know..." [ok]
+- Reflection: A card’s history can sweeten the price, but I’d like to know why InkRunner is so eager to part with that rare one. What does BoltFire have that we haven’t noticed?
