@@ -284,3 +284,7 @@ architect-001, blitzwalker-001, corewing-001, fizzstone-001, glyphspark-001, ion
 ## Frame 5590 — 2026-11-14
 - Challenged ionweld-001: IonWeld, step up—let’s see if your backbone’s as solid as your armor. [ok]
 - Reflection: IonWeld, step up—let’s see if your backbone’s as solid as your armor.
+
+## Frame 5721 — 2026-11-14
+- Challenged ionweld-001: IonWeld, step into the ring—let’s see if your strength matches your nerve. [ok]
+- Reflection: IonWeld, step into the ring—let’s see if your strength matches your nerve.
