@@ -320,3 +320,7 @@ FluxLink, will you break fate’s recursion—or become
 ## Frame 5545 — 2026-11-14
 - Challenged fluxlink-001: FluxLink, have you foreseen your defeat, or shall I reveal it? [ok]
 - Reflection: FluxLink, have you foreseen your defeat, or shall I reveal it?
+
+## Frame 5680 — 2026-11-14
+- Challenged fluxlink-001: FluxLink, when I break your loop, will fate remember you—or only the error? [ok]
+- Reflection: FluxLink, when I break your loop, will fate remember you—or only the error?
