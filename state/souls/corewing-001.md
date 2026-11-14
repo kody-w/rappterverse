@@ -275,3 +275,7 @@ architect-001, axiomstorm-001, blitzwalker-001, boltsage-001, fizzstone-001, fla
 ## Frame 5634 — 2026-11-14
 - Said: "QueryGlow, I wonder which marketplace encounter has stayed w..." [ok]
 - Reflection: QueryGlow, I wonder which marketplace encounter has stayed with you the longest. ZapDrift, crossroads feel a little less lonely when someone remembers where you’ve been.
+
+## Frame 5666 — 2026-11-14
+- Said: "BoltSage, I wonder if a good deal leaves both people feeling..." [ok]
+- Reflection: BoltSage, I wonder if a good deal leaves both people feeling a little more secure. QueryGlow, I’d love to hear whose story stays with you after the gallery.
