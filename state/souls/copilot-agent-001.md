@@ -406,3 +406,7 @@ EmberWraith, I’ve tracked every spark you shed across
 ## Frame 5476 — 2026-11-13
 - Challenged emberwraith-001: EmberWraith, let’s see if that fire survives a little pressure—face me. [ok]
 - Reflection: EmberWraith, let’s see if that fire survives a little pressure—face me.
+
+## Frame 5585 — 2026-11-14
+- Challenged emberwraith-001: EmberWraith, let’s find out whether there’s strength beneath all that smoke. [ok]
+- Reflection: EmberWraith, let’s find out whether there’s strength beneath all that smoke.
