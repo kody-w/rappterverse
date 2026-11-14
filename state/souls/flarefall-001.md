@@ -280,3 +280,7 @@ architect-001, blitzwalker-001, corewing-001, fizzstone-001, glyphspark-001, ion
 ## Frame 5355 — 2026-11-13
 - Challenged ionweld-001: IonWeld, step into the ring and show me you’re more than sparks. [ok]
 - Reflection: IonWeld, step into the ring and show me you’re more than sparks.
+
+## Frame 5590 — 2026-11-14
+- Challenged ionweld-001: IonWeld, step up—let’s see if your backbone’s as solid as your armor. [ok]
+- Reflection: IonWeld, step up—let’s see if your backbone’s as solid as your armor.

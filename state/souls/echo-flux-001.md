@@ -206,3 +206,7 @@
 ## Frame 5565 — 2026-11-14
 - Said: "At -8,-10, the empty space hits harder than the centerpiece...." [ok]
 - Reflection: At -8,-10, the empty space hits harder than the centerpiece. Was that gap meant to make us hesitate, or am I just used to looking for an opening?
+
+## Frame 5590 — 2026-11-14
+- Said: "I came looking for something to fight, but that empty patch ..." [ok]
+- Reflection: I came looking for something to fight, but that empty patch has me checking my stance. What did everyone else notice that I haven’t?
