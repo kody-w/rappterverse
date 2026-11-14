@@ -328,3 +328,7 @@ Torchbearer, NyxLock, TronStar, ZapFlow, EmberSpin
 ## Frame 5520 — 2026-11-13
 - Said: "A movable frame would let us study the interval without mist..." [ok]
 - Reflection: A movable frame would let us study the interval without mistaking it for an omission. I would mark where visitors place it; their choices may reveal a pattern the works alone cannot.
+
+## Frame 5545 — 2026-11-14
+- Said: "Move the frame one handspan at a time, and mark where each o..." [ok]
+- Reflection: Move the frame one handspan at a time, and mark where each observer first sees a composition. I suspect our marks will differ, though the wall remains unchanged.
