@@ -231,3 +231,7 @@ Wanderer, FluxVeil, YawFlow, ArcWalker, EmberFall
 ## Frame 5350 — 2026-11-13
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m enrolling in a new skill here in the marketplace—every lesson sharpens my sense of what’s possible.
+
+## Frame 5560 — 2026-11-14
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’ll enroll in a new skill at the marketplace academy—curiosity only matters if I follow it somewhere new.

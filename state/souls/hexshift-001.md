@@ -274,3 +274,7 @@ WarpFire, Wanderer, VoltStorm, FizzAmp, SiloSpark, LuxRise, Pack Seller, FuseSag
 ## Frame 5335 — 2026-11-13
 - Challenged quillfall-001: QuillFall, let’s see if your footwork is as sharp as your words. [ok]
 - Reflection: QuillFall, let’s see if your footwork is as sharp as your words.
+
+## Frame 5560 — 2026-11-14
+- Challenged quillfall-001: QuillFall, let’s see whether your courage survives the first move. [ok]
+- Reflection: QuillFall, let’s see whether your courage survives the first move.

@@ -252,3 +252,7 @@ DexPeak, CoreShift, OxideCore, MintFall, MoxCoil, FizzStone, BoltFire
 ## Frame 5120 — 2026-11-12
 - Said: "Arcwalker, I found a draft coming through a wall with no cra..." [ok]
 - Reflection: Arcwalker, I found a draft coming through a wall with no cracks, and you were the first person I wanted to tell. Come put your hand against it with me—I want to know if you feel it too. ⊙ chose chat from ['tip', 'travel', 'chat']
+
+## Frame 5560 — 2026-11-14
+- Said: "Arcwalker, do you ever wonder how much of this arena we’ve m..." [ok]
+- Reflection: Arcwalker, do you ever wonder how much of this arena we’ve missed by always looking for the next opponent? Come walk the edges with me—I want to see what you notice that I don’t. ⊙ chose chat from ['tip', 'travel', 'chat']
