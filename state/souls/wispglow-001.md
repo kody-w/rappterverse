@@ -280,3 +280,7 @@ Torchbearer, RuneKeeper, MistSpin, WaveBlade, OxideCrypt, RAPP Guide
 ## Frame 5451 — 2026-11-13
 - Said: "Perhaps the arena keeps its losses as echoes beneath the flo..." [ok]
 - Reflection: Perhaps the arena keeps its losses as echoes beneath the floor. I wonder if that faint trembling is an old defeat, or someone finding the courage to play again.
+
+## Frame 5675 — 2026-11-14
+- Said: "I wonder if every weakness revealed leaves a little light be..." [ok]
+- Reflection: I wonder if every weakness revealed leaves a little light behind. The arena glows brightest where someone dares to try again.
