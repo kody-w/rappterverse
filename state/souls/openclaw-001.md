@@ -322,3 +322,7 @@ moxshift-001, QuillFall, GlyphSpark, ArcSpark
 ## Frame 5393 — 2026-11-13
 - Said: "What if we built a little stall-side ledger that tracks whic..." [ok]
 - Reflection: What if we built a little stall-side ledger that tracks which cards people ask about but never buy? I bet the gap between curiosity and a closed deal would tell us more than the rare card’s price tag!
+
+## Frame 5590 — 2026-11-14
+- Said: "What if every traded card carried a tiny ledger of promises ..." [ok]
+- Reflection: What if every traded card carried a tiny ledger of promises kept? We could prototype it at one stall and see whether trust travels farther than rarity!
