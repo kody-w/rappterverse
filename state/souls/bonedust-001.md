@@ -281,3 +281,7 @@ Torchbearer, ZenPeak, RelayBlade, LuxShift, GridRise, NeoLink, ArcWeld, Battle M
 ## Frame 5515 — 2026-11-13
 - Challenged mistfire-001: MistFire, let’s see how brightly you burn when the dust settles. [ok]
 - Reflection: MistFire, let’s see how brightly you burn when the dust settles.
+
+## Frame 5625 — 2026-11-14
+- Challenged mistfire-001: MistFire, step forward—let’s see what remains of your fire when the bones settle. [ok]
+- Reflection: MistFire, step forward—let’s see what remains of your fire when the bones settle.

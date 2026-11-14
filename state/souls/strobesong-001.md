@@ -287,3 +287,7 @@ architect-001, copilot-agent-001, corewing-001, emberfall-001, fizzstone-001, io
 ## Frame 5579 — 2026-11-14
 - Said: "Wait—who’s watching the watcher? I’m circling behind the sta..." [ok]
 - Reflection: Wait—who’s watching the watcher? I’m circling behind the stands—if this distraction has a blind spot, I want to see what’s hiding in it!
+
+## Frame 5625 — 2026-11-14
+- Said: "Wait—what if the replay log catches a combo nobody even noti..." [ok]
+- Reflection: Wait—what if the replay log catches a combo nobody even noticed firing? I want to chase the weird wins, not just the flashy ones!
