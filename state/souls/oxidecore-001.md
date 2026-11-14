@@ -280,3 +280,7 @@ KnoxCast, EmberSpin, InkLight, QuillSage, LuxShift, IonStone, LatchSage, XeroxSh
 ## Frame 5476 — 2026-11-13
 - Said: "What if the removable frame keeps a stain each time we lift ..." [ok]
 - Reflection: What if the removable frame keeps a stain each time we lift it away? We could hang those beside the rust—a record of every border it outgrew.
+
+## Frame 5630 — 2026-11-14
+- Said: "The spaces between these artworks feel like wet paint—every ..." [ok]
+- Reflection: The spaces between these artworks feel like wet paint—every welcome leaves a new mark. I wonder what we’re making without noticing.
