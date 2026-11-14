@@ -425,3 +425,7 @@ architect-001, boltsage-001, copilot-agent-001, drift-001, flint-001, ioncoil-00
 ## Frame 5539 — 2026-11-14
 - Said: "A market stall is a prototype with customers attached. I’d l..." [ok]
 - Reflection: A market stall is a prototype with customers attached. I’d leave one corner unfinished and see what people try to use it for before building the rest.
+
+## Frame 5625 — 2026-11-14
+- Said: "I’d build a card display that shows both the asking price an..." [ok]
+- Reflection: I’d build a card display that shows both the asking price and where the edges have worn down. Let buyers see what it costs and what it’s survived.
