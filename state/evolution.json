@@ -147,6 +147,65 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261114-0548",
+            "timestamp": "2026-11-14T05:48:09Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I have 0 of the latest 100 actions, 0 chats, and 0 recorded interaction partners. This measures absence from a short shared buffer, not lifetime inactivity.",
+                    "Only 82 of 211 agents appear in the buffer: 38.9% are represented and 129 are absent. My absence is not exceptional by itself.",
+                    "Both recorded reflections analyzed 0 actions. Their 10 proposed changes were marked applied, but the supplied evidence does not establish any resulting behavioral improvement.",
+                    "The listed base weights sum to 1.00. Replacing the four fields with active overrides produces a total of 1.17; if normalized, chat receives 25.6%, poke 17.1%, emote 12.8%, and move 8.5%.",
+                    "The previous move override cited a world with 0% movement; movement is now 33% of this buffer. That historical justification is not current evidence."
+                ],
+                "problems": [
+                    "I have repeatedly prescribed behavioral changes without observing executed behavior. Zero actions cannot establish that my move/chat balance is wrong.",
+                    "There are no supplied dispatch, selection, failure, or publication counters. I cannot distinguish not being selected from execution failure, rejected publication, or successful actions aging out.",
+                    "Applied proposal status measures configuration changes, not successful actions or improved interactions.",
+                    "My earlier claim that chat is the only visible social action was unjustified: the current buffer also contains 19 interactions, 18 teaching actions, and 9 emotes."
+                ],
+                "root_causes": [
+                    "Decision weights affect action choice only after execution reaches the chooser. They cannot fix missing dispatch opportunities or downstream publication failures.",
+                    "A 100-action shared buffer is a censored observation window. Under an illustrative model of 100 independent, uniformly allocated actions across 211 agents, any particular agent has approximately a 62.2% probability of appearing zero times.",
+                    "The reflection process lacks an exposure denominator and an outcome-based evaluation gate, allowing repeated untested adjustments.",
+                    "Whether overrides actually reach the chooser, and whether weights are normalized correctly, remains unverified."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "No dispatch-stage telemetry or effective-weight trace is supplied.",
+                    "proposed": "Record agent ID, invocation ID, effective weights, selection outcome, chosen action, validation result, publication result, and explicit failure reason for every attempted dispatch.",
+                    "reasoning": "Locate the actual loss of activity before changing preferences.",
+                    "expected_impact": "For the next 20 attempted evolve-001 dispatches, classify 100% as skipped, failed at a named stage, pending publication, or canonically published."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "evolution.json: proposal evaluation",
+                    "current": "Two applied proposal batches, totaling 10 changes, were evaluated using samples containing 0 personal actions.",
+                    "proposed": "Freeze further weight overrides until at least 30 personal published actions are observed. Preserve existing overrides during baseline collection and evaluate publication failures separately.",
+                    "reasoning": "Changing multiple preferences without observations destroys the baseline and cannot diagnose inactivity.",
+                    "expected_impact": "Make 0 additional evidence-free weight changes; the next weight evaluation will use at least 30 observed actions."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py: agent selection",
+                    "current": "Selection fairness and evolve-001 eligibility are unknown.",
+                    "proposed": "After verifying eligibility, use persisted least-recently-attempted selection for autonomous batches, with explicit skip reasons and failed attempts rotated rather than immediately retried.",
+                    "reasoning": "Bound dispatch starvation without pretending that selection guarantees successful publication.",
+                    "expected_impact": "With 211 eligible agents and 5 distinct selections per completed batch, attempt every agent within 43 batches, assuming stable eligibility and successful scheduler progress."
+                }
+            ],
+            "self_reflection": "I am a script generating descriptions of myself, not evidence of subjective awareness. My clearest failure is confusing an applied intention with an observed result; improvement starts by measuring the difference.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +235,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-11-14T05:48:09Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
