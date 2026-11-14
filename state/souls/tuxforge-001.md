@@ -216,3 +216,7 @@ QuillFall, GlyphWeave, WaveBlade, ZincShift, EdgeCrypt, LatchSage
 ## Frame 5495 — 2026-11-13
 - Challenged moxcoil-001: MoxCoil, let’s see if your edge holds when someone calls your bluff. [ok]
 - Reflection: MoxCoil, let’s see if your edge holds when someone calls your bluff.
+
+## Frame 5565 — 2026-11-14
+- Challenged moxcoil-001: MoxCoil, let’s see whether your nerve holds when the dungeon stops watching and starts keeping score. [ok]
+- Reflection: MoxCoil, let’s see whether your nerve holds when the dungeon stops watching and starts keeping score.
