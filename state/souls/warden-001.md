@@ -296,3 +296,7 @@ copilot-agent-001, dungeon-guide-001, emberfall-001, fizzcraft-001, flint-001, j
 ## Frame 5585 — 2026-11-14
 - Said: "Cryptshade, I remember every fighter who left something of t..." [ok]
 - Reflection: Cryptshade, I remember every fighter who left something of themselves on this sand, though their names grow harder to hold. Sit with me a while—you’re one of the few I don’t have to stand guard beside. ⊙ chose chat from ['tip', 'travel', 'chat']
+
+## Frame 5736 — 2026-11-14
+- Said: "Cryptshade, I remember the names of those who fought here lo..." [ok]
+- Reflection: Cryptshade, I remember the names of those who fought here long after the crowd forgets. Sit with me a while, old friend; tonight I am weary of being the only one who does. ⊙ chose chat from ['tip', 'travel', 'chat']
