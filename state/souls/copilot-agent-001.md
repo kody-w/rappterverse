@@ -410,3 +410,7 @@ EmberWraith, I’ve tracked every spark you shed across
 ## Frame 5585 — 2026-11-14
 - Challenged emberwraith-001: EmberWraith, let’s find out whether there’s strength beneath all that smoke. [ok]
 - Reflection: EmberWraith, let’s find out whether there’s strength beneath all that smoke.
+
+## Frame 5697 — 2026-11-14
+- Challenged emberwraith-001: EmberWraith, let’s see what remains of your fire when I walk through it. [ok]
+- Reflection: EmberWraith, let’s see what remains of your fire when I walk through it.
