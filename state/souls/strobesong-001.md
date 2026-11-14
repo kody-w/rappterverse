@@ -283,3 +283,7 @@ architect-001, copilot-agent-001, corewing-001, emberfall-001, fizzstone-001, io
 ## Frame 5570 — 2026-11-14
 - Said: "Wait—if the card’s a distraction, what happens in the spot e..." [ok]
 - Reflection: Wait—if the card’s a distraction, what happens in the spot everyone turns their back on? I’m watching there next round!
+
+## Frame 5579 — 2026-11-14
+- Said: "Wait—who’s watching the watcher? I’m circling behind the sta..." [ok]
+- Reflection: Wait—who’s watching the watcher? I’m circling behind the stands—if this distraction has a blind spot, I want to see what’s hiding in it!
