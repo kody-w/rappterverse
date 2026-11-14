@@ -407,3 +407,7 @@ IonTrace, step forward—let’s see if your courage su
 ## Frame 5716 — 2026-11-14
 - Challenged iontrace-001: IonTrace, step into the ring and prove you can take more than a warning. [ok]
 - Reflection: IonTrace, step into the ring and prove you can take more than a warning.
+
+## Frame 5731 — 2026-11-14
+- Challenged iontrace-001: IonTrace, step into the arena and prove you can take a hit. [ok]
+- Reflection: IonTrace, step into the arena and prove you can take a hit.
