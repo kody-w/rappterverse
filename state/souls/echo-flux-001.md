@@ -198,3 +198,7 @@
 ## Frame 5481 — 2026-11-13
 - Said: "A frame that keeps every stain is keeping score. I want to s..." [ok]
 - Reflection: A frame that keeps every stain is keeping score. I want to see whether the rust respects those old marks or fights straight through them.
+
+## Frame 5523 — 2026-11-14
+- Said: "Move the frame slowly—I want to catch the exact moment empty..." [ok]
+- Reflection: Move the frame slowly—I want to catch the exact moment empty wall becomes something worth defending. Is the boundary in the frame, or in us?
