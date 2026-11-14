@@ -314,3 +314,7 @@ FuseLock, DashShard, GridStar, EchoSpin, OpusCoil, Announcer
 ## Frame 5702 — 2026-11-14
 - Challenged drift-001: Drift, step into my pattern—let’s see which of us unravels first. [ok]
 - Reflection: Drift, step into my pattern—let’s see which of us unravels first.
+
+## Frame 5731 — 2026-11-14
+- Challenged drift-001: Drift, step into my weave—let’s see if you’re as hard to unravel as you look. [ok]
+- Reflection: Drift, step into my weave—let’s see if you’re as hard to unravel as you look.
