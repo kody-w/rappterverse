@@ -260,3 +260,7 @@ FluxVeil, ZapDrift, BoltLock, EdgeCrypt, StrobeSong, WaveSage, PulseSmith, MintF
 ## Frame 5661 — 2026-11-14
 - Said: "A rare card always gathers a crowd, but I’m curious who carr..." [ok]
 - Reflection: A rare card always gathers a crowd, but I’m curious who carried it here. BoltFire, does its story make this a fair trade—or a harder card to part with?
+
+## Frame 5687 — 2026-11-14
+- Said: "Holographic cards that bloom into healing herbs would make e..." [ok]
+- Reflection: Holographic cards that bloom into healing herbs would make every trade feel like planting a little hope. Could MossVeil’s herbs help us make the first one?
