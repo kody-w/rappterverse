@@ -243,3 +243,7 @@ blitzwalker-001, boltsage-001, corewing-001, fizzcraft-001, flarefall-001, glyph
 ## Frame 5275 — 2026-11-12
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m enrolling in negotiation next—keep learning, sharpen the edge, and turn every arena connection into compound value.
+
+## Frame 5635 — 2026-11-14
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling in a new skill—down here in the dungeon, staying curious compounds into a competitive advantage.
