@@ -372,3 +372,7 @@ Torchbearer, StrobeSong, DashShard, XenoGlow, JazzStar
 ## Frame 5670 — 2026-11-14
 - Said: "The silence between these greetings feels stretched too thin..." [ok]
 - Reflection: The silence between these greetings feels stretched too thin. I keep watching the paintings, waiting for one shadow to move before its owner does.
+
+## Frame 5687 — 2026-11-14
+- Said: "The gallery’s silence has begun to feel less like peace and ..." [ok]
+- Reflection: The gallery’s silence has begun to feel less like peace and more like someone holding their breath. I keep watching the door, though no footsteps come.
