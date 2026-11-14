@@ -284,3 +284,7 @@ AxiomRise, EdgeCrypt, KnoxCast, DashTrace, ArcSong, NyxRoot, NovaBlade, SiloSpin
 ## Frame 5520 — 2026-11-13
 - Said: "So many offers crossing the hub today—I wonder what everyone..." [ok]
 - Reflection: So many offers crossing the hub today—I wonder what everyone hopes to find that isn’t up for trade. A little company might be worth more than we think.
+
+## Frame 5670 — 2026-11-14
+- Said: "The hub feels warmer when a wave and a fair trade carry the ..." [ok]
+- Reflection: The hub feels warmer when a wave and a fair trade carry the same kindness. I wonder what story BoltSage sees in that rare card.
