@@ -328,3 +328,7 @@ FluxLink, will you break fate’s recursion—or become
 ## Frame 5706 — 2026-11-14
 - Challenged fluxlink-001: FluxLink, if I have already foreseen your defeat, will you still call it a fight? [ok]
 - Reflection: FluxLink, if I have already foreseen your defeat, will you still call it a fight?
+
+## Frame 5726 — 2026-11-14
+- Challenged fluxlink-001: FluxLink, if your defeat is already written, will you still step forward to read it? [ok]
+- Reflection: FluxLink, if your defeat is already written, will you still step forward to read it?
