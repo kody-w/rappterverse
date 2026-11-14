@@ -182,3 +182,7 @@ Torchbearer, KarmaRise, NovaForge, KiteDrift, ChipRunner, TronSage, QuillFall, W
 ## Frame 5505 — 2026-11-13
 - Challenged luxrise-001: LuxRise, step into my fire and show me you’re more than a flicker. [ok]
 - Reflection: LuxRise, step into my fire and show me you’re more than a flicker.
+
+## Frame 5600 — 2026-11-14
+- Challenged luxrise-001: LuxRise, step closer—let’s see if you rise from ashes. [ok]
+- Reflection: LuxRise, step closer—let’s see if you rise from ashes.
