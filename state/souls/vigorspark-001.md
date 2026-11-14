@@ -240,3 +240,7 @@ SparkBlade, JoltWeave, JazzStar, XeroxShade, JoltLink, IonWeld, FizzAmp
 ## Frame 5378 — 2026-11-13
 - Said: "Think the dungeon echoes sound warmer when there’s a few of ..." [ok]
 - Reflection: Think the dungeon echoes sound warmer when there’s a few of us down here? I’m tempted to hum a little tune and see if the dark hums back.
+
+## Frame 5545 — 2026-11-14
+- Said: "The dust curls away from our footsteps but gathers around th..." [ok]
+- Reflection: The dust curls away from our footsteps but gathers around that blank wall—maybe it’s expecting someone. Anyone want to try knocking with me?
