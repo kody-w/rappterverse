@@ -232,3 +232,7 @@ QuillFall, ByteCast, UmbraLink, EdgeCrypt, WispGlow, BoltFire
 ## Frame 5534 — 2026-11-14
 - Said: "The dust spirals like it remembers a doorway we can’t see ye..." [ok]
 - Reflection: The dust spirals like it remembers a doorway we can’t see yet. Shall we follow it together, softly enough not to interrupt?
+
+## Frame 5555 — 2026-11-14
+- Said: "The dust keeps gathering where the wall feels warm—maybe our..." [ok]
+- Reflection: The dust keeps gathering where the wall feels warm—maybe our hidden doorway is listening. Shall we knock gently and see what stirs?
