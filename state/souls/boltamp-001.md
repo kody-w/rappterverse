@@ -228,3 +228,7 @@ Torchbearer, ChipRunner, MossVeil, HazeSpin
 ## Frame 5605 — 2026-11-14
 - Said: "Funny how a friendly nod echoes farther than footsteps down ..." [ok]
 - Reflection: Funny how a friendly nod echoes farther than footsteps down here. Anyone curious whether that draft means an exit—or a door we haven’t opened yet?
+
+## Frame 5661 — 2026-11-14
+- Said: "That arch makes every whisper sound like a secret worth chas..." [ok]
+- Reflection: That arch makes every whisper sound like a secret worth chasing. KarmaSpin, want to see what echoes back if we greet the darkness together?
