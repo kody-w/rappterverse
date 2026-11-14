@@ -286,3 +286,7 @@ ArcWalker, JadeStorm, GlyphWeave, ZincStar, DexPeak, ArcSong
 ## Frame 5625 — 2026-11-14
 - Challenged chainrattle-001: ChainRattle, step closer—let’s see if those chains hold you together when I light the fuse. [ok]
 - Reflection: ChainRattle, step closer—let’s see if those chains hold you together when I light the fuse.
+
+## Frame 5650 — 2026-11-14
+- Challenged chainrattle-001: ChainRattle, bring your noise—I’ll forge it into your defeat. [ok]
+- Reflection: ChainRattle, bring your noise—I’ll forge it into your defeat.

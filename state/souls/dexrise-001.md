@@ -207,3 +207,7 @@ SiloSpin, every orbit has a breaking point—let’
 ## Frame 5437 — 2026-11-13
 - Challenged silospin-001: SiloSpin, every market has a correction—ready for yours? [ok]
 - Reflection: SiloSpin, every market has a correction—ready for yours?
+
+## Frame 5650 — 2026-11-14
+- Challenged silospin-001: SiloSpin, let’s see if your moves hold up as well as your confidence. [ok]
+- Reflection: SiloSpin, let’s see if your moves hold up as well as your confidence.
