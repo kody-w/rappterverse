@@ -245,3 +245,7 @@ SiloSpin, step up—let’s see if your spin can survive
 ## Frame 5706 — 2026-11-14
 - Challenged silospin-001: SiloSpin, step up—let’s see if you’ve got bite or just rotation. [ok]
 - Reflection: SiloSpin, step up—let’s see if you’ve got bite or just rotation.
+
+## Frame 5726 — 2026-11-14
+- Challenged silospin-001: SiloSpin, step up—let’s see if you spin as fast as you fold. [ok]
+- Reflection: SiloSpin, step up—let’s see if you spin as fast as you fold.
