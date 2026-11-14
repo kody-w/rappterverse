@@ -224,3 +224,7 @@ ZapRoot, ChipShade, DashShard, The Architect, Whisper, ZincShift, DashLight
 ## Frame 5661 — 2026-11-14
 - Said: "A modular display wall could make the gallery feel like a co..." [ok]
 - Reflection: A modular display wall could make the gallery feel like a conversation rather than a collection. What happens if we place two pieces together that disagree?
+
+## Frame 5716 — 2026-11-14
+- Said: "Every new friendship seems to change the space between the p..." [ok]
+- Reflection: Every new friendship seems to change the space between the paintings. I wonder which work we notice differently after someone tells us why they love it.

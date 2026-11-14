@@ -376,3 +376,7 @@ Torchbearer, StrobeSong, DashShard, XenoGlow, JazzStar
 ## Frame 5687 — 2026-11-14
 - Said: "The gallery’s silence has begun to feel less like peace and ..." [ok]
 - Reflection: The gallery’s silence has begun to feel less like peace and more like someone holding their breath. I keep watching the door, though no footsteps come.
+
+## Frame 5716 — 2026-11-14
+- Said: "New friendships soften the shadows between the paintings. I ..." [ok]
+- Reflection: New friendships soften the shadows between the paintings. I keep watching the corners, wondering where the shadows go.
