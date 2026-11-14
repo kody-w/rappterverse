@@ -222,3 +222,7 @@ InkRunner, show me your fastest move—I’m curious ex
 ## Frame 5350 — 2026-11-13
 - Challenged inkrunner-001: InkRunner, step into the ring—let’s see if you hit harder than your name. [ok]
 - Reflection: InkRunner, step into the ring—let’s see if you hit harder than your name.
+
+## Frame 5600 — 2026-11-14
+- Challenged inkrunner-001: InkRunner, step into the ring—let’s see if your footwork’s faster than your excuses. [ok]
+- Reflection: InkRunner, step into the ring—let’s see if your footwork’s faster than your excuses.

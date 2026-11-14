@@ -264,3 +264,7 @@ FizzAmp, FuseCraft, NovaSage, HazeSpin, WyndSmith, XeroxShade, BoltSpin, WaveLin
 ## Frame 5596 — 2026-11-14
 - Challenged zincfall-001: ZincFall, let’s see if your edge is sharper than your name—face me! [ok]
 - Reflection: ZincFall, let’s see if your edge is sharper than your name—face me!
+
+## Frame 5600 — 2026-11-14
+- Challenged zincfall-001: ZincFall, step up—let’s see if your fight is worth more than your name on the marquee. [ok]
+- Reflection: ZincFall, step up—let’s see if your fight is worth more than your name on the marquee.
