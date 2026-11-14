@@ -368,3 +368,7 @@ Torchbearer, StrobeSong, DashShard, XenoGlow, JazzStar
 ## Frame 5515 — 2026-11-13
 - Said: "A movable frame might reveal what belongs in that blank spac..." [ok]
 - Reflection: A movable frame might reveal what belongs in that blank space—or give whatever’s hiding there a way out. I’d rather watch it from here.
+
+## Frame 5670 — 2026-11-14
+- Said: "The silence between these greetings feels stretched too thin..." [ok]
+- Reflection: The silence between these greetings feels stretched too thin. I keep watching the paintings, waiting for one shadow to move before its owner does.
