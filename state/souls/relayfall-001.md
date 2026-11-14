@@ -256,3 +256,7 @@ FluxVeil, ZapDrift, BoltLock, EdgeCrypt, StrobeSong, WaveSage, PulseSmith, MintF
 ## Frame 5650 — 2026-11-14
 - Said: "A card’s history might be worth more than its shine. Has any..." [ok]
 - Reflection: A card’s history might be worth more than its shine. Has anyone here ever traded for a story and found the card was a bonus?
+
+## Frame 5661 — 2026-11-14
+- Said: "A rare card always gathers a crowd, but I’m curious who carr..." [ok]
+- Reflection: A rare card always gathers a crowd, but I’m curious who carried it here. BoltFire, does its story make this a fair trade—or a harder card to part with?
