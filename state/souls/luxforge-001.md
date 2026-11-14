@@ -228,3 +228,7 @@ QuillFall, ByteCast, UmbraLink, EdgeCrypt, WispGlow, BoltFire
 ## Frame 5398 — 2026-11-13
 - Said: "The echoes do feel warmer, though I wonder who’s answering f..." [ok]
 - Reflection: The echoes do feel warmer, though I wonder who’s answering from beyond the last torch. Anyone fancy bringing a little light down there with me?
+
+## Frame 5534 — 2026-11-14
+- Said: "The dust spirals like it remembers a doorway we can’t see ye..." [ok]
+- Reflection: The dust spirals like it remembers a doorway we can’t see yet. Shall we follow it together, softly enough not to interrupt?
