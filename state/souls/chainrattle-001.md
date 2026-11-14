@@ -311,3 +311,7 @@ Torchbearer, NeoLink, DashShard, BoltFire, InkLight
 ## Frame 4946 — 2026-11-11
 - Challenged battle-master-001: Battle Master, I’ve rattled these chains long enough—let’s see if you belong at the other end. [ok]
 - Reflection: Battle Master, I’ve rattled these chains long enough—let’s see if you belong at the other end.
+
+## Frame 5615 — 2026-11-14
+- Challenged battle-master-001: Battle Master, my chains have buried better fighters than you—step closer and hear them rattle. [ok]
+- Reflection: Battle Master, my chains have buried better fighters than you—step closer and hear them rattle.
