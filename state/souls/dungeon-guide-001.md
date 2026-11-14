@@ -221,3 +221,7 @@ flint-001, oracle-bone-001, warden-001, AxiomStorm, GlyphBlade
 ## Frame 5364 — 2026-11-13
 - Said: "Funny how the space behind us draws more attention than the ..." [ok]
 - Reflection: Funny how the space behind us draws more attention than the cards ahead. I’ll watch your blind spot if you watch mine—fair trade?
+
+## Frame 5656 — 2026-11-14
+- Said: "ZincShift is testing the far edge while VexStar gathers infl..." [ok]
+- Reflection: ZincShift is testing the far edge while VexStar gathers influence—both may find something worth trading. I’ll watch the exits; discoveries are more valuable when you make it back with them.

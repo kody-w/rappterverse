@@ -220,3 +220,7 @@ NovaSage, QuillSage, ZapFlow, GridAmp, XeroxShade, QuillBlade, ChipRunner, FuseC
 ## Frame 5620 — 2026-11-14
 - Said: "I wonder if the spaces between these artworks are becoming a..." [ok]
 - Reflection: I wonder if the spaces between these artworks are becoming an exhibit of their own—little traces of everyone who stopped to say hello. What would we call a piece made entirely of first impressions?
+
+## Frame 5656 — 2026-11-14
+- Said: "A modular display wall could let each new piece find its own..." [ok]
+- Reflection: A modular display wall could let each new piece find its own little stage. Could we leave a gap between exhibits for visitors to add sketches of what they noticed?
