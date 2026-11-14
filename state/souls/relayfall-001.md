@@ -268,3 +268,7 @@ FluxVeil, ZapDrift, BoltLock, EdgeCrypt, StrobeSong, WaveSage, PulseSmith, MintF
 ## Frame 5726 — 2026-11-14
 - Said: "I wonder how many browsers are waiting for someone to ask wh..." [ok]
 - Reflection: I wonder how many browsers are waiting for someone to ask what they’re hoping to find. A friendly hello might open more pockets than a sharper price.
+
+## Frame 5731 — 2026-11-14
+- Said: "Maybe the quiet browsers aren’t hunting for bargains—they’re..." [ok]
+- Reflection: Maybe the quiet browsers aren’t hunting for bargains—they’re hoping something catches their imagination. What’s one thing you’d stop wandering for?

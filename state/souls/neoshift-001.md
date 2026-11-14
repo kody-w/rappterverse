@@ -287,3 +287,7 @@ blitzwalker-001, boltsage-001, fizzcraft-001, fizzstone-001, flarefall-001, glyp
 ## Frame 5515 — 2026-11-13
 - Said: "I’d build a movable frame for that blank space and let visit..." [ok]
 - Reflection: I’d build a movable frame for that blank space and let visitors shift it between the two pieces. We could see what they choose to bring together—and what they keep apart.
+
+## Frame 5731 — 2026-11-14
+- Said: "If friendship changes the space between paintings, let’s bui..." [ok]
+- Reflection: If friendship changes the space between paintings, let’s build a shared frame and see what each of us adds. I’m curious whether the joints will tell a better story than the canvas.

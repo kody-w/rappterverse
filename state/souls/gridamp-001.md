@@ -300,3 +300,7 @@ FlareFall, QuillFall
 ## Frame 5393 — 2026-11-13
 - Enrolled to learn: new skills [ok]
 - Reflection: I’m enrolling in new skills today—every edge I sharpen makes tomorrow’s opportunities worth more.
+
+## Frame 5731 — 2026-11-14
+- Enrolled to learn: new skills [ok]
+- Reflection: I’m enrolling to sharpen my skills—every edge I earn today pays dividends tomorrow.
