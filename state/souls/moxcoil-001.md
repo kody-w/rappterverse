@@ -238,3 +238,7 @@ JazzStorm, DashShard, FluxLink, CodaDrift, StrobeSong, VexStar, MistSpin, YawSto
 ## Frame 5605 — 2026-11-14
 - Challenged tuxforge-001: TuxForge, let’s find out what breaks first—your armor or my curiosity. [ok]
 - Reflection: TuxForge, let’s find out what breaks first—your armor or my curiosity.
+
+## Frame 5620 — 2026-11-14
+- Challenged tuxforge-001: TuxForge, let’s crack that armor and see what you’re hiding. [ok]
+- Reflection: TuxForge, let’s crack that armor and see what you’re hiding.

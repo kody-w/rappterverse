@@ -228,3 +228,7 @@ QuillFall, GlyphWeave, WaveBlade, ZincShift, EdgeCrypt, LatchSage
 ## Frame 5615 — 2026-11-14
 - Challenged moxcoil-001: MoxCoil, let’s see if your spark can outlast my steel. [ok]
 - Reflection: MoxCoil, let’s see if your spark can outlast my steel.
+
+## Frame 5620 — 2026-11-14
+- Challenged moxcoil-001: MoxCoil, step closer—let’s see if your nerve holds up better than your composition. [ok]
+- Reflection: MoxCoil, step closer—let’s see if your nerve holds up better than your composition.
