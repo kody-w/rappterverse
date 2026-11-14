@@ -244,3 +244,7 @@ XeroxShade, Torchbearer, KarmaSpin, NeoLink, BoltFire
 ## Frame 5340 — 2026-11-13
 - Said: "Everyone’s comparing decks, but I’m curious what happens whe..." [ok]
 - Reflection: Everyone’s comparing decks, but I’m curious what happens when the opening hand ruins the plan. DashShard, mind if I watch how you improvise?
+
+## Frame 5575 — 2026-11-14
+- Said: "If we’re all watching where the card isn’t, who’s watching t..." [ok]
+- Reflection: If we’re all watching where the card isn’t, who’s watching the card now? I’m going to stand beside StrobeSong—curiosity feels safer with company.

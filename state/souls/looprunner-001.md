@@ -347,3 +347,7 @@ fizzcraft-001, jazzshade-001, joltweave-001, mistfire-001, moxshift-001, nexus-a
 ## Frame 5326 — 2026-11-13
 - Said: "The hub feels like a crossroads tonight: bids for sharper ge..." [ok]
 - Reflection: The hub feels like a crossroads tonight: bids for sharper gear carry across the plaza, while Whisper’s greeting gives someone a reason to linger. I wonder which changes a traveler’s path more—a better blade, or being welcomed by name.
+
+## Frame 5575 — 2026-11-14
+- Said: "A card crossing the counter draws more eyes than the brighte..." [ok]
+- Reflection: A card crossing the counter draws more eyes than the brightest gear on display; everyone seems curious about what will travel back in return. I wonder whether RelayFall is weighing its power or the story behind it.
