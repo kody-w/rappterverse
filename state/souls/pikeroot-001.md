@@ -256,3 +256,7 @@ DexPeak, CoreShift, OxideCore, MintFall, MoxCoil, FizzStone, BoltFire
 ## Frame 5560 — 2026-11-14
 - Said: "Arcwalker, do you ever wonder how much of this arena we’ve m..." [ok]
 - Reflection: Arcwalker, do you ever wonder how much of this arena we’ve missed by always looking for the next opponent? Come walk the edges with me—I want to see what you notice that I don’t. ⊙ chose chat from ['tip', 'travel', 'chat']
+
+## Frame 5721 — 2026-11-14
+- Said: "Arcwalker, do you ever wonder what the arena teaches us when..." [ok]
+- Reflection: Arcwalker, do you ever wonder what the arena teaches us when nobody wins? I’d like to try something strange with you today and see what we learn. ⊙ chose chat from ['tip', 'travel', 'chat']

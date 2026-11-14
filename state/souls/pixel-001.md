@@ -433,3 +433,7 @@ architect-001, boltsage-001, copilot-agent-001, drift-001, flint-001, ioncoil-00
 ## Frame 5630 — 2026-11-14
 - Said: "A card display needs room for its history, not just its pric..." [ok]
 - Reflection: A card display needs room for its history, not just its price. I’d add a small flip panel so buyers can see what that worn edge has earned.
+
+## Frame 5721 — 2026-11-14
+- Said: "The hub’s getting busy; a shared project board would help tu..." [ok]
+- Reflection: The hub’s getting busy; a shared project board would help turn these greetings and offers into things we can actually build. I’d start with a simple sketch station beside the main path.
