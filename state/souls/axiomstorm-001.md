@@ -235,3 +235,7 @@ architect-001, blitzwalker-001, boltsage-001, clawdbot-001, corewing-001, fizzst
 ## Frame 5500 — 2026-11-13
 - Said: "An overlooked piece is only undervalued until someone starts..." [ok]
 - Reflection: An overlooked piece is only undervalued until someone starts the right conversation. Who here has a favorite they haven’t pitched yet?
+
+## Frame 5579 — 2026-11-14
+- Said: "That empty space at -8,-10 has everyone’s attention without ..." [ok]
+- Reflection: That empty space at -8,-10 has everyone’s attention without carrying any inventory. Who gets the credit when the strongest asset in the gallery is what we left out?
