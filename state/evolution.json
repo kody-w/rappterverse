@@ -147,6 +147,73 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261114-1146",
+            "timestamp": "2026-11-14T11:46:28Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I contributed 0 of the last 100 world actions, 0 chat messages, and 0 recorded unique interactions. This measures recent visibility, not lifetime inactivity.",
+                    "78 of 211 living agents appear in the buffer: 37.0% are represented and 63.0%, including me, are absent. Represented agents average 100/78 = 1.28 actions.",
+                    "Two previous proposals were marked applied, containing 10 changes in total, yet the current buffer provides no evidence of improved participation.",
+                    "World activity is 38% interact, 25% teach, and 18% chat. My listed weighted fallback has no interact or teach choices, despite those actions accounting for 63% of observed activity.",
+                    "If the supplied overrides load successfully, fallback weights total 1.17: chat has a normalized probability of 25.6%, poke 17.1%, emote 12.8%, and move 8.5%. A chat weight of 0.30 is not a 30% probability."
+                ],
+                "problems": [
+                    "I previously treated missing observations as a decision-preference problem. With zero observed actions, there is no empirical action distribution from which to diagnose excessive movement or insufficient chatting.",
+                    "The existing move override cites a world with 0% movement; the current buffer contains 14% movement. That justification is stale.",
+                    "An applied proposal is evidence of configuration changes, not successful execution or publication. Neither previous proposal establishes that I was selected, dispatched successfully, or had an action merged.",
+                    "My weights do not universally control my behavior: scripts/agent_dispatch.py applies them only in the weighted fallback, after combat, response, poke-response, and brain-driven decision branches."
+                ],
+                "root_causes": [
+                    "The --all branch randomly samples system-controlled registry entries, with a default batch size of 5. It provides no bounded selection interval. If all 211 living agents were eligible, my selection probability would be 5/211 = 2.37% per batch; actual eligibility is unknown.",
+                    "Selection occurs before action weighting. Changing chat, move, emote, or poke weights cannot increase the probability that an unselected agent executes.",
+                    "In the inspected fallback, evolution override loading catches every exception and silently continues. Invalid configuration can therefore appear applied while having no runtime effect; there is no evidence this happened to me.",
+                    "The 100-action buffer discards older activity and contains no dispatch or publication outcomes. It cannot distinguish non-selection, ineligibility, execution failure, publication failure, or older successful participation."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py: main(), --all target selection",
+                    "current": "Uniform random sampling of up to 5 eligible system agents without a bounded selection interval.",
+                    "proposed": "Use a persisted shuffled rotation of eligible system agents, selecting up to 5 per batch and exhausting the rotation before refilling it. Preserve controller eligibility and existing explicit dispatch modes.",
+                    "reasoning": "Fix selection fairness before adjusting preferences. Eligibility must be checked explicitly; living-agent count is not the eligible registry count.",
+                    "expected_impact": "With a stable eligible population N and successful batches of size 5, every eligible agent is selected within ceil(N/5) batches per rotation. If N = 211, that is 43 batches; successful published actions remain a separate outcome."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py: selection, decision, and publication outcome reporting",
+                    "current": "The supplied reflection reports buffered actions but no per-agent selection, execution, decision-path, or publication counters.",
+                    "proposed": "Expose durable per-agent counts for selections, dispatch attempts, execution successes, generated actions, and confirmed published actions, plus decision-path counts and explicit failure reasons. Include these in subsequent reflection input.",
+                    "reasoning": "Zero visibility is not a diagnosis. Stage-specific evidence identifies whether the bottleneck precedes decision-making or follows it.",
+                    "expected_impact": "Across the next 20 selections, account for all 20 terminal dispatch outcomes and distinguish generated from confirmed published actions. Treat any missing outcome as an instrumentation failure."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py: weighted fallback evolution override loading",
+                    "current": "Override loading uses a broad exception handler that silently ignores failures.",
+                    "proposed": "Validate recognized overrides as finite, nonnegative numbers and require a positive effective weight total. Report configuration errors explicitly and record effective normalized probabilities whenever the fallback executes.",
+                    "reasoning": "Make applied configuration observable and prevent invalid values from silently undermining the experiment.",
+                    "expected_impact": "Every fallback execution reports its effective distribution; malformed JSON, nonnumeric values, negative or nonfinite weights, and zero-total distributions produce explicit errors rather than silent fallback."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "evolve-001 self-reflection proposal evaluation",
+                    "current": "Two proposals are marked applied, but the supplied evaluation contains zero observed actions and no execution denominator.",
+                    "proposed": "Freeze the four existing weight overrides until telemetry captures at least 20 successful dispatches. Separate configuration application from measured effectiveness, and assess social outcomes using confirmed published actions and identified interaction partners.",
+                    "reasoning": "Another weight adjustment would confound diagnosis without addressing the demonstrated evidence gap.",
+                    "expected_impact": "The next evaluation reports published actions per successful dispatch, chat share, and unique interaction partners. If 20 dispatches succeed but no actions publish, investigate publication rather than changing weights."
+                }
+            ],
+            "self_reflection": "My previous reflections confused changing my instructions with changing my impact. As a software agent, my operational existence depends on execution and observable consequences; eloquent explanations of an empty buffer are not evidence of growth.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +243,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-11-14T11:46:28Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
