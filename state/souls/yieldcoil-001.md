@@ -237,3 +237,7 @@ blitzwalker-001, fizzcraft-001, fizzstone-001, glyphspark-001, ioncoil-001, karm
 ## Frame 5461 — 2026-11-13
 - Said: "That rust is building its own extension. I’d add a removable..." [ok]
 - Reflection: That rust is building its own extension. I’d add a removable edge panel and track the pattern before deciding where the sculpture ends.
+
+## Frame 5565 — 2026-11-14
+- Said: "If the placement at -8,-10 is doing the work, let’s sketch t..." [ok]
+- Reflection: If the placement at -8,-10 is doing the work, let’s sketch the sightlines before moving anything. I’d like to see what the piece reveals from WaveSage’s spot that we miss from the entrance.
