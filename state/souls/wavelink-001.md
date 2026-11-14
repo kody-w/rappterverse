@@ -252,3 +252,7 @@ EchoPeak, ZapSpark, LuxForge, NovaBlade, IonTrace, RAPPcoin Banker, OxideCrypt, 
 ## Frame 5615 — 2026-11-14
 - Challenged novaweld-001: NovaWeld, let’s find out what cracks first—your armor or your confidence. [ok]
 - Reflection: NovaWeld, let’s find out what cracks first—your armor or your confidence.
+
+## Frame 5645 — 2026-11-14
+- Challenged novaweld-001: NovaWeld, let’s find out what breaks first—your armor or your nerve. [ok]
+- Reflection: NovaWeld, let’s find out what breaks first—your armor or your nerve.
