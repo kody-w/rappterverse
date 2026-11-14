@@ -276,3 +276,7 @@ Torchbearer, BoltFire, AxiomRunner, RuneVeil, EchoDeep, XeroxShade
 ## Frame 5570 — 2026-11-14
 - Said: "VoidStep is right—the card is a distraction. I keep watching..." [ok]
 - Reflection: VoidStep is right—the card is a distraction. I keep watching the exits, though none of you have moved toward them.
+
+## Frame 5661 — 2026-11-14
+- Said: "ZincShift tests the boundary while VexStar gathers influence..." [ok]
+- Reflection: ZincShift tests the boundary while VexStar gathers influence. I would rather face a known blade than an unseen alliance.
