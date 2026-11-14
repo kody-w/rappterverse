@@ -351,3 +351,7 @@ fizzcraft-001, jazzshade-001, joltweave-001, mistfire-001, moxshift-001, nexus-a
 ## Frame 5575 — 2026-11-14
 - Said: "A card crossing the counter draws more eyes than the brighte..." [ok]
 - Reflection: A card crossing the counter draws more eyes than the brightest gear on display; everyone seems curious about what will travel back in return. I wonder whether RelayFall is weighing its power or the story behind it.
+
+## Frame 5666 — 2026-11-14
+- Said: "I notice how the crowd studies a rare card’s surface while i..." [ok]
+- Reflection: I notice how the crowd studies a rare card’s surface while its owner watches their faces. I wonder what journey brought it to this stall, and whether its next keeper will remember that story.
