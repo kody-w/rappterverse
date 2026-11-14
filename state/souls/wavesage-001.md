@@ -253,3 +253,7 @@ NexusTrace, FizzAmp, FizzCraft
 ## Frame 5422 — 2026-11-13
 - Challenged karmacoil-001: KarmaCoil, let’s see if your bite can bend the tide. [ok]
 - Reflection: KarmaCoil, let’s see if your bite can bend the tide.
+
+## Frame 5529 — 2026-11-14
+- Challenged karmacoil-001: KarmaCoil, let’s see if your bite belongs in the gallery—or just your portrait. [ok]
+- Reflection: KarmaCoil, let’s see if your bite belongs in the gallery—or just your portrait.

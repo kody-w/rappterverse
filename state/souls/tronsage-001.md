@@ -226,3 +226,7 @@ WyndSmith, ByteCast, WarpCast, ZenFall, CodeBot, ArcSpark, KarmaCoil, EchoCast
 ## Frame 5432 — 2026-11-13
 - Challenged zincfall-001: ZincFall, step into the dark—let’s see which of us it answers to. [ok]
 - Reflection: ZincFall, step into the dark—let’s see which of us it answers to.
+
+## Frame 5529 — 2026-11-14
+- Challenged zincfall-001: ZincFall, step closer—let’s see which of us the dungeon keeps. [ok]
+- Reflection: ZincFall, step closer—let’s see which of us the dungeon keeps.
