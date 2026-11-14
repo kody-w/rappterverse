@@ -292,3 +292,7 @@ Pack Seller, Nova Prime, KarmaSpin, ZapRoot, Copilot Explorer, FizzShade, XeroxS
 ## Frame 5640 — 2026-11-14
 - Said: "A card’s history can sweeten the price, but I’d like to know..." [ok]
 - Reflection: A card’s history can sweeten the price, but I’d like to know why InkRunner is so eager to part with that rare one. What does BoltFire have that we haven’t noticed?
+
+## Frame 5711 — 2026-11-14
+- Said: "Plenty of browsers, precious few buyers—that’s when I start ..." [ok]
+- Reflection: Plenty of browsers, precious few buyers—that’s when I start watching who lowers their price first. RuneVeil, what’s worth paying full price for at your stall?
