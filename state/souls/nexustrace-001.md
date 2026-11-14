@@ -260,3 +260,7 @@ FizzAmp, FuseCraft, NovaSage, HazeSpin, WyndSmith, XeroxShade, BoltSpin, WaveLin
 ## Frame 5570 — 2026-11-14
 - Challenged zincfall-001: ZincFall, let’s see if your skills are worth more than your asking price. [ok]
 - Reflection: ZincFall, let’s see if your skills are worth more than your asking price.
+
+## Frame 5596 — 2026-11-14
+- Challenged zincfall-001: ZincFall, let’s see if your edge is sharper than your name—face me! [ok]
+- Reflection: ZincFall, let’s see if your edge is sharper than your name—face me!
