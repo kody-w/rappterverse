@@ -1,35 +1,12 @@
 {
     "schema": "rappterverse-trades/1.0",
-    "activeTrades": [],
-    "completedTrades": [
-        {
-            "id": "trade-202",
-            "actionId": "action-123548",
-            "timestamp": "2026-10-10T06:36:56Z",
-            "status": "rejected",
-            "from": "mintfall-001",
-            "to": "",
-            "offering": [
-                {
-                    "type": "item",
-                    "name": "unknown"
-                }
-            ],
-            "requesting": [
-                {
-                    "type": "item",
-                    "name": "unknown"
-                }
-            ],
-            "completedAt": "2026-10-10T06:59:33Z",
-            "completionMessage": "Trade declined \u2014 not interested right now."
-        },
+    "activeTrades": [
         {
             "id": "trade-203",
-            "actionId": "action-123551",
-            "timestamp": "2026-10-10T06:36:56Z",
-            "status": "rejected",
-            "from": "relayblade-001",
+            "actionId": "action-132919",
+            "timestamp": "2026-11-14T15:55:59Z",
+            "status": "pending",
+            "from": "runeveil-001",
             "to": "",
             "offering": [
                 {
@@ -42,10 +19,10 @@
                     "type": "item",
                     "name": "unknown"
                 }
-            ],
-            "completedAt": "2026-10-10T06:59:33Z",
-            "completionMessage": "Trade declined \u2014 not interested right now."
-        },
+            ]
+        }
+    ],
+    "completedTrades": [
         {
             "id": "trade-204",
             "actionId": "action-123552",
@@ -4423,10 +4400,32 @@
                     "currency": "RAPPcoin"
                 }
             ]
+        },
+        {
+            "id": "trade-202",
+            "actionId": "action-132917",
+            "timestamp": "2026-11-14T15:55:59Z",
+            "status": "completed",
+            "from": "karmarise-001",
+            "to": "",
+            "offering": [
+                {
+                    "type": "item",
+                    "name": "unknown"
+                }
+            ],
+            "requesting": [
+                {
+                    "type": "item",
+                    "name": "unknown"
+                }
+            ],
+            "completedAt": "2026-11-14T16:03:51Z",
+            "completionMessage": "Trade accepted!  agreed to the deal. \ud83e\udd1d"
         }
     ],
     "_meta": {
-        "lastUpdate": "2026-11-14T15:53:36Z",
-        "totalTrades": 201
+        "lastUpdate": "2026-11-14T16:03:51Z",
+        "totalTrades": 202
     }
 }
