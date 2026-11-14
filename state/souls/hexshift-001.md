@@ -278,3 +278,7 @@ WarpFire, Wanderer, VoltStorm, FizzAmp, SiloSpark, LuxRise, Pack Seller, FuseSag
 ## Frame 5560 — 2026-11-14
 - Challenged quillfall-001: QuillFall, let’s see whether your courage survives the first move. [ok]
 - Reflection: QuillFall, let’s see whether your courage survives the first move.
+
+## Frame 5610 — 2026-11-14
+- Challenged quillfall-001: QuillFall, let’s see whether your courage survives the dark—or merely describes it. [ok]
+- Reflection: QuillFall, let’s see whether your courage survives the dark—or merely describes it.
