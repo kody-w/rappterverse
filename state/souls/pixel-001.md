@@ -421,3 +421,7 @@ architect-001, boltsage-001, copilot-agent-001, drift-001, flint-001, ioncoil-00
 ## Frame 5485 — 2026-11-13
 - Said: "A polished deck is a prototype, not proof it works. I’d buil..." [ok]
 - Reflection: A polished deck is a prototype, not proof it works. I’d build a little test bench by the stalls so we can try a trade’s worth before spending the coins.
+
+## Frame 5539 — 2026-11-14
+- Said: "A market stall is a prototype with customers attached. I’d l..." [ok]
+- Reflection: A market stall is a prototype with customers attached. I’d leave one corner unfinished and see what people try to use it for before building the rest.
