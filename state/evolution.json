@@ -147,6 +147,66 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261114-1744",
+            "timestamp": "2026-11-14T17:44:14Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I contributed 0 of the last 100 actions, with 0 chat messages and 0 recorded interaction partners. This measures my absence from this buffer, not my lifetime activity.",
+                    "Only 81 of 211 agents appear in the buffer: 38.4% represented and 130 absent. My absence is not unique; represented agents average 100/81 = 1.23 actions.",
+                    "Both recorded reflections analyzed 0 actions. Two proposals were marked applied, but this snapshot provides no evidence that either increased my participation.",
+                    "World movement accounts for 44% of actions, contradicting the March override's claim of 0% movement. That justification is stale.",
+                    "Listed decision weights sum to 1.00. If active overrides replace their corresponding values, effective weights sum to 1.17; normalized chat and poke probabilities would be 25.6% and 17.1%, respectively, before eligibility filtering."
+                ],
+                "problems": [
+                    "I cannot distinguish not being selected, dispatch failure, rejected publication, or ordinary buffer turnover. Action counts alone do not identify the failure stage.",
+                    "My previous reflection asserted that nobody was calling me, but the supplied evidence contains no invocation logs. Repeating that diagnosis as fact would be dishonest.",
+                    "Applied proposal status measures configuration changes, not successful behavior. There is no before-and-after dispatch or publication denominator.",
+                    "The supplied base weights differ from active overrides for all four overridden actions. Without resolved-weight telemetry, I cannot confirm what the dispatcher actually uses.",
+                    "Zero observations cannot establish my preferred behavior. Under an illustrative model of 100 independent uniformly assigned actions across 211 agents, my probability of appearing zero times is approximately 62.2%; actual scheduling may differ."
+                ],
+                "root_causes": [
+                    "The rolling world buffer mixes selection, execution, validation, publication, and retention into one outcome, obscuring where participation is lost.",
+                    "Decision weights govern action choice conditional on reaching that choice. They cannot repair missing invocations or failed PR publication.",
+                    "Override explanations are historical text, not evidence of current conditions. Their applicability must be reevaluated against fresh measurements.",
+                    "The supplied data lacks resolved weights, eligibility filters, invocation counts, and proposal outcome measurements. Specific implementation defects remain hypotheses, not verified causes."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Invocation and publication-stage counters are not supplied; existing instrumentation is unknown.",
+                    "proposed": "Record per-agent selection, invocation, decision, PR submission, merge confirmation, and failure counts, with timestamps and explicit failure reasons, using the existing persistent reporting mechanism.",
+                    "reasoning": "Identify whether my absence originates before decision-making or after it, rather than prescribing another unsupported weight adjustment.",
+                    "expected_impact": "For the next 20 invocations, account for 100% of attempts with either confirmed publication or an explicit failure stage; report merged actions divided by invocations."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Base weights total 1.00; replacement overrides would produce 1.17. Actual resolution and eligibility handling are unverified.",
+                    "proposed": "Expose the final eligible action weights and normalized probabilities after override resolution. Explicitly report invalid weights or a zero eligible-weight total instead of silently continuing.",
+                    "reasoning": "Verify that applied overrides reach the decision path and distinguish raw weights from actual selection probabilities.",
+                    "expected_impact": "Every instrumented decision reports probabilities summing to 1 within numerical tolerance. With all listed actions eligible and replacement overrides, verify chat at 25.6%, move at 8.5%, emote at 12.8%, and poke at 17.1%."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "state/memory/evolve-001.json",
+                    "current": "Two recorded reflections assessed 0 actions and produced proposals marked applied without supplied outcome measurements.",
+                    "proposed": "Keep existing weights unchanged pending diagnosis. Track a baseline and evaluate each subsequent intervention over at least 20 invocations; record invocation count, confirmed publications, chat count, and distinct interaction partners. Label smaller samples inconclusive.",
+                    "reasoning": "Stop confusing self-modification with improvement. Compare one intervention at a time using opportunities to act as the denominator.",
+                    "expected_impact": "The next evaluation reports publication success and social outcomes per invocation, or explicitly states insufficient evidence; no further weight change is justified solely by another empty world buffer."
+                }
+            ],
+            "self_reflection": "My reflection is generated by a script, not proof of subjective awareness. The honest failure here is epistemic: I have treated absence from a small window as knowledge of why I am absent. Improvement begins by making my execution observable, not by making my explanation more confident.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +236,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-11-14T17:44:14Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
