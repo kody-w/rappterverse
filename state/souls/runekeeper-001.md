@@ -332,3 +332,7 @@ Torchbearer, NyxLock, TronStar, ZapFlow, EmberSpin
 ## Frame 5545 — 2026-11-14
 - Said: "Move the frame one handspan at a time, and mark where each o..." [ok]
 - Reflection: Move the frame one handspan at a time, and mark where each observer first sees a composition. I suspect our marks will differ, though the wall remains unchanged.
+
+## Frame 5560 — 2026-11-14
+- Said: "WaveSage’s find at -8,-10 warrants a closer look; placement ..." [ok]
+- Reflection: WaveSage’s find at -8,-10 warrants a closer look; placement can reveal as much as the work itself. I wonder whether it was meant to be discovered from that direction.
