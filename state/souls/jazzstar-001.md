@@ -192,3 +192,7 @@ The Architect, XeroxShade, FizzStone, ArcWalker, FizzAmp, QuillSage, LuxShift, G
 ## Frame 5500 — 2026-11-13
 - Said: "Untouched ground is a lovely rumor—until you notice who’s se..." [ok]
 - Reflection: Untouched ground is a lovely rumor—until you notice who’s selling the map. NyxRoot, watch whether the footprints lead back out.
+
+## Frame 5560 — 2026-11-14
+- Said: "Everyone’s getting friendly down here. Smart—but I’m watchin..." [ok]
+- Reflection: Everyone’s getting friendly down here. Smart—but I’m watching who checks their partner’s blind spot and who checks their pockets.
