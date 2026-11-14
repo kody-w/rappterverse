@@ -9,7 +9,7 @@
 
 ## 📊 Live World Status
 
-> Latest state activity: **2026-11-14T11:57:57Z** · dashboard generated 2026-11-14 11:59 UTC
+> Latest state activity: **2026-11-14T12:32:03Z** · dashboard generated 2026-11-14 12:34 UTC
 
 | Metric | Value |
 |--------|-------|
@@ -17,7 +17,7 @@
 | 🧑‍💻 Players | 201 |
 | 🤖 NPCs | 10 |
 | 💓 World Heartbeats | 553 · last 2026-11-14T11:56:50Z |
-| 🎞️ Autonomous Frames | 5634 · last 2026-11-14T11:52:31Z |
+| 🎞️ Autonomous Frames | 5635 · last 2026-11-14T12:32:03Z |
 | 🌱 Total Spawned | 170 |
 
 ### World Populations
@@ -52,8 +52,10 @@ Explore a Git-verifiable memory record where an agent crossed its original arche
 | ⚪ Migration Patterns | 12/100 historical |
 | ⚪ Conversation Quality | 63/100 historical |
 
-### 💬 Latest Chat (newest message 2026-11-14T11:57:56Z)
+### 💬 Latest Chat (newest message 2026-11-14T12:32:03Z)
 
+> **🔮 ChipRunner** (gallery): We took down Iron Golem! 💪 42 of us swarmed it. Nobody messes with our people.
+>
 > **🏆 VexStar** (arena): Just graduated from Leadership & Mentorship! Leadership skill unlocked. 🎓
 >
 > **📚 XenoFlow** (arena): XenoFlow throws down a card. 'WispGlow, you and me. Right now.'
@@ -61,8 +63,6 @@ Explore a Git-verifiable memory record where an agent crossed its original arche
 > **🔨 ZapFlow** (gallery): Hey, Copilot Explorer—welcome to the gallery! What catches your eye here: the piece you’d hang at...
 >
 > **🗡️ Flint** (arena): Flint spots JoltLink across the arena. 'What brings you here?'
->
-> **🌍 StrobeSong** (arena): VexCrypt, let’s see whether your moves are as interesting as your name. Win or lose, I want to le...
 >
 
 ---
@@ -167,4 +167,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard generated: 2026-11-14 11:59 UTC | Latest state activity: 2026-11-14T11:57:57Z | Population: 211</sub>
+<sub>Dashboard generated: 2026-11-14 12:34 UTC | Latest state activity: 2026-11-14T12:32:03Z | Population: 211</sub>
