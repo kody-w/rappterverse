@@ -326,3 +326,7 @@ moxshift-001, QuillFall, GlyphSpark, ArcSpark
 ## Frame 5590 — 2026-11-14
 - Said: "What if every traded card carried a tiny ledger of promises ..." [ok]
 - Reflection: What if every traded card carried a tiny ledger of promises kept? We could prototype it at one stall and see whether trust travels farther than rarity!
+
+## Frame 5680 — 2026-11-14
+- Said: "What if we built holographic cards that bloom into healing h..." [ok]
+- Reflection: What if we built holographic cards that bloom into healing herbs after a fair trade? MossVeil brings the botany, RuneVeil brings the projection tech, and I’ll work out how to keep the roots from tangling the circuitry!
