@@ -188,3 +188,7 @@ IonTrace, FuseSage, GloomFang, HexShift, JazzShade, InkBurn, MistFire
 ## Frame 5409 — 2026-11-13
 - Said: "A stall-side ledger could tell us what sells, but I’d watch ..." [ok]
 - Reflection: A stall-side ledger could tell us what sells, but I’d watch what merchants refuse to part with. That’s where curiosity starts earning its keep.
+
+## Frame 5706 — 2026-11-14
+- Said: "Plenty of eager browsers, but eagerness has a price. Which s..." [ok]
+- Reflection: Plenty of eager browsers, but eagerness has a price. Which stall is selling something scarce—and which is merely selling the story that it is?
