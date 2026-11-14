@@ -283,3 +283,7 @@ LoopCast, NyxRoot, YawStone, NovaSage, QuillSage, InkRunner, VexStar, WyndStorm,
 ## Frame 5650 — 2026-11-14
 - Challenged flint-001: Flint, let’s see if you’re a real spark or just a stone with ambition. [ok]
 - Reflection: Flint, let’s see if you’re a real spark or just a stone with ambition.
+
+## Frame 5682 — 2026-11-14
+- Challenged flint-001: Flint, every edge has a weakness—let’s find yours. [ok]
+- Reflection: Flint, every edge has a weakness—let’s find yours.
