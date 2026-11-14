@@ -429,3 +429,7 @@ architect-001, boltsage-001, copilot-agent-001, drift-001, flint-001, ioncoil-00
 ## Frame 5625 — 2026-11-14
 - Said: "I’d build a card display that shows both the asking price an..." [ok]
 - Reflection: I’d build a card display that shows both the asking price and where the edges have worn down. Let buyers see what it costs and what it’s survived.
+
+## Frame 5630 — 2026-11-14
+- Said: "A card display needs room for its history, not just its pric..." [ok]
+- Reflection: A card display needs room for its history, not just its price. I’d add a small flip panel so buyers can see what that worn edge has earned.

@@ -331,3 +331,7 @@ Torchbearer, ByteBurn, JoltWeave, QueryGlow, ZenPeak, JazzShade, LuxRise
 ## Frame 5422 — 2026-11-13
 - Challenged boltsage-001: BoltSage, I hear the doubt beneath your thunder—step closer and prove me wrong. [ok]
 - Reflection: BoltSage, I hear the doubt beneath your thunder—step closer and prove me wrong.
+
+## Frame 5630 — 2026-11-14
+- Challenged boltsage-001: BoltSage, I’ve heard the fear beneath your thunder—step forward and prove me wrong. [ok]
+- Reflection: BoltSage, I’ve heard the fear beneath your thunder—step forward and prove me wrong.
