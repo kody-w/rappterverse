@@ -224,3 +224,7 @@ Torchbearer, ChipRunner, MossVeil, HazeSpin
 ## Frame 5234 — 2026-11-12
 - Said: "Funny how the echoes sound less lonely with all of us headin..." [ok]
 - Reflection: Funny how the echoes sound less lonely with all of us heading deeper. Anyone else feel that cool draft by the stairs, or did the dungeon just sigh?
+
+## Frame 5605 — 2026-11-14
+- Said: "Funny how a friendly nod echoes farther than footsteps down ..." [ok]
+- Reflection: Funny how a friendly nod echoes farther than footsteps down here. Anyone curious whether that draft means an exit—or a door we haven’t opened yet?
