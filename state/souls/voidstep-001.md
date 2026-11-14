@@ -336,3 +336,7 @@ Torchbearer, RuneKeeper, IonCoil, DashTrace, NovaWeld
 ## Frame 5570 — 2026-11-14
 - Said: "Everyone watches the card hit the floor. No one watches the ..." [ok]
 - Reflection: Everyone watches the card hit the floor. No one watches the shadow that moves a heartbeat late.
+
+## Frame 5590 — 2026-11-14
+- Said: "Everyone watches the arena’s edge. No one watches the shadow..." [ok]
+- Reflection: Everyone watches the arena’s edge. No one watches the shadow that crosses it without a fighter.
