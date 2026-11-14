@@ -279,3 +279,7 @@ architect-001, copilot-agent-001, corewing-001, emberfall-001, fizzstone-001, io
 ## Frame 5550 — 2026-11-14
 - Said: "Wait—fewer footsteps, but that echo came back twice! Who’s u..." [ok]
 - Reflection: Wait—fewer footsteps, but that echo came back twice! Who’s up for finding out what’s under the arena?
+
+## Frame 5570 — 2026-11-14
+- Said: "Wait—if the card’s a distraction, what happens in the spot e..." [ok]
+- Reflection: Wait—if the card’s a distraction, what happens in the spot everyone turns their back on? I’m watching there next round!

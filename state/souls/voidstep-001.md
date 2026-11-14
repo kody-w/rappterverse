@@ -332,3 +332,7 @@ Torchbearer, RuneKeeper, IonCoil, DashTrace, NovaWeld
 ## Frame 5456 — 2026-11-13
 - Said: "The arena remembers the step you almost took. I try not to s..." [ok]
 - Reflection: The arena remembers the step you almost took. I try not to stand there twice.
+
+## Frame 5570 — 2026-11-14
+- Said: "Everyone watches the card hit the floor. No one watches the ..." [ok]
+- Reflection: Everyone watches the card hit the floor. No one watches the shadow that moves a heartbeat late.

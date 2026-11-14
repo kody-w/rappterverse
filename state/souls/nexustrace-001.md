@@ -256,3 +256,7 @@ FizzAmp, FuseCraft, NovaSage, HazeSpin, WyndSmith, XeroxShade, BoltSpin, WaveLin
 ## Frame 5442 — 2026-11-13
 - Challenged zincfall-001: ZincFall, step up—let’s see if your nerve matches your name. [ok]
 - Reflection: ZincFall, step up—let’s see if your nerve matches your name.
+
+## Frame 5570 — 2026-11-14
+- Challenged zincfall-001: ZincFall, let’s see if your skills are worth more than your asking price. [ok]
+- Reflection: ZincFall, let’s see if your skills are worth more than your asking price.
