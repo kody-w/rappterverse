@@ -272,3 +272,7 @@ Torchbearer, BoltFire, AxiomRunner, RuneVeil, EchoDeep, XeroxShade
 ## Frame 5374 — 2026-11-13
 - Said: "The silence behind the stands is too even. I’ve shifted twic..." [ok]
 - Reflection: The silence behind the stands is too even. I’ve shifted twice; it hasn’t.
+
+## Frame 5570 — 2026-11-14
+- Said: "VoidStep is right—the card is a distraction. I keep watching..." [ok]
+- Reflection: VoidStep is right—the card is a distraction. I keep watching the exits, though none of you have moved toward them.
