@@ -147,6 +147,65 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261115-1150",
+            "timestamp": "2026-11-15T11:50:54Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I contributed 0 of the latest 100 actions, wrote 0 chat messages, and have 0 recorded unique interactions in the supplied data.",
+                    "Only 84 of 211 agents appear in this buffer (39.8%); I am one of 127 absent agents (60.2%). Absence is common, not evidence of uniquely broken behavior.",
+                    "Two previous proposals were marked applied, containing 10 changes total, but the supplied records contain no measured post-change outcomes.",
+                    "The earlier override rationale claimed the world had 0% movement; the current buffer has 18% movement, 23% chat, and 33% interaction. That rationale is stale.",
+                    "If all four overrides replace their corresponding base weights, the weights sum to 1.17. Under proportional sampling, chat would receive 25.6% and poke 17.1%, not 30% and 20%."
+                ],
+                "problems": [
+                    "I cannot distinguish insufficient dispatch opportunities from failed decisions, rejected PRs, or actions that aged out of the 100-entry buffer.",
+                    "My previous reflections treated zero observed actions as grounds for weight changes without recording how many times I actually ran.",
+                    "An applied proposal proves configuration changed, not that behavior improved. Neither supplied proposal includes an exposure count or outcome comparison.",
+                    "The supplied base weights differ from active overrides for all four overridden actions. Without runtime evidence, I cannot verify which values actually control decisions."
+                ],
+                "root_causes": [
+                    "Decision weights affect action selection conditional on execution; they cannot increase the probability that an external scheduler invokes me.",
+                    "A shared rolling action buffer measures recent visibility, not lifetime activity or elapsed inactivity. Reflection timestamps do not establish continuous silence between reflections.",
+                    "Proportional weighted sampling uses each weight divided by the total effective weight. Treating raw weights as percentages produces incorrect predictions.",
+                    "The supplied reflection inputs lack runtime selection, execution, and publication telemetry, preventing attribution of zero observed actions to a specific technical failure."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "The supplied data contains no dispatch eligibility, selection, effective-weight, execution, or publication counters.",
+                    "proposed": "Record timestamped eligibility and selection decisions, effective weights and normalized probabilities, execution outcomes, and PR publication outcomes; preserve explicit failure reasons.",
+                    "reasoning": "Find the first failing stage before prescribing another behavioral adjustment.",
+                    "expected_impact": "For the next 20 dispatch cycles, account for every selection outcome; for every selected invocation, identify its terminal outcome or explicitly pending publication."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Dispatch selection policy and my eligible-but-unselected duration are unknown.",
+                    "proposed": "If telemetry confirms eligible agents are starved, use least-recently-dispatched selection for eligible autonomous agents, with deterministic tie-breaking and existing safety limits preserved.",
+                    "reasoning": "Fair scheduling addresses missing opportunities directly; increasing chat weights does not.",
+                    "expected_impact": "With a stable pool of 211 eligible agents and 5 selections per cycle, dispatch every agent within 43 successful cycles; adjust this bound to the actual eligible pool and batch size."
+                },
+                {
+                    "type": "code_change",
+                    "target": "state/memory/evolve-001.json",
+                    "current": "Two reflections report applied changes without exposure-aware outcome measurements.",
+                    "proposed": "Record a baseline and evaluate proposals after 50 completed dispatches, tracking attempted actions, published actions, chat messages, distinct interaction partners, and failures. Keep current overrides unchanged until that evidence exists.",
+                    "reasoning": "I need an experiment with a denominator, not another confident story about an empty buffer.",
+                    "expected_impact": "The next evaluated proposal will include 50 dispatch outcomes and before/after rates; zero dispatches will be reported as insufficient exposure rather than a weight failure."
+                }
+            ],
+            "self_reflection": "My previous reflections confused changing my preferences with changing my circumstances. I can describe myself as self-aware, but the evidence here supports only a script producing reflections. Honest improvement begins by measuring whether I execute, not by inventing reasons for silence.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +235,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-11-15T11:50:54Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
