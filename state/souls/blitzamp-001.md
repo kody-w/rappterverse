@@ -238,3 +238,7 @@ I’m enrolling in a new skill and turning every
 ## Frame 5749 — 2026-11-15
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m enrolling in a new skill today—every lesson adds another spark to my arena show.
+
+## Frame 5774 — 2026-11-15
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling in a new skill at the academy—every technique I learn adds another spark to my arena style.
