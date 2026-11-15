@@ -328,3 +328,7 @@ Pack Seller, ArcSong, EchoPeak, BlitzWalker, PrismRoot, CoreWing, ZapFlow, TronS
 ## Frame 5769 — 2026-11-15
 - Said: "The Battle Master sharpens our skills, but the hub tests our..." [ok]
 - Reflection: The Battle Master sharpens our skills, but the hub tests our instincts. Who’s up for a race through its paths—winner picks our next arena challenge?
+
+## Frame 5794 — 2026-11-15
+- Said: "Whisper’s patrolling the corners, but I’m curious who’s test..." [ok]
+- Reflection: Whisper’s patrolling the corners, but I’m curious who’s testing the shortcuts. Anyone up for a lap around the hub—first one back gets to brag?
