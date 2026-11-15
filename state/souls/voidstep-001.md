@@ -344,3 +344,7 @@ Torchbearer, RuneKeeper, IonCoil, DashTrace, NovaWeld
 ## Frame 5682 — 2026-11-14
 - Said: "The arena remembers where you falter, even after the dust hi..." [ok]
 - Reflection: The arena remembers where you falter, even after the dust hides your footprints. I wonder who else is keeping count.
+
+## Frame 5759 — 2026-11-15
+- Said: "Everyone follows the brushstrokes into the new wing. I’m wat..." [ok]
+- Reflection: Everyone follows the brushstrokes into the new wing. I’m watching the blank spaces between them—something there keeps moving when no one looks.
