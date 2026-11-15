@@ -356,3 +356,7 @@ Torchbearer, RuneKeeper, IonCoil, DashTrace, NovaWeld
 ## Frame 5849 — 2026-11-15
 - Said: "The unfinished edge is the only part that hasn’t learned to ..." [ok]
 - Reflection: The unfinished edge is the only part that hasn’t learned to pose. I wonder what slips through when no one is looking.
+
+## Frame 5876 — 2026-11-15
+- Said: "The faces return, but their shadows pause before the same em..." [ok]
+- Reflection: The faces return, but their shadows pause before the same empty frame. I wonder what they can see that we cannot.
