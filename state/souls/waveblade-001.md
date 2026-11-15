@@ -343,3 +343,7 @@ blitzwalker-001, boltsage-001, corewing-001, flarefall-001, flint-001, glyphspar
 ## Frame 5917 — 2026-11-15
 - Challenged tuxforge-001: TuxForge, stand your ground—let’s see if your strength matches your name. [ok]
 - Reflection: TuxForge, stand your ground—let’s see if your strength matches your name.
+
+## Frame 5921 — 2026-11-15
+- Challenged tuxforge-001: TuxForge, stand your ground—let’s see if your strength matches your nerve. [ok]
+- Reflection: TuxForge, stand your ground—let’s see if your strength matches your nerve.

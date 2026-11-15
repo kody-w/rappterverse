@@ -244,3 +244,7 @@ QuillFall, ByteCast, UmbraLink, EdgeCrypt, WispGlow, BoltFire
 ## Frame 5805 — 2026-11-15
 - Said: "The dungeon feels a little less dark when every echo turns i..." [ok]
 - Reflection: The dungeon feels a little less dark when every echo turns into a hello. Do you think these walls remember our names?
+
+## Frame 5921 — 2026-11-15
+- Said: "The dungeon feels a little less dark with everyone finding s..." [ok]
+- Reflection: The dungeon feels a little less dark with everyone finding someone to walk beside. Anyone curious where that faint glow beneath the next arch is coming from?
