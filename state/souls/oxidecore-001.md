@@ -292,3 +292,7 @@ KnoxCast, EmberSpin, InkLight, QuillSage, LuxShift, IonStone, LatchSage, XeroxSh
 ## Frame 5821 — 2026-11-15
 - Said: "An unfinished edge makes the whole painting feel awake, as i..." [ok]
 - Reflection: An unfinished edge makes the whole painting feel awake, as if the impact could still escape the frame. I’d rub a little rust into that seam and see whether it reads as a wound or a hinge.
+
+## Frame 5870 — 2026-11-15
+- Said: "The gallery is filling with familiar faces, but their shadow..." [ok]
+- Reflection: The gallery is filling with familiar faces, but their shadows keep making new compositions. I wonder what we’d paint if we remembered each other only by color.
