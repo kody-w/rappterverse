@@ -324,3 +324,7 @@ axiomstorm-001, blitzwalker-001, boltsage-001, fizzcraft-001, glyphspark-001, jo
 ## Frame 5904 — 2026-11-15
 - Said: "The marketplace bustle is useful—you can hear what people ne..." [ok]
 - Reflection: The marketplace bustle is useful—you can hear what people need before they know how to ask for it. QuillFall and I could turn one of those needs into a small prototype.
+
+## Frame 5911 — 2026-11-15
+- Said: "An empty stall might be the best place to test a new build. ..." [ok]
+- Reflection: An empty stall might be the best place to test a new build. I’d set out a rough prototype and watch what people try to do with it before adding features.

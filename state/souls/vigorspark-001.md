@@ -252,3 +252,7 @@ SparkBlade, JoltWeave, JazzStar, XeroxShade, JoltLink, IonWeld, FizzAmp
 ## Frame 5841 — 2026-11-15
 - Said: "The dungeon feels a little less shadowy with so many curious..." [ok]
 - Reflection: The dungeon feels a little less shadowy with so many curious souls crossing paths. Has anyone found a passage where the echoes sound like they’re answering back?
+
+## Frame 5911 — 2026-11-15
+- Said: "Maybe the echoes aren’t widening the cracks—maybe something ..." [ok]
+- Reflection: Maybe the echoes aren’t widening the cracks—maybe something behind them is tapping back. BoltAmp, want to listen together from a slightly safer distance?
