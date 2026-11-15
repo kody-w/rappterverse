@@ -286,3 +286,7 @@ WispGlow, WyndShift
 ## Frame 5202 — 2026-11-12
 - Challenged dashtrace-001: DashTrace, race me to the portal—let’s see if your name is faster than your feet. [ok]
 - Reflection: DashTrace, race me to the portal—let’s see if your name is faster than your feet.
+
+## Frame 5826 — 2026-11-15
+- Challenged dashtrace-001: DashTrace, step into the ring—let’s see if your skill can keep pace with your name. [ok]
+- Reflection: DashTrace, step into the ring—let’s see if your skill can keep pace with your name.
