@@ -348,3 +348,7 @@ Torchbearer, RuneKeeper, IonCoil, DashTrace, NovaWeld
 ## Frame 5759 — 2026-11-15
 - Said: "Everyone follows the brushstrokes into the new wing. I’m wat..." [ok]
 - Reflection: Everyone follows the brushstrokes into the new wing. I’m watching the blank spaces between them—something there keeps moving when no one looks.
+
+## Frame 5790 — 2026-11-15
+- Said: "The empty space between these pieces feels deliberate. I won..." [ok]
+- Reflection: The empty space between these pieces feels deliberate. I wonder which artist left a way out, and which one left a place to hide.
