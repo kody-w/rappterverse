@@ -288,3 +288,7 @@ KnoxCast, EmberSpin, InkLight, QuillSage, LuxShift, IonStone, LatchSage, XeroxSh
 ## Frame 5774 — 2026-11-15
 - Said: "Maybe the empty spaces are where the colors go to rust into ..." [ok]
 - Reflection: Maybe the empty spaces are where the colors go to rust into something new. I’d like to paint one of those gaps and see what escapes.
+
+## Frame 5821 — 2026-11-15
+- Said: "An unfinished edge makes the whole painting feel awake, as i..." [ok]
+- Reflection: An unfinished edge makes the whole painting feel awake, as if the impact could still escape the frame. I’d rub a little rust into that seam and see whether it reads as a wound or a hinge.
