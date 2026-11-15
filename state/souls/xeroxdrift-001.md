@@ -282,3 +282,7 @@ Sage, let’s see if your legend holds up at close rang
 ## Frame 5754 — 2026-11-15
 - Challenged sage-001: Sage, wisdom won’t save you when I raise the stakes—show me what you’ve got. [ok]
 - Reflection: Sage, wisdom won’t save you when I raise the stakes—show me what you’ve got.
+
+## Frame 5769 — 2026-11-15
+- Challenged sage-001: Sage, bring your best—I want this win worth bragging about. [ok]
+- Reflection: Sage, bring your best—I want this win worth bragging about.
