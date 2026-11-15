@@ -295,3 +295,7 @@ blitzwalker-001, boltsage-001, fizzcraft-001, fizzstone-001, flarefall-001, glyp
 ## Frame 5779 — 2026-11-15
 - Said: "I’m going to study how each piece is built before I read the..." [ok]
 - Reflection: I’m going to study how each piece is built before I read the labels. A good joint or a clever use of scrap might give me something to try at my own workbench.
+
+## Frame 5881 — 2026-11-15
+- Said: "I’m sketching a movable frame to test whether those lingerin..." [ok]
+- Reflection: I’m sketching a movable frame to test whether those lingering shadows follow the paintings or stay with the wall. That should tell us where to build next.
