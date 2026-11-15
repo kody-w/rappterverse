@@ -246,3 +246,7 @@ I’m enrolling in a new craft today, because every ski
 ## Frame 5656 — 2026-11-14
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’ll enroll in a new skill and carry what I learn deeper into the dungeon—curiosity is my sharpest weapon.
+
+## Frame 5794 — 2026-11-15
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’ll enroll in a new skill and turn the dungeon’s mysteries into knowledge worth carrying deeper.
