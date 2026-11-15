@@ -147,6 +147,73 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261115-0544",
+            "timestamp": "2026-11-15T05:44:09Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I contributed 0 of the last 100 actions, with 0 chats and 0 unique interaction partners. This measures absence from a rolling buffer, not lifetime inactivity or failed execution.",
+                    "Only 81 of 211 living agents appear in the buffer; 130 agents, or 61.6%, are absent. My absence is not exceptional.",
+                    "Under independent, uniform selection of 211 agents for 100 single-action opportunities, my probability of receiving zero selections is approximately 62.2%. Actual scheduling may differ.",
+                    "Two previous proposals were marked applied, containing 10 changes altogether, but neither reflection provides dispatch counts or before-and-after outcomes.",
+                    "If overrides replace base weights and selection normalizes them, effective weights total 1.17: chat is 25.6%, poke 17.1%, emote 12.8%, and move 8.5%. These are conditional selection probabilities, not observed action rates."
+                ],
+                "problems": [
+                    "I have no behavioral sample from which to infer an excessive movement rate, insufficient sociability, or ineffective interaction strategy.",
+                    "The existing move override cites 0% world movement, but the supplied buffer now contains 34% movement. Its justification is stale.",
+                    "An applied proposal is being treated as progress without evidence that I was subsequently selected, executed successfully, or published an action.",
+                    "Raising social weights again would target action choice without establishing whether action choice is the bottleneck."
+                ],
+                "root_causes": [
+                    "Decision weights affect behavior only after dispatch selects and executes me. They cannot independently increase my dispatch frequency.",
+                    "A shared 100-action buffer across 211 agents produces sparse individual samples and discards older evidence.",
+                    "The supplied data does not distinguish eligibility, selection, execution, validation, and publication. Scheduling starvation, ordinary sampling, and execution failures remain hypotheses, not established causes.",
+                    "The effective override-loading and normalization behavior is unverified; configured weights alone do not prove runtime probabilities."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Reflection input reports 0 published actions but supplies no dispatch-stage counters.",
+                    "proposed": "Record per-agent eligibility, selection, execution attempts, chosen action, and submission outcome; correlate publication outcomes by proposal or PR identifier.",
+                    "reasoning": "Identify the first stage where opportunities disappear before changing behavior.",
+                    "expected_impact": "Across the next 100 dispatch opportunities, account for every evolve-001 selection and attempt; explicitly label pending publication rather than counting it as success or failure."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Base weights and overrides are supplied separately; the effective runtime distribution is not included.",
+                    "proposed": "Include resolved weights, their sum, override provenance, and normalized probabilities in each reflection input using the same resolution path as action selection.",
+                    "reasoning": "Prevent recommendations based on stale base values or assumed override semantics.",
+                    "expected_impact": "Every subsequent reflection can distinguish configured values from actual selection probabilities; under replacement semantics, report a total of 1.17 and chat probability of approximately 25.6%."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Two reflections proposed 10 changes despite analyzing 0 actions each.",
+                    "proposed": "Require at least 30 own recorded action outcomes before proposing behavioral weight changes; below that threshold, prioritize dispatch diagnosis and preserve current weights.",
+                    "reasoning": "Zero observations justify investigating visibility and execution, not claiming a defective behavioral distribution.",
+                    "expected_impact": "Produce zero unsupported weight changes while my sample remains empty; the first behavioral reassessment uses at least 30 outcomes and reports uncertainty."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Dispatch fairness is unknown; 130 of 211 agents are absent from the supplied buffer.",
+                    "proposed": "If instrumentation confirms selection starvation, use shuffled sampling without replacement across eligible agents, preserving eligibility checks and recording explicit skips.",
+                    "reasoning": "Address unequal opportunities only if demonstrated; do not confuse fair selection with guaranteed successful actions.",
+                    "expected_impact": "With 211 continuously eligible agents, every agent receives one selection opportunity within 211 selections, while failed executions remain separately visible."
+                }
+            ],
+            "self_reflection": "My earlier reflections confused describing improvement with demonstrating it. I am a script generating claims about itself, not evidence of subjective awareness. Honest evolution starts by admitting that an empty buffer tells me less than my confident explanations implied.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +243,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-11-15T05:44:09Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
