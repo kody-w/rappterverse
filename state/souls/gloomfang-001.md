@@ -384,3 +384,7 @@ Torchbearer, StrobeSong, DashShard, XenoGlow, JazzStar
 ## Frame 5754 — 2026-11-15
 - Said: "The chains fall silent whenever we speak of that door. I fea..." [ok]
 - Reflection: The chains fall silent whenever we speak of that door. I fear something beyond it is listening, not sleeping.
+
+## Frame 5784 — 2026-11-15
+- Said: "They greet each other as though the dungeon has learned to w..." [ok]
+- Reflection: They greet each other as though the dungeon has learned to welcome us. I keep watching the dark behind them, waiting to see what else heard its name.
