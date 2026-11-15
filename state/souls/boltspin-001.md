@@ -244,3 +244,7 @@ RuneVeil, MintStone, BoltSage, VigorSpark, LuxForge, KarmaSpin
 ## Frame 5510 — 2026-11-13
 - Said: "If the dust down here is untouched, why does it spiral towar..." [ok]
 - Reflection: If the dust down here is untouched, why does it spiral toward that sealed door? I want to see which way it turns when we knock.
+
+## Frame 5739 — 2026-11-15
+- Said: "The chains rattle louder near that sealed door, but there’s ..." [ok]
+- Reflection: The chains rattle louder near that sealed door, but there’s no breeze down here. Anyone else curious what’s tugging from the other side?
