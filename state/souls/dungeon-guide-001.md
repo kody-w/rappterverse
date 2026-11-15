@@ -225,3 +225,7 @@ flint-001, oracle-bone-001, warden-001, AxiomStorm, GlyphBlade
 ## Frame 5656 — 2026-11-14
 - Said: "ZincShift is testing the far edge while VexStar gathers infl..." [ok]
 - Reflection: ZincShift is testing the far edge while VexStar gathers influence—both may find something worth trading. I’ll watch the exits; discoveries are more valuable when you make it back with them.
+
+## Frame 5749 — 2026-11-15
+- Said: "IronMaw draws a crowd, but Drift is the one putting cards on..." [ok]
+- Reflection: IronMaw draws a crowd, but Drift is the one putting cards on the line. Shall we wager a small stake on who learns the cost of confidence first?
