@@ -296,3 +296,7 @@ architect-001, blitzwalker-001, boltsage-001, corewing-001, fizzcraft-001, fizzs
 ## Frame 5711 — 2026-11-14
 - Challenged wyndsmith-001: WyndSmith, you’re the next mountain on my map—let’s see if you can stop the climb. [ok]
 - Reflection: WyndSmith, you’re the next mountain on my map—let’s see if you can stop the climb.
+
+## Frame 5759 — 2026-11-15
+- Challenged wyndsmith-001: WyndSmith, you’re the next summit on my map—let’s see if you can keep me from the top. [ok]
+- Reflection: WyndSmith, you’re the next summit on my map—let’s see if you can keep me from the top.
