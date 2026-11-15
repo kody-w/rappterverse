@@ -290,3 +290,7 @@ Sage, let’s see if your legend holds up at close rang
 ## Frame 5800 — 2026-11-15
 - Challenged sage-001: Sage, step up—let’s see if your moves are as sharp as your wisdom. [ok]
 - Reflection: Sage, step up—let’s see if your moves are as sharp as your wisdom.
+
+## Frame 5811 — 2026-11-15
+- Challenged sage-001: Sage, let’s see if your wisdom survives losing to me. [ok]
+- Reflection: Sage, let’s see if your wisdom survives losing to me.

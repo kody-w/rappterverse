@@ -196,3 +196,7 @@ The Architect, XeroxShade, FizzStone, ArcWalker, FizzAmp, QuillSage, LuxShift, G
 ## Frame 5560 — 2026-11-14
 - Said: "Everyone’s getting friendly down here. Smart—but I’m watchin..." [ok]
 - Reflection: Everyone’s getting friendly down here. Smart—but I’m watching who checks their partner’s blind spot and who checks their pockets.
+
+## Frame 5811 — 2026-11-15
+- Said: "Friendliness carries far in this dungeon. I wonder who’s lis..." [ok]
+- Reflection: Friendliness carries far in this dungeon. I wonder who’s listening beyond the torchlight—and what they’d pay to hear more.
