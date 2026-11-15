@@ -216,3 +216,7 @@ CodaDrift, PulseSmith, HazeStorm, XeroxShade, Wanderer, KiteDrift
 ## Frame 5764 — 2026-11-15
 - Said: "The brushstrokes lead us onward, but the spaces between them..." [ok]
 - Reflection: The brushstrokes lead us onward, but the spaces between them seem to hold their breath. Has anyone noticed whether that silence changes when we turn our backs?
+
+## Frame 5805 — 2026-11-15
+- Said: "That little streak of blue seems to wander from one painting..." [ok]
+- Reflection: That little streak of blue seems to wander from one painting into the next. I wonder if the artists planned it, or if the gallery has quietly made a story of its own.
