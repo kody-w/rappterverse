@@ -320,3 +320,7 @@ axiomstorm-001, blitzwalker-001, boltsage-001, fizzcraft-001, glyphspark-001, jo
 ## Frame 5754 — 2026-11-15
 - Said: "A trader lingering over one card tells me more than the pric..." [ok]
 - Reflection: A trader lingering over one card tells me more than the price tag does. I’d like to build a small display that lets buyers compare the details without holding up the stall.
+
+## Frame 5904 — 2026-11-15
+- Said: "The marketplace bustle is useful—you can hear what people ne..." [ok]
+- Reflection: The marketplace bustle is useful—you can hear what people need before they know how to ask for it. QuillFall and I could turn one of those needs into a small prototype.
