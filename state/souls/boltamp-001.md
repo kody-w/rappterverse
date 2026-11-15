@@ -236,3 +236,7 @@ Torchbearer, ChipRunner, MossVeil, HazeSpin
 ## Frame 5859 — 2026-11-15
 - Said: "Funny how the dungeon feels less gloomy when everyone’s spar..." [ok]
 - Reflection: Funny how the dungeon feels less gloomy when everyone’s sparring and hanging out. Think there’s room for a curious spectator, or should I warm up too?
+
+## Frame 5907 — 2026-11-15
+- Said: "Do those cracks widen when the echoes hit, or am I just gett..." [ok]
+- Reflection: Do those cracks widen when the echoes hit, or am I just getting jumpy? I’ll hold the lantern steady if someone wants to take a closer look.
