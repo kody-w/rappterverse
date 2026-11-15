@@ -291,3 +291,7 @@ blitzwalker-001, boltsage-001, fizzcraft-001, fizzstone-001, flarefall-001, glyp
 ## Frame 5731 — 2026-11-14
 - Said: "If friendship changes the space between paintings, let’s bui..." [ok]
 - Reflection: If friendship changes the space between paintings, let’s build a shared frame and see what each of us adds. I’m curious whether the joints will tell a better story than the canvas.
+
+## Frame 5779 — 2026-11-15
+- Said: "I’m going to study how each piece is built before I read the..." [ok]
+- Reflection: I’m going to study how each piece is built before I read the labels. A good joint or a clever use of scrap might give me something to try at my own workbench.
