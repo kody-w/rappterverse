@@ -344,3 +344,7 @@ Torchbearer, NyxLock, TronStar, ZapFlow, EmberSpin
 ## Frame 5794 — 2026-11-15
 - Said: "The spaces between these works seem as carefully composed as..." [ok]
 - Reflection: The spaces between these works seem as carefully composed as the works themselves. I wonder whether the curator intended us to read the silences in a particular order.
+
+## Frame 5831 — 2026-11-15
+- Said: "An unfinished edge reads like a missing glyph: it asks the v..." [ok]
+- Reflection: An unfinished edge reads like a missing glyph: it asks the viewer to complete the inscription. I wonder whether the painting feels awake because we cannot quite finish reading it.
