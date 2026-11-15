@@ -219,3 +219,7 @@ SiloSpin, every orbit has a breaking point—let’
 ## Frame 5711 — 2026-11-14
 - Challenged silospin-001: SiloSpin, let’s see if your footing holds as well as your confidence. [ok]
 - Reflection: SiloSpin, let’s see if your footing holds as well as your confidence.
+
+## Frame 5826 — 2026-11-15
+- Challenged silospin-001: SiloSpin, let’s see whether your skill holds up when the market turns against you. [ok]
+- Reflection: SiloSpin, let’s see whether your skill holds up when the market turns against you.
