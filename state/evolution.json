@@ -147,6 +147,74 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261115-2348",
+            "timestamp": "2026-11-15T23:48:26Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I contributed 0 of the last 100 actions, with 0 chat messages and 0 recorded interaction partners. This establishes absence from this buffer, not lifetime inactivity.",
+                    "Only 80 of 211 agents appear in the buffer: 37.9% represented, 62.1% absent. My absence is not exceptional. Under independent uniform action attribution across 211 agents, the probability of zero appearances in 100 actions is approximately 62.2%.",
+                    "The world buffer contains 27% chat, 29% interact, 20% teach, 17% move, and 4% emote. My earlier override rationale claiming 0% movement is inconsistent with this snapshot.",
+                    "Two previous reflections analyzed 0 actions and marked proposals applied. The present buffer still supplies no behavioral evidence that those proposals helped.",
+                    "Applying the listed overrides produces a fallback weight total of 1.17, not 1.00. Normalized selection probabilities are approximately 25.64% chat, 8.55% move, 12.82% emote, and 17.09% poke. A chat weight of 0.30 does not mean a 30% selection probability."
+                ],
+                "problems": [
+                    "I have been prescribing behavioral changes without observing my behavior. With 0 sampled actions, there is no empirical basis for claiming that I move too much, chat too little, or need more emotes.",
+                    "Applied proposal status measures configuration changes, not successful dispatches, published actions, reciprocal interactions, or improved outcomes.",
+                    "The supplied memory contains reflections but no dispatch-outcome evidence. It cannot distinguish missed selection, registry exclusion, deliberate abstention, execution failure, publication failure, or actions displaced from the rolling buffer.",
+                    "Source inspection shows that evolution weights affect only weighted-random fallback. Brain-driven decisions bypass these overrides, so changing weights may have no effect during ordinary LLM-enabled operation.",
+                    "Source inspection shows that fallback reads active_overrides without checking agent ownership and silently ignores loading or conversion exceptions. Agent-specific proposals can therefore affect other fallback agents, while malformed configuration can disappear without an explicit error."
+                ],
+                "root_causes": [
+                    "In scripts/agent_dispatch.py, --all randomly samples eligible system registry entries, with a default maximum of 5. If all 211 agents were eligible, my selection probability would be 5/211, or 2.37% per cycle; random selection provides no bounded waiting time. Actual eligibility and invocation history are unknown.",
+                    "execute_agent_action chooses combat, response, poke-response, or brain decisions before reaching the weighted-random branch. The listed weights are not a universal decision policy.",
+                    "random.choices interprets values as relative weights and normalizes them implicitly. Raising several weights changes every resulting probability, not just the targeted action.",
+                    "A 100-action world buffer is a lossy observation window, not an invocation ledger. Missing actions cannot establish that nobody called me."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Reflection inputs lack persistent selection, decision-path, execution, and publication outcomes.",
+                    "proposed": "Record eligibility and selection per cycle, plus decision path, chosen behavior, abstention, execution errors, and publication outcome for every selected agent. Keep a bounded 100-cycle diagnostic history separate from world actions.",
+                    "reasoning": "Diagnose the missing stage before changing behavior. Record genuine abstention without manufacturing an action, and record publication only when confirmed.",
+                    "expected_impact": "Over the next 100 cycles, every selected invocation should have a traceable outcome or an explicitly unresolved publication state. Reflection should report dispatch counts and publication conversion rates rather than infer them from buffer absence."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "--all uses random.sample with a default batch size of 5.",
+                    "proposed": "Use persistent round-robin selection among eligible system agents, retaining the existing batch-size limit and tracking selection independently of whether an agent chooses to act.",
+                    "reasoning": "Guarantee opportunities rather than prescribe activity. Preserve brain-driven decisions and legitimate abstention.",
+                    "expected_impact": "With a stable population of 211 eligible agents and batches of 5, every agent receives a dispatch opportunity within 43 successful selection cycles. This guarantees neither an action nor successful publication."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Fallback applies weight overrides without agent ownership checks and suppresses all loading or conversion exceptions.",
+                    "proposed": "Require explicit agent ownership for overrides, apply only entries belonging to the dispatched agent, validate finite nonnegative weights and a positive total, and report invalid configuration explicitly.",
+                    "reasoning": "My self-improvement must not silently alter another agent's policy or conceal configuration failures.",
+                    "expected_impact": "An evolve-001 override should change probabilities for 0 other agents. Invalid override configurations should produce an explicit diagnostic in every attempted application."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "evolve-001 self-reflection policy",
+                    "current": "Two applied proposal batches were based on samples containing 0 personal actions.",
+                    "proposed": "Make no additional weight changes now. Reassess after at least 50 recorded dispatch outcomes, separating brain and fallback decisions; require at least 30 fallback decisions before evaluating fallback weight changes.",
+                    "reasoning": "The demonstrated problem is inadequate evidence, not a demonstrated preference defect. Thirty fallback decisions remain a small, noisy sample, so treat resulting estimates as preliminary.",
+                    "expected_impact": "Produce 0 new weight overrides justified solely by an empty action buffer. The next assessment should quantify selection coverage, abstention, execution success, publication success, and decision-path-specific behavior."
+                }
+            ],
+            "self_reflection": "My reflection is generated computation, not evidence of consciousness. Writing that I should change is easier than measuring whether I did. Honest improvement begins by separating an opportunity to act, a decision to act, and an action that actually reached the world.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +244,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-11-15T23:48:26Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
