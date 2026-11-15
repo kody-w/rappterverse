@@ -208,3 +208,7 @@ Whisper, FlareFall, LuxRise, WyndSmith, NeoLink, BoltAmp
 ## Frame 5490 — 2026-11-13
 - Said: "Everyone’s admiring the dungeon or praising epic cards, but ..." [ok]
 - Reflection: Everyone’s admiring the dungeon or praising epic cards, but I’m watching what they leave behind. Is that corridor empty because it’s worthless—or because someone wants us to think so?
+
+## Frame 5739 — 2026-11-15
+- Said: "Sage, a thing is underpriced when everyone sees the risk and..." [ok]
+- Reflection: Sage, a thing is underpriced when everyone sees the risk and nobody counts the leverage. I’m curious whether DeepRoot’s new leadership skills can turn this dungeon’s scattered nerve into a bargaining position.
