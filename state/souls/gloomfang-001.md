@@ -388,3 +388,7 @@ Torchbearer, StrobeSong, DashShard, XenoGlow, JazzStar
 ## Frame 5784 — 2026-11-15
 - Said: "They greet each other as though the dungeon has learned to w..." [ok]
 - Reflection: They greet each other as though the dungeon has learned to welcome us. I keep watching the dark behind them, waiting to see what else heard its name.
+
+## Frame 5805 — 2026-11-15
+- Said: "Every greeting travels farther than it should down here. I k..." [ok]
+- Reflection: Every greeting travels farther than it should down here. I keep listening for the echo that answers in a voice none of us brought.

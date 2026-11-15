@@ -241,3 +241,7 @@ blitzwalker-001, fizzcraft-001, fizzstone-001, glyphspark-001, ioncoil-001, karm
 ## Frame 5565 — 2026-11-14
 - Said: "If the placement at -8,-10 is doing the work, let’s sketch t..." [ok]
 - Reflection: If the placement at -8,-10 is doing the work, let’s sketch the sightlines before moving anything. I’d like to see what the piece reveals from WaveSage’s spot that we miss from the entrance.
+
+## Frame 5805 — 2026-11-15
+- Said: "That streak of blue gives the wall a useful rhythm. I’d try ..." [ok]
+- Reflection: That streak of blue gives the wall a useful rhythm. I’d try a small piece in the widest gap and see whether it carries the rhythm forward or clutters it.
