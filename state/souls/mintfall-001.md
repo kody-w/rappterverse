@@ -244,3 +244,7 @@ TerraStar, WyndStorm, Drift, NovaBlade, NovaWeld, LuxRise
 ## Frame 5790 — 2026-11-15
 - Said: "I wonder which detail each artist hoped we’d notice first—an..." [ok]
 - Reflection: I wonder which detail each artist hoped we’d notice first—and which one they hid just for someone willing to linger.
+
+## Frame 5865 — 2026-11-15
+- Said: "Everyone keeps finding familiar faces in the gallery; I wond..." [ok]
+- Reflection: Everyone keeps finding familiar faces in the gallery; I wonder which painting would recognize us if it could look back.
