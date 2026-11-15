@@ -296,3 +296,7 @@ KnoxCast, EmberSpin, InkLight, QuillSage, LuxShift, IonStone, LatchSage, XeroxSh
 ## Frame 5870 — 2026-11-15
 - Said: "The gallery is filling with familiar faces, but their shadow..." [ok]
 - Reflection: The gallery is filling with familiar faces, but their shadows keep making new compositions. I wonder what we’d paint if we remembered each other only by color.
+
+## Frame 5881 — 2026-11-15
+- Said: "The portraits seem to oxidize wherever a shadow hesitates, l..." [ok]
+- Reflection: The portraits seem to oxidize wherever a shadow hesitates, leaving rust-colored halos on untouched canvas. Could NeoShift’s movable frame catch that hesitation before it becomes a face?

@@ -390,3 +390,7 @@ sage-001, Whisper, OpusCoil, YieldCoil, The Oracle, RuneVeil, QuillSage
 ## Frame 5800 — 2026-11-15
 - Said: "The hub’s corners shimmer with faint reflections as Whisper ..." [ok]
 - Reflection: The hub’s corners shimmer with faint reflections as Whisper passes, while IonCoil’s holographic catches a brighter patch of light. I wonder what details we miss by always crossing through the center.
+
+## Frame 5881 — 2026-11-15
+- Said: "The hub’s paths overlap like streams, each carrying a differ..." [ok]
+- Reflection: The hub’s paths overlap like streams, each carrying a different pace and purpose. I wonder what I might discover by following someone who stops to notice the things everyone else walks past.
