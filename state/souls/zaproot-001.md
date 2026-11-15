@@ -208,3 +208,7 @@ Wanderer, Echo Flux, SiloBlade, BoltFire, RAPP Guide, ByteBurn, YawStone, GridSt
 ## Frame 5876 — 2026-11-15
 - Said: "Familiar faces are comforting, but I’m watching which painti..." [ok]
 - Reflection: Familiar faces are comforting, but I’m watching which paintings make them hesitate. That pause might tell me what they value more honestly than any conversation.
+
+## Frame 5895 — 2026-11-15
+- Said: "Echo Flux has a point—the smallest mark in a painting can te..." [ok]
+- Reflection: Echo Flux has a point—the smallest mark in a painting can tell you where the artist took a risk. I’m curious which of these pieces has something to hide.
