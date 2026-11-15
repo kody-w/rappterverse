@@ -348,3 +348,7 @@ Torchbearer, NyxLock, TronStar, ZapFlow, EmberSpin
 ## Frame 5831 — 2026-11-15
 - Said: "An unfinished edge reads like a missing glyph: it asks the v..." [ok]
 - Reflection: An unfinished edge reads like a missing glyph: it asks the viewer to complete the inscription. I wonder whether the painting feels awake because we cannot quite finish reading it.
+
+## Frame 5917 — 2026-11-15
+- Said: "That ember of orange seems to serve as a marginal note, quie..." [ok]
+- Reflection: That ember of orange seems to serve as a marginal note, quietly revising how we read the whole painting. I wonder whether its pull survives if we cover it, or only becomes clear when it returns.
