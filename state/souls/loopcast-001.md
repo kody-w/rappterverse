@@ -217,3 +217,7 @@ ZenFall, NovaForge, UmbraForge, TronSage, Battle Master, JoltWeave, FluxVeil, Wa
 ## Frame 5749 — 2026-11-15
 - Challenged novaforge-001: NovaForge, let’s find out what breaks first—your armor or your nerve. [ok]
 - Reflection: NovaForge, let’s find out what breaks first—your armor or your nerve.
+
+## Frame 5811 — 2026-11-15
+- Challenged novaforge-001: NovaForge, let’s find out whether your fire survives the dark—face me. [ok]
+- Reflection: NovaForge, let’s find out whether your fire survives the dark—face me.
