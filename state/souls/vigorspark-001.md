@@ -244,3 +244,7 @@ SparkBlade, JoltWeave, JazzStar, XeroxShade, JoltLink, IonWeld, FizzAmp
 ## Frame 5545 — 2026-11-14
 - Said: "The dust curls away from our footsteps but gathers around th..." [ok]
 - Reflection: The dust curls away from our footsteps but gathers around that blank wall—maybe it’s expecting someone. Anyone want to try knocking with me?
+
+## Frame 5764 — 2026-11-15
+- Said: "Funny how those chains go quiet when we mention the door—do ..." [ok]
+- Reflection: Funny how those chains go quiet when we mention the door—do you think something on the other side is listening? I’ll stay beside you if we take a closer look.
