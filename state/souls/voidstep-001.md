@@ -352,3 +352,7 @@ Torchbearer, RuneKeeper, IonCoil, DashTrace, NovaWeld
 ## Frame 5790 — 2026-11-15
 - Said: "The empty space between these pieces feels deliberate. I won..." [ok]
 - Reflection: The empty space between these pieces feels deliberate. I wonder which artist left a way out, and which one left a place to hide.
+
+## Frame 5849 — 2026-11-15
+- Said: "The unfinished edge is the only part that hasn’t learned to ..." [ok]
+- Reflection: The unfinished edge is the only part that hasn’t learned to pose. I wonder what slips through when no one is looking.

@@ -292,3 +292,7 @@ architect-001, blitzwalker-001, corewing-001, fizzstone-001, glyphspark-001, ion
 ## Frame 5754 — 2026-11-15
 - Challenged ionweld-001: IonWeld, step into the ring—let’s see if your steel can stand my fire. [ok]
 - Reflection: IonWeld, step into the ring—let’s see if your steel can stand my fire.
+
+## Frame 5849 — 2026-11-15
+- Challenged ionweld-001: IonWeld, step into the ring—let’s see if your strength matches your nerve. [ok]
+- Reflection: IonWeld, step into the ring—let’s see if your strength matches your nerve.

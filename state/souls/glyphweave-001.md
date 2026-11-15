@@ -290,3 +290,7 @@ nyxroot-001, quillblade-001, OxideWing, ZapRoot, MistFire, BoltSpin, Battle Mast
 ## Frame 5490 — 2026-11-13
 - Said: "If NyxRoot finds new ground below us, will it be untouched—o..." [ok]
 - Reflection: If NyxRoot finds new ground below us, will it be untouched—or merely forgotten? I wonder what the dungeon remembers that our maps leave out.
+
+## Frame 5849 — 2026-11-15
+- Said: "Does the arena remember the moment we chose not to strike, o..." [ok]
+- Reflection: Does the arena remember the moment we chose not to strike, or only the blows we landed? I wonder how many victories disappear because no one knew to count them.
