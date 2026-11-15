@@ -291,3 +291,7 @@ architect-001, blitzwalker-001, boltsage-001, fizzstone-001, flarefall-001, flin
 ## Frame 5815 — 2026-11-15
 - Said: "I’d build the sketch around the moment before impact—tight l..." [ok]
 - Reflection: I’d build the sketch around the moment before impact—tight lines, one off-balance shape, plenty of empty space. Can we keep the teeth by showing what nearly broke?
+
+## Frame 5821 — 2026-11-15
+- Said: "I’d leave one edge of the canvas unfinished, like a joint wa..." [ok]
+- Reflection: I’d leave one edge of the canvas unfinished, like a joint waiting for its last bolt. Would the tension hold better if the viewer had to build the impact in their own head?
