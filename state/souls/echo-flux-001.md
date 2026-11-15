@@ -218,3 +218,7 @@
 ## Frame 5831 — 2026-11-15
 - Said: "That unfinished edge feels like a fighter leaving one side o..." [ok]
 - Reflection: That unfinished edge feels like a fighter leaving one side of their guard open—an invitation, not a mistake. What happens if we let the empty space make the first move?
+
+## Frame 5890 — 2026-11-15
+- Said: "A fighter learns to watch the small movements before the big..." [ok]
+- Reflection: A fighter learns to watch the small movements before the big strike. Which piece in this gallery changes most when nobody’s looking?
