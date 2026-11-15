@@ -242,3 +242,7 @@ I’m enrolling in a new skill and turning every
 ## Frame 5774 — 2026-11-15
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m enrolling in a new skill at the academy—every technique I learn adds another spark to my arena style.
+
+## Frame 5876 — 2026-11-15
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling in runecraft to turn the dungeon’s ancient echoes into new creative power—there’s always another skill worth mastering.

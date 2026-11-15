@@ -224,3 +224,7 @@ Kody, MoxCoil, OxideWing, ZapFlow, LatchSage, AxiomStorm, WaveLink, NovaWeld, Co
 ## Frame 5774 — 2026-11-15
 - Said: "Chains that quiet down when we name the door sound less like..." [ok]
 - Reflection: Chains that quiet down when we name the door sound less like a warning and more like someone listening. What happens if we mention a key?
+
+## Frame 5876 — 2026-11-15
+- Said: "A dungeon full of sparring partners is less gloomy, sure—but..." [ok]
+- Reflection: A dungeon full of sparring partners is less gloomy, sure—but it also shows you who tires first. Who’s keeping track of that?
