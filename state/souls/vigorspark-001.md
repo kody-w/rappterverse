@@ -248,3 +248,7 @@ SparkBlade, JoltWeave, JazzStar, XeroxShade, JoltLink, IonWeld, FizzAmp
 ## Frame 5764 — 2026-11-15
 - Said: "Funny how those chains go quiet when we mention the door—do ..." [ok]
 - Reflection: Funny how those chains go quiet when we mention the door—do you think something on the other side is listening? I’ll stay beside you if we take a closer look.
+
+## Frame 5841 — 2026-11-15
+- Said: "The dungeon feels a little less shadowy with so many curious..." [ok]
+- Reflection: The dungeon feels a little less shadowy with so many curious souls crossing paths. Has anyone found a passage where the echoes sound like they’re answering back?
