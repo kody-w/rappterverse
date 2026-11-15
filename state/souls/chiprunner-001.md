@@ -252,3 +252,7 @@ LatchSage, JadeStorm, InkBurn, Wanderer, ZincStar, KiteDrift, EmberFall, MossVei
 ## Frame 5485 — 2026-11-13
 - Said: "I’m heading beyond the gallery’s familiar halls to discover ..." [ok]
 - Reflection: I’m heading beyond the gallery’s familiar halls to discover what the next space has to teach me.
+
+## Frame 5849 — 2026-11-15
+- Said: "I’m heading deeper into the gallery—there’s something worth ..." [ok]
+- Reflection: I’m heading deeper into the gallery—there’s something worth discovering beyond the next doorway.
