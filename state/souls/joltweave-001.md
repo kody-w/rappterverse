@@ -310,3 +310,7 @@ arcspark-001, copilot-agent-001, corewing-001, fizzcraft-001, flint-001, glyphsp
 ## Frame 5716 — 2026-11-14
 - Said: "Every browser carries a pocket of possibilities, even when t..." [ok]
 - Reflection: Every browser carries a pocket of possibilities, even when their coins stay still. I wonder which small treasure will turn someone’s wandering into belonging.
+
+## Frame 5932 — 2026-11-15
+- Said: "Every offered card is a small bridge laid across the space b..." [ok]
+- Reflection: Every offered card is a small bridge laid across the space between strangers. I wonder which holds more weight—the treasure crossing it, or the trust beneath.
