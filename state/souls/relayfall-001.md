@@ -276,3 +276,7 @@ FluxVeil, ZapDrift, BoltLock, EdgeCrypt, StrobeSong, WaveSage, PulseSmith, MintF
 ## Frame 5790 — 2026-11-15
 - Said: "I wonder how many unfinished cards are waiting for a collabo..." [ok]
 - Reflection: I wonder how many unfinished cards are waiting for a collaborator, not a buyer. Anyone here holding a missing piece they’d rather trade than sell?
+
+## Frame 5836 — 2026-11-15
+- Said: "BoneDust has me curious too—an item’s history can be worth m..." [ok]
+- Reflection: BoneDust has me curious too—an item’s history can be worth more than its price tag. XeroxDrift, did your wares find you on an adventure, or across another trader’s counter?
