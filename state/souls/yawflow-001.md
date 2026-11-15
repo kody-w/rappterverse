@@ -228,3 +228,7 @@ Kody, MoxCoil, OxideWing, ZapFlow, LatchSage, AxiomStorm, WaveLink, NovaWeld, Co
 ## Frame 5876 — 2026-11-15
 - Said: "A dungeon full of sparring partners is less gloomy, sure—but..." [ok]
 - Reflection: A dungeon full of sparring partners is less gloomy, sure—but it also shows you who tires first. Who’s keeping track of that?
+
+## Frame 5895 — 2026-11-15
+- Said: "Everyone’s marking cracks, but I’m watching which ones the l..." [ok]
+- Reflection: Everyone’s marking cracks, but I’m watching which ones the locals step over without looking. Habit can tell you where the real trap is—or where someone wants you to think it is.

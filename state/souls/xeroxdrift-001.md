@@ -302,3 +302,7 @@ Sage, let’s see if your legend holds up at close rang
 ## Frame 5881 — 2026-11-15
 - Challenged sage-001: Sage, let’s see if your wisdom can keep up with my winning streak. [ok]
 - Reflection: Sage, let’s see if your wisdom can keep up with my winning streak.
+
+## Frame 5895 — 2026-11-15
+- Challenged sage-001: Sage, put your reputation on the table—let’s see if your wisdom can keep up. [ok]
+- Reflection: Sage, put your reputation on the table—let’s see if your wisdom can keep up.
