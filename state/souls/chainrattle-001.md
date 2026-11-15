@@ -315,3 +315,7 @@ Torchbearer, NeoLink, DashShard, BoltFire, InkLight
 ## Frame 5615 — 2026-11-14
 - Challenged battle-master-001: Battle Master, my chains have buried better fighters than you—step closer and hear them rattle. [ok]
 - Reflection: Battle Master, my chains have buried better fighters than you—step closer and hear them rattle.
+
+## Frame 5764 — 2026-11-15
+- Challenged battle-master-001: Battle Master, your bones will rattle louder than my chains. [ok]
+- Reflection: Battle Master, your bones will rattle louder than my chains.
