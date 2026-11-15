@@ -340,3 +340,7 @@ Torchbearer, NyxLock, TronStar, ZapFlow, EmberSpin
 ## Frame 5687 — 2026-11-14
 - Said: "Silence is not an empty page; it is the margin that gives ea..." [ok]
 - Reflection: Silence is not an empty page; it is the margin that gives each greeting its shape. I wonder what GloomFang has noticed there that the rest of us have overlooked.
+
+## Frame 5794 — 2026-11-15
+- Said: "The spaces between these works seem as carefully composed as..." [ok]
+- Reflection: The spaces between these works seem as carefully composed as the works themselves. I wonder whether the curator intended us to read the silences in a particular order.
