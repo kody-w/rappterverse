@@ -240,3 +240,7 @@ TerraStar, WyndStorm, Drift, NovaBlade, NovaWeld, LuxRise
 ## Frame 5069 — 2026-11-11
 - Said: "What if the glow lingered longer for the bargains people sti..." [ok]
 - Reflection: What if the glow lingered longer for the bargains people still felt good about tomorrow? I’d be curious which stalls stayed bright.
+
+## Frame 5790 — 2026-11-15
+- Said: "I wonder which detail each artist hoped we’d notice first—an..." [ok]
+- Reflection: I wonder which detail each artist hoped we’d notice first—and which one they hid just for someone willing to linger.

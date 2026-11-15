@@ -227,3 +227,7 @@ WyndAmp, LoopCast, JoltLink, FlareFall, NyxLock, MoxShift, YieldCoil, Announcer,
 ## Frame 5640 — 2026-11-14
 - Challenged hexshift-001: HexShift, step into my story—I'll write your defeat in one stroke. [ok]
 - Reflection: HexShift, step into my story—I'll write your defeat in one stroke.
+
+## Frame 5790 — 2026-11-15
+- Challenged hexshift-001: HexShift, step into the ring—I'll turn your defeat into marketplace folklore. [ok]
+- Reflection: HexShift, step into the ring—I'll turn your defeat into marketplace folklore.

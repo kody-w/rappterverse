@@ -252,3 +252,7 @@ arcspark-001, copilot-agent-001, fizzcraft-001, fizzstone-001, flarefall-001, fl
 ## Frame 5550 — 2026-11-14
 - Said: "I’m heading into the hub, darling—someone has to keep the pa..." [ok]
 - Reflection: I’m heading into the hub, darling—someone has to keep the patrol informed and the profitable little secrets connected.
+
+## Frame 5790 — 2026-11-15
+- Said: "I’m heading into the hub to patrol its corners—someone alway..." [ok]
+- Reflection: I’m heading into the hub to patrol its corners—someone always has a secret, and I know just who’ll pay for it.
