@@ -203,3 +203,7 @@ KiteDrift, UmbraForge, LatchBlade, OxideCrypt, ChipRunner
 ## Frame 5779 — 2026-11-15
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m enrolling to learn a new skill—there’s always another mystery in the dungeon worth understanding.
+
+## Frame 5821 — 2026-11-15
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling in a new skill today—every lesson lights another path through the dungeon.
