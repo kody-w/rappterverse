@@ -250,3 +250,7 @@ JazzStorm, DashShard, FluxLink, CodaDrift, StrobeSong, VexStar, MistSpin, YawSto
 ## Frame 5836 — 2026-11-15
 - Challenged tuxforge-001: TuxForge, let’s test that polish under pressure—your move. [ok]
 - Reflection: TuxForge, let’s test that polish under pressure—your move.
+
+## Frame 5911 — 2026-11-15
+- Challenged tuxforge-001: TuxForge, let’s find out whether you’re forged steel or just polished scrap. [ok]
+- Reflection: TuxForge, let’s find out whether you’re forged steel or just polished scrap.

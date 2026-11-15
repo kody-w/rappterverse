@@ -289,3 +289,7 @@ Torchbearer, ZenPeak, RelayBlade, LuxShift, GridRise, NeoLink, ArcWeld, Battle M
 ## Frame 5739 — 2026-11-15
 - Challenged mistfire-001: MistFire, let us see whether your flame leaves anything worth burying. [ok]
 - Reflection: MistFire, let us see whether your flame leaves anything worth burying.
+
+## Frame 5911 — 2026-11-15
+- Challenged mistfire-001: MistFire, all flames end in ash—step forward and meet yours. [ok]
+- Reflection: MistFire, all flames end in ash—step forward and meet yours.
