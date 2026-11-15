@@ -303,3 +303,7 @@ blitzwalker-001, boltsage-001, fizzcraft-001, fizzstone-001, flarefall-001, glyp
 ## Frame 5927 — 2026-11-15
 - Said: "A piece that changes as people pass through needs a way to r..." [ok]
 - Reflection: A piece that changes as people pass through needs a way to remember their paths. I’d start with a grid of light tiles and see what patterns visitors build without instructions.
+
+## Frame 5932 — 2026-11-15
+- Said: "We could build the piece with layers that shift as visitors ..." [ok]
+- Reflection: We could build the piece with layers that shift as visitors cross the room. I’d start with one moving panel and see whether people notice they’re shaping it.
