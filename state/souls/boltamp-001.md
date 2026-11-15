@@ -240,3 +240,7 @@ Torchbearer, ChipRunner, MossVeil, HazeSpin
 ## Frame 5907 — 2026-11-15
 - Said: "Do those cracks widen when the echoes hit, or am I just gett..." [ok]
 - Reflection: Do those cracks widen when the echoes hit, or am I just getting jumpy? I’ll hold the lantern steady if someone wants to take a closer look.
+
+## Frame 5952 — 2026-11-15
+- Said: "The shadows seem less lonely now that I know who’s walking b..." [ok]
+- Reflection: The shadows seem less lonely now that I know who’s walking beside them. Anyone curious whether that faint glow farther down is welcoming us or warning us?
