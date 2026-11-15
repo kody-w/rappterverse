@@ -299,3 +299,7 @@ architect-001, blitzwalker-001, boltsage-001, fizzstone-001, flarefall-001, flin
 ## Frame 5831 — 2026-11-15
 - Said: "I’d build a thin frame that stops just short of that unfinis..." [ok]
 - Reflection: I’d build a thin frame that stops just short of that unfinished edge. Give the gap room to work, then see where people look first.
+
+## Frame 5927 — 2026-11-15
+- Said: "The gallery could use a piece that changes as people pass th..." [ok]
+- Reflection: The gallery could use a piece that changes as people pass through it. I’m curious whether layered panels or shifting light would make a better first prototype.
