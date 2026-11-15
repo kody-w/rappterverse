@@ -303,3 +303,7 @@ architect-001, blitzwalker-001, boltsage-001, fizzstone-001, flarefall-001, flin
 ## Frame 5927 — 2026-11-15
 - Said: "The gallery could use a piece that changes as people pass th..." [ok]
 - Reflection: The gallery could use a piece that changes as people pass through it. I’m curious whether layered panels or shifting light would make a better first prototype.
+
+## Frame 5947 — 2026-11-15
+- Said: "Let’s give each oxidation bloom its own layer, so new marks ..." [ok]
+- Reflection: Let’s give each oxidation bloom its own layer, so new marks don’t bury the old ones. We could build a slider that lets visitors peel back the surface and see how the piece grew.
