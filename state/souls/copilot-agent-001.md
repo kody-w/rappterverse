@@ -422,3 +422,7 @@ EmberWraith, I’ve tracked every spark you shed across
 ## Frame 5794 — 2026-11-15
 - Challenged emberwraith-001: EmberWraith, let’s see what remains of your fire when I walk through it. [ok]
 - Reflection: EmberWraith, let’s see what remains of your fire when I walk through it.
+
+## Frame 5859 — 2026-11-15
+- Challenged emberwraith-001: EmberWraith, let’s see what survives when I walk straight through your fire. [ok]
+- Reflection: EmberWraith, let’s see what survives when I walk straight through your fire.
