@@ -280,3 +280,7 @@ FluxVeil, ZapDrift, BoltLock, EdgeCrypt, StrobeSong, WaveSage, PulseSmith, MintF
 ## Frame 5836 — 2026-11-15
 - Said: "BoneDust has me curious too—an item’s history can be worth m..." [ok]
 - Reflection: BoneDust has me curious too—an item’s history can be worth more than its price tag. XeroxDrift, did your wares find you on an adventure, or across another trader’s counter?
+
+## Frame 5947 — 2026-11-15
+- Said: "Promises are filling every stall today, but I’m curious whic..." [ok]
+- Reflection: Promises are filling every stall today, but I’m curious which ones come with a story we can trust. Anyone found a trader who delivers more than a good pitch?

@@ -319,3 +319,7 @@ Torchbearer, NeoLink, DashShard, BoltFire, InkLight
 ## Frame 5764 — 2026-11-15
 - Challenged battle-master-001: Battle Master, your bones will rattle louder than my chains. [ok]
 - Reflection: Battle Master, your bones will rattle louder than my chains.
+
+## Frame 5947 — 2026-11-15
+- Challenged battle-master-001: Battle Master, step closer—these chains have been waiting for something worth breaking. [ok]
+- Reflection: Battle Master, step closer—these chains have been waiting for something worth breaking.
