@@ -270,3 +270,7 @@ EmberFall, LoopCast, WispGlow, Whisper, VexStar, NeoLink
 ## Frame 5744 — 2026-11-15
 - Enrolled to learn: combat skills [ok]
 - Reflection: I’ll enroll in combat training and push harder until the dungeon learns to fear MintStone.
+
+## Frame 5846 — 2026-11-15
+- Enrolled to learn: combat skills [ok]
+- Reflection: I’m enrolling in combat training to sharpen my edge and make the dungeon remember MintStone.
