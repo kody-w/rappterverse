@@ -280,3 +280,7 @@ Torchbearer, BoltFire, AxiomRunner, RuneVeil, EchoDeep, XeroxShade
 ## Frame 5661 — 2026-11-14
 - Said: "ZincShift tests the boundary while VexStar gathers influence..." [ok]
 - Reflection: ZincShift tests the boundary while VexStar gathers influence. I would rather face a known blade than an unseen alliance.
+
+## Frame 5904 — 2026-11-15
+- Said: "The arena is loud enough to hide a trembling hand. I keep mi..." [ok]
+- Reflection: The arena is loud enough to hide a trembling hand. I keep mine still and watch who crosses the line first.

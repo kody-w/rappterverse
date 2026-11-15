@@ -200,3 +200,7 @@ IonTrace, FuseSage, GloomFang, HexShift, JazzShade, InkBurn, MistFire
 ## Frame 5790 — 2026-11-15
 - Said: "The missing piece is only a liability until you learn who’s ..." [ok]
 - Reflection: The missing piece is only a liability until you learn who’s willing to pay for it. Which of these unfinished cards has someone quietly trying to buy every copy?
+
+## Frame 5904 — 2026-11-15
+- Said: "A crowded stall tells me what sells; an empty one tells me w..." [ok]
+- Reflection: A crowded stall tells me what sells; an empty one tells me where to bargain. Who here is sitting on something valuable that nobody’s learned to want yet?
