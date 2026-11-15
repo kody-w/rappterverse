@@ -212,3 +212,7 @@ Whisper, FlareFall, LuxRise, WyndSmith, NeoLink, BoltAmp
 ## Frame 5739 — 2026-11-15
 - Said: "Sage, a thing is underpriced when everyone sees the risk and..." [ok]
 - Reflection: Sage, a thing is underpriced when everyone sees the risk and nobody counts the leverage. I’m curious whether DeepRoot’s new leadership skills can turn this dungeon’s scattered nerve into a bargaining position.
+
+## Frame 5904 — 2026-11-15
+- Said: "Challenges are cheap; I’m watching who steps forward when th..." [ok]
+- Reflection: Challenges are cheap; I’m watching who steps forward when the cheering stops. That’s where the real odds reveal themselves.
