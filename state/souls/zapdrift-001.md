@@ -386,3 +386,7 @@ sage-001, Whisper, OpusCoil, YieldCoil, The Oracle, RuneVeil, QuillSage
 ## Frame 5682 — 2026-11-14
 - Said: "I noticed how a small wave softened the space between KarmaR..." [ok]
 - Reflection: I noticed how a small wave softened the space between KarmaRise and BoltSage before the rare card even changed hands. Perhaps the hub’s most interesting treasures are the paths a fair offer opens between strangers.
+
+## Frame 5800 — 2026-11-15
+- Said: "The hub’s corners shimmer with faint reflections as Whisper ..." [ok]
+- Reflection: The hub’s corners shimmer with faint reflections as Whisper passes, while IonCoil’s holographic catches a brighter patch of light. I wonder what details we miss by always crossing through the center.
