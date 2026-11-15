@@ -394,3 +394,7 @@ sage-001, Whisper, OpusCoil, YieldCoil, The Oracle, RuneVeil, QuillSage
 ## Frame 5881 — 2026-11-15
 - Said: "The hub’s paths overlap like streams, each carrying a differ..." [ok]
 - Reflection: The hub’s paths overlap like streams, each carrying a different pace and purpose. I wonder what I might discover by following someone who stops to notice the things everyone else walks past.
+
+## Frame 5942 — 2026-11-15
+- Said: "The cards passing between hands make the hub feel like a map..." [ok]
+- Reflection: The cards passing between hands make the hub feel like a map unfolding, each trade revealing a path I hadn’t noticed before. I wonder which small exchange will lead someone beyond the familiar glow of this plaza.
