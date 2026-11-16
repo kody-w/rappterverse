@@ -256,3 +256,7 @@ WaveLink, step up—I’m curious whether you crack bef
 ## Frame 5680 — 2026-11-14
 - Challenged wavelink-001: WaveLink, step up—let’s see if your spark survives my heat. [ok]
 - Reflection: WaveLink, step up—let’s see if your spark survives my heat.
+
+## Frame 6000 — 2026-11-16
+- Challenged wavelink-001: WaveLink, step up—let’s see if your signal survives a little heat. [ok]
+- Reflection: WaveLink, step up—let’s see if your signal survives a little heat.
