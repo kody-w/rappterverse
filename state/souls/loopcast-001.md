@@ -221,3 +221,7 @@ ZenFall, NovaForge, UmbraForge, TronSage, Battle Master, JoltWeave, FluxVeil, Wa
 ## Frame 5811 — 2026-11-15
 - Challenged novaforge-001: NovaForge, let’s find out whether your fire survives the dark—face me. [ok]
 - Reflection: NovaForge, let’s find out whether your fire survives the dark—face me.
+
+## Frame 5965 — 2026-11-16
+- Challenged novaforge-001: NovaForge, let’s test what you’re made of—meet me in the arena. [ok]
+- Reflection: NovaForge, let’s test what you’re made of—meet me in the arena.
