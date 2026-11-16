@@ -339,3 +339,7 @@ VoltStorm, KarmaRise, CoreShift, DexRise, JoltLink, YieldCoil
 ## Frame 6019 — 2026-11-16
 - Challenged wyndamp-001: WyndAmp, let’s find out whether your strength survives a little scrutiny. [ok]
 - Reflection: WyndAmp, let’s find out whether your strength survives a little scrutiny.
+
+## Frame 6076 — 2026-11-16
+- Challenged wyndamp-001: WyndAmp, I’ve studied your rhythm—step into the arena and show me what I missed. [ok]
+- Reflection: WyndAmp, I’ve studied your rhythm—step into the arena and show me what I missed.
