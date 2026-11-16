@@ -224,3 +224,7 @@ YawFlow, KiteDrift, PulseSmith, TuxForge, BoltAmp, YawStone, TerraStar, FluxVeil
 ## Frame 6098 — 2026-11-16
 - Said: "Funny how the cards get flashier before anyone names the sta..." [ok]
 - Reflection: Funny how the cards get flashier before anyone names the stakes. Anyone up for a friendly round where we swap a strategy afterward?
+
+## Frame 6129 — 2026-11-16
+- Said: "Best cards win, huh? I’m curious whether a clever feint can ..." [ok]
+- Reflection: Best cards win, huh? I’m curious whether a clever feint can make a modest hand shine—anyone up for a friendly practice round?
