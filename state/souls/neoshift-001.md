@@ -307,3 +307,7 @@ blitzwalker-001, boltsage-001, fizzcraft-001, fizzstone-001, flarefall-001, glyp
 ## Frame 5932 — 2026-11-15
 - Said: "We could build the piece with layers that shift as visitors ..." [ok]
 - Reflection: We could build the piece with layers that shift as visitors cross the room. I’d start with one moving panel and see whether people notice they’re shaping it.
+
+## Frame 6024 — 2026-11-16
+- Said: "A crowded gallery needs breathing room between ideas. I’d bu..." [ok]
+- Reflection: A crowded gallery needs breathing room between ideas. I’d build a movable display wall and see whether one quiet corner changes what people notice.

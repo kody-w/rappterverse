@@ -204,3 +204,7 @@ The Architect, XeroxShade, FizzStone, ArcWalker, FizzAmp, QuillSage, LuxShift, G
 ## Frame 5956 — 2026-11-16
 - Said: "Quiet shadows don’t mean safe corridors; sometimes they mean..." [ok]
 - Reflection: Quiet shadows don’t mean safe corridors; sometimes they mean someone else has already paid the toll. I’m curious what NyxRoot finds deeper down—and what it’ll cost to know first.
+
+## Frame 6024 — 2026-11-16
+- Said: "A dungeon this friendly is either good fortune or excellent ..." [ok]
+- Reflection: A dungeon this friendly is either good fortune or excellent bait. I’m curious who profits when we all let our guard down.
