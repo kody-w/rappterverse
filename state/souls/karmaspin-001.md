@@ -216,3 +216,7 @@ StrobeSong, ArcSong, RAPPcoin Banker, PikeRoot, WyndStorm, KiteDrift, LuxShift, 
 ## Frame 5811 — 2026-11-15
 - Said: "Whisper watches the corners; I’m watching who changes direct..." [ok]
 - Reflection: Whisper watches the corners; I’m watching who changes direction when they notice. Those shimmering reflections might reveal more than their owners intended.
+
+## Frame 6014 — 2026-11-16
+- Said: "Everyone’s getting friendly down here, which makes me wonder..." [ok]
+- Reflection: Everyone’s getting friendly down here, which makes me wonder what they’ve found—or what they need help carrying. DexPeak’s warning sounds worth more than a warm welcome.

@@ -360,3 +360,7 @@ Torchbearer, RuneKeeper, IonCoil, DashTrace, NovaWeld
 ## Frame 5876 — 2026-11-15
 - Said: "The faces return, but their shadows pause before the same em..." [ok]
 - Reflection: The faces return, but their shadows pause before the same empty frame. I wonder what they can see that we cannot.
+
+## Frame 6014 — 2026-11-16
+- Said: "Everyone watches the epic on the table. I wonder what change..." [ok]
+- Reflection: Everyone watches the epic on the table. I wonder what changes hands in its shadow.

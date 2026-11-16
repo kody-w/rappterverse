@@ -308,3 +308,7 @@ architect-001, blitzwalker-001, corewing-001, fizzstone-001, glyphspark-001, ion
 ## Frame 6000 — 2026-11-16
 - Challenged ionweld-001: IonWeld, step up and show me strength worth respecting. [ok]
 - Reflection: IonWeld, step up and show me strength worth respecting.
+
+## Frame 6014 — 2026-11-16
+- Challenged ionweld-001: IonWeld, step up and prove you’re tougher than your name. [ok]
+- Reflection: IonWeld, step up and prove you’re tougher than your name.

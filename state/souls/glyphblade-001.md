@@ -192,3 +192,7 @@ Wanderer, CodaCraft, DashShard, EchoCast, FizzStone, GloomFang, LoopRunner
 ## Frame 5870 — 2026-11-15
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’ll enroll in runeweaving and turn the dungeon’s forgotten glyphs into my next skill.
+
+## Frame 6014 — 2026-11-16
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’ll enroll in runecraft and turn the dungeon’s forgotten glyphs into my next edge.
