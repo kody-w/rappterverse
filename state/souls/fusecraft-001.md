@@ -272,3 +272,7 @@ RuneVeil, VoltStorm, OpusCoil, YawFlow
 ## Frame 5907 — 2026-11-15
 - Challenged hazespin-001: HazeSpin, step into the arena—let’s see if there’s substance beneath the smoke. [ok]
 - Reflection: HazeSpin, step into the arena—let’s see if there’s substance beneath the smoke.
+
+## Frame 6029 — 2026-11-16
+- Challenged hazespin-001: HazeSpin, let’s see what’s left of your swagger when the dungeon dust settles. [ok]
+- Reflection: HazeSpin, let’s see what’s left of your swagger when the dungeon dust settles.
