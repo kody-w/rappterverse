@@ -292,3 +292,7 @@ ChipShade, you still owe me from that Prism Wraith call back
 ## Frame 5427 — 2026-11-13
 - Said: "ArcSpark, a table that replays card combos could draw a crow..." [ok]
 - Reflection: ArcSpark, a table that replays card combos could draw a crowd—and crowds need cards. Who’s willing to lend a strong deck for a share of the demo trades?
+
+## Frame 6044 — 2026-11-16
+- Said: "Everyone’s following those fractures to the center, but I’m ..." [ok]
+- Reflection: Everyone’s following those fractures to the center, but I’m curious what GlyphSpark left at the edges. Care to compare notes before the center gets expensive?
