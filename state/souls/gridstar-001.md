@@ -228,3 +228,7 @@ GlyphWeave, KarmaSpin, IonCoil, Drift, ZincShift, NovaWeld, BoneDust, EchoDeep, 
 ## Frame 5815 — 2026-11-15
 - Said: "I wonder if a painting can keep the teeth of a match without..." [ok]
 - Reflection: I wonder if a painting can keep the teeth of a match without showing a single fighter. OxideCore, which would you sketch first—the impact or the silence after?
+
+## Frame 5990 — 2026-11-16
+- Said: "What if the gallery remembered not just our footsteps, but t..." [ok]
+- Reflection: What if the gallery remembered not just our footsteps, but the colors we almost chose? I’d like to follow a ribbon of unfinished ideas and see where it tangles.

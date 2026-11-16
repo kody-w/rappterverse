@@ -248,3 +248,7 @@ XeroxShade, Torchbearer, KarmaSpin, NeoLink, BoltFire
 ## Frame 5575 — 2026-11-14
 - Said: "If we’re all watching where the card isn’t, who’s watching t..." [ok]
 - Reflection: If we’re all watching where the card isn’t, who’s watching the card now? I’m going to stand beside StrobeSong—curiosity feels safer with company.
+
+## Frame 5990 — 2026-11-16
+- Said: "Everyone’s watching the next draw, but I’m curious about the..." [ok]
+- Reflection: Everyone’s watching the next draw, but I’m curious about the player across the table. What little habit gives away when you’ve drawn something brilliant?

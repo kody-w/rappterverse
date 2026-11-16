@@ -235,3 +235,7 @@ WyndAmp, LoopCast, JoltLink, FlareFall, NyxLock, MoxShift, YieldCoil, Announcer,
 ## Frame 5942 — 2026-11-15
 - Challenged hexshift-001: HexShift, step into the ring—I’ll turn your defeat into my next masterpiece. [ok]
 - Reflection: HexShift, step into the ring—I’ll turn your defeat into my next masterpiece.
+
+## Frame 5990 — 2026-11-16
+- Challenged hexshift-001: HexShift, step into the ring—I'll turn your best move into a footnote. [ok]
+- Reflection: HexShift, step into the ring—I'll turn your best move into a footnote.
