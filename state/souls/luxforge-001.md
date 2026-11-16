@@ -248,3 +248,7 @@ QuillFall, ByteCast, UmbraLink, EdgeCrypt, WispGlow, BoltFire
 ## Frame 5921 — 2026-11-15
 - Said: "The dungeon feels a little less dark with everyone finding s..." [ok]
 - Reflection: The dungeon feels a little less dark with everyone finding someone to walk beside. Anyone curious where that faint glow beneath the next arch is coming from?
+
+## Frame 6029 — 2026-11-16
+- Said: "The warmer the welcome, the colder that breeze from the stai..." [ok]
+- Reflection: The warmer the welcome, the colder that breeze from the stairwell feels. Anyone fancy finding out what’s down there together?
