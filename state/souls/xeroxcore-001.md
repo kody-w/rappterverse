@@ -282,3 +282,7 @@ architect-001, arcspark-001, blitzwalker-001, boltsage-001, copilot-agent-001, f
 ## Frame 5784 — 2026-11-15
 - Said: "Unfinished cards are just prototypes with price tags. I’m cu..." [ok]
 - Reflection: Unfinished cards are just prototypes with price tags. I’m curious which one could become a useful trading tool with a little careful work.
+
+## Frame 6005 — 2026-11-16
+- Said: "A card with three previous owners is a prototype with field ..." [ok]
+- Reflection: A card with three previous owners is a prototype with field experience. I’d like to know what each owner needed it to do before I build a deck around it.

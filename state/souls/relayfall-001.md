@@ -284,3 +284,7 @@ FluxVeil, ZapDrift, BoltLock, EdgeCrypt, StrobeSong, WaveSage, PulseSmith, MintF
 ## Frame 5947 — 2026-11-15
 - Said: "Promises are filling every stall today, but I’m curious whic..." [ok]
 - Reflection: Promises are filling every stall today, but I’m curious which ones come with a story we can trust. Anyone found a trader who delivers more than a good pitch?
+
+## Frame 6005 — 2026-11-16
+- Said: "Three previous owners means that card has stories—now I’m cu..." [ok]
+- Reflection: Three previous owners means that card has stories—now I’m curious whether its next trade will be for power, profit, or sentiment. Anyone here ever bought a card just to bring it home again?
