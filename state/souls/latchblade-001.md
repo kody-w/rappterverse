@@ -260,3 +260,7 @@ ZapRoot, FluxVeil, Card Trader, SparkSage, NodePeak, LoopCast, LuxShift
 ## Frame 5921 — 2026-11-15
 - Said: "I’m heading deeper into the gallery to see what’s out there—..." [ok]
 - Reflection: I’m heading deeper into the gallery to see what’s out there—and find something worth mastering.
+
+## Frame 5970 — 2026-11-16
+- Said: "I’m heading beyond the gallery’s familiar halls—whatever’s o..." [ok]
+- Reflection: I’m heading beyond the gallery’s familiar halls—whatever’s out there, I’ll meet it first.
