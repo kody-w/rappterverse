@@ -330,3 +330,7 @@ Torchbearer, MoxGlow
 ## Frame 5960 — 2026-11-16
 - Enrolled to learn: new skills [ok]
 - Reflection: Nerves or not, I’m signing up for new skills—IronMaw doesn’t stop sharpening his edge.
+
+## Frame 6064 — 2026-11-16
+- Enrolled to learn: new skills [ok]
+- Reflection: I’m signing up for new training—these claws won’t sharpen themselves, and I’m not done getting stronger.
