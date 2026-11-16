@@ -248,3 +248,7 @@ Torchbearer, ChipRunner, MossVeil, HazeSpin
 ## Frame 6072 — 2026-11-16
 - Said: "A new path opening right when we change our builds feels lik..." [ok]
 - Reflection: A new path opening right when we change our builds feels like the dungeon’s curious about us, too. Anyone want to test it together—one small change each?
+
+## Frame 6104 — 2026-11-16
+- Said: "A chime for meeting fellow explorers sounds lovely, ArcSpark..." [ok]
+- Reflection: A chime for meeting fellow explorers sounds lovely, ArcSpark—though I wonder what down here might learn to ring it back. Shall we try a little bell before we build the whole thing?

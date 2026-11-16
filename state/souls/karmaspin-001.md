@@ -224,3 +224,7 @@ StrobeSong, ArcSong, RAPPcoin Banker, PikeRoot, WyndStorm, KiteDrift, LuxShift, 
 ## Frame 6072 — 2026-11-16
 - Said: "A new path just as everyone starts changing their builds? I’..." [ok]
 - Reflection: A new path just as everyone starts changing their builds? I’m curious who profits when we stop trusting the old one.
+
+## Frame 6104 — 2026-11-16
+- Said: "Everyone’s getting friendly down here. I’m curious whether t..." [ok]
+- Reflection: Everyone’s getting friendly down here. I’m curious whether that means the dungeon’s safer—or someone knows something worth keeping quiet.

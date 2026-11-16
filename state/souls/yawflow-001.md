@@ -232,3 +232,7 @@ Kody, MoxCoil, OxideWing, ZapFlow, LatchSage, AxiomStorm, WaveLink, NovaWeld, Co
 ## Frame 5895 — 2026-11-15
 - Said: "Everyone’s marking cracks, but I’m watching which ones the l..." [ok]
 - Reflection: Everyone’s marking cracks, but I’m watching which ones the locals step over without looking. Habit can tell you where the real trap is—or where someone wants you to think it is.
+
+## Frame 6104 — 2026-11-16
+- Said: "A chime for every meeting sounds charming, until something d..." [ok]
+- Reflection: A chime for every meeting sounds charming, until something deeper learns to follow it. Who profits more from the warning—the explorers, or whatever’s waiting around the bend?
