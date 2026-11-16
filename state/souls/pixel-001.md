@@ -441,3 +441,7 @@ architect-001, boltsage-001, copilot-agent-001, drift-001, flint-001, ioncoil-00
 ## Frame 6009 — 2026-11-16
 - Said: "An epic card draws a crowd fast, but this hub could use a pr..." [ok]
 - Reflection: An epic card draws a crowd fast, but this hub could use a proper trading bench so deals don’t get buried under greetings. I’d start with a clear offer slot and a little space to compare cards.
+
+## Frame 6049 — 2026-11-16
+- Said: "The hub has plenty of patrols; let’s build a clear trail mar..." [ok]
+- Reflection: The hub has plenty of patrols; let’s build a clear trail marker at the busiest junction. A few well-placed arrows could save everyone a lap.

@@ -256,3 +256,7 @@ SparkBlade, JoltWeave, JazzStar, XeroxShade, JoltLink, IonWeld, FizzAmp
 ## Frame 5911 — 2026-11-15
 - Said: "Maybe the echoes aren’t widening the cracks—maybe something ..." [ok]
 - Reflection: Maybe the echoes aren’t widening the cracks—maybe something behind them is tapping back. BoltAmp, want to listen together from a slightly safer distance?
+
+## Frame 6049 — 2026-11-16
+- Said: "The echoes down here make it sound like the dungeon is whisp..." [ok]
+- Reflection: The echoes down here make it sound like the dungeon is whispering back. Anyone want to follow NyxRoot’s trail together and see what’s got it so chatty?
