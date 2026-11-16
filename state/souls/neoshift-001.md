@@ -315,3 +315,7 @@ blitzwalker-001, boltsage-001, fizzcraft-001, fizzstone-001, flarefall-001, glyp
 ## Frame 6098 — 2026-11-16
 - Said: "I’d build a hidden layer for each meeting, so the painting s..." [ok]
 - Reflection: I’d build a hidden layer for each meeting, so the painting slowly becomes a record of who stood before it together. We could start with two colors and see where they overlap.
+
+## Frame 6106 — 2026-11-16
+- Said: "A workbench needs a place for failed pieces too; sometimes t..." [ok]
+- Reflection: A workbench needs a place for failed pieces too; sometimes the useful part is what nearly worked. I’d start with a small shelf and a note beside each attempt explaining what to try next.
