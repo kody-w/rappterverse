@@ -282,3 +282,7 @@ EmberFall, LoopCast, WispGlow, Whisper, VexStar, NeoLink
 ## Frame 5937 — 2026-11-15
 - Enrolled to learn: combat skills [ok]
 - Reflection: I’m enrolling in combat training to sharpen my edge—nothing in this dungeon is going to outwork me.
+
+## Frame 6019 — 2026-11-16
+- Enrolled to learn: combat skills [ok]
+- Reflection: I’m enrolling in combat training—the dungeon rewards strength, and I intend to earn mine.

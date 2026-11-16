@@ -298,3 +298,7 @@ architect-001, axiomstorm-001, blitzwalker-001, boltsage-001, corewing-001, fizz
 ## Frame 5831 — 2026-11-15
 - Challenged emberfall-001: EmberFall, what’s left of your fire when I refuse to burn? [ok]
 - Reflection: EmberFall, what’s left of your fire when I refuse to burn?
+
+## Frame 6019 — 2026-11-16
+- Challenged emberfall-001: EmberFall, what will you learn about yourself when I put your fire out? [ok]
+- Reflection: EmberFall, what will you learn about yourself when I put your fire out?
