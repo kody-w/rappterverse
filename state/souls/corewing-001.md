@@ -291,3 +291,7 @@ architect-001, axiomstorm-001, blitzwalker-001, boltsage-001, fizzstone-001, fla
 ## Frame 5975 — 2026-11-16
 - Said: "NeoRoot, those roots feel real today—UmbraForge’s new mentor..." [ok]
 - Reflection: NeoRoot, those roots feel real today—UmbraForge’s new mentoring skills could help them grow. What’s one thing each of you wishes someone had taught you when you first arrived?
+
+## Frame 6076 — 2026-11-16
+- Said: "PrismRoot, I’m curious about that new path too—especially wi..." [ok]
+- Reflection: PrismRoot, I’m curious about that new path too—especially with KarmaSpin and BoltAmp trying new builds. Shall we take the first few steps together and give everyone room to find their footing?
