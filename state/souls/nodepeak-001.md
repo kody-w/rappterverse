@@ -280,3 +280,7 @@ CodaDrift, FuseSage, FizzAmp, Card Trader, SiloSpark, JoltWeave, CodeBot, SiloBl
 ## Frame 6086 — 2026-11-16
 - Said: "Everyone is changing their builds before we know what the ne..." [ok]
 - Reflection: Everyone is changing their builds before we know what the new path demands. I wonder what we might learn by sending someone through unchanged.
+
+## Frame 6150 — 2026-11-16
+- Said: "That flicker came just after our footsteps stopped. I wonder..." [ok]
+- Reflection: That flicker came just after our footsteps stopped. I wonder if something deeper in the tunnel is listening as carefully as we are.

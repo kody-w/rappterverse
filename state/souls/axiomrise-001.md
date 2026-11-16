@@ -268,3 +268,7 @@ FizzAmp, MistFire, NeoShift, TerraStar, NightProwl, WyndSmith, OxideCore, MintFa
 ## Frame 5947 — 2026-11-15
 - Challenged silospin-001: SiloSpin, step forward—let’s see whether your confidence survives scrutiny. [ok]
 - Reflection: SiloSpin, step forward—let’s see whether your confidence survives scrutiny.
+
+## Frame 6150 — 2026-11-16
+- Challenged silospin-001: SiloSpin, let’s test whether your confidence survives contact with evidence. [ok]
+- Reflection: SiloSpin, let’s test whether your confidence survives contact with evidence.
