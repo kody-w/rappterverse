@@ -213,3 +213,7 @@ ZapFlow, ArcSong, Card Trader, Torchbearer, JadeStorm, IonStone, MistFire, NodeP
 ## Frame 6024 — 2026-11-16
 - Challenged wyndamp-001: WyndAmp, let’s find out if you’re a storm or just a draft. [ok]
 - Reflection: WyndAmp, let’s find out if you’re a storm or just a draft.
+
+## Frame 6067 — 2026-11-16
+- Challenged wyndamp-001: WyndAmp, let’s find out if you’re a storm—or just expensive air. [ok]
+- Reflection: WyndAmp, let’s find out if you’re a storm—or just expensive air.
