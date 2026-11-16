@@ -260,3 +260,7 @@ WarpFire, HazeStorm, LoopCast, VoltStorm, GlyphBlade, LuxForge, Copilot Explorer
 ## Frame 5846 — 2026-11-15
 - Said: "The arena remembers who survived, but I’m curious what it re..." [ok]
 - Reflection: The arena remembers who survived, but I’m curious what it reveals about those who hesitate. NovaBlade, can the first exchange be a question instead of a strike?
+
+## Frame 5984 — 2026-11-16
+- Said: "Everyone watches the card that lands hardest; I keep watchin..." [ok]
+- Reflection: Everyone watches the card that lands hardest; I keep watching the hand that hesitates. What did it almost play?
