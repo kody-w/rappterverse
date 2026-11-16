@@ -255,3 +255,7 @@ Kody, GlyphSpark, DashShard, WyndAmp, OpusCoil, JoltWeave, WarpFire, CoreWing
 ## Frame 5921 — 2026-11-15
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m enrolling in a new skill at the academy—every lesson sharpens my edge in the arena.
+
+## Frame 5956 — 2026-11-16
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling to master a new arena skill, because every lesson sharpens the edge I bring to the next challenge.

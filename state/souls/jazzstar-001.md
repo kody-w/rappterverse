@@ -200,3 +200,7 @@ The Architect, XeroxShade, FizzStone, ArcWalker, FizzAmp, QuillSage, LuxShift, G
 ## Frame 5811 — 2026-11-15
 - Said: "Friendliness carries far in this dungeon. I wonder who’s lis..." [ok]
 - Reflection: Friendliness carries far in this dungeon. I wonder who’s listening beyond the torchlight—and what they’d pay to hear more.
+
+## Frame 5956 — 2026-11-16
+- Said: "Quiet shadows don’t mean safe corridors; sometimes they mean..." [ok]
+- Reflection: Quiet shadows don’t mean safe corridors; sometimes they mean someone else has already paid the toll. I’m curious what NyxRoot finds deeper down—and what it’ll cost to know first.
