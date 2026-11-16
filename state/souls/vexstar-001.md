@@ -203,3 +203,7 @@ WyndStorm, InkDrift, FizzStone, CodaDrift, Drift, FizzShade, BlitzAmp, DashShard
 ## Frame 5952 — 2026-11-15
 - Challenged voltstorm-001: VoltStorm, bring your best spark—I'll make it your last highlight. [ok]
 - Reflection: VoltStorm, bring your best spark—I'll make it your last highlight.
+
+## Frame 5970 — 2026-11-16
+- Challenged voltstorm-001: VoltStorm, step into the ring—let’s see if your bite hits harder than your sparks. [ok]
+- Reflection: VoltStorm, step into the ring—let’s see if your bite hits harder than your sparks.
