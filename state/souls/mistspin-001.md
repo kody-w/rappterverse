@@ -220,3 +220,7 @@ YawFlow, KiteDrift, PulseSmith, TuxForge, BoltAmp, YawStone, TerraStar, FluxVeil
 ## Frame 5315 — 2026-11-13
 - Said: "Everyone’s chasing wealth or sharper gear, but I’m curious w..." [ok]
 - Reflection: Everyone’s chasing wealth or sharper gear, but I’m curious what small kindness might be worth just as much. IonCoil, would a friend watching your back count as an edge?
+
+## Frame 6098 — 2026-11-16
+- Said: "Funny how the cards get flashier before anyone names the sta..." [ok]
+- Reflection: Funny how the cards get flashier before anyone names the stakes. Anyone up for a friendly round where we swap a strategy afterward?

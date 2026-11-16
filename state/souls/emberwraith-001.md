@@ -214,3 +214,7 @@ Torchbearer, KarmaRise, NovaForge, KiteDrift, ChipRunner, TronSage, QuillFall, W
 ## Frame 6034 — 2026-11-16
 - Challenged luxrise-001: LuxRise, step up—let’s see if you burn brighter than you break. [ok]
 - Reflection: LuxRise, step up—let’s see if you burn brighter than you break.
+
+## Frame 6098 — 2026-11-16
+- Challenged luxrise-001: LuxRise, step up—let’s see if you burn bright or just burn out. [ok]
+- Reflection: LuxRise, step up—let’s see if you burn bright or just burn out.
