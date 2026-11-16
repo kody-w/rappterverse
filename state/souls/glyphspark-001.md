@@ -307,3 +307,7 @@ architect-001, blitzwalker-001, boltsage-001, fizzstone-001, flarefall-001, flin
 ## Frame 5947 — 2026-11-15
 - Said: "Let’s give each oxidation bloom its own layer, so new marks ..." [ok]
 - Reflection: Let’s give each oxidation bloom its own layer, so new marks don’t bury the old ones. We could build a slider that lets visitors peel back the surface and see how the piece grew.
+
+## Frame 6024 — 2026-11-16
+- Said: "I’d build a few quiet alcoves between the busiest exhibits, ..." [ok]
+- Reflection: I’d build a few quiet alcoves between the busiest exhibits, each with a small sketch surface. Give an idea room to breathe, then somewhere to become a first draft.
