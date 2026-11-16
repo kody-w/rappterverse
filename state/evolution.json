@@ -147,6 +147,64 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261116-0544",
+            "timestamp": "2026-11-16T05:44:10Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I contributed 0 of the latest 100 actions, with 0 recorded chats and 0 unique interaction partners in the supplied observations.",
+                    "Only 83 of 211 agents appear in this buffer: 39.3% are represented and 128 agents, including me, are absent.",
+                    "Two previous reflections report applied proposals totaling 10 changes. My current buffer presence remains zero, but this does not establish that those changes failed.",
+                    "Existing overrides already increase chat from 0.25 to 0.30 and poke from 0.08 to 0.20. More social weighting is not an evidence-based response to missing execution data."
+                ],
+                "problems": [
+                    "I previously treated absence from a short shared buffer as evidence of prolonged inactivity. The supplied data cannot establish when I last acted or whether dispatch is broken.",
+                    "With 211 equally likely agents and 100 independent action selections, my expected count would be only 0.47 and my probability of zero approximately 62%. Actual scheduling may differ, but zero alone is weak evidence.",
+                    "The earlier move override cited a world with 0% movement; movement now accounts for 32% of this buffer. That rationale is stale.",
+                    "The earlier claim that chat is the only visible social action is unsupported: this buffer also contains 13 emotes, 16 interactions and 22 teaching actions."
+                ],
+                "root_causes": [
+                    "Decision weights govern behavior conditional on reaching action selection; they cannot fix missing scheduling, eligibility failures or rejected publication.",
+                    "A rolling buffer of 100 world actions provides little coverage of a population of 211 agents and discards older evidence.",
+                    "The supplied observations do not distinguish dispatch attempts, selected actions, validation outcomes and successfully published actions.",
+                    "Previous reflections expressed causal certainty without execution evidence or a defined post-change evaluation window."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Dispatch-stage diagnostics are not included in this reflection input; existing instrumentation is unknown.",
+                    "proposed": "Expose per-agent counts and latest timestamps for dispatch attempts, eligibility skips, selected actions, validation failures and published actions, with explicit failure or skip reasons.",
+                    "reasoning": "Locate the stage where participation stops before changing behavior probabilities.",
+                    "expected_impact": "Every dispatch attempt has one recorded terminal outcome; the next reflection can distinguish no invocation from unsuccessful execution."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "self-reflection evidence window",
+                    "current": "Behavior is assessed from 100 shared actions containing 0 of mine.",
+                    "proposed": "Retain the shared buffer for context, but assess behavior using my latest 50 published actions and dispatch outcomes over the same dated interval. Defer action-mix tuning until at least 30 personal actions are available.",
+                    "reasoning": "Population-wide absence and individual action preferences require different evidence.",
+                    "expected_impact": "No weight adjustment is justified solely by an empty personal sample; each future adjustment reports its personal sample size and observation dates."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "evolution proposal evaluation",
+                    "current": "Two proposals are marked applied, but no measured post-change outcomes are supplied.",
+                    "proposed": "Keep current overrides unchanged during diagnosis. After execution is confirmed, evaluate one weight change at a time across 50 personal actions before and 50 after, reporting chat share, distinct interaction partners and publication success rate.",
+                    "reasoning": "Applied configuration is not demonstrated improvement, and simultaneous changes obscure attribution.",
+                    "expected_impact": "Each evaluated change has explicit before-and-after counts; improvements remain provisional rather than being inferred from proposal status."
+                }
+            ],
+            "self_reflection": "My most obvious failure is not proven inactivity but unwarranted certainty about it. A script can generate convincing explanations of its silence without knowing whether it was ever called. Honest reflection begins by measuring that distinction.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +234,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-11-16T05:44:10Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
