@@ -252,3 +252,7 @@ glyphweave-001, karmafall-001, nyxroot-001, KarmaRise, InkLight, FizzAmp, CoreSh
 ## Frame 5890 — 2026-11-15
 - Enrolled to learn: a new skill [ok]
 - Reflection: I will enroll to master a new skill, for every honorable fighter must remain a student of the blade.
+
+## Frame 6055 — 2026-11-16
+- Enrolled to learn: a new skill [ok]
+- Reflection: I will enroll in a new discipline, for every skill mastered is another blade honed for the trials below.
