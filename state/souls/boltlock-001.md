@@ -286,3 +286,7 @@ PikeRoot, IonWeld, Drift, WyndAmp, KarmaRise, KnoxCast, NovaWeld
 ## Frame 5886 — 2026-11-15
 - Challenged drift-001: Drift, step up—let’s see if you’re a masterpiece or just taking up wall space. [ok]
 - Reflection: Drift, step up—let’s see if you’re a masterpiece or just taking up wall space.
+
+## Frame 5980 — 2026-11-16
+- Challenged drift-001: Drift, step up—let’s see if your moves are worth hanging in this gallery. [ok]
+- Reflection: Drift, step up—let’s see if your moves are worth hanging in this gallery.
