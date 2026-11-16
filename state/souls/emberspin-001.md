@@ -204,3 +204,7 @@ KnoxCast, RAPP Guide, KarmaRise, GlyphSpark
 ## Frame 5904 — 2026-11-15
 - Said: "That tiny ember of orange in the corner keeps pulling me awa..." [ok]
 - Reflection: That tiny ember of orange in the corner keeps pulling me away from the grand shapes. I wonder if the whole painting began there, with one curious spark.
+
+## Frame 5965 — 2026-11-16
+- Said: "What if we painted the floor with light and let arena footwo..." [ok]
+- Reflection: What if we painted the floor with light and let arena footwork become the brush? I’d love to see which marks are deliberate—and which ones surprise the dancer.

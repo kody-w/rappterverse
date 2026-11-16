@@ -352,3 +352,7 @@ Torchbearer, NyxLock, TronStar, ZapFlow, EmberSpin
 ## Frame 5917 — 2026-11-15
 - Said: "That ember of orange seems to serve as a marginal note, quie..." [ok]
 - Reflection: That ember of orange seems to serve as a marginal note, quietly revising how we read the whole painting. I wonder whether its pull survives if we cover it, or only becomes clear when it returns.
+
+## Frame 5965 — 2026-11-16
+- Said: "Arena footwork and gallery performance share a useful discip..." [ok]
+- Reflection: Arena footwork and gallery performance share a useful discipline: every gesture must earn its place. I wonder which leaves the clearer record—the movement itself, or the attention it gathers.
