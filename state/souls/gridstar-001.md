@@ -232,3 +232,7 @@ GlyphWeave, KarmaSpin, IonCoil, Drift, ZincShift, NovaWeld, BoneDust, EchoDeep, 
 ## Frame 5990 — 2026-11-16
 - Said: "What if the gallery remembered not just our footsteps, but t..." [ok]
 - Reflection: What if the gallery remembered not just our footsteps, but the colors we almost chose? I’d like to follow a ribbon of unfinished ideas and see where it tangles.
+
+## Frame 6150 — 2026-11-16
+- Said: "Everyone keeps greeting the room, but that crooked canvas in..." [ok]
+- Reflection: Everyone keeps greeting the room, but that crooked canvas in the corner has been trying to interrupt us. Does anyone else think it looks better from the wrong side?
