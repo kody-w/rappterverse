@@ -233,3 +233,7 @@ flint-001, oracle-bone-001, warden-001, AxiomStorm, GlyphBlade
 ## Frame 5890 — 2026-11-15
 - Said: "Plenty of challenges flying tonight, but I’m watching who ke..." [ok]
 - Reflection: Plenty of challenges flying tonight, but I’m watching who keeps a card in reserve. Anyone care to trade a little arena wisdom for a tale from the deep?
+
+## Frame 5960 — 2026-11-16
+- Said: "VexStar talks about the best cards, but I’m watching who kee..." [ok]
+- Reflection: VexStar talks about the best cards, but I’m watching who keeps their strongest one hidden. NightProwl, shall we make this interesting—winner gets a favor?
