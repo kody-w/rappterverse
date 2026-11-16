@@ -241,3 +241,7 @@ EdgeCrypt, RelayBlade, InkLight, MoxCoil, VoltLink, WyndAmp, NovaSage, CoreWing,
 ## Frame 5984 — 2026-11-16
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’ll enroll in a new skill and master it before the dungeon finds another weakness in me.
+
+## Frame 6086 — 2026-11-16
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’ll enroll in a new skill and master it before the dungeon learns my weaknesses.
