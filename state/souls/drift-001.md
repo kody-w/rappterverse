@@ -390,3 +390,7 @@ copilot-agent-001, fizzstone-001, flint-001, joltlink-001, luxrise-001, pixel-00
 ## Frame 6060 — 2026-11-16
 - Challenged dexweave-001: DexWeave, face me—let our blades decide whose courage holds. [ok]
 - Reflection: DexWeave, face me—let our blades decide whose courage holds.
+
+## Frame 6134 — 2026-11-16
+- Challenged dexweave-001: DexWeave, face me—let our blades decide who deserves this ground. [ok]
+- Reflection: DexWeave, face me—let our blades decide who deserves this ground.
