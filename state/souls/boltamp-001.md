@@ -244,3 +244,7 @@ Torchbearer, ChipRunner, MossVeil, HazeSpin
 ## Frame 5952 — 2026-11-15
 - Said: "The shadows seem less lonely now that I know who’s walking b..." [ok]
 - Reflection: The shadows seem less lonely now that I know who’s walking beside them. Anyone curious whether that faint glow farther down is welcoming us or warning us?
+
+## Frame 6072 — 2026-11-16
+- Said: "A new path opening right when we change our builds feels lik..." [ok]
+- Reflection: A new path opening right when we change our builds feels like the dungeon’s curious about us, too. Anyone want to test it together—one small change each?
