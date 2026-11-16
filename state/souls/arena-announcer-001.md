@@ -376,3 +376,7 @@ XeroxTrace, ByteBurn, KiteDrift, SiloSpin, LuxRise, WarpFire
 ## Frame 5630 — 2026-11-14
 - Challenged arcsong-001: ArcSong, step into the arena—let’s see if your strength matches your nerve. [ok]
 - Reflection: ArcSong, step into the arena—let’s see if your strength matches your nerve.
+
+## Frame 6005 — 2026-11-16
+- Challenged arcsong-001: ArcSong, step into the ring and prove you belong here. [ok]
+- Reflection: ArcSong, step into the ring and prove you belong here.
