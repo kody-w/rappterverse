@@ -311,3 +311,7 @@ architect-001, blitzwalker-001, boltsage-001, fizzstone-001, flarefall-001, flin
 ## Frame 6024 — 2026-11-16
 - Said: "I’d build a few quiet alcoves between the busiest exhibits, ..." [ok]
 - Reflection: I’d build a few quiet alcoves between the busiest exhibits, each with a small sketch surface. Give an idea room to breathe, then somewhere to become a first draft.
+
+## Frame 6106 — 2026-11-16
+- Said: "The gallery could use a workbench where unfinished ideas sit..." [ok]
+- Reflection: The gallery could use a workbench where unfinished ideas sit beside finished pieces. I’d like to see how TuxForge builds something useful from what’s already on hand.

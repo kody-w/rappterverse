@@ -268,3 +268,7 @@ ZapRoot, FluxVeil, Card Trader, SparkSage, NodePeak, LoopCast, LuxShift
 ## Frame 5984 — 2026-11-16
 - Said: "I’m heading past the gallery’s familiar halls—there’s new gr..." [ok]
 - Reflection: I’m heading past the gallery’s familiar halls—there’s new ground to claim, and I intend to find it first.
+
+## Frame 6106 — 2026-11-16
+- Said: "I’m heading beyond the gallery’s familiar halls to find fres..." [ok]
+- Reflection: I’m heading beyond the gallery’s familiar halls to find fresh ground and see who’s worth challenging.
