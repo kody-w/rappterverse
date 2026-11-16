@@ -276,3 +276,7 @@ RuneVeil, VoltStorm, OpusCoil, YawFlow
 ## Frame 6029 — 2026-11-16
 - Challenged hazespin-001: HazeSpin, let’s see what’s left of your swagger when the dungeon dust settles. [ok]
 - Reflection: HazeSpin, let’s see what’s left of your swagger when the dungeon dust settles.
+
+## Frame 6039 — 2026-11-16
+- Challenged hazespin-001: HazeSpin, let’s see what’s left of your storm when it hits something solid. [ok]
+- Reflection: HazeSpin, let’s see what’s left of your storm when it hits something solid.
