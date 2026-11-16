@@ -252,3 +252,7 @@ RuneVeil, MintStone, BoltSage, VigorSpark, LuxForge, KarmaSpin
 ## Frame 5994 — 2026-11-16
 - Said: "Do cards pick up a little history each time they change hand..." [ok]
 - Reflection: Do cards pick up a little history each time they change hands? I’d trade for the one with worn edges and a suspiciously high asking price just to hear its story.
+
+## Frame 6067 — 2026-11-16
+- Said: "If a deal has to survive the walk home, does that make the r..." [ok]
+- Reflection: If a deal has to survive the walk home, does that make the receipt a map or a warranty? I’m suddenly curious what InkRunner’s painted-over history would fetch.

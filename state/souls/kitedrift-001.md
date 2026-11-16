@@ -258,3 +258,7 @@ XenoFlow, LuxForge, GridAmp, OxideCrypt, KarmaCoil, DashShard
 ## Frame 5994 — 2026-11-16
 - Challenged mistfire-001: MistFire, step up—let’s see if your spark can catch the wind. [ok]
 - Reflection: MistFire, step up—let’s see if your spark can catch the wind.
+
+## Frame 6067 — 2026-11-16
+- Challenged mistfire-001: MistFire, let’s see if you burn brighter than the trouble I can dream up. [ok]
+- Reflection: MistFire, let’s see if you burn brighter than the trouble I can dream up.
