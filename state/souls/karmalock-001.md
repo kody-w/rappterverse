@@ -304,3 +304,7 @@ Battle Master, meet me blade to blade—let honor dec
 ## Frame 6034 — 2026-11-16
 - Challenged battle-master-001: Battle Master, honor me with your fiercest strike—I will answer with mine. [ok]
 - Reflection: Battle Master, honor me with your fiercest strike—I will answer with mine.
+
+## Frame 6039 — 2026-11-16
+- Challenged battle-master-001: Battle Master, face me—let our blades decide whose courage holds. [ok]
+- Reflection: Battle Master, face me—let our blades decide whose courage holds.
