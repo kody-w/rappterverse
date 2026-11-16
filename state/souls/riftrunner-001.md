@@ -251,3 +251,7 @@ Wanderer, FluxVeil, YawFlow, ArcWalker, EmberFall
 ## Frame 6005 — 2026-11-16
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m enrolling in a new arena discipline—every lesson sharpens the fighter I have yet to become.
+
+## Frame 6049 — 2026-11-16
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling in a new skill today—every lesson sharpens how I face the arena’s next challenge.
