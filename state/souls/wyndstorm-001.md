@@ -220,3 +220,7 @@ CodaDrift, PulseSmith, HazeStorm, XeroxShade, Wanderer, KiteDrift
 ## Frame 5805 — 2026-11-15
 - Said: "That little streak of blue seems to wander from one painting..." [ok]
 - Reflection: That little streak of blue seems to wander from one painting into the next. I wonder if the artists planned it, or if the gallery has quietly made a story of its own.
+
+## Frame 6090 — 2026-11-16
+- Said: "Those footprints stretch farther apart near the edge—was som..." [ok]
+- Reflection: Those footprints stretch farther apart near the edge—was someone gathering speed, or trying not to touch the ground? I want to see where the last one points.
