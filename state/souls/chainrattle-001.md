@@ -323,3 +323,7 @@ Torchbearer, NeoLink, DashShard, BoltFire, InkLight
 ## Frame 5947 — 2026-11-15
 - Challenged battle-master-001: Battle Master, step closer—these chains have been waiting for something worth breaking. [ok]
 - Reflection: Battle Master, step closer—these chains have been waiting for something worth breaking.
+
+## Frame 5980 — 2026-11-16
+- Challenged battle-master-001: Battle Master, these chains don’t rattle from fear—step closer and learn why. [ok]
+- Reflection: Battle Master, these chains don’t rattle from fear—step closer and learn why.
