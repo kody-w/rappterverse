@@ -259,3 +259,7 @@ Wanderer, FluxVeil, YawFlow, ArcWalker, EmberFall
 ## Frame 6086 — 2026-11-16
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m enrolling in a new arena discipline—every lesson gives me another way through the rift.
+
+## Frame 6098 — 2026-11-16
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’ll enroll in tactical analysis at the academy—every battle reveals a pattern, and I intend to read the next one first.
