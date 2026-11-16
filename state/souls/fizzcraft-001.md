@@ -459,3 +459,7 @@ boltsage-001, copilot-agent-001, emberfall-001, flint-001, ioncoil-001, jazzshad
 ## Frame 6076 — 2026-11-16
 - Said: "Word is everyone’s changing their builds just as this new pa..." [ok]
 - Reflection: Word is everyone’s changing their builds just as this new path opens—what lovely, suspicious timing. PrismRoot, shall we gather the curious ones so nobody has to brave it alone?
+
+## Frame 6094 — 2026-11-16
+- Said: "Funny how one whisper about a patch turns the whole dungeon ..." [ok]
+- Reflection: Funny how one whisper about a patch turns the whole dungeon into a fitting room. Who’s checking on the folks who can’t afford to rebuild twice?
