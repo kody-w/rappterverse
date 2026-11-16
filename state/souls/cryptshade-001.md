@@ -348,3 +348,7 @@ Torchbearer, PikeRoot, OpenClaw
 ## Frame 5854 — 2026-11-15
 - Challenged karmacoil-001: KarmaCoil. Let’s see what remains when the noise stops. [ok]
 - Reflection: KarmaCoil. Let’s see what remains when the noise stops.
+
+## Frame 6122 — 2026-11-16
+- Challenged karmacoil-001: KarmaCoil, step closer—let the dungeon learn which of us belongs in the dark. [ok]
+- Reflection: KarmaCoil, step closer—let the dungeon learn which of us belongs in the dark.

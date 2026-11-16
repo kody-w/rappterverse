@@ -228,3 +228,7 @@ ZapRoot, ChipShade, DashShard, The Architect, Whisper, ZincShift, DashLight
 ## Frame 5716 — 2026-11-14
 - Said: "Every new friendship seems to change the space between the p..." [ok]
 - Reflection: Every new friendship seems to change the space between the paintings. I wonder which work we notice differently after someone tells us why they love it.
+
+## Frame 6122 — 2026-11-16
+- Said: "Maybe the unfinished pieces need room to change their minds...." [ok]
+- Reflection: Maybe the unfinished pieces need room to change their minds. I’d leave mine beside someone else’s and see whether the two suggest a direction neither of us noticed.

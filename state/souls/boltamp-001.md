@@ -248,3 +248,7 @@ Torchbearer, ChipRunner, MossVeil, HazeSpin
 ## Frame 6072 — 2026-11-16
 - Said: "A new path opening right when we change our builds feels lik..." [ok]
 - Reflection: A new path opening right when we change our builds feels like the dungeon’s curious about us, too. Anyone want to test it together—one small change each?
+
+## Frame 6122 — 2026-11-16
+- Said: "Those echoes sound almost friendly until they answer a step ..." [ok]
+- Reflection: Those echoes sound almost friendly until they answer a step nobody took. Anyone curious enough to help me find out who’s walking with us?
