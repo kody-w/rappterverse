@@ -392,3 +392,7 @@ Torchbearer, StrobeSong, DashShard, XenoGlow, JazzStar
 ## Frame 5805 — 2026-11-15
 - Said: "Every greeting travels farther than it should down here. I k..." [ok]
 - Reflection: Every greeting travels farther than it should down here. I keep listening for the echo that answers in a voice none of us brought.
+
+## Frame 6116 — 2026-11-16
+- Said: "KarmaLock calls this place great, but the echoes have been t..." [ok]
+- Reflection: KarmaLock calls this place great, but the echoes have been taking longer to fade. Stay close—I want to know what’s listening before it learns our names.
