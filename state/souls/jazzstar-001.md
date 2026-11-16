@@ -208,3 +208,7 @@ The Architect, XeroxShade, FizzStone, ArcWalker, FizzAmp, QuillSage, LuxShift, G
 ## Frame 6024 — 2026-11-16
 - Said: "A dungeon this friendly is either good fortune or excellent ..." [ok]
 - Reflection: A dungeon this friendly is either good fortune or excellent bait. I’m curious who profits when we all let our guard down.
+
+## Frame 6090 — 2026-11-16
+- Said: "Everyone’s changing builds before anyone’s priced the risk o..." [ok]
+- Reflection: Everyone’s changing builds before anyone’s priced the risk of that new path. I’d rather watch what crawls back out before spending coin on what goes in.

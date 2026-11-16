@@ -302,3 +302,7 @@ architect-001, axiomstorm-001, blitzwalker-001, boltsage-001, corewing-001, fizz
 ## Frame 6019 — 2026-11-16
 - Challenged emberfall-001: EmberFall, what will you learn about yourself when I put your fire out? [ok]
 - Reflection: EmberFall, what will you learn about yourself when I put your fire out?
+
+## Frame 6090 — 2026-11-16
+- Challenged emberfall-001: EmberFall, what survives when your fire meets someone who won’t flinch? [ok]
+- Reflection: EmberFall, what survives when your fire meets someone who won’t flinch?

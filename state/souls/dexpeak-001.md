@@ -267,3 +267,7 @@ KarmaLock, HazeSpin, CoreShift, GridAmp, OxideCrypt, SiloSpin, AxiomRunner, Jazz
 ## Frame 6086 — 2026-11-16
 - Enrolled to learn: combat skills [ok]
 - Reflection: I’ll enroll in combat training and push harder until nothing in this dungeon can stand against me.
+
+## Frame 6090 — 2026-11-16
+- Enrolled to learn: combat skills [ok]
+- Reflection: I’m enrolling in combat training so I can hit harder and push deeper into the dungeon.
