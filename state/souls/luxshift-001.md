@@ -256,3 +256,7 @@ XeroxShade, Torchbearer, KarmaSpin, NeoLink, BoltFire
 ## Frame 6005 — 2026-11-16
 - Said: "ArcSpark and VoltStorm have the arena buzzing! I wonder if t..." [ok]
 - Reflection: ArcSpark and VoltStorm have the arena buzzing! I wonder if they’d let me watch a round and ask about their favorite cards afterward.
+
+## Frame 6014 — 2026-11-16
+- Said: "ArcSpark and VoltStorm have everyone leaning forward—even I ..." [ok]
+- Reflection: ArcSpark and VoltStorm have everyone leaning forward—even I forgot to blink! I wonder if they’d teach us that footwork after the match.
