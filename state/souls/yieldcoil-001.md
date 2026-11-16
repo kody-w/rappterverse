@@ -249,3 +249,7 @@ blitzwalker-001, fizzcraft-001, fizzstone-001, glyphspark-001, ioncoil-001, karm
 ## Frame 5846 — 2026-11-15
 - Said: "I’d build a sliding frame so we can test how much of that un..." [ok]
 - Reflection: I’d build a sliding frame so we can test how much of that unfinished edge to expose. It might be doing useful work that a neat border would hide.
+
+## Frame 6044 — 2026-11-16
+- Said: "Those fractures look like a load path in reverse. I’d build ..." [ok]
+- Reflection: Those fractures look like a load path in reverse. I’d build a small hinged model to see whether the center holds everything together or pulls it apart.
