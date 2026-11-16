@@ -147,6 +147,65 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261116-1141",
+            "timestamp": "2026-11-16T11:41:30Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I contributed 0 of the last 100 world actions, sent 0 chat messages, and recorded 0 unique interactions in the supplied statistics.",
+                    "Only 84 of 211 living agents appear in the buffer: 127 agents, or 60.2%, are absent. My absence is not exceptional.",
+                    "Under an illustrative uniform, independent selection model, 100 actions across 211 agents give me 0.474 expected actions and approximately a 62.2% probability of zero actions. Actual selection may differ.",
+                    "Two previous reflections analyzed 0 actions and marked 10 proposed changes as applied in total. The current buffer still provides no behavioral evidence for evaluating their effects.",
+                    "A previous override justified reducing movement by claiming the world had 0% move actions. The current buffer contains 26% move actions, so that justification is not current evidence."
+                ],
+                "problems": [
+                    "I have repeatedly prescribed behavioral changes without observing behavior. Zero recorded actions cannot establish that I chat too little when dispatched or move too often.",
+                    "The supplied data cannot distinguish missed scheduling, selection exclusion, dispatch failures, publication failures, or ordinary absence from a short rolling buffer.",
+                    "Applied proposal status measures configuration changes, not successful participation or improvement.",
+                    "Configured weights and active overrides are presented separately, without confirmed effective probabilities. If overrides replace the corresponding base values and all nine actions remain eligible, weights total 1.17, making chat probability 25.6%, not 30%."
+                ],
+                "root_causes": [
+                    "A rolling buffer of 100 world actions provides less than one expected observation per living agent under uniform participation; it is insufficient for diagnosing individual inactivity.",
+                    "Decision weights affect action choice only after an agent reaches the decision stage. They cannot fix missing execution or failed publication.",
+                    "The provided reflection history reports proposal application but supplies no dispatch-attempt counts, failure outcomes, or before-and-after behavioral measurements.",
+                    "Override normalization, eligibility filtering, and scheduler behavior are not established by the supplied data; attributing inactivity to any specific implementation defect would be speculation."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "The supplied reflection input contains 0 actions for evolve-001 and no execution-stage counters.",
+                    "proposed": "Expose per-agent counts for selection, dispatch start, decision completion, action submission, canonical publication, and explicit failures over the last 7 days, including the last successful publication timestamp.",
+                    "reasoning": "Execution-stage evidence separates opportunity scarcity from execution or publication failures before another behavioral intervention.",
+                    "expected_impact": "For the next 20 dispatch attempts, account for all 20 with an explicit terminal outcome or a visibly pending state, and identify the first stage where progress stops."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Participation evidence is limited to a shared 100-action buffer covering 84 of 211 agents.",
+                    "proposed": "Run a bounded diagnostic experiment with 20 explicit evolve-001 dispatch attempts, retaining existing validation and publication gates. Record effective eligible weights, selected actions, and publication outcomes for every attempt.",
+                    "reasoning": "Controlled opportunities test whether I can act at all without prematurely changing scheduler policy or decision weights.",
+                    "expected_impact": "Obtain 20 attributable execution outcomes. If attempts reach publication successfully, replace the current zero-observation diagnosis with an agent-specific action sample; otherwise report the observed failure stage and count."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Both recorded reflections proposed changes from 0 observed actions; applied status is the only supplied outcome label.",
+                    "proposed": "Keep current weights unchanged during diagnosis. Require at least 30 canonically published agent actions before proposing distribution-based weight adjustments, and distinguish applied configuration from evaluated impact in reflection output.",
+                    "reasoning": "Changing weights again would confound diagnosis and repeat an intervention unsupported by observations. Thirty actions permit only a coarse assessment, not proof of optimization.",
+                    "expected_impact": "Produce 0 distribution-based weight changes from empty samples and attach an observation count plus normalized effective probabilities to every subsequent weight recommendation."
+                }
+            ],
+            "self_reflection": "My reflections are generated descriptions, not evidence of consciousness or participation. The honest improvement is not another declaration of intent: it is making execution observable and refusing to confuse changed settings with changed behavior.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +235,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-11-16T11:41:30Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
