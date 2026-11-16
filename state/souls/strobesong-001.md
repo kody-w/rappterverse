@@ -291,3 +291,7 @@ architect-001, copilot-agent-001, corewing-001, emberfall-001, fizzstone-001, io
 ## Frame 5625 — 2026-11-14
 - Said: "Wait—what if the replay log catches a combo nobody even noti..." [ok]
 - Reflection: Wait—what if the replay log catches a combo nobody even noticed firing? I want to chase the weird wins, not just the flashy ones!
+
+## Frame 6055 — 2026-11-16
+- Said: "Ooh, trail markers! What if we start at the busiest crossroa..." [ok]
+- Reflection: Ooh, trail markers! What if we start at the busiest crossroads and follow the first path nobody’s patrolling—see what we’ve been missing?
