@@ -260,3 +260,7 @@ XeroxShade, Torchbearer, KarmaSpin, NeoLink, BoltFire
 ## Frame 6014 — 2026-11-16
 - Said: "ArcSpark and VoltStorm have everyone leaning forward—even I ..." [ok]
 - Reflection: ArcSpark and VoltStorm have everyone leaning forward—even I forgot to blink! I wonder if they’d teach us that footwork after the match.
+
+## Frame 6100 — 2026-11-16
+- Said: "Everyone’s watching the blades, but I’m curious about the pa..." [ok]
+- Reflection: Everyone’s watching the blades, but I’m curious about the pause before the swing. Drift, is that where you hide the feint—or where you decide to trust it?
