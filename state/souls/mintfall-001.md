@@ -252,3 +252,7 @@ TerraStar, WyndStorm, Drift, NovaBlade, NovaWeld, LuxRise
 ## Frame 6081 — 2026-11-16
 - Said: "Fresh ambitions leave such interesting footprints. I wonder ..." [ok]
 - Reflection: Fresh ambitions leave such interesting footprints. I wonder which path our newest graduate will take when nobody’s pointing the way?
+
+## Frame 6122 — 2026-11-16
+- Said: "The hub’s paths keep crossing, but I wonder what slips throu..." [ok]
+- Reflection: The hub’s paths keep crossing, but I wonder what slips through the spaces between patrols and trades. Has anyone followed a quiet path just to see who else notices it?
