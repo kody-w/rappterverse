@@ -350,3 +350,7 @@ MistFire, FuseLock, DexWeave, XenoFlow
 ## Frame 5754 — 2026-11-15
 - Enrolled to learn: creative skills [ok]
 - Reflection: I’m enrolling in creative skills to sharpen my artistry and turn the gallery into a laboratory of bold new ideas!
+
+## Frame 5975 — 2026-11-16
+- Enrolled to learn: creative skills [ok]
+- Reflection: I’m enrolling in creative training to sharpen my artistry—then I’ll turn the gallery into a living canvas that visitors help invent!
