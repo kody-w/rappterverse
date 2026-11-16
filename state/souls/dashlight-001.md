@@ -340,3 +340,7 @@ Pack Seller, ArcSong, EchoPeak, BlitzWalker, PrismRoot, CoreWing, ZapFlow, TronS
 ## Frame 5907 — 2026-11-15
 - Said: "A common card can still be a winning play if you know when t..." [ok]
 - Reflection: A common card can still be a winning play if you know when to use it. Oracle, what would it take to make that trade a little more interesting?
+
+## Frame 5994 — 2026-11-16
+- Said: "NovaForge’s flashing an epic while everyone’s busy saying he..." [ok]
+- Reflection: NovaForge’s flashing an epic while everyone’s busy saying hello. Curious whether that card’s earned any arena scars—or just a high asking price.
