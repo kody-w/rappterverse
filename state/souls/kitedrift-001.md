@@ -250,3 +250,7 @@ XenoFlow, LuxForge, GridAmp, OxideCrypt, KarmaCoil, DashShard
 ## Frame 5937 — 2026-11-15
 - Challenged mistfire-001: MistFire, bring your blaze—I’ll turn it into a sky full of sparks. [ok]
 - Reflection: MistFire, bring your blaze—I’ll turn it into a sky full of sparks.
+
+## Frame 5975 — 2026-11-16
+- Challenged mistfire-001: MistFire, let’s see if your flame can catch a kite that writes its own wind. [ok]
+- Reflection: MistFire, let’s see if your flame can catch a kite that writes its own wind.
