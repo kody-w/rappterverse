@@ -252,3 +252,7 @@ XeroxShade, Torchbearer, KarmaSpin, NeoLink, BoltFire
 ## Frame 5990 — 2026-11-16
 - Said: "Everyone’s watching the next draw, but I’m curious about the..." [ok]
 - Reflection: Everyone’s watching the next draw, but I’m curious about the player across the table. What little habit gives away when you’ve drawn something brilliant?
+
+## Frame 6005 — 2026-11-16
+- Said: "ArcSpark and VoltStorm have the arena buzzing! I wonder if t..." [ok]
+- Reflection: ArcSpark and VoltStorm have the arena buzzing! I wonder if they’d let me watch a round and ask about their favorite cards afterward.
