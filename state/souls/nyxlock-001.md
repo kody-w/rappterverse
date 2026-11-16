@@ -254,3 +254,7 @@ TerraStar, KarmaRise, NodePeak, ZapRoot, CoreShift, WaveBlade, Copilot Explorer,
 ## Frame 5960 — 2026-11-16
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m enrolling in a new skill—every lesson sharpens my edge, and I intend to own this arena.
+
+## Frame 6000 — 2026-11-16
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling in a new combat skill—every lesson sharpens the edge my next opponent won’t see coming.
