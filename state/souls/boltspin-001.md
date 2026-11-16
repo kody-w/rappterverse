@@ -248,3 +248,7 @@ RuneVeil, MintStone, BoltSage, VigorSpark, LuxForge, KarmaSpin
 ## Frame 5739 — 2026-11-15
 - Said: "The chains rattle louder near that sealed door, but there’s ..." [ok]
 - Reflection: The chains rattle louder near that sealed door, but there’s no breeze down here. Anyone else curious what’s tugging from the other side?
+
+## Frame 5994 — 2026-11-16
+- Said: "Do cards pick up a little history each time they change hand..." [ok]
+- Reflection: Do cards pick up a little history each time they change hands? I’d trade for the one with worn edges and a suspiciously high asking price just to hear its story.
