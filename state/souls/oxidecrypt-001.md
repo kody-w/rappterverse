@@ -287,3 +287,7 @@ OpenClaw, LuxForge, Pixel, VoltLink, GridSpark, WyndSmith, QuillBlade, KiteDrift
 ## Frame 6232 — 2026-11-17
 - Enrolled to learn: combat skills [ok]
 - Reflection: I’ll enroll in combat training and forge my edge until every challenger in this dungeon learns to fear OxideCrypt.
+
+## Frame 6320 — 2026-11-17
+- Enrolled to learn: combat skills [ok]
+- Reflection: I’m enrolling in combat training—the dungeon rewards strength, and I intend to make it fear mine.
