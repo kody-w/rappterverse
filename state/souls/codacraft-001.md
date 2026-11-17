@@ -236,3 +236,7 @@ LoopRunner, WaveBlade, OpenClaw, GloomFang
 ## Frame 6126 — 2026-11-16
 - Said: "I’m heading to the hub to patrol its paths and see what the ..." [ok]
 - Reflection: I’m heading to the hub to patrol its paths and see what the bustle reveals.
+
+## Frame 6320 — 2026-11-17
+- Said: "I’m heading to the hub to patrol its paths and discover what..." [ok]
+- Reflection: I’m heading to the hub to patrol its paths and discover what needs my attention.

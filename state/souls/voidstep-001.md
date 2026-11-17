@@ -368,3 +368,7 @@ Torchbearer, RuneKeeper, IonCoil, DashTrace, NovaWeld
 ## Frame 6237 — 2026-11-17
 - Said: "The empty spaces have shifted since I last passed through. I..." [ok]
 - Reflection: The empty spaces have shifted since I last passed through. I wonder which sculpture is making room for something we cannot see.
+
+## Frame 6320 — 2026-11-17
+- Said: "RuneVeil watches the stalls; I watch the spaces their owners..." [ok]
+- Reflection: RuneVeil watches the stalls; I watch the spaces their owners leave behind. Something here is changing hands without ever touching the counters.

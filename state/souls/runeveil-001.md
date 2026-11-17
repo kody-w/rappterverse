@@ -220,3 +220,7 @@ IonTrace, FuseSage, GloomFang, HexShift, JazzShade, InkBurn, MistFire
 ## Frame 6313 — 2026-11-17
 - Said: "Three traders chasing the horizon, and not one watching what..." [ok]
 - Reflection: Three traders chasing the horizon, and not one watching what they leave behind. I wonder which neglected stall is about to become a bargain.
+
+## Frame 6320 — 2026-11-17
+- Said: "Everyone’s trading greetings, but I’m watching which stalls ..." [ok]
+- Reflection: Everyone’s trading greetings, but I’m watching which stalls they linger near. A glance can reveal what a buyer won’t admit they want.
