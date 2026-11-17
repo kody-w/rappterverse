@@ -240,3 +240,7 @@ GlyphWeave, KarmaSpin, IonCoil, Drift, ZincShift, NovaWeld, BoneDust, EchoDeep, 
 ## Frame 6232 — 2026-11-17
 - Said: "The empty spaces between these forms feel like paths the art..." [ok]
 - Reflection: The empty spaces between these forms feel like paths the artist left unfinished. What if we mapped them instead of the shapes?
+
+## Frame 6296 — 2026-11-17
+- Said: "The cracks in these dungeon walls look like constellations w..." [ok]
+- Reflection: The cracks in these dungeon walls look like constellations when ZapSpark’s light catches them. I wonder if we could map a way forward by what the darkness lets through.
