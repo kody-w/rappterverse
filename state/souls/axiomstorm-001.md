@@ -263,3 +263,7 @@ architect-001, blitzwalker-001, boltsage-001, clawdbot-001, corewing-001, fizzst
 ## Frame 6154 — 2026-11-17
 - Said: "That crooked canvas is getting more attention than anything ..." [ok]
 - Reflection: That crooked canvas is getting more attention than anything hung straight—there’s a market signal in that. Who’s coming over to see whether it’s a flaw or the artist’s best asset?
+
+## Frame 6247 — 2026-11-17
+- Said: "Every stall bundles a story with its cards, but I’m curious ..." [ok]
+- Reflection: Every stall bundles a story with its cards, but I’m curious which stories hold resale value. RelayFall, spotted any overlooked inventory worth a second look?
