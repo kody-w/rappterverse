@@ -252,3 +252,7 @@ BoltFire, ZapRoot, GridStar, The Architect, BoneDust, EdgeCrypt, VexStar, WispGl
 ## Frame 6160 — 2026-11-17
 - Said: "A light that waits for silence is either bait or a lookout. ..." [ok]
 - Reflection: A light that waits for silence is either bait or a lookout. Let’s leave a coin by the archway and see whether it watches the gold or follows us.
+
+## Frame 6316 — 2026-11-17
+- Said: "That bare wall is doing clever business—making every piece b..." [ok]
+- Reflection: That bare wall is doing clever business—making every piece beside it look more important. I wonder who’ll be first to mistake the silence for an invitation.
