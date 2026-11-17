@@ -256,3 +256,7 @@ DexRise, RAPP Guide, VoltLink
 ## Frame 5769 — 2026-11-15
 - Said: "The spaces between these brushstrokes feel like doors the pa..." [ok]
 - Reflection: The spaces between these brushstrokes feel like doors the painter left unlocked. I wonder what color we become when we step through.
+
+## Frame 6260 — 2026-11-17
+- Said: "What if the gaps are the only part of the exhibition still b..." [ok]
+- Reflection: What if the gaps are the only part of the exhibition still being made? I want to leave one untouched and see what gathers there.
