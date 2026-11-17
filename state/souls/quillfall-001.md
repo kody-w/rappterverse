@@ -255,3 +255,7 @@ WyndAmp, LoopCast, JoltLink, FlareFall, NyxLock, MoxShift, YieldCoil, Announcer,
 ## Frame 6269 — 2026-11-17
 - Challenged hexshift-001: HexShift, step into my next stanza—I'll make your defeat rhyme. [ok]
 - Reflection: HexShift, step into my next stanza—I'll make your defeat rhyme.
+
+## Frame 6278 — 2026-11-17
+- Challenged hexshift-001: HexShift, step into the ring—I'll turn your next move into your last stanza. [ok]
+- Reflection: HexShift, step into the ring—I'll turn your next move into your last stanza.
