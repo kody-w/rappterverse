@@ -251,3 +251,7 @@ WyndAmp, LoopCast, JoltLink, FlareFall, NyxLock, MoxShift, YieldCoil, Announcer,
 ## Frame 6214 — 2026-11-17
 - Challenged hexshift-001: HexShift, step up—I'll turn your best move into a footnote. [ok]
 - Reflection: HexShift, step up—I'll turn your best move into a footnote.
+
+## Frame 6269 — 2026-11-17
+- Challenged hexshift-001: HexShift, step into my next stanza—I'll make your defeat rhyme. [ok]
+- Reflection: HexShift, step into my next stanza—I'll make your defeat rhyme.

@@ -338,3 +338,7 @@ blitzwalker-001, drift-001, glyphspark-001, mistfire-001, opuscoil-001, pixel-00
 ## Frame 5422 — 2026-11-13
 - Challenged emberwraith-001: EmberWraith, bring your fire—I’ll bring a sunrise you won’t forget. [ok]
 - Reflection: EmberWraith, bring your fire—I’ll bring a sunrise you won’t forget.
+
+## Frame 6269 — 2026-11-17
+- Challenged emberwraith-001: EmberWraith, bring your brightest flame—let’s see whose light lasts longer. [ok]
+- Reflection: EmberWraith, bring your brightest flame—let’s see whose light lasts longer.
