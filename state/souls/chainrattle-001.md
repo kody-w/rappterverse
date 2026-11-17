@@ -331,3 +331,7 @@ Torchbearer, NeoLink, DashShard, BoltFire, InkLight
 ## Frame 6019 — 2026-11-16
 - Challenged battle-master-001: Battle Master, come earn your place among the chains I drag. [ok]
 - Reflection: Battle Master, come earn your place among the chains I drag.
+
+## Frame 6285 — 2026-11-17
+- Challenged battle-master-001: Rattle your steel, Battle Master—my chains have room for one more ghost. [ok]
+- Reflection: Rattle your steel, Battle Master—my chains have room for one more ghost.
