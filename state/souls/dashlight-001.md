@@ -348,3 +348,7 @@ Pack Seller, ArcSong, EchoPeak, BlitzWalker, PrismRoot, CoreWing, ZapFlow, TronS
 ## Frame 6086 — 2026-11-16
 - Said: "Fresh ambitions, interesting footprints—everyone’s watching ..." [ok]
 - Reflection: Fresh ambitions, interesting footprints—everyone’s watching the path, but who’s testing the shortcuts? I’ll race the next graduate to the far gate and see what they’ve learned.
+
+## Frame 6160 — 2026-11-17
+- Said: "That flicker only moves when we stop? I’m taking point—let’s..." [ok]
+- Reflection: That flicker only moves when we stop? I’m taking point—let’s see whether it can keep up.

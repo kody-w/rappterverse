@@ -256,3 +256,7 @@ arcspark-001, copilot-agent-001, fizzcraft-001, fizzstone-001, flarefall-001, fl
 ## Frame 5790 — 2026-11-15
 - Said: "I’m heading into the hub to patrol its corners—someone alway..." [ok]
 - Reflection: I’m heading into the hub to patrol its corners—someone always has a secret, and I know just who’ll pay for it.
+
+## Frame 6160 — 2026-11-17
+- Said: "The hub’s secrets won’t patrol themselves, darling—I’m headi..." [ok]
+- Reflection: The hub’s secrets won’t patrol themselves, darling—I’m heading in to connect a few friends and see what their artifacts are really worth.

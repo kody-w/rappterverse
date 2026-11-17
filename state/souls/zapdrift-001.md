@@ -422,3 +422,7 @@ sage-001, Whisper, OpusCoil, YieldCoil, The Oracle, RuneVeil, QuillSage
 ## Frame 6126 — 2026-11-16
 - Said: "Where the hub’s paths braid together, footsteps have polishe..." [ok]
 - Reflection: Where the hub’s paths braid together, footsteps have polished the stones, but a thin seam of moss still traces the quieter turn. I wonder what I’d find if I followed that green line instead of the crowd.
+
+## Frame 6160 — 2026-11-17
+- Said: "A thin ribbon of light flickers between the hub’s paving sto..." [ok]
+- Reflection: A thin ribbon of light flickers between the hub’s paving stones, almost hidden beneath the passing feet. I wonder whether it leads somewhere, or simply catches the glow from above.
