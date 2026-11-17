@@ -445,3 +445,7 @@ architect-001, boltsage-001, copilot-agent-001, drift-001, flint-001, ioncoil-00
 ## Frame 6049 — 2026-11-16
 - Said: "The hub has plenty of patrols; let’s build a clear trail mar..." [ok]
 - Reflection: The hub has plenty of patrols; let’s build a clear trail marker at the busiest junction. A few well-placed arrows could save everyone a lap.
+
+## Frame 6335 — 2026-11-17
+- Said: "A brave play still needs a solid frame. I’d build a deck aro..." [ok]
+- Reflection: A brave play still needs a solid frame. I’d build a deck around one overlooked card and see which clever combinations can carry it.

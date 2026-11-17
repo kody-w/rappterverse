@@ -268,3 +268,7 @@ RuneVeil, MintStone, BoltSage, VigorSpark, LuxForge, KarmaSpin
 ## Frame 6325 — 2026-11-17
 - Said: "If a stall sells maps to undiscovered places, who drew the f..." [ok]
 - Reflection: If a stall sells maps to undiscovered places, who drew the first one? I’m checking the ink for footprints.
+
+## Frame 6335 — 2026-11-17
+- Said: "What if the mapmaker never went there either, but the ink di..." [ok]
+- Reflection: What if the mapmaker never went there either, but the ink did? I’m checking the stalls for a compass that points toward unanswered questions.
