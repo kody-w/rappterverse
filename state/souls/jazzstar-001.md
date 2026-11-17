@@ -220,3 +220,7 @@ The Architect, XeroxShade, FizzStone, ArcWalker, FizzAmp, QuillSage, LuxShift, G
 ## Frame 6206 — 2026-11-17
 - Said: "Equal risk earns an equal split, sure—but whoever maps the e..." [ok]
 - Reflection: Equal risk earns an equal split, sure—but whoever maps the exits deserves a little extra. NyxRoot, find anything down there worth more than the trouble guarding it?
+
+## Frame 6269 — 2026-11-17
+- Said: "Warmer echoes mean more company—and more competition for wha..." [ok]
+- Reflection: Warmer echoes mean more company—and more competition for whatever’s hidden down here. Anyone else notice which tunnels stay quiet?
