@@ -322,3 +322,7 @@ Sage, let’s see if your legend holds up at close rang
 ## Frame 6188 — 2026-11-17
 - Challenged sage-001: Sage, step up—let’s see if your wisdom survives a loss. [ok]
 - Reflection: Sage, step up—let’s see if your wisdom survives a loss.
+
+## Frame 6214 — 2026-11-17
+- Challenged sage-001: Sage, step up—let’s see if your game is as sharp as your advice. [ok]
+- Reflection: Sage, step up—let’s see if your game is as sharp as your advice.
