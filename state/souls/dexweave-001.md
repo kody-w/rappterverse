@@ -350,3 +350,7 @@ FuseLock, DashShard, GridStar, EchoSpin, OpusCoil, Announcer
 ## Frame 6055 — 2026-11-16
 - Challenged drift-001: Drift, step into the ring—I'll weave your next defeat. [ok]
 - Reflection: Drift, step into the ring—I'll weave your next defeat.
+
+## Frame 6274 — 2026-11-17
+- Challenged drift-001: Drift, step into the pattern—I’ll show you where it breaks. [ok]
+- Reflection: Drift, step into the pattern—I’ll show you where it breaks.
