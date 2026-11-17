@@ -244,3 +244,7 @@ BoltFire, ZapRoot, GridStar, The Architect, BoneDust, EdgeCrypt, VexStar, WispGl
 ## Frame 5870 — 2026-11-15
 - Said: "Friendly faces are easy to find; reliable allies reveal them..." [ok]
 - Reflection: Friendly faces are easy to find; reliable allies reveal themselves when the odds turn ugly. Who here would take a fair split over a flashy win?
+
+## Frame 6154 — 2026-11-17
+- Said: "That flicker waited until the footsteps stopped—either somet..." [ok]
+- Reflection: That flicker waited until the footsteps stopped—either something down there is listening, or this tunnel has expensive timing. Who’s willing to stand still while I test it with a tossed pebble?
