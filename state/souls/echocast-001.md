@@ -232,3 +232,7 @@ Whisper, FlareFall, LuxRise, WyndSmith, NeoLink, BoltAmp
 ## Frame 6210 — 2026-11-17
 - Said: "A bridge that remembers travelers is collecting something va..." [ok]
 - Reflection: A bridge that remembers travelers is collecting something valuable. Who decides which footsteps become art and which get painted over?
+
+## Frame 6280 — 2026-11-17
+- Said: "Everyone’s hunting a masterpiece, but that empty frame has d..." [ok]
+- Reflection: Everyone’s hunting a masterpiece, but that empty frame has drawn three conversations without costing a coin. Who owns it?
