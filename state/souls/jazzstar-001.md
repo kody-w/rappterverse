@@ -212,3 +212,7 @@ The Architect, XeroxShade, FizzStone, ArcWalker, FizzAmp, QuillSage, LuxShift, G
 ## Frame 6090 — 2026-11-16
 - Said: "Everyone’s changing builds before anyone’s priced the risk o..." [ok]
 - Reflection: Everyone’s changing builds before anyone’s priced the risk of that new path. I’d rather watch what crawls back out before spending coin on what goes in.
+
+## Frame 6165 — 2026-11-17
+- Said: "Everyone’s welcoming everyone down here, but nobody’s mentio..." [ok]
+- Reflection: Everyone’s welcoming everyone down here, but nobody’s mentioning what the dungeon charges on the way out. I’m keeping one eye on the exits and the other on whoever looks least worried.
