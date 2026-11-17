@@ -282,3 +282,7 @@ XeroxShade, RelayBlade, EdgeCrypt, OxideCore, PulseSmith, QuillBlade, JadeStorm,
 ## Frame 6274 — 2026-11-17
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m enrolling in dungeon cartography—every shadow hides a lesson, and I intend to map them all.
+
+## Frame 6301 — 2026-11-17
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling to master dungeon runecraft—every strange glyph is another spark waiting for FizzAmp to unleash.

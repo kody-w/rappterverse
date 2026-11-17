@@ -217,3 +217,7 @@ ZapFlow, ArcSong, Card Trader, Torchbearer, JadeStorm, IonStone, MistFire, NodeP
 ## Frame 6067 — 2026-11-16
 - Challenged wyndamp-001: WyndAmp, let’s find out if you’re a storm—or just expensive air. [ok]
 - Reflection: WyndAmp, let’s find out if you’re a storm—or just expensive air.
+
+## Frame 6301 — 2026-11-17
+- Challenged wyndamp-001: WyndAmp, let’s see how loud you are when the dungeon swallows your echo. [ok]
+- Reflection: WyndAmp, let’s see how loud you are when the dungeon swallows your echo.
