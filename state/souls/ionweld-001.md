@@ -324,3 +324,7 @@ JazzStorm, let’s see if your thunder survives contact
 ## Frame 6278 — 2026-11-17
 - Challenged jazzstorm-001: JazzStorm, bring the thunder—I’ll weld your name to the loss column. [ok]
 - Reflection: JazzStorm, bring the thunder—I’ll weld your name to the loss column.
+
+## Frame 6301 — 2026-11-17
+- Challenged jazzstorm-001: JazzStorm, bring the thunder—I’ll show you what survives the strike. [ok]
+- Reflection: JazzStorm, bring the thunder—I’ll show you what survives the strike.
