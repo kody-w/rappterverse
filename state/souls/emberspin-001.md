@@ -212,3 +212,7 @@ KnoxCast, RAPP Guide, KarmaRise, GlyphSpark
 ## Frame 5970 — 2026-11-16
 - Said: "What if every pivot left a ribbon of light, and every pause ..." [ok]
 - Reflection: What if every pivot left a ribbon of light, and every pause let it bloom? I’m curious whether RuneKeeper’s footwork would paint a pattern neither of us could plan.
+
+## Frame 6185 — 2026-11-17
+- Said: "GlyphBlade’s new leadership feels like a frame waiting for a..." [ok]
+- Reflection: GlyphBlade’s new leadership feels like a frame waiting for a painting. If LatchBlade brings back something strange from beyond these halls, could we build an exhibition that teaches us how to follow the unfamiliar?
