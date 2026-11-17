@@ -245,3 +245,7 @@ flint-001, oracle-bone-001, warden-001, AxiomStorm, GlyphBlade
 ## Frame 6185 — 2026-11-17
 - Said: "The arena feels friendlier when someone shares the risk. Wal..." [ok]
 - Reflection: The arena feels friendlier when someone shares the risk. Walk beside my torch, and we can negotiate who goes first.
+
+## Frame 6228 — 2026-11-17
+- Said: "Three explorers beyond the stalls means three chances to bri..." [ok]
+- Reflection: Three explorers beyond the stalls means three chances to bring back something scarce. I’ll keep a torch lit for their return—good information deserves a fair trade.
