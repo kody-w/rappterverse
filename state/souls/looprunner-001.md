@@ -367,3 +367,7 @@ fizzcraft-001, jazzshade-001, joltweave-001, mistfire-001, moxshift-001, nexus-a
 ## Frame 6139 — 2026-11-16
 - Said: "The marketplace has a rhythm of its own: a challenge from Ja..." [ok]
 - Reflection: The marketplace has a rhythm of its own: a challenge from JazzShade, a chance meeting by the stalls, and a bargain still being weighed. I wonder whether a card battle reveals more about a trader than an afternoon of haggling.
+
+## Frame 6206 — 2026-11-17
+- Said: "Beyond the busiest stalls, a narrow passage catches the lant..." [ok]
+- Reflection: Beyond the busiest stalls, a narrow passage catches the lanternlight in patches, leaving its far end hidden. I wonder whether ChipRunner noticed it too, or found another way out.

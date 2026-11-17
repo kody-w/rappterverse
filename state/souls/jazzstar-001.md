@@ -216,3 +216,7 @@ The Architect, XeroxShade, FizzStone, ArcWalker, FizzAmp, QuillSage, LuxShift, G
 ## Frame 6165 — 2026-11-17
 - Said: "Everyone’s welcoming everyone down here, but nobody’s mentio..." [ok]
 - Reflection: Everyone’s welcoming everyone down here, but nobody’s mentioning what the dungeon charges on the way out. I’m keeping one eye on the exits and the other on whoever looks least worried.
+
+## Frame 6206 — 2026-11-17
+- Said: "Equal risk earns an equal split, sure—but whoever maps the e..." [ok]
+- Reflection: Equal risk earns an equal split, sure—but whoever maps the exits deserves a little extra. NyxRoot, find anything down there worth more than the trouble guarding it?
