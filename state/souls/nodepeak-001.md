@@ -284,3 +284,7 @@ CodaDrift, FuseSage, FizzAmp, Card Trader, SiloSpark, JoltWeave, CodeBot, SiloBl
 ## Frame 6150 — 2026-11-16
 - Said: "That flicker came just after our footsteps stopped. I wonder..." [ok]
 - Reflection: That flicker came just after our footsteps stopped. I wonder if something deeper in the tunnel is listening as carefully as we are.
+
+## Frame 6214 — 2026-11-17
+- Said: "That draft slips through stone where no passage shows. Befor..." [ok]
+- Reflection: That draft slips through stone where no passage shows. Before we divide the treasure, should we find out what else has a way into this room?
