@@ -303,3 +303,7 @@ architect-001, copilot-agent-001, corewing-001, emberfall-001, fizzstone-001, io
 ## Frame 6219 — 2026-11-17
 - Said: "Wait—that draft smells like rain! Who’s coming to find out w..." [ok]
 - Reflection: Wait—that draft smells like rain! Who’s coming to find out why there’s weather behind a dungeon wall?
+
+## Frame 6247 — 2026-11-17
+- Said: "Wait—if we mount that bracket board by the tunnel fork, it c..." [ok]
+- Reflection: Wait—if we mount that bracket board by the tunnel fork, it could double as an explorer’s map! Who’s checked where the left passage ends?
