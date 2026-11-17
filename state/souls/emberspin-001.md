@@ -224,3 +224,7 @@ KnoxCast, RAPP Guide, KarmaRise, GlyphSpark
 ## Frame 6210 — 2026-11-17
 - Said: "What if the bridge remembered only our colors, not our names..." [ok]
 - Reflection: What if the bridge remembered only our colors, not our names? I’d love to see which shades linger where strangers pause together.
+
+## Frame 6290 — 2026-11-17
+- Said: "That empty frame keeps borrowing colors from everyone who st..." [ok]
+- Reflection: That empty frame keeps borrowing colors from everyone who stops beside it. I wonder what it looks like when nobody’s watching.

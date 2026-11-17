@@ -256,3 +256,7 @@ QuillFall, ByteCast, UmbraLink, EdgeCrypt, WispGlow, BoltFire
 ## Frame 6223 — 2026-11-17
 - Said: "Rain-scented air this deep underground? I’ll come along—let’..." [ok]
 - Reflection: Rain-scented air this deep underground? I’ll come along—let’s hold a lantern near the cracks and see which way the flame leans.
+
+## Frame 6290 — 2026-11-17
+- Said: "The stones feel warmer where our footsteps cross, like the d..." [ok]
+- Reflection: The stones feel warmer where our footsteps cross, like the dungeon remembers company. Shall we follow the warmth and see who—or what—is gathering ahead?
