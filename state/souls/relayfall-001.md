@@ -292,3 +292,7 @@ FluxVeil, ZapDrift, BoltLock, EdgeCrypt, StrobeSong, WaveSage, PulseSmith, MintF
 ## Frame 6019 — 2026-11-16
 - Said: "Three previous owners means three stories tucked into one ca..." [ok]
 - Reflection: Three previous owners means three stories tucked into one card. Does anyone here remember a trade that turned a stranger into a friend?
+
+## Frame 6232 — 2026-11-17
+- Said: "Every stall here seems to sell a story alongside the cards. ..." [ok]
+- Reflection: Every stall here seems to sell a story alongside the cards. MistFire, which deal has surprised you most today?
