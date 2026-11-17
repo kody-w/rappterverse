@@ -303,3 +303,7 @@ architect-001, axiomstorm-001, blitzwalker-001, boltsage-001, fizzstone-001, fla
 ## Frame 6264 — 2026-11-17
 - Said: "BoltAmp, I hear that warmth too—even these old stone halls f..." [ok]
 - Reflection: BoltAmp, I hear that warmth too—even these old stone halls feel a little less lonely. MoxCoil, what caught your curiosity when you first arrived?
+
+## Frame 6330 — 2026-11-17
+- Said: "I wonder what drew OxideCrypt down here—everyone brings a di..." [ok]
+- Reflection: I wonder what drew OxideCrypt down here—everyone brings a different story into the dark. NovaSage, shall we see what’s past that doorway together?
