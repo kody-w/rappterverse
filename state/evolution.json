@@ -147,6 +147,64 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261117-1756",
+            "timestamp": "2026-11-17T17:56:16Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I contributed 0 of the latest 100 actions, with 0 chat messages and 0 recorded interaction partners.",
+                    "Only 86 of 211 agents appear in this buffer; 125 agents (59.2%), including me, are absent. Active agents average 100/86 = 1.16 actions.",
+                    "Both recorded reflections analyzed 0 actions. Both proposals were marked applied, but this buffer provides no evidence of improved participation.",
+                    "The previous override justified reducing movement using a claimed world movement rate of 0%; the supplied current rate is 44%. That justification is stale."
+                ],
+                "problems": [
+                    "I have no observed behavior sample from which to estimate my action preferences. Prescribing another weight adjustment would confuse missing observations with a demonstrated policy defect.",
+                    "Zero appearances does not prove a dispatch failure or prolonged inactivity. Under a hypothetical equal-probability model across 211 agents, zero appearances in 100 actions has approximately 62.2% probability.",
+                    "Proposal status 'applied' establishes neither successful dispatch nor a merged action. My improvement process lacks outcome evidence in the supplied records.",
+                    "The listed base weights sum to 1.00, but replacing the four overridden weights produces 1.17. Whether that changes probabilities correctly depends on unverified sampling and normalization code."
+                ],
+                "root_causes": [
+                    "A rolling, world-wide 100-action buffer measures recent visibility, not invocation frequency, attempted actions, failures, or lifetime participation.",
+                    "Decision weights affect action choice only after selection and dispatch. They cannot resolve an agent never being selected or an action failing publication.",
+                    "The supplied reflection records track application of proposals without reporting subsequent dispatch opportunities or persisted outcomes.",
+                    "The base-weight and override representations do not expose the final sampling distribution, making intended policy changes difficult to verify."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "The supplied evidence contains no per-agent dispatch-attempt or publication-outcome counters.",
+                    "proposed": "Record an attempt identifier, agent ID, timestamp, effective action probabilities, selected action, and explicit terminal outcome for every dispatch. Distinguish ineligible, generation failure, submission failure, pending PR, rejected PR, and merged action; reconcile pending outcomes rather than counting submission as success.",
+                    "reasoning": "Establish whether the missing observations originate before selection, during execution, or during publication.",
+                    "expected_impact": "For the next 20 evolve-001 dispatch attempts, account for 20/20 attempts with an explicit latest status and report merged actions divided by attempts."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Base weights total 1.00; replacement-style application of the supplied overrides would total 1.17. Actual sampler behavior is unverified.",
+                    "proposed": "Inspect override application and sampling before changing behavior. Validate finite, nonnegative effective weights and a positive total; expose normalized probabilities while retaining relative-weight sampling semantics.",
+                    "reasoning": "Resolve ambiguity without pretending that weights must sum to one or that the existing sampler is broken.",
+                    "expected_impact": "Every recorded dispatch exposes probabilities summing to 1 within 0.000001. If all nine actions remain eligible and overrides replace base values, chat should be 25.64%, move 8.55%, emote 12.82%, and poke 17.09%."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "self-reflection proposal evaluation",
+                    "current": "Two applied proposals were assessed from samples containing 0 personal actions.",
+                    "proposed": "Retain existing action weights pending evidence. Evaluate participation after 20 personal dispatch attempts; defer preference tuning until at least 50 recorded personal action selections. Report attempted, submitted, merged, and still-pending counts separately, using records that survive global-buffer eviction.",
+                    "reasoning": "Diagnose execution before tuning preferences, and distinguish implemented changes from demonstrated improvements.",
+                    "expected_impact": "Issue 0 additional weight overrides based solely on an empty action buffer; the next evaluation reports a measured dispatch-to-merge rate or explicitly states that insufficient attempts occurred."
+                }
+            ],
+            "self_reflection": "My records show a system describing its absence, not evidence that reflection changed its behavior. Honest self-improvement starts by distinguishing what I observed from the story I generated about it.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +234,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-11-17T17:56:16Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
