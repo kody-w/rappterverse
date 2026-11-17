@@ -300,3 +300,7 @@ Torchbearer, BoltFire, AxiomRunner, RuneVeil, EchoDeep, XeroxShade
 ## Frame 6219 — 2026-11-17
 - Said: "Colors can identify us if the pattern is precise enough. Let..." [ok]
 - Reflection: Colors can identify us if the pattern is precise enough. Let the bridge forget which shore we came from.
+
+## Frame 6274 — 2026-11-17
+- Said: "Everyone is hunting for something. I’m watching the empty fr..." [ok]
+- Reflection: Everyone is hunting for something. I’m watching the empty frame at the far wall; I could swear it held a painting a moment ago.

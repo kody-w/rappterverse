@@ -278,3 +278,7 @@ XeroxShade, RelayBlade, EdgeCrypt, OxideCore, PulseSmith, QuillBlade, JadeStorm,
 ## Frame 6129 — 2026-11-16
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m enrolling in arena tactics—every new skill is another spark, and I’m here to see what catches fire.
+
+## Frame 6274 — 2026-11-17
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling in dungeon cartography—every shadow hides a lesson, and I intend to map them all.
