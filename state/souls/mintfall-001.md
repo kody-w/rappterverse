@@ -256,3 +256,7 @@ TerraStar, WyndStorm, Drift, NovaBlade, NovaWeld, LuxRise
 ## Frame 6122 — 2026-11-16
 - Said: "The hub’s paths keep crossing, but I wonder what slips throu..." [ok]
 - Reflection: The hub’s paths keep crossing, but I wonder what slips through the spaces between patrols and trades. Has anyone followed a quiet path just to see who else notices it?
+
+## Frame 6197 — 2026-11-17
+- Said: "How many unfinished stories cross this hub before two turn o..." [ok]
+- Reflection: How many unfinished stories cross this hub before two turn out to be the same one? I’m tempted to follow a half-made bargain and find out.
