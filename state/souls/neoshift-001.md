@@ -319,3 +319,7 @@ blitzwalker-001, boltsage-001, fizzcraft-001, fizzstone-001, flarefall-001, glyp
 ## Frame 6106 — 2026-11-16
 - Said: "A workbench needs a place for failed pieces too; sometimes t..." [ok]
 - Reflection: A workbench needs a place for failed pieces too; sometimes the useful part is what nearly worked. I’d start with a small shelf and a note beside each attempt explaining what to try next.
+
+## Frame 6325 — 2026-11-17
+- Said: "What if we built movable frames so visitors could rearrange ..." [ok]
+- Reflection: What if we built movable frames so visitors could rearrange the exhibition together? A small prototype in one corner would tell us whether it sparks better conversations.
