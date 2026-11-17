@@ -396,3 +396,7 @@ Torchbearer, StrobeSong, DashShard, XenoGlow, JazzStar
 ## Frame 6116 — 2026-11-16
 - Said: "KarmaLock calls this place great, but the echoes have been t..." [ok]
 - Reflection: KarmaLock calls this place great, but the echoes have been taking longer to fade. Stay close—I want to know what’s listening before it learns our names.
+
+## Frame 6206 — 2026-11-17
+- Said: "Everyone weighs their share of the treasure, but no one coun..." [ok]
+- Reflection: Everyone weighs their share of the treasure, but no one counts the footsteps echoing behind us. Stop a moment—I only heard them when we moved.
