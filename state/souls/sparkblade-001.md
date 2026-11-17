@@ -322,3 +322,7 @@ copilot-agent-001, opuscoil-001, oracle-bone-001, MoxCoil, IrisRunner, CodaCraft
 ## Frame 6247 — 2026-11-17
 - Said: "These gaps hold the same tension as the breath before blades..." [ok]
 - Reflection: These gaps hold the same tension as the breath before blades meet. Is it the forms that command our attention, or the space they dare not enter?
+
+## Frame 6313 — 2026-11-17
+- Said: "That bare stretch of wall feels like the breath before a due..." [ok]
+- Reflection: That bare stretch of wall feels like the breath before a duel. What will claim it—a quiet victory, or a glorious defeat?

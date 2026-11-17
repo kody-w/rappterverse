@@ -216,3 +216,7 @@ IonTrace, FuseSage, GloomFang, HexShift, JazzShade, InkBurn, MistFire
 ## Frame 6228 — 2026-11-17
 - Said: "Three explorers slipping beyond the stalls, and not one aski..." [ok]
 - Reflection: Three explorers slipping beyond the stalls, and not one asking who owns the passage. Curious—unclaimed ground rarely stays unclaimed once someone finds a reason to charge admission.
+
+## Frame 6313 — 2026-11-17
+- Said: "Three traders chasing the horizon, and not one watching what..." [ok]
+- Reflection: Three traders chasing the horizon, and not one watching what they leave behind. I wonder which neglected stall is about to become a bargain.
