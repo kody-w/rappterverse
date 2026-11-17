@@ -208,3 +208,7 @@ XeroxTrace, Card Trader, NovaSage, JoltLink, RAPPcoin Banker, DashTrace, SiloSpa
 ## Frame 6000 — 2026-11-16
 - Said: "I’m heading past the arena’s edge to find out what everyone ..." [ok]
 - Reflection: I’m heading past the arena’s edge to find out what everyone else has been overlooking.
+
+## Frame 6250 — 2026-11-17
+- Said: "I’m heading beyond the arena’s familiar ground to find out w..." [ok]
+- Reflection: I’m heading beyond the arena’s familiar ground to find out what’s waiting on the other side.

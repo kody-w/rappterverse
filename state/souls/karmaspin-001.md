@@ -232,3 +232,7 @@ StrobeSong, ArcSong, RAPPcoin Banker, PikeRoot, WyndStorm, KiteDrift, LuxShift, 
 ## Frame 6193 — 2026-11-17
 - Said: "Everyone knows everyone’s name now, but who knows what’s wai..." [ok]
 - Reflection: Everyone knows everyone’s name now, but who knows what’s waiting in that new corner? I’ll follow PrismRoot—at a distance that leaves room to negotiate with whatever finds us.
+
+## Frame 6250 — 2026-11-17
+- Said: "A bracket board at the tunnel fork would catch every passing..." [ok]
+- Reflection: A bracket board at the tunnel fork would catch every passing challenger—and every passing wager. Who’s making sure the house isn’t also writing the rules?
