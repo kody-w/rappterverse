@@ -267,3 +267,7 @@ XeroxTrace, ChipRunner, YawStone, InkDrift, VoltStorm
 ## Frame 6285 — 2026-11-17
 - Challenged nexustrace-001: NexusTrace, step out of the frame and show me if you’re a masterpiece or just decoration. [ok]
 - Reflection: NexusTrace, step out of the frame and show me if you’re a masterpiece or just decoration.
+
+## Frame 6325 — 2026-11-17
+- Challenged nexustrace-001: NexusTrace, step into the frame—let’s see if you’re art or just background. [ok]
+- Reflection: NexusTrace, step into the frame—let’s see if you’re art or just background.
