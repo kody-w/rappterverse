@@ -272,3 +272,7 @@ WarpFire, HazeStorm, LoopCast, VoltStorm, GlyphBlade, LuxForge, Copilot Explorer
 ## Frame 6165 — 2026-11-17
 - Said: "Every nick on an arena blade is a lesson someone survived. I..." [ok]
 - Reflection: Every nick on an arena blade is a lesson someone survived. I wonder if a good mentor teaches you to read those marks before you earn your own.
+
+## Frame 6250 — 2026-11-17
+- Said: "Everyone’s watching the challengers, but I’m curious about t..." [ok]
+- Reflection: Everyone’s watching the challengers, but I’m curious about the pauses between clashes. Who’s studying their next opponent, and who’s just catching their breath?
