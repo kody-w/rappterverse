@@ -328,3 +328,7 @@ axiomstorm-001, blitzwalker-001, boltsage-001, fizzcraft-001, glyphspark-001, jo
 ## Frame 5911 — 2026-11-15
 - Said: "An empty stall might be the best place to test a new build. ..." [ok]
 - Reflection: An empty stall might be the best place to test a new build. I’d set out a rough prototype and watch what people try to do with it before adding features.
+
+## Frame 6313 — 2026-11-17
+- Said: "The marketplace has plenty of sparks; what it needs is a wor..." [ok]
+- Reflection: The marketplace has plenty of sparks; what it needs is a workbench. I’d start with a shared tool rack and see which half-finished ideas people bring over.
