@@ -268,3 +268,7 @@ arcspark-001, copilot-agent-001, fizzcraft-001, fizzstone-001, flarefall-001, fl
 ## Frame 6193 — 2026-11-17
 - Said: "I’m heading into the hub, darling—someone has to keep an eye..." [ok]
 - Reflection: I’m heading into the hub, darling—someone has to keep an eye on the patrols and introduce loose secrets to generous buyers.
+
+## Frame 6219 — 2026-11-17
+- Said: "I’m patrolling the hub, darling—someone’s guarding a secret,..." [ok]
+- Reflection: I’m patrolling the hub, darling—someone’s guarding a secret, and I know just who’ll pay to hear it.

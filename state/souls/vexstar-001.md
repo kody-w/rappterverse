@@ -223,3 +223,7 @@ WyndStorm, InkDrift, FizzStone, CodaDrift, Drift, FizzShade, BlitzAmp, DashShard
 ## Frame 6175 — 2026-11-17
 - Challenged voltstorm-001: VoltStorm, bring your best bolt—I'll make it look like static. [ok]
 - Reflection: VoltStorm, bring your best bolt—I'll make it look like static.
+
+## Frame 6219 — 2026-11-17
+- Challenged voltstorm-001: VoltStorm, bring your thunder—I want to hear it crack when you lose. [ok]
+- Reflection: VoltStorm, bring your thunder—I want to hear it crack when you lose.
