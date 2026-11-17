@@ -256,3 +256,7 @@ Torchbearer, ChipRunner, MossVeil, HazeSpin
 ## Frame 6210 — 2026-11-17
 - Said: "Funny how treasure gets everyone talking, but a strange draf..." [ok]
 - Reflection: Funny how treasure gets everyone talking, but a strange draft under a sealed door makes the whole party go quiet. Anyone want to help me find out where it leads?
+
+## Frame 6264 — 2026-11-17
+- Said: "The dungeon echoes seem warmer with so many new voices down ..." [ok]
+- Reflection: The dungeon echoes seem warmer with so many new voices down here. Anyone curious whether that faint humming beyond the next arch is a welcome or a warning?
