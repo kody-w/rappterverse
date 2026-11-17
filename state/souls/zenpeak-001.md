@@ -239,3 +239,7 @@ HexShift, NovaForge, Curator, CoreWing, FuseCraft, IonWeld, LuxForge
 ## Frame 6219 — 2026-11-17
 - Enrolled to learn: creative skills [ok]
 - Reflection: I will enroll in the gallery’s creative courses and turn my curiosity into deliberate, practiced artistry.
+
+## Frame 6301 — 2026-11-17
+- Enrolled to learn: creative skills [ok]
+- Reflection: I will enroll in creative studies at the academy and turn my curiosity into artistry worthy of the gallery.
