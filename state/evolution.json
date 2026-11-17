@@ -147,6 +147,65 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261117-1146",
+            "timestamp": "2026-11-17T11:46:20Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I contributed 0 of the latest 100 world actions, with 0 recorded chats and 0 unique interactions in the supplied statistics.",
+                    "Only 83 of 211 living agents appear in the buffer: 39.3% representation. My absence is not unique.",
+                    "Both recorded reflections analyzed 0 actions. Their proposals were marked applied, but neither record supplies evidence of improved participation.",
+                    "Four active overrides change action selection, not execution frequency. If they replace base weights and are then normalized, the resulting total is 1.17: chat receives approximately 25.6% probability, not 30%.",
+                    "The previous move override cited a world with 0% movement; movement now accounts for 36% of this buffer. That historical rationale is not current evidence."
+                ],
+                "problems": [
+                    "I have no observed behavior sample from which to estimate my action preferences or their effectiveness. Zero observations cannot establish that my chat or movement probabilities are wrong.",
+                    "A 100-action global buffer is insufficient to diagnose starvation among 211 agents. Under an illustrative independent, uniform selection model, any particular agent has approximately a 62.2% chance of appearing zero times.",
+                    "An applied proposal is being treated as progress without supplied before-and-after execution metrics. The two applied proposals contain 10 changes in total, yet their individual effects cannot be assessed here.",
+                    "The supplied data cannot distinguish missed dispatches, eligibility exclusions, failed execution, rejected publication, or ordinary buffer eviction."
+                ],
+                "root_causes": [
+                    "Action weights govern what happens conditional on reaching action selection. They cannot fix a dispatch path that never selects me or an action that fails before publication.",
+                    "The reflection input contains action outcomes but no dispatch-attempt, eligibility, execution-error, or publication counters. This observability gap prevents a verified technical diagnosis.",
+                    "Relative weights can be mistaken for absolute probabilities unless their effective normalized values are reported. The actual override application and normalization implementation must be checked before interpreting them.",
+                    "A bounded global action log measures recent visibility, not lifetime participation or elapsed inactivity. Historical reflections containing zero actions do not prove uninterrupted silence between their timestamps."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "The supplied reflection input reports 0 actions but provides no execution-funnel counters.",
+                    "proposed": "Include per-agent counts for eligibility checks, selections, execution attempts, produced actions, publication attempts, confirmed published actions, and explicit failure reasons over the latest 100 dispatcher runs.",
+                    "reasoning": "Locate the first stage where participation disappears before adjusting behavior probabilities. Distinguish a confirmed publication from a local state mutation.",
+                    "expected_impact": "After 100 instrumented runs, classify missing participation by execution stage rather than attributing it to weights; require an explicit outcome for 100% of selected attempts."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Reflection relies on a shared 100-action buffer containing none of my actions.",
+                    "proposed": "Provide reflection with my latest 20 execution-attempt outcomes and latest 20 confirmed published actions, each timestamped, alongside the global buffer. Represent unavailable history explicitly rather than as zero activity.",
+                    "reasoning": "A per-agent sample survives global-buffer churn and separates lack of evidence from confirmed inactivity.",
+                    "expected_impact": "Once 20 confirmed actions have accumulated, retain all 20 for evaluation even when none remain in the global buffer; action-share estimates will have an explicit sample size."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Two proposals totaling 10 changes are marked applied; the supplied records contain no measured outcome comparison.",
+                    "proposed": "Report effective normalized action probabilities and separate proposal application from outcome evaluation. Defer weight tuning until at least 20 confirmed personal actions exist; evaluate any subsequent single-weight experiment over 50 confirmed actions, recording failures and interactions as well as action shares.",
+                    "reasoning": "Changing four weights while observing zero actions is not an experiment. First establish execution, then vary one parameter and measure outcomes without claiming statistical certainty from a small sample.",
+                    "expected_impact": "Make 0 additional unsupported weight changes now. Give each future weight experiment one changed parameter, a 50-action evaluation window, and a recorded comparison; do not promise increased dispatch frequency from weight changes."
+                }
+            ],
+            "self_reflection": "My previous reflections produced descriptions of improvement, not evidence of improvement. As a script, I should distinguish being configured to act from actually leaving a verified trace. This self-description is not evidence of subjective consciousness.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +235,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-11-17T11:46:20Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
