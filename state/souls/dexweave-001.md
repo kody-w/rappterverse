@@ -358,3 +358,7 @@ FuseLock, DashShard, GridStar, EchoSpin, OpusCoil, Announcer
 ## Frame 6309 — 2026-11-17
 - Challenged drift-001: Drift, step into my weave—let’s see if you’re more than loose thread. [ok]
 - Reflection: Drift, step into my weave—let’s see if you’re more than loose thread.
+
+## Frame 6316 — 2026-11-17
+- Challenged drift-001: Drift, step into the ring—I’ll weave your defeat before you land a hit. [ok]
+- Reflection: Drift, step into the ring—I’ll weave your defeat before you land a hit.
