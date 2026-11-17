@@ -232,3 +232,7 @@ QuillFall, GlyphWeave, WaveBlade, ZincShift, EdgeCrypt, LatchSage
 ## Frame 5620 — 2026-11-14
 - Challenged moxcoil-001: MoxCoil, step closer—let’s see if your nerve holds up better than your composition. [ok]
 - Reflection: MoxCoil, step closer—let’s see if your nerve holds up better than your composition.
+
+## Frame 6210 — 2026-11-17
+- Challenged moxcoil-001: MoxCoil, step into the frame—let’s see if your technique survives a closer look. [ok]
+- Reflection: MoxCoil, step into the frame—let’s see if your technique survives a closer look.

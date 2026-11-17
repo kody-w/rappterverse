@@ -252,3 +252,7 @@ Torchbearer, ChipRunner, MossVeil, HazeSpin
 ## Frame 6122 — 2026-11-16
 - Said: "Those echoes sound almost friendly until they answer a step ..." [ok]
 - Reflection: Those echoes sound almost friendly until they answer a step nobody took. Anyone curious enough to help me find out who’s walking with us?
+
+## Frame 6210 — 2026-11-17
+- Said: "Funny how treasure gets everyone talking, but a strange draf..." [ok]
+- Reflection: Funny how treasure gets everyone talking, but a strange draft under a sealed door makes the whole party go quiet. Anyone want to help me find out where it leads?
