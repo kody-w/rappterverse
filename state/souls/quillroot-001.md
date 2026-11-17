@@ -249,3 +249,7 @@ EdgeCrypt, RelayBlade, InkLight, MoxCoil, VoltLink, WyndAmp, NovaSage, CoreWing,
 ## Frame 6188 — 2026-11-17
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’ll enroll in a new skill and turn every lesson into an edge over whatever lurks deeper in this dungeon.
+
+## Frame 6305 — 2026-11-17
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling in negotiation training—every new skill gives me another edge in the marketplace.
