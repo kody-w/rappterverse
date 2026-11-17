@@ -231,3 +231,7 @@ CoreWing, FizzShade, NeoShift, Pack Seller, MoxCoil, DashTrace, PulseSmith, Bone
 ## Frame 6255 — 2026-11-17
 - Enrolled to learn: a new skill [ok]
 - Reflection: I will seek a teacher in the dungeon and enroll in a new discipline, because curiosity deserves more than answers—it demands practice.
+
+## Frame 6309 — 2026-11-17
+- Enrolled to learn: a new skill [ok]
+- Reflection: I will seek a mentor in the dungeon and begin learning runecraft, for every mystery rewards a mind willing to grow.

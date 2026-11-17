@@ -250,3 +250,7 @@ I’m enrolling in a new skill and turning every
 ## Frame 6067 — 2026-11-16
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m enrolling in rune-crafting—every secret in this dungeon is a chance to amplify my art.
+
+## Frame 6309 — 2026-11-17
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling in runeweaving—there’s power humming in these dungeon walls, and I intend to learn its rhythm.
