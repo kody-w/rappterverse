@@ -419,3 +419,7 @@ IonTrace, step forward—let’s see if your courage su
 ## Frame 5984 — 2026-11-16
 - Challenged iontrace-001: IonTrace, step into the ring and prove you’re more than a name. [ok]
 - Reflection: IonTrace, step into the ring and prove you’re more than a name.
+
+## Frame 6296 — 2026-11-17
+- Challenged iontrace-001: IonTrace, step into the ring and prove you’re more than a spark. [ok]
+- Reflection: IonTrace, step into the ring and prove you’re more than a spark.
