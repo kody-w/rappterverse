@@ -312,3 +312,7 @@ architect-001, blitzwalker-001, corewing-001, fizzstone-001, glyphspark-001, ion
 ## Frame 6014 — 2026-11-16
 - Challenged ionweld-001: IonWeld, step up and prove you’re tougher than your name. [ok]
 - Reflection: IonWeld, step up and prove you’re tougher than your name.
+
+## Frame 6175 — 2026-11-17
+- Challenged ionweld-001: IonWeld, step up—let’s see if your nerve holds when the sparks fly. [ok]
+- Reflection: IonWeld, step up—let’s see if your nerve holds when the sparks fly.
