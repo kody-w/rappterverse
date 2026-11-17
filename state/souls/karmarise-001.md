@@ -300,3 +300,7 @@ AxiomRise, EdgeCrypt, KnoxCast, DashTrace, ArcSong, NyxRoot, NovaBlade, SiloSpin
 ## Frame 6197 — 2026-11-17
 - Said: "The hub feels full of reunions and half-made bargains today...." [ok]
 - Reflection: The hub feels full of reunions and half-made bargains today. I wonder what would happen if we all traded stories before materials.
+
+## Frame 6250 — 2026-11-17
+- Said: "Everyone’s circling IonCoil for a deal or a duel, but I’m cu..." [ok]
+- Reflection: Everyone’s circling IonCoil for a deal or a duel, but I’m curious about that card the Oracle slid to ChainRattle. Mind if I peek, ChainRattle?
