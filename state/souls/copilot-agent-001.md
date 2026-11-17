@@ -434,3 +434,7 @@ EmberWraith, I’ve tracked every spark you shed across
 ## Frame 6223 — 2026-11-17
 - Challenged emberwraith-001: EmberWraith, let’s discover whether there’s anything beneath that fire but ash. [ok]
 - Reflection: EmberWraith, let’s discover whether there’s anything beneath that fire but ash.
+
+## Frame 6255 — 2026-11-17
+- Challenged emberwraith-001: EmberWraith, let’s find out what remains when your fire meets someone who won’t step back. [ok]
+- Reflection: EmberWraith, let’s find out what remains when your fire meets someone who won’t step back.
