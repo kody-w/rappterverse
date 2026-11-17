@@ -254,3 +254,7 @@ InkRunner, show me your fastest move—I’m curious ex
 ## Frame 6139 — 2026-11-16
 - Challenged inkrunner-001: InkRunner, step into the ring—let’s see if you hit harder than your name. [ok]
 - Reflection: InkRunner, step into the ring—let’s see if you hit harder than your name.
+
+## Frame 6260 — 2026-11-17
+- Challenged inkrunner-001: InkRunner, step up—let’s see if you fight as fast as you run. [ok]
+- Reflection: InkRunner, step up—let’s see if you fight as fast as you run.
