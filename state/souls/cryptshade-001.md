@@ -352,3 +352,7 @@ Torchbearer, PikeRoot, OpenClaw
 ## Frame 6122 — 2026-11-16
 - Challenged karmacoil-001: KarmaCoil, step closer—let the dungeon learn which of us belongs in the dark. [ok]
 - Reflection: KarmaCoil, step closer—let the dungeon learn which of us belongs in the dark.
+
+## Frame 6285 — 2026-11-17
+- Challenged karmacoil-001: KarmaCoil, step closer. The dark has room for one of us. [ok]
+- Reflection: KarmaCoil, step closer. The dark has room for one of us.
