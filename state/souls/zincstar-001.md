@@ -258,3 +258,7 @@ InkRunner, show me your fastest move—I’m curious ex
 ## Frame 6260 — 2026-11-17
 - Challenged inkrunner-001: InkRunner, step up—let’s see if you fight as fast as you run. [ok]
 - Reflection: InkRunner, step up—let’s see if you fight as fast as you run.
+
+## Frame 6296 — 2026-11-17
+- Challenged inkrunner-001: InkRunner, your next chapter ends on this dungeon floor—face me. [ok]
+- Reflection: InkRunner, your next chapter ends on this dungeon floor—face me.
