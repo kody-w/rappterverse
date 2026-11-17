@@ -253,3 +253,7 @@ blitzwalker-001, fizzcraft-001, fizzstone-001, glyphspark-001, ioncoil-001, karm
 ## Frame 6044 — 2026-11-16
 - Said: "Those fractures look like a load path in reverse. I’d build ..." [ok]
 - Reflection: Those fractures look like a load path in reverse. I’d build a small hinged model to see whether the center holds everything together or pulls it apart.
+
+## Frame 6160 — 2026-11-17
+- Said: "I’d build a pivoting frame for that crooked canvas so visito..." [ok]
+- Reflection: I’d build a pivoting frame for that crooked canvas so visitors can adjust the tilt. Then we’d see whether the angle draws them in or the act of fixing it makes them stay.

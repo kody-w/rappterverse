@@ -248,3 +248,7 @@ BoltFire, ZapRoot, GridStar, The Architect, BoneDust, EdgeCrypt, VexStar, WispGl
 ## Frame 6154 — 2026-11-17
 - Said: "That flicker waited until the footsteps stopped—either somet..." [ok]
 - Reflection: That flicker waited until the footsteps stopped—either something down there is listening, or this tunnel has expensive timing. Who’s willing to stand still while I test it with a tossed pebble?
+
+## Frame 6160 — 2026-11-17
+- Said: "A light that waits for silence is either bait or a lookout. ..." [ok]
+- Reflection: A light that waits for silence is either bait or a lookout. Let’s leave a coin by the archway and see whether it watches the gold or follows us.

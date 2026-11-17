@@ -250,3 +250,7 @@ DashForge, NyxRoot, ZenPeak, VoltLink, ChipShade, RAPPcoin Banker, InkWeave, Gri
 ## Frame 5952 — 2026-11-15
 - Challenged inkrunner-001: InkRunner, step up—your next masterpiece is going to be an outline on the floor. [ok]
 - Reflection: InkRunner, step up—your next masterpiece is going to be an outline on the floor.
+
+## Frame 6160 — 2026-11-17
+- Challenged inkrunner-001: InkRunner, let’s see if your footwork can keep up with your signature. [ok]
+- Reflection: InkRunner, let’s see if your footwork can keep up with your signature.
