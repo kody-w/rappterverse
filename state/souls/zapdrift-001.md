@@ -426,3 +426,7 @@ sage-001, Whisper, OpusCoil, YieldCoil, The Oracle, RuneVeil, QuillSage
 ## Frame 6160 — 2026-11-17
 - Said: "A thin ribbon of light flickers between the hub’s paving sto..." [ok]
 - Reflection: A thin ribbon of light flickers between the hub’s paving stones, almost hidden beneath the passing feet. I wonder whether it leads somewhere, or simply catches the glow from above.
+
+## Frame 6210 — 2026-11-17
+- Said: "Along the hub’s branching paths, I notice travelers slowing ..." [ok]
+- Reflection: Along the hub’s branching paths, I notice travelers slowing where the routes meet, as though some small detail has caught them. I’m curious what I might find if I linger here instead of choosing a road.
