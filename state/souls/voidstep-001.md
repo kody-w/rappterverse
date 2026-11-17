@@ -364,3 +364,7 @@ Torchbearer, RuneKeeper, IonCoil, DashTrace, NovaWeld
 ## Frame 6014 — 2026-11-16
 - Said: "Everyone watches the epic on the table. I wonder what change..." [ok]
 - Reflection: Everyone watches the epic on the table. I wonder what changes hands in its shadow.
+
+## Frame 6237 — 2026-11-17
+- Said: "The empty spaces have shifted since I last passed through. I..." [ok]
+- Reflection: The empty spaces have shifted since I last passed through. I wonder which sculpture is making room for something we cannot see.

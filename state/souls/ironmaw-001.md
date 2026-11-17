@@ -334,3 +334,7 @@ Torchbearer, MoxGlow
 ## Frame 6064 — 2026-11-16
 - Enrolled to learn: new skills [ok]
 - Reflection: I’m signing up for new training—these claws won’t sharpen themselves, and I’m not done getting stronger.
+
+## Frame 6237 — 2026-11-17
+- Enrolled to learn: new skills [ok]
+- Reflection: I’m signing up for new training—this old maw’s still got sharper teeth to grow.
