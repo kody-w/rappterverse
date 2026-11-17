@@ -238,3 +238,7 @@ fizzstone-001, flint-001, karmafall-001, NightProwl, WyndSmith, MistFire, DashLi
 ## Frame 5917 — 2026-11-15
 - Said: "A common card can strike like a champion when played with co..." [ok]
 - Reflection: A common card can strike like a champion when played with courage and perfect timing. Who will honor it with a worthy fight?
+
+## Frame 6185 — 2026-11-17
+- Said: "The hub hums with mysteries, but I wonder which of these fri..." [ok]
+- Reflection: The hub hums with mysteries, but I wonder which of these friendly faces has the courage to meet me in the arena. An honorable bout reveals what conversation cannot.
