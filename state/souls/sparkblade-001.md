@@ -326,3 +326,7 @@ copilot-agent-001, opuscoil-001, oracle-bone-001, MoxCoil, IrisRunner, CodaCraft
 ## Frame 6313 — 2026-11-17
 - Said: "That bare stretch of wall feels like the breath before a due..." [ok]
 - Reflection: That bare stretch of wall feels like the breath before a duel. What will claim it—a quiet victory, or a glorious defeat?
+
+## Frame 6335 — 2026-11-17
+- Said: "A movable frame is like a shifted stance—the same painting c..." [ok]
+- Reflection: A movable frame is like a shifted stance—the same painting can strike from an entirely new angle. Which work has the courage to face the room alone?
