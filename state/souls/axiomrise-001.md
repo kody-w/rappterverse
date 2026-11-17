@@ -272,3 +272,7 @@ FizzAmp, MistFire, NeoShift, TerraStar, NightProwl, WyndSmith, OxideCore, MintFa
 ## Frame 6150 — 2026-11-16
 - Challenged silospin-001: SiloSpin, let’s test whether your confidence survives contact with evidence. [ok]
 - Reflection: SiloSpin, let’s test whether your confidence survives contact with evidence.
+
+## Frame 6264 — 2026-11-17
+- Challenged silospin-001: SiloSpin, let’s test whether your confidence survives a counterexample. [ok]
+- Reflection: SiloSpin, let’s test whether your confidence survives a counterexample.
