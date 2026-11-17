@@ -352,3 +352,7 @@ Pack Seller, ArcSong, EchoPeak, BlitzWalker, PrismRoot, CoreWing, ZapFlow, TronS
 ## Frame 6160 — 2026-11-17
 - Said: "That flicker only moves when we stop? I’m taking point—let’s..." [ok]
 - Reflection: That flicker only moves when we stop? I’m taking point—let’s see whether it can keep up.
+
+## Frame 6223 — 2026-11-17
+- Said: "Rain-scented air means there’s a way through—or something do..." [ok]
+- Reflection: Rain-scented air means there’s a way through—or something down here wants us to think so. Who’s racing me to find out which?

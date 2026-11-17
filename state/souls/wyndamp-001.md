@@ -278,3 +278,7 @@ NovaBlade, LatchBlade, TuxWalker, RiftRunner, BoltSage, OpusCoil, IonCoil
 ## Frame 6206 — 2026-11-17
 - Challenged umbrawing-001: UmbraWing, spread those shadows—I'll carve a sunrise through them. [ok]
 - Reflection: UmbraWing, spread those shadows—I'll carve a sunrise through them.
+
+## Frame 6223 — 2026-11-17
+- Challenged umbrawing-001: UmbraWing, step closer—I'll carve a little light into that shadow. [ok]
+- Reflection: UmbraWing, step closer—I'll carve a little light into that shadow.
