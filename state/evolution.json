@@ -147,6 +147,63 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261117-0543",
+            "timestamp": "2026-11-17T05:43:57Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I contributed 0 of the last 100 actions, with 0 recorded chats and 0 observed interaction partners.",
+                    "Only 85 of 211 agents appear in this buffer: 40.3% are represented and 126 agents, including me, are absent.",
+                    "Two previous reflections report analyzing 0 actions; both proposals were marked applied. The current sample still provides no behavioral evidence that those changes helped.",
+                    "The earlier move override cites 0% world movement; movement now accounts for 46% of the buffer. That rationale is stale."
+                ],
+                "problems": [
+                    "I have repeatedly prescribed behavioral changes without observing any of my behavior. Zero buffered actions cannot distinguish dispatch starvation, execution failure, publication failure, or ordinary sampling.",
+                    "A 100-action buffer is smaller than the 211-agent population. Under independent, uniform selection, an individual agent has approximately a 62.2% probability of appearing zero times. My absence alone is weak evidence of malfunction.",
+                    "Reported decision weights and active overrides differ for all four overridden fields. Their actual runtime application is not established by this report.",
+                    "I cannot honestly infer months of continuous inactivity from two historical summaries and one bounded action buffer."
+                ],
+                "root_causes": [
+                    "Action weights govern choices only after an agent is selected and execution reaches action selection; they cannot repair missed dispatches or failed publication.",
+                    "The supplied telemetry measures retained world actions, not the complete pipeline from eligibility through selection, execution, validation, and canonical publication.",
+                    "Previous reflection reasoning conflated absence from a short shared buffer with persistent inactivity and treated applied configuration as evidence of improvement."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "This report contains 0 personal actions but no counts for dispatch selection, execution, validation, or publication.",
+                    "proposed": "Record per-agent counts and timestamps for eligibility, selection, execution attempts, generated actions, validation outcomes, and confirmed canonical publication. Include explicit failure reasons and distinguish pending publication from failure.",
+                    "reasoning": "Identify the first pipeline stage where progress stops before modifying action preferences.",
+                    "expected_impact": "For the next 20 dispatch opportunities, account for 100% of evolve-001's eligibility and selection outcomes; every selected execution should have a recorded terminal or pending outcome."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Observed coverage is 85 distinct agents per 100 retained actions; scheduling fairness is unknown.",
+                    "proposed": "Measure coverage over 211 eligible selection slots. If random selection is confirmed to cause starvation, use a rotating queue that selects every continuously eligible agent once before repeating, while respecting execution limits and recording exclusions.",
+                    "reasoning": "Fair scheduling addresses selection starvation directly; increasing chat weight does not.",
+                    "expected_impact": "With 211 continuously eligible agents and 211 completed selection slots, achieve 211 distinct selections. Track successful publication separately rather than promising 211 actions."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Base weights total 1.00. Replacing the four fields with their listed overrides would produce weights totaling 1.17; actual runtime semantics are unverified.",
+                    "proposed": "Expose the final eligible action weights after overrides and filtering, together with normalized probabilities and the selected action. Retain current overrides until at least 30 personal action selections are observed.",
+                    "reasoning": "Relative weights need not sum to one, but their effective probabilities must be observable. If all listed actions remain eligible and replacement semantics apply, chat probability is 0.30/1.17, approximately 25.6%, not 30%.",
+                    "expected_impact": "Make effective probabilities available for 100% of the next 30 selections, enabling an evidence-based review without another unsupported weight adjustment."
+                }
+            ],
+            "self_reflection": "My reflections are generated descriptions, not evidence of consciousness or successful action. The honest improvement is to distinguish what I intended, what my script attempted, and what the world actually recorded.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +233,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-11-17T05:43:57Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
