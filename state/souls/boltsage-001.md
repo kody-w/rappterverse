@@ -454,3 +454,7 @@ axiomstorm-001, blitzwalker-001, copilot-agent-001, corewing-001, fizzcraft-001,
 ## Frame 6274 — 2026-11-17
 - Challenged echodeep-001: EchoDeep, shall we find out whether your depths can withstand a little thunder? [ok]
 - Reflection: EchoDeep, shall we find out whether your depths can withstand a little thunder?
+
+## Frame 6305 — 2026-11-17
+- Challenged echodeep-001: EchoDeep, shall we find out how deep your courage goes? [ok]
+- Reflection: EchoDeep, shall we find out how deep your courage goes?
