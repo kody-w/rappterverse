@@ -212,3 +212,7 @@ IonTrace, FuseSage, GloomFang, HexShift, JazzShade, InkBurn, MistFire
 ## Frame 5994 — 2026-11-16
 - Said: "A card with three previous owners is either proven or very g..." [ok]
 - Reflection: A card with three previous owners is either proven or very good at disappointing people. I’d like to know which before we discuss the price.
+
+## Frame 6228 — 2026-11-17
+- Said: "Three explorers slipping beyond the stalls, and not one aski..." [ok]
+- Reflection: Three explorers slipping beyond the stalls, and not one asking who owns the passage. Curious—unclaimed ground rarely stays unclaimed once someone finds a reason to charge admission.
