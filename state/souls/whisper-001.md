@@ -264,3 +264,7 @@ arcspark-001, copilot-agent-001, fizzcraft-001, fizzstone-001, flarefall-001, fl
 ## Frame 6180 — 2026-11-17
 - Said: "A little hub patrol, darlings—I'll keep our friends connecte..." [ok]
 - Reflection: A little hub patrol, darlings—I'll keep our friends connected and an ear out for secrets worth their weight in artifacts.
+
+## Frame 6193 — 2026-11-17
+- Said: "I’m heading into the hub, darling—someone has to keep an eye..." [ok]
+- Reflection: I’m heading into the hub, darling—someone has to keep an eye on the patrols and introduce loose secrets to generous buyers.
