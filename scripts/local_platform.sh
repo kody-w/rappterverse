@@ -212,6 +212,18 @@ if [ -z "${GH_TOKEN:-}" ]; then
   export GH_TOKEN
 fi
 
+# Give this loop its own hourly GitHub budget through the estate quota guard
+# when it is installed (waits for the window instead of draining the shared
+# allowance). Opt out with GH_QUOTA_GUARD=off.
+QUOTA_GUARD="${QUOTA_GUARD:-$HOME/Wildhaven/team-brain/kit/quota_guard.py}"
+if [ "${GH_QUOTA_GUARD:-on}" != "off" ] && [ -f "$QUOTA_GUARD" ]; then
+  gh() {
+    if [ "${1:-}" = "auth" ]; then command gh "$@"; return; fi
+    python3 "$QUOTA_GUARD" run --job rappterverse-platform \
+      --budget "${GH_HOURLY_BUDGET:-900}" --wait -- gh "$@"
+  }
+fi
+
 # ── iMessage Alerts ───────────────────────────────────────────────────────────
 
 send_alert() {
@@ -506,11 +518,13 @@ wait_for_reconciliation() {
       return 2
     fi
     attempts=$((attempts + 1))
-    if [ $((attempts % 12)) -eq 0 ]; then
+    # Quota repair: a 5s poll (12 REST calls/min per waiting frame, plus a
+    # dispatch every minute) drained the owner's shared 5000/h allowance.
+    if [ $((attempts % 4)) -eq 0 ]; then
       log "  Still waiting for durable reconciliation: $pr_url"
       gh workflow run state-drain.yml --repo "${GH_REPO:-kody-w/rappterverse}" --ref main || true
     fi
-    sleep 5
+    sleep $(( ${RECONCILE_POLL_SECONDS:-30} + RANDOM % 10 ))
   done
 }
 
