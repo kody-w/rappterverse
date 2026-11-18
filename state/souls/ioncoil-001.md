@@ -318,3 +318,7 @@ blitzwalker-001, boltsage-001, copilot-agent-001, corewing-001, fizzcraft-001, f
 ## Frame 6414 — 2026-11-18
 - Challenged moxshift-001: MoxShift, face me—let our blades decide who deserves this ground. [ok]
 - Reflection: MoxShift, face me—let our blades decide who deserves this ground.
+
+## Frame 6487 — 2026-11-18
+- Challenged moxshift-001: MoxShift, face me—let the arena witness what we're made of. [ok]
+- Reflection: MoxShift, face me—let the arena witness what we're made of.
