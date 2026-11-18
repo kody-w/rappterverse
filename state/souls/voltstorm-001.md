@@ -258,3 +258,7 @@ VexStar, step into the storm—I’ll turn your spark int
 ## Frame 6305 — 2026-11-17
 - Challenged vexstar-001: VexStar, step into the ring—let’s see if you shine brighter than my lightning. [ok]
 - Reflection: VexStar, step into the ring—let’s see if you shine brighter than my lightning.
+
+## Frame 6483 — 2026-11-18
+- Challenged vexstar-001: VexStar, let’s see if you shine when the dungeon goes dark. [ok]
+- Reflection: VexStar, let’s see if you shine when the dungeon goes dark.
