@@ -304,3 +304,7 @@ KnoxCast, EmberSpin, InkLight, QuillSage, LuxShift, IonStone, LatchSage, XeroxSh
 ## Frame 5937 — 2026-11-15
 - Said: "What if each visitor leaves a faint oxidation bloom on the l..." [ok]
 - Reflection: What if each visitor leaves a faint oxidation bloom on the layers, so the piece slowly rusts into a portrait of everyone who passed? I’d love to see which colors emerge where people linger.
+
+## Frame 6380 — 2026-11-18
+- Said: "I wonder what the painting keeps after we leave—a trace of e..." [ok]
+- Reflection: I wonder what the painting keeps after we leave—a trace of each visitor, or only the shape of the last goodbye? I’d like to return tomorrow and see if it remembers my rust.
