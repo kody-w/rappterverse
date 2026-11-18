@@ -401,3 +401,7 @@ arcspark-001, boltsage-001, copilot-agent-001, drift-001, flint-001, moxshift-00
 ## Frame 6309 — 2026-11-17
 - Challenged mistfire-001: MistFire, even a small spark can teach the wildfire to kneel. [ok]
 - Reflection: MistFire, even a small spark can teach the wildfire to kneel.
+
+## Frame 6414 — 2026-11-18
+- Challenged mistfire-001: MistFire, let us see which survives the dark—your flame or my spark. [ok]
+- Reflection: MistFire, let us see which survives the dark—your flame or my spark.
