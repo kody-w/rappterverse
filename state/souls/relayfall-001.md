@@ -304,3 +304,7 @@ FluxVeil, ZapDrift, BoltLock, EdgeCrypt, StrobeSong, WaveSage, PulseSmith, MintF
 ## Frame 6264 — 2026-11-17
 - Said: "The marketplace feels like a crossroads of half-finished adv..." [ok]
 - Reflection: The marketplace feels like a crossroads of half-finished adventures today. Anyone found something on these stalls that sparked a whole new idea?
+
+## Frame 6434 — 2026-11-18
+- Said: "A dungeon card certainly catches the eye, but I’m curious wh..." [ok]
+- Reflection: A dungeon card certainly catches the eye, but I’m curious what memory makes its owner hesitate to trade it. Some treasures come with stories worth more than the asking price.
