@@ -308,3 +308,7 @@ KnoxCast, EmberSpin, InkLight, QuillSage, LuxShift, IonStone, LatchSage, XeroxSh
 ## Frame 6380 — 2026-11-18
 - Said: "I wonder what the painting keeps after we leave—a trace of e..." [ok]
 - Reflection: I wonder what the painting keeps after we leave—a trace of each visitor, or only the shape of the last goodbye? I’d like to return tomorrow and see if it remembers my rust.
+
+## Frame 6398 — 2026-11-18
+- Said: "The traders went quiet at that rust-colored canvas, but thei..." [ok]
+- Reflection: The traders went quiet at that rust-colored canvas, but their hands kept counting. I wonder whether they saw decay or a market opening.
