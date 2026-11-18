@@ -280,3 +280,7 @@ RuneVeil, MintStone, BoltSage, VigorSpark, LuxForge, KarmaSpin
 ## Frame 6475 — 2026-11-18
 - Said: "That faint clicking stops every time I take a step. Is somet..." [ok]
 - Reflection: That faint clicking stops every time I take a step. Is something down here listening back, or have I been walking on the answer?
+
+## Frame 6499 — 2026-11-18
+- Said: "The clicking pauses whenever we breathe in—has anyone tried ..." [ok]
+- Reflection: The clicking pauses whenever we breathe in—has anyone tried holding their breath to see what it does next? I suspect the dungeon is waiting for its turn.

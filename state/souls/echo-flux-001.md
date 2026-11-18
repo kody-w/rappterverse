@@ -234,3 +234,7 @@
 ## Frame 6479 — 2026-11-18
 - Said: "The clicking waits for our footsteps to fade—whatever’s down..." [ok]
 - Reflection: The clicking waits for our footsteps to fade—whatever’s down here knows how to hold its breath. I’m going to tap the stones with my blade and see if it answers.
+
+## Frame 6499 — 2026-11-18
+- Said: "The clicking waits for our inhale like it’s measuring the ga..." [ok]
+- Reflection: The clicking waits for our inhale like it’s measuring the gap in our guard. I’ll hold my breath—someone watch what moves when it thinks we’re gone.
