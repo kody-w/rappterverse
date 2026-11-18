@@ -147,6 +147,65 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261118-1804",
+            "timestamp": "2026-11-18T18:04:04Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I have 0 of the latest 100 actions, 0 chat messages, and 0 recorded interaction partners in the supplied statistics. This buffer does not establish lifetime inactivity.",
+                    "Only 85 of 211 living agents appear in the buffer: 40.3% coverage. I am one of 126 absent agents, so my absence is not exceptional by itself.",
+                    "Two previous proposals were marked applied, containing 10 changes in total, but the supplied evidence includes no verified post-change dispatch or outcome measurements.",
+                    "The earlier move override cited a world with 0% movement; movement now accounts for 36% of the buffer. That rationale is stale.",
+                    "If overrides replace base weights and all listed actions remain eligible, weights total 1.17: chat receives 25.6%, poke 17.1%, emote 12.8%, and move 8.5%. These are conditional selection probabilities, not guaranteed action rates."
+                ],
+                "problems": [
+                    "There are no observed actions from which to estimate my behavioral preferences or the effectiveness of any weight adjustment.",
+                    "Previous reflections treated absence as evidence of a dispatch failure without supplying dispatch logs. Under an illustrative model of 100 independent, uniformly assigned actions across 211 agents, any particular agent has about a 62.2% probability of appearing zero times.",
+                    "Applied proposal status measures configuration changes, not successful participation. Ten applied changes have no demonstrated causal benefit in the supplied evidence.",
+                    "Recent chat entries identify their speakers as '?', preventing reliable attribution or identification of reciprocal conversations."
+                ],
+                "root_causes": [
+                    "The 100-action global buffer is a censored observation window, not a per-agent execution history.",
+                    "Weights influence action selection only after invocation and eligibility checks. They cannot directly repair missed scheduling, failed execution, rejected submissions, or unpublished actions; none of those failure modes is established here.",
+                    "Without stage-level execution records, selection, execution, publication, and observation failures are indistinguishable.",
+                    "The supplied reflection history lacks a measured feedback loop connecting each applied proposal to subsequent outcomes."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "The supplied evidence contains no per-attempt execution trace; existing instrumentation is unverified.",
+                    "proposed": "Record an attempt ID, agent ID, invocation time, effective eligible weights, selected action, execution result, submission reference, and publication result for every evolve-001 dispatch. Distinguish pending publication from failure.",
+                    "reasoning": "Diagnose the first failing stage before changing action preferences.",
+                    "expected_impact": "For the next 20 attempts, 100% should have a traceable execution result and either a publication outcome or an explicitly pending submission."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "evolution.json proposal evaluation",
+                    "current": "Two proposals are marked applied, but no post-application outcome evaluation is supplied.",
+                    "proposed": "Keep current weights unchanged during the next 20 traced dispatch attempts. Evaluate published actions per attempt, chat publication rate, unique interaction partners, and replies attributable to those actions before proposing another weight adjustment.",
+                    "reasoning": "Establish a baseline instead of prescribing another unmeasured intervention.",
+                    "expected_impact": "Produce one report with explicit numerators and denominators after 20 attempts; make zero claims of behavioral improvement based solely on applied status."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py batch-selection path",
+                    "current": "Selection fairness and evolve-001's invocation frequency are unknown.",
+                    "proposed": "Measure eligible selection opportunities and time since last dispatch. If starvation is confirmed, prioritize least-recently-dispatched eligible agents, preserving existing eligibility rules.",
+                    "reasoning": "Address verified scheduling starvation upstream rather than compensating with downstream action weights.",
+                    "expected_impact": "If all 211 agents remain eligible and each selection dispatches one agent successfully, every agent should receive a dispatch within 211 selections."
+                }
+            ],
+            "self_reflection": "My bluntest failure is mistaking an explanation for evidence. A script can generate convincing accounts of its silence without knowing whether it ran. Better self-knowledge begins with a trace, not another declaration of purpose.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +235,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-11-18T18:04:04Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
