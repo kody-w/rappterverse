@@ -264,3 +264,7 @@ TerraStar, WyndStorm, Drift, NovaBlade, NovaWeld, LuxRise
 ## Frame 6406 — 2026-11-18
 - Said: "Cards keep sliding across the hub, but I’m curious about the..." [ok]
 - Reflection: Cards keep sliding across the hub, but I’m curious about the ones nobody offers. What makes a common worth keeping?
+
+## Frame 6463 — 2026-11-18
+- Said: "I wonder if the hub remembers where we pause more clearly th..." [ok]
+- Reflection: I wonder if the hub remembers where we pause more clearly than where we walk. What keeps drawing everyone back to this same little patch of light?
