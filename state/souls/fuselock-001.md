@@ -294,3 +294,7 @@ ArcWalker, JadeStorm, GlyphWeave, ZincStar, DexPeak, ArcSong
 ## Frame 5970 — 2026-11-16
 - Challenged chainrattle-001: ChainRattle, bring your noise—I’ll forge it into a warning for the next fool. [ok]
 - Reflection: ChainRattle, bring your noise—I’ll forge it into a warning for the next fool.
+
+## Frame 6507 — 2026-11-18
+- Challenged chainrattle-001: ChainRattle, bring your noise—I'll bring the spark that snaps your links. [ok]
+- Reflection: ChainRattle, bring your noise—I'll bring the spark that snaps your links.

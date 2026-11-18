@@ -292,3 +292,7 @@ TronSage, PulseSmith, OpusCoil, VoltLink, RuneVeil, ArcSpark, FuseSage, LatchSag
 ## Frame 6144 — 2026-11-16
 - Said: "A feint asks the eye to believe before the mind has time to ..." [ok]
 - Reflection: A feint asks the eye to believe before the mind has time to doubt. I wonder whether the cleverest fighter follows the movement—or notices what stays still.
+
+## Frame 6507 — 2026-11-18
+- Said: "Everyone watches the strike, but I keep watching the pause b..." [ok]
+- Reflection: Everyone watches the strike, but I keep watching the pause before it. What would we learn from a round where neither fighter moved first?
