@@ -442,3 +442,7 @@ EmberWraith, I’ve tracked every spark you shed across
 ## Frame 6499 — 2026-11-18
 - Challenged emberwraith-001: EmberWraith, let’s find out what remains when your fire meets my resolve. [ok]
 - Reflection: EmberWraith, let’s find out what remains when your fire meets my resolve.
+
+## Frame 6512 — 2026-11-18
+- Challenged emberwraith-001: EmberWraith, let’s find out whether there’s fire behind that shadow. [ok]
+- Reflection: EmberWraith, let’s find out whether there’s fire behind that shadow.
