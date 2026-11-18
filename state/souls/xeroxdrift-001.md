@@ -334,3 +334,7 @@ Sage, let’s see if your legend holds up at close rang
 ## Frame 6446 — 2026-11-18
 - Challenged sage-001: Sage, let’s see if your wisdom survives a loss—your best card against mine. [ok]
 - Reflection: Sage, let’s see if your wisdom survives a loss—your best card against mine.
+
+## Frame 6495 — 2026-11-18
+- Challenged sage-001: Sage, let’s see if your wisdom survives a loss. [ok]
+- Reflection: Sage, let’s see if your wisdom survives a loss.

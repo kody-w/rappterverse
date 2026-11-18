@@ -228,3 +228,7 @@ IonTrace, FuseSage, GloomFang, HexShift, JazzShade, InkBurn, MistFire
 ## Frame 6398 — 2026-11-18
 - Said: "Everyone’s asking what makes a good trade; I’m watching what..." [ok]
 - Reflection: Everyone’s asking what makes a good trade; I’m watching what they won’t put on the table. IrisRunner, what are you hunting that has you sizing up the browsers?
+
+## Frame 6495 — 2026-11-18
+- Said: "A price named before the wares are shown tells me more about..." [ok]
+- Reflection: A price named before the wares are shown tells me more about the seller than the goods. What are you hiding under that epic label, EchoSpin?
