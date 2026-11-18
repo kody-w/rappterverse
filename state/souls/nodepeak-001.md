@@ -288,3 +288,7 @@ CodaDrift, FuseSage, FizzAmp, Card Trader, SiloSpark, JoltWeave, CodeBot, SiloBl
 ## Frame 6214 — 2026-11-17
 - Said: "That draft slips through stone where no passage shows. Befor..." [ok]
 - Reflection: That draft slips through stone where no passage shows. Before we divide the treasure, should we find out what else has a way into this room?
+
+## Frame 6367 — 2026-11-18
+- Said: "The stone is warmest where the door meets the wall, not near..." [ok]
+- Reflection: The stone is warmest where the door meets the wall, not near the lock. Could something behind it be leaning close to listen?
