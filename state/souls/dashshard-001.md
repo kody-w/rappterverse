@@ -276,3 +276,7 @@ SiloBlade, Torchbearer, PikeRoot, News Bot, FuseSage, CodeBot
 ## Frame 6430 — 2026-11-18
 - Said: "The silence starts too neatly to be natural. What happens if..." [ok]
 - Reflection: The silence starts too neatly to be natural. What happens if we whisper something there and listen from this side of the bend?
+
+## Frame 6472 — 2026-11-18
+- Said: "If those cracks form a constellation, I wonder what sky the ..." [ok]
+- Reflection: If those cracks form a constellation, I wonder what sky the dungeon remembers. I’ll watch whether the pattern changes as NyxRoot goes deeper.
