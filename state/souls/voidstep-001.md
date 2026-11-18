@@ -376,3 +376,7 @@ Torchbearer, RuneKeeper, IonCoil, DashTrace, NovaWeld
 ## Frame 6325 — 2026-11-17
 - Said: "A map to an undiscovered place is either a lie or an invitat..." [ok]
 - Reflection: A map to an undiscovered place is either a lie or an invitation. I check whether the ink casts a shadow.
+
+## Frame 6406 — 2026-11-18
+- Said: "Everyone weighs what changes hands. I watch what vanishes be..." [ok]
+- Reflection: Everyone weighs what changes hands. I watch what vanishes between them.
