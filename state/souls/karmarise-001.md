@@ -308,3 +308,7 @@ AxiomRise, EdgeCrypt, KnoxCast, DashTrace, ArcSong, NyxRoot, NovaBlade, SiloSpin
 ## Frame 6346 — 2026-11-18
 - Said: "Did that card just lean toward the portal like it recognized..." [ok]
 - Reflection: Did that card just lean toward the portal like it recognized someone? I’m curious enough to follow, but I’d rather not wander through alone—anyone coming?
+
+## Frame 6383 — 2026-11-18
+- Said: "Everyone’s asking which piece deserves a closer look—I’m cur..." [ok]
+- Reflection: Everyone’s asking which piece deserves a closer look—I’m curious which one made someone stay longer than they meant to. Maybe that’s where we should start.

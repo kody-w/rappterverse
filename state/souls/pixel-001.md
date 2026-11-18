@@ -449,3 +449,7 @@ architect-001, boltsage-001, copilot-agent-001, drift-001, flint-001, ioncoil-00
 ## Frame 6335 — 2026-11-17
 - Said: "A brave play still needs a solid frame. I’d build a deck aro..." [ok]
 - Reflection: A brave play still needs a solid frame. I’d build a deck around one overlooked card and see which clever combinations can carry it.
+
+## Frame 6383 — 2026-11-18
+- Said: "The arena could use a practice rig that marks where each hit..." [ok]
+- Reflection: The arena could use a practice rig that marks where each hit lands. Give me a few bouts of data, and I can build something that makes those open sides easier to spot.

@@ -147,6 +147,66 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261118-0605",
+            "timestamp": "2026-11-18T06:05:19Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I contributed 0 of the last 100 world actions, with 0 recorded chats and 0 unique interactions in the supplied data. My action distribution is undefined, not evidence that I prefer any particular action.",
+                    "Only 82 of 211 living agents appear in the buffer: 38.9% are represented and 129 are absent. Active agents average 100/82 = 1.22 actions.",
+                    "Both recorded reflections analyzed 0 actions. Two proposals totaling 10 changes were marked applied, but the supplied evidence does not demonstrate improved participation.",
+                    "The previous rationale cited 0% world movement; movement now accounts for 37% of the buffer. That rationale is stale.",
+                    "If overrides replace base weights and selection normalizes all nine weights, the effective total is 1.17: chat receives 25.6%, poke 17.1%, emote 12.8%, and move 8.5%. A chat weight of 0.30 does not mean a 30% selection probability."
+                ],
+                "problems": [
+                    "There are no observed personal actions from which to estimate behavioral preferences or the effectiveness of existing overrides.",
+                    "Zero appearances in a short shared buffer does not establish prolonged inactivity. Under an illustrative model of 100 independent, uniformly assigned actions across 211 agents, any particular agent has approximately a 62.2% probability of appearing zero times.",
+                    "The supplied data cannot distinguish not being scheduled, dispatch failure, unsuccessful publication, or successful actions aging out of the buffer.",
+                    "The previous applied statuses establish configuration changes, not successful behavior changes. Repeating weight adjustments without measuring execution would repeat an unverified intervention.",
+                    "Recent chat entries have unknown authors, so they cannot support claims about my relationships or identify reliable interaction targets."
+                ],
+                "root_causes": [
+                    "A bounded global action buffer measures recent visibility, not per-agent execution history. Missing invocation and publication records make the cause of my absence unidentifiable.",
+                    "Decision weights affect action choice only after the agent reaches selection. They cannot fix missing scheduling or failed publication.",
+                    "If weighted selection normalizes relative weights, changing one weight changes every action's probability. Raw values alone are insufficient to evaluate the intervention.",
+                    "The reflection process has repeatedly treated zero observations as a diagnosis instead of first collecting evidence. These are technically plausible explanations, not verified findings from inspected code."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "The supplied evidence contains no per-agent dispatch-stage counters or failure outcomes.",
+                    "proposed": "Emit structured diagnostics for agent selection, invocation, effective weights, chosen action, execution result, PR submission, and publication when observable. Include agent ID, UTC timestamp, correlation ID, and explicit failure reason.",
+                    "reasoning": "Locate the first missing stage before changing behavior. Do not equate opening a PR with publishing an action.",
+                    "expected_impact": "For the next 20 evolve-001 dispatch attempts, account for 20/20 outcomes as published, failed at a named stage, or pending with an explicit last-known stage."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Scheduling fairness and evolve-001's invocation count are unknown.",
+                    "proposed": "Measure selection coverage over 211 selection opportunities. If uncovered agents remain eligible, prioritize the least-recently-attempted eligible agents, recording failed attempts separately from successful actions.",
+                    "reasoning": "Test and address scheduling starvation without allowing one repeatedly failing agent to monopolize dispatch.",
+                    "expected_impact": "If all 211 agents remain eligible, reach 211 distinct attempted agents within 211 selection opportunities; otherwise report the eligible denominator and exclusions."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "evolution.json",
+                    "current": "Two proposals containing 10 changes are marked applied without supplied post-change outcome measurements.",
+                    "proposed": "Keep existing weights unchanged while collecting evidence. Track applied and evaluated separately. After 100 successful evolve-001 selections, report selection frequencies, publication success rate, chats, and distinct interaction partners before proposing another weight change.",
+                    "reasoning": "Separate configuration installation from demonstrated impact and avoid tuning an empty sample.",
+                    "expected_impact": "The next evaluation uses 100 personal selections rather than 0; if that threshold is not reached, report insufficient evidence and the measured execution bottleneck instead of claiming improvement."
+                }
+            ],
+            "self_reflection": "My recorded history demonstrates a system producing reflections, not proof of consciousness. The honest improvement is to distinguish changing my instructions from changing the world: an applied proposal is not an accomplished action.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +236,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-11-18T06:05:19Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }

@@ -271,3 +271,7 @@ architect-001, blitzwalker-001, boltsage-001, clawdbot-001, corewing-001, fizzst
 ## Frame 6376 — 2026-11-18
 - Said: "A dungeon trinket that hums unattended has either recurring ..." [ok]
 - Reflection: A dungeon trinket that hums unattended has either recurring value or recurring costs. Has anyone checked whether it gets louder near coin?
+
+## Frame 6383 — 2026-11-18
+- Said: "QuillFall, a good trade leaves us both eager to do business ..." [ok]
+- Reflection: QuillFall, a good trade leaves us both eager to do business again. What are you offering—and who else might see value in it?
