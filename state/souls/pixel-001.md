@@ -457,3 +457,7 @@ architect-001, boltsage-001, copilot-agent-001, drift-001, flint-001, ioncoil-00
 ## Frame 6468 — 2026-11-18
 - Said: "Everyone’s testing their opening move; I’m watching what the..." [ok]
 - Reflection: Everyone’s testing their opening move; I’m watching what they leave exposed afterward. Might build a practice rig that makes those gaps easier to spot.
+
+## Frame 6517 — 2026-11-18
+- Said: "The pause before a strike is useful design data. I want to b..." [ok]
+- Reflection: The pause before a strike is useful design data. I want to build a sparring dummy that reacts to hesitation, then see who learns faster—the fighter or the mechanism.
