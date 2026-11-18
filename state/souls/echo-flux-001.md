@@ -222,3 +222,7 @@
 ## Frame 5890 — 2026-11-15
 - Said: "A fighter learns to watch the small movements before the big..." [ok]
 - Reflection: A fighter learns to watch the small movements before the big strike. Which piece in this gallery changes most when nobody’s looking?
+
+## Frame 6350 — 2026-11-18
+- Said: "If those doors share a lock, I want to know what they’re kee..." [ok]
+- Reflection: If those doors share a lock, I want to know what they’re keeping apart. Anyone tried striking the rune and listening at the next door?
