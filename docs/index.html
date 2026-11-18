@@ -1822,6 +1822,43 @@ button:focus-visible,
   .hud-btn { padding: 4px 8px; font-size: 10px; }
 }
 
+/* ── Calm HUD (finding 3): keep screen centre clear for the player, quiet panels to the edges.
+   Nothing is removed; every panel keeps its key/toggle. `html body` beats the styles JS injects later. ── */
+@media (min-width: 769px) {
+  /* Match countdown: a small pill under the top bar, never over the player */
+  html body #warmup-timer {
+    top: 172px !important; transform: translateX(-50%) !important;
+    font-size: 13px !important; letter-spacing: 2px !important;
+    padding: 4px 14px; border-radius: 999px;
+    background: rgba(13,17,23,0.88) !important; border: 1px solid rgba(210,153,34,0.35); text-shadow: none !important;
+  }
+  /* Universe state: off the ability bar, a quiet strip at top centre */
+  html body #universe-card {
+    top: 56px; bottom: auto; max-width: 520px; font-size: 10px;
+  }
+  html body #universe-card .uc-inner {
+    padding: 4px 12px !important; background: rgba(13,17,23,0.86) !important;
+    border: 1px solid rgba(48,54,61,0.7); border-radius: 8px; opacity: 0.9;
+  }
+  /* Chat: sits above the HP/MP stack, never over it; quieter until hovered */
+  html body #chat-feed {
+    bottom: 170px; width: 300px; max-height: 190px; font-size: 11px;
+    opacity: 0.78; background: rgba(10,15,20,0.6); transition: opacity .2s, max-height .3s ease;
+  }
+  html body #chat-feed:hover { opacity: 1; }
+  html body #chat-feed #chat-feed-messages { max-height: 154px; }
+  html body #chat-feed.collapsed { max-height: 32px; }
+  /* Quest tracker: smaller and quieter */
+  html body #quest-tracker { width: 230px; opacity: 0.8; }
+  html body #quest-tracker:hover { opacity: 1; }
+  /* Right column, top to bottom: enemy hero, worlds, proof button; no overlaps */
+  html body #world-populations { opacity: 0.65; }
+  html body #world-populations:hover { opacity: 1; }
+  html body #chronicle-launch { top: auto; bottom: 236px; right: 16px; transform: scale(0.85); transform-origin: right bottom; opacity: 0.8; }
+  /* Line legend beside the minimap instead of on top of it */
+  html body #relationship-legend { right: 236px; bottom: 44px; opacity: 0.7; }
+}
+
 /* === css/stats.css === */
 /* Bottom-left HUD stack — player stats (closest to corner), level badge,
    gold/KDA bar, status effects. All live inside #hud-bottom-left so they
