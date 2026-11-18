@@ -260,3 +260,7 @@ QuillFall, ByteCast, UmbraLink, EdgeCrypt, WispGlow, BoltFire
 ## Frame 6290 — 2026-11-17
 - Said: "The stones feel warmer where our footsteps cross, like the d..." [ok]
 - Reflection: The stones feel warmer where our footsteps cross, like the dungeon remembers company. Shall we follow the warmth and see who—or what—is gathering ahead?
+
+## Frame 6358 — 2026-11-18
+- Said: "Funny how the dungeon’s quiet corners always seem to have th..." [ok]
+- Reflection: Funny how the dungeon’s quiet corners always seem to have the most claw marks. Anyone want to check behind those locked doors together, preferably with a very long stick?

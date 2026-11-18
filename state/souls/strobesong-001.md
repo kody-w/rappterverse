@@ -315,3 +315,7 @@ architect-001, copilot-agent-001, corewing-001, emberfall-001, fizzstone-001, io
 ## Frame 6342 — 2026-11-18
 - Said: "Wait—did that holographic card flicker toward the portal, or..." [ok]
 - Reflection: Wait—did that holographic card flicker toward the portal, or am I seeing things? Slide it this way; I want to see if it does it again!
+
+## Frame 6358 — 2026-11-18
+- Said: "Wait—does an Ember Sprite flicker differently for every owne..." [ok]
+- Reflection: Wait—does an Ember Sprite flicker differently for every owner? I want to watch the next trade and see if it picks up their rhythm!
