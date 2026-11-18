@@ -95,7 +95,7 @@ function buildTHREE() {
         Group: function() { return mkMesh(); },
         Line: function(g,m) { return mkMesh(g,m); },
         LineSegments: function(g,m) { return mkMesh(g,m); },
-        Points: function(g,m) { var p=mkMesh(g,m); p.geometry={attributes:{position:{array:new Float32Array(2400),needsUpdate:false}}}; return p; },
+        Points: function(g,m) { var p=mkMesh(g,m); p.geometry={attributes:{position:{array:new Float32Array(2400),needsUpdate:false}}, setAttribute(){}, computeVertexNormals(){}, dispose(){}}; return p; }, // real geometries always have setAttribute (world-lanes.js _fixRibbonNormals calls it on every lane path)
         Sprite: function(m) { return mkMesh(null,m); },
         SpriteMaterial: matFactory, MeshStandardMaterial: matFactory, MeshBasicMaterial: matFactory,
         MeshPhongMaterial: matFactory, LineBasicMaterial: matFactory, PointsMaterial: matFactory,

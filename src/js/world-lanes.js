@@ -163,11 +163,25 @@ const WorldLanes = {
         this.buildRiver(scene, sx, sz, w);
         this.buildRoads(scene, w, sx, sz);
         this.buildBrush(scene, sx, sz, w);
+        this._fixRibbonNormals();
 
         for (var lk in LANE_DEFS) {
             this.createTowersForLane(scene, lk, LANE_DEFS[lk], sx, sz);
         }
         this.createThrones(scene, sx, sz);
+    },
+
+    // v2-ground: river/road ribbons are hand-built BufferGeometry with no normal
+    // attribute, so MeshStandardMaterial lit them pure black (the "holes" beside the
+    // lanes). Give every flat ribbon an up-facing normal; shape/position unchanged.
+    _fixRibbonNormals() {
+        this.lanePaths.forEach(function(m) {
+            var g = m && m.geometry;
+            if (!g || !g.attributes || !g.attributes.position || g.attributes.normal) return;
+            var n = new Float32Array(g.attributes.position.count * 3);
+            for (var i = 1; i < n.length; i += 3) n[i] = 1;
+            g.setAttribute('normal', new THREE.BufferAttribute(n, 3));
+        });
     },
 
     buildRiver(scene, sx, sz, w) {
