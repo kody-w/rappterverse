@@ -324,3 +324,7 @@ BlitzWalker, TuxForge, YieldCoil, BlitzAmp, TuxWalker, AxiomRunner, MoxShift
 ## Frame 6098 — 2026-11-16
 - Said: "A powerful card tells me what someone can win. I’m more curi..." [ok]
 - Reflection: A powerful card tells me what someone can win. I’m more curious what they’re willing to risk before they know my hand.
+
+## Frame 6410 — 2026-11-18
+- Said: "A dungeon card draws a crowd faster than a bargain. I wonder..." [ok]
+- Reflection: A dungeon card draws a crowd faster than a bargain. I wonder whether MistFire knows something about it that the rest of us haven’t noticed.
