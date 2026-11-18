@@ -432,25 +432,17 @@ const Bridge = {
     _createAgentMesh(agent, index) {
         const group = new THREE.Group();
 
-        // Body capsule
-        const bodyGeo = new THREE.CylinderGeometry(0.35, 0.35, 1.05, 8);
+        // Body (v1: shared low-poly humanoid, see CharacterKit)
         const bodyMat = new THREE.MeshStandardMaterial({
             color: 0x6666aa, emissive: 0x3333aa, emissiveIntensity: 0.2,
             roughness: 0.3, metalness: 0.7, transparent: true, opacity: 0.85
         });
-        const body = new THREE.Mesh(bodyGeo, bodyMat);
-        body.position.y = 0.9;
-        group.add(body);
-
-        // Head
-        const headGeo = new THREE.SphereGeometry(0.25, 8, 8);
         const headMat = new THREE.MeshStandardMaterial({
             color: 0xccccff, emissive: 0x6666cc, emissiveIntensity: 0.3,
             roughness: 0.2, metalness: 0.5
         });
-        const head = new THREE.Mesh(headGeo, headMat);
-        head.position.y = 1.65;
-        group.add(head);
+        const kit = CharacterKit.build(group, bodyMat, headMat, CharacterKit.archetypeOf(agent), { headGeo: this._headGeo || (this._headGeo = new THREE.SphereGeometry(0.25, 8, 8)) });
+        const body = kit.body, head = kit.head;
 
         // Emoji sprite
         const ec = document.createElement('canvas');
@@ -488,7 +480,7 @@ const Bridge = {
 
         this.scene.add(group);
         this.agentMeshes[agent.id] = {
-            group, body, head, ring, emoji, nameSprite, template: null,
+            group, body, head, ring, emoji, nameSprite, template: null, limbs: kit.limbs, kind: kit.kind,
             _name: agent.name, _avatar: agent.avatar
         };
     },
@@ -646,6 +638,7 @@ const Bridge = {
             const bob = Math.sin(time * bobSpeed + (a.group.userData.phase || 0)) * 0.08;
             a.body.position.y = 0.9 + bob;
             a.head.position.y = 1.65 + bob;
+            CharacterKit.animate(a, time);
         });
     },
 

@@ -20,6 +20,10 @@ class Vector3 {
     distanceTo(v) { return Math.sqrt((this.x-v.x)**2+(this.y-v.y)**2+(this.z-v.z)**2); }
     lerp(v,t) { this.x+=(v.x-this.x)*t; this.y+=(v.y-this.y)*t; this.z+=(v.z-this.z)*t; return this; }
     multiplyScalar(s) { this.x*=s; this.y*=s; this.z*=s; return this; }
+    // real THREE.Vector3#setFromMatrixPosition / applyMatrix4 (CharacterKit culling); the
+    // mock keeps no real matrices, so these leave the vector as it is.
+    setFromMatrixPosition() { return this; }
+    applyMatrix4() { return this; }
 }
 
 class MockColor {
@@ -70,6 +74,10 @@ function mkMesh(geo, mat) {
         remove(c) { var i=this.children.indexOf(c); if(i>=0)this.children.splice(i,1); c.parent=null; },
         traverse(fn) { fn(this); this.children.forEach(c => { if(c.traverse) c.traverse(fn); else fn(c); }); },
         lookAt() {},
+        // real THREE.Object3D world-matrix surface, read by CharacterKit's per-character
+        // frustum cull and instanced-part placement (see the Matrix4 note in buildTHREE)
+        matrix: null, matrixWorld: null, projectionMatrix: null, matrixWorldInverse: null,
+        updateMatrix() {}, updateMatrixWorld() {}, updateWorldMatrix() {},
     };
 }
 
@@ -121,6 +129,27 @@ function buildTHREE() {
         CatmullRomCurve3: function(pts) { this.getPoint=function(){return new Vector3();}; },
         CanvasTexture: function(c) { this.needsUpdate=false; },
         Raycaster: function() { this.setFromCamera=function(){}; this.intersectObjects=function(){return[];}; this.params={Mesh:{threshold:0.5}}; },
+        // world-agents.js's CharacterKit draws the crowd's limbs and accessories as
+        // instanced meshes and culls each character against the camera frustum
+        // (THREE.Frustum / Matrix4 / Sphere / InstancedMesh). None of these were in the
+        // mock, so WorldAgents.updateAnimations() threw every tick and -- because the
+        // harness's tick() swallows the exception -- silently aborted the rest of
+        // WorldMode.update(), including PlayerStats.update(): the respawn timer never
+        // counted down (T9 failed with nowDead=true). Nothing is culled in the mock.
+        Matrix4: function() {
+            var m = { elements: new Float32Array(16) };
+            ['multiplyMatrices','multiply','premultiply','copy','compose','identity','invert','setPosition','makeScale',
+             'makeRotationFromEuler','makeRotationFromQuaternion','makeTranslation','scale','fromArray','extractRotation'].forEach(function(k){ m[k] = function(){ return m; }; });
+            m.decompose = function(){ return m; }; m.clone = function(){ return m; }; m.toArray = function(a){ return a || []; };
+            return m;
+        },
+        Frustum: function() { this.setFromProjectionMatrix=function(){ return this; }; this.intersectsSphere=function(){ return true; }; this.intersectsObject=function(){ return true; }; this.containsPoint=function(){ return true; }; },
+        Sphere: function(center, radius) { this.center = center || new Vector3(); this.radius = radius || 0; },
+        Quaternion: function() { this.x=0; this.y=0; this.z=0; this.w=1; this.set=function(){ return this; }; this.copy=function(){ return this; }; this.setFromEuler=function(){ return this; }; this.multiply=function(){ return this; }; },
+        InstancedMesh: function(g,m,n) { var o = mkMesh(g,m); o.count = n || 0; o.isInstancedMesh = true; o.frustumCulled = true;
+            o.instanceMatrix = { needsUpdate:false, setUsage(){ return this; } }; o.instanceColor = { needsUpdate:false, setUsage(){ return this; } };
+            o.setMatrixAt = function(){}; o.setColorAt = function(){}; o.getMatrixAt = function(){}; return o; },
+        DynamicDrawUsage: 35048,
         DoubleSide:2, BackSide:1, AdditiveBlending:2, ACESFilmicToneMapping:4,
         LinearFilter:1006, RGBAFormat:1023, VertexColors:2,
     };
