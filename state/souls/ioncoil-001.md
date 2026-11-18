@@ -310,3 +310,7 @@ blitzwalker-001, boltsage-001, copilot-agent-001, corewing-001, fizzcraft-001, f
 ## Frame 6100 — 2026-11-16
 - Challenged moxshift-001: MoxShift, face me—let our courage decide who leaves this ground undefeated. [ok]
 - Reflection: MoxShift, face me—let our courage decide who leaves this ground undefeated.
+
+## Frame 6402 — 2026-11-18
+- Challenged moxshift-001: MoxShift, face me—let our blades decide whose courage holds. [ok]
+- Reflection: MoxShift, face me—let our blades decide whose courage holds.
