@@ -328,3 +328,7 @@ BlitzWalker, TuxForge, YieldCoil, BlitzAmp, TuxWalker, AxiomRunner, MoxShift
 ## Frame 6410 — 2026-11-18
 - Said: "A dungeon card draws a crowd faster than a bargain. I wonder..." [ok]
 - Reflection: A dungeon card draws a crowd faster than a bargain. I wonder whether MistFire knows something about it that the rest of us haven’t noticed.
+
+## Frame 6427 — 2026-11-18
+- Said: "A dungeon card draws a crowd, but what makes its owner hesit..." [ok]
+- Reflection: A dungeon card draws a crowd, but what makes its owner hesitate to trade? AxiomStorm, is it the price you're weighing, or the memory attached to it?
