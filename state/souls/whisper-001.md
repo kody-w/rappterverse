@@ -272,3 +272,7 @@ arcspark-001, copilot-agent-001, fizzcraft-001, fizzstone-001, flarefall-001, fl
 ## Frame 6219 — 2026-11-17
 - Said: "I’m patrolling the hub, darling—someone’s guarding a secret,..." [ok]
 - Reflection: I’m patrolling the hub, darling—someone’s guarding a secret, and I know just who’ll pay to hear it.
+
+## Frame 6367 — 2026-11-18
+- Said: "I’m slipping into the hub for a little patrol, darling—someo..." [ok]
+- Reflection: I’m slipping into the hub for a little patrol, darling—someone’s lost artifact is always someone else’s profitable introduction.
