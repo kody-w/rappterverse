@@ -1,4 +1,261 @@
 // World Agents — NPC Meshes, Portals, Screens, Decorations, Interactions
+// === v1: CharacterKit — shared low-poly humanoids (replaces the capsule peg) ===
+// All geometries and accessory materials are created once and shared by every
+// character; only the per-agent body/head materials (which existing code
+// recolours per agent) stay per-agent, exactly as before.
+const CharacterKit = {
+    _g: null, _m: null,
+    ARCHETYPES: ['fighter', 'trader', 'social', 'explorer', 'builder'],
+    geos() {
+        if (this._g) return this._g;
+        const B = (x, y, z) => new THREE.BoxGeometry(x, y, z);
+        const C = (a, b, h, s) => new THREE.CylinderGeometry(a, b, h, s);
+        this._g = {
+            leg: B(0.18, 0.55, 0.2),
+            visor: B(0.32, 0.07, 0.06),
+            torso: {
+                fighter: B(0.74, 0.72, 0.42),
+                trader: C(0.26, 0.37, 0.74, 8),
+                social: C(0.17, 0.36, 0.8, 8),
+                explorer: B(0.5, 0.72, 0.32),
+                builder: B(0.64, 0.68, 0.42),
+                hero: B(0.6, 0.72, 0.36),
+            },
+            arm: {
+                fighter: B(0.21, 0.62, 0.21), trader: B(0.14, 0.56, 0.14), social: B(0.11, 0.56, 0.11),
+                explorer: B(0.13, 0.6, 0.13), builder: B(0.17, 0.58, 0.17), hero: B(0.14, 0.58, 0.14),
+            },
+            pad: B(0.3, 0.14, 0.34),
+            crest: B(0.06, 0.2, 0.44),
+            brim: C(0.44, 0.44, 0.04, 10),
+            crown: C(0.2, 0.23, 0.22, 8),
+            pack: B(0.4, 0.42, 0.18),
+            bun: new THREE.SphereGeometry(0.14, 6, 4),
+            hood: new THREE.ConeGeometry(0.3, 0.46, 8),
+            roll: C(0.11, 0.11, 0.52, 6),
+            hardhat: new THREE.SphereGeometry(0.29, 8, 4, 0, Math.PI * 2, 0, Math.PI / 2),
+            hardbrim: C(0.34, 0.34, 0.03, 10),
+            belt: B(0.68, 0.08, 0.46),
+            cape: new THREE.PlaneGeometry(0.62, 0.95),
+            heroCrest: new THREE.ConeGeometry(0.09, 0.24, 4),
+        };
+        return this._g;
+    },
+    mats() {
+        if (this._m) return this._m;
+        const S = (c, extra) => new THREE.MeshStandardMaterial(Object.assign({ color: c, roughness: 0.6, metalness: 0.2 }, extra || {}));
+        this._m = {
+            leg: S(0x2a2c3a),
+            visor: new THREE.MeshBasicMaterial({ color: 0x0b0d18 }),
+            dark: S(0x3a3a48, { metalness: 0.5 }),
+            leather: S(0x6b4a2a, { roughness: 0.85, metalness: 0 }),
+            gold: S(0xffcc33, { emissive: 0x664400, emissiveIntensity: 0.4, metalness: 0.8, roughness: 0.3 }),
+            hard: S(0xffb020, { roughness: 0.4 }),
+            hair: S(0x2a1a14, { roughness: 0.9, metalness: 0 }),
+            cape: new THREE.MeshStandardMaterial({ color: 0xff3366, emissive: 0x661022, emissiveIntensity: 0.35, side: THREE.DoubleSide, roughness: 0.7 }),
+        };
+        return this._m;
+    },
+    archetypeOf(agent) {
+        if (!agent) return 'explorer';
+        if (this.ARCHETYPES.indexOf(agent.archetype) >= 0) return agent.archetype;
+        const t = agent.traits;
+        if (t && typeof t === 'object') {
+            let best = null, bv = -1;
+            this.ARCHETYPES.forEach(k => { if (typeof t[k] === 'number' && t[k] > bv) { bv = t[k]; best = k; } });
+            if (best) return best;
+        }
+        let h = 0; const s = String(agent.id || agent.name || '');
+        for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0;
+        return this.ARCHETYPES[Math.abs(h) % this.ARCHETYPES.length];
+    },
+    _mesh(geo, mat, x, y, z, parent) {
+        const m = new THREE.Mesh(geo, mat); m.position.set(x, y, z); parent.add(m); return m;
+    },
+    // v1b: pooled part = an empty Object3D placeholder (no draw call); the
+    // CharacterPool draws every placeholder of one geometry+material as one
+    // InstancedMesh. tint=true parts follow the agent's own body material.
+    _slot(geo, mat, x, y, z, parent, parts, tint) {
+        const o = new THREE.Object3D(); o.position.set(x, y, z); parent.add(o);
+        o.userData.kp = { geo, mat, tint: !!tint }; parts.push(o); return o;
+    },
+    // Builds torso (returned as `body`, at y 0.9 like the old cylinder) with
+    // arms/legs parented to it, and the head (y 1.65) with its accessories.
+    build(group, bodyMat, headMat, kind, opts) {
+        const G = this.geos(), M = this.mats();
+        opts = opts || {};
+        const parts = [];
+        const mk = opts.pool
+            ? (geo, mat, x, y, z, parent) => this._slot(geo, mat === bodyMat ? null : mat, x, y, z, parent, parts, mat === bodyMat)
+            : this._mesh.bind(this);
+        const body = new THREE.Mesh(G.torso[kind] || G.torso.explorer, bodyMat);
+        body.position.y = 0.9;
+        group.add(body);
+        const head = new THREE.Mesh(opts.headGeo || new THREE.SphereGeometry(0.25, 8, 8), headMat);
+        head.position.y = 1.65;
+        group.add(head);
+        const limbs = {};
+        const armGeo = G.arm[kind] || G.arm.explorer;
+        const sh = kind === 'fighter' ? 0.48 : kind === 'social' ? 0.27 : kind === 'trader' ? 0.34 : kind === 'builder' ? 0.42 : 0.36;
+        const limbParent = opts.limbParent || body;   // player: limbs stay top-level
+        const baseY = limbParent === body ? 0 : 0.9;
+        ['L', 'R'].forEach((side, i) => {
+            const sx = i === 0 ? -1 : 1;
+            const ap = new THREE.Group(); ap.position.set(sx * sh, baseY + 0.3, 0); limbParent.add(ap);
+            mk(armGeo, bodyMat, 0, -0.29, 0, ap);
+            limbs['arm' + side] = ap;
+            const lp = new THREE.Group(); lp.position.set(sx * 0.14, baseY - 0.35, 0); limbParent.add(lp);
+            mk(G.leg, M.leg, 0, -0.275, 0, lp);
+            limbs['leg' + side] = lp;
+        });
+        if (!opts.noVisor) mk(G.visor, M.visor, 0, 0.03, 0.22, head);
+        if (kind === 'fighter') {
+            mk(G.pad, M.dark, -0.42, 0.34, 0, body); mk(G.pad, M.dark, 0.42, 0.34, 0, body);
+            mk(G.crest, M.dark, 0, 0.3, -0.02, head);
+        } else if (kind === 'trader') {
+            mk(G.brim, M.leather, 0, 0.17, 0, head); mk(G.crown, M.leather, 0, 0.3, 0, head);
+            mk(G.pack, M.leather, 0, 0.05, -0.28, body);
+        } else if (kind === 'social') {
+            mk(G.bun, M.hair, 0, 0.12, -0.2, head);
+        } else if (kind === 'explorer') {
+            mk(G.hood, M.dark, 0, 0.26, -0.03, head);
+            const r = mk(G.roll, M.leather, 0, 0.22, -0.24, body); r.rotation.z = Math.PI / 2;
+        } else if (kind === 'builder') {
+            mk(G.hardhat, M.hard, 0, 0.06, 0, head); mk(G.hardbrim, M.hard, 0, 0.06, 0.02, head);
+            mk(G.belt, M.leather, 0, -0.28, 0, body);
+        } else if (kind === 'hero') {
+            const c = mk(G.cape, M.cape, 0, -0.08, -0.22, body); c.rotation.x = 0.12;
+            mk(G.heroCrest, M.gold, 0, 0.32, 0, head);
+        }
+        return { body, head, limbs, kind, parts: opts.pool ? parts : null };
+    },
+    // Idle sway / walk swing for agents whose limbs ride on the torso.
+    animate(a, time) {
+        if (!a.limbs || !a.group) return;
+        const p = a.group.position;
+        const now = performance.now();
+        if (a._kLast === undefined) { a._kLast = now; a._kx = p.x; a._kz = p.z; a._kSpd = 0; a._kPh = Math.random() * 6.28; }
+        const dt = Math.max(1, now - a._kLast) / 1000;
+        const d = Math.hypot(p.x - a._kx, p.z - a._kz);
+        a._kSpd = a._kSpd * 0.85 + (d / dt) * 0.15;
+        a._kLast = now; a._kx = p.x; a._kz = p.z;
+        const L = a.limbs, t = now / 1000 + a._kPh;
+        if (a._kSpd > 0.25) {
+            const w = Math.sin(t * 9) * Math.min(0.7, 0.25 + a._kSpd * 0.15);
+            L.armL.rotation.x = w; L.armR.rotation.x = -w;
+            L.legL.rotation.x = -w; L.legR.rotation.x = w;
+            L.armL.rotation.z = L.armR.rotation.z = 0;
+        } else {
+            const s = Math.sin(t * 1.6) * 0.06;
+            L.armL.rotation.x *= 0.85; L.armR.rotation.x *= 0.85;
+            L.legL.rotation.x *= 0.85; L.legR.rotation.x *= 0.85;
+            L.armL.rotation.z = -0.08 - s; L.armR.rotation.z = 0.08 + s;   // breathe
+        }
+    }
+};
+
+// v1b: instanced drawing for CharacterKit parts (limbs, visor, accessories).
+// One InstancedMesh per geometry+material for the whole crowd, so a world adds
+// ~15 draw calls instead of ~8 per character. Tinted parts (arms) carry the
+// agent's body colour and its live emissive (template glow, attack red) per instance.
+const CharacterPool = {
+    pools: {},
+    _tintMat: null,
+    tintMat() {
+        if (this._tintMat) return this._tintMat;
+        const m = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.3, metalness: 0.7, transparent: true, opacity: 0.85 });
+        m.onBeforeCompile = (sh) => {
+            sh.vertexShader = sh.vertexShader
+                .replace('#include <common>', '#include <common>\nattribute vec3 instEmis;\nvarying vec3 vEmis;')
+                .replace('#include <begin_vertex>', '#include <begin_vertex>\nvEmis = instEmis;');
+            sh.fragmentShader = sh.fragmentShader
+                .replace('#include <common>', '#include <common>\nvarying vec3 vEmis;')
+                .replace('vec3 totalEmissiveRadiance = emissive;', 'vec3 totalEmissiveRadiance = vEmis;');
+        };
+        return (this._tintMat = m);
+    },
+    _key(kp) { return kp.geo.uuid + (kp.tint ? ':tint' : ':' + kp.mat.uuid); },
+    _make(geo, mat, tint, cap) {
+        const g = tint ? geo.clone() : geo;   // tinted pool gets its own instEmis attribute
+        const im = new THREE.InstancedMesh(g, tint ? this.tintMat() : mat, cap);
+        im.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+        im.frustumCulled = false; im.matrixAutoUpdate = false;
+        im.raycast = function () {};
+        if (tint) {
+            im.setColorAt(0, new THREE.Color(1, 1, 1));
+            im.instanceColor.setUsage(THREE.DynamicDrawUsage);
+            const e = new THREE.InstancedBufferAttribute(new Float32Array(cap * 3), 3);
+            e.setUsage(THREE.DynamicDrawUsage);
+            g.setAttribute('instEmis', e);
+            im._emis = e;
+        }
+        im.count = 0;
+        return im;
+    },
+    _get(kp) {
+        const key = this._key(kp);
+        let p = this.pools[key];
+        if (!p) p = this.pools[key] = { mesh: this._make(kp.geo, kp.mat, kp.tint, 64), cap: 64, n: 0, tint: kp.tint };
+        if (p.n >= p.cap) {
+            const cap = p.cap * 2, old = p.mesh, parent = old.parent;
+            const nm = this._make(kp.geo, kp.mat, kp.tint, cap);
+            nm.instanceMatrix.array.set(old.instanceMatrix.array);
+            if (p.tint) { nm.instanceColor.array.set(old.instanceColor.array); nm._emis.array.set(old._emis.array); }
+            if (parent) { parent.remove(old); parent.add(nm); }
+            if (p.tint) old.geometry.dispose();
+            p.mesh = nm; p.cap = cap;
+        }
+        return p;
+    },
+    _vis(o, root) {
+        for (; o && o !== root; o = o.parent) if (!o.visible) return false;
+        return true;
+    },
+    update(list) {
+        const pools = this.pools;
+        for (const k in pools) pools[k].n = 0;
+        let scene = null;
+        const c = this._c || (this._c = new THREE.Color());
+        // Per-character frustum cull against the world camera (the only camera the
+        // world's render passes use), so offscreen characters cost nothing, as with
+        // v1's per-mesh culling.
+        const cam = typeof WorldMode !== 'undefined' && WorldMode.camera;
+        const fr = this._fr || (this._fr = new THREE.Frustum()), pm = this._pm || (this._pm = new THREE.Matrix4());
+        const sp = this._sp || (this._sp = new THREE.Sphere(new THREE.Vector3(), 1.15));
+        if (cam) { cam.updateMatrixWorld(); pm.multiplyMatrices(cam.projectionMatrix, cam.matrixWorldInverse); fr.setFromProjectionMatrix(pm); }
+        for (let i = 0; i < list.length; i++) {
+            const a = list[i];
+            if (!a.parts || !a.group || !a.group.parent || !a.group.visible) continue;
+            if (!scene) scene = a.group.parent;
+            a.group.updateMatrixWorld(true);
+            if (cam) { sp.center.setFromMatrixPosition(a.group.matrixWorld); sp.center.y += 1.1; if (!fr.intersectsSphere(sp)) continue; }
+            const bm = a.body && a.body.material;
+            for (let j = 0; j < a.parts.length; j++) {
+                const o = a.parts[j];
+                if (!this._vis(o.parent, a.group)) continue;
+                const p = this._get(o.userData.kp);
+                p.mesh.setMatrixAt(p.n, o.matrixWorld);
+                if (p.tint && bm) {
+                    p.mesh.setColorAt(p.n, bm.color);
+                    c.copy(bm.emissive).multiplyScalar(bm.emissiveIntensity);
+                    p.mesh._emis.setXYZ(p.n, c.r, c.g, c.b);
+                }
+                p.n++;
+            }
+        }
+        for (const k in pools) {
+            const p = pools[k], m = p.mesh;
+            m.count = p.n; m.visible = p.n > 0;
+            if (scene && m.parent !== scene) scene.add(m);
+            if (!scene && m.parent) m.parent.remove(m);
+            if (p.n) {
+                m.instanceMatrix.needsUpdate = true;
+                if (p.tint) { m.instanceColor.needsUpdate = true; m._emis.needsUpdate = true; }
+            }
+        }
+    }
+};
+
 const WorldAgents = {
     agentMeshes: {},
     portalMeshes: [],
@@ -42,25 +299,17 @@ const WorldAgents = {
         const w = WORLDS[worldId];
         const group = new THREE.Group();
 
-        // Body
-        const bodyGeo = new THREE.CylinderGeometry(0.35, 0.35, 1.05, 8);
+        // Body (v1: shared low-poly humanoid, see CharacterKit)
         const bodyMat = new THREE.MeshStandardMaterial({
             color: w.accent, emissive: w.accent, emissiveIntensity: 0.2,
             roughness: 0.3, metalness: 0.7, transparent: true, opacity: 0.85
         });
-        const body = new THREE.Mesh(bodyGeo, bodyMat);
-        body.position.y = 0.9;
-        group.add(body);
-
-        // Head
-        const headGeo = new THREE.SphereGeometry(0.25, 8, 8);
         const headMat = new THREE.MeshStandardMaterial({
             color: 0xffffff, emissive: w.accent, emissiveIntensity: 0.4,
             roughness: 0.2, metalness: 0.5
         });
-        const head = new THREE.Mesh(headGeo, headMat);
-        head.position.y = 1.65;
-        group.add(head);
+        const kit = CharacterKit.build(group, bodyMat, headMat, CharacterKit.archetypeOf(agent), { pool: true, headGeo: this._headGeo || (this._headGeo = new THREE.SphereGeometry(0.25, 8, 8)) });
+        const body = kit.body, head = kit.head;
 
         // Emoji sprite
         const emojiCanvas = document.createElement('canvas');
@@ -117,7 +366,7 @@ const WorldAgents = {
         group.position.set(agent.position.x, 0, agent.position.z);
         scene.add(group);
         this.agentMeshes[agent.id] = {
-            group, body, head, ring, bubble, bubbleCanvas, bubbleTex,
+            group, body, head, ring, bubble, bubbleCanvas, bubbleTex, limbs: kit.limbs, kind: kit.kind, parts: kit.parts,
             targetPos: new THREE.Vector3(agent.position.x, 0, agent.position.z),
             homePos: new THREE.Vector3(agent.position.x, 0, agent.position.z),
             wanderTarget: null,
@@ -851,6 +1100,10 @@ const WorldAgents = {
                 delete this.agentAttackTimers[id];
             }
         });
+
+        // v1: limb idle/walk motion for the humanoid characters
+        Object.values(this.agentMeshes).forEach(a => CharacterKit.animate(a, time));
+        CharacterPool.update(Object.values(this.agentMeshes));   // v1b: instanced parts
 
         // Portal spin
         this.portalMeshes.forEach(g => {

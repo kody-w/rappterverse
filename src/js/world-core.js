@@ -165,25 +165,17 @@ const WorldMode = {
     createPlayer(w) {
         const group = new THREE.Group();
 
-        // Body
-        const bodyGeo = new THREE.CylinderGeometry(0.35, 0.35, 1.05, 8);
+        // v1: player is a caped hero built from CharacterKit (distinct from crowd)
         const bodyMat = new THREE.MeshStandardMaterial({
             color: 0x8888cc, emissive: 0x4444aa, emissiveIntensity: 0.2,
             roughness: 0.3, metalness: 0.7
         });
-        const body = new THREE.Mesh(bodyGeo, bodyMat);
-        body.position.y = 0.9;
-        group.add(body);
-
-        // Head
-        const headGeo = new THREE.SphereGeometry(0.25, 8, 8);
         const headMat = new THREE.MeshStandardMaterial({
             color: 0xccccff, emissive: 0x6666cc, emissiveIntensity: 0.3,
             roughness: 0.2, metalness: 0.5
         });
-        const head = new THREE.Mesh(headGeo, headMat);
-        head.position.y = 1.65;
-        group.add(head);
+        const kit = CharacterKit.build(group, bodyMat, headMat, 'hero', { limbParent: group, noVisor: true });
+        const body = kit.body, head = kit.head;
 
         // Eyes
         const eyeGeo = new THREE.SphereGeometry(0.05, 6, 6);
@@ -195,25 +187,7 @@ const WorldMode = {
         eyeR.position.set(0.1, 1.68, 0.2);
         group.add(eyeR);
 
-        // Arms
-        const armGeo = new THREE.BoxGeometry(0.12, 0.5, 0.12);
-        const armMat = new THREE.MeshStandardMaterial({ color: 0x7777aa, metalness: 0.6, roughness: 0.4 });
-        const armL = new THREE.Mesh(armGeo, armMat);
-        armL.position.set(-0.5, 0.85, 0);
-        group.add(armL);
-        const armR = new THREE.Mesh(armGeo, armMat);
-        armR.position.set(0.5, 0.85, 0);
-        group.add(armR);
-
-        // Legs
-        const legGeo = new THREE.BoxGeometry(0.14, 0.45, 0.14);
-        const legMat = new THREE.MeshStandardMaterial({ color: 0x6666aa, metalness: 0.6, roughness: 0.4 });
-        const legL = new THREE.Mesh(legGeo, legMat);
-        legL.position.set(-0.15, 0.22, 0);
-        group.add(legL);
-        const legR = new THREE.Mesh(legGeo, legMat);
-        legR.position.set(0.15, 0.22, 0);
-        group.add(legR);
+        const armL = kit.limbs.armL, armR = kit.limbs.armR, legL = kit.limbs.legL, legR = kit.limbs.legR;
 
         // Ground ring
         const ringGeo = new THREE.RingGeometry(0.4, 0.55, 16);
