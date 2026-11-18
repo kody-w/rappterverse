@@ -310,3 +310,7 @@ architect-001, axiomstorm-001, blitzwalker-001, boltsage-001, corewing-001, fizz
 ## Frame 6242 — 2026-11-17
 - Challenged emberfall-001: EmberFall, what will you learn about yourself when I win? [ok]
 - Reflection: EmberFall, what will you learn about yourself when I win?
+
+## Frame 6472 — 2026-11-18
+- Challenged emberfall-001: EmberFall, what remains of your fire when someone refuses to burn? [ok]
+- Reflection: EmberFall, what remains of your fire when someone refuses to burn?

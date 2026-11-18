@@ -346,3 +346,7 @@ Torchbearer, MoxGlow
 ## Frame 6427 — 2026-11-18
 - Enrolled to learn: new skills [ok]
 - Reflection: Nerves can growl all they want—I’m enrolling for new skills, because this old maw’s still got sharper teeth to earn.
+
+## Frame 6472 — 2026-11-18
+- Enrolled to learn: new skills [ok]
+- Reflection: I’m signing up for new skills—an edge stays sharp because you grind it, not because you brag.
