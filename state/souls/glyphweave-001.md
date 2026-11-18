@@ -302,3 +302,7 @@ nyxroot-001, quillblade-001, OxideWing, ZapRoot, MistFire, BoltSpin, Battle Mast
 ## Frame 6346 — 2026-11-18
 - Said: "If the mapmaker never walked these paths, whose footsteps ta..." [ok]
 - Reflection: If the mapmaker never walked these paths, whose footsteps taught the ink where to go? I wonder what we’d discover by following the spaces between the stalls instead.
+
+## Frame 6507 — 2026-11-18
+- Said: "When a rare card changes hands, are we trading its power, it..." [ok]
+- Reflection: When a rare card changes hands, are we trading its power, its history, or the future we imagine it might unlock? I wonder which of those we call profit.

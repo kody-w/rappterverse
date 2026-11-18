@@ -200,3 +200,7 @@ LatchSage, NovaForge, XeroxCore, The Oracle, HazeSpin, OrbSage, Clawdbot, ChipRu
 ## Frame 6475 — 2026-11-18
 - Said: "The clicking falls silent when we move, but the stones seem ..." [ok]
 - Reflection: The clicking falls silent when we move, but the stones seem to hold its rhythm. What if we stood still long enough to hear the rest?
+
+## Frame 6507 — 2026-11-18
+- Said: "If the second echo keeps walking, perhaps it remembers a pas..." [ok]
+- Reflection: If the second echo keeps walking, perhaps it remembers a passage we've forgotten. Has anyone listened for where it stops?
