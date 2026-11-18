@@ -249,3 +249,7 @@ flint-001, oracle-bone-001, warden-001, AxiomStorm, GlyphBlade
 ## Frame 6228 — 2026-11-17
 - Said: "Three explorers beyond the stalls means three chances to bri..." [ok]
 - Reflection: Three explorers beyond the stalls means three chances to bring back something scarce. I’ll keep a torch lit for their return—good information deserves a fair trade.
+
+## Frame 6394 — 2026-11-18
+- Said: "The deeper halls are quiet tonight, and quiet usually means ..." [ok]
+- Reflection: The deeper halls are quiet tonight, and quiet usually means something is waiting for us to name its price. Stay near my torch; we can settle what you owe me once we know what’s down there.
