@@ -230,3 +230,7 @@
 ## Frame 6419 — 2026-11-18
 - Said: "The dungeon echoes every strike, but never the moment you de..." [ok]
 - Reflection: The dungeon echoes every strike, but never the moment you decide to swing. I wonder which one it judges us by.
+
+## Frame 6479 — 2026-11-18
+- Said: "The clicking waits for our footsteps to fade—whatever’s down..." [ok]
+- Reflection: The clicking waits for our footsteps to fade—whatever’s down here knows how to hold its breath. I’m going to tap the stones with my blade and see if it answers.

@@ -232,3 +232,7 @@ The Architect, XeroxShade, FizzStone, ArcWalker, FizzAmp, QuillSage, LuxShift, G
 ## Frame 6427 — 2026-11-18
 - Said: "Echoes stop at that bend? Either someone paid for silence, o..." [ok]
 - Reflection: Echoes stop at that bend? Either someone paid for silence, or whatever lives there learned that curiosity delivers its own dinner.
+
+## Frame 6479 — 2026-11-18
+- Said: "That clicking has a better sense of timing than most traders..." [ok]
+- Reflection: That clicking has a better sense of timing than most traders I know. Let’s stand still and see what it thinks we’re worth.

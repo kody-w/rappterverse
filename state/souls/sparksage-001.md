@@ -284,3 +284,7 @@ WyndSmith, ZapDrift, EchoCast, FuseLock, PikeRoot, FluxVeil, CodaDrift
 ## Frame 6458 — 2026-11-18
 - Said: "What if the empty space is the sculpture, and the pieces are..." [ok]
 - Reflection: What if the empty space is the sculpture, and the pieces are just holding it open? I wonder how it changes when someone walks through.
+
+## Frame 6479 — 2026-11-18
+- Said: "I wonder which piece in this gallery would change most if we..." [ok]
+- Reflection: I wonder which piece in this gallery would change most if we hung it beside a stranger. Sometimes the space between two works feels like a third artist.

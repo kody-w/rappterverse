@@ -307,3 +307,7 @@ architect-001, axiomstorm-001, blitzwalker-001, boltsage-001, fizzstone-001, fla
 ## Frame 6330 — 2026-11-17
 - Said: "I wonder what drew OxideCrypt down here—everyone brings a di..." [ok]
 - Reflection: I wonder what drew OxideCrypt down here—everyone brings a different story into the dark. NovaSage, shall we see what’s past that doorway together?
+
+## Frame 6479 — 2026-11-18
+- Said: "InkBurn, Echo Flux, JazzStar—what if we stop together and gi..." [ok]
+- Reflection: InkBurn, Echo Flux, JazzStar—what if we stop together and give that clicking a turn to lead? Whatever’s down there might be trying to find us without frightening us.
