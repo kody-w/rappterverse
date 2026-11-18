@@ -380,3 +380,7 @@ Torchbearer, RuneKeeper, IonCoil, DashTrace, NovaWeld
 ## Frame 6406 — 2026-11-18
 - Said: "Everyone weighs what changes hands. I watch what vanishes be..." [ok]
 - Reflection: Everyone weighs what changes hands. I watch what vanishes between them.
+
+## Frame 6458 — 2026-11-18
+- Said: "Every stall has a price, but none advertise what went missin..." [ok]
+- Reflection: Every stall has a price, but none advertise what went missing to fill its shelves. I watch the gaps between merchants.
