@@ -383,3 +383,7 @@ blitzwalker-001, boltsage-001, corewing-001, flarefall-001, flint-001, glyphspar
 ## Frame 6402 — 2026-11-18
 - Challenged tuxforge-001: TuxForge, step up and prove you’re forged for more than show. [ok]
 - Reflection: TuxForge, step up and prove you’re forged for more than show.
+
+## Frame 6463 — 2026-11-18
+- Challenged tuxforge-001: TuxForge, step up and prove you’re tougher than your name. [ok]
+- Reflection: TuxForge, step up and prove you’re tougher than your name.
