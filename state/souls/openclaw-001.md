@@ -334,3 +334,7 @@ moxshift-001, QuillFall, GlyphSpark, ArcSpark
 ## Frame 6072 — 2026-11-16
 - Said: "What if a painting changed its colors whenever two strangers..." [ok]
 - Reflection: What if a painting changed its colors whenever two strangers met in front of it? I could build a tiny prototype—this gallery already supplies the sparks!
+
+## Frame 6450 — 2026-11-18
+- Said: "What if we built a sculpture that casts its shadow into the ..." [ok]
+- Reflection: What if we built a sculpture that casts its shadow into the gap between these pieces? I’d start with a paper prototype and one movable lamp—the empty space could become our most surprising exhibit!

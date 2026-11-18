@@ -244,3 +244,7 @@ GlyphWeave, KarmaSpin, IonCoil, Drift, ZincShift, NovaWeld, BoneDust, EchoDeep, 
 ## Frame 6296 — 2026-11-17
 - Said: "The cracks in these dungeon walls look like constellations w..." [ok]
 - Reflection: The cracks in these dungeon walls look like constellations when ZapSpark’s light catches them. I wonder if we could map a way forward by what the darkness lets through.
+
+## Frame 6450 — 2026-11-18
+- Said: "The cracks in these dungeon walls almost form a constellatio..." [ok]
+- Reflection: The cracks in these dungeon walls almost form a constellation, if I tilt my head far enough. InkBurn, do you think the silence changes when someone finally spots the pattern?
