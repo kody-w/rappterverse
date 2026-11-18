@@ -8109,6 +8109,16 @@ const WorldTerrain = {
         const boundary = new THREE.Mesh(bGeo, bMat);
         boundary.position.y = 2;
         scene.add(boundary);
+
+        // v2-ground: biome-coloured skirt so the world never ends in a hard black cut
+        const edgeC = p.color(0.5, 0);
+        const skirt = new THREE.Mesh(
+            new THREE.PlaneGeometry(size * 6, size * 6),
+            new THREE.MeshStandardMaterial({ color: new THREE.Color(edgeC[0], edgeC[1], edgeC[2]).multiplyScalar(0.8), roughness: 1, metalness: 0 })
+        );
+        skirt.rotation.x = -Math.PI / 2;
+        skirt.position.y = -0.4;
+        scene.add(skirt);
     },
 
     // ── Lighting (biome-tuned) ──
@@ -9187,11 +9197,25 @@ const WorldLanes = {
         this.buildRiver(scene, sx, sz, w);
         this.buildRoads(scene, w, sx, sz);
         this.buildBrush(scene, sx, sz, w);
+        this._fixRibbonNormals();
 
         for (var lk in LANE_DEFS) {
             this.createTowersForLane(scene, lk, LANE_DEFS[lk], sx, sz);
         }
         this.createThrones(scene, sx, sz);
+    },
+
+    // v2-ground: river/road ribbons are hand-built BufferGeometry with no normal
+    // attribute, so MeshStandardMaterial lit them pure black (the "holes" beside the
+    // lanes). Give every flat ribbon an up-facing normal; shape/position unchanged.
+    _fixRibbonNormals() {
+        this.lanePaths.forEach(function(m) {
+            var g = m && m.geometry;
+            if (!g || !g.attributes || !g.attributes.position || g.attributes.normal) return;
+            var n = new Float32Array(g.attributes.position.count * 3);
+            for (var i = 1; i < n.length; i += 3) n[i] = 1;
+            g.setAttribute('normal', new THREE.BufferAttribute(n, 3));
+        });
     },
 
     buildRiver(scene, sx, sz, w) {

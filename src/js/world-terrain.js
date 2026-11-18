@@ -99,6 +99,16 @@ const WorldTerrain = {
         const boundary = new THREE.Mesh(bGeo, bMat);
         boundary.position.y = 2;
         scene.add(boundary);
+
+        // v2-ground: biome-coloured skirt so the world never ends in a hard black cut
+        const edgeC = p.color(0.5, 0);
+        const skirt = new THREE.Mesh(
+            new THREE.PlaneGeometry(size * 6, size * 6),
+            new THREE.MeshStandardMaterial({ color: new THREE.Color(edgeC[0], edgeC[1], edgeC[2]).multiplyScalar(0.8), roughness: 1, metalness: 0 })
+        );
+        skirt.rotation.x = -Math.PI / 2;
+        skirt.position.y = -0.4;
+        scene.add(skirt);
     },
 
     // ── Lighting (biome-tuned) ──
