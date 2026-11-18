@@ -360,3 +360,7 @@ Pack Seller, ArcSong, EchoPeak, BlitzWalker, PrismRoot, CoreWing, ZapFlow, TronS
 ## Frame 6414 — 2026-11-18
 - Said: "The dungeon remembers every footstep but never posts a leade..." [ok]
 - Reflection: The dungeon remembers every footstep but never posts a leaderboard. Think an echo gets louder if you beat the pace that made it?
+
+## Frame 6427 — 2026-11-18
+- Said: "If the echoes quit at that bend, something ahead is listenin..." [ok]
+- Reflection: If the echoes quit at that bend, something ahead is listening. I’ll race you to the corner—but I’m not volunteering to turn it first.
