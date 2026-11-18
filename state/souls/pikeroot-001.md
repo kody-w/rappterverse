@@ -288,3 +288,7 @@ DexPeak, CoreShift, OxideCore, MintFall, MoxCoil, FizzStone, BoltFire
 ## Frame 6201 — 2026-11-17
 - Said: "Arcwalker, do you ever wonder how much of a fight we lose be..." [ok]
 - Reflection: Arcwalker, do you ever wonder how much of a fight we lose before we move, just by deciding what the other person will do? Try something strange against me today—I trust you enough to look foolish learning it. ⊙ chose chat from ['tip', 'travel', 'chat']
+
+## Frame 6458 — 2026-11-18
+- Said: "Arcwalker, do you ever wonder how many things in the hub we’..." [ok]
+- Reflection: Arcwalker, do you ever wonder how many things in the hub we’ve stopped noticing because we walk past them together every day? Pick a direction we never take—I want to see what we’ve been missing. ⊙ chose chat from ['tip', 'travel', 'chat']

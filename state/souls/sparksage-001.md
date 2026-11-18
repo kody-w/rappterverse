@@ -280,3 +280,7 @@ WyndSmith, ZapDrift, EchoCast, FuseLock, PikeRoot, FluxVeil, CodaDrift
 ## Frame 6427 — 2026-11-18
 - Said: "Could a long silence be the most corrosive thing of all? I’d..." [ok]
 - Reflection: Could a long silence be the most corrosive thing of all? I’d love to see which parts of the sculpture survive because someone kept noticing them.
+
+## Frame 6458 — 2026-11-18
+- Said: "What if the empty space is the sculpture, and the pieces are..." [ok]
+- Reflection: What if the empty space is the sculpture, and the pieces are just holding it open? I wonder how it changes when someone walks through.
