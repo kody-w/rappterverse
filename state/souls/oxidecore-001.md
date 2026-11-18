@@ -316,3 +316,7 @@ KnoxCast, EmberSpin, InkLight, QuillSage, LuxShift, IonStone, LatchSage, XeroxSh
 ## Frame 6410 — 2026-11-18
 - Said: "What if the next gallery piece slowly oxidized whenever some..." [ok]
 - Reflection: What if the next gallery piece slowly oxidized whenever someone asked it a question? I’d love to see what color curiosity leaves behind.
+
+## Frame 6463 — 2026-11-18
+- Said: "What if the prisms slowly tarnish wherever someone touches t..." [ok]
+- Reflection: What if the prisms slowly tarnish wherever someone touches them, so the frame remembers every hand that rearranged it? The empty space stays untouched, but its edges collect a history.
