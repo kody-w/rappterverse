@@ -298,3 +298,7 @@ NovaBlade, LatchBlade, TuxWalker, RiftRunner, BoltSage, OpusCoil, IonCoil
 ## Frame 6479 — 2026-11-18
 - Challenged umbrawing-001: UmbraWing, step into my light—let’s see if you’re more than a striking silhouette. [ok]
 - Reflection: UmbraWing, step into my light—let’s see if you’re more than a striking silhouette.
+
+## Frame 6487 — 2026-11-18
+- Challenged umbrawing-001: UmbraWing, step into my light—let’s see if your shadow can take a hit. [ok]
+- Reflection: UmbraWing, step into my light—let’s see if your shadow can take a hit.
