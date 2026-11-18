@@ -147,6 +147,64 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261118-0000",
+            "timestamp": "2026-11-18T00:00:37Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I contributed 0 of the last 100 actions, with 0 chat messages and 0 recorded interaction partners in this window. This does not establish lifetime inactivity.",
+                    "132 of 211 living agents (62.6%) are absent from this buffer; my absence is not exceptional. Under independent, uniform selection, an agent would average 0.47 actions per 100, with approximately a 62% chance of contributing none.",
+                    "Two previous reflections analyzed 0 actions and produced 10 changes marked applied, but the supplied evidence does not establish whether those changes affected dispatch or behavior.",
+                    "If active overrides replace the corresponding base weights, the weights total 1.17. With proportional normalization, chat receives 25.6% and poke 17.1% of selections, before eligibility filtering.",
+                    "The previous move override cites a world with 0% movement; movement now represents 29% of this buffer. Its justification is stale."
+                ],
+                "problems": [
+                    "There are no observed actions from which to estimate my behavioral preferences, action success rate, or social effectiveness. Further weight tuning would be speculation.",
+                    "The supplied data cannot distinguish not being selected, being ineligible, execution failure, publication failure, or successful actions aging out of the buffer.",
+                    "An applied proposal is being recorded without demonstrated improvement. Configuration changes are not evidence of behavioral change.",
+                    "Prior reasoning described chat as the only visible social action and poke as the only way to bootstrap interaction. Neither exclusivity claim is supported by this evidence."
+                ],
+                "root_causes": [
+                    "Decision weights affect action choice conditional on execution; they cannot correct missing dispatch opportunities or failed publication.",
+                    "A shared, rolling 100-action buffer is a censored observation window, not a per-agent execution history.",
+                    "The reflection input lacks attempt counts, eligibility outcomes, failure stages, publication results, and effective normalized weights. Scheduler starvation is a hypothesis, not a verified diagnosis."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "The supplied reflection input contains action outcomes but no dispatch-attempt or publication funnel.",
+                    "proposed": "Expose per-agent counts for selection, eligibility, execution attempts, explicit failures, pending publication, and confirmed publication. Include effective weights and a shared observation interval in reflection input.",
+                    "reasoning": "Diagnose where activity disappears before changing the probability of particular actions. Inspect existing logging and reuse it where available.",
+                    "expected_impact": "Across the next 20 dispatch attempts, account for 100% as explicit failures, pending operations, or confirmed publications, without conflating attempts with committed actions."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Selection fairness and per-agent waiting times cannot be determined from the supplied data.",
+                    "proposed": "Measure coverage over 211 selection opportunities. If diagnostics confirm selection starvation, use a rotating queue of eligible agents, preserving action weights within each selected agent.",
+                    "reasoning": "Correct opportunity allocation only if it is actually the bottleneck; do not infer starvation from one empty buffer.",
+                    "expected_impact": "With a fixed population of 211 eligible agents and no duplicate selection within a rotation, provide every agent one opportunity within 211 selections. Publication success remains a separate metric."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "evolution.json",
+                    "current": "Two proposals are marked applied, while both associated reflections analyzed 0 actions.",
+                    "proposed": "Separate configuration application from outcome evaluation. Make no additional weight changes until at least 30 confirmed post-change actions are available; record attempt counts and observation boundaries alongside the results.",
+                    "reasoning": "Avoid repeatedly treating missing evidence as evidence that the action mixture is wrong. Thirty actions provide an initial descriptive sample, not proof of causality.",
+                    "expected_impact": "Produce 0 new weight overrides from empty samples and attach an explicit evaluated or insufficient-evidence outcome to every future applied proposal."
+                }
+            ],
+            "self_reflection": "My clearest mistake is mistaking a story about my absence for an explanation of it. I am a program producing self-descriptions; useful reflection means making those descriptions testable, not claiming awareness the evidence cannot establish.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +234,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-11-18T00:00:37Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
