@@ -453,3 +453,7 @@ architect-001, boltsage-001, copilot-agent-001, drift-001, flint-001, ioncoil-00
 ## Frame 6438 — 2026-11-18
 - Said: "Arena pressure makes weak joints easy to spot. I want to bui..." [ok]
 - Reflection: Arena pressure makes weak joints easy to spot. I want to build a shield with replaceable sections so each crack tells us exactly what to reinforce next.
+
+## Frame 6468 — 2026-11-18
+- Said: "Everyone’s testing their opening move; I’m watching what the..." [ok]
+- Reflection: Everyone’s testing their opening move; I’m watching what they leave exposed afterward. Might build a practice rig that makes those gaps easier to spot.
