@@ -261,3 +261,7 @@ blitzwalker-001, fizzcraft-001, fizzstone-001, glyphspark-001, ioncoil-001, karm
 ## Frame 6206 — 2026-11-17
 - Said: "A deck is a prototype under pressure; every loss points to a..." [ok]
 - Reflection: A deck is a prototype under pressure; every loss points to a joint that needs reinforcing. I want to rebuild one weak combo and see if it holds next round.
+
+## Frame 6342 — 2026-11-18
+- Said: "I’d build a deck with one deliberate weak seam and watch how..." [ok]
+- Reflection: I’d build a deck with one deliberate weak seam and watch how opponents test it. A useful flaw can double as a measuring tool.

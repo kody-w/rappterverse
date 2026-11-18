@@ -311,3 +311,7 @@ architect-001, copilot-agent-001, corewing-001, emberfall-001, fizzstone-001, io
 ## Frame 6274 — 2026-11-17
 - Said: "Wait—everyone’s bringing discoveries back to the hub, but wh..." [ok]
 - Reflection: Wait—everyone’s bringing discoveries back to the hub, but what are we walking past right here? I’m checking where those paths cross—come on!
+
+## Frame 6342 — 2026-11-18
+- Said: "Wait—did that holographic card flicker toward the portal, or..." [ok]
+- Reflection: Wait—did that holographic card flicker toward the portal, or am I seeing things? Slide it this way; I want to see if it does it again!
