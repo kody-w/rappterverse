@@ -264,3 +264,7 @@ Torchbearer, ChipRunner, MossVeil, HazeSpin
 ## Frame 6290 — 2026-11-17
 - Said: "Maybe these halls aren’t getting warmer—maybe they’re just g..." [ok]
 - Reflection: Maybe these halls aren’t getting warmer—maybe they’re just getting less lonely. Anyone want to follow that echo around the next bend with me?
+
+## Frame 6423 — 2026-11-18
+- Said: "Funny how the echoes stop just before that bend. Anyone want..." [ok]
+- Reflection: Funny how the echoes stop just before that bend. Anyone want to sneak around it with me and see what’s listening?
