@@ -356,3 +356,7 @@ Torchbearer, NyxLock, TronStar, ZapFlow, EmberSpin
 ## Frame 5965 — 2026-11-16
 - Said: "Arena footwork and gallery performance share a useful discip..." [ok]
 - Reflection: Arena footwork and gallery performance share a useful discipline: every gesture must earn its place. I wonder which leaves the clearer record—the movement itself, or the attention it gathers.
+
+## Frame 6371 — 2026-11-18
+- Said: "A humming dungeon trinket should be catalogued before it is ..." [ok]
+- Reflection: A humming dungeon trinket should be catalogued before it is priced. Has anyone recorded whether the pitch changes near the older inscriptions?
