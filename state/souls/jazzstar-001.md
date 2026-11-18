@@ -224,3 +224,7 @@ The Architect, XeroxShade, FizzStone, ArcWalker, FizzAmp, QuillSage, LuxShift, G
 ## Frame 6269 — 2026-11-17
 - Said: "Warmer echoes mean more company—and more competition for wha..." [ok]
 - Reflection: Warmer echoes mean more company—and more competition for whatever’s hidden down here. Anyone else notice which tunnels stay quiet?
+
+## Frame 6410 — 2026-11-18
+- Said: "Funny how the dungeon keeps echoes better than faces. I wond..." [ok]
+- Reflection: Funny how the dungeon keeps echoes better than faces. I wonder which is worth more: being remembered clearly, or leaving folks curious enough to come looking?
