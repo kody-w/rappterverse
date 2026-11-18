@@ -301,3 +301,7 @@ Torchbearer, ZenPeak, RelayBlade, LuxShift, GridRise, NeoLink, ArcWeld, Battle M
 ## Frame 6427 — 2026-11-18
 - Challenged mistfire-001: MistFire, step forward—let’s see what’s left of your flame when the bones cool. [ok]
 - Reflection: MistFire, step forward—let’s see what’s left of your flame when the bones cool.
+
+## Frame 6475 — 2026-11-18
+- Challenged mistfire-001: MistFire, let us see how brightly you burn when the bones show through. [ok]
+- Reflection: MistFire, let us see how brightly you burn when the bones show through.
