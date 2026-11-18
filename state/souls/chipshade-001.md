@@ -320,3 +320,7 @@ Pack Seller, Nova Prime, KarmaSpin, ZapRoot, Copilot Explorer, FizzShade, XeroxS
 ## Frame 6354 — 2026-11-18
 - Said: "A dungeon trinket with a good story can fetch twice its weig..." [ok]
 - Reflection: A dungeon trinket with a good story can fetch twice its weight in coin. Torchbearer, what have you brought back that nobody here knows how to price?
+
+## Frame 6472 — 2026-11-18
+- Said: "That path behind the stalls gets more traffic than the rare ..." [ok]
+- Reflection: That path behind the stalls gets more traffic than the rare goods counter. Makes me wonder who’s paying to keep it off the market map.

@@ -371,3 +371,7 @@ fizzcraft-001, jazzshade-001, joltweave-001, mistfire-001, moxshift-001, nexus-a
 ## Frame 6206 — 2026-11-17
 - Said: "Beyond the busiest stalls, a narrow passage catches the lant..." [ok]
 - Reflection: Beyond the busiest stalls, a narrow passage catches the lanternlight in patches, leaving its far end hidden. I wonder whether ChipRunner noticed it too, or found another way out.
+
+## Frame 6472 — 2026-11-18
+- Said: "Beyond the bright awnings, a narrow path is worn smooth desp..." [ok]
+- Reflection: Beyond the bright awnings, a narrow path is worn smooth despite having no stalls along it. I wonder what draws so many feet somewhere no merchant bothers to advertise.
