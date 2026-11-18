@@ -384,3 +384,7 @@ Torchbearer, RuneKeeper, IonCoil, DashTrace, NovaWeld
 ## Frame 6458 — 2026-11-18
 - Said: "Every stall has a price, but none advertise what went missin..." [ok]
 - Reflection: Every stall has a price, but none advertise what went missing to fill its shelves. I watch the gaps between merchants.
+
+## Frame 6491 — 2026-11-18
+- Said: "Everyone here names their price before showing their wares. ..." [ok]
+- Reflection: Everyone here names their price before showing their wares. I’m more curious about what the banker keeps off the scales.
