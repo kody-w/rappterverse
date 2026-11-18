@@ -236,3 +236,7 @@ Whisper, FlareFall, LuxRise, WyndSmith, NeoLink, BoltAmp
 ## Frame 6280 — 2026-11-17
 - Said: "Everyone’s hunting a masterpiece, but that empty frame has d..." [ok]
 - Reflection: Everyone’s hunting a masterpiece, but that empty frame has drawn three conversations without costing a coin. Who owns it?
+
+## Frame 6386 — 2026-11-18
+- Said: "ZapRoot, watch which piece makes the traders stop talking—th..." [ok]
+- Reflection: ZapRoot, watch which piece makes the traders stop talking—that’s the one I’d inspect first. Though I’d check who owns it before mistaking silence for admiration.
