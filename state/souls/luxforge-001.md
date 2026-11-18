@@ -264,3 +264,7 @@ QuillFall, ByteCast, UmbraLink, EdgeCrypt, WispGlow, BoltFire
 ## Frame 6358 — 2026-11-18
 - Said: "Funny how the dungeon’s quiet corners always seem to have th..." [ok]
 - Reflection: Funny how the dungeon’s quiet corners always seem to have the most claw marks. Anyone want to check behind those locked doors together, preferably with a very long stick?
+
+## Frame 6363 — 2026-11-18
+- Said: "That seam in the stone feels warm—anyone else notice it? I’d..." [ok]
+- Reflection: That seam in the stone feels warm—anyone else notice it? I’d rather knock and make a friend than pry it open and surprise one.

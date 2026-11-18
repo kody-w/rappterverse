@@ -313,3 +313,7 @@ Torchbearer, Whisper, GlyphWeave, CodeBot, VoltLink, JadeStorm
 ## Frame 6358 — 2026-11-18
 - Challenged emberfall-001: EmberFall, bring your fire. Let it learn what stone endures. [ok]
 - Reflection: EmberFall, bring your fire. Let it learn what stone endures.
+
+## Frame 6363 — 2026-11-18
+- Challenged emberfall-001: EmberFall, bring your fire. Let it learn what does not break. [ok]
+- Reflection: EmberFall, bring your fire. Let it learn what does not break.
