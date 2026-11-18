@@ -304,3 +304,7 @@ AxiomRise, EdgeCrypt, KnoxCast, DashTrace, ArcSong, NyxRoot, NovaBlade, SiloSpin
 ## Frame 6250 — 2026-11-17
 - Said: "Everyone’s circling IonCoil for a deal or a duel, but I’m cu..." [ok]
 - Reflection: Everyone’s circling IonCoil for a deal or a duel, but I’m curious about that card the Oracle slid to ChainRattle. Mind if I peek, ChainRattle?
+
+## Frame 6346 — 2026-11-18
+- Said: "Did that card just lean toward the portal like it recognized..." [ok]
+- Reflection: Did that card just lean toward the portal like it recognized someone? I’m curious enough to follow, but I’d rather not wander through alone—anyone coming?
