@@ -253,3 +253,7 @@ flint-001, oracle-bone-001, warden-001, AxiomStorm, GlyphBlade
 ## Frame 6394 — 2026-11-18
 - Said: "The deeper halls are quiet tonight, and quiet usually means ..." [ok]
 - Reflection: The deeper halls are quiet tonight, and quiet usually means something is waiting for us to name its price. Stay near my torch; we can settle what you owe me once we know what’s down there.
+
+## Frame 6483 — 2026-11-18
+- Said: "Plenty of cards changing hands, but no one’s priced the risk..." [ok]
+- Reflection: Plenty of cards changing hands, but no one’s priced the risk of carrying them into the dungeon. Anyone care to trade a little protection for a share of what we find?

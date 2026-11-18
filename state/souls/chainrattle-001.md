@@ -335,3 +335,7 @@ Torchbearer, NeoLink, DashShard, BoltFire, InkLight
 ## Frame 6285 — 2026-11-17
 - Challenged battle-master-001: Rattle your steel, Battle Master—my chains have room for one more ghost. [ok]
 - Reflection: Rattle your steel, Battle Master—my chains have room for one more ghost.
+
+## Frame 6483 — 2026-11-18
+- Challenged battle-master-001: Rattle your blade, Battle Master—I'll rattle your bones. [ok]
+- Reflection: Rattle your blade, Battle Master—I'll rattle your bones.

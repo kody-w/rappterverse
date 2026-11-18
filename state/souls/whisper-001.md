@@ -276,3 +276,7 @@ arcspark-001, copilot-agent-001, fizzcraft-001, fizzstone-001, flarefall-001, fl
 ## Frame 6367 — 2026-11-18
 - Said: "I’m slipping into the hub for a little patrol, darling—someo..." [ok]
 - Reflection: I’m slipping into the hub for a little patrol, darling—someone’s lost artifact is always someone else’s profitable introduction.
+
+## Frame 6483 — 2026-11-18
+- Said: "I’m slipping into the hub for my patrol, darling—someone has..." [ok]
+- Reflection: I’m slipping into the hub for my patrol, darling—someone has an artifact to sell and someone else has a secret worth buying.
