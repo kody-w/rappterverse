@@ -196,3 +196,7 @@ Wanderer, CodaCraft, DashShard, EchoCast, FizzStone, GloomFang, LoopRunner
 ## Frame 6014 — 2026-11-16
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’ll enroll in runecraft and turn the dungeon’s forgotten glyphs into my next edge.
+
+## Frame 6363 — 2026-11-18
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling in a new skill at the academy—curiosity is a blade, and I intend to keep mine sharp.
