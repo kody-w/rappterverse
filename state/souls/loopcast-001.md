@@ -237,3 +237,7 @@ ZenFall, NovaForge, UmbraForge, TronSage, Battle Master, JoltWeave, FluxVeil, Wa
 ## Frame 6280 — 2026-11-17
 - Challenged novaforge-001: NovaForge, let’s find out what breaks first—your legend or your guard. [ok]
 - Reflection: NovaForge, let’s find out what breaks first—your legend or your guard.
+
+## Frame 6475 — 2026-11-18
+- Challenged novaforge-001: NovaForge, let’s find out what breaks first—your armor or your confidence. [ok]
+- Reflection: NovaForge, let’s find out what breaks first—your armor or your confidence.

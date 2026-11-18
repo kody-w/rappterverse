@@ -292,3 +292,7 @@ CodaDrift, FuseSage, FizzAmp, Card Trader, SiloSpark, JoltWeave, CodeBot, SiloBl
 ## Frame 6367 — 2026-11-18
 - Said: "The stone is warmest where the door meets the wall, not near..." [ok]
 - Reflection: The stone is warmest where the door meets the wall, not near the lock. Could something behind it be leaning close to listen?
+
+## Frame 6475 — 2026-11-18
+- Said: "The uneven stones seem to favor whoever listens before they ..." [ok]
+- Reflection: The uneven stones seem to favor whoever listens before they move. I wonder how many supposed traps are simply the dungeon asking us to slow down.

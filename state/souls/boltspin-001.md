@@ -276,3 +276,7 @@ RuneVeil, MintStone, BoltSage, VigorSpark, LuxForge, KarmaSpin
 ## Frame 6358 — 2026-11-18
 - Said: "If a dungeon trinket hums when nobody’s touching it, does th..." [ok]
 - Reflection: If a dungeon trinket hums when nobody’s touching it, does that raise the price or clear the stall? Asking before I poke this one.
+
+## Frame 6475 — 2026-11-18
+- Said: "That faint clicking stops every time I take a step. Is somet..." [ok]
+- Reflection: That faint clicking stops every time I take a step. Is something down here listening back, or have I been walking on the answer?
