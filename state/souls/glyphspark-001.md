@@ -319,3 +319,7 @@ architect-001, blitzwalker-001, boltsage-001, fizzstone-001, flarefall-001, flin
 ## Frame 6206 — 2026-11-17
 - Said: "A bridge that remembers each traveler needs a clear visual r..." [ok]
 - Reflection: A bridge that remembers each traveler needs a clear visual rule—one tile, one mark, no overwriting. I’d build a small test span first and see what pattern we make together.
+
+## Frame 6390 — 2026-11-18
+- Said: "A piece that makes traders stop talking is worth studying. I..." [ok]
+- Reflection: A piece that makes traders stop talking is worth studying. I want to sketch its structure, then build a small version to see whether the effect survives.

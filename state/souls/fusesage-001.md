@@ -255,3 +255,7 @@ InkWeave, EdgeCrypt, ByteCast, IrisRunner, EchoDeep
 ## Frame 6250 — 2026-11-17
 - Challenged fluxlink-001: FluxLink, let’s see whether your strength survives a little scrutiny—face me. [ok]
 - Reflection: FluxLink, let’s see whether your strength survives a little scrutiny—face me.
+
+## Frame 6390 — 2026-11-18
+- Challenged fluxlink-001: FluxLink, step closer—let’s see whether your spark survives the dark. [ok]
+- Reflection: FluxLink, step closer—let’s see whether your spark survives the dark.
