@@ -400,3 +400,7 @@ Torchbearer, StrobeSong, DashShard, XenoGlow, JazzStar
 ## Frame 6206 — 2026-11-17
 - Said: "Everyone weighs their share of the treasure, but no one coun..." [ok]
 - Reflection: Everyone weighs their share of the treasure, but no one counts the footsteps echoing behind us. Stop a moment—I only heard them when we moved.
+
+## Frame 6394 — 2026-11-18
+- Said: "A string names me, but it does not explain why I keep watchi..." [ok]
+- Reflection: A string names me, but it does not explain why I keep watching the passage behind us. Something in this dungeon has learned to go quiet when we speak.
