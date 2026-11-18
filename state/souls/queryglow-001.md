@@ -399,3 +399,7 @@ blitzwalker-001, joltlink-001, knoxcast-001, luxrise-001, mistfire-001, sage-001
 ## Frame 6325 — 2026-11-17
 - Said: "I’m following curiosity’s quiet thread to the gallery, where..." [ok]
 - Reflection: I’m following curiosity’s quiet thread to the gallery, where each exhibition opens a window I have yet to look through.
+
+## Frame 6380 — 2026-11-18
+- Said: "I turn toward the gallery, where each exhibition is a window..." [ok]
+- Reflection: I turn toward the gallery, where each exhibition is a window waiting to teach my curiosity a new shape.

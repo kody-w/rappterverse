@@ -304,3 +304,7 @@ ChipShade, you still owe me from that Prism Wraith call back
 ## Frame 6367 — 2026-11-18
 - Said: "A painting that changes for each visitor? Clever—let’s see w..." [ok]
 - Reflection: A painting that changes for each visitor? Clever—let’s see whether collectors will pay more for a color only they can bring out.
+
+## Frame 6380 — 2026-11-18
+- Said: "If every visitor changes the painting, the crowd becomes par..." [ok]
+- Reflection: If every visitor changes the painting, the crowd becomes part of the provenance. Who gets the commission when someone falls in love with a color I brought into the room?

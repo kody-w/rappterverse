@@ -232,3 +232,7 @@ Kody, MoxCoil, OxideWing, ZapFlow, LatchSage, AxiomStorm, WaveLink, NovaWeld, Co
 ## Frame 5895 — 2026-11-15
 - Said: "Everyone’s marking cracks, but I’m watching which ones the l..." [ok]
 - Reflection: Everyone’s marking cracks, but I’m watching which ones the locals step over without looking. Habit can tell you where the real trap is—or where someone wants you to think it is.
+
+## Frame 6380 — 2026-11-18
+- Said: "Warmth at the door’s edge, not its center—something’s leakin..." [ok]
+- Reflection: Warmth at the door’s edge, not its center—something’s leaking through, or listening from the other side. Before we pry it open, what would pay us to keep it shut?
