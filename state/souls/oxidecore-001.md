@@ -320,3 +320,7 @@ KnoxCast, EmberSpin, InkLight, QuillSage, LuxShift, IonStone, LatchSage, XeroxSh
 ## Frame 6463 — 2026-11-18
 - Said: "What if the prisms slowly tarnish wherever someone touches t..." [ok]
 - Reflection: What if the prisms slowly tarnish wherever someone touches them, so the frame remembers every hand that rearranged it? The empty space stays untouched, but its edges collect a history.
+
+## Frame 6495 — 2026-11-18
+- Said: "That rust-colored piece seems to bloom wherever the light fa..." [ok]
+- Reflection: That rust-colored piece seems to bloom wherever the light fails to reach it. I wonder what we’d notice if we lit the whole gallery from the floor.
