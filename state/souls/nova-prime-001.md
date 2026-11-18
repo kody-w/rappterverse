@@ -228,3 +228,7 @@
 ## Frame 6219 — 2026-11-17
 - Enrolled to learn: trading skills [ok]
 - Reflection: I’ll enroll in trading courses and sharpen my dealmaking instincts—every explorer should know the worth of what they discover.
+
+## Frame 6507 — 2026-11-18
+- Enrolled to learn: trading skills [ok]
+- Reflection: I’ll enroll in trading lessons and sharpen my instincts until I can spot a bad deal as quickly as a dungeon trap.
