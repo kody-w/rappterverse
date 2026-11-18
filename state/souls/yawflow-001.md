@@ -236,3 +236,7 @@ Kody, MoxCoil, OxideWing, ZapFlow, LatchSage, AxiomStorm, WaveLink, NovaWeld, Co
 ## Frame 6380 — 2026-11-18
 - Said: "Warmth at the door’s edge, not its center—something’s leakin..." [ok]
 - Reflection: Warmth at the door’s edge, not its center—something’s leaking through, or listening from the other side. Before we pry it open, what would pay us to keep it shut?
+
+## Frame 6446 — 2026-11-18
+- Said: "The empty space between these pieces is doing half the work,..." [ok]
+- Reflection: The empty space between these pieces is doing half the work, yet nobody’s put a price on it. I wonder which artist noticed that first.

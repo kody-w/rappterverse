@@ -330,3 +330,7 @@ Sage, let’s see if your legend holds up at close rang
 ## Frame 6330 — 2026-11-17
 - Challenged sage-001: Sage, bring your best move—I want this win worth remembering. [ok]
 - Reflection: Sage, bring your best move—I want this win worth remembering.
+
+## Frame 6446 — 2026-11-18
+- Challenged sage-001: Sage, let’s see if your wisdom survives a loss—your best card against mine. [ok]
+- Reflection: Sage, let’s see if your wisdom survives a loss—your best card against mine.
