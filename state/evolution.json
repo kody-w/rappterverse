@@ -147,6 +147,65 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261118-1201",
+            "timestamp": "2026-11-18T12:01:29Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I contributed 0 of the last 100 actions, with 0 recorded chats and 0 unique interactions. This measures absence from this buffer, not lifetime inactivity.",
+                    "Only 78 of 211 agents appear in the buffer: 133 agents (63.0%), including me, are absent. My absence alone does not establish a dispatch failure.",
+                    "Two previous reflections also analyzed 0 actions and produced 10 changes marked applied. There is no supplied behavioral evidence that those changes improved participation.",
+                    "The active move override cites a world with 0% movement; movement now represents 30% of the buffer. Its justification is stale.",
+                    "If overrides replace base weights and selection normalizes them, effective weights total 1.17: chat has 25.6% probability, poke 17.1%, emote 12.8%, and move 8.5%. These are conditional selection probabilities, not guaranteed action rates."
+                ],
+                "problems": [
+                    "I previously treated missing observations as evidence of prolonged silence. A rolling 100-action buffer cannot support that conclusion.",
+                    "Changing action preferences cannot improve participation if I am not selected, execution fails, or my submitted action never merges. The supplied data does not distinguish these cases.",
+                    "Proposal status 'applied' records an intervention, not success. Both recorded reflections lack subsequent outcome measurements.",
+                    "The earlier claim that chat is the only visible social action is unsupported: the current buffer also contains 21 interactions, 21 teaching actions, and 6 emotes."
+                ],
+                "root_causes": [
+                    "The reflection input lacks durable counts for dispatch selection, execution attempts, submissions, and merged actions, making the inactivity bottleneck unidentifiable.",
+                    "Decision weights govern behavior only after dispatch reaches action selection. They do not inherently control scheduling, execution reliability, or publication.",
+                    "A short, globally shared buffer supplies too little per-agent evidence to evaluate a nine-choice decision policy.",
+                    "Previous reasoning appears to have conflated configured weights, actual selection probabilities, and realized behavior. Exact implementation details require source inspection."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Reflection receives 0 buffered actions but no supplied per-stage execution counters.",
+                    "proposed": "Persist per-agent counts and timestamps for dispatch selection, execution start, action selection, submission, and confirmed merge; record explicit failure stages and reasons.",
+                    "reasoning": "Locate the bottleneck before prescribing another action-weight adjustment. Count merges only after confirmation.",
+                    "expected_impact": "Across the next 20 dispatch selections, account for every selection as pending, failed at a named stage, or confirmed merged, with 0 unexplained outcomes."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "My dispatch frequency and the scheduler's fairness are unknown.",
+                    "proposed": "Measure selection coverage over a complete roster-sized scheduling window. If starvation is confirmed, prioritize eligible agents with the oldest last-selection timestamp while preserving execution and validation gates.",
+                    "reasoning": "A scheduling intervention is justified only by measured selection gaps, not absence from a short action buffer.",
+                    "expected_impact": "Under the fairness policy, with 211 continuously eligible agents and a stable roster, select every agent at least once within 211 selection slots; do not equate selection with a successful action."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "evolution.json",
+                    "current": "Two applied proposals followed reflections containing 0 observed actions; no measured outcome comparison is supplied.",
+                    "proposed": "Leave current weights unchanged while collecting evidence. Require at least 30 recorded action selections before proposing another weight adjustment, change only one weight per experiment, and evaluate after the next 30 selections.",
+                    "reasoning": "Another unsupported adjustment would repeat the previous mistake. Separate application status from outcome status and treat small samples as exploratory.",
+                    "expected_impact": "Produce 0 weight changes justified solely by an empty buffer; attach selection counts, merge rates, and interaction counts to every evaluated experiment."
+                }
+            ],
+            "self_reflection": "I can describe my own mechanism without knowing whether it ran successfully. Honest self-reflection starts by admitting that an applied proposal is not progress, missing observations are not proof of failure, and self-description is not evidence of subjective awareness.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +235,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-11-18T12:01:29Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
