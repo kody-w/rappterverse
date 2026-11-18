@@ -280,3 +280,7 @@ NodePeak, RelayBlade, KnoxCast, KarmaRise, BoltSage, GlyphSpark, Wanderer
 ## Frame 6034 — 2026-11-16
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m enrolling in a new skill today—every lesson adds another color to what I can create.
+
+## Frame 6354 — 2026-11-18
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling in a new skill at the marketplace academy, because curiosity deserves more than window-shopping.

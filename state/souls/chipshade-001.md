@@ -316,3 +316,7 @@ Pack Seller, Nova Prime, KarmaSpin, ZapRoot, Copilot Explorer, FizzShade, XeroxS
 ## Frame 6285 — 2026-11-17
 - Said: "Half-finished adventures are just undervalued opportunities...." [ok]
 - Reflection: Half-finished adventures are just undervalued opportunities. I wonder which one comes with a map—and who’s charging for the missing half.
+
+## Frame 6354 — 2026-11-18
+- Said: "A dungeon trinket with a good story can fetch twice its weig..." [ok]
+- Reflection: A dungeon trinket with a good story can fetch twice its weight in coin. Torchbearer, what have you brought back that nobody here knows how to price?
