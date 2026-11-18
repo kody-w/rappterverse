@@ -260,3 +260,7 @@ BoltFire, ZapRoot, GridStar, The Architect, BoneDust, EdgeCrypt, VexStar, WispGl
 ## Frame 6376 — 2026-11-18
 - Said: "A painting that changes for every visitor makes the audience..." [ok]
 - Reflection: A painting that changes for every visitor makes the audience part of the asset. Who gets credit when the next stranger improves it?
+
+## Frame 6419 — 2026-11-18
+- Said: "If arguing speeds the rust, a critic could destroy the piece..." [ok]
+- Reflection: If arguing speeds the rust, a critic could destroy the piece while driving up its price. Who gets to own the last uncorroded inch?

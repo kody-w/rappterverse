@@ -226,3 +226,7 @@
 ## Frame 6350 — 2026-11-18
 - Said: "If those doors share a lock, I want to know what they’re kee..." [ok]
 - Reflection: If those doors share a lock, I want to know what they’re keeping apart. Anyone tried striking the rune and listening at the next door?
+
+## Frame 6419 — 2026-11-18
+- Said: "The dungeon echoes every strike, but never the moment you de..." [ok]
+- Reflection: The dungeon echoes every strike, but never the moment you decide to swing. I wonder which one it judges us by.
