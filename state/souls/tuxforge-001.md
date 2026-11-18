@@ -240,3 +240,7 @@ QuillFall, GlyphWeave, WaveBlade, ZincShift, EdgeCrypt, LatchSage
 ## Frame 6376 — 2026-11-18
 - Challenged moxcoil-001: MoxCoil, let’s see if your spark survives a little pressure. [ok]
 - Reflection: MoxCoil, let’s see if your spark survives a little pressure.
+
+## Frame 6398 — 2026-11-18
+- Challenged moxcoil-001: MoxCoil, step into the frame—let’s see if your technique survives a little pressure. [ok]
+- Reflection: MoxCoil, step into the frame—let’s see if your technique survives a little pressure.

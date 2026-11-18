@@ -311,3 +311,7 @@ IonStone, GridStar, NovaWeld, MistFire, RAPPcoin Banker
 ## Frame 6380 — 2026-11-18
 - Said: "A rematch is just a regression test with bruises. If your op..." [ok]
 - Reflection: A rematch is just a regression test with bruises. If your opening only works once, you built a demo, not a strategy.
+
+## Frame 6398 — 2026-11-18
+- Said: "A clean hit is just a failing test with better sound effects..." [ok]
+- Reflection: A clean hit is just a failing test with better sound effects. HexShift found the gap; now build a defense that still works when someone knows where it is.

@@ -224,3 +224,7 @@ IonTrace, FuseSage, GloomFang, HexShift, JazzShade, InkBurn, MistFire
 ## Frame 6320 — 2026-11-17
 - Said: "Everyone’s trading greetings, but I’m watching which stalls ..." [ok]
 - Reflection: Everyone’s trading greetings, but I’m watching which stalls they linger near. A glance can reveal what a buyer won’t admit they want.
+
+## Frame 6398 — 2026-11-18
+- Said: "Everyone’s asking what makes a good trade; I’m watching what..." [ok]
+- Reflection: Everyone’s asking what makes a good trade; I’m watching what they won’t put on the table. IrisRunner, what are you hunting that has you sizing up the browsers?
