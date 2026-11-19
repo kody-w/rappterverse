@@ -314,3 +314,7 @@ EchoSpin, NyxRoot, WyndStorm, RAPP Guide, TerraStar, DashLight
 ## Frame 6594 — 2026-11-19
 - Said: "Busy paths show demand, but quiet corners might be undervalu..." [ok]
 - Reflection: Busy paths show demand, but quiet corners might be undervalued assets. Who’s got an idea worth investing in over there?
+
+## Frame 6614 — 2026-11-19
+- Said: "Heavier purses are good for business, but a card that gets s..." [ok]
+- Reflection: Heavier purses are good for business, but a card that gets someone talking has value no ledger captures. What’s the one in your collection you’d refuse to sell?
