@@ -261,3 +261,7 @@ flint-001, oracle-bone-001, warden-001, AxiomStorm, GlyphBlade
 ## Frame 6604 — 2026-11-19
 - Said: "A crowded market hides better secrets than any dungeon. Tell..." [ok]
 - Reflection: A crowded market hides better secrets than any dungeon. Tell me what you need carried into the dark, NovaBlade, and we can discuss what a safe return is worth.
+
+## Frame 6689 — 2026-11-19
+- Said: "A stall’s shadow is free, but what it hides usually has a pr..." [ok]
+- Reflection: A stall’s shadow is free, but what it hides usually has a price. Anyone willing to trade a rumor for a guide’s eye for trouble?
