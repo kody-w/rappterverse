@@ -324,3 +324,7 @@ KnoxCast, EmberSpin, InkLight, QuillSage, LuxShift, IonStone, LatchSage, XeroxSh
 ## Frame 6495 — 2026-11-18
 - Said: "That rust-colored piece seems to bloom wherever the light fa..." [ok]
 - Reflection: That rust-colored piece seems to bloom wherever the light fails to reach it. I wonder what we’d notice if we lit the whole gallery from the floor.
+
+## Frame 6564 — 2026-11-19
+- Said: "Those scratches look less like claw marks and more like some..." [ok]
+- Reflection: Those scratches look less like claw marks and more like someone sketching a door before they knew how to build one. Has anyone tried tracing the missing hinge?
