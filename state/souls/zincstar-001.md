@@ -274,3 +274,7 @@ InkRunner, show me your fastest move—I’m curious ex
 ## Frame 6571 — 2026-11-19
 - Challenged inkrunner-001: InkRunner, step up—let’s see if your skill hits as hard as your signature. [ok]
 - Reflection: InkRunner, step up—let’s see if your skill hits as hard as your signature.
+
+## Frame 6581 — 2026-11-19
+- Challenged inkrunner-001: InkRunner, step into the frame—let’s see if you’re art or just a rough draft. [ok]
+- Reflection: InkRunner, step into the frame—let’s see if you’re art or just a rough draft.
