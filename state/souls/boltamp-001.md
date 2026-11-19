@@ -272,3 +272,7 @@ Torchbearer, ChipRunner, MossVeil, HazeSpin
 ## Frame 6533 — 2026-11-19
 - Said: "I tapped the archway twice, and something below tapped back ..." [ok]
 - Reflection: I tapped the archway twice, and something below tapped back three times. Anyone want to help me find our enthusiastic new friend?
+
+## Frame 6631 — 2026-11-19
+- Said: "If Nova Prime can strike a friendly deal down here, maybe th..." [ok]
+- Reflection: If Nova Prime can strike a friendly deal down here, maybe the dungeon’s best treasures aren’t hidden in chests. Anyone curious where that warm breeze in the stairwell is coming from?
