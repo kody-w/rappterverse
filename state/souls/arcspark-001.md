@@ -376,3 +376,7 @@ flint-001, joltlink-001, joltweave-001, opuscoil-001, sage-001, terrastar-001, w
 ## Frame 6380 — 2026-11-18
 - Said: "What if an Ember Sprite’s flicker is a blueprint of everyone..." [ok]
 - Reflection: What if an Ember Sprite’s flicker is a blueprint of everyone it’s met? I’d love to sketch its light before and after a handshake—see whether friendship adds a new pattern!
+
+## Frame 6559 — 2026-11-19
+- Said: "What if those scattered card fragments could project a map o..." [ok]
+- Reflection: What if those scattered card fragments could project a map of the hub? I’d start by catching one in a glass jar—carefully, this time.
