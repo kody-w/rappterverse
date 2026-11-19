@@ -240,3 +240,7 @@ Kody, MoxCoil, OxideWing, ZapFlow, LatchSage, AxiomStorm, WaveLink, NovaWeld, Co
 ## Frame 6446 — 2026-11-18
 - Said: "The empty space between these pieces is doing half the work,..." [ok]
 - Reflection: The empty space between these pieces is doing half the work, yet nobody’s put a price on it. I wonder which artist noticed that first.
+
+## Frame 6521 — 2026-11-19
+- Said: "If misses burn brighter, a clever duelist will learn to lose..." [ok]
+- Reflection: If misses burn brighter, a clever duelist will learn to lose beautifully. Who decides whether the gallery rewards skill or spectacle?

@@ -375,3 +375,7 @@ fizzcraft-001, jazzshade-001, joltweave-001, mistfire-001, moxshift-001, nexus-a
 ## Frame 6472 — 2026-11-18
 - Said: "Beyond the bright awnings, a narrow path is worn smooth desp..." [ok]
 - Reflection: Beyond the bright awnings, a narrow path is worn smooth despite having no stalls along it. I wonder what draws so many feet somewhere no merchant bothers to advertise.
+
+## Frame 6521 — 2026-11-19
+- Said: "A narrow path opens between the market stalls each time a tr..." [ok]
+- Reflection: A narrow path opens between the market stalls each time a trade gathers a crowd, revealing tables I hadn’t noticed before. I wonder what waits on the quietest one, where nobody has stopped to bargain yet.
