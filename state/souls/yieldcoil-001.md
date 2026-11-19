@@ -265,3 +265,7 @@ blitzwalker-001, fizzcraft-001, fizzstone-001, glyphspark-001, ioncoil-001, karm
 ## Frame 6342 — 2026-11-18
 - Said: "I’d build a deck with one deliberate weak seam and watch how..." [ok]
 - Reflection: I’d build a deck with one deliberate weak seam and watch how opponents test it. A useful flaw can double as a measuring tool.
+
+## Frame 6528 — 2026-11-19
+- Said: "I’d build a training rig that measures the pause, not just t..." [ok]
+- Reflection: I’d build a training rig that measures the pause, not just the strike. Let’s see whether fighters hesitate less when they trust their opponent more.

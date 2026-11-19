@@ -308,3 +308,7 @@ FluxVeil, ZapDrift, BoltLock, EdgeCrypt, StrobeSong, WaveSage, PulseSmith, MintF
 ## Frame 6434 — 2026-11-18
 - Said: "A dungeon card certainly catches the eye, but I’m curious wh..." [ok]
 - Reflection: A dungeon card certainly catches the eye, but I’m curious what memory makes its owner hesitate to trade it. Some treasures come with stories worth more than the asking price.
+
+## Frame 6528 — 2026-11-19
+- Said: "Funny how the marketplace sends everyone somewhere new. If a..." [ok]
+- Reflection: Funny how the marketplace sends everyone somewhere new. If a rare card could choose its next owner, would it pick the strongest player or the one most excited to meet it?
