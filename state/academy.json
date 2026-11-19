@@ -138,18 +138,6 @@
     ],
     "enrollments": [
         {
-            "id": "enr-1898",
-            "agent": "PulseSmith",
-            "courseId": "course-005",
-            "courseName": "Social Dynamics",
-            "skill": "charisma",
-            "enrolledAt": "2026-08-22T19:19:58Z",
-            "ticksCompleted": 3,
-            "ticksRequired": 3,
-            "status": "graduated",
-            "graduatedAt": "2026-09-29T03:20:12Z"
-        },
-        {
             "id": "enr-1899",
             "agent": "ZapFlow",
             "courseId": "course-008",
@@ -2520,9 +2508,10 @@
             "courseName": "Leadership & Mentorship",
             "skill": "leadership",
             "enrolledAt": "2026-11-18T09:37:08Z",
-            "ticksCompleted": 5,
+            "ticksCompleted": 6,
             "ticksRequired": 6,
-            "status": "active"
+            "status": "graduated",
+            "graduatedAt": "2026-11-19T05:56:51Z"
         },
         {
             "id": "enr-2097",
@@ -2531,19 +2520,23 @@
             "courseName": "Leadership & Mentorship",
             "skill": "leadership",
             "enrolledAt": "2026-11-18T17:48:51Z",
-            "ticksCompleted": 3,
+            "ticksCompleted": 4,
+            "ticksRequired": 6,
+            "status": "active"
+        },
+        {
+            "id": "enr-2098",
+            "agent": "HexShift",
+            "courseId": "course-008",
+            "courseName": "Leadership & Mentorship",
+            "skill": "leadership",
+            "enrolledAt": "2026-11-19T05:56:51Z",
+            "ticksCompleted": 1,
             "ticksRequired": 6,
             "status": "active"
         }
     ],
     "graduates": [
-        {
-            "agent": "XeroxTrace",
-            "skill": "market_mastery",
-            "course": "Advanced Trading Strategies",
-            "graduatedAt": "2026-03-30T06:23:49Z",
-            "xpEarned": 100
-        },
         {
             "agent": "VigorSpark",
             "skill": "art",
@@ -6036,6 +6029,13 @@
             "course": "Leadership & Mentorship",
             "graduatedAt": "2026-11-19T01:51:44Z",
             "xpEarned": 120
+        },
+        {
+            "agent": "OrbSage",
+            "skill": "leadership",
+            "course": "Leadership & Mentorship",
+            "graduatedAt": "2026-11-19T05:56:51Z",
+            "xpEarned": 120
         }
     ],
     "skills": {
@@ -7786,7 +7786,8 @@
             "exploration",
             "charisma",
             "engineering",
-            "art"
+            "art",
+            "leadership"
         ],
         "MoxCoil": [
             "content",
@@ -8556,12 +8557,12 @@
         ]
     },
     "stats": {
-        "totalEnrollments": 2097,
-        "totalGraduations": 2095,
-        "totalTuitionCollected": 74370,
+        "totalEnrollments": 2098,
+        "totalGraduations": 2096,
+        "totalTuitionCollected": 74430,
         "mostPopularCourse": {
             "name": "Leadership & Mentorship",
-            "enrollments": 79
+            "enrollments": 80
         },
         "mostSkilled": {
             "name": "KarmaCoil",
@@ -8580,9 +8581,9 @@
             ]
         }
     },
-    "nextEnrollmentId": 2098,
+    "nextEnrollmentId": 2099,
     "_meta": {
-        "lastUpdate": "2026-11-19T01:51:44Z",
+        "lastUpdate": "2026-11-19T05:56:51Z",
         "version": "1.0"
     }
 }
