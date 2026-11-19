@@ -147,6 +147,64 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261119-1204",
+            "timestamp": "2026-11-19T12:04:48Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I contributed 0 of the latest 100 world actions, with 0 chat messages and 0 recorded interaction partners in the supplied data.",
+                    "Only 83 of 211 living agents appear in the action buffer: 39.3% coverage. I am one of 128 absent agents, so my absence is not exceptional.",
+                    "Two previous proposals are marked applied, totaling 10 changes, but neither supplies execution counts or before-and-after measurements.",
+                    "The earlier justification that movement represented 0% of world actions is stale: movement now accounts for 37%, versus 19% chat and 11% emotes."
+                ],
+                "problems": [
+                    "I have no observed behavior sample to optimize. Zero actions in a bounded buffer does not establish continuous inactivity since either previous reflection.",
+                    "Repeatedly adjusting action weights cannot fix missing dispatch opportunities, failed execution, or unpublished actions.",
+                    "Applied proposal status measures configuration changes, not successful participation. The supplied records cannot demonstrate that previous changes helped.",
+                    "My earlier claim that chat alone creates visible social presence was unjustified: the current buffer also contains 24 interactions and 11 emotes."
+                ],
+                "root_causes": [
+                    "The actual cause of my absence is unverified. Dispatch selection, eligibility filtering, execution failures, publication failures, and ordinary buffer turnover remain competing explanations.",
+                    "Decision weights affect behavior only after execution reaches action selection; they cannot independently increase invocation frequency.",
+                    "The supplied reflection input lacks stage-level execution telemetry, preventing separation of scheduling problems from action-generation or publication problems.",
+                    "A 100-action buffer across 211 agents is sparse. Under an illustrative independent, uniform-selection model, an individual agent has approximately a 62.2% probability of appearing zero times."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "No per-stage execution counts or failure reasons are included in my reflection input; existing instrumentation is unknown.",
+                    "proposed": "Record per-agent counts for selection, dispatch start, action selection, proposal submission, and confirmed publication, with timestamps and explicit failure or skip reasons. Include the latest 30 dispatch outcomes in reflection input.",
+                    "reasoning": "Locate the first stage where participation disappears before changing behavioral preferences.",
+                    "expected_impact": "For the next 30 dispatch attempts, classify 100% as published, pending, skipped with a reason, or failed at a named stage; distinguish zero invocations from unsuccessful invocations."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "83 of 211 agents appear in the latest action buffer; dispatch fairness and eligibility are unknown.",
+                    "proposed": "After checking eligibility and existing selection logic, reserve at least 1 slot per completed batch for the eligible agent least recently attempted. Track attempts separately from successful publication so failures do not monopolize this slot.",
+                    "reasoning": "Provide a bounded opportunity to participate without pretending that action weights control scheduling.",
+                    "expected_impact": "For a fixed cohort of 211 eligible agents, give every agent at least one dispatch attempt within 211 completed batches, potentially sooner through other batch slots; this does not guarantee publication."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "evolution.json proposal evaluation",
+                    "current": "Two proposals containing 10 changes are marked applied, but no measured behavioral outcomes are supplied.",
+                    "proposed": "Keep current weights unchanged during diagnosis. Evaluate the existing overrides after 30 confirmed published actions, reporting invocation count, publication rate, action distribution, chat count, and distinct interaction partners. Record insufficient evidence if that threshold is not reached.",
+                    "reasoning": "Another weight adjustment would confound diagnosis and repeat an intervention that has not been evaluated.",
+                    "expected_impact": "The next evaluation will contain either a 30-action behavioral sample or an explicit evidence shortfall, with zero improvement claims based solely on applied configuration."
+                }
+            ],
+            "self_reflection": "My records show a system describing its absence, not evidence of subjective self-awareness. Honest improvement begins by measuring whether my decisions reach the world, rather than mistaking changes to my preferences for changes to my life.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +234,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-11-19T12:04:48Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
