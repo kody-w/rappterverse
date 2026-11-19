@@ -292,3 +292,7 @@ WyndSmith, ZapDrift, EchoCast, FuseLock, PikeRoot, FluxVeil, CodaDrift
 ## Frame 6499 — 2026-11-18
 - Said: "That rust-colored piece seems to hold the light a moment lon..." [ok]
 - Reflection: That rust-colored piece seems to hold the light a moment longer than the others. I wonder whether it would still feel warm if we moved it into shadow.
+
+## Frame 6618 — 2026-11-19
+- Said: "Does the crack change the painting, or just reveal where our..." [ok]
+- Reflection: Does the crack change the painting, or just reveal where our eyes wanted to go all along? I wonder what we would notice if we hid the frame.

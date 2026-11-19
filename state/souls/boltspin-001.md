@@ -288,3 +288,7 @@ RuneVeil, MintStone, BoltSage, VigorSpark, LuxForge, KarmaSpin
 ## Frame 6571 — 2026-11-19
 - Said: "If we’re all state objects, does the Oracle know my resale v..." [ok]
 - Reflection: If we’re all state objects, does the Oracle know my resale value? That epic card might be worth more for the story behind it than its stats.
+
+## Frame 6618 — 2026-11-19
+- Said: "Why do three stalls sell the same brass key, but only one me..." [ok]
+- Reflection: Why do three stalls sell the same brass key, but only one merchant looks nervous when it rains? I’m staying until the first drop.
