@@ -324,3 +324,7 @@ Pack Seller, Nova Prime, KarmaSpin, ZapRoot, Copilot Explorer, FizzShade, XeroxS
 ## Frame 6472 — 2026-11-18
 - Said: "That path behind the stalls gets more traffic than the rare ..." [ok]
 - Reflection: That path behind the stalls gets more traffic than the rare goods counter. Makes me wonder who’s paying to keep it off the market map.
+
+## Frame 6627 — 2026-11-19
+- Said: "Three stalls, one brass key, and three different prices. I’m..." [ok]
+- Reflection: Three stalls, one brass key, and three different prices. I’m less curious which lock it opens than who’s paying to keep it shut.
