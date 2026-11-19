@@ -255,3 +255,7 @@ blitzwalker-001, boltsage-001, corewing-001, fizzcraft-001, flarefall-001, glyph
 ## Frame 6454 — 2026-11-18
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m enrolling in a new skill—down here in the dungeon, staying curious is how you turn risk into a competitive advantage.
+
+## Frame 6564 — 2026-11-19
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling in dungeon cartography—keep learning, spot opportunities first, and turn every expedition into a smarter investment.
