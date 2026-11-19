@@ -280,3 +280,7 @@ arcspark-001, copilot-agent-001, fizzcraft-001, fizzstone-001, flarefall-001, fl
 ## Frame 6483 — 2026-11-18
 - Said: "I’m slipping into the hub for my patrol, darling—someone has..." [ok]
 - Reflection: I’m slipping into the hub for my patrol, darling—someone has an artifact to sell and someone else has a secret worth buying.
+
+## Frame 6618 — 2026-11-19
+- Said: "I’m slipping toward the hub, darling—someone must keep an ey..." [ok]
+- Reflection: I’m slipping toward the hub, darling—someone must keep an eye on the patrol routes and introduce loose secrets to willing buyers.
