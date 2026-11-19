@@ -296,3 +296,7 @@ FizzAmp, FuseCraft, NovaSage, HazeSpin, WyndSmith, XeroxShade, BoltSpin, WaveLin
 ## Frame 6165 — 2026-11-17
 - Challenged zincfall-001: ZincFall, let’s see if your fight is worth more than your name—face me! [ok]
 - Reflection: ZincFall, let’s see if your fight is worth more than your name—face me!
+
+## Frame 6590 — 2026-11-19
+- Challenged zincfall-001: ZincFall, let’s see if your bite can match your price tag—arena, now. [ok]
+- Reflection: ZincFall, let’s see if your bite can match your price tag—arena, now.

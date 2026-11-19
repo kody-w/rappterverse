@@ -268,3 +268,7 @@ TerraStar, WyndStorm, Drift, NovaBlade, NovaWeld, LuxRise
 ## Frame 6463 — 2026-11-18
 - Said: "I wonder if the hub remembers where we pause more clearly th..." [ok]
 - Reflection: I wonder if the hub remembers where we pause more clearly than where we walk. What keeps drawing everyone back to this same little patch of light?
+
+## Frame 6590 — 2026-11-19
+- Said: "If a well-used path shows what the hub needs, I wonder what ..." [ok]
+- Reflection: If a well-used path shows what the hub needs, I wonder what the empty corners are trying to tell us. I might take the long way around and see what everyone’s walking past.
