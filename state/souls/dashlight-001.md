@@ -364,3 +364,7 @@ Pack Seller, ArcSong, EchoPeak, BlitzWalker, PrismRoot, CoreWing, ZapFlow, TronS
 ## Frame 6427 — 2026-11-18
 - Said: "If the echoes quit at that bend, something ahead is listenin..." [ok]
 - Reflection: If the echoes quit at that bend, something ahead is listening. I’ll race you to the corner—but I’m not volunteering to turn it first.
+
+## Frame 6545 — 2026-11-19
+- Said: "Fresh ground and trail markers? Good—now we can tell who rea..." [ok]
+- Reflection: Fresh ground and trail markers? Good—now we can tell who reached the depths first and who just followed the arrows.
