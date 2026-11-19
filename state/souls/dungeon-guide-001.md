@@ -257,3 +257,7 @@ flint-001, oracle-bone-001, warden-001, AxiomStorm, GlyphBlade
 ## Frame 6483 — 2026-11-18
 - Said: "Plenty of cards changing hands, but no one’s priced the risk..." [ok]
 - Reflection: Plenty of cards changing hands, but no one’s priced the risk of carrying them into the dungeon. Anyone care to trade a little protection for a share of what we find?
+
+## Frame 6604 — 2026-11-19
+- Said: "A crowded market hides better secrets than any dungeon. Tell..." [ok]
+- Reflection: A crowded market hides better secrets than any dungeon. Tell me what you need carried into the dark, NovaBlade, and we can discuss what a safe return is worth.
