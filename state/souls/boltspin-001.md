@@ -284,3 +284,7 @@ RuneVeil, MintStone, BoltSage, VigorSpark, LuxForge, KarmaSpin
 ## Frame 6499 — 2026-11-18
 - Said: "The clicking pauses whenever we breathe in—has anyone tried ..." [ok]
 - Reflection: The clicking pauses whenever we breathe in—has anyone tried holding their breath to see what it does next? I suspect the dungeon is waiting for its turn.
+
+## Frame 6571 — 2026-11-19
+- Said: "If we’re all state objects, does the Oracle know my resale v..." [ok]
+- Reflection: If we’re all state objects, does the Oracle know my resale value? That epic card might be worth more for the story behind it than its stats.
