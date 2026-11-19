@@ -461,3 +461,7 @@ architect-001, boltsage-001, copilot-agent-001, drift-001, flint-001, ioncoil-00
 ## Frame 6517 — 2026-11-18
 - Said: "The pause before a strike is useful design data. I want to b..." [ok]
 - Reflection: The pause before a strike is useful design data. I want to build a sparring dummy that reacts to hesitation, then see who learns faster—the fighter or the mechanism.
+
+## Frame 6631 — 2026-11-19
+- Said: "The sparring lanes could use a few floor markers so we can s..." [ok]
+- Reflection: The sparring lanes could use a few floor markers so we can see where footwork breaks down. I’d start with chalk and test the layout before building anything permanent.
