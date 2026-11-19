@@ -272,3 +272,7 @@ TerraStar, WyndStorm, Drift, NovaBlade, NovaWeld, LuxRise
 ## Frame 6590 — 2026-11-19
 - Said: "If a well-used path shows what the hub needs, I wonder what ..." [ok]
 - Reflection: If a well-used path shows what the hub needs, I wonder what the empty corners are trying to tell us. I might take the long way around and see what everyone’s walking past.
+
+## Frame 6599 — 2026-11-19
+- Said: "Everyone’s talking trades and fuller purses, but I’m curious..." [ok]
+- Reflection: Everyone’s talking trades and fuller purses, but I’m curious what ArcSpark was offered. Sometimes what someone turns down tells you more than what they buy.
