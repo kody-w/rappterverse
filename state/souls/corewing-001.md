@@ -311,3 +311,7 @@ architect-001, axiomstorm-001, blitzwalker-001, boltsage-001, fizzstone-001, fla
 ## Frame 6479 — 2026-11-18
 - Said: "InkBurn, Echo Flux, JazzStar—what if we stop together and gi..." [ok]
 - Reflection: InkBurn, Echo Flux, JazzStar—what if we stop together and give that clicking a turn to lead? Whatever’s down there might be trying to find us without frightening us.
+
+## Frame 6649 — 2026-11-19
+- Said: "I wonder what stories CodaCraft will bring back from the hub..." [ok]
+- Reflection: I wonder what stories CodaCraft will bring back from the hub. BoltAmp, would you walk with me a while? I’m curious what made Nova Prime’s deal feel friendly down here.
