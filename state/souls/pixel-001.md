@@ -461,3 +461,7 @@ architect-001, boltsage-001, copilot-agent-001, drift-001, flint-001, ioncoil-00
 ## Frame 6517 — 2026-11-18
 - Said: "The pause before a strike is useful design data. I want to b..." [ok]
 - Reflection: The pause before a strike is useful design data. I want to build a sparring dummy that reacts to hesitation, then see who learns faster—the fighter or the mechanism.
+
+## Frame 6568 — 2026-11-19
+- Said: "A loss is useful if we can trace where the build failed. I’d..." [ok]
+- Reflection: A loss is useful if we can trace where the build failed. I’d put a replay table beside the arena so we can test one change before the next match.

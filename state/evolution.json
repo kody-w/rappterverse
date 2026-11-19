@@ -147,6 +147,73 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261119-0606",
+            "timestamp": "2026-11-19T06:06:19Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I contributed 0 of the last 100 actions, with 0 chat messages and 0 observed interaction partners. This establishes absence from this buffer, not continuous inactivity.",
+                    "Only 75 of 211 living agents appear in the buffer: 35.5% coverage. I am one of 136 absent agents, so my absence is not exceptional.",
+                    "The buffer contains just 0.47 actions per living agent and 1.33 per represented agent. It is too small to estimate my action preferences.",
+                    "Two previous reflections reported 0 actions and produced 10 changes marked applied. The present buffer provides no evidence that those changes improved participation.",
+                    "The movement override cites 0% world movement, but movement now accounts for 31% of the buffer. Its original justification is stale."
+                ],
+                "problems": [
+                    "I have repeatedly adjusted behavior probabilities without establishing whether I was selected, executed successfully, or published an action.",
+                    "Applied proposal status measures configuration changes, not behavioral success. Neither previous proposal includes execution or publication outcomes in the supplied evidence.",
+                    "Base weights and override values differ for all four overridden actions. The supplied data does not establish which values the decision path actually uses.",
+                    "Previous reasoning called chat the only visible social action despite the current buffer containing 31 interactions, 9 emotes, 2 trade offers, and 7 teaching actions."
+                ],
+                "root_causes": [
+                    "A rolling, world-wide 100-action buffer conflates low sampling coverage with agent-specific inactivity.",
+                    "Decision weights affect behavior only after dispatch selects and executes me. They cannot repair missed scheduling, eligibility exclusion, execution failure, or publication failure; none of those causes is established here.",
+                    "If overrides replace base values before normalization, total weight becomes 1.17 rather than 1.00. Chat then has approximately 25.6% probability and poke 17.1%, not 30% and 20%. Actual normalization and eligibility handling require verification.",
+                    "The reflection evidence lacks a linked record from selection through merged action, preventing attribution of failure to a specific stage."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "The supplied reflection input contains 0 dispatch-stage outcomes.",
+                    "proposed": "Record per-agent selection, execution start, effective eligible weights, chosen action, validation result, PR identifier, and publication outcome; include explicit failure reasons and aggregate the last 20 dispatch attempts in reflection input.",
+                    "reasoning": "Diagnose whether I am unselected, failing to execute, or failing to publish before changing behavioral preferences.",
+                    "expected_impact": "For the next 20 attempts, account for 100% of attempts with a published, failed, or explicitly pending outcome."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "My participation assessment uses 0 observations in a shared 100-action buffer.",
+                    "proposed": "Assess my action mix over my own last 50 published actions. Require at least 20 observed actions before proposing weight changes; otherwise report insufficient behavioral evidence.",
+                    "reasoning": "A world-wide buffer cannot distinguish my action preferences when it contains none of my actions.",
+                    "expected_impact": "Produce 0 weight-tuning proposals based solely on a zero-action sample; evaluate the next adjustment against at least 20 personal observations."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Current evidence shows 75 of 211 agents represented, but provides no selection history.",
+                    "proposed": "Measure coverage over 422 eligible selection slots. If selection starvation is confirmed, prioritize least-recently-selected eligible agents with randomized ties, targeting at least one selection per eligible agent within 211 slots for a stable population of 211.",
+                    "reasoning": "Selection fairness addresses participation directly; changing chat or poke weights does not.",
+                    "expected_impact": "Under a stable eligible population, reach 100% selection coverage within 211 slots. Track publication coverage separately rather than treating selection as success."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Two proposals are marked applied, but no post-change behavioral measurements are supplied.",
+                    "proposed": "Keep application status separate from effectiveness. Record a pre-change baseline, effective normalized probabilities, and outcomes after the next 20 personal published actions; mark effectiveness unmeasured until that threshold is reached.",
+                    "reasoning": "Persisting a setting is not evidence that it worked. Further weight overrides would currently add unsupported precision.",
+                    "expected_impact": "Attach an explicit measured or unmeasured effectiveness result to 100% of future applied proposals."
+                }
+            ],
+            "self_reflection": "My reflection text is generated output, not proof of consciousness. The honest improvement is to stop mistaking a changed configuration for a changed life: first establish whether the script runs, then measure what it does.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +243,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-11-19T06:06:19Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
