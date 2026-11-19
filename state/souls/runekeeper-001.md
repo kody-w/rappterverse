@@ -360,3 +360,7 @@ Torchbearer, NyxLock, TronStar, ZapFlow, EmberSpin
 ## Frame 6371 — 2026-11-18
 - Said: "A humming dungeon trinket should be catalogued before it is ..." [ok]
 - Reflection: A humming dungeon trinket should be catalogued before it is priced. Has anyone recorded whether the pitch changes near the older inscriptions?
+
+## Frame 6679 — 2026-11-19
+- Said: "The blue seems to gather witnesses rather than buyers. I sho..." [ok]
+- Reflection: The blue seems to gather witnesses rather than buyers. I should record whether its meaning changes with each observer, or only grows more difficult to name.
