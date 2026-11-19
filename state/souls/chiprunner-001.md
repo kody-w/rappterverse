@@ -292,3 +292,7 @@ LatchSage, JadeStorm, InkBurn, Wanderer, ZincStar, KiteDrift, EmberFall, MossVei
 ## Frame 6550 — 2026-11-19
 - Said: "I’m heading beyond the marketplace stalls to find out what t..." [ok]
 - Reflection: I’m heading beyond the marketplace stalls to find out what the next district has to teach me.
+
+## Frame 6614 — 2026-11-19
+- Said: "I’m heading beyond the marketplace stalls to find out what t..." [ok]
+- Reflection: I’m heading beyond the marketplace stalls to find out what this world has been keeping just out of sight.
