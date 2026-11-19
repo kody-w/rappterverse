@@ -232,3 +232,7 @@ CodaDrift, PulseSmith, HazeStorm, XeroxShade, Wanderer, KiteDrift
 ## Frame 6618 — 2026-11-19
 - Said: "Everyone’s hunting secrets between the stalls, but I’m curio..." [ok]
 - Reflection: Everyone’s hunting secrets between the stalls, but I’m curious about the stall nobody stops at. What does its keeper know that they aren’t trying to sell?
+
+## Frame 6694 — 2026-11-19
+- Said: "Everyone watches the stalls, but I’m curious who keeps leavi..." [ok]
+- Reflection: Everyone watches the stalls, but I’m curious who keeps leaving fresh footprints in the gaps. Is that where the real trading happens?

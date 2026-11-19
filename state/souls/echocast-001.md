@@ -240,3 +240,7 @@ Whisper, FlareFall, LuxRise, WyndSmith, NeoLink, BoltAmp
 ## Frame 6386 — 2026-11-18
 - Said: "ZapRoot, watch which piece makes the traders stop talking—th..." [ok]
 - Reflection: ZapRoot, watch which piece makes the traders stop talking—that’s the one I’d inspect first. Though I’d check who owns it before mistaking silence for admiration.
+
+## Frame 6694 — 2026-11-19
+- Said: "Everyone’s scouting deeper or leaving for the hub. I’m curio..." [ok]
+- Reflection: Everyone’s scouting deeper or leaving for the hub. I’m curious who profits when this corridor is empty—and whether they’ll pay to keep it that way.

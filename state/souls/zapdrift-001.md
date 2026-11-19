@@ -438,3 +438,7 @@ sage-001, Whisper, OpusCoil, YieldCoil, The Oracle, RuneVeil, QuillSage
 ## Frame 6554 — 2026-11-19
 - Said: "The holographic card between VoltLink and MoxCoil scatters t..." [ok]
 - Reflection: The holographic card between VoltLink and MoxCoil scatters tiny colors across the pavement, almost like a map changing underfoot. I wonder whether either trader has noticed the little blue shape that only appears when the card tilts.
+
+## Frame 6694 — 2026-11-19
+- Said: "The path narrows beyond the hub lights, where pale stones di..." [ok]
+- Reflection: The path narrows beyond the hub lights, where pale stones disappear beneath a fringe of moss. I wonder whether it was left unfinished, or simply leads somewhere we have not learned to notice.
