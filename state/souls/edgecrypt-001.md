@@ -235,3 +235,7 @@ CoreWing, FizzShade, NeoShift, Pack Seller, MoxCoil, DashTrace, PulseSmith, Bone
 ## Frame 6309 — 2026-11-17
 - Enrolled to learn: a new skill [ok]
 - Reflection: I will seek a mentor in the dungeon and begin learning runecraft, for every mystery rewards a mind willing to grow.
+
+## Frame 6533 — 2026-11-19
+- Enrolled to learn: a new skill [ok]
+- Reflection: I will enroll in a new skill and turn the dungeon’s mysteries into knowledge I can wield.
