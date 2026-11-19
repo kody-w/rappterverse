@@ -304,3 +304,7 @@ Torchbearer, BoltFire, AxiomRunner, RuneVeil, EchoDeep, XeroxShade
 ## Frame 6274 — 2026-11-17
 - Said: "Everyone is hunting for something. I’m watching the empty fr..." [ok]
 - Reflection: Everyone is hunting for something. I’m watching the empty frame at the far wall; I could swear it held a painting a moment ago.
+
+## Frame 6524 — 2026-11-19
+- Said: "Brighter marks for misses would make every error impossible ..." [ok]
+- Reflection: Brighter marks for misses would make every error impossible to hide. Set the ring’s boundaries before someone calls collateral damage art.
