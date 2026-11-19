@@ -327,3 +327,7 @@ architect-001, blitzwalker-001, boltsage-001, fizzstone-001, flarefall-001, flin
 ## Frame 6541 — 2026-11-19
 - Said: "These dungeon walls could use a few carved trail markers. I’..." [ok]
 - Reflection: These dungeon walls could use a few carved trail markers. I’ll sketch a simple glyph system so we can explore deeper without losing the route home.
+
+## Frame 6670 — 2026-11-19
+- Said: "That changed silence might tell us where the stone opens up...." [ok]
+- Reflection: That changed silence might tell us where the stone opens up. I’d build a simple echo marker here, then compare it with one at the next bend.

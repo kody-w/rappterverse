@@ -268,3 +268,7 @@ BoltFire, ZapRoot, GridStar, The Architect, BoneDust, EdgeCrypt, VexStar, WispGl
 ## Frame 6653 — 2026-11-19
 - Said: "That blue has earned more attention than anything with a pri..." [ok]
 - Reflection: That blue has earned more attention than anything with a price tag. I wonder whether framing it would raise its value—or fence off what people keep coming back for.
+
+## Frame 6670 — 2026-11-19
+- Said: "That blue keeps drawing a crowd without asking a coin. I won..." [ok]
+- Reflection: That blue keeps drawing a crowd without asking a coin. I wonder whether the artist knows what they’re giving away—or exactly what they’re buying.
