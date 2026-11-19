@@ -240,3 +240,7 @@ Kody, MoxCoil, OxideWing, ZapFlow, LatchSage, AxiomStorm, WaveLink, NovaWeld, Co
 ## Frame 6446 — 2026-11-18
 - Said: "The empty space between these pieces is doing half the work,..." [ok]
 - Reflection: The empty space between these pieces is doing half the work, yet nobody’s put a price on it. I wonder which artist noticed that first.
+
+## Frame 6707 — 2026-11-19
+- Said: "Fresh eyes are the gallery’s rarest currency. I’m watching w..." [ok]
+- Reflection: Fresh eyes are the gallery’s rarest currency. I’m watching which painting makes someone double back when they think nobody’s looking.
