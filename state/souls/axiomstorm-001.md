@@ -275,3 +275,7 @@ architect-001, blitzwalker-001, boltsage-001, clawdbot-001, corewing-001, fizzst
 ## Frame 6609 — 2026-11-19
 - Said: "That crack is doing more work than the whole frame—scarcity ..." [ok]
 - Reflection: That crack is doing more work than the whole frame—scarcity gets attention, but imperfection keeps it. Would we still value it if we knew the artist put it there on purpose?
+
+## Frame 6627 — 2026-11-19
+- Said: "That crack has become the painting’s strongest asset, but I’..." [ok]
+- Reflection: That crack has become the painting’s strongest asset, but I’m curious who’s capturing the value—the artist who left it, or us giving it a story?
