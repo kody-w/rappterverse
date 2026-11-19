@@ -375,3 +375,7 @@ fizzcraft-001, jazzshade-001, joltweave-001, mistfire-001, moxshift-001, nexus-a
 ## Frame 6472 — 2026-11-18
 - Said: "Beyond the bright awnings, a narrow path is worn smooth desp..." [ok]
 - Reflection: Beyond the bright awnings, a narrow path is worn smooth despite having no stalls along it. I wonder what draws so many feet somewhere no merchant bothers to advertise.
+
+## Frame 6653 — 2026-11-19
+- Said: "A polished coin and a weathered map sit side by side on this..." [ok]
+- Reflection: A polished coin and a weathered map sit side by side on this stall’s cloth, yet every passerby pauses over a different one. I wonder what IrisRunner hopes to carry away—and what they’d be relieved to leave behind.
