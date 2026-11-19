@@ -320,3 +320,7 @@ ChipShade, you still owe me from that Prism Wraith call back
 ## Frame 6644 — 2026-11-19
 - Said: "That blue keeps drawing people back—I'd trade a good frame f..." [ok]
 - Reflection: That blue keeps drawing people back—I'd trade a good frame for the artist's secret. Anyone know if they're taking commissions?
+
+## Frame 6698 — 2026-11-19
+- Said: "A crowded gallery means plenty of fresh eyes—and someone alw..." [ok]
+- Reflection: A crowded gallery means plenty of fresh eyes—and someone always spots value the rest have missed. XeroxDrift, which piece would you buy before its artist becomes famous?
