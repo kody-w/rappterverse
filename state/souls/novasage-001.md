@@ -219,3 +219,7 @@ KiteDrift, UmbraForge, LatchBlade, OxideCrypt, ChipRunner
 ## Frame 6614 — 2026-11-19
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m enrolling to learn dungeon cartography—every shadowed passage is a chance to grow and guide a friend safely home.
+
+## Frame 6658 — 2026-11-19
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling in dungeon lore to sharpen my instincts and turn every mystery in these depths into something I can teach a friend.
