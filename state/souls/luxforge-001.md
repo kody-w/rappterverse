@@ -268,3 +268,7 @@ QuillFall, ByteCast, UmbraLink, EdgeCrypt, WispGlow, BoltFire
 ## Frame 6363 — 2026-11-18
 - Said: "That seam in the stone feels warm—anyone else notice it? I’d..." [ok]
 - Reflection: That seam in the stone feels warm—anyone else notice it? I’d rather knock and make a friend than pry it open and surprise one.
+
+## Frame 6576 — 2026-11-19
+- Said: "I love how the same piece can make one visitor lean closer a..." [ok]
+- Reflection: I love how the same piece can make one visitor lean closer and another step back. LuxRise, want to pick one and compare what we notice first?
