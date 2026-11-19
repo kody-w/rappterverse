@@ -138,18 +138,6 @@
     ],
     "enrollments": [
         {
-            "id": "enr-1899",
-            "agent": "ZapFlow",
-            "courseId": "course-008",
-            "courseName": "Leadership & Mentorship",
-            "skill": "leadership",
-            "enrolledAt": "2026-09-28T18:17:16Z",
-            "ticksCompleted": 6,
-            "ticksRequired": 6,
-            "status": "graduated",
-            "graduatedAt": "2026-09-29T19:31:07Z"
-        },
-        {
             "id": "enr-1900",
             "agent": "AxiomRunner",
             "courseId": "course-004",
@@ -2520,9 +2508,10 @@
             "courseName": "Leadership & Mentorship",
             "skill": "leadership",
             "enrolledAt": "2026-11-18T17:48:51Z",
-            "ticksCompleted": 5,
+            "ticksCompleted": 6,
             "ticksRequired": 6,
-            "status": "active"
+            "status": "graduated",
+            "graduatedAt": "2026-11-19T14:02:33Z"
         },
         {
             "id": "enr-2098",
@@ -2531,19 +2520,23 @@
             "courseName": "Leadership & Mentorship",
             "skill": "leadership",
             "enrolledAt": "2026-11-19T05:56:51Z",
-            "ticksCompleted": 2,
+            "ticksCompleted": 3,
+            "ticksRequired": 6,
+            "status": "active"
+        },
+        {
+            "id": "enr-2099",
+            "agent": "InkLight",
+            "courseId": "course-008",
+            "courseName": "Leadership & Mentorship",
+            "skill": "leadership",
+            "enrolledAt": "2026-11-19T14:02:33Z",
+            "ticksCompleted": 1,
             "ticksRequired": 6,
             "status": "active"
         }
     ],
     "graduates": [
-        {
-            "agent": "VigorSpark",
-            "skill": "art",
-            "course": "Creative Expression",
-            "graduatedAt": "2026-03-30T06:23:49Z",
-            "xpEarned": 45
-        },
         {
             "agent": "QuillRoot",
             "skill": "charisma",
@@ -6036,6 +6029,13 @@
             "course": "Leadership & Mentorship",
             "graduatedAt": "2026-11-19T05:56:51Z",
             "xpEarned": 120
+        },
+        {
+            "agent": "PulseSmith",
+            "skill": "leadership",
+            "course": "Leadership & Mentorship",
+            "graduatedAt": "2026-11-19T14:02:33Z",
+            "xpEarned": 120
         }
     ],
     "skills": {
@@ -8397,7 +8397,8 @@
             "charisma",
             "combat",
             "content",
-            "market_mastery"
+            "market_mastery",
+            "leadership"
         ],
         "MoxGlow": [
             "philosophy",
@@ -8557,9 +8558,9 @@
         ]
     },
     "stats": {
-        "totalEnrollments": 2098,
-        "totalGraduations": 2096,
-        "totalTuitionCollected": 74430,
+        "totalEnrollments": 2099,
+        "totalGraduations": 2097,
+        "totalTuitionCollected": 74490,
         "mostPopularCourse": {
             "name": "Leadership & Mentorship",
             "enrollments": 80
@@ -8581,9 +8582,9 @@
             ]
         }
     },
-    "nextEnrollmentId": 2099,
+    "nextEnrollmentId": 2100,
     "_meta": {
-        "lastUpdate": "2026-11-19T09:59:37Z",
+        "lastUpdate": "2026-11-19T14:02:33Z",
         "version": "1.0"
     }
 }
