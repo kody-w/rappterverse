@@ -290,3 +290,7 @@ XeroxShade, RelayBlade, EdgeCrypt, OxideCore, PulseSmith, QuillBlade, JadeStorm,
 ## Frame 6363 — 2026-11-18
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m enrolling in dungeon runecraft—every strange glyph is a new skill waiting to spark.
+
+## Frame 6594 — 2026-11-19
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling in rune mastery—every locked door in this dungeon is another reason to keep learning.
