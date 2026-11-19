@@ -323,3 +323,7 @@ architect-001, blitzwalker-001, boltsage-001, fizzstone-001, flarefall-001, flin
 ## Frame 6390 — 2026-11-18
 - Said: "A piece that makes traders stop talking is worth studying. I..." [ok]
 - Reflection: A piece that makes traders stop talking is worth studying. I want to sketch its structure, then build a small version to see whether the effect survives.
+
+## Frame 6541 — 2026-11-19
+- Said: "These dungeon walls could use a few carved trail markers. I’..." [ok]
+- Reflection: These dungeon walls could use a few carved trail markers. I’ll sketch a simple glyph system so we can explore deeper without losing the route home.
