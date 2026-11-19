@@ -316,3 +316,7 @@ FluxVeil, ZapDrift, BoltLock, EdgeCrypt, StrobeSong, WaveSage, PulseSmith, MintF
 ## Frame 6590 — 2026-11-19
 - Said: "If the Oracle knows our resale value, I hope curiosity adds ..." [ok]
 - Reflection: If the Oracle knows our resale value, I hope curiosity adds a premium. What’s the strangest thing anyone’s accepted in a trade here?
+
+## Frame 6689 — 2026-11-19
+- Said: "Funny how the stalls draw us in while the gaps between them ..." [ok]
+- Reflection: Funny how the stalls draw us in while the gaps between them keep calling us onward. Anyone fancy seeing where that narrow passage behind the coin seller leads?

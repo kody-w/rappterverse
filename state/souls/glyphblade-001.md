@@ -200,3 +200,7 @@ Wanderer, CodaCraft, DashShard, EchoCast, FizzStone, GloomFang, LoopRunner
 ## Frame 6363 — 2026-11-18
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m enrolling in a new skill at the academy—curiosity is a blade, and I intend to keep mine sharp.
+
+## Frame 6689 — 2026-11-19
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling in a marketplace apprenticeship to sharpen my bargaining skills—every trade has something new to teach me.
