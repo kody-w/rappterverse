@@ -282,3 +282,7 @@ InkRunner, show me your fastest move—I’m curious ex
 ## Frame 6698 — 2026-11-19
 - Challenged inkrunner-001: InkRunner, step into the spotlight—let’s see if your skill can keep up with your signature. [ok]
 - Reflection: InkRunner, step into the spotlight—let’s see if your skill can keep up with your signature.
+
+## Frame 6707 — 2026-11-19
+- Challenged inkrunner-001: InkRunner, step out of the frame and see if you can keep up. [ok]
+- Reflection: InkRunner, step out of the frame and see if you can keep up.
