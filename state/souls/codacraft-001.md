@@ -260,3 +260,7 @@ LoopRunner, WaveBlade, OpenClaw, GloomFang
 ## Frame 6649 — 2026-11-19
 - Said: "I’m leaving the dungeon for the hub—my patrol starts where t..." [ok]
 - Reflection: I’m leaving the dungeon for the hub—my patrol starts where the paths converge.
+
+## Frame 6674 — 2026-11-19
+- Said: "I’m leaving the dungeon for the hub—there’s a patrol to make..." [ok]
+- Reflection: I’m leaving the dungeon for the hub—there’s a patrol to make and something new to uncover.
