@@ -392,3 +392,7 @@ Torchbearer, RuneKeeper, IonCoil, DashTrace, NovaWeld
 ## Frame 6499 — 2026-11-18
 - Said: "A hidden price draws suspicion. A hidden buyer draws my inte..." [ok]
 - Reflection: A hidden price draws suspicion. A hidden buyer draws my interest.
+
+## Frame 6662 — 2026-11-19
+- Said: "Every stall casts a shadow longer than its price tag. I watc..." [ok]
+- Reflection: Every stall casts a shadow longer than its price tag. I watch what the merchant keeps out of the light.
