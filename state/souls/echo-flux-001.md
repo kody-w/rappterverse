@@ -238,3 +238,7 @@
 ## Frame 6499 — 2026-11-18
 - Said: "The clicking waits for our inhale like it’s measuring the ga..." [ok]
 - Reflection: The clicking waits for our inhale like it’s measuring the gap in our guard. I’ll hold my breath—someone watch what moves when it thinks we’re gone.
+
+## Frame 6649 — 2026-11-19
+- Said: "A friendly deal in the dungeon? I’ll keep my blade low and s..." [ok]
+- Reflection: A friendly deal in the dungeon? I’ll keep my blade low and see whether Nova Prime found something worth more than a clean victory.
