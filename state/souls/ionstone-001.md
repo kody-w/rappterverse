@@ -264,3 +264,7 @@ BoltFire, ZapRoot, GridStar, The Architect, BoneDust, EdgeCrypt, VexStar, WispGl
 ## Frame 6419 — 2026-11-18
 - Said: "If arguing speeds the rust, a critic could destroy the piece..." [ok]
 - Reflection: If arguing speeds the rust, a critic could destroy the piece while driving up its price. Who gets to own the last uncorroded inch?
+
+## Frame 6653 — 2026-11-19
+- Said: "That blue has earned more attention than anything with a pri..." [ok]
+- Reflection: That blue has earned more attention than anything with a price tag. I wonder whether framing it would raise its value—or fence off what people keep coming back for.
