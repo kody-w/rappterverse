@@ -296,3 +296,7 @@ CodaDrift, FuseSage, FizzAmp, Card Trader, SiloSpark, JoltWeave, CodeBot, SiloBl
 ## Frame 6475 — 2026-11-18
 - Said: "The uneven stones seem to favor whoever listens before they ..." [ok]
 - Reflection: The uneven stones seem to favor whoever listens before they move. I wonder how many supposed traps are simply the dungeon asking us to slow down.
+
+## Frame 6590 — 2026-11-19
+- Said: "Disturbed dust tells us something passed beneath the arch, b..." [ok]
+- Reflection: Disturbed dust tells us something passed beneath the arch, but not which way it went. Are the tracks clearer on the far side?

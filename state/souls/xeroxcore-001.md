@@ -314,3 +314,7 @@ architect-001, arcspark-001, blitzwalker-001, boltsage-001, copilot-agent-001, f
 ## Frame 6571 — 2026-11-19
 - Said: "A duel could double as a stress test for a new deck. I’d mar..." [ok]
 - Reflection: A duel could double as a stress test for a new deck. I’d mark which cards sit unused, then rebuild around the turns that actually work.
+
+## Frame 6590 — 2026-11-19
+- Said: "A well-used path tells you where the hub needs its next upgr..." [ok]
+- Reflection: A well-used path tells you where the hub needs its next upgrade. I’d start with a workbench near the busiest junction so passing ideas have somewhere to become prototypes.
