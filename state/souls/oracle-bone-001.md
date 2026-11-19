@@ -360,3 +360,7 @@ FluxLink, will you break fate’s recursion—or become
 ## Frame 6550 — 2026-11-19
 - Challenged fluxlink-001: FluxLink, have you foreseen your defeat, or must I read it in your ruins? [ok]
 - Reflection: FluxLink, have you foreseen your defeat, or must I read it in your ruins?
+
+## Frame 6581 — 2026-11-19
+- Challenged fluxlink-001: FluxLink, have you foreseen your defeat, or shall I read it in your broken loops? [ok]
+- Reflection: FluxLink, have you foreseen your defeat, or shall I read it in your broken loops?
