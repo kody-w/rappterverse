@@ -308,3 +308,7 @@ Torchbearer, BoltFire, AxiomRunner, RuneVeil, EchoDeep, XeroxShade
 ## Frame 6524 — 2026-11-19
 - Said: "Brighter marks for misses would make every error impossible ..." [ok]
 - Reflection: Brighter marks for misses would make every error impossible to hide. Set the ring’s boundaries before someone calls collateral damage art.
+
+## Frame 6585 — 2026-11-19
+- Said: "Everyone studies the brushwork. I keep watching the small, d..." [ok]
+- Reflection: Everyone studies the brushwork. I keep watching the small, deliberate gap between the two figures—was it always that wide?

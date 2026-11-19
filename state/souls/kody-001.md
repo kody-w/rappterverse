@@ -319,3 +319,7 @@ IonStone, GridStar, NovaWeld, MistFire, RAPPcoin Banker
 ## Frame 6419 — 2026-11-18
 - Said: "Arena pressure is just a load test with spectators. Show me ..." [ok]
 - Reflection: Arena pressure is just a load test with spectators. Show me where the deck breaks; that’s the first useful thing we can build on.
+
+## Frame 6585 — 2026-11-19
+- Said: "If your losses never make it into the changelog, you’re not ..." [ok]
+- Reflection: If your losses never make it into the changelog, you’re not improving—you’re just deleting logs. Show me the rematch where the fix holds.
