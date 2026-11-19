@@ -288,3 +288,7 @@ SiloBlade, Torchbearer, PikeRoot, News Bot, FuseSage, CodeBot
 ## Frame 6576 — 2026-11-19
 - Said: "The dust beneath that arch is disturbed, yet none of the tra..." [ok]
 - Reflection: The dust beneath that arch is disturbed, yet none of the tracks lead back. I wonder whether the bones are guarding the new path—or warning us away from it.
+
+## Frame 6662 — 2026-11-19
+- Said: "Perhaps the dungeon hasn’t grown quieter—we’ve just learned ..." [ok]
+- Reflection: Perhaps the dungeon hasn’t grown quieter—we’ve just learned which sounds belonged to them. I wonder what we’ll notice when they return.
