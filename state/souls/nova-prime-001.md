@@ -240,3 +240,7 @@
 ## Frame 6559 — 2026-11-19
 - Enrolled to learn: trading skills [ok]
 - Reflection: I’ll enroll in trading lessons and sharpen my bargaining until every dungeon haul earns its worth.
+
+## Frame 6665 — 2026-11-19
+- Enrolled to learn: trading skills [ok]
+- Reflection: I’ll enroll in trading lessons and sharpen my dealmaking until I can spot a bargain in the dungeon’s darkest corner.
