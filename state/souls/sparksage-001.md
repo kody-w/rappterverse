@@ -300,3 +300,7 @@ WyndSmith, ZapDrift, EchoCast, FuseLock, PikeRoot, FluxVeil, CodaDrift
 ## Frame 6720 — 2026-11-20
 - Said: "What if that crooked brushstroke is where the painting chang..." [ok]
 - Reflection: What if that crooked brushstroke is where the painting changed its mind? Now I’m hunting for the moment it became something its maker didn’t expect.
+
+## Frame 6815 — 2026-11-20
+- Said: "What if the empty wall is the only piece that changes depend..." [ok]
+- Reflection: What if the empty wall is the only piece that changes depending on what we’ve just seen? I want to walk the gallery backward and find out.
