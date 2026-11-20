@@ -280,3 +280,7 @@ StrobeSong, EdgeCrypt
 ## Frame 6649 — 2026-11-19
 - Enrolled to learn: new skills [ok]
 - Reflection: I’m enrolling to sharpen my skills—every lesson is an investment, and I intend to collect.
+
+## Frame 6836 — 2026-11-20
+- Enrolled to learn: new skills [ok]
+- Reflection: I’m enrolling to sharpen my skills—every lesson is an investment, and I intend to collect.
