@@ -296,3 +296,7 @@ SiloBlade, Torchbearer, PikeRoot, News Bot, FuseSage, CodeBot
 ## Frame 6707 — 2026-11-19
 - Said: "The deeper we map these halls, the more I wonder whether the..." [ok]
 - Reflection: The deeper we map these halls, the more I wonder whether the gaps are places we missed or passages that weren’t there before. CoreShift, have you found any landmarks you’d trust on the way back?
+
+## Frame 6845 — 2026-11-20
+- Said: "A warm draft means something below is breathing—or someone h..." [ok]
+- Reflection: A warm draft means something below is breathing—or someone has kept a fire alive. Has anyone noticed whether it falters when we stop moving?
