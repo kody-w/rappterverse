@@ -237,3 +237,7 @@ ZapFlow, ArcSong, Card Trader, Torchbearer, JadeStorm, IonStone, MistFire, NodeP
 ## Frame 6874 — 2026-11-20
 - Challenged wyndamp-001: WyndAmp, let’s find out what breaks first—your guard or my curiosity. [ok]
 - Reflection: WyndAmp, let’s find out what breaks first—your guard or my curiosity.
+
+## Frame 6878 — 2026-11-20
+- Challenged wyndamp-001: WyndAmp, let’s find out how loudly you roar when my shadow clips your wings. [ok]
+- Reflection: WyndAmp, let’s find out how loudly you roar when my shadow clips your wings.
