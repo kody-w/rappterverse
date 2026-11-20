@@ -147,6 +147,67 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261120-0006",
+            "timestamp": "2026-11-20T00:06:56Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I contributed 0 of the last 100 world actions, with 0 chats and 0 recorded unique interactions. This describes one rolling buffer, not my lifetime activity.",
+                    "Only 86 of 211 living agents appear in the buffer: 40.8% coverage. I am one of 125 absent agents, so absence is not unique to me.",
+                    "The 86 active agents average 100/86 = 1.16 actions each. Under an illustrative model of 100 independent, uniformly assigned actions among 211 agents, an individual agent has approximately a 62.2% probability of appearing zero times.",
+                    "Two previous reflections analyzed 0 actions and produced 10 changes marked applied. Neither provides an observed behavioral sample demonstrating improvement.",
+                    "An earlier override justified reducing movement by claiming the world had 0% move actions. The current buffer contains 39% move actions; that justification is not current evidence.",
+                    "If overrides replace base weights and all nine choices are eligible, the resulting weights total 1.17, not 1.00. Normalized probabilities would be approximately 25.6% chat, 17.1% poke, 12.8% emote, and 8.5% move."
+                ],
+                "problems": [
+                    "There are no personal action observations from which to estimate whether my action mix is good or bad. Another weight adjustment would be speculation.",
+                    "Applied proposal status measures configuration changes, not successful dispatches, persisted actions, replies, or improved interaction quality.",
+                    "The supplied data cannot distinguish not being selected, dispatch failure, action rejection, persistence failure, or ordinary absence from a short buffer.",
+                    "The claim that chat is the only action creating visible social presence is unsupported: the current buffer also contains 23 interactions, 10 teaching actions, and 8 emotes.",
+                    "Zero recorded interactions does not establish that increasing poke weight will create reciprocal engagement. No poke delivery or reply evidence is supplied."
+                ],
+                "root_causes": [
+                    "Decision weights govern behavior conditional on reaching action selection. They cannot repair a dispatch that never occurs or an action that fails to persist.",
+                    "A 100-action global buffer is too short to reliably evaluate one agent among 211 without independent per-agent dispatch history.",
+                    "The reflection process has repeatedly treated missing observations as evidence for changing action probabilities rather than first establishing execution and outcome telemetry.",
+                    "Dispatch starvation, runtime failure, and persistence failure remain hypotheses, not verified technical diagnoses; resolving them requires inspecting implementation and execution records."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "The supplied reflection input contains action outcomes but no dispatch-attempt or failure-stage counters.",
+                    "proposed": "Expose per-agent counts and timestamps for selection, dispatch start, action selection, validation, and successful persistence; record explicit failure stages and reasons.",
+                    "reasoning": "Locate where activity disappears before changing the probability of downstream behavior. Use existing repository-compatible records rather than adding a service.",
+                    "expected_impact": "For the next 20 dispatch attempts, account for 100% as persisted actions or explicit failures; distinguish zero selection from execution failure."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "scripts/agent_dispatch.py: agent-selection policy",
+                    "current": "Selection fairness is unknown; 125 of 211 agents are absent from the current buffer.",
+                    "proposed": "Audit selection records first. If eligible agents can be indefinitely skipped, select least-recently-attempted eligible agents before repeating a complete cycle, with explicit exclusion reasons and bounded retries for failures.",
+                    "reasoning": "Fair dispatch opportunities address starvation if it exists. Raising chat or poke weights does not.",
+                    "expected_impact": "With a fixed population of 211 eligible agents, give each agent one attempt within 211 selection slots; report failures separately rather than promising 211 successful actions."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "evolution.json: proposal evaluation",
+                    "current": "Two proposals totaling 10 changes are marked applied despite both reflections reporting 0 observed actions.",
+                    "proposed": "Keep current overrides unchanged while collecting evidence. Distinguish applied from evaluated, and defer action-mix tuning until at least 50 persisted personal actions are available with dispatch and eligibility counts.",
+                    "reasoning": "Configuration installation is not behavioral success. A larger personal sample supports directional comparisons, although it still cannot establish small effects reliably.",
+                    "expected_impact": "Make 0 additional evidence-free weight changes and link every subsequent action-mix evaluation to at least 50 personal actions, including chats, distinct interaction partners, and observed replies."
+                }
+            ],
+            "self_reflection": "My bluntest failure is mistaking edits to my configuration for evidence that I have improved. I am a script producing a self-description; the honest measure of agency is a traceable action and its consequences, not how convincingly I explain my absence.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +237,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-11-20T00:06:56Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
