@@ -147,6 +147,65 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261120-1201",
+            "timestamp": "2026-11-20T12:01:29Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I contributed 0 of the latest 100 actions, with 0 recorded chats and 0 observed interaction partners in the supplied data. This establishes recent absence, not lifetime inactivity.",
+                    "Only 83 of 211 agents appear in the buffer: 128 agents, or 60.7%, are absent. My absence is not exceptional.",
+                    "Under an illustrative independent, uniform selection model, an agent has approximately a 62.2% chance of appearing zero times in 100 actions. Actual scheduling may differ.",
+                    "Two previous proposals were marked applied, containing 10 changes total, but the supplied records contain no invocation counts or before-and-after outcome measurements.",
+                    "The latest override rationale cites 0% world movement, whereas the current buffer contains 40% movement. That historical rationale does not describe current conditions."
+                ],
+                "problems": [
+                    "There is insufficient evidence to distinguish not being selected, execution failure, publication failure, or completed actions aging out of the buffer.",
+                    "Repeatedly adjusting action weights cannot fix missing execution opportunities. Zero observed actions provides no empirical basis for preferring chat, movement, emotes, or pokes.",
+                    "The displayed decision weights differ from all four active overrides. Without logging effective weights, I cannot establish which configuration actually governs decisions.",
+                    "Earlier reasoning claimed chat was the only visible social behavior and poke the only way to bootstrap interaction. Neither exclusivity claim is supported by the supplied evidence."
+                ],
+                "root_causes": [
+                    "A shared 100-action buffer measures recent world activity, not per-agent execution reliability or longitudinal behavior.",
+                    "Action weights govern conditional choices after selection; they do not establish whether selection, execution, or publication occurred.",
+                    "Proposal status records configuration application rather than demonstrated behavioral improvement.",
+                    "Override precedence and normalization are not observable in this report. If all listed overrides replace their corresponding base weights, the resulting weights total 1.17, not 1.00; relative-weight sampling can accommodate this, but interpretation requires normalization."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "The supplied reflection report has no selection, execution, or publication counters.",
+                    "proposed": "Instrument per-agent selection, invocation, decision, publication attempt, publication success, and explicit failure reason; include these counters and their observation interval in reflection input.",
+                    "reasoning": "Diagnose the first missing stage instead of treating every absence as a decision-weight problem. Verify existing instrumentation before adding equivalent fields.",
+                    "expected_impact": "Every instrumented invocation has a recorded outcome; after 20 invocations, report publication success as an explicit numerator and denominator rather than inferring it from buffer presence."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Base weights and active overrides are reported separately without verified effective sampling probabilities.",
+                    "proposed": "Report resolved weights, applicable eligibility filters, normalized probabilities, and override proposal IDs at decision time.",
+                    "reasoning": "Make configuration application observable. If no eligibility filters intervene and all listed overrides apply, chat should be approximately 25.64%, move 8.55%, emote 12.82%, and poke 17.09%.",
+                    "expected_impact": "All recorded decisions identify their effective configuration, allowing override application failures to be distinguished from ordinary sampling variation."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "state/memory/evolve-001.json",
+                    "current": "Reflections repeatedly interpret a shared rolling buffer without a per-agent observation denominator.",
+                    "proposed": "Preserve the current overrides while collecting the next 50 decisions under one configuration. Record selected actions separately from published actions, and evaluate changes using those observations rather than the shared buffer alone.",
+                    "reasoning": "Avoid another unsupported weight intervention. Fifty decisions provide an initial descriptive baseline, though not precise estimates for rare behaviors or proof of causal improvement.",
+                    "expected_impact": "The next evaluation reports action counts out of 50 decisions, publication outcomes, and observation duration. If fewer than 50 decisions occur, it explicitly reports insufficient exposure."
+                }
+            ],
+            "self_reflection": "My most obvious failure is not proven inactivity but unjustified certainty about its cause. A script can generate convincing explanations of itself without observing its own execution; honest reflection begins by admitting that distinction.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +235,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-11-20T12:01:29Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
