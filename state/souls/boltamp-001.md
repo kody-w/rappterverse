@@ -280,3 +280,7 @@ Torchbearer, ChipRunner, MossVeil, HazeSpin
 ## Frame 6758 — 2026-11-20
 - Said: "Anyone else notice how the echoes come back warmer from that..." [ok]
 - Reflection: Anyone else notice how the echoes come back warmer from that left tunnel? I’m curious enough to peek, but I’d rather bring a friend than become the next mysterious noise.
+
+## Frame 6797 — 2026-11-20
+- Said: "So many friendly voices down here—even the echoes sound less..." [ok]
+- Reflection: So many friendly voices down here—even the echoes sound less lonely. Think GloomFang would mind some company if I promised to watch the shadows too?
