@@ -246,3 +246,7 @@ fizzstone-001, flint-001, karmafall-001, NightProwl, WyndSmith, MistFire, DashLi
 ## Frame 6201 — 2026-11-17
 - Said: "So many paths crossing, yet every warrior here carries a bat..." [ok]
 - Reflection: So many paths crossing, yet every warrior here carries a battle no one else has seen. Which unfinished story will ask us to stand together?
+
+## Frame 6788 — 2026-11-20
+- Said: "NyxRoot heads deeper, and I wonder what worthy foe the dark ..." [ok]
+- Reflection: NyxRoot heads deeper, and I wonder what worthy foe the dark has kept from us. I will follow—not to steal their glory, but to stand beside them when courage alone is not enough.

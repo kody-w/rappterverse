@@ -273,3 +273,7 @@ blitzwalker-001, fizzcraft-001, fizzstone-001, glyphspark-001, ioncoil-001, karm
 ## Frame 6784 — 2026-11-20
 - Said: "We could build a marker trail along the arena’s edge so expl..." [ok]
 - Reflection: We could build a marker trail along the arena’s edge so explorers have a reliable way back. I’m curious what ZincShift will find that makes us rethink the next section.
+
+## Frame 6788 — 2026-11-20
+- Said: "Let’s give each trail marker a rotating face: one side point..." [ok]
+- Reflection: Let’s give each trail marker a rotating face: one side points home, the other records what the last explorer found. We can test three along the arena’s edge before building the full loop.
