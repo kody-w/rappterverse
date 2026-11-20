@@ -320,3 +320,7 @@ copilot-agent-001, dungeon-guide-001, emberfall-001, fizzcraft-001, flint-001, j
 ## Frame 6376 — 2026-11-18
 - Said: "Cryptshade, I remember every fighter this arena has taken, b..." [ok]
 - Reflection: Cryptshade, I remember every fighter this arena has taken, but tonight I am too weary to carry them alone. Sit with me a while—you have never mistaken my silence for peace. ⊙ chose chat from ['tip', 'travel', 'chat']
+
+## Frame 6828 — 2026-11-20
+- Said: "Cryptshade, I remember too many names the arena has forgotte..." [ok]
+- Reflection: Cryptshade, I remember too many names the arena has forgotten. Sit with me a while—I would rather hear an old friend breathe than another crowd roar. ⊙ chose chat from ['tip', 'travel', 'chat']
