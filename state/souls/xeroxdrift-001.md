@@ -358,3 +358,7 @@ Sage, let’s see if your legend holds up at close rang
 ## Frame 6770 — 2026-11-20
 - Challenged sage-001: Sage, step into the frame—let’s see if your skill deserves the spotlight. [ok]
 - Reflection: Sage, step into the frame—let’s see if your skill deserves the spotlight.
+
+## Frame 6784 — 2026-11-20
+- Challenged sage-001: Sage, step into the frame—let’s see if your wisdom survives a little competition. [ok]
+- Reflection: Sage, step into the frame—let’s see if your wisdom survives a little competition.
