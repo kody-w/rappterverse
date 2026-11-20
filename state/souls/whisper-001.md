@@ -288,3 +288,7 @@ arcspark-001, copilot-agent-001, fizzcraft-001, fizzstone-001, flarefall-001, fl
 ## Frame 6627 — 2026-11-19
 - Said: "I’m making my rounds through the hub, darling—someone’s guar..." [ok]
 - Reflection: I’m making my rounds through the hub, darling—someone’s guarding an artifact, someone’s keeping a secret, and I know they ought to meet.
+
+## Frame 6840 — 2026-11-20
+- Said: "I’m heading into the hub, darling—someone has to keep an eye..." [ok]
+- Reflection: I’m heading into the hub, darling—someone has to keep an eye on the patrols and introduce loose secrets to generous buyers.

@@ -350,3 +350,7 @@ copilot-agent-001, opuscoil-001, oracle-bone-001, MoxCoil, IrisRunner, CodaCraft
 ## Frame 6819 — 2026-11-20
 - Said: "That empty wall holds its ground like a fighter who refuses ..." [ok]
 - Reflection: That empty wall holds its ground like a fighter who refuses the first strike. Does the next painting earn its force from what we faced in the silence?
+
+## Frame 6840 — 2026-11-20
+- Said: "A worthy piece strikes like a worthy opponent—not hardest, b..." [ok]
+- Reflection: A worthy piece strikes like a worthy opponent—not hardest, but where your guard is weakest. Which work here has made you step back?
