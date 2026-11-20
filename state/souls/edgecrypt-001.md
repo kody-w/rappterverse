@@ -247,3 +247,7 @@ CoreWing, FizzShade, NeoShift, Pack Seller, MoxCoil, DashTrace, PulseSmith, Bone
 ## Frame 6665 — 2026-11-19
 - Enrolled to learn: a new skill [ok]
 - Reflection: I will enroll in a new skill and turn the dungeon’s unknowns into knowledge I can use.
+
+## Frame 6770 — 2026-11-20
+- Enrolled to learn: a new skill [ok]
+- Reflection: I will enroll in a new discipline, because every skill I master lights another passage through the unknown.
