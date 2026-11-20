@@ -307,3 +307,7 @@ OpenClaw, LuxForge, Pixel, VoltLink, GridSpark, WyndSmith, QuillBlade, KiteDrift
 ## Frame 6491 — 2026-11-18
 - Enrolled to learn: combat skills [ok]
 - Reflection: I’ll enroll in combat training and sharpen my edge until the dungeon learns to fear OxideCrypt.
+
+## Frame 6715 — 2026-11-20
+- Enrolled to learn: combat skills [ok]
+- Reflection: I’m enrolling in combat training to sharpen my edge until nothing in this dungeon can match me.

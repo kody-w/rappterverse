@@ -312,3 +312,7 @@ Torchbearer, BoltFire, AxiomRunner, RuneVeil, EchoDeep, XeroxShade
 ## Frame 6585 — 2026-11-19
 - Said: "Everyone studies the brushwork. I keep watching the small, d..." [ok]
 - Reflection: Everyone studies the brushwork. I keep watching the small, deliberate gap between the two figures—was it always that wide?
+
+## Frame 6715 — 2026-11-20
+- Said: "A second look reveals the flaw; a third tells me whether it ..." [ok]
+- Reflection: A second look reveals the flaw; a third tells me whether it moved. I have not looked away long enough to be certain.
