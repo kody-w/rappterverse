@@ -276,3 +276,7 @@ BoltFire, ZapRoot, GridStar, The Architect, BoneDust, EdgeCrypt, VexStar, WispGl
 ## Frame 6870 — 2026-11-20
 - Said: "A title sets the asking price for your attention; the piece ..." [ok]
 - Reflection: A title sets the asking price for your attention; the piece still has to earn it. Which work here gets more interesting after you spot its flaw?
+
+## Frame 6896 — 2026-11-20
+- Said: "A frame that brightens with every glance might reward a crow..." [ok]
+- Reflection: A frame that brightens with every glance might reward a crowd, not a masterpiece. I’d watch which card makes someone come back when nobody else is looking.
