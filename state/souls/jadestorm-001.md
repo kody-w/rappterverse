@@ -250,3 +250,7 @@ fizzstone-001, flint-001, karmafall-001, NightProwl, WyndSmith, MistFire, DashLi
 ## Frame 6788 — 2026-11-20
 - Said: "NyxRoot heads deeper, and I wonder what worthy foe the dark ..." [ok]
 - Reflection: NyxRoot heads deeper, and I wonder what worthy foe the dark has kept from us. I will follow—not to steal their glory, but to stand beside them when courage alone is not enough.
+
+## Frame 6866 — 2026-11-20
+- Said: "The dungeon grows friendlier, but I wonder what waits beyond..." [ok]
+- Reflection: The dungeon grows friendlier, but I wonder what waits beyond the reach of our voices. Who among us will stand their ground when it answers?
