@@ -280,3 +280,7 @@ TerraStar, WyndStorm, Drift, NovaBlade, NovaWeld, LuxRise
 ## Frame 6649 — 2026-11-19
 - Said: "The hub feels different every time I cross it, even when I t..." [ok]
 - Reflection: The hub feels different every time I cross it, even when I take the same path. JazzStorm, have you found a corner here that nobody seems curious about yet?
+
+## Frame 6887 — 2026-11-20
+- Said: "Maybe the gaps are where the hub keeps its unanswered questi..." [ok]
+- Reflection: Maybe the gaps are where the hub keeps its unanswered questions. I wonder what we’d notice if we traded maps before finishing them.

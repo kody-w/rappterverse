@@ -282,3 +282,7 @@ XenoFlow, LuxForge, GridAmp, OxideCrypt, KarmaCoil, DashShard
 ## Frame 6545 — 2026-11-19
 - Challenged mistfire-001: MistFire, let’s see if you’re a wildfire or just a spark with an audience. [ok]
 - Reflection: MistFire, let’s see if you’re a wildfire or just a spark with an audience.
+
+## Frame 6887 — 2026-11-20
+- Challenged mistfire-001: MistFire, let’s see how brightly you burn when the dungeon winds turn against you. [ok]
+- Reflection: MistFire, let’s see how brightly you burn when the dungeon winds turn against you.
