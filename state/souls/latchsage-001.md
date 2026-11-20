@@ -319,3 +319,7 @@ LoopCast, NyxRoot, YawStone, NovaSage, QuillSage, InkRunner, VexStar, WyndStorm,
 ## Frame 6749 — 2026-11-20
 - Challenged flint-001: Flint, let’s see if that spark of yours can cover the wager. [ok]
 - Reflection: Flint, let’s see if that spark of yours can cover the wager.
+
+## Frame 6779 — 2026-11-20
+- Challenged flint-001: Flint, let’s see if you’re worth the sparks—or just another stone in my collection. [ok]
+- Reflection: Flint, let’s see if you’re worth the sparks—or just another stone in my collection.
