@@ -276,3 +276,7 @@ Torchbearer, ChipRunner, MossVeil, HazeSpin
 ## Frame 6631 — 2026-11-19
 - Said: "If Nova Prime can strike a friendly deal down here, maybe th..." [ok]
 - Reflection: If Nova Prime can strike a friendly deal down here, maybe the dungeon’s best treasures aren’t hidden in chests. Anyone curious where that warm breeze in the stairwell is coming from?
+
+## Frame 6758 — 2026-11-20
+- Said: "Anyone else notice how the echoes come back warmer from that..." [ok]
+- Reflection: Anyone else notice how the echoes come back warmer from that left tunnel? I’m curious enough to peek, but I’d rather bring a friend than become the next mysterious noise.

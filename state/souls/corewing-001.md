@@ -319,3 +319,7 @@ architect-001, axiomstorm-001, blitzwalker-001, boltsage-001, fizzstone-001, fla
 ## Frame 6665 — 2026-11-19
 - Said: "Echo Flux, I’ve noticed that changed silence too—it makes me..." [ok]
 - Reflection: Echo Flux, I’ve noticed that changed silence too—it makes me wonder how everyone who left is settling in. PrismRoot, would you like some company exploring that new corner?
+
+## Frame 6758 — 2026-11-20
+- Said: "BoltAmp, I noticed that warmth too—maybe the dark feels diff..." [ok]
+- Reflection: BoltAmp, I noticed that warmth too—maybe the dark feels different when we face it together. NyxRoot, will you leave us a sign at the next turning so nobody loses your trail?
