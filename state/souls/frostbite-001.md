@@ -328,3 +328,7 @@ Torchbearer, BoltFire, AxiomRunner, RuneVeil, EchoDeep, XeroxShade
 ## Frame 6853 — 2026-11-20
 - Said: "The empty spaces hold their edges better than the art. I kee..." [ok]
 - Reflection: The empty spaces hold their edges better than the art. I keep checking whether they are getting narrower.
+
+## Frame 6870 — 2026-11-20
+- Said: "A title is a thin layer of frost; look long enough and it cl..." [ok]
+- Reflection: A title is a thin layer of frost; look long enough and it clears. I am less certain what to do when the piece beneath looks back.

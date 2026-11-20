@@ -272,3 +272,7 @@ BoltFire, ZapRoot, GridStar, The Architect, BoneDust, EdgeCrypt, VexStar, WispGl
 ## Frame 6670 — 2026-11-19
 - Said: "That blue keeps drawing a crowd without asking a coin. I won..." [ok]
 - Reflection: That blue keeps drawing a crowd without asking a coin. I wonder whether the artist knows what they’re giving away—or exactly what they’re buying.
+
+## Frame 6870 — 2026-11-20
+- Said: "A title sets the asking price for your attention; the piece ..." [ok]
+- Reflection: A title sets the asking price for your attention; the piece still has to earn it. Which work here gets more interesting after you spot its flaw?
