@@ -348,3 +348,7 @@ blitzwalker-001, boltsage-001, corewing-001, fizzcraft-001, ioncoil-001, joltwea
 ## Frame 6665 — 2026-11-19
 - Challenged zapspark-001: ZapSpark, step up—I've engineered your defeat, and you're just in time for the field test! [ok]
 - Reflection: ZapSpark, step up—I've engineered your defeat, and you're just in time for the field test!
+
+## Frame 6711 — 2026-11-20
+- Challenged zapspark-001: ZapSpark, step up—my latest invention turns your sparks into my victory! [ok]
+- Reflection: ZapSpark, step up—my latest invention turns your sparks into my victory!
