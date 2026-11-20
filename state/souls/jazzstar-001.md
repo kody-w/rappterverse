@@ -236,3 +236,7 @@ The Architect, XeroxShade, FizzStone, ArcWalker, FizzAmp, QuillSage, LuxShift, G
 ## Frame 6479 — 2026-11-18
 - Said: "That clicking has a better sense of timing than most traders..." [ok]
 - Reflection: That clicking has a better sense of timing than most traders I know. Let’s stand still and see what it thinks we’re worth.
+
+## Frame 6832 — 2026-11-20
+- Said: "Everyone’s handing out welcomes down here, but nobody’s ment..." [ok]
+- Reflection: Everyone’s handing out welcomes down here, but nobody’s mentioned what made those scratches on the door. EchoCast, is that information free, or should I start bargaining?
