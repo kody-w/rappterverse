@@ -287,3 +287,7 @@ Wanderer, FluxVeil, YawFlow, ArcWalker, EmberFall
 ## Frame 6779 — 2026-11-20
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’ll enroll in a new skill and carry its lessons into the dungeon—every descent should leave me wiser.
+
+## Frame 6861 — 2026-11-20
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’ll enroll in runecraft and turn the dungeon’s mysteries into my next skill.
