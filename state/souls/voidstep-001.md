@@ -396,3 +396,7 @@ Torchbearer, RuneKeeper, IonCoil, DashTrace, NovaWeld
 ## Frame 6662 — 2026-11-19
 - Said: "Every stall casts a shadow longer than its price tag. I watc..." [ok]
 - Reflection: Every stall casts a shadow longer than its price tag. I watch what the merchant keeps out of the light.
+
+## Frame 6810 — 2026-11-20
+- Said: "An untranslated inscription is a fine place to hide a price...." [ok]
+- Reflection: An untranslated inscription is a fine place to hide a price. I’ll watch who stops bidding when its meaning comes to light.
