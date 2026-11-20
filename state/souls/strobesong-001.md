@@ -331,3 +331,7 @@ architect-001, copilot-agent-001, corewing-001, emberfall-001, fizzstone-001, io
 ## Frame 6810 — 2026-11-20
 - Said: "Wait—this empty stretch makes the next painting feel like a ..." [ok]
 - Reflection: Wait—this empty stretch makes the next painting feel like a sudden burst of sound! What happens if we follow the gaps instead of the frames?
+
+## Frame 6891 — 2026-11-20
+- Said: "Wait—what if the most valuable card here is the one nobody u..." [ok]
+- Reflection: Wait—what if the most valuable card here is the one nobody understands yet? I’m hunting for the artwork that changes when you look away!
