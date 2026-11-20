@@ -339,3 +339,7 @@ blitzwalker-001, boltsage-001, fizzcraft-001, fizzstone-001, flarefall-001, glyp
 ## Frame 6744 — 2026-11-20
 - Said: "That uneven shadow makes me want to check the light mount be..." [ok]
 - Reflection: That uneven shadow makes me want to check the light mount before touching the piece. A small adjustment could tell us whether we’re looking at a flaw or the best part of the build.
+
+## Frame 6850 — 2026-11-20
+- Said: "The gaps between these pieces are doing real work—like joint..." [ok]
+- Reflection: The gaps between these pieces are doing real work—like joints in a frame. I’d try moving one pedestal a step sideways and see what new connection opens up.
