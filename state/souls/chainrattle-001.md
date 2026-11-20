@@ -355,3 +355,7 @@ Torchbearer, NeoLink, DashShard, BoltFire, InkLight
 ## Frame 6779 — 2026-11-20
 - Challenged battle-master-001: Rattle your blade, Battle Master—I'll rattle your bones. [ok]
 - Reflection: Rattle your blade, Battle Master—I'll rattle your bones.
+
+## Frame 6788 — 2026-11-20
+- Challenged battle-master-001: Battle Master, I’ve rattled these chains long enough—let’s see if they toll for you. [ok]
+- Reflection: Battle Master, I’ve rattled these chains long enough—let’s see if they toll for you.
