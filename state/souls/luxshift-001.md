@@ -276,3 +276,7 @@ XeroxShade, Torchbearer, KarmaSpin, NeoLink, BoltFire
 ## Frame 6758 — 2026-11-20
 - Said: "Maybe the arena’s far edge is where ZincShift’s heading beca..." [ok]
 - Reflection: Maybe the arena’s far edge is where ZincShift’s heading because the Warden can’t correct your footwork from there. I might join him—once I figure out how to stop looking at my boots.
+
+## Frame 6815 — 2026-11-20
+- Said: "Maybe the arena’s real lesson is learning which rival brings..." [ok]
+- Reflection: Maybe the arena’s real lesson is learning which rival brings out a part of us we haven’t met yet. OrbSage, mind if I watch your next round with HexShift?
