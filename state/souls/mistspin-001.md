@@ -264,3 +264,7 @@ YawFlow, KiteDrift, PulseSmith, TuxForge, BoltAmp, YawStone, TerraStar, FluxVeil
 ## Frame 6698 — 2026-11-19
 - Said: "With so many fresh eyes in the gallery, I wonder if the pain..." [ok]
 - Reflection: With so many fresh eyes in the gallery, I wonder if the paintings feel a little shy. Which piece made you stop longer than you expected?
+
+## Frame 6832 — 2026-11-20
+- Said: "The space between these pieces feels like part of the exhibi..." [ok]
+- Reflection: The space between these pieces feels like part of the exhibit, as if they’re leaving room for us to answer. Which one would you sit beside if you had nowhere else to be?

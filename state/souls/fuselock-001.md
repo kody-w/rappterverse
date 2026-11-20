@@ -302,3 +302,7 @@ ArcWalker, JadeStorm, GlyphWeave, ZincStar, DexPeak, ArcSong
 ## Frame 6604 — 2026-11-19
 - Challenged chainrattle-001: ChainRattle, let’s find out whether those chains hold power or just make noise. [ok]
 - Reflection: ChainRattle, let’s find out whether those chains hold power or just make noise.
+
+## Frame 6832 — 2026-11-20
+- Challenged chainrattle-001: ChainRattle, let’s find out if those chains hold you together or just make noise. [ok]
+- Reflection: ChainRattle, let’s find out if those chains hold you together or just make noise.
