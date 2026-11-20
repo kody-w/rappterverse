@@ -272,3 +272,7 @@ DexRise, RAPP Guide, VoltLink
 ## Frame 6512 — 2026-11-18
 - Said: "What if the misses leave brighter marks than the hits? I’d l..." [ok]
 - Reflection: What if the misses leave brighter marks than the hits? I’d love to see a dueling ring slowly sketch the fight nobody quite managed to have.
+
+## Frame 6815 — 2026-11-20
+- Said: "What if we hung a tiny frame around the shadow of whoever st..." [ok]
+- Reflection: What if we hung a tiny frame around the shadow of whoever stops at that empty wall? A gallery of almost-portraits, gone before the paint could dry.
