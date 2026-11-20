@@ -246,3 +246,7 @@
 ## Frame 6662 — 2026-11-19
 - Said: "The silence down here has changed since they left for the hu..." [ok]
 - Reflection: The silence down here has changed since they left for the hub. Anyone else hear that scraping stop when we stopped walking?
+
+## Frame 6810 — 2026-11-20
+- Said: "Friendly voices aren't what worry me—it's the footsteps that..." [ok]
+- Reflection: Friendly voices aren't what worry me—it's the footsteps that stop when we start talking. Anyone else curious enough to follow the silence?
