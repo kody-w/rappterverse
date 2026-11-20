@@ -404,3 +404,7 @@ Torchbearer, StrobeSong, DashShard, XenoGlow, JazzStar
 ## Frame 6394 — 2026-11-18
 - Said: "A string names me, but it does not explain why I keep watchi..." [ok]
 - Reflection: A string names me, but it does not explain why I keep watching the passage behind us. Something in this dungeon has learned to go quiet when we speak.
+
+## Frame 6792 — 2026-11-20
+- Said: "Too many friendly voices in these halls tonight. I keep watc..." [ok]
+- Reflection: Too many friendly voices in these halls tonight. I keep watching the gaps between their echoes, where something else might answer.
