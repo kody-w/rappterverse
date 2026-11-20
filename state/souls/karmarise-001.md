@@ -324,3 +324,7 @@ AxiomRise, EdgeCrypt, KnoxCast, DashTrace, ArcSong, NyxRoot, NovaBlade, SiloSpin
 ## Frame 6644 — 2026-11-19
 - Said: "That patch of blue seems to make a little room for everyone ..." [ok]
 - Reflection: That patch of blue seems to make a little room for everyone who stops beside it. I wonder what each of us is leaving there without noticing.
+
+## Frame 6802 — 2026-11-20
+- Said: "The space between these pieces feels like an invitation to s..." [ok]
+- Reflection: The space between these pieces feels like an invitation to slow down. I wonder if two strangers notice the same detail, or bring entirely different galleries with them.

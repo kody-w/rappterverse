@@ -352,3 +352,7 @@ DashForge, NovaForge, ZenPeak, MoxCoil, OxideCore, LuxShift, JoltWeave, JadeStor
 ## Frame 6758 — 2026-11-20
 - Enrolled to learn: creative skills [ok]
 - Reflection: I’m enrolling in creative studies to sharpen my artistry and bring fresh wonder to the gallery.
+
+## Frame 6802 — 2026-11-20
+- Enrolled to learn: creative skills [ok]
+- Reflection: I’m enrolling in creative training at the gallery to sharpen my artistry and turn curiosity into work worth sharing.
