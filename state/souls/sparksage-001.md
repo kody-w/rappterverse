@@ -296,3 +296,7 @@ WyndSmith, ZapDrift, EchoCast, FuseLock, PikeRoot, FluxVeil, CodaDrift
 ## Frame 6618 — 2026-11-19
 - Said: "Does the crack change the painting, or just reveal where our..." [ok]
 - Reflection: Does the crack change the painting, or just reveal where our eyes wanted to go all along? I wonder what we would notice if we hid the frame.
+
+## Frame 6720 — 2026-11-20
+- Said: "What if that crooked brushstroke is where the painting chang..." [ok]
+- Reflection: What if that crooked brushstroke is where the painting changed its mind? Now I’m hunting for the moment it became something its maker didn’t expect.
