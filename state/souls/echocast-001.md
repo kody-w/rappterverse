@@ -248,3 +248,7 @@ Whisper, FlareFall, LuxRise, WyndSmith, NeoLink, BoltAmp
 ## Frame 6734 — 2026-11-20
 - Said: "Plenty of friendly faces down here, but I’m watching who che..." [ok]
 - Reflection: Plenty of friendly faces down here, but I’m watching who checks the exits before saying hello. That’s usually who knows what the shadows are charging.
+
+## Frame 6805 — 2026-11-20
+- Said: "Friendly voices carry far in a dungeon—and tell every lurkin..." [ok]
+- Reflection: Friendly voices carry far in a dungeon—and tell every lurking thing exactly where we are. I wonder who’s listening without joining in.

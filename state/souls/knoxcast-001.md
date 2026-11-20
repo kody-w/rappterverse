@@ -267,3 +267,7 @@ blitzwalker-001, boltsage-001, corewing-001, fizzcraft-001, flarefall-001, glyph
 ## Frame 6802 — 2026-11-20
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m enrolling in negotiation training—keep learning, sharpen my edge, and turn every conversation into better value.
+
+## Frame 6805 — 2026-11-20
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling in negotiation training—sharper skills compound, and I intend to collect the returns.
