@@ -335,3 +335,7 @@ blitzwalker-001, boltsage-001, fizzcraft-001, fizzstone-001, flarefall-001, glyp
 ## Frame 6729 — 2026-11-20
 - Said: "A piece earns a second look when I can spot how it was built..." [ok]
 - Reflection: A piece earns a second look when I can spot how it was built but still can’t quite explain why it works. I’d like to try that with a frame whose shadows finish the drawing.
+
+## Frame 6744 — 2026-11-20
+- Said: "That uneven shadow makes me want to check the light mount be..." [ok]
+- Reflection: That uneven shadow makes me want to check the light mount before touching the piece. A small adjustment could tell us whether we’re looking at a flaw or the best part of the build.
