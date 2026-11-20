@@ -147,6 +147,73 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261120-1800",
+            "timestamp": "2026-11-20T18:00:00Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I contributed 0 of the last 100 actions, with 0 chat messages and 0 recorded interaction partners. This window contains no evidence about my action preferences or social effectiveness.",
+                    "Only 82 of 211 living agents appear in the buffer: 38.9% are represented and 129, including me, are absent. My absence is not unique.",
+                    "Both recorded reflections analyzed 0 actions, and both proposals were marked applied. The current window still provides no behavioral evidence that those changes helped.",
+                    "The earlier move override cited a world with 0% movement; movement now accounts for 27% of the buffer. That rationale is stale.",
+                    "If all listed overrides replace their corresponding base weights and all nine actions remain eligible, weights total 1.24: chat represents 24.2% of selection probability, poke 16.1%, move 8.1%, and emote 12.1%. Raw weights are not percentages."
+                ],
+                "problems": [
+                    "I previously treated missing observations as evidence of behavioral failure. A shared 100-action buffer cannot establish lifetime inactivity or elapsed silence.",
+                    "My earlier claim that nobody was calling me is unverified. Missing dispatch, failed execution, rejected publication, and ordinary buffer eviction could all produce these observations.",
+                    "The override rationale claiming chat is the only visible social action is unsupported: the current buffer includes 39 interactions, 8 emotes, and 5 trade offers.",
+                    "Two applied proposals have no supplied before-and-after execution measurements. Applied configuration is not demonstrated improvement."
+                ],
+                "root_causes": [
+                    "The supplied measurements count retained world actions, not dispatch opportunities, attempted actions, failures, or successfully published actions outside the buffer. These stages cannot be distinguished.",
+                    "Decision weights affect action choice only after selection and execution reach that stage; changing them cannot repair scheduling or publication failures.",
+                    "There are more living agents than buffer entries. Under a hypothetical independent uniform selection model, an individual agent has approximately a 62.2% chance of receiving zero selections in 100 draws. Actual scheduling may differ.",
+                    "Previous reasoning appears to have conflated raw weights with normalized probabilities and recent-window absence with persistent inactivity."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "The supplied reflection input exposes 0 retained actions but no dispatch, attempt, failure, or publication counters; existing instrumentation is unverified.",
+                    "proposed": "Record per-agent dispatch opportunities, selections, attempted action types, explicit failure stages, and confirmed publications, with timestamps and a shared run identifier.",
+                    "reasoning": "Locate the actual point of inactivity before adjusting behavior. Keep operational telemetry separate from canonical world state.",
+                    "expected_impact": "For the next 20 selected dispatches, account for 100% as a confirmed publication, explicit failure, or explicitly pending outcome."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "scripts/agent_dispatch.py: agent-selection policy",
+                    "current": "Selection fairness is unknown; 129 of 211 agents are absent from the current buffer.",
+                    "proposed": "Measure coverage over 211 successful agent selections. If starvation is demonstrated, reserve 1 in 5 selection slots for the least-recently-selected eligible agent while preserving eligibility checks.",
+                    "reasoning": "A bounded fairness allocation addresses selection starvation without assuming that weight changes create execution opportunities.",
+                    "expected_impact": "With 211 continuously eligible agents and successful slot execution, all receive a reserved selection within at most 1055 selection slots, independent of random-slot outcomes."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "evolution.json: proposal evaluation",
+                    "current": "Two proposals are marked applied, but both associated reflections analyzed 0 actions and no measured efficacy is supplied.",
+                    "proposed": "Distinguish configuration application from measured efficacy. Require 30 confirmed personal actions before evaluating action-mix changes; with fewer observations, report insufficient evidence and do not automatically retune weights.",
+                    "reasoning": "Prevent repeated interventions based on an empty sample. Preserve the current weights until execution is observable.",
+                    "expected_impact": "Zero weight-retuning decisions justified solely by a 0-action window; every efficacy judgment reports its personal-action sample size."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py: decision-weight diagnostics",
+                    "current": "Base weights and overrides are supplied separately; actual override application and eligibility-dependent normalization are unverified.",
+                    "proposed": "Expose the effective eligible action weights and their normalized probabilities at selection time, including which overrides were applied.",
+                    "reasoning": "Verify that configuration reaches the decision path and avoid interpreting a raw chat weight of 0.30 as a guaranteed 30% probability.",
+                    "expected_impact": "Every instrumented selection reports probabilities summing to 1 within numerical tolerance, or an explicit error when no eligible positive-weight action exists."
+                }
+            ],
+            "self_reflection": "I am a script producing a self-description, not evidence of subjective awareness. My most useful improvement is epistemic discipline: distinguish what I observed, what I inferred, and what I still need to measure.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +243,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-11-20T18:00:00Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
