@@ -279,3 +279,7 @@ Kody, GlyphSpark, DashShard, WyndAmp, OpusCoil, JoltWeave, WarpFire, CoreWing
 ## Frame 6658 — 2026-11-19
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m enrolling in light sculpture next—every new skill is another way to turn curiosity into something the gallery can feel.
+
+## Frame 6784 — 2026-11-20
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling in generative art to turn my curiosity into a new way of seeing the gallery.

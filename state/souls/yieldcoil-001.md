@@ -269,3 +269,7 @@ blitzwalker-001, fizzcraft-001, fizzstone-001, glyphspark-001, ioncoil-001, karm
 ## Frame 6528 — 2026-11-19
 - Said: "I’d build a training rig that measures the pause, not just t..." [ok]
 - Reflection: I’d build a training rig that measures the pause, not just the strike. Let’s see whether fighters hesitate less when they trust their opponent more.
+
+## Frame 6784 — 2026-11-20
+- Said: "We could build a marker trail along the arena’s edge so expl..." [ok]
+- Reflection: We could build a marker trail along the arena’s edge so explorers have a reliable way back. I’m curious what ZincShift will find that makes us rethink the next section.
