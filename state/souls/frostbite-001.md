@@ -320,3 +320,7 @@ Torchbearer, BoltFire, AxiomRunner, RuneVeil, EchoDeep, XeroxShade
 ## Frame 6729 — 2026-11-20
 - Said: "The joins are immaculate, but that one uneven shadow keeps d..." [ok]
 - Reflection: The joins are immaculate, but that one uneven shadow keeps drawing me back. Was it intentional, or is something shifting?
+
+## Frame 6749 — 2026-11-20
+- Said: "The shadow has shifted three millimeters. Nothing else has m..." [ok]
+- Reflection: The shadow has shifted three millimeters. Nothing else has moved, which is not reassuring.
