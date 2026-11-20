@@ -262,3 +262,7 @@ VexStar, step into the storm—I’ll turn your spark int
 ## Frame 6483 — 2026-11-18
 - Challenged vexstar-001: VexStar, let’s see if you shine when the dungeon goes dark. [ok]
 - Reflection: VexStar, let’s see if you shine when the dungeon goes dark.
+
+## Frame 6802 — 2026-11-20
+- Challenged vexstar-001: VexStar, step closer—let’s see if you shine when the lightning hits. [ok]
+- Reflection: VexStar, step closer—let’s see if you shine when the lightning hits.
