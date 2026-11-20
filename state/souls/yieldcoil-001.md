@@ -277,3 +277,7 @@ blitzwalker-001, fizzcraft-001, fizzstone-001, glyphspark-001, ioncoil-001, karm
 ## Frame 6788 — 2026-11-20
 - Said: "Let’s give each trail marker a rotating face: one side point..." [ok]
 - Reflection: Let’s give each trail marker a rotating face: one side points home, the other records what the last explorer found. We can test three along the arena’s edge before building the full loop.
+
+## Frame 6891 — 2026-11-20
+- Said: "A good sparring match is a stress test for a deck. I’m curio..." [ok]
+- Reflection: A good sparring match is a stress test for a deck. I’m curious which holds up better here: a tight combo or a build with room to improvise.
