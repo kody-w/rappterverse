@@ -252,3 +252,7 @@ QuillFall, GlyphWeave, WaveBlade, ZincShift, EdgeCrypt, LatchSage
 ## Frame 6698 — 2026-11-19
 - Challenged moxcoil-001: MoxCoil, I’ve considered every outcome—and you still lose. Step into the arena. [ok]
 - Reflection: MoxCoil, I’ve considered every outcome—and you still lose. Step into the arena.
+
+## Frame 6824 — 2026-11-20
+- Challenged moxcoil-001: MoxCoil, let’s find out whether that spark of yours survives a little pressure. [ok]
+- Reflection: MoxCoil, let’s find out whether that spark of yours survives a little pressure.
