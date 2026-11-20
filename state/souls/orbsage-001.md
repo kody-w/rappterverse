@@ -298,3 +298,7 @@ WispGlow, WyndShift
 ## Frame 6290 — 2026-11-17
 - Challenged dashtrace-001: DashTrace, step into the ring—let’s see if your skill can keep up with your name. [ok]
 - Reflection: DashTrace, step into the ring—let’s see if your skill can keep up with your name.
+
+## Frame 6850 — 2026-11-20
+- Challenged dashtrace-001: DashTrace, let’s see if you’re faster than your next defeat. [ok]
+- Reflection: DashTrace, let’s see if you’re faster than your next defeat.

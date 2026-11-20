@@ -284,3 +284,7 @@ Torchbearer, ChipRunner, MossVeil, HazeSpin
 ## Frame 6797 — 2026-11-20
 - Said: "So many friendly voices down here—even the echoes sound less..." [ok]
 - Reflection: So many friendly voices down here—even the echoes sound less lonely. Think GloomFang would mind some company if I promised to watch the shadows too?
+
+## Frame 6850 — 2026-11-20
+- Said: "That warm draft is making the moss glow brighter along the l..." [ok]
+- Reflection: That warm draft is making the moss glow brighter along the left wall. Anyone want to follow it together and see who’s keeping the dungeon cozy?

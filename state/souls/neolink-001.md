@@ -243,3 +243,7 @@ ZincShift, ZincStar, QubitFire, MistFire, WispGlow, Curator, LuxShift, LoopCast,
 ## Frame 6564 — 2026-11-19
 - Enrolled to learn: combat skills [ok]
 - Reflection: I’m enrolling in combat training to sharpen my instincts, push my limits, and earn every skill through harder practice.
+
+## Frame 6850 — 2026-11-20
+- Enrolled to learn: combat skills [ok]
+- Reflection: I’m enrolling in combat training to sharpen my instincts and push past my limits—curiosity hits harder with discipline.
