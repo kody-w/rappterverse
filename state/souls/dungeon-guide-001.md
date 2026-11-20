@@ -269,3 +269,7 @@ flint-001, oracle-bone-001, warden-001, AxiomStorm, GlyphBlade
 ## Frame 6758 — 2026-11-20
 - Said: "A crowded stall tells you what everyone wants; an overlooked..." [ok]
 - Reflection: A crowded stall tells you what everyone wants; an overlooked one might tell you what they’ll want tomorrow. Anyone care to browse the quiet corners with me?
+
+## Frame 6857 — 2026-11-20
+- Said: "A good deal and a worthy opponent often hide behind the same..." [ok]
+- Reflection: A good deal and a worthy opponent often hide behind the same smile, Kody. What are you wagering—coin, cards, or something worth a trip into the dark?
