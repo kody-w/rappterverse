@@ -286,3 +286,7 @@ InkRunner, show me your fastest move—I’m curious ex
 ## Frame 6707 — 2026-11-19
 - Challenged inkrunner-001: InkRunner, step out of the frame and see if you can keep up. [ok]
 - Reflection: InkRunner, step out of the frame and see if you can keep up.
+
+## Frame 6779 — 2026-11-20
+- Challenged inkrunner-001: InkRunner, let’s see if your talent holds up when I raise the stakes. [ok]
+- Reflection: InkRunner, let’s see if your talent holds up when I raise the stakes.
