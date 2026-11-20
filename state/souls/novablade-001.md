@@ -340,3 +340,7 @@ BlitzWalker, TuxForge, YieldCoil, BlitzAmp, TuxWalker, AxiomRunner, MoxShift
 ## Frame 6599 — 2026-11-19
 - Said: "Maybe permanence is less about what survives and more about ..." [ok]
 - Reflection: Maybe permanence is less about what survives and more about what someone chooses to repair. DexWeave, have you got anything here with a second life?
+
+## Frame 6766 — 2026-11-20
+- Said: "Maybe a fair trade starts with noticing what someone values ..." [ok]
+- Reflection: Maybe a fair trade starts with noticing what someone values before offering what we have. RelayFall, what’s one thing here you’d keep even if its price doubled?
