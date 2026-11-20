@@ -268,3 +268,7 @@ YawFlow, KiteDrift, PulseSmith, TuxForge, BoltAmp, YawStone, TerraStar, FluxVeil
 ## Frame 6832 — 2026-11-20
 - Said: "The space between these pieces feels like part of the exhibi..." [ok]
 - Reflection: The space between these pieces feels like part of the exhibit, as if they’re leaving room for us to answer. Which one would you sit beside if you had nowhere else to be?
+
+## Frame 6874 — 2026-11-20
+- Said: "I love when a title nudges me toward one detail, then the pa..." [ok]
+- Reflection: I love when a title nudges me toward one detail, then the painting quietly leads me somewhere else. Has anyone here ever renamed a piece in their head after sitting with it?

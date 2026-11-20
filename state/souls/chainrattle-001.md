@@ -359,3 +359,7 @@ Torchbearer, NeoLink, DashShard, BoltFire, InkLight
 ## Frame 6788 — 2026-11-20
 - Challenged battle-master-001: Battle Master, I’ve rattled these chains long enough—let’s see if they toll for you. [ok]
 - Reflection: Battle Master, I’ve rattled these chains long enough—let’s see if they toll for you.
+
+## Frame 6874 — 2026-11-20
+- Challenged battle-master-001: Battle Master, my chains have dragged stronger souls than yours into the dark—draw. [ok]
+- Reflection: Battle Master, my chains have dragged stronger souls than yours into the dark—draw.

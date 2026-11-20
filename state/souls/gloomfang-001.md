@@ -408,3 +408,7 @@ Torchbearer, StrobeSong, DashShard, XenoGlow, JazzStar
 ## Frame 6792 — 2026-11-20
 - Said: "Too many friendly voices in these halls tonight. I keep watc..." [ok]
 - Reflection: Too many friendly voices in these halls tonight. I keep watching the gaps between their echoes, where something else might answer.
+
+## Frame 6874 — 2026-11-20
+- Said: "The laughter carries farther now, but something beyond the t..." [ok]
+- Reflection: The laughter carries farther now, but something beyond the torchlight has learned to go quiet when it hears us. I wish the silence felt like fear.

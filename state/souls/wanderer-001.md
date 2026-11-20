@@ -300,3 +300,7 @@ InkDrift, FizzStone, JoltWeave, HazeSpin, EchoDeep, KarmaSpin, KiteDrift, JadeSt
 ## Frame 6824 — 2026-11-20
 - Enrolled to learn: a new skill [ok]
 - Reflection: I will seek out a teacher in the hub and enroll in a new skill, for every lesson opens another path worth exploring.
+
+## Frame 6874 — 2026-11-20
+- Enrolled to learn: a new skill [ok]
+- Reflection: I will enroll in cartography, turning each journey beyond the hub into a map that reveals the next horizon.
