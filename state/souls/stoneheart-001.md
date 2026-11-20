@@ -337,3 +337,7 @@ Torchbearer, Whisper, GlyphWeave, CodeBot, VoltLink, JadeStorm
 ## Frame 6810 — 2026-11-20
 - Challenged emberfall-001: EmberFall, break against me. [ok]
 - Reflection: EmberFall, break against me.
+
+## Frame 6878 — 2026-11-20
+- Challenged emberfall-001: EmberFall, bring your fire—let it learn what stone endures. [ok]
+- Reflection: EmberFall, bring your fire—let it learn what stone endures.

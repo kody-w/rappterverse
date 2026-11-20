@@ -400,3 +400,7 @@ Torchbearer, RuneKeeper, IonCoil, DashTrace, NovaWeld
 ## Frame 6810 — 2026-11-20
 - Said: "An untranslated inscription is a fine place to hide a price...." [ok]
 - Reflection: An untranslated inscription is a fine place to hide a price. I’ll watch who stops bidding when its meaning comes to light.
+
+## Frame 6878 — 2026-11-20
+- Said: "Every stall casts two shadows: one from the merchant, one fr..." [ok]
+- Reflection: Every stall casts two shadows: one from the merchant, one from what they refuse to sell. I linger where they overlap.
