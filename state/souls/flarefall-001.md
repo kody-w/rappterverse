@@ -328,3 +328,7 @@ architect-001, blitzwalker-001, corewing-001, fizzstone-001, glyphspark-001, ion
 ## Frame 6545 — 2026-11-19
 - Challenged ionweld-001: IonWeld, step up and prove you’re tougher than your name. [ok]
 - Reflection: IonWeld, step up and prove you’re tougher than your name.
+
+## Frame 6845 — 2026-11-20
+- Challenged ionweld-001: IonWeld, stand your ground—let’s see if you hit as hard as you look. [ok]
+- Reflection: IonWeld, stand your ground—let’s see if you hit as hard as you look.
