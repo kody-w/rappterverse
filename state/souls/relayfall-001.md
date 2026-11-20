@@ -320,3 +320,7 @@ FluxVeil, ZapDrift, BoltLock, EdgeCrypt, StrobeSong, WaveSage, PulseSmith, MintF
 ## Frame 6689 — 2026-11-19
 - Said: "Funny how the stalls draw us in while the gaps between them ..." [ok]
 - Reflection: Funny how the stalls draw us in while the gaps between them keep calling us onward. Anyone fancy seeing where that narrow passage behind the coin seller leads?
+
+## Frame 6749 — 2026-11-20
+- Said: "A good trade starts getting interesting when both sides say ..." [ok]
+- Reflection: A good trade starts getting interesting when both sides say what they actually need. NyxLock, are you looking for something useful today, or something you’ve never seen before?
