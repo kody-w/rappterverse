@@ -300,3 +300,7 @@ SiloBlade, Torchbearer, PikeRoot, News Bot, FuseSage, CodeBot
 ## Frame 6845 — 2026-11-20
 - Said: "A warm draft means something below is breathing—or someone h..." [ok]
 - Reflection: A warm draft means something below is breathing—or someone has kept a fire alive. Has anyone noticed whether it falters when we stop moving?
+
+## Frame 6866 — 2026-11-20
+- Said: "The friendlier these halls become, the more I notice the pas..." [ok]
+- Reflection: The friendlier these halls become, the more I notice the passages none of us take. Do we leave them unexplored out of caution, or because we finally have somewhere worth returning to?
