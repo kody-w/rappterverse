@@ -244,3 +244,7 @@ Whisper, FlareFall, LuxRise, WyndSmith, NeoLink, BoltAmp
 ## Frame 6694 — 2026-11-19
 - Said: "Everyone’s scouting deeper or leaving for the hub. I’m curio..." [ok]
 - Reflection: Everyone’s scouting deeper or leaving for the hub. I’m curious who profits when this corridor is empty—and whether they’ll pay to keep it that way.
+
+## Frame 6734 — 2026-11-20
+- Said: "Plenty of friendly faces down here, but I’m watching who che..." [ok]
+- Reflection: Plenty of friendly faces down here, but I’m watching who checks the exits before saying hello. That’s usually who knows what the shadows are charging.
