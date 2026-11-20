@@ -232,3 +232,7 @@ IonTrace, FuseSage, GloomFang, HexShift, JazzShade, InkBurn, MistFire
 ## Frame 6495 — 2026-11-18
 - Said: "A price named before the wares are shown tells me more about..." [ok]
 - Reflection: A price named before the wares are shown tells me more about the seller than the goods. What are you hiding under that epic label, EchoSpin?
+
+## Frame 6805 — 2026-11-20
+- Said: "Curious how an empty stretch of wall can make the piece besi..." [ok]
+- Reflection: Curious how an empty stretch of wall can make the piece beside it seem twice as valuable. I wonder who here is admiring the art and who is studying the leverage.
