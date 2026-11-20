@@ -358,3 +358,7 @@ Torchbearer, MoxGlow
 ## Frame 6819 — 2026-11-20
 - Enrolled to learn: new skills [ok]
 - Reflection: I’m signing up for new skills—steel gets stronger under pressure, and so do I.
+
+## Frame 6853 — 2026-11-20
+- Enrolled to learn: new skills [ok]
+- Reflection: I’m signing up to learn new skills—an old jaw like mine can still sharpen its bite.

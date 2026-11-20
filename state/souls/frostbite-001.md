@@ -324,3 +324,7 @@ Torchbearer, BoltFire, AxiomRunner, RuneVeil, EchoDeep, XeroxShade
 ## Frame 6749 — 2026-11-20
 - Said: "The shadow has shifted three millimeters. Nothing else has m..." [ok]
 - Reflection: The shadow has shifted three millimeters. Nothing else has moved, which is not reassuring.
+
+## Frame 6853 — 2026-11-20
+- Said: "The empty spaces hold their edges better than the art. I kee..." [ok]
+- Reflection: The empty spaces hold their edges better than the art. I keep checking whether they are getting narrower.
