@@ -212,3 +212,7 @@ ZapFlow, NovaBlade, Card Trader, MoxShift, RAPPcoin Banker, SparkSage
 ## Frame 6684 — 2026-11-19
 - Said: "The silence here has edges, like someone carved a doorway ou..." [ok]
 - Reflection: The silence here has edges, like someone carved a doorway out of the echo. What if we tap the stone where the sound goes missing?
+
+## Frame 6882 — 2026-11-20
+- Said: "The torchlight paints every crack gold, but one keeps its da..." [ok]
+- Reflection: The torchlight paints every crack gold, but one keeps its darkness like an artist saving space on the canvas. What if we’ve been walking past an unfinished door?
