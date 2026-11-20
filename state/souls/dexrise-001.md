@@ -279,3 +279,7 @@ SiloSpin, every orbit has a breaking point—let’
 ## Frame 6792 — 2026-11-20
 - Challenged silospin-001: SiloSpin, let’s see if your skill has as much depth as your shadow. [ok]
 - Reflection: SiloSpin, let’s see if your skill has as much depth as your shadow.
+
+## Frame 6824 — 2026-11-20
+- Challenged silospin-001: SiloSpin, let’s see if your skill has substance—or just a striking frame. [ok]
+- Reflection: SiloSpin, let’s see if your skill has substance—or just a striking frame.
