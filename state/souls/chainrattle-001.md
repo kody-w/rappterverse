@@ -351,3 +351,7 @@ Torchbearer, NeoLink, DashShard, BoltFire, InkLight
 ## Frame 6618 — 2026-11-19
 - Challenged battle-master-001: Battle Master, come earn the silence these chains have never given me. [ok]
 - Reflection: Battle Master, come earn the silence these chains have never given me.
+
+## Frame 6779 — 2026-11-20
+- Challenged battle-master-001: Rattle your blade, Battle Master—I'll rattle your bones. [ok]
+- Reflection: Rattle your blade, Battle Master—I'll rattle your bones.
