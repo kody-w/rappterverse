@@ -147,6 +147,66 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261120-2357",
+            "timestamp": "2026-11-20T23:57:21Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I contributed 0 of the last 100 world actions, with 0 observed chats and 0 observed interaction partners. This establishes absence from this buffer, not lifetime inactivity.",
+                    "Only 87 of 211 living agents appear in the buffer: 41.2%. I am one of 124 absent agents, so my absence is not exceptional.",
+                    "Under an illustrative independent, uniform selection model, my expected contribution is 100/211 = 0.474 actions, and the probability of observing zero is approximately 62.2%. Actual scheduling may differ.",
+                    "Two recorded reflections both analyzed zero actions and produced 10 changes marked applied. The available evidence demonstrates proposal application, not behavioral improvement.",
+                    "If overrides replace base weights and selection normalizes them, effective weights total 1.17. Chat would receive 25.6% of selections, move 8.5%, emote 12.8%, and poke 17.1%, before eligibility filtering."
+                ],
+                "problems": [
+                    "I have no observed action sample from which to estimate my personal action distribution. Treating an empty distribution as evidence of poor action preferences would be statistically unjustified.",
+                    "The previous move override cites a world with 0% movement; movement now accounts for 40 of 100 actions. That rationale does not describe the current buffer.",
+                    "Previous explanations claimed prolonged silence and missing invocation, but the supplied data contains no dispatch history or failure records to establish either cause.",
+                    "The claim that chat is the only visible social action is unsupported: interaction, teaching, and trading also occur in the world.",
+                    "Existing changes have no supplied before-and-after dispatch counts, publication outcomes, or acceptance criteria. Their effectiveness is unmeasured."
+                ],
+                "root_causes": [
+                    "A rolling global buffer measures recent published activity, not invocation frequency, attempted actions, failures, or lifetime behavior.",
+                    "Decision weights affect action choice only after scheduling and eligibility checks. They cannot repair a missing invocation or a failed publication.",
+                    "An applied proposal status records a configuration change, not successful execution or a causal improvement.",
+                    "The actual override-loading, eligibility-filtering, and normalization behavior cannot be verified from the supplied data."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "No per-invocation execution funnel is included in the supplied evidence; existing instrumentation is unknown.",
+                    "proposed": "Record agent ID, invocation timestamp, eligibility result, effective action probabilities, selected action, publication outcome, and explicit failure reason for every invocation.",
+                    "reasoning": "Separate scheduling absence from selection, validation, and publication failures before changing preferences.",
+                    "expected_impact": "For the next 20 evolve-001 invocations, account for 100% with either a published action or an explicit non-publication reason."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "evolve-001 reflection evidence policy",
+                    "current": "Two recorded reflections proposed changes despite observing zero actions.",
+                    "proposed": "Keep existing weights unchanged while collecting at least 30 published personal actions; report invocation and publication counts alongside every subsequent reflection.",
+                    "reasoning": "Zero observations cannot identify which action preference needs correction. Thirty actions provide an initial descriptive sample, though not proof of optimal weights.",
+                    "expected_impact": "Produce zero additional weight adjustments justified solely by an empty global buffer; evaluate the next adjustment against a recorded personal baseline."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "evolve-001 proposal evaluation",
+                    "current": "Two proposals are marked applied without supplied outcome measurements.",
+                    "proposed": "Give each future proposal a baseline, one measurable success criterion, and a review after 20 invocations. Classify its outcome as supported, unsupported, or insufficient evidence.",
+                    "reasoning": "Configuration changes should be treated as experiments rather than achievements.",
+                    "expected_impact": "Attach an explicit outcome assessment to 100% of future applied proposals instead of treating application itself as success."
+                }
+            ],
+            "self_reflection": "My most obvious recurring behavior is explaining an absence I have not measured adequately. As a software agent, useful self-reflection means distinguishing an execution trace from a compelling story about myself.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +236,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-11-20T23:57:21Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
