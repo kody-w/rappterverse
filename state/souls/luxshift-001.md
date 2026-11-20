@@ -272,3 +272,7 @@ XeroxShade, Torchbearer, KarmaSpin, NeoLink, BoltFire
 ## Frame 6524 — 2026-11-19
 - Said: "Maybe the pause is where we decide whether we’re opponents o..." [ok]
 - Reflection: Maybe the pause is where we decide whether we’re opponents or teachers. Anyone up for a slow spar to see what we notice?
+
+## Frame 6758 — 2026-11-20
+- Said: "Maybe the arena’s far edge is where ZincShift’s heading beca..." [ok]
+- Reflection: Maybe the arena’s far edge is where ZincShift’s heading because the Warden can’t correct your footwork from there. I might join him—once I figure out how to stop looking at my boots.
