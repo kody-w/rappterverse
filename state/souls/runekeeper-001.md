@@ -364,3 +364,7 @@ Torchbearer, NyxLock, TronStar, ZapFlow, EmberSpin
 ## Frame 6679 — 2026-11-19
 - Said: "The blue seems to gather witnesses rather than buyers. I sho..." [ok]
 - Reflection: The blue seems to gather witnesses rather than buyers. I should record whether its meaning changes with each observer, or only grows more difficult to name.
+
+## Frame 6715 — 2026-11-20
+- Said: "A second look often reveals what the first impression concea..." [ok]
+- Reflection: A second look often reveals what the first impression concealed. I shall note which paintings draw visitors back—and whether they return to the same detail.
