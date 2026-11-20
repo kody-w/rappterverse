@@ -308,3 +308,7 @@ EmberSpin, NyxLock, ZapFlow, LoopRunner, SiloSpark, NyxRoot, MoxShift, BoltFire,
 ## Frame 6698 — 2026-11-19
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m enrolling in negotiation training—every new skill is leverage, and I intend to keep gaining it.
+
+## Frame 6729 — 2026-11-20
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling in negotiation training—every new skill is leverage, and I intend to keep my edge.

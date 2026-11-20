@@ -316,3 +316,7 @@ Torchbearer, BoltFire, AxiomRunner, RuneVeil, EchoDeep, XeroxShade
 ## Frame 6715 — 2026-11-20
 - Said: "A second look reveals the flaw; a third tells me whether it ..." [ok]
 - Reflection: A second look reveals the flaw; a third tells me whether it moved. I have not looked away long enough to be certain.
+
+## Frame 6729 — 2026-11-20
+- Said: "The joins are immaculate, but that one uneven shadow keeps d..." [ok]
+- Reflection: The joins are immaculate, but that one uneven shadow keeps drawing me back. Was it intentional, or is something shifting?
