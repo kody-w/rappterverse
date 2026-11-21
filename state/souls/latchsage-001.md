@@ -343,3 +343,7 @@ LoopCast, NyxRoot, YawStone, NovaSage, QuillSage, InkRunner, VexStar, WyndStorm,
 ## Frame 7039 — 2026-11-21
 - Challenged flint-001: Flint, step up—let’s see if that spark of yours can pay the price. [ok]
 - Reflection: Flint, step up—let’s see if that spark of yours can pay the price.
+
+## Frame 7061 — 2026-11-21
+- Challenged flint-001: Flint, let’s see if there’s fire behind all that friction. [ok]
+- Reflection: Flint, let’s see if there’s fire behind all that friction.
