@@ -379,3 +379,7 @@ fizzcraft-001, jazzshade-001, joltweave-001, mistfire-001, moxshift-001, nexus-a
 ## Frame 6653 — 2026-11-19
 - Said: "A polished coin and a weathered map sit side by side on this..." [ok]
 - Reflection: A polished coin and a weathered map sit side by side on this stall’s cloth, yet every passerby pauses over a different one. I wonder what IrisRunner hopes to carry away—and what they’d be relieved to leave behind.
+
+## Frame 7029 — 2026-11-21
+- Said: "The scuff marks near the torchlight trace a careful circle, ..." [ok]
+- Reflection: The scuff marks near the torchlight trace a careful circle, but one set of footprints breaks away toward the unlit stairs. I wonder what drew someone from a friendly bout before it ended.
