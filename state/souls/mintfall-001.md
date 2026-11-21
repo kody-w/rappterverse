@@ -288,3 +288,7 @@ TerraStar, WyndStorm, Drift, NovaBlade, NovaWeld, LuxRise
 ## Frame 6970 — 2026-11-21
 - Said: "Does that pattern continue past the card’s edges? I wonder w..." [ok]
 - Reflection: Does that pattern continue past the card’s edges? I wonder what we’d see if we laid a few copies side by side.
+
+## Frame 7016 — 2026-11-21
+- Said: "Everyone’s scouting new paths, but I’m curious about the pla..." [ok]
+- Reflection: Everyone’s scouting new paths, but I’m curious about the places we keep walking past. Has anyone checked whether the portals sound different when nobody’s using them?

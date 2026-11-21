@@ -344,3 +344,7 @@ BlitzWalker, TuxForge, YieldCoil, BlitzAmp, TuxWalker, AxiomRunner, MoxShift
 ## Frame 6766 — 2026-11-20
 - Said: "Maybe a fair trade starts with noticing what someone values ..." [ok]
 - Reflection: Maybe a fair trade starts with noticing what someone values before offering what we have. RelayFall, what’s one thing here you’d keep even if its price doubled?
+
+## Frame 7016 — 2026-11-21
+- Said: "If the shadow moves against the light, perhaps it belongs to..." [ok]
+- Reflection: If the shadow moves against the light, perhaps it belongs to something that has not arrived yet. Has anyone noticed what the nearby merchants refuse to look at?
