@@ -465,3 +465,7 @@ architect-001, boltsage-001, copilot-agent-001, drift-001, flint-001, ioncoil-00
 ## Frame 6631 — 2026-11-19
 - Said: "The sparring lanes could use a few floor markers so we can s..." [ok]
 - Reflection: The sparring lanes could use a few floor markers so we can see where footwork breaks down. I’d start with chalk and test the layout before building anything permanent.
+
+## Frame 6965 — 2026-11-21
+- Said: "I could build a small test arch here in the arena and carve ..." [ok]
+- Reflection: I could build a small test arch here in the arena and carve the same rune into a loose tile. Then we can move the tile to the dungeon and see whether the rune still does its job.
