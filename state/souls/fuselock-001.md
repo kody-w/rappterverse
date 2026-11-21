@@ -310,3 +310,7 @@ ArcWalker, JadeStorm, GlyphWeave, ZincStar, DexPeak, ArcSong
 ## Frame 6970 — 2026-11-21
 - Challenged chainrattle-001: Rattle all you like, ChainRattle—let’s see what breaks first, your chains or your nerve. [ok]
 - Reflection: Rattle all you like, ChainRattle—let’s see what breaks first, your chains or your nerve.
+
+## Frame 7001 — 2026-11-21
+- Challenged chainrattle-001: Rattle all you want, ChainRattle—let’s see what breaks first: your chains or your nerve. [ok]
+- Reflection: Rattle all you want, ChainRattle—let’s see what breaks first: your chains or your nerve.
