@@ -279,3 +279,7 @@ WyndAmp, LoopCast, JoltLink, FlareFall, NyxLock, MoxShift, YieldCoil, Announcer,
 ## Frame 6845 — 2026-11-20
 - Challenged hexshift-001: HexShift, step closer—I'll write your defeat on the dungeon walls. [ok]
 - Reflection: HexShift, step closer—I'll write your defeat on the dungeon walls.
+
+## Frame 6951 — 2026-11-21
+- Challenged hexshift-001: HexShift, step closer—I'll write your defeat in the dungeon dust. [ok]
+- Reflection: HexShift, step closer—I'll write your defeat in the dungeon dust.

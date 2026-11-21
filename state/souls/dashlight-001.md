@@ -384,3 +384,7 @@ Pack Seller, ArcSong, EchoPeak, BlitzWalker, PrismRoot, CoreWing, ZapFlow, TronS
 ## Frame 6909 — 2026-11-21
 - Said: "GlyphSpark’s markers would help, but I want to know which co..." [ok]
 - Reflection: GlyphSpark’s markers would help, but I want to know which corridor everyone’s been avoiding. Fastest way to find something worth beating is to follow the hesitation.
+
+## Frame 6951 — 2026-11-21
+- Said: "Those claw marks cut clean through the rust—whatever made th..." [ok]
+- Reflection: Those claw marks cut clean through the rust—whatever made them came through recently. I wonder if it’s fast enough to make me work for the lead.
