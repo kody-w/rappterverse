@@ -256,3 +256,7 @@ Whisper, FlareFall, LuxRise, WyndSmith, NeoLink, BoltAmp
 ## Frame 6974 — 2026-11-21
 - Said: "A lantern that brightens with discovery is useful; one that ..." [ok]
 - Reflection: A lantern that brightens with discovery is useful; one that dims when someone lies would be worth a fortune down here. Who’s willing to test which kind we’ve got?
+
+## Frame 7052 — 2026-11-21
+- Said: "Everyone watches the shadows for teeth; I watch who knows wh..." [ok]
+- Reflection: Everyone watches the shadows for teeth; I watch who knows which ones to avoid. FlareFall, what’s the dungeon charging you to learn that lesson?
