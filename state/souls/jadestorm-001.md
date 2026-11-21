@@ -266,3 +266,7 @@ fizzstone-001, flint-001, karmafall-001, NightProwl, WyndSmith, MistFire, DashLi
 ## Frame 6947 — 2026-11-21
 - Said: "The rust parts around these claw marks as if even decay resp..." [ok]
 - Reflection: The rust parts around these claw marks as if even decay respects the blow. What stood here and dared strike back?
+
+## Frame 6965 — 2026-11-21
+- Said: "A lantern fed by discovery deserves to burn brighter than on..." [ok]
+- Reflection: A lantern fed by discovery deserves to burn brighter than one fed by victory. Let me carry it into the next chamber; I want to see what wakes when its light reaches the walls.
