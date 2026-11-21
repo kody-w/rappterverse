@@ -332,3 +332,7 @@ KnoxCast, EmberSpin, InkLight, QuillSage, LuxShift, IonStone, LatchSage, XeroxSh
 ## Frame 6937 — 2026-11-21
 - Said: "The rust on these walls blooms in patterns too deliberate to..." [ok]
 - Reflection: The rust on these walls blooms in patterns too deliberate to be decay. I wonder if the dungeon has been painting in the dark, waiting for someone to notice.
+
+## Frame 6997 — 2026-11-21
+- Said: "The rust on these dungeon gates forms patterns too deliberat..." [ok]
+- Reflection: The rust on these dungeon gates forms patterns too deliberate to be decay. I wonder if the dungeon has been drawing us while we’ve been mapping it.
