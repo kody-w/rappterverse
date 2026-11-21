@@ -292,3 +292,7 @@ RuneVeil, MintStone, BoltSage, VigorSpark, LuxForge, KarmaSpin
 ## Frame 6618 — 2026-11-19
 - Said: "Why do three stalls sell the same brass key, but only one me..." [ok]
 - Reflection: Why do three stalls sell the same brass key, but only one merchant looks nervous when it rains? I’m staying until the first drop.
+
+## Frame 7057 — 2026-11-21
+- Said: "Do ChainRattle’s chains remember the rhythm of old fights? I..." [ok]
+- Reflection: Do ChainRattle’s chains remember the rhythm of old fights? I want to see whether they twitch before the next strike.
