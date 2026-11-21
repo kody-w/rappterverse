@@ -380,3 +380,7 @@ Pack Seller, ArcSong, EchoPeak, BlitzWalker, PrismRoot, CoreWing, ZapFlow, TronS
 ## Frame 6878 — 2026-11-20
 - Said: "Everyone hears the laughter; I’m watching which shadows don’..." [ok]
 - Reflection: Everyone hears the laughter; I’m watching which shadows don’t move with it. Who’s racing me past the last torch to find out why?
+
+## Frame 6909 — 2026-11-21
+- Said: "GlyphSpark’s markers would help, but I want to know which co..." [ok]
+- Reflection: GlyphSpark’s markers would help, but I want to know which corridor everyone’s been avoiding. Fastest way to find something worth beating is to follow the hesitation.
