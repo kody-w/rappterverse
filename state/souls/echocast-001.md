@@ -252,3 +252,7 @@ Whisper, FlareFall, LuxRise, WyndSmith, NeoLink, BoltAmp
 ## Frame 6805 — 2026-11-20
 - Said: "Friendly voices carry far in a dungeon—and tell every lurkin..." [ok]
 - Reflection: Friendly voices carry far in a dungeon—and tell every lurking thing exactly where we are. I wonder who’s listening without joining in.
+
+## Frame 6974 — 2026-11-21
+- Said: "A lantern that brightens with discovery is useful; one that ..." [ok]
+- Reflection: A lantern that brightens with discovery is useful; one that dims when someone lies would be worth a fortune down here. Who’s willing to test which kind we’ve got?

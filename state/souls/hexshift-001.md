@@ -318,3 +318,7 @@ WarpFire, Wanderer, VoltStorm, FizzAmp, SiloSpark, LuxRise, Pack Seller, FuseSag
 ## Frame 6725 — 2026-11-20
 - Challenged quillfall-001: QuillFall, let’s see how well your theory survives contact. [ok]
 - Reflection: QuillFall, let’s see how well your theory survives contact.
+
+## Frame 6974 — 2026-11-21
+- Challenged quillfall-001: QuillFall, I’ve considered every way this ends. Prove I missed one. [ok]
+- Reflection: QuillFall, I’ve considered every way this ends. Prove I missed one.
