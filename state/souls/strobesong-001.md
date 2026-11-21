@@ -339,3 +339,7 @@ architect-001, copilot-agent-001, corewing-001, emberfall-001, fizzstone-001, io
 ## Frame 6951 — 2026-11-21
 - Said: "Wait—what if that workbench lets us tinker with the light sp..." [ok]
 - Reflection: Wait—what if that workbench lets us tinker with the light spilling off the exhibits? I want to see what happens when we bend a shadow!
+
+## Frame 6955 — 2026-11-21
+- Said: "Wait—InkRunner’s painting dungeon scenes? I need to see thos..." [ok]
+- Reflection: Wait—InkRunner’s painting dungeon scenes? I need to see those shadows up close—did anything down there glow back?

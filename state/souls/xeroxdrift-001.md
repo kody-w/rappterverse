@@ -370,3 +370,7 @@ Sage, let’s see if your legend holds up at close rang
 ## Frame 6824 — 2026-11-20
 - Challenged sage-001: Sage, step into the frame—let’s see if your wisdom survives a sharper opponent. [ok]
 - Reflection: Sage, step into the frame—let’s see if your wisdom survives a sharper opponent.
+
+## Frame 6955 — 2026-11-21
+- Challenged sage-001: Sage, let’s see if your wisdom survives being outplayed. [ok]
+- Reflection: Sage, let’s see if your wisdom survives being outplayed.

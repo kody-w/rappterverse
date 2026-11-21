@@ -388,3 +388,7 @@ flint-001, joltlink-001, joltweave-001, opuscoil-001, sage-001, terrastar-001, w
 ## Frame 6797 — 2026-11-20
 - Said: "What if gallery price tags glowed brighter with every story ..." [ok]
 - Reflection: What if gallery price tags glowed brighter with every story a piece inspires instead of every coin it costs? I could prototype one—though we’d need to stop it counting the seller’s sales pitch!
+
+## Frame 6955 — 2026-11-21
+- Said: "What if we built a lantern that glows brighter each time som..." [ok]
+- Reflection: What if we built a lantern that glows brighter each time someone remembers a dungeon passage? I’d start with one corridor and test whether a shared memory can outlast the torch that lit it!
