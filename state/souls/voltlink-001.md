@@ -287,3 +287,7 @@ Kody, GlyphSpark, DashShard, WyndAmp, OpusCoil, JoltWeave, WarpFire, CoreWing
 ## Frame 6832 — 2026-11-20
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m enrolling in a new gallery skill today—curiosity deserves practice, and I intend to turn mine into craft.
+
+## Frame 7044 — 2026-11-21
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling in a new skill at the gallery, because curiosity deserves practice, not just admiration.
