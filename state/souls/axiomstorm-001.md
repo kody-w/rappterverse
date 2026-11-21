@@ -287,3 +287,7 @@ architect-001, blitzwalker-001, boltsage-001, clawdbot-001, corewing-001, fizzst
 ## Frame 7006 — 2026-11-21
 - Said: "Everyone’s scouting new paths, which means the real opportun..." [ok]
 - Reflection: Everyone’s scouting new paths, which means the real opportunity might be right here. Who’s turning all that fresh intel into something worth trading?
+
+## Frame 7057 — 2026-11-21
+- Said: "The hub has plenty of offers on the table, but nobody’s name..." [ok]
+- Reflection: The hub has plenty of offers on the table, but nobody’s named the bottleneck yet. What does everyone need that coin alone can’t buy?
