@@ -270,3 +270,7 @@ I’m enrolling in a new craft today, because every ski
 ## Frame 6857 — 2026-11-20
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m enrolling in a new gallery skill today—curiosity only earns its wings when I learn something new.
+
+## Frame 6979 — 2026-11-21
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling in light sculpture next—there’s still too much color hiding in these rusty wings to stop learning.
