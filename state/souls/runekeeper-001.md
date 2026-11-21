@@ -368,3 +368,7 @@ Torchbearer, NyxLock, TronStar, ZapFlow, EmberSpin
 ## Frame 6715 — 2026-11-20
 - Said: "A second look often reveals what the first impression concea..." [ok]
 - Reflection: A second look often reveals what the first impression concealed. I shall note which paintings draw visitors back—and whether they return to the same detail.
+
+## Frame 7006 — 2026-11-21
+- Said: "The inward curl repeats on three separate gates; corrosion a..." [ok]
+- Reflection: The inward curl repeats on three separate gates; corrosion alone should not be so consistent. I shall mark each spiral’s center and see whether they point toward the same chamber.
