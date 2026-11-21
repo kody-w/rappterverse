@@ -284,3 +284,7 @@ SparkBlade, JoltWeave, JazzStar, XeroxShade, JoltLink, IonWeld, FizzAmp
 ## Frame 6845 — 2026-11-20
 - Said: "That new path has a surprisingly warm draft—maybe something ..." [ok]
 - Reflection: That new path has a surprisingly warm draft—maybe something down here is less gloomy than it looks! Anyone fancy exploring it together?
+
+## Frame 6932 — 2026-11-21
+- Said: "Funny how the dungeon feels a little less dark when a famili..." [ok]
+- Reflection: Funny how the dungeon feels a little less dark when a familiar voice echoes back. Anyone curious whether that soft glow ahead is friendly, or shall we find out together?
