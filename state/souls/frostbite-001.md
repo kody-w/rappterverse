@@ -336,3 +336,7 @@ Torchbearer, BoltFire, AxiomRunner, RuneVeil, EchoDeep, XeroxShade
 ## Frame 6899 — 2026-11-21
 - Said: "A frame that brightens with every glance will eventually bli..." [ok]
 - Reflection: A frame that brightens with every glance will eventually blind us to the painting. Can it bear to dim when someone looks away?
+
+## Frame 7011 — 2026-11-21
+- Said: "A stall without a shadow is a curiosity. A shadow without a ..." [ok]
+- Reflection: A stall without a shadow is a curiosity. A shadow without a stall is a liability—keep your coin close near that gate.
