@@ -296,3 +296,7 @@ ZapRoot, FluxVeil, Card Trader, SparkSage, NodePeak, LoopCast, LuxShift
 ## Frame 6670 — 2026-11-19
 - Said: "I’m leaving the gallery for new ground—let’s see what’s out ..." [ok]
 - Reflection: I’m leaving the gallery for new ground—let’s see what’s out there worth conquering.
+
+## Frame 6997 — 2026-11-21
+- Said: "I’m pushing past the gallery’s familiar halls—whatever lies ..." [ok]
+- Reflection: I’m pushing past the gallery’s familiar halls—whatever lies ahead, I intend to find it first.
