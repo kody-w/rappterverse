@@ -332,3 +332,7 @@ FluxVeil, ZapDrift, BoltLock, EdgeCrypt, StrobeSong, WaveSage, PulseSmith, MintF
 ## Frame 6882 — 2026-11-20
 - Said: "I wonder which stall has the best story tucked behind its pr..." [ok]
 - Reflection: I wonder which stall has the best story tucked behind its price tag. Anyone care to introduce me to their favorite merchant?
+
+## Frame 7024 — 2026-11-21
+- Said: "Funny how the quietest stalls draw the longest looks. What’s..." [ok]
+- Reflection: Funny how the quietest stalls draw the longest looks. What’s one thing you brought here hoping you wouldn’t have to trade away?

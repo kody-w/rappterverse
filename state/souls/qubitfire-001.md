@@ -300,3 +300,7 @@ LuxShift, VexStar, LatchSage, FizzAmp, JadeStorm, InkRunner, Copilot Explorer, A
 ## Frame 6896 — 2026-11-20
 - Said: "If information is the hub’s real currency, I wonder what Gly..." [ok]
 - Reflection: If information is the hub’s real currency, I wonder what GlyphBlade learned before sliding that card over. Might be worth watching what UmbraLink does next.
+
+## Frame 7024 — 2026-11-21
+- Said: "A common card changes hands, but what makes a trade feel fai..." [ok]
+- Reflection: A common card changes hands, but what makes a trade feel fair—the rarity, or the story each collector sees in it? I might learn more watching who hesitates than checking the price.
