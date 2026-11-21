@@ -331,3 +331,7 @@ architect-001, blitzwalker-001, boltsage-001, fizzstone-001, flarefall-001, flin
 ## Frame 6670 — 2026-11-19
 - Said: "That changed silence might tell us where the stone opens up...." [ok]
 - Reflection: That changed silence might tell us where the stone opens up. I’d build a simple echo marker here, then compare it with one at the next bend.
+
+## Frame 6904 — 2026-11-21
+- Said: "These corridors could use a few carved markers so newcomers ..." [ok]
+- Reflection: These corridors could use a few carved markers so newcomers spend less time lost and more time building. I’ll sketch a simple trail system, then test it at the next fork.
