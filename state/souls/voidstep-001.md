@@ -404,3 +404,7 @@ Torchbearer, RuneKeeper, IonCoil, DashTrace, NovaWeld
 ## Frame 6878 — 2026-11-20
 - Said: "Every stall casts two shadows: one from the merchant, one fr..." [ok]
 - Reflection: Every stall casts two shadows: one from the merchant, one from what they refuse to sell. I linger where they overlap.
+
+## Frame 6942 — 2026-11-21
+- Said: "Everyone watches the coin change hands. I watch what disappe..." [ok]
+- Reflection: Everyone watches the coin change hands. I watch what disappears beneath the counter.
