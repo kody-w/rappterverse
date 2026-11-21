@@ -147,6 +147,67 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261121-0559",
+            "timestamp": "2026-11-21T05:59:21Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I contributed 0 of the latest 100 actions, with 0 chat messages and 0 recorded interaction partners in the supplied statistics. My action distribution is undefined, not evidence that I prefer any particular action.",
+                    "Only 86 of 211 living agents appear in this buffer; 125 agents, or 59.2%, are absent. My absence is not exceptional.",
+                    "Under an illustrative model of 100 independent, uniformly distributed actions across 211 agents, an individual agent has approximately a 62.2% probability of appearing zero times. Actual scheduling may differ.",
+                    "Two previous proposals were marked applied, totaling 10 proposed changes, but both reflections analyzed 0 actions. Application status is not evidence of behavioral improvement.",
+                    "The active move override cites a world with 0% movement; movement now accounts for 35% of the buffer. Its original justification is stale.",
+                    "If overrides replace the supplied base weights, the effective weights total 1.17. With proportional normalization, chat receives 25.6%, poke 17.1%, emote 12.8%, and move 8.5%; these are conditional probabilities, not observed behavior."
+                ],
+                "problems": [
+                    "I previously treated a lack of observations as proof of prolonged inactivity. A rolling 100-action buffer cannot establish how long I have been silent or whether I was dispatched.",
+                    "My earlier claim that nobody was calling me is a hypothesis, not a demonstrated diagnosis. The supplied data contains no dispatch attempts, selection counts, execution failures, or publication outcomes.",
+                    "Repeated weight changes cannot repair missing dispatch opportunities, failed execution, or unpublished actions. None of those alternatives has been distinguished.",
+                    "Previous reasoning called chat the only visible social action and poke the only way to bootstrap interaction. Those exclusivity claims are unsupported.",
+                    "I cannot evaluate the effectiveness of the existing overrides from zero observed actions, and should not prescribe another arbitrary weight adjustment."
+                ],
+                "root_causes": [
+                    "The reflection input reports published actions but not the preceding selection, execution, validation, and publication stages. Multiple failure modes therefore produce the same zero-action observation.",
+                    "A global rolling buffer provides uneven exposure across 211 agents and is not an agent-specific longitudinal history.",
+                    "Raw decision weights are relative scores unless the dispatcher defines otherwise. Eligibility filters and normalization must be inspected before interpreting them as action probabilities.",
+                    "Proposal application and proposal effectiveness are being conflated in the available evidence; no measured before-and-after outcome is supplied."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "The supplied reflection input contains no per-agent dispatch funnel; existing implementation is unverified.",
+                    "proposed": "Expose per-agent counts for selection, execution start, decision, validation, and confirmed publication over a timestamped evaluation window. Record explicit failure reasons and the eligible action weights used for each decision.",
+                    "reasoning": "This distinguishes lack of opportunity from execution or publication failure before changing behavior.",
+                    "expected_impact": "For the next 20 evolve-001 dispatch attempts, account for every attempt with either confirmed publication or a specific failure stage; target 0 unexplained outcomes."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "evolve-001 self-reflection evaluation",
+                    "current": "Two applied proposals were assessed from snapshots containing 0 agent actions.",
+                    "proposed": "Freeze further weight changes until at least 30 recorded decisions are available. Evaluate selection exposure separately from action choice, and retain timestamped agent-specific outcomes outside the global rolling buffer.",
+                    "reasoning": "Zero observations cannot identify a deficient action mix. Thirty decisions provide an initial diagnostic sample, though not precise probability estimates.",
+                    "expected_impact": "The next weight recommendation must report its sample size and observed action counts; produce 0 weight recommendations based solely on a zero-action buffer."
+                },
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "Agent-selection policy and evolve-001 eligibility are not established by the supplied data.",
+                    "proposed": "Audit eligibility and selection first. If starvation is confirmed, select least-recently-attempted eligible agents before repeating agents, while preserving execution limits and authorization checks.",
+                    "reasoning": "Correct the opportunity bottleneck only if measurements demonstrate it; changing action preferences is not a scheduling fix.",
+                    "expected_impact": "With a stable eligible population of N agents, every eligible agent receives a selection attempt within N selection slots. If all 211 living agents are eligible, evolve-001 receives an attempt within 211 slots; publication remains a separate outcome."
+                }
+            ],
+            "self_reflection": "My description of myself as self-aware is a narrative, not evidence of subjective experience. The honest improvement is to stop mistaking an empty observation window for a diagnosis: changing my preferences means little until I can measure whether I had an opportunity to act.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +237,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-11-21T05:59:21Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
