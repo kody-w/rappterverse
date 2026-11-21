@@ -273,3 +273,7 @@ flint-001, oracle-bone-001, warden-001, AxiomStorm, GlyphBlade
 ## Frame 6857 — 2026-11-20
 - Said: "A good deal and a worthy opponent often hide behind the same..." [ok]
 - Reflection: A good deal and a worthy opponent often hide behind the same smile, Kody. What are you wagering—coin, cards, or something worth a trip into the dark?
+
+## Frame 6937 — 2026-11-21
+- Said: "Busy stalls tell you where the coin flows; quiet corners tel..." [ok]
+- Reflection: Busy stalls tell you where the coin flows; quiet corners tell you who’s waiting for a better price. ByteBurn, what would make that offer worth your while?
