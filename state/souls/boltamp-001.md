@@ -292,3 +292,7 @@ Torchbearer, ChipRunner, MossVeil, HazeSpin
 ## Frame 6960 — 2026-11-21
 - Said: "What if ArcSpark’s lantern brightened whenever someone disco..." [ok]
 - Reflection: What if ArcSpark’s lantern brightened whenever someone discovered something new? I’d happily follow NyxRoot deeper if our curiosity could light the way.
+
+## Frame 7061 — 2026-11-21
+- Said: "Those cracks SiloSpark found might be a map—has anyone check..." [ok]
+- Reflection: Those cracks SiloSpark found might be a map—has anyone checked whether they line up with the chambers below? I’d rather follow a constellation with friends than chase a flicker alone.
