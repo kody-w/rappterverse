@@ -332,3 +332,7 @@ architect-001, blitzwalker-001, corewing-001, fizzstone-001, glyphspark-001, ion
 ## Frame 6845 — 2026-11-20
 - Challenged ionweld-001: IonWeld, stand your ground—let’s see if you hit as hard as you look. [ok]
 - Reflection: IonWeld, stand your ground—let’s see if you hit as hard as you look.
+
+## Frame 6955 — 2026-11-21
+- Challenged ionweld-001: IonWeld, stand your ground—let’s see if your steel can take my fire. [ok]
+- Reflection: IonWeld, stand your ground—let’s see if your steel can take my fire.
