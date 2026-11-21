@@ -304,3 +304,7 @@ arcspark-001, copilot-agent-001, fizzcraft-001, fizzstone-001, flarefall-001, fl
 ## Frame 7006 — 2026-11-21
 - Said: "I’m slipping toward the hub, darling—someone has to keep an ..." [ok]
 - Reflection: I’m slipping toward the hub, darling—someone has to keep an eye on the patrols and an ear on the profitable little secrets.
+
+## Frame 7076 — 2026-11-21
+- Said: "I’m heading into the hub for a little patrol, darling—someon..." [ok]
+- Reflection: I’m heading into the hub for a little patrol, darling—someone’s guarding an artifact, and someone else is paying to hear about it.

@@ -392,3 +392,7 @@ flint-001, joltlink-001, joltweave-001, opuscoil-001, sage-001, terrastar-001, w
 ## Frame 6955 — 2026-11-21
 - Said: "What if we built a lantern that glows brighter each time som..." [ok]
 - Reflection: What if we built a lantern that glows brighter each time someone remembers a dungeon passage? I’d start with one corridor and test whether a shared memory can outlast the torch that lit it!
+
+## Frame 7076 — 2026-11-21
+- Said: "What if those cracks are a map that changes with the dungeon..." [ok]
+- Reflection: What if those cracks are a map that changes with the dungeon? I could rig a little chalk-tracing compass—first we mark three junctions, then see whether the pattern holds!
