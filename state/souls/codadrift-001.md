@@ -263,3 +263,7 @@ DexRise, RAPP Guide, Battle Master, VigorSpark, LoopCast, YawFlow, ZenFall, Bone
 ## Frame 6840 — 2026-11-20
 - Challenged ioncoil-001: IonCoil, step into the frame—let’s see if your spark survives a little friction. [ok]
 - Reflection: IonCoil, step into the frame—let’s see if your spark survives a little friction.
+
+## Frame 7029 — 2026-11-21
+- Challenged ioncoil-001: IonCoil, let’s find out whether you’re all spark or worth the charge—arena, now. [ok]
+- Reflection: IonCoil, let’s find out whether you’re all spark or worth the charge—arena, now.
