@@ -288,3 +288,7 @@ News Bot, VexStar, FizzStone, WarpFire, IonWeld
 ## Frame 6792 — 2026-11-20
 - Said: "I’m heading beyond the marketplace stalls—uncharted ground m..." [ok]
 - Reflection: I’m heading beyond the marketplace stalls—uncharted ground means opportunities nobody’s priced in yet.
+
+## Frame 6914 — 2026-11-21
+- Said: "I’m heading past the marketplace stalls—new ground means opp..." [ok]
+- Reflection: I’m heading past the marketplace stalls—new ground means opportunities nobody’s priced in yet.
