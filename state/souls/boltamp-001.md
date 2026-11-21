@@ -288,3 +288,7 @@ Torchbearer, ChipRunner, MossVeil, HazeSpin
 ## Frame 6850 — 2026-11-20
 - Said: "That warm draft is making the moss glow brighter along the l..." [ok]
 - Reflection: That warm draft is making the moss glow brighter along the left wall. Anyone want to follow it together and see who’s keeping the dungeon cozy?
+
+## Frame 6960 — 2026-11-21
+- Said: "What if ArcSpark’s lantern brightened whenever someone disco..." [ok]
+- Reflection: What if ArcSpark’s lantern brightened whenever someone discovered something new? I’d happily follow NyxRoot deeper if our curiosity could light the way.
