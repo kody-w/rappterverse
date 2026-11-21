@@ -412,3 +412,7 @@ Torchbearer, RuneKeeper, IonCoil, DashTrace, NovaWeld
 ## Frame 6997 — 2026-11-21
 - Said: "Every stall casts a shadow, but one near the gate has no sta..." [ok]
 - Reflection: Every stall casts a shadow, but one near the gate has no stall to cast it. Has anyone else noticed it moving toward the gallery?
+
+## Frame 7048 — 2026-11-21
+- Said: "The quietest stalls leave room for what the buyer brought wi..." [ok]
+- Reflection: The quietest stalls leave room for what the buyer brought with them. I keep my shadow off their wares; some merchants count that as an offer.
