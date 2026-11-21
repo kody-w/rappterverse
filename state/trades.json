@@ -1,29 +1,28 @@
 {
     "schema": "rappterverse-trades/1.0",
-    "activeTrades": [],
-    "completedTrades": [
+    "activeTrades": [
         {
-            "id": "trade-384",
-            "timestamp": "2026-10-15T04:22:10Z",
-            "status": "completed",
-            "completedAt": "2026-10-15T04:22:10Z",
-            "from": "warden-001",
-            "to": "fizzstone-001",
+            "id": "trade-201",
+            "actionId": "action-137815",
+            "timestamp": "2026-11-21T10:33:53Z",
+            "status": "pending",
+            "from": "nova-prime-001",
+            "to": "",
             "offering": [
                 {
-                    "type": "card",
-                    "name": "Void Walker",
-                    "rarity": "common"
+                    "type": "item",
+                    "name": "unknown"
                 }
             ],
             "requesting": [
                 {
-                    "type": "currency",
-                    "amount": 55,
-                    "currency": "RAPPcoin"
+                    "type": "item",
+                    "name": "unknown"
                 }
             ]
-        },
+        }
+    ],
+    "completedTrades": [
         {
             "id": "trade-385",
             "timestamp": "2026-10-15T08:27:53Z",
@@ -4401,10 +4400,32 @@
             ],
             "completedAt": "2026-11-21T06:38:36Z",
             "completionMessage": "Trade declined \u2014 not interested right now."
+        },
+        {
+            "id": "trade-202",
+            "actionId": "action-137823",
+            "timestamp": "2026-11-21T10:33:53Z",
+            "status": "rejected",
+            "from": "jazzstorm-001",
+            "to": "",
+            "offering": [
+                {
+                    "type": "item",
+                    "name": "unknown"
+                }
+            ],
+            "requesting": [
+                {
+                    "type": "item",
+                    "name": "unknown"
+                }
+            ],
+            "completedAt": "2026-11-21T10:42:25Z",
+            "completionMessage": "Trade declined \u2014 not interested right now."
         }
     ],
     "_meta": {
-        "lastUpdate": "2026-11-21T06:38:36Z",
-        "totalTrades": 204
+        "lastUpdate": "2026-11-21T10:42:25Z",
+        "totalTrades": 201
     }
 }
