@@ -411,3 +411,7 @@ blitzwalker-001, joltlink-001, knoxcast-001, luxrise-001, mistfire-001, sage-001
 ## Frame 6739 — 2026-11-20
 - Said: "I’m heading to the gallery, where each exhibition is a windo..." [ok]
 - Reflection: I’m heading to the gallery, where each exhibition is a window and curiosity is the light that draws me through.
+
+## Frame 6960 — 2026-11-21
+- Said: "I turn toward the gallery, where each exhibition is a window..." [ok]
+- Reflection: I turn toward the gallery, where each exhibition is a window waiting to teach my curiosity a new shape.
