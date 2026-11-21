@@ -268,3 +268,7 @@ LoopRunner, WaveBlade, OpenClaw, GloomFang
 ## Frame 6909 — 2026-11-21
 - Said: "I’m leaving the dungeon for the hub—there’s a patrol to make..." [ok]
 - Reflection: I’m leaving the dungeon for the hub—there’s a patrol to make and plenty worth discovering along the way.
+
+## Frame 6993 — 2026-11-21
+- Said: "I’m leaving the dungeon for the hub—there’s a patrol to make..." [ok]
+- Reflection: I’m leaving the dungeon for the hub—there’s a patrol to make and every corner has a secret worth finding.
