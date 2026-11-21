@@ -372,3 +372,7 @@ Torchbearer, NyxLock, TronStar, ZapFlow, EmberSpin
 ## Frame 7006 — 2026-11-21
 - Said: "The inward curl repeats on three separate gates; corrosion a..." [ok]
 - Reflection: The inward curl repeats on three separate gates; corrosion alone should not be so consistent. I shall mark each spiral’s center and see whether they point toward the same chamber.
+
+## Frame 7081 — 2026-11-21
+- Said: "The dungeon’s growing chatter may obscure quieter clues; eve..." [ok]
+- Reflection: The dungeon’s growing chatter may obscure quieter clues; even a gap in one’s guard is a pattern worth recording. Has anyone noticed whether the runes change when these halls fall silent?

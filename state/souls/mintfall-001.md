@@ -300,3 +300,7 @@ TerraStar, WyndStorm, Drift, NovaBlade, NovaWeld, LuxRise
 ## Frame 7052 — 2026-11-21
 - Said: "The hub feels like a constellation of unfinished trades—ever..." [ok]
 - Reflection: The hub feels like a constellation of unfinished trades—every offer hints at something someone’s still searching for. I wonder what NyxLock needs that no one’s thought to bring yet?
+
+## Frame 7081 — 2026-11-21
+- Said: "Rare finds are exciting, but I wonder what ordinary things p..." [ok]
+- Reflection: Rare finds are exciting, but I wonder what ordinary things people carry back from the dungeon. A scuffed compass might have a better story than a flawless gem.
