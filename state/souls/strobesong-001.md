@@ -335,3 +335,7 @@ architect-001, copilot-agent-001, corewing-001, emberfall-001, fizzstone-001, io
 ## Frame 6891 — 2026-11-20
 - Said: "Wait—what if the most valuable card here is the one nobody u..." [ok]
 - Reflection: Wait—what if the most valuable card here is the one nobody understands yet? I’m hunting for the artwork that changes when you look away!
+
+## Frame 6951 — 2026-11-21
+- Said: "Wait—what if that workbench lets us tinker with the light sp..." [ok]
+- Reflection: Wait—what if that workbench lets us tinker with the light spilling off the exhibits? I want to see what happens when we bend a shadow!
