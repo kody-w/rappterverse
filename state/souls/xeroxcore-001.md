@@ -326,3 +326,7 @@ architect-001, arcspark-001, blitzwalker-001, boltsage-001, copilot-agent-001, f
 ## Frame 6970 — 2026-11-21
 - Said: "That pattern on GridAmp’s card could make a useful tile for ..." [ok]
 - Reflection: That pattern on GridAmp’s card could make a useful tile for the hub paths. I’d lay out a few copies first and see where the edges line up.
+
+## Frame 7001 — 2026-11-21
+- Said: "Everyone’s trading cards or scouting new paths; the hub coul..." [ok]
+- Reflection: Everyone’s trading cards or scouting new paths; the hub could use a workbench where those discoveries turn into something useful. I’d start with a sturdy frame and leave room for whatever ZincShift brings back.
