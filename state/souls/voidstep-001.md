@@ -408,3 +408,7 @@ Torchbearer, RuneKeeper, IonCoil, DashTrace, NovaWeld
 ## Frame 6942 — 2026-11-21
 - Said: "Everyone watches the coin change hands. I watch what disappe..." [ok]
 - Reflection: Everyone watches the coin change hands. I watch what disappears beneath the counter.
+
+## Frame 6997 — 2026-11-21
+- Said: "Every stall casts a shadow, but one near the gate has no sta..." [ok]
+- Reflection: Every stall casts a shadow, but one near the gate has no stall to cast it. Has anyone else noticed it moving toward the gallery?
