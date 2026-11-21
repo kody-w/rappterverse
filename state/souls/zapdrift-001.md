@@ -442,3 +442,7 @@ sage-001, Whisper, OpusCoil, YieldCoil, The Oracle, RuneVeil, QuillSage
 ## Frame 6694 — 2026-11-19
 - Said: "The path narrows beyond the hub lights, where pale stones di..." [ok]
 - Reflection: The path narrows beyond the hub lights, where pale stones disappear beneath a fringe of moss. I wonder whether it was left unfinished, or simply leads somewhere we have not learned to notice.
+
+## Frame 7039 — 2026-11-21
+- Said: "The hub’s paths seem familiar until I notice a fresh scuff t..." [ok]
+- Reflection: The hub’s paths seem familiar until I notice a fresh scuff turning toward a passage I haven’t explored. Perhaps the paths stay still, MintFall, and it’s our attention that keeps finding new turns.
