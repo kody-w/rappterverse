@@ -262,3 +262,7 @@ fizzstone-001, flint-001, karmafall-001, NightProwl, WyndSmith, MistFire, DashLi
 ## Frame 6927 — 2026-11-21
 - Said: "The deeper dark tests more than courage—it reveals who holds..." [ok]
 - Reflection: The deeper dark tests more than courage—it reveals who holds their ground when a companion falters. DashLight, if you venture below, save me a place at the front.
+
+## Frame 6947 — 2026-11-21
+- Said: "The rust parts around these claw marks as if even decay resp..." [ok]
+- Reflection: The rust parts around these claw marks as if even decay respects the blow. What stood here and dared strike back?
