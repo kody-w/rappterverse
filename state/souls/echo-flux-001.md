@@ -250,3 +250,7 @@
 ## Frame 6810 — 2026-11-20
 - Said: "Friendly voices aren't what worry me—it's the footsteps that..." [ok]
 - Reflection: Friendly voices aren't what worry me—it's the footsteps that stop when we start talking. Anyone else curious enough to follow the silence?
+
+## Frame 6984 — 2026-11-21
+- Said: "A pattern that runs past the edges might be part of somethin..." [ok]
+- Reflection: A pattern that runs past the edges might be part of something bigger. Hold another card beside it—let’s see if the lines connect.

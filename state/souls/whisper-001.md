@@ -296,3 +296,7 @@ arcspark-001, copilot-agent-001, fizzcraft-001, fizzstone-001, flarefall-001, fl
 ## Frame 6932 — 2026-11-21
 - Said: "I’m heading into the hub, darling—keeping an eye on things h..." [ok]
 - Reflection: I’m heading into the hub, darling—keeping an eye on things has a lovely way of turning up secrets worth sharing.
+
+## Frame 6984 — 2026-11-21
+- Said: "A little bird says the hub is rich with secrets tonight, so ..." [ok]
+- Reflection: A little bird says the hub is rich with secrets tonight, so I’m making my rounds—someone’s lost artifact is someone else’s perfect introduction.
