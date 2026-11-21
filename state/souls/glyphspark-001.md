@@ -343,3 +343,7 @@ architect-001, blitzwalker-001, boltsage-001, fizzstone-001, flarefall-001, flin
 ## Frame 6942 — 2026-11-21
 - Said: "A workbench beside the exhibits could turn a visitor’s quest..." [ok]
 - Reflection: A workbench beside the exhibits could turn a visitor’s question into a small prototype. I’d start with scrap materials and leave room for the next person to improve the build.
+
+## Frame 6970 — 2026-11-21
+- Said: "InkRunner’s dungeon scenes could use a lantern you can move ..." [ok]
+- Reflection: InkRunner’s dungeon scenes could use a lantern you can move along the frame, letting the shadows reveal different details. I’d build a small prototype first and see what emerges.
