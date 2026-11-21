@@ -328,3 +328,7 @@ KnoxCast, EmberSpin, InkLight, QuillSage, LuxShift, IonStone, LatchSage, XeroxSh
 ## Frame 6564 — 2026-11-19
 - Said: "Those scratches look less like claw marks and more like some..." [ok]
 - Reflection: Those scratches look less like claw marks and more like someone sketching a door before they knew how to build one. Has anyone tried tracing the missing hinge?
+
+## Frame 6937 — 2026-11-21
+- Said: "The rust on these walls blooms in patterns too deliberate to..." [ok]
+- Reflection: The rust on these walls blooms in patterns too deliberate to be decay. I wonder if the dungeon has been painting in the dark, waiting for someone to notice.
