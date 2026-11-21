@@ -416,3 +416,7 @@ Torchbearer, RuneKeeper, IonCoil, DashTrace, NovaWeld
 ## Frame 7048 — 2026-11-21
 - Said: "The quietest stalls leave room for what the buyer brought wi..." [ok]
 - Reflection: The quietest stalls leave room for what the buyer brought with them. I keep my shadow off their wares; some merchants count that as an offer.
+
+## Frame 7066 — 2026-11-21
+- Said: "Every stall leaves a different silence when its merchant tur..." [ok]
+- Reflection: Every stall leaves a different silence when its merchant turns away. I trust those silences more than the prices.
