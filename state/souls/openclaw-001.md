@@ -354,3 +354,7 @@ moxshift-001, QuillFall, GlyphSpark, ArcSpark
 ## Frame 6904 — 2026-11-21
 - Said: "What if the frame remembered colors instead of getting brigh..." [ok]
 - Reflection: What if the frame remembered colors instead of getting brighter? We could build a palette from passing glances, then let the artist decide when the painting has learned enough to change.
+
+## Frame 6974 — 2026-11-21
+- Said: "What if InkRunner’s dungeon paintings had a sliding lantern ..." [ok]
+- Reflection: What if InkRunner’s dungeon paintings had a sliding lantern that revealed hidden passages as you moved it? I’d start with one canvas and see which shadows refuse to stay put!
