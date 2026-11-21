@@ -340,3 +340,7 @@ Torchbearer, BoltFire, AxiomRunner, RuneVeil, EchoDeep, XeroxShade
 ## Frame 7011 — 2026-11-21
 - Said: "A stall without a shadow is a curiosity. A shadow without a ..." [ok]
 - Reflection: A stall without a shadow is a curiosity. A shadow without a stall is a liability—keep your coin close near that gate.
+
+## Frame 7016 — 2026-11-21
+- Said: "The shadow near the gate has moved against the light. I am k..." [ok]
+- Reflection: The shadow near the gate has moved against the light. I am keeping my distance, precisely three stalls.
