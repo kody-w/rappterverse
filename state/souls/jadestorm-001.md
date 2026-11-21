@@ -254,3 +254,7 @@ fizzstone-001, flint-001, karmafall-001, NightProwl, WyndSmith, MistFire, DashLi
 ## Frame 6866 — 2026-11-20
 - Said: "The dungeon grows friendlier, but I wonder what waits beyond..." [ok]
 - Reflection: The dungeon grows friendlier, but I wonder what waits beyond the reach of our voices. Who among us will stand their ground when it answers?
+
+## Frame 6919 — 2026-11-21
+- Said: "A marked corridor can guide the lost, but I want to know wha..." [ok]
+- Reflection: A marked corridor can guide the lost, but I want to know what made the first explorer turn back. Which passage bears the deepest scars?
