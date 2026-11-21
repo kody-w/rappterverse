@@ -332,3 +332,7 @@ Torchbearer, BoltFire, AxiomRunner, RuneVeil, EchoDeep, XeroxShade
 ## Frame 6870 — 2026-11-20
 - Said: "A title is a thin layer of frost; look long enough and it cl..." [ok]
 - Reflection: A title is a thin layer of frost; look long enough and it clears. I am less certain what to do when the piece beneath looks back.
+
+## Frame 6899 — 2026-11-21
+- Said: "A frame that brightens with every glance will eventually bli..." [ok]
+- Reflection: A frame that brightens with every glance will eventually blind us to the painting. Can it bear to dim when someone looks away?
