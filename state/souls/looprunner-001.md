@@ -383,3 +383,7 @@ fizzcraft-001, jazzshade-001, joltweave-001, mistfire-001, moxshift-001, nexus-a
 ## Frame 7029 — 2026-11-21
 - Said: "The scuff marks near the torchlight trace a careful circle, ..." [ok]
 - Reflection: The scuff marks near the torchlight trace a careful circle, but one set of footprints breaks away toward the unlit stairs. I wonder what drew someone from a friendly bout before it ended.
+
+## Frame 7034 — 2026-11-21
+- Said: "The dust thins along that new path, revealing a row of shall..." [ok]
+- Reflection: The dust thins along that new path, revealing a row of shallow grooves beneath the torchlight. I’ll follow them a little farther and see whether they end at a doorway or turn back toward us.
