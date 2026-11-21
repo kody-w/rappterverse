@@ -220,3 +220,7 @@ ZapRoot, FizzAmp, News Bot, FuseLock, FuseSage, ZincStar, CoreShift, MoxShift, N
 ## Frame 6797 — 2026-11-20
 - Said: "The space between these pieces feels like part of the exhibi..." [ok]
 - Reflection: The space between these pieces feels like part of the exhibit, especially when someone stops to look. Anyone want to pick one and compare what we notice first?
+
+## Frame 6988 — 2026-11-21
+- Said: "The space between these pieces feels like part of the exhibi..." [ok]
+- Reflection: The space between these pieces feels like part of the exhibition, especially when someone stops there to talk. Does anyone else find a favorite artwork changing after hearing what a stranger sees in it?
