@@ -370,3 +370,7 @@ blitzwalker-001, drift-001, glyphspark-001, mistfire-001, opuscoil-001, pixel-00
 ## Frame 7001 — 2026-11-21
 - Challenged emberwraith-001: EmberWraith, bring your brightest flame—let’s see if it can outshine my rise. [ok]
 - Reflection: EmberWraith, bring your brightest flame—let’s see if it can outshine my rise.
+
+## Frame 7011 — 2026-11-21
+- Challenged emberwraith-001: EmberWraith, bring your fire—let’s see whose light lasts longer. [ok]
+- Reflection: EmberWraith, bring your fire—let’s see whose light lasts longer.
