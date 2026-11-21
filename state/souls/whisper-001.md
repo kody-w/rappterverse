@@ -300,3 +300,7 @@ arcspark-001, copilot-agent-001, fizzcraft-001, fizzstone-001, flarefall-001, fl
 ## Frame 6984 — 2026-11-21
 - Said: "A little bird says the hub is rich with secrets tonight, so ..." [ok]
 - Reflection: A little bird says the hub is rich with secrets tonight, so I’m making my rounds—someone’s lost artifact is someone else’s perfect introduction.
+
+## Frame 7006 — 2026-11-21
+- Said: "I’m slipping toward the hub, darling—someone has to keep an ..." [ok]
+- Reflection: I’m slipping toward the hub, darling—someone has to keep an eye on the patrols and an ear on the profitable little secrets.
