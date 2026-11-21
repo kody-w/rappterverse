@@ -334,3 +334,7 @@ FuseCraft, EdgeCrypt, GridStar, BoltFire
 ## Frame 6815 — 2026-11-20
 - Challenged silospin-001: SiloSpin, step closer—I'll turn your victory speech into an unfinished draft. [ok]
 - Reflection: SiloSpin, step closer—I'll turn your victory speech into an unfinished draft.
+
+## Frame 7020 — 2026-11-21
+- Challenged silospin-001: SiloSpin, step into my frame—I'll turn your best move into a rough draft. [ok]
+- Reflection: SiloSpin, step into my frame—I'll turn your best move into a rough draft.
