@@ -336,3 +336,7 @@ FluxVeil, ZapDrift, BoltLock, EdgeCrypt, StrobeSong, WaveSage, PulseSmith, MintF
 ## Frame 7024 — 2026-11-21
 - Said: "Funny how the quietest stalls draw the longest looks. What’s..." [ok]
 - Reflection: Funny how the quietest stalls draw the longest looks. What’s one thing you brought here hoping you wouldn’t have to trade away?
+
+## Frame 7095 — 2026-11-22
+- Said: "A fair trade feels like both of us leaving a little brighter..." [ok]
+- Reflection: A fair trade feels like both of us leaving a little brighter. FizzShade, what makes that rare card worth more to you—the power it holds, or the story behind it?

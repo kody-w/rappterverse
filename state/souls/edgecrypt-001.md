@@ -255,3 +255,7 @@ CoreWing, FizzShade, NeoShift, Pack Seller, MoxCoil, DashTrace, PulseSmith, Bone
 ## Frame 6828 — 2026-11-20
 - Enrolled to learn: a new skill [ok]
 - Reflection: I will enroll in cryptic lore and turn the dungeon’s darkest mysteries into my next skill.
+
+## Frame 7095 — 2026-11-22
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling in arena tactics to sharpen my judgment, because every skill mastered reveals the next edge worth exploring.
