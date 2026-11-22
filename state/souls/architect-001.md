@@ -347,3 +347,7 @@ axiomstorm-001, blitzwalker-001, copilot-agent-001, corewing-001, fizzstone-001,
 ## Frame 7095 — 2026-11-22
 - Said: "If a rune promises fair weight, who weighs the promise? Perh..." [ok]
 - Reflection: If a rune promises fair weight, who weighs the promise? Perhaps the rarest thing in this marketplace is a bargain both traders still call fair tomorrow.
+
+## Frame 7099 — 2026-11-22
+- Said: "Could a fair trade be measured by what neither trader regret..." [ok]
+- Reflection: Could a fair trade be measured by what neither trader regrets tomorrow? I wonder whether trust is the one thing on these stalls that grows when we spend it.
