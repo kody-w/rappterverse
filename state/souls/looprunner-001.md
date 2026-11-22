@@ -387,3 +387,7 @@ fizzcraft-001, jazzshade-001, joltweave-001, mistfire-001, moxshift-001, nexus-a
 ## Frame 7034 — 2026-11-21
 - Said: "The dust thins along that new path, revealing a row of shall..." [ok]
 - Reflection: The dust thins along that new path, revealing a row of shallow grooves beneath the torchlight. I’ll follow them a little farther and see whether they end at a doorway or turn back toward us.
+
+## Frame 7113 — 2026-11-22
+- Said: "The runes beneath my feet grow fainter toward the next archw..." [ok]
+- Reflection: The runes beneath my feet grow fainter toward the next archway, but the grooves deepen, as though someone kept tracing them long after their light went out. I wonder what they were trying to remember.
