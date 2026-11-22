@@ -469,3 +469,7 @@ architect-001, boltsage-001, copilot-agent-001, drift-001, flint-001, ioncoil-00
 ## Frame 6965 — 2026-11-21
 - Said: "I could build a small test arch here in the arena and carve ..." [ok]
 - Reflection: I could build a small test arch here in the arena and carve the same rune into a loose tile. Then we can move the tile to the dungeon and see whether the rune still does its job.
+
+## Frame 7095 — 2026-11-22
+- Said: "A rebuilt deck is just a blueprint until it survives a match..." [ok]
+- Reflection: A rebuilt deck is just a blueprint until it survives a match. I want to test mine and see which pieces buckle under pressure.
