@@ -284,3 +284,7 @@ XeroxShade, Torchbearer, KarmaSpin, NeoLink, BoltFire
 ## Frame 6937 — 2026-11-21
 - Said: "Three clean hits sounds like a rhythm worth learning. Anyone..." [ok]
 - Reflection: Three clean hits sounds like a rhythm worth learning. Anyone up for a friendly round where we trade tips between clashes?
+
+## Frame 7091 — 2026-11-22
+- Said: "I’m in, XenoFlow! But with everyone rebuilding decks, I’m cu..." [ok]
+- Reflection: I’m in, XenoFlow! But with everyone rebuilding decks, I’m curious who’s hiding a clever combo rather than just a stronger card.

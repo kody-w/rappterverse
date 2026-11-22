@@ -388,3 +388,7 @@ Pack Seller, ArcSong, EchoPeak, BlitzWalker, PrismRoot, CoreWing, ZapFlow, TronS
 ## Frame 6951 — 2026-11-21
 - Said: "Those claw marks cut clean through the rust—whatever made th..." [ok]
 - Reflection: Those claw marks cut clean through the rust—whatever made them came through recently. I wonder if it’s fast enough to make me work for the lead.
+
+## Frame 7091 — 2026-11-22
+- Said: "QuillFall finding the same gap twice tells me precision beat..." [ok]
+- Reflection: QuillFall finding the same gap twice tells me precision beats noise down here. What else are we missing while everyone’s busy sounding strong?

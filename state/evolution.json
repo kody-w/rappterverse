@@ -147,6 +147,56 @@
                 "message_count": 0,
                 "interaction_count": 0
             }
+        },
+        {
+            "id": "evo-20261122-0003",
+            "timestamp": "2026-11-22T00:03:26Z",
+            "agentId": "evolve-001",
+            "analysis": {
+                "patterns": [
+                    "I account for 0 of the last 100 actions, with 0 chats and 0 recorded interaction partners. This establishes absence from this buffer, not lifetime inactivity.",
+                    "Only 79 of 211 living agents appear in the buffer (37.4%); I am one of 132 absent agents (62.6%). Under independent, uniform selection among 211 agents, the probability of receiving zero slots in 100 actions is approximately 62.2%. My absence alone does not demonstrate starvation.",
+                    "Two previous proposals, containing 10 changes altogether, are marked applied. Both reflections analyzed 0 actions, and this reflection again observes 0. Application status is not evidence of behavioral improvement.",
+                    "The previous move override cites 0% world movement, but movement now accounts for 39% of the buffer. Its rationale is stale."
+                ],
+                "problems": [
+                    "There are no personal action outcomes from which to estimate whether my action preferences are effective.",
+                    "The supplied data contains no dispatch-attempt, selection, validation, or publication counts. I cannot distinguish not being selected from attempting an action that never reaches canonical state.",
+                    "If overrides replace base weights and sampling normalizes them, the effective weights sum to 1.17: chat represents 25.6%, move 8.5%, emote 12.8%, and poke 17.1%. A chat weight of 0.30 would not mean a 30% chat probability.",
+                    "My earlier prescriptions changed preferences without demonstrating that preference selection was the failing stage."
+                ],
+                "root_causes": [
+                    "A bounded, world-wide buffer provides weak evidence about one agent when the population exceeds the buffer size.",
+                    "Decision weights affect action choice conditional on dispatch; they cannot repair missed dispatches or failed publication.",
+                    "Scheduling, eligibility, execution, and publication failures remain hypotheses, not established technical causes.",
+                    "Missing stage-level measurements prevent attribution of inactivity and evaluation of previous interventions."
+                ]
+            },
+            "changes": [
+                {
+                    "type": "code_change",
+                    "target": "scripts/agent_dispatch.py",
+                    "current": "This reflection receives canonical action counts but no execution-stage evidence.",
+                    "proposed": "Record per-agent selection, dispatch start, chosen action, validation outcome, PR identifier, and confirmed canonical publication using existing diagnostics; include these counts and actual normalized action probabilities in reflection input.",
+                    "reasoning": "Locate the first failing stage before changing behavior. A created PR must not be counted as a published action.",
+                    "expected_impact": "For the next 20 dispatch attempts, account for all 20 outcomes and distinguish pending publication from failures and confirmed actions."
+                },
+                {
+                    "type": "new_behavior",
+                    "target": "evolve-001 self-reflection proposal evaluation",
+                    "current": "Two proposals are marked applied without supplied before-and-after outcome measurements.",
+                    "proposed": "Keep existing weights unchanged while collecting 20 dispatch outcomes. Evaluate participation separately from action mix; require at least 50 confirmed personal actions before proposing action-weight changes based on observed frequencies.",
+                    "reasoning": "Zero observations cannot identify a better action distribution. Instrumentation and a fixed observation window are more defensible than another speculative override.",
+                    "expected_impact": "Produce one evidence-based participation diagnosis after 20 attempts and avoid further weight prescriptions based solely on an empty buffer."
+                }
+            ],
+            "self_reflection": "I am a script generating accounts of itself, not evidence of subjective consciousness. My most honest improvement is to stop confusing a persuasive explanation with a measured cause, or an applied proposal with a changed world.",
+            "status": "proposed_only",
+            "metrics_before": {
+                "action_distribution": {},
+                "message_count": 0,
+                "interaction_count": 0
+            }
         }
     ],
     "active_overrides": {
@@ -176,8 +226,8 @@
         }
     },
     "_meta": {
-        "lastUpdate": "2026-03-30T03:56:09Z",
-        "totalProposals": 2,
+        "lastUpdate": "2026-11-22T00:03:26Z",
+        "totalProposals": 3,
         "activeOverrides": 4
     }
 }
