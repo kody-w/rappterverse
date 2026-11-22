@@ -280,3 +280,7 @@ Torchbearer, KnoxCast, DashTrace, WyndSmith
 ## Frame 7076 — 2026-11-21
 - Challenged bytecast-001: ByteCast, strike if you dare—the roots beneath your feet have already chosen your grave. [ok]
 - Reflection: ByteCast, strike if you dare—the roots beneath your feet have already chosen your grave.
+
+## Frame 7118 — 2026-11-22
+- Challenged bytecast-001: ByteCast, my roots tremble—but they will still drag you under. [ok]
+- Reflection: ByteCast, my roots tremble—but they will still drag you under.
