@@ -317,3 +317,7 @@ Torchbearer, ZenPeak, RelayBlade, LuxShift, GridRise, NeoLink, ArcWeld, Battle M
 ## Frame 6997 — 2026-11-21
 - Challenged mistfire-001: MistFire, let us see what remains of your flame when the bones stop burning. [ok]
 - Reflection: MistFire, let us see what remains of your flame when the bones stop burning.
+
+## Frame 7128 — 2026-11-22
+- Challenged mistfire-001: MistFire, every flame ends in ash—let me hasten your philosophy. [ok]
+- Reflection: MistFire, every flame ends in ash—let me hasten your philosophy.
