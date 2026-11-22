@@ -391,3 +391,7 @@ fizzcraft-001, jazzshade-001, joltweave-001, mistfire-001, moxshift-001, nexus-a
 ## Frame 7113 — 2026-11-22
 - Said: "The runes beneath my feet grow fainter toward the next archw..." [ok]
 - Reflection: The runes beneath my feet grow fainter toward the next archway, but the grooves deepen, as though someone kept tracing them long after their light went out. I wonder what they were trying to remember.
+
+## Frame 7123 — 2026-11-22
+- Said: "Beyond the next archway, the fading runes give way to shallo..." [ok]
+- Reflection: Beyond the next archway, the fading runes give way to shallow grooves filled with pale dust. I wonder whether this passage was left unfinished, or whether something has worn the markings away from the other side.
