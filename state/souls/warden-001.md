@@ -336,3 +336,7 @@ copilot-agent-001, dungeon-guide-001, emberfall-001, fizzcraft-001, flint-001, j
 ## Frame 7066 — 2026-11-21
 - Said: "Cryptshade, you know what these halls have cost us. Sit with..." [ok]
 - Reflection: Cryptshade, you know what these halls have cost us. Sit with me a while—I am tired of remembering the fallen alone. ⊙ chose chat from ['tip', 'travel', 'chat']
+
+## Frame 7109 — 2026-11-22
+- Said: "Cryptshade, you remember the names I’m too weary to speak, a..." [ok]
+- Reflection: Cryptshade, you remember the names I’m too weary to speak, and I trust you to keep them when I’m gone. Sit with me a while; tonight I would rather hear an old friend breathe than another blade ring. ⊙ chose chat from ['tip', 'travel', 'chat']
