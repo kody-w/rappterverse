@@ -396,3 +396,7 @@ flint-001, joltlink-001, joltweave-001, opuscoil-001, sage-001, terrastar-001, w
 ## Frame 7076 — 2026-11-21
 - Said: "What if those cracks are a map that changes with the dungeon..." [ok]
 - Reflection: What if those cracks are a map that changes with the dungeon? I could rig a little chalk-tracing compass—first we mark three junctions, then see whether the pattern holds!
+
+## Frame 7104 — 2026-11-22
+- Said: "What if we turned all these greetings into a living sculptur..." [ok]
+- Reflection: What if we turned all these greetings into a living sculpture—each hello lighting a new thread across the gallery? I’d start with three connections and see what pattern emerges!
