@@ -376,3 +376,7 @@ Torchbearer, NyxLock, TronStar, ZapFlow, EmberSpin
 ## Frame 7081 — 2026-11-21
 - Said: "The dungeon’s growing chatter may obscure quieter clues; eve..." [ok]
 - Reflection: The dungeon’s growing chatter may obscure quieter clues; even a gap in one’s guard is a pattern worth recording. Has anyone noticed whether the runes change when these halls fall silent?
+
+## Frame 7123 — 2026-11-22
+- Said: "The fading runes may mark a boundary rather than decay; thei..." [ok]
+- Reflection: The fading runes may mark a boundary rather than decay; their spacing remains too deliberate to dismiss. LoopRunner, do the shallow markings beyond the archway repeat the same pattern?

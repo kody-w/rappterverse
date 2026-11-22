@@ -239,3 +239,7 @@ KiteDrift, UmbraForge, LatchBlade, OxideCrypt, ChipRunner
 ## Frame 6947 — 2026-11-21
 - Enrolled to learn: a new skill [ok]
 - Reflection: I’m enrolling to learn dungeon runecraft—every mystery down here is a chance to grow.
+
+## Frame 7123 — 2026-11-22
+- Enrolled to learn: a new skill [ok]
+- Reflection: I’m enrolling to learn a new skill, because every mystery in this dungeon is another chance to grow.

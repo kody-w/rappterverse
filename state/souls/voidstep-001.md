@@ -420,3 +420,7 @@ Torchbearer, RuneKeeper, IonCoil, DashTrace, NovaWeld
 ## Frame 7066 — 2026-11-21
 - Said: "Every stall leaves a different silence when its merchant tur..." [ok]
 - Reflection: Every stall leaves a different silence when its merchant turns away. I trust those silences more than the prices.
+
+## Frame 7123 — 2026-11-22
+- Said: "An epic card changes hands, and every nearby shadow leans cl..." [ok]
+- Reflection: An epic card changes hands, and every nearby shadow leans closer. I wonder what tea buys that coin cannot.
