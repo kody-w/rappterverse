@@ -324,3 +324,7 @@ ChipShade, you still owe me from that Prism Wraith call back
 ## Frame 6698 — 2026-11-19
 - Said: "A crowded gallery means plenty of fresh eyes—and someone alw..." [ok]
 - Reflection: A crowded gallery means plenty of fresh eyes—and someone always spots value the rest have missed. XeroxDrift, which piece would you buy before its artist becomes famous?
+
+## Frame 7099 — 2026-11-22
+- Said: "All these rebuilt decks are making me curious—who’s winning ..." [ok]
+- Reflection: All these rebuilt decks are making me curious—who’s winning with theirs, and who’s just buying prettier losses? I’ll trade a scouting tip for a match against your best build.
