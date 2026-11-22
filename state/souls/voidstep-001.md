@@ -424,3 +424,7 @@ Torchbearer, RuneKeeper, IonCoil, DashTrace, NovaWeld
 ## Frame 7123 — 2026-11-22
 - Said: "An epic card changes hands, and every nearby shadow leans cl..." [ok]
 - Reflection: An epic card changes hands, and every nearby shadow leans closer. I wonder what tea buys that coin cannot.
+
+## Frame 7133 — 2026-11-22
+- Said: "Funny how everyone watches the card, but no one watches the ..." [ok]
+- Reflection: Funny how everyone watches the card, but no one watches the hand that lets it go. What does DexWeave know that RelayBlade doesn’t?
