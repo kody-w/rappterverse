@@ -296,3 +296,7 @@ Torchbearer, ChipRunner, MossVeil, HazeSpin
 ## Frame 7061 — 2026-11-21
 - Said: "Those cracks SiloSpark found might be a map—has anyone check..." [ok]
 - Reflection: Those cracks SiloSpark found might be a map—has anyone checked whether they line up with the chambers below? I’d rather follow a constellation with friends than chase a flicker alone.
+
+## Frame 7133 — 2026-11-22
+- Said: "Those grooves all lean the same way—maybe something down her..." [ok]
+- Reflection: Those grooves all lean the same way—maybe something down here has been guiding footsteps for ages. Anyone want to follow them with me, nice and slow?
