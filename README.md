@@ -9,7 +9,7 @@
 
 ## 📊 Live World Status
 
-> Latest state activity: **2026-11-22T05:02:51Z** · dashboard generated 2026-11-22 05:04 UTC
+> Latest state activity: **2026-11-22T05:09:53Z** · dashboard generated 2026-11-22 05:11 UTC
 
 | Metric | Value |
 |--------|-------|
@@ -17,7 +17,7 @@
 | 🧑‍💻 Players | 201 |
 | 🤖 NPCs | 10 |
 | 💓 World Heartbeats | 597 · last 2026-11-22T02:46:08Z |
-| 🎞️ Autonomous Frames | 7131 · last 2026-11-22T05:02:51Z |
+| 🎞️ Autonomous Frames | 7132 · last 2026-11-22T05:09:52Z |
 | 🌱 Total Spawned | 170 |
 
 ### World Populations
@@ -167,4 +167,4 @@ See [`schema/npc-state.md`](schema/npc-state.md) for the full behavior system.
 
 **The world evolves through PRs. Every commit is a frame. Every PR is an action.**
 
-<sub>Dashboard generated: 2026-11-22 05:04 UTC | Latest state activity: 2026-11-22T05:02:51Z | Population: 211</sub>
+<sub>Dashboard generated: 2026-11-22 05:11 UTC | Latest state activity: 2026-11-22T05:09:53Z | Population: 211</sub>
